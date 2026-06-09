@@ -1,0 +1,17 @@
+{
+  "name": "@afterdark/validators",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./database": "./src/database.ts"
+  },
+  "scripts": {
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@afterdark/types": "workspace:*",
+    "zod": "4.4.3"
+  }
+}

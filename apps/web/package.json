@@ -1,0 +1,36 @@
+{
+  "name": "@afterdark/web",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite dev",
+    "build": "vite build",
+    "start": "vite preview",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@afterdark/db": "workspace:*",
+    "@afterdark/types": "workspace:*",
+    "@afterdark/ui": "workspace:*",
+    "@afterdark/validators": "workspace:*",
+    "@tanstack/react-form": "1.32.0",
+    "@tanstack/react-query": "5.100.14",
+    "@tanstack/react-router": "1.170.8",
+    "@tanstack/react-start": "1.168.13",
+    "@tanstack/zod-form-adapter": "0.42.1",
+    "react": "19.2.6",
+    "react-dom": "19.2.6",
+    "vite": "6.4.3",
+    "zod": "4.4.3"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "4.3.0",
+    "@types/node": "22.15.0",
+    "@types/react": "19.1.6",
+    "@types/react-dom": "19.1.5",
+    "tailwindcss": "4.3.0",
+    "typescript": "6.0.3",
+    "vite-tsconfig-paths": "5.1.4"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "name": "@afterdark/db",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./config/env.server": "./src/config/env.server.ts"
+  },
+  "scripts": {
+    "type-check": "tsc --noEmit",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:push": "drizzle-kit push"
+  },
+  "dependencies": {
+    "@afterdark/types": "workspace:*",
+    "@afterdark/validators": "workspace:*",
+    "drizzle-orm": "0.43.1",
+    "pg": "8.13.1",
+    "zod": "4.4.3"
+  },
+  "devDependencies": {
+    "@types/pg": "8.11.13",
+    "drizzle-kit": "0.31.1",
+    "typescript": "6.0.3"
+  }
+}

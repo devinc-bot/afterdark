@@ -1,0 +1,15 @@
+{
+  "$schema": "https://raw.githubusercontent.com/oxc-project/oxc/main/npm/oxlint/configuration_schema.json",
+  "plugins": ["react", "typescript"],
+  "env": {
+    "browser": true,
+    "es2022": true,
+    "node": true
+  },
+  "rules": {
+    "no-unused-vars": "error",
+    "no-console": "warn",
+    "eqeqeq": "error"
+  },
+  "ignorePatterns": ["**/routeTree.gen.ts", "**/dist/**", "**/.vinxi/**", "**/.output/**"]
+}

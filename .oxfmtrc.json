@@ -1,0 +1,9 @@
+{
+  "indent_width": 2,
+  "line_ending": "lf",
+  "print_width": 100,
+  "single_quote": true,
+  "trailing_comma": "all",
+  "bracket_spacing": true,
+  "semicolon": false
+}

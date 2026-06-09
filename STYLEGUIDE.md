@@ -1,0 +1,112 @@
+# STYLEGUIDE.md — afterdark Monorepo
+
+Code conventions, naming rules, dependency policy, and quality toolchain.
+
+---
+
+## Naming conventions
+
+| What                  | Convention                              | Example                                |
+| --------------------- | --------------------------------------- | -------------------------------------- |
+| Files                 | `kebab-case`                            | `property-card.tsx`                    |
+| Components            | `PascalCase`                            | `PropertyCard`                         |
+| Hooks                 | `camelCase` with `use` prefix           | `useProperties`                        |
+| Server fns            | `camelCase` with `Fn` suffix            | `getPropertiesFn`                      |
+| Query options         | `camelCase` with `QueryOptions` suffix  | `propertiesQueryOptions`               |
+| Routes paths          | English, kebab-case                     | `/properties/new`                      |
+| Constant maps         | `SCREAMING_SNAKE_CASE` keys, `as const` | `MODE.DEVELOPMENT`                     |
+| String values in code | Use constant maps, not inline literals  | `MODE.DEVELOPMENT` not `"development"` |
+
+> UI **display text** (labels, messages, placeholders shown to users) stays in **Spanish** per product requirements. All identifiers (files, functions, constants, routes) must be in **English**. See [DOMAIN.md](./DOMAIN.md) for language rules.
+
+---
+
+## No magic strings
+
+Do not repeat string literals in application logic (env modes, statuses, roles, query keys, etc.). Define constants once and compare against them.
+
+| Scope    | Location                                                   |
+| -------- | ---------------------------------------------------------- |
+| App-wide | `app/config/constants/` or `app/modules/shared/constants/` |
+| Domain   | `@afterdark/types` or `@afterdark/validators`              |
+
+Define constant maps with `SCREAMING_SNAKE_CASE` keys and `as const`. Derive TypeScript types from the map when needed.
+
+```ts
+// app/config/constants/mode.ts
+export const MODE = {
+  DEVELOPMENT: "development",
+  PRODUCTION: "production",
+  TEST: "test",
+} as const;
+
+export type Mode = (typeof MODE)[keyof typeof MODE];
+```
+
+```ts
+// incorrect
+if (envResult.MODE === "development") {
+}
+
+// correct
+if (envResult.MODE === MODE.DEVELOPMENT) {
+}
+```
+
+Use the same values in Zod enums: `z.enum([MODE.DEVELOPMENT, MODE.PRODUCTION, MODE.TEST])`.
+
+**Exceptions (literals are OK):** route paths inside `createFileRoute("...")` (codegen), UI copy shown to users (Spanish), and one-off test fixtures.
+
+---
+
+## Dependency management
+
+- **No `^` or `~`** — all versions are pinned exactly.
+- `save-exact=true` is set in `.npmrc` — every `pnpm add` auto-pins.
+- Always commit `pnpm-lock.yaml`. Never delete it.
+- To upgrade a dep: `pnpm add <pkg>@<exact-version>`, review changelog first.
+- Never run blind upgrade commands (`pnpm update --latest`, `npm-check-updates`, etc.).
+- Use `pnpm install --frozen-lockfile` in CI.
+
+### Pinned versions (key deps)
+
+| Package                      | Version  |
+| ---------------------------- | -------- |
+| `@tanstack/react-start`      | 1.168.13 |
+| `@tanstack/react-router`     | 1.170.8  |
+| `@tanstack/react-query`      | 5.100.14 |
+| `@tanstack/react-form`       | 1.32.0   |
+| `@tanstack/zod-form-adapter` | 0.42.1   |
+| `react` / `react-dom`        | 19.2.6   |
+| `zod`                        | 4.4.3    |
+| `typeorm`                    | 1.0.0    |
+| `typescript`                 | 6.0.3    |
+| `tailwindcss`                | 4.3.0    |
+| `vinxi`                      | 0.5.11   |
+| `oxlint`                     | 1.66.0   |
+| `oxfmt`                      | 0.51.0   |
+
+---
+
+## Code quality toolchain
+
+| Tool            | Role                            | Config                         |
+| --------------- | ------------------------------- | ------------------------------ |
+| **oxlint**      | Linter (Oxc ecosystem, Rust)    | `oxlint.json`                  |
+| **oxfmt**       | Formatter (Oxc ecosystem, Rust) | `.oxfmtrc.json`                |
+| **Husky**       | Git hooks                       | `.husky/pre-commit`            |
+| **lint-staged** | Run tools on staged files only  | `package.json → "lint-staged"` |
+
+Pre-commit (runs on every `git commit`):
+
+1. `oxlint --fix` → lint + auto-fix staged TS/JS files
+2. `oxfmt` → format staged files in place
+
+Unfixable lint errors **block** the commit.
+
+```bash
+pnpm lint           # lint check
+pnpm lint:fix       # lint + auto-fix
+pnpm format         # format all files in place
+pnpm format:check   # format check without writing (CI)
+```

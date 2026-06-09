@@ -1,0 +1,27 @@
+packages:
+  - "apps/*"
+  - "packages/*"
+
+allowBuilds:
+  "@nestjs/core": true
+  "@parcel/watcher": true
+  esbuild: true
+
+# nodeLinker: isolated (default de pnpm 11) bloquea phantom deps:
+# cada paquete solo ve lo que declara en su package.json.
+# Los @repo/* internos quedan vinculados via workspace:* en cada package.json.
+# Imports relativos cross-package (ej. ../ui/src/utils) siguen funcionando
+# porque son resoluciones de filesystem, no de node_modules.
+nodeLinker: isolated
+
+# Supply chain hardening (mas restrictivo que los defaults de pnpm 11)
+minimumReleaseAge: 10080 # 7 dias (default pnpm 11 = 1440 = 1 dia)
+minimumReleaseAgeStrict: false # paquetes sin campo "time" en el registry son warning, no error
+blockExoticSubdeps: true # bloquea github:/git:/file: en transitivas (default)
+strictDepBuilds: true # falla si una dep nueva quiere correr scripts (default)
+saveExact: true # equivalente al viejo save-exact de .npmrc
+
+# Red mas tolerante a timeouts del registry
+fetchRetries: 5
+fetchTimeout: 120000 # 2 min por request
+networkConcurrency: 8
