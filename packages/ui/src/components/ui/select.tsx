@@ -2,6 +2,10 @@ import * as React from "react";
 import * as SelectPrimitive from "@radix-ui/react-select";
 import { Check, ChevronDown, ChevronUp } from "lucide-react";
 import { cn } from "../../lib/utils";
+import { Label } from "./label";
+
+const selectTriggerClassName =
+  "flex h-11 w-full items-center justify-between rounded-md border bg-surface-container-lowest px-4 py-3 text-base text-ink tracking-[0.16px] focus:outline-none focus:ring-2 disabled:cursor-not-allowed disabled:bg-surface-container-low disabled:text-ink-muted-soft disabled:opacity-60 [&>span]:line-clamp-1";
 
 const Select = SelectPrimitive.Root;
 const SelectGroup = SelectPrimitive.Group;
@@ -9,19 +13,24 @@ const SelectValue = SelectPrimitive.Value;
 
 const SelectTrigger = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Trigger>,
-  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger>
->(({ className, children, ...props }, ref) => (
+  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger> & {
+    error?: boolean;
+  }
+>(({ className, children, error, ...props }, ref) => (
   <SelectPrimitive.Trigger
     ref={ref}
     className={cn(
-      "flex h-11 w-full items-center justify-between rounded-md border border-hairline-strong bg-surface-card px-4 py-3 text-[16px] text-ink tracking-[0.16px] placeholder:text-ink-muted-soft focus:outline-none focus:border-ink focus:ring-2 focus:ring-ink disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
+      selectTriggerClassName,
+      error
+        ? "border-destructive focus:border-destructive focus:ring-destructive/40"
+        : "border-hairline-strong focus:border-ink focus:ring-ink",
       className,
     )}
     {...props}
   >
     {children}
     <SelectPrimitive.Icon asChild>
-      <ChevronDown className="h-4 w-4 opacity-50" />
+      <ChevronDown className="h-4 w-4 shrink-0 text-ink-muted-soft" />
     </SelectPrimitive.Icon>
   </SelectPrimitive.Trigger>
 ));
@@ -63,7 +72,7 @@ const SelectContent = React.forwardRef<
     <SelectPrimitive.Content
       ref={ref}
       className={cn(
-        "relative z-50 max-h-96 min-w-[8rem] overflow-hidden rounded-xl border border-hairline bg-surface-card text-ink shadow-[0_4px_16px_rgba(0,0,0,0.06)] data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
+        "relative z-50 max-h-96 min-w-[8rem] overflow-hidden rounded-xl border border-hairline-strong bg-surface-container-lowest text-ink shadow-glass data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
         position === "popper" &&
           "data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1",
         className,
@@ -93,7 +102,7 @@ const SelectLabel = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <SelectPrimitive.Label
     ref={ref}
-    className={cn("py-1.5 pl-8 pr-2 text-sm font-semibold", className)}
+    className={cn("py-1.5 pl-8 pr-2 text-sm font-semibold text-ink-muted", className)}
     {...props}
   />
 ));
@@ -106,7 +115,7 @@ const SelectItem = React.forwardRef<
   <SelectPrimitive.Item
     ref={ref}
     className={cn(
-      "relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-[15px] text-ink outline-none focus:bg-surface-strong data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+      "relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-base text-ink outline-none focus:bg-surface-container-high data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
       className,
     )}
     {...props}
@@ -127,14 +136,68 @@ const SelectSeparator = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <SelectPrimitive.Separator
     ref={ref}
-    className={cn("-mx-1 my-1 h-px bg-muted", className)}
+    className={cn("-mx-1 my-1 h-px bg-hairline", className)}
     {...props}
   />
 ));
 SelectSeparator.displayName = SelectPrimitive.Separator.displayName;
 
+export interface SelectFieldProps extends React.ComponentPropsWithoutRef<typeof Select> {
+  label?: string;
+  error?: string;
+  id?: string;
+  placeholder?: string;
+  triggerClassName?: string;
+  containerClassName?: string;
+  children: React.ReactNode;
+}
+
+function SelectField({
+  label,
+  error,
+  id,
+  placeholder,
+  triggerClassName,
+  containerClassName,
+  disabled,
+  children,
+  ...selectProps
+}: SelectFieldProps) {
+  const generatedId = React.useId();
+  const selectId = id ?? generatedId;
+  const errorId = error ? `${selectId}-error` : undefined;
+  const hasError = Boolean(error);
+
+  return (
+    <div className={cn("flex w-full flex-col gap-2", containerClassName)}>
+      {label ? <Label htmlFor={selectId}>{label}</Label> : null}
+      <div className="flex flex-col gap-1.5">
+        <Select disabled={disabled} {...selectProps}>
+          <SelectTrigger
+            id={selectId}
+            error={hasError}
+            disabled={disabled}
+            aria-invalid={hasError || undefined}
+            aria-describedby={errorId}
+            className={triggerClassName}
+          >
+            <SelectValue placeholder={placeholder} />
+          </SelectTrigger>
+          <SelectContent>{children}</SelectContent>
+        </Select>
+        {error ? (
+          <p id={errorId} role="alert" className="text-xs text-error">
+            {error}
+          </p>
+        ) : null}
+      </div>
+    </div>
+  );
+}
+
 export {
   Select,
+  SelectField,
   SelectGroup,
   SelectValue,
   SelectTrigger,
