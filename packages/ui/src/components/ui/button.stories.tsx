@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { ArrowRight, ShoppingCart, Zap } from "lucide-react";
 import { Button } from "./button";
 
 const meta = {
@@ -15,6 +16,7 @@ const meta = {
       options: ["default", "sm", "lg", "icon"],
     },
     disabled: { control: "boolean" },
+    loading: { control: "boolean" },
   },
 } satisfies Meta<typeof Button>;
 
@@ -24,6 +26,44 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     children: "Comprar ahora",
+  },
+};
+
+export const WithIconLeft: Story = {
+  args: {
+    children: "Crear cuenta",
+    iconLeft: <Zap aria-hidden="true" />,
+  },
+};
+
+export const WithIconRight: Story = {
+  args: {
+    variant: "outline",
+    children: "Ver catálogo",
+    iconRight: <ArrowRight aria-hidden="true" />,
+  },
+};
+
+export const WithBothIcons: Story = {
+  args: {
+    children: "Agregar al carrito",
+    iconLeft: <ShoppingCart aria-hidden="true" />,
+    iconRight: <ArrowRight aria-hidden="true" />,
+  },
+};
+
+export const Loading: Story = {
+  args: {
+    children: "Procesando…",
+    loading: true,
+  },
+};
+
+export const LoadingWithIcon: Story = {
+  args: {
+    children: "Crear cuenta",
+    iconLeft: <Zap aria-hidden="true" />,
+    loading: true,
   },
 };
 
@@ -72,6 +112,23 @@ export const AllVariants: Story = {
       <Button variant="ghost">Ghost</Button>
       <Button variant="destructive">Destructive</Button>
       <Button variant="link">Link</Button>
+    </div>
+  ),
+};
+
+export const IconAndLoadingStates: Story = {
+  render: () => (
+    <div className="flex flex-col gap-4">
+      <div className="flex flex-wrap items-center gap-3">
+        <Button iconLeft={<Zap aria-hidden="true" />}>Crear cuenta</Button>
+        <Button variant="outline" iconRight={<ArrowRight aria-hidden="true" />}>
+          Continuar
+        </Button>
+        <Button loading>Procesando…</Button>
+        <Button loading iconLeft={<Zap aria-hidden="true" />}>
+          Crear cuenta
+        </Button>
+      </div>
     </div>
   ),
 };

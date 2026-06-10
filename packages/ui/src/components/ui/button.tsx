@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
+import { Loader2 } from "lucide-react";
 import { cn } from "../../lib/utils";
 
 const buttonVariants = cva(
@@ -32,16 +33,68 @@ const buttonVariants = cva(
   },
 );
 
+const spinnerSizeClasses: Record<
+  NonNullable<VariantProps<typeof buttonVariants>["size"]>,
+  string
+> = {
+  sm: "!size-5",
+  default: "!size-7",
+  lg: "!size-8",
+  icon: "!size-7",
+};
+
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>, VariantProps<typeof buttonVariants> {
   asChild?: boolean;
+  iconLeft?: React.ReactNode;
+  iconRight?: React.ReactNode;
+  loading?: boolean;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, ...props }, ref) => {
+  (
+    {
+      className,
+      variant,
+      size,
+      asChild = false,
+      iconLeft,
+      iconRight,
+      loading = false,
+      disabled,
+      children,
+      ...props
+    },
+    ref,
+  ) => {
     const Comp = asChild ? Slot : "button";
+    const isDisabled = disabled || loading;
+
     return (
-      <Comp className={cn(buttonVariants({ variant, size, className }))} ref={ref} {...props} />
+      <Comp
+        className={cn(buttonVariants({ variant, size, className }))}
+        ref={ref}
+        disabled={isDisabled}
+        aria-busy={loading || undefined}
+        {...props}
+      >
+        {asChild ? (
+          children
+        ) : (
+          <>
+            {loading ? (
+              <Loader2
+                className={cn("animate-spin", spinnerSizeClasses[size ?? "default"])}
+                aria-hidden="true"
+              />
+            ) : (
+              iconLeft
+            )}
+            {children}
+            {!loading && iconRight}
+          </>
+        )}
+      </Comp>
     );
   },
 );
