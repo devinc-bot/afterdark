@@ -1,15 +1,19 @@
-import { sqliteTable, text } from 'drizzle-orm/sqlite-core'
-import { USER_ROLE } from '@afterdark/types'
+import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core'
+import { USER_STATUS } from '@afterdark/types'
 import { baseColumns } from './base.ts'
 
 export const users = sqliteTable('users', {
   ...baseColumns,
   name: text('name').notNull(),
-  email: text('email').notNull().unique(),
-  password: text('password').notNull(),
-  role: text('role', { enum: [USER_ROLE.ADMIN, USER_ROLE.STAFF] })
+  lastName: text('last_name').notNull(),
+  phone: text('phone').notNull(),
+  avatar: text('avatar'),
+  age: integer('age'),
+  status: text('status', {
+    enum: [USER_STATUS.ACTIVE, USER_STATUS.INACTIVE, USER_STATUS.PRIVATE],
+  })
     .notNull()
-    .default(USER_ROLE.STAFF),
+    .default(USER_STATUS.ACTIVE),
 })
 
 export type UserSelect = typeof users.$inferSelect
