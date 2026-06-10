@@ -1,41 +1,41 @@
-import type { Meta, StoryObj } from "@storybook/react-vite";
-import { withRouter } from "../../stories/decorators/with-router";
-import { Link } from "./link";
+import type { Meta, StoryObj } from '@storybook/react-vite'
+import { withRouter } from '../../stories/decorators/with-router'
+import { Link } from './link'
 
 const meta = {
-  title: "UI/Link",
+  title: 'UI/Link',
   component: Link,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   decorators: [withRouter],
   argTypes: {
     variant: {
-      control: "select",
-      options: ["default", "destructive", "outline", "inverse", "secondary", "ghost", "link"],
+      control: 'select',
+      options: ['default', 'destructive', 'outline', 'inverse', 'secondary', 'ghost', 'link'],
     },
     size: {
-      control: "select",
-      options: ["default", "sm", "lg", "icon"],
+      control: 'select',
+      options: ['default', 'sm', 'lg', 'icon'],
     },
   },
-} satisfies Meta<typeof Link>;
+} satisfies Meta<typeof Link>
 
-export default meta;
-type Story = StoryObj<typeof meta>;
+export default meta
+type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
   args: {
-    to: "/",
-    children: "Ir al inicio",
+    to: '/',
+    children: 'Ir al inicio',
   },
-};
+}
 
 export const Outline: Story = {
   args: {
-    to: "/about",
-    variant: "outline",
-    children: "Sobre nosotros",
+    to: '/about',
+    variant: 'outline',
+    children: 'Sobre nosotros',
   },
-};
+}
 
 export const AsButtonStyle: Story = {
   render: () => (
@@ -49,4 +49,4 @@ export const AsButtonStyle: Story = {
       </Link>
     </div>
   ),
-};
+}

@@ -1,66 +1,66 @@
-import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Button } from "./button";
+import type { Meta, StoryObj } from '@storybook/react-vite'
+import { Button } from './button'
 
 const meta = {
-  title: "UI/Button",
+  title: 'UI/Button',
   component: Button,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   argTypes: {
     variant: {
-      control: "select",
-      options: ["default", "destructive", "outline", "inverse", "secondary", "ghost", "link"],
+      control: 'select',
+      options: ['default', 'destructive', 'outline', 'inverse', 'secondary', 'ghost', 'link'],
     },
     size: {
-      control: "select",
-      options: ["default", "sm", "lg", "icon"],
+      control: 'select',
+      options: ['default', 'sm', 'lg', 'icon'],
     },
-    disabled: { control: "boolean" },
+    disabled: { control: 'boolean' },
   },
-} satisfies Meta<typeof Button>;
+} satisfies Meta<typeof Button>
 
-export default meta;
-type Story = StoryObj<typeof meta>;
+export default meta
+type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
   args: {
-    children: "Comprar ahora",
+    children: 'Comprar ahora',
   },
-};
+}
 
 export const Outline: Story = {
   args: {
-    variant: "outline",
-    children: "Ver catálogo",
+    variant: 'outline',
+    children: 'Ver catálogo',
   },
-};
+}
 
 export const Destructive: Story = {
   args: {
-    variant: "destructive",
-    children: "Eliminar",
+    variant: 'destructive',
+    children: 'Eliminar',
   },
-};
+}
 
 export const Ghost: Story = {
   args: {
-    variant: "ghost",
-    children: "Cancelar",
+    variant: 'ghost',
+    children: 'Cancelar',
   },
-};
+}
 
 export const Small: Story = {
   args: {
-    size: "sm",
-    children: "Pequeño",
+    size: 'sm',
+    children: 'Pequeño',
   },
-};
+}
 
 export const Disabled: Story = {
   args: {
     disabled: true,
-    children: "Deshabilitado",
+    children: 'Deshabilitado',
   },
-};
+}
 
 export const AllVariants: Story = {
   render: () => (
@@ -74,4 +74,4 @@ export const AllVariants: Story = {
       <Button variant="link">Link</Button>
     </div>
   ),
-};
+}

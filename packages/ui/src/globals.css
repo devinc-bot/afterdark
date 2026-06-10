@@ -1,15 +1,15 @@
-@import "tailwindcss";
-@import "@fontsource/geist-mono/400.css";
-@import "@fontsource/geist-mono/500.css";
-@import "@fontsource/geist-mono/700.css";
+@import 'tailwindcss';
+@import '@fontsource/geist-mono/400.css';
+@import '@fontsource/geist-mono/500.css';
+@import '@fontsource/geist-mono/700.css';
 
 @source "../../../apps/web/app";
 @source "../../../apps/dashboard/app";
 
 @theme {
   --font-mono:
-    "Geist Mono", ui-monospace, SFMono-Regular, "Roboto Mono", Menlo, Monaco, "Liberation Mono",
-    "DejaVu Sans Mono", "Courier New", monospace;
+    'Geist Mono', ui-monospace, SFMono-Regular, 'Roboto Mono', Menlo, Monaco, 'Liberation Mono',
+    'DejaVu Sans Mono', 'Courier New', monospace;
   --font-sans: var(--font-mono);
 
   --color-background: oklch(0 0 0);

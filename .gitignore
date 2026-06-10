@@ -5,3 +5,4 @@ dist/
 .output/
 *.tsbuildinfo
 pnpm-debug.log
+local.db*

@@ -1,14 +1,12 @@
-import type { Config } from "drizzle-kit";
+import type { Config } from 'drizzle-kit'
+import { serverEnv } from './src/config/env.server.ts'
 
 export default {
-  schema: "./src/schema/index.ts",
-  out: "./src/migrations",
-  dialect: "postgresql",
+  schema: './src/schema/index.ts',
+  out: './src/migrations',
+  dialect: 'turso',
   dbCredentials: {
-    host: process.env["DB_HOST"] ?? "localhost",
-    port: Number(process.env["DB_PORT"] ?? 5432),
-    user: process.env["DB_USER"] ?? "postgres",
-    password: process.env["DB_PASSWORD"] ?? "",
-    database: process.env["DB_NAME"] ?? "afterdark",
+    url: serverEnv.TURSO_DATABASE_URL,
+    authToken: serverEnv.TURSO_AUTH_TOKEN,
   },
-} satisfies Config;
+} satisfies Config

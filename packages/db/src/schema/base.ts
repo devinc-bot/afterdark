@@ -1,7 +1,13 @@
-import { timestamp, uuid } from "drizzle-orm/pg-core";
+import { integer, text } from 'drizzle-orm/sqlite-core'
 
 export const baseColumns = {
-  id: uuid("id").defaultRandom().primaryKey(),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-  updatedAt: timestamp("updated_at").defaultNow().notNull(),
-};
+  id: text('id')
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+  createdAt: integer('created_at', { mode: 'timestamp' })
+    .$defaultFn(() => new Date())
+    .notNull(),
+  updatedAt: integer('updated_at', { mode: 'timestamp' })
+    .$defaultFn(() => new Date())
+    .notNull(),
+}

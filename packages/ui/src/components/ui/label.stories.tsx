@@ -1,21 +1,21 @@
-import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Label } from "./label";
-import { Input } from "./input";
+import type { Meta, StoryObj } from '@storybook/react-vite'
+import { Label } from './label'
+import { Input } from './input'
 
 const meta = {
-  title: "UI/Label",
+  title: 'UI/Label',
   component: Label,
-  tags: ["autodocs"],
-} satisfies Meta<typeof Label>;
+  tags: ['autodocs'],
+} satisfies Meta<typeof Label>
 
-export default meta;
-type Story = StoryObj<typeof meta>;
+export default meta
+type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
   args: {
-    children: "Nombre del producto",
+    children: 'Nombre del producto',
   },
-};
+}
 
 export const WithInput: Story = {
   render: () => (
@@ -24,4 +24,4 @@ export const WithInput: Story = {
       <Input id="product-name" placeholder="Ej. Sillón Oslo" />
     </div>
   ),
-};
+}

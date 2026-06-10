@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react-vite";
+import type { Meta, StoryObj } from '@storybook/react-vite'
 import {
   Select,
   SelectContent,
@@ -7,20 +7,20 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "./select";
-import { Label } from "./label";
+} from './select'
+import { Label } from './label'
 
 const meta = {
-  title: "UI/Select",
+  title: 'UI/Select',
   component: Select,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   parameters: {
-    layout: "padded",
+    layout: 'padded',
   },
-} satisfies Meta<typeof Select>;
+} satisfies Meta<typeof Select>
 
-export default meta;
-type Story = StoryObj<typeof meta>;
+export default meta
+type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
   render: () => (
@@ -39,7 +39,7 @@ export const Default: Story = {
       </SelectContent>
     </Select>
   ),
-};
+}
 
 export const WithLabel: Story = {
   render: () => (
@@ -58,4 +58,4 @@ export const WithLabel: Story = {
       </Select>
     </div>
   ),
-};
+}

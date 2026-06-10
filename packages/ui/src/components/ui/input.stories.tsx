@@ -1,22 +1,22 @@
-import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Input } from "./input";
-import { Label } from "./label";
+import type { Meta, StoryObj } from '@storybook/react-vite'
+import { Input } from './input'
+import { Label } from './label'
 
 const meta = {
-  title: "UI/Input",
+  title: 'UI/Input',
   component: Input,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   argTypes: {
-    type: { control: "text" },
-    placeholder: { control: "text" },
-    disabled: { control: "boolean" },
+    type: { control: 'text' },
+    placeholder: { control: 'text' },
+    disabled: { control: 'boolean' },
   },
-} satisfies Meta<typeof Input>;
+} satisfies Meta<typeof Input>
 
-export default meta;
-type Story = StoryObj<typeof meta>;
+export default meta
+type Story = StoryObj<typeof meta>
 
-const fieldShellClassName = "w-96 max-w-full";
+const fieldShellClassName = 'w-96 max-w-full'
 
 export const Default: Story = {
   render: (args) => (
@@ -25,9 +25,9 @@ export const Default: Story = {
     </div>
   ),
   args: {
-    placeholder: "Buscar muebles...",
+    placeholder: 'Buscar muebles...',
   },
-};
+}
 
 export const WithLabel: Story = {
   render: () => (
@@ -36,7 +36,7 @@ export const WithLabel: Story = {
       <Input id="email" type="email" placeholder="nombre@ejemplo.com" />
     </div>
   ),
-};
+}
 
 export const Disabled: Story = {
   render: (args) => (
@@ -46,7 +46,7 @@ export const Disabled: Story = {
   ),
   args: {
     disabled: true,
-    placeholder: "No editable",
-    value: "Valor fijo",
+    placeholder: 'No editable',
+    value: 'Valor fijo',
   },
-};
+}

@@ -4,27 +4,28 @@ import {
   Scripts,
   ScrollRestoration,
   createRootRouteWithContext,
-} from "@tanstack/react-router";
-import { QueryClientProvider, type QueryClient } from "@tanstack/react-query";
+} from '@tanstack/react-router'
+import { QueryClientProvider, type QueryClient } from '@tanstack/react-query'
+import globalsCssUrl from '@afterdark/ui/globals.css?url'
 
 interface RouterContext {
-  queryClient: QueryClient;
+  queryClient: QueryClient
 }
 
 export const Route = createRootRouteWithContext<RouterContext>()({
   head: () => ({
     meta: [
-      { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "afterdark · Admin" },
+      { charSet: 'utf-8' },
+      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+      { title: 'afterdark · Admin' },
     ],
-    links: [{ rel: "stylesheet", href: "/globals.css" }],
+    links: [{ rel: 'stylesheet', href: globalsCssUrl }],
   }),
   component: RootComponent,
-});
+})
 
 function RootComponent() {
-  const { queryClient } = Route.useRouteContext();
+  const { queryClient } = Route.useRouteContext()
   return (
     <QueryClientProvider client={queryClient}>
       <html lang="es">
@@ -38,5 +39,5 @@ function RootComponent() {
         </body>
       </html>
     </QueryClientProvider>
-  );
+  )
 }

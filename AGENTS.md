@@ -59,7 +59,7 @@ pnpm dlx shadcn@latest add table
 
 ## Framework gotchas
 
-- **Drizzle schemas** are plain TypeScript in `packages/db/src/schema/` — use `pgTable`; no decorators or `reflect-metadata`.
+- **Drizzle schemas** are plain TypeScript in `packages/db/src/schema/` — use `sqliteTable` (Turso/libSQL); no decorators or `reflect-metadata`.
 - **Tailwind v4** has a different config format than v3 — consult the [v4 docs](https://tailwindcss.com/docs) before making changes.
 - **Zod v4** has breaking changes from v3 — consult the [migration guide](https://zod.dev/v4) before modifying validators.
 - **Drizzle migrations** use `drizzle-kit` — generate and run SQL migrations for schema changes; do not rely on auto-sync in production.
