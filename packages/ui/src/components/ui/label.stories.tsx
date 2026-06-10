@@ -25,3 +25,10 @@ export const WithInput: Story = {
     </div>
   ),
 }
+
+export const Field: Story = {
+  args: {
+    variant: 'field',
+    children: 'Información adicional',
+  },
+}
