@@ -22,6 +22,13 @@ export const Default: Story = {
   },
 }
 
+export const WithIcon: Story = {
+  args: {
+    children: 'Live now',
+    icon: <span className="size-1.5 rounded-full bg-current" aria-hidden="true" />,
+  },
+}
+
 export const Outline: Story = {
   args: {
     variant: 'outline',
@@ -43,6 +50,22 @@ export const AllVariants: Story = {
       <Badge variant="secondary">Secondary</Badge>
       <Badge variant="outline">Outline</Badge>
       <Badge variant="destructive">Destructive</Badge>
+    </div>
+  ),
+}
+
+export const WithIconExamples: Story = {
+  render: () => (
+    <div className="flex flex-wrap gap-2">
+      <Badge icon={<span className="size-1.5 rounded-full bg-current" aria-hidden="true" />}>
+        Live now
+      </Badge>
+      <Badge
+        variant="outline"
+        icon={<span className="size-1.5 rounded-full bg-primary" aria-hidden="true" />}
+      >
+        Private
+      </Badge>
     </div>
   ),
 }
