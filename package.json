@@ -6,6 +6,8 @@
     "dev:web": "pnpm --filter @afterdark/web dev",
     "dev:dashboard": "pnpm --filter @afterdark/dashboard dev",
     "dev:api": "pnpm --filter @afterdark/api dev",
+    "storybook": "pnpm --filter @afterdark/ui storybook",
+    "build-storybook": "pnpm --filter @afterdark/ui build-storybook",
     "build": "pnpm --recursive --filter \"./apps/*\" build",
     "type-check": "pnpm --recursive type-check",
     "lint": "oxlint .",
