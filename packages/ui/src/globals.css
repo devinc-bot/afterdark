@@ -1,27 +1,27 @@
-@import "tailwindcss";
-@import "@fontsource/montserrat/400.css";
-@import "@fontsource/montserrat/600.css";
-@import "@fontsource/montserrat/700.css";
-@import "@fontsource/inter/400.css";
-@import "@fontsource/inter/500.css";
-@import "@fontsource/geist-sans/500.css";
-@import "@fontsource/geist-sans/600.css";
-@import "@fontsource/geist-mono/400.css";
-@import "@fontsource/geist-mono/500.css";
-@import "@fontsource/geist-mono/700.css";
+@import 'tailwindcss';
+@import '@fontsource/montserrat/400.css';
+@import '@fontsource/montserrat/600.css';
+@import '@fontsource/montserrat/700.css';
+@import '@fontsource/inter/400.css';
+@import '@fontsource/inter/500.css';
+@import '@fontsource/geist-sans/500.css';
+@import '@fontsource/geist-sans/600.css';
+@import '@fontsource/geist-mono/400.css';
+@import '@fontsource/geist-mono/500.css';
+@import '@fontsource/geist-mono/700.css';
 
 @source "../../../apps/web/app";
 @source "../../../apps/dashboard/app";
 
 @theme {
   /* ── Font families ─────────────────────────────────────────────── */
-  --font-display: "Montserrat", sans-serif;
-  --font-heading: "Montserrat", sans-serif;
-  --font-sans: "Inter", sans-serif;
-  --font-label: "Geist Sans", sans-serif;
+  --font-display: 'Montserrat', sans-serif;
+  --font-heading: 'Montserrat', sans-serif;
+  --font-sans: 'Inter', sans-serif;
+  --font-label: 'Geist Sans', sans-serif;
   --font-mono:
-    "Geist Mono", ui-monospace, SFMono-Regular, "Roboto Mono", Menlo, Monaco, "Liberation Mono",
-    "DejaVu Sans Mono", "Courier New", monospace;
+    'Geist Mono', ui-monospace, SFMono-Regular, 'Roboto Mono', Menlo, Monaco, 'Liberation Mono',
+    'DejaVu Sans Mono', 'Courier New', monospace;
 
   /* ── Typography scale ────────────────────────────────────────── */
   --text-xs: 10px;
