@@ -32,6 +32,8 @@
   --text-2xl: 24px;
   --text-3xl: 32px;
   --text-4xl: 48px;
+  --text-5xl: 56px;
+  --text-6xl: 60px;
   --text-headline-3xl-mobile: 28px;
 
   --leading-xs: 14px;
@@ -42,6 +44,8 @@
   --leading-2xl: 32px;
   --leading-3xl: 40px;
   --leading-4xl: 56px;
+  --leading-5xl: 60px;
+  --leading-6xl: 64px;
   --leading-headline-3xl-mobile: 36px;
 
   --tracking-label-md: 0.02em;
