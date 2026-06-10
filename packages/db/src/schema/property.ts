@@ -1,20 +1,17 @@
-import { integer, numeric, pgEnum, pgTable, text, varchar } from "drizzle-orm/pg-core";
-import { PROPERTY_STATUS } from "@afterdark/types";
-import { baseColumns } from "./base";
+import { integer, real, sqliteTable, text } from 'drizzle-orm/sqlite-core'
+import { PROPERTY_STATUS } from '@afterdark/types'
+import { baseColumns } from './base.ts'
 
-export const propertyStatusEnum = pgEnum("property_status", [
-  PROPERTY_STATUS.ACTIVE,
-  PROPERTY_STATUS.INACTIVE,
-]);
-
-export const properties = pgTable("properties", {
+export const properties = sqliteTable('properties', {
   ...baseColumns,
-  name: varchar("name", { length: 255 }).notNull(),
-  description: text("description"),
-  price: numeric("price", { precision: 10, scale: 2 }).notNull(),
-  stock: integer("stock").notNull().default(0),
-  status: propertyStatusEnum("status").notNull().default(PROPERTY_STATUS.ACTIVE),
-});
+  name: text('name').notNull(),
+  description: text('description'),
+  price: real('price').notNull(),
+  stock: integer('stock').notNull().default(0),
+  status: text('status', { enum: [PROPERTY_STATUS.ACTIVE, PROPERTY_STATUS.INACTIVE] })
+    .notNull()
+    .default(PROPERTY_STATUS.ACTIVE),
+})
 
-export type PropertySelect = typeof properties.$inferSelect;
-export type PropertyInsert = typeof properties.$inferInsert;
+export type PropertySelect = typeof properties.$inferSelect
+export type PropertyInsert = typeof properties.$inferInsert

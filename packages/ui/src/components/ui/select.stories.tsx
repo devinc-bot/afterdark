@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react-vite";
+import type { Meta, StoryObj } from '@storybook/react-vite'
 import {
   Select,
   SelectContent,
@@ -8,7 +8,7 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "./select";
+} from './select'
 
 const clubOptions = (
   <>
@@ -17,27 +17,27 @@ const clubOptions = (
     <SelectItem value="after">After</SelectItem>
     <SelectItem value="neon">Neon Room</SelectItem>
   </>
-);
+)
 
 const meta = {
-  title: "UI/Select",
+  title: 'UI/Select',
   component: SelectField,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   parameters: {
-    layout: "padded",
+    layout: 'padded',
   },
   argTypes: {
-    label: { control: "text" },
-    placeholder: { control: "text" },
-    error: { control: "text" },
-    disabled: { control: "boolean" },
+    label: { control: 'text' },
+    placeholder: { control: 'text' },
+    error: { control: 'text' },
+    disabled: { control: 'boolean' },
   },
-} satisfies Meta<typeof SelectField>;
+} satisfies Meta<typeof SelectField>
 
-export default meta;
-type Story = StoryObj<typeof meta>;
+export default meta
+type Story = StoryObj<typeof meta>
 
-const fieldShellClassName = "w-96 max-w-full";
+const fieldShellClassName = 'w-96 max-w-full'
 
 export const Default: Story = {
   render: (args) => (
@@ -46,10 +46,10 @@ export const Default: Story = {
     </SelectField>
   ),
   args: {
-    label: "Night Club",
-    placeholder: "Todos los Clubes",
+    label: 'Night Club',
+    placeholder: 'Todos los Clubes',
   },
-};
+}
 
 export const WithLabel: Story = {
   render: () => (
@@ -62,7 +62,7 @@ export const WithLabel: Story = {
       {clubOptions}
     </SelectField>
   ),
-};
+}
 
 export const Disabled: Story = {
   render: () => (
@@ -75,7 +75,7 @@ export const Disabled: Story = {
       {clubOptions}
     </SelectField>
   ),
-};
+}
 
 export const WithError: Story = {
   render: () => (
@@ -88,7 +88,7 @@ export const WithError: Story = {
       {clubOptions}
     </SelectField>
   ),
-};
+}
 
 export const GroupedOptions: Story = {
   render: () => (
@@ -107,7 +107,7 @@ export const GroupedOptions: Story = {
       </SelectGroup>
     </SelectField>
   ),
-};
+}
 
 export const Primitives: Story = {
   render: () => (
@@ -126,4 +126,4 @@ export const Primitives: Story = {
       </SelectContent>
     </Select>
   ),
-};
+}

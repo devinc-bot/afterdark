@@ -13,7 +13,7 @@ Business context, domain model, and product rules for the afterdark platform.
 | Customers | `web`       | Browse catalog, filter products, view detail      |
 | Staff     | `dashboard` | Manage catalog and inventory (CRUD, admin tables) |
 
-Both apps operate on the same PostgreSQL database and share domain types and validation schemas through workspace packages.
+Both apps operate on the same Turso (libSQL) database and share domain types and validation schemas through workspace packages.
 
 ---
 

@@ -1,2 +1,2 @@
-export * from "./user";
-export * from "./property";
+export * from './user.ts'
+export * from './property.ts'

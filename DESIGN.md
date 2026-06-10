@@ -1,111 +1,111 @@
 ---
 name: Afterdark Pulse Refined
 colors:
-  surface: "#131314"
-  surface-dim: "#131314"
-  surface-bright: "#39393a"
-  surface-container-lowest: "#0e0e0f"
-  surface-container-low: "#1c1b1c"
-  surface-container: "#201f20"
-  surface-container-high: "#2a2a2b"
-  surface-container-highest: "#353436"
-  on-surface: "#e5e2e3"
-  on-surface-variant: "#d0c3cf"
-  inverse-surface: "#e5e2e3"
-  inverse-on-surface: "#313031"
-  outline: "#998d99"
-  outline-variant: "#4d444e"
-  surface-tint: "#ecb1ff"
-  primary: "#f8d7ff"
-  on-primary: "#4a1a5e"
-  primary-container: "#ecb1ff"
-  on-primary-container: "#6f3e82"
-  inverse-primary: "#7d4a90"
-  secondary: "#c8c6c7"
-  on-secondary: "#303031"
-  secondary-container: "#474748"
-  on-secondary-container: "#b6b5b6"
-  tertiary: "#ffd9e0"
-  on-tertiary: "#66002c"
-  tertiary-container: "#ffb1c3"
-  on-tertiary-container: "#a5004c"
-  error: "#ffb4ab"
-  on-error: "#690005"
-  error-container: "#93000a"
-  on-error-container: "#ffdad6"
-  primary-fixed: "#f8d8ff"
-  primary-fixed-dim: "#ecb1ff"
-  on-primary-fixed: "#320046"
-  on-primary-fixed-variant: "#633276"
-  secondary-fixed: "#e4e2e3"
-  secondary-fixed-dim: "#c8c6c7"
-  on-secondary-fixed: "#1b1b1c"
-  on-secondary-fixed-variant: "#474748"
-  tertiary-fixed: "#ffd9e0"
-  tertiary-fixed-dim: "#ffb1c3"
-  on-tertiary-fixed: "#3f0019"
-  on-tertiary-fixed-variant: "#8f0041"
-  background: "#131314"
-  on-background: "#e5e2e3"
-  surface-variant: "#353436"
+  surface: '#131314'
+  surface-dim: '#131314'
+  surface-bright: '#39393a'
+  surface-container-lowest: '#0e0e0f'
+  surface-container-low: '#1c1b1c'
+  surface-container: '#201f20'
+  surface-container-high: '#2a2a2b'
+  surface-container-highest: '#353436'
+  on-surface: '#e5e2e3'
+  on-surface-variant: '#d0c3cf'
+  inverse-surface: '#e5e2e3'
+  inverse-on-surface: '#313031'
+  outline: '#998d99'
+  outline-variant: '#4d444e'
+  surface-tint: '#ecb1ff'
+  primary: '#f8d7ff'
+  on-primary: '#4a1a5e'
+  primary-container: '#ecb1ff'
+  on-primary-container: '#6f3e82'
+  inverse-primary: '#7d4a90'
+  secondary: '#c8c6c7'
+  on-secondary: '#303031'
+  secondary-container: '#474748'
+  on-secondary-container: '#b6b5b6'
+  tertiary: '#ffd9e0'
+  on-tertiary: '#66002c'
+  tertiary-container: '#ffb1c3'
+  on-tertiary-container: '#a5004c'
+  error: '#ffb4ab'
+  on-error: '#690005'
+  error-container: '#93000a'
+  on-error-container: '#ffdad6'
+  primary-fixed: '#f8d8ff'
+  primary-fixed-dim: '#ecb1ff'
+  on-primary-fixed: '#320046'
+  on-primary-fixed-variant: '#633276'
+  secondary-fixed: '#e4e2e3'
+  secondary-fixed-dim: '#c8c6c7'
+  on-secondary-fixed: '#1b1b1c'
+  on-secondary-fixed-variant: '#474748'
+  tertiary-fixed: '#ffd9e0'
+  tertiary-fixed-dim: '#ffb1c3'
+  on-tertiary-fixed: '#3f0019'
+  on-tertiary-fixed-variant: '#8f0041'
+  background: '#131314'
+  on-background: '#e5e2e3'
+  surface-variant: '#353436'
 typography:
   headline-4xl:
     fontFamily: Montserrat
     fontSize: 48px
-    fontWeight: "700"
+    fontWeight: '700'
     lineHeight: 56px
   headline-3xl:
     fontFamily: Montserrat
     fontSize: 32px
-    fontWeight: "700"
+    fontWeight: '700'
     lineHeight: 40px
   headline-2xl:
     fontFamily: Montserrat
     fontSize: 24px
-    fontWeight: "600"
+    fontWeight: '600'
     lineHeight: 32px
   headline-xl:
     fontFamily: Montserrat
     fontSize: 20px
-    fontWeight: "600"
+    fontWeight: '600'
     lineHeight: 28px
   body-lg:
     fontFamily: Inter
     fontSize: 16px
-    fontWeight: "400"
+    fontWeight: '400'
     lineHeight: 24px
   body-md:
     fontFamily: Inter
     fontSize: 14px
-    fontWeight: "400"
+    fontWeight: '400'
     lineHeight: 20px
   body-sm:
     fontFamily: Inter
     fontSize: 12px
-    fontWeight: "400"
+    fontWeight: '400'
     lineHeight: 18px
   label-md:
     fontFamily: Geist
     fontSize: 14px
-    fontWeight: "500"
+    fontWeight: '500'
     lineHeight: 20px
     letterSpacing: 0.02em
   label-sm:
     fontFamily: Geist
     fontSize: 12px
-    fontWeight: "500"
+    fontWeight: '500'
     lineHeight: 16px
     letterSpacing: 0.05em
   label-xs:
     fontFamily: Geist
     fontSize: 10px
-    fontWeight: "600"
+    fontWeight: '600'
     lineHeight: 14px
     letterSpacing: 0.1em
   headline-3xl-mobile:
     fontFamily: Montserrat
     fontSize: 28px
-    fontWeight: "700"
+    fontWeight: '700'
     lineHeight: 36px
 rounded:
   sm: 0.125rem
@@ -115,14 +115,14 @@ rounded:
   xl: 0.75rem
   full: 9999px
 spacing:
-  "1": 2px
-  "2": 4px
-  "3": 6px
-  "4": 8px
-  "5": 10px
-  "6": 12px
-  "7": 16px
-  "8": 24px
+  '1': 2px
+  '2': 4px
+  '3': 6px
+  '4': 8px
+  '5': 10px
+  '6': 12px
+  '7': 16px
+  '8': 24px
   gutter: 16px
   margin-mobile: 16px
   margin-desktop: 32px

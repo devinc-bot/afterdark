@@ -125,16 +125,15 @@ afterdark/
     │   ├── tailwind.config.ts  # Base Tailwind config (apps extend this)
     │   └── components.json     # ShadCN CLI config
     │
-    ├── db/                     # TypeORM data layer
+    ├── db/                     # Drizzle data layer (Turso / libSQL)
     │   └── src/
-    │       ├── entities/
-    │       │   ├── base.entity.ts       # id (UUID), createdAt, updatedAt
-    │       │   ├── user.entity.ts
-    │       │   └── property.entity.ts
-    │       ├── repositories/
-    │       │   ├── user.repository.ts
-    │       │   └── property.repository.ts
-    │       └── data-source.ts           # AppDataSource (PostgreSQL)
+    │       ├── schema/
+    │       │   ├── base.ts     # baseColumns: id (UUID), createdAt, updatedAt
+    │       │   ├── user.ts
+    │       │   └── property.ts
+    │       ├── config/
+    │       │   └── env.server.ts        # serverEnv (validated process.env)
+    │       └── index.ts                 # db client (drizzle + @libsql/client)
     │
     ├── validators/             # Shared Zod schemas
     │   └── src/
@@ -159,7 +158,7 @@ afterdark/
 #### Stack
 
 - NestJS 11 (`@nestjs/*`)
-- TypeORM 0.3 + PostgreSQL (`pg`)
+- Drizzle ORM + Turso (`@afterdark/db`, `@libsql/client`)
 - Validation: Zod (via shared schemas) + custom `ZodValidationPipe`
 - Auth: JWT + refresh sessions persisted in DB
 - Email: Resend + React Email templates
@@ -173,9 +172,8 @@ afterdark/
 
 #### Database conventions
 
-- Prefer explicit entities and relation tables.
-- Join/link tables live in `src/database/entity/link/` (e.g. `UserRoleLink`, `BusinessCategoryLink`).
-- In development, `synchronize` may create schema changes; for production prefer migrations.
+- Schemas live in `packages/db/src/schema/` (`sqliteTable`) — the API consumes them via `@afterdark/db`.
+- In development, `drizzle-kit push` may sync schema changes; for production prefer migrations.
 
 #### API conventions
 
@@ -273,12 +271,12 @@ export const Route = createFileRoute("/catalog/")({ ... })
 
 ```ts
 // modules/<m>/services/property.service.ts
-export const getPropertiesFn = createServerFn({ method: "GET" })
+export const getPropertiesFn = createServerFn({ method: 'GET' })
   .validator(filterPropertySchema.merge(paginationSchema))
   .handler(async ({ data }) => {
-    const { page, limit, ...filters } = data;
-    return PropertyRepository.findWithFilters(filters, page, limit);
-  });
+    const { page, limit, ...filters } = data
+    return PropertyRepository.findWithFilters(filters, page, limit)
+  })
 ```
 
 ### Queries
@@ -289,12 +287,12 @@ Export a `queryOptions` factory (used by loaders) and a `useSuspenseQuery` hook 
 // modules/<m>/queries/use-properties.ts
 export const propertiesQueryOptions = (params = { page: 1, limit: 10 }) =>
   queryOptions({
-    queryKey: ["properties", params],
+    queryKey: ['properties', params],
     queryFn: () => getPropertiesFn({ data: params }),
-  });
+  })
 
 export function useProperties(params?) {
-  return useSuspenseQuery(propertiesQueryOptions(params));
+  return useSuspenseQuery(propertiesQueryOptions(params))
 }
 ```
 
@@ -305,11 +303,11 @@ Query key pattern: `['entity']` | `['entity', id]` | `['entity', filters]`.
 ```ts
 // modules/<m>/mutations/use-property-mutations.ts
 export function useDeleteProperty() {
-  const queryClient = useQueryClient();
+  const queryClient = useQueryClient()
   return async (id: string) => {
-    await deletePropertyFn({ data: { id } });
-    await queryClient.invalidateQueries({ queryKey: ["properties"] });
-  };
+    await deletePropertyFn({ data: { id } })
+    await queryClient.invalidateQueries({ queryKey: ['properties'] })
+  }
 }
 ```
 
@@ -342,7 +340,7 @@ cd packages/ui && pnpm dlx shadcn@latest add <name>
 Apps import CSS in `__root.tsx`:
 
 ```ts
-import "@afterdark/ui/globals.css";
+import '@afterdark/ui/globals.css'
 ```
 
 Apps extend the shared Tailwind config and include the UI package in `content`:
@@ -351,8 +349,8 @@ Apps extend the shared Tailwind config and include the UI package in `content`:
 // apps/*/tailwind.config.ts
 export default {
   ...sharedConfig,
-  content: ["./app/**/*.{ts,tsx}", "../../packages/ui/src/**/*.{ts,tsx}"],
-};
+  content: ['./app/**/*.{ts,tsx}', '../../packages/ui/src/**/*.{ts,tsx}'],
+}
 ```
 
 ### `@afterdark/db`
@@ -373,20 +371,17 @@ Single source of truth for domain TypeScript interfaces.
 
 File: `.env` at the repo root (copy from `.env.example`). Both apps load it via Vite `envDir`.
 
-| Variable      | Description         | Default       |
-| ------------- | ------------------- | ------------- |
-| `DB_HOST`     | PostgreSQL host     | `localhost`   |
-| `DB_PORT`     | PostgreSQL port     | `5432`        |
-| `DB_USER`     | PostgreSQL user     | `postgres`    |
-| `DB_PASSWORD` | PostgreSQL password | —             |
-| `DB_NAME`     | Database name       | `afterdark`   |
-| `NODE_ENV`    | Environment         | `development` |
+| Variable             | Description                                  | Default                                |
+| -------------------- | -------------------------------------------- | -------------------------------------- |
+| `TURSO_DATABASE_URL` | Turso database URL (`libsql://…` or `file:`) | `file:../../local.db` (repo root, dev) |
+| `TURSO_AUTH_TOKEN`   | Turso auth token (not needed for `file:`)    | —                                      |
+| `NODE_ENV`           | Environment                                  | `development`                          |
 
 Validation (Zod) runs at startup:
 
 - `app/config/env.ts` — client (`import.meta.env`; `VITE_*` when added)
-- `packages/validators/src/database.ts` — Zod schemas for `DB_*` and `NODE_ENV`
-- `packages/db/src/config/env.server.ts` — parses `process.env` and exports `serverEnv` (used by `AppDataSource`)
+- `packages/validators/src/database.ts` — Zod schemas for `TURSO_*` and `NODE_ENV`
+- `packages/db/src/config/env.server.ts` — parses `process.env` and exports `serverEnv` (used by the db client)
 - `app/config/env.server.ts` — re-exports `@afterdark/db/config/env.server`; import from `*-data.server.ts` only
 
 ---

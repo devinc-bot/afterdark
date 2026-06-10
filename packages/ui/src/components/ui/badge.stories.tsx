@@ -1,40 +1,40 @@
-import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Badge } from "./badge";
+import type { Meta, StoryObj } from '@storybook/react-vite'
+import { Badge } from './badge'
 
 const meta = {
-  title: "UI/Badge",
+  title: 'UI/Badge',
   component: Badge,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   argTypes: {
     variant: {
-      control: "select",
-      options: ["default", "secondary", "destructive", "outline"],
+      control: 'select',
+      options: ['default', 'secondary', 'destructive', 'outline'],
     },
   },
-} satisfies Meta<typeof Badge>;
+} satisfies Meta<typeof Badge>
 
-export default meta;
-type Story = StoryObj<typeof meta>;
+export default meta
+type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
   args: {
-    children: "Nuevo",
+    children: 'Nuevo',
   },
-};
+}
 
 export const Outline: Story = {
   args: {
-    variant: "outline",
-    children: "En stock",
+    variant: 'outline',
+    children: 'En stock',
   },
-};
+}
 
 export const Destructive: Story = {
   args: {
-    variant: "destructive",
-    children: "Agotado",
+    variant: 'destructive',
+    children: 'Agotado',
   },
-};
+}
 
 export const AllVariants: Story = {
   render: () => (
@@ -45,4 +45,4 @@ export const AllVariants: Story = {
       <Badge variant="destructive">Destructive</Badge>
     </div>
   ),
-};
+}

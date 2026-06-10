@@ -1,1 +1,1 @@
-export { OrdersModule } from "./orders.module";
+export { OrdersModule } from './orders.module'

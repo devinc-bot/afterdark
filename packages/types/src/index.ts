@@ -1,3 +1,3 @@
-export * from "./domain";
-export * from "./api";
-export * from "./pagination";
+export * from './domain.ts'
+export * from './api.ts'
+export * from './pagination.ts'

@@ -1,17 +1,17 @@
-import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Separator } from "./separator";
+import type { Meta, StoryObj } from '@storybook/react-vite'
+import { Separator } from './separator'
 
 const meta = {
-  title: "UI/Separator",
+  title: 'UI/Separator',
   component: Separator,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   parameters: {
-    layout: "padded",
+    layout: 'padded',
   },
-} satisfies Meta<typeof Separator>;
+} satisfies Meta<typeof Separator>
 
-export default meta;
-type Story = StoryObj<typeof meta>;
+export default meta
+type Story = StoryObj<typeof meta>
 
 export const Horizontal: Story = {
   render: () => (
@@ -27,7 +27,7 @@ export const Horizontal: Story = {
       </div>
     </div>
   ),
-};
+}
 
 export const Vertical: Story = {
   render: () => (
@@ -37,4 +37,4 @@ export const Vertical: Story = {
       <span className="text-sm">Derecha</span>
     </div>
   ),
-};
+}

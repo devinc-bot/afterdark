@@ -1,5 +1,5 @@
 {
   "permissions": {
-    "allow": ["PowerShell(Get-Content *)"]
+    "allow": ["PowerShell(Get-Content *)", "Bash(node *)"]
   }
 }

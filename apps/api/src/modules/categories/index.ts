@@ -1,1 +1,1 @@
-export { CategoriesModule } from "./categories.module";
+export { CategoriesModule } from './categories.module'
