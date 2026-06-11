@@ -26,11 +26,17 @@ const meta = {
   parameters: {
     layout: 'padded',
   },
+  args: {
+    label: 'Night Club',
+    placeholder: 'Todos los Clubes',
+    children: clubOptions,
+  },
   argTypes: {
     label: { control: 'text' },
     placeholder: { control: 'text' },
     error: { control: 'text' },
     disabled: { control: 'boolean' },
+    children: { control: false },
   },
 } satisfies Meta<typeof SelectField>
 
@@ -48,6 +54,7 @@ export const Default: Story = {
   args: {
     label: 'Night Club',
     placeholder: 'Todos los Clubes',
+    children: clubOptions,
   },
 }
 
