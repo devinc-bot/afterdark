@@ -1,55 +1,36 @@
-import { useEffect, useRef, type ReactNode } from 'react'
+import type { ReactNode } from 'react'
 
 interface AuthShellProps {
   children: ReactNode
 }
 
 export function AuthShell({ children }: AuthShellProps) {
-  const nebulaRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    const nebula = nebulaRef.current
-    if (!nebula) return
-
-    const handleMouseMove = (event: MouseEvent) => {
-      const x = event.clientX / window.innerWidth
-      const y = event.clientY / window.innerHeight
-      nebula.style.transform = `translate(${x * 20}px, ${y * 20}px) scale(1.05)`
-    }
-
-    window.addEventListener('mousemove', handleMouseMove)
-    return () => window.removeEventListener('mousemove', handleMouseMove)
-  }, [])
-
   return (
-    <div className="flex h-dvh w-full items-center justify-center overflow-hidden bg-background text-on-surface">
-      <div aria-hidden className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
-        <div ref={nebulaRef} className="nebula-bg absolute inset-0 motion-reduce:animate-none" />
-      </div>
+    <div className="flex min-h-dvh w-full items-center justify-center bg-background px-6 py-10 text-on-surface">
+      <div
+        aria-hidden
+        className="pointer-events-none fixed inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(236,177,255,0.06)_0%,transparent_45%),radial-gradient(circle_at_80%_80%,rgba(125,74,144,0.05)_0%,transparent_40%)]"
+      />
 
-      <main className="relative z-10 w-full max-w-[480px] px-6">
-        <div className="mb-10 flex flex-col items-center">
+      <main className="relative z-10 w-full max-w-[440px]">
+        <header className="mb-8 flex flex-col items-center text-center">
           <div
             aria-hidden
-            className="mb-4 flex size-24 items-center justify-center rounded-full border border-primary/30 bg-surface-container shadow-primary-glow md:size-32"
+            className="mb-5 flex size-16 items-center justify-center rounded-full border border-outline-variant bg-surface-container md:size-20"
           >
-            <span className="font-display text-3xl font-bold text-primary md:text-4xl">AD</span>
+            <span className="font-display text-2xl font-bold text-primary md:text-3xl">AD</span>
           </div>
-          <h1 className="neon-glow-text font-display text-4xl font-extrabold tracking-tighter text-primary">
-            AFTERDARK
+          <h1 className="font-display text-3xl font-bold tracking-tight text-on-surface md:text-4xl">
+            Afterdark
           </h1>
-          <p className="mt-2 font-label text-xs font-bold uppercase tracking-[0.2em] text-on-surface-variant">
-            Accedé al ecosistema nocturno
+          <p className="mt-2 max-w-xs text-sm text-on-surface-variant">
+            Panel de administración para locales y eventos
           </p>
-        </div>
+        </header>
 
         {children}
 
-        <p className="mt-10 text-center font-sans text-sm text-on-surface-variant opacity-50">
-          Professional Management Suite v2.4.0
-          <br />
-          Protegido por AFTERDARK Secure Perimeter
-        </p>
+        <p className="mt-8 text-center text-xs text-on-surface-variant">Suite de gestión v2.4.0</p>
       </main>
     </div>
   )

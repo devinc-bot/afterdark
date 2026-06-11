@@ -11,7 +11,7 @@ const tabsListVariants = cva(
     variants: {
       variant: {
         default: 'h-10 rounded-lg bg-muted p-1',
-        line: 'h-auto w-full justify-stretch rounded-none border-b border-white/10 bg-transparent p-0',
+        line: 'h-auto w-full justify-stretch rounded-none border-b border-outline-variant bg-transparent p-0',
       },
     },
     defaultVariants: {
@@ -21,13 +21,13 @@ const tabsListVariants = cva(
 )
 
 const tabsTriggerVariants = cva(
-  'inline-flex flex-1 items-center justify-center whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-0 disabled:pointer-events-none disabled:opacity-50',
+  'inline-flex flex-1 items-center justify-center whitespace-nowrap font-medium transition-colors focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50',
   {
     variants: {
       variant: {
         default:
           'rounded-sm px-3 py-1.5 text-sm data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm',
-        line: 'relative rounded-none border-b-2 border-transparent py-4 font-label text-xs font-semibold uppercase tracking-label-xs text-on-surface-variant data-[state=active]:text-primary data-[state=inactive]:hover:text-on-surface',
+        line: 'relative rounded-none border-b-2 border-transparent py-4 font-label text-xs font-semibold uppercase tracking-label-xs text-on-surface-variant data-[state=active]:border-b-primary data-[state=active]:text-primary data-[state=inactive]:hover:text-on-surface focus-visible:ring-2 focus-visible:ring-primary/25 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-container',
       },
     },
     defaultVariants: {

@@ -11,5 +11,13 @@
     "no-console": "warn",
     "eqeqeq": "error"
   },
-  "ignorePatterns": ["**/routeTree.gen.ts", "**/dist/**", "**/.vinxi/**", "**/.output/**"]
+  "ignorePatterns": [
+    "**/routeTree.gen.ts",
+    "**/dist/**",
+    "**/.vinxi/**",
+    "**/.output/**",
+    "**/node_modules/**",
+    ".claude/**",
+    ".agents/**"
+  ]
 }

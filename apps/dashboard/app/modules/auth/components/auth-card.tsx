@@ -3,8 +3,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@afterdark/ui'
 import { DASHBOARD_ROUTES } from '../../shared/constants/routes'
 import { LoginForm } from './login-form'
 import { RegisterForm } from './register-form'
-import { SocialAuthButtons } from './social-auth-buttons'
-
 const AUTH_TAB = {
   LOGIN: 'login',
   REGISTER: 'register',
@@ -19,7 +17,7 @@ export function AuthCard() {
     pathname === DASHBOARD_ROUTES.register() ? AUTH_TAB.REGISTER : AUTH_TAB.LOGIN
 
   return (
-    <div className="glass-card neon-border-primary rounded-xl p-8">
+    <div className="rounded-xl border border-outline-variant bg-surface-container p-6 shadow-glass md:p-8">
       <Tabs
         value={activeTab}
         onValueChange={(value) => {
@@ -29,19 +27,11 @@ export function AuthCard() {
           })
         }}
       >
-        <TabsList variant="line" className="mb-8 grid grid-cols-2">
-          <TabsTrigger
-            variant="line"
-            value={AUTH_TAB.LOGIN}
-            className="data-[state=active]:border-b-primary data-[state=active]:border-b-2"
-          >
+        <TabsList variant="line" className="mb-6 grid grid-cols-2">
+          <TabsTrigger variant="line" value={AUTH_TAB.LOGIN}>
             Entrar
           </TabsTrigger>
-          <TabsTrigger
-            variant="line"
-            value={AUTH_TAB.REGISTER}
-            className="data-[state=active]:border-b-primary data-[state=active]:border-b-2"
-          >
+          <TabsTrigger variant="line" value={AUTH_TAB.REGISTER}>
             Registrarse
           </TabsTrigger>
         </TabsList>
@@ -54,8 +44,6 @@ export function AuthCard() {
           <RegisterForm />
         </TabsContent>
       </Tabs>
-
-      <SocialAuthButtons />
     </div>
   )
 }

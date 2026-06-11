@@ -1,6 +1,6 @@
 {
   "$schema": "./node_modules/oxfmt/configuration_schema.json",
-  "ignorePatterns": ["**/.claude/**", "**/.agents/**"],
+  "ignorePatterns": [".claude/**", ".agents/**", "**/node_modules/**"],
   "tabWidth": 2,
   "endOfLine": "lf",
   "printWidth": 100,

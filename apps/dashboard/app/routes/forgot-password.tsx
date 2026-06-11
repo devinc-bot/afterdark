@@ -10,16 +10,16 @@ export const Route = createFileRoute('/forgot-password')({
 function ForgotPasswordPage() {
   return (
     <AuthShell>
-      <div className="glass-card neon-border-primary rounded-xl p-8 text-center">
-        <h2 className="font-display text-xl font-semibold text-primary">Recuperar contraseña</h2>
-        <p className="mt-4 font-sans text-sm text-on-surface-variant">
+      <div className="rounded-xl border border-outline-variant bg-surface-container p-6 text-center shadow-glass md:p-8">
+        <h2 className="font-display text-xl font-semibold text-on-surface">Recuperar contraseña</h2>
+        <p className="mt-3 text-sm text-on-surface-variant">
           Esta función todavía no está disponible. Contactá al administrador de tu venue.
         </p>
         <Link
           to={DASHBOARD_ROUTES.login()}
-          className="mt-8 inline-block font-label text-xs font-semibold uppercase tracking-label-xs text-secondary-fixed transition-colors hover:underline"
+          className="mt-6 inline-block text-sm text-on-surface-variant transition-colors hover:text-primary hover:underline"
         >
-          Volver a entrar
+          Volver a iniciar sesión
         </Link>
       </div>
     </AuthShell>

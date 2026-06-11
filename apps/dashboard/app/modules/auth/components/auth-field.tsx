@@ -1,6 +1,5 @@
 import type { ReactNode } from 'react'
-import { Label } from '@afterdark/ui'
-import { cn } from '@afterdark/ui'
+import { Label, cn } from '@afterdark/ui'
 
 interface AuthFieldProps {
   label: string
@@ -23,7 +22,7 @@ export function AuthField({
 }: AuthFieldProps) {
   return (
     <div className={cn('flex flex-col gap-2', className)}>
-      <div className="flex items-center justify-between px-1">
+      <div className="flex items-center justify-between gap-3">
         <Label htmlFor={htmlFor} variant="field">
           {label}
         </Label>
@@ -33,7 +32,7 @@ export function AuthField({
         {icon ? (
           <span
             aria-hidden
-            className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-primary/60 [&_svg]:size-7"
+            className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant [&_svg]:size-5"
           >
             {icon}
           </span>
@@ -41,7 +40,7 @@ export function AuthField({
         {children}
       </div>
       {error ? (
-        <p id={`${htmlFor}-error`} className="px-1 text-sm text-error" role="alert">
+        <p id={`${htmlFor}-error`} className="text-sm text-error" role="alert">
           {error}
         </p>
       ) : null}

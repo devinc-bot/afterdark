@@ -1,22 +1,13 @@
 import { useForm } from '@tanstack/react-form'
 import { Link } from '@tanstack/react-router'
-import { Lock, Mail, Zap } from 'lucide-react'
+import { Lock, Mail } from 'lucide-react'
 import { loginSchema } from '@afterdark/validators'
 import { Button } from '@afterdark/ui'
 import { DASHBOARD_ROUTES } from '../../shared/constants/routes'
 import { useLogin } from '../mutations/use-auth-mutations'
+import { fieldErrorMessage } from '../utils/form-field.utils'
 import { AuthField } from './auth-field'
 import { AuthInput } from './auth-input'
-
-function fieldErrorMessage(errors: ReadonlyArray<unknown>): string | null {
-  const [first] = errors
-  if (!first) return null
-  if (typeof first === 'string') return first
-  if (typeof first === 'object' && 'message' in first) {
-    return String((first as { message: unknown }).message)
-  }
-  return null
-}
 
 export function LoginForm() {
   const login = useLogin()
@@ -31,21 +22,24 @@ export function LoginForm() {
   return (
     <form
       noValidate
-      className="space-y-6"
+      className="space-y-5"
       onSubmit={(event) => {
         event.preventDefault()
         event.stopPropagation()
         void form.handleSubmit()
       }}
     >
-      <form.Field name="email" validators={{ onSubmit: loginSchema.shape.email }}>
+      <form.Field
+        name="email"
+        validators={{ onBlur: loginSchema.shape.email, onSubmit: loginSchema.shape.email }}
+      >
         {(field) => {
           const error = fieldErrorMessage(field.state.meta.errors)
           return (
             <AuthField
               label="Correo"
               htmlFor={field.name}
-              icon={<Mail className="size-6" />}
+              icon={<Mail aria-hidden="true" />}
               error={error}
             >
               <AuthInput
@@ -66,21 +60,24 @@ export function LoginForm() {
         }}
       </form.Field>
 
-      <form.Field name="password" validators={{ onSubmit: loginSchema.shape.password }}>
+      <form.Field
+        name="password"
+        validators={{ onBlur: loginSchema.shape.password, onSubmit: loginSchema.shape.password }}
+      >
         {(field) => {
           const error = fieldErrorMessage(field.state.meta.errors)
           return (
             <AuthField
               label="Contraseña"
               htmlFor={field.name}
-              icon={<Lock className="size-6" />}
+              icon={<Lock aria-hidden="true" />}
               error={error}
               labelAction={
                 <Link
                   to={DASHBOARD_ROUTES.forgotPassword()}
-                  className="font-label text-[10px] font-semibold uppercase tracking-label-xs text-secondary-fixed transition-colors hover:underline"
+                  className="shrink-0 text-sm text-on-surface-variant transition-colors hover:text-primary hover:underline"
                 >
-                  ¿Olvidaste?
+                  ¿Olvidaste tu contraseña?
                 </Link>
               }
             >
@@ -119,9 +116,8 @@ export function LoginForm() {
             className="w-full"
             loading={isSubmitting}
             disabled={isSubmitting}
-            iconRight={!isSubmitting ? <Zap aria-hidden="true" /> : undefined}
           >
-            Acceder al sistema
+            Iniciar sesión
           </Button>
         )}
       </form.Subscribe>

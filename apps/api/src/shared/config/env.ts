@@ -13,7 +13,6 @@ let envResult: Env
 try {
   envResult = envSchema.parse(process.env)
 } catch (error) {
-  console.error(error)
   throw new Error(`Error validating environment variables: ${error}`, { cause: error })
 }
 
