@@ -32,7 +32,7 @@ export function AuthField({
         {icon ? (
           <span
             aria-hidden
-            className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant [&_svg]:size-5"
+            className="pointer-events-none absolute left-6 top-1/2 flex size-6 -translate-y-1/2 items-center justify-center text-on-surface-variant [&_svg]:size-7 [&_svg]:shrink-0 [&_svg]:stroke-[1.75]"
           >
             {icon}
           </span>
