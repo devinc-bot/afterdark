@@ -5,11 +5,11 @@ import { Loader2 } from 'lucide-react'
 import { cn } from '../../lib/utils'
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center gap-2 whitespace-nowrap font-sans text-[15px] font-medium leading-none transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0',
+  'inline-flex items-center justify-center gap-2 whitespace-nowrap font-sans text-[15px] font-medium leading-none transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0',
   {
     variants: {
       variant: {
-        default: 'rounded-pill bg-primary text-primary-foreground shadow-sm hover:bg-ink',
+        default: 'rounded-pill bg-primary text-primary-foreground shadow-sm hover:bg-primary/90',
         destructive: 'rounded-xl bg-destructive text-white hover:bg-destructive/90',
         outline:
           'rounded-pill border border-hairline-strong bg-surface-card text-ink shadow-sm hover:bg-surface-strong',
@@ -20,10 +20,10 @@ const buttonVariants = cva(
         link: 'text-ink underline-offset-4 hover:underline',
       },
       size: {
-        default: 'h-10 px-5',
-        sm: 'h-9 px-4 text-[13px]',
-        lg: 'h-11 px-8',
-        icon: 'h-10 w-10',
+        default: 'h-10 px-5 [&_svg]:size-[16px]',
+        sm: 'h-9 px-4 text-[13px] [&_svg]:size-[14px]',
+        lg: 'h-11 px-8 [&_svg]:size-[18px]',
+        icon: 'h-10 w-10 [&_svg]:size-[20px]',
       },
     },
     defaultVariants: {
@@ -72,7 +72,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
     return (
       <Comp
-        className={cn(buttonVariants({ variant, size, className }))}
+        className={cn(buttonVariants({ variant, size }), className)}
         ref={ref}
         disabled={isDisabled}
         aria-busy={loading || undefined}
