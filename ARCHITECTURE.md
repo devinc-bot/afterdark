@@ -153,7 +153,7 @@ afterdark/
 
 ## Apps Documentation
 
-### `apps/api` (NestJS + TypeORM)
+### `apps/api` (NestJS + Drizzle ORM)
 
 #### Stack
 

@@ -14,7 +14,9 @@ Code conventions, naming rules, dependency policy, and quality toolchain.
 | Server fns            | `camelCase` with `Fn` suffix            | `getPropertiesFn`                      |
 | Query options         | `camelCase` with `QueryOptions` suffix  | `propertiesQueryOptions`               |
 | Routes paths          | English, kebab-case                     | `/properties/new`                      |
-| Constant maps         | `SCREAMING_SNAKE_CASE` keys, `as const` | `MODE.DEVELOPMENT`                     |
+| Constant maps         | `SCREAMING_SNAKE_CASE` export, `as const` | `SESSION_STORAGE_KEYS`, `MODE`         |
+| Map keys (grouped)    | `camelCase`                               | `accessToken`, `sessionToken`          |
+| External key values   | `snake_case` string literals              | `'access_token'`, `'session_token'`    |
 | String values in code | Use constant maps, not inline literals  | `MODE.DEVELOPMENT` not `"development"` |
 
 > UI **display text** (labels, messages, placeholders shown to users) stays in **Spanish** per product requirements. All identifiers (files, functions, constants, routes) must be in **English**. See [DOMAIN.md](./DOMAIN.md) for language rules.
@@ -30,7 +32,43 @@ Do not repeat string literals in application logic (env modes, statuses, roles, 
 | App-wide | `app/config/constants/` or `app/modules/shared/constants/` |
 | Domain   | `@afterdark/types` or `@afterdark/validators`              |
 
-Define constant maps with `SCREAMING_SNAKE_CASE` keys and `as const`. Derive TypeScript types from the map when needed.
+Define constant maps with `as const`. Derive TypeScript types from the map when needed.
+
+### Grouped constant maps
+
+For storage keys, cookie names, query keys, and similar **grouped identifiers**, use one exported map per domain:
+
+| Part            | Convention              | Example              |
+| --------------- | ----------------------- | -------------------- |
+| Export name     | `SCREAMING_SNAKE_CASE`  | `SESSION_STORAGE_KEYS` |
+| Property keys   | `camelCase`             | `accessToken`        |
+| String values   | `snake_case`            | `'access_token'`     |
+
+```ts
+// app/modules/shared/constants/storage.ts
+export const SESSION_STORAGE_KEYS = {
+  accessToken: 'access_token',
+} as const
+```
+
+```ts
+// app/modules/shared/constants/cookies.ts
+export const COOKIE_KEYS = {
+  sessionToken: 'session_token',
+} as const
+```
+
+Reference grouped maps by property — never repeat the raw string:
+
+```ts
+// incorrect
+sessionStorage.setItem('access_token', token)
+
+// correct
+sessionStorage.setItem(SESSION_STORAGE_KEYS.accessToken, token)
+```
+
+For **enum-style** constants (modes, statuses, roles), keep `SCREAMING_SNAKE_CASE` keys with lowercase string values:
 
 ```ts
 // app/config/constants/mode.ts
