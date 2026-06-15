@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 
-export const Route = createFileRoute('/properties/')({
+export const Route = createFileRoute('/_app/properties/')({
   component: PropertiesPage,
 })
 

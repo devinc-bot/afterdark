@@ -10,6 +10,21 @@ export {
   CardHeader,
   CardTitle,
 } from './components/ui/card.tsx'
+export {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  dialogContentVariants,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogOverlay,
+  dialogOverlayVariants,
+  DialogPortal,
+  DialogTitle,
+  DialogTrigger,
+  type DialogContentProps,
+} from './components/ui/dialog.tsx'
 export { Input, type InputProps } from './components/ui/input.tsx'
 export {
   KpiInformation,
@@ -18,6 +33,7 @@ export {
 } from './components/ui/kpi-information.tsx'
 export { Label } from './components/ui/label.tsx'
 export { Link, type LinkProps } from './components/ui/link.tsx'
+export { NotImage, notImageVariants, type NotImageProps } from './components/ui/not-image.tsx'
 export {
   Select,
   SelectContent,
@@ -32,6 +48,14 @@ export {
   SelectValue,
   type SelectFieldProps,
 } from './components/ui/select.tsx'
+export {
+  SidebarNav,
+  SidebarNavMenuButton,
+  type SidebarNavItem,
+  type SidebarNavLinkRenderProps,
+  type SidebarNavLogo,
+  type SidebarNavProps,
+} from './components/ui/sidebar-nav.tsx'
 export { Separator } from './components/ui/separator.tsx'
 export {
   Tabs,
@@ -44,4 +68,10 @@ export {
   type TabsTriggerProps,
 } from './components/ui/tabs.tsx'
 export { Textarea, type TextareaProps } from './components/ui/textarea.tsx'
+export {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from './components/ui/tooltip.tsx'
 export { Typography } from './components/ui/typography.tsx'

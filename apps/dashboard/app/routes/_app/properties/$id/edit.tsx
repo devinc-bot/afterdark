@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 
-export const Route = createFileRoute('/properties/$id/edit')({
+export const Route = createFileRoute('/_app/properties/$id/edit')({
   component: EditPropertyPage,
 })
 
