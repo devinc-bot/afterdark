@@ -11,10 +11,15 @@ export type ClubDisplayStatus = (typeof CLUB_DISPLAY_STATUS)[keyof typeof CLUB_D
 export type RegisteredClub = {
   id: string
   name: string
-  location: string
+  address: string
   tags: string[]
   status: ClubDisplayStatus
   imageUrl?: string
+  capacity?: string
+  description?: string
+  state?: string
+  street_number?: string
+  city?: string
 }
 
 function ClubStatusBadge({ status }: { status: ClubDisplayStatus }) {
@@ -45,7 +50,15 @@ function ClubStatusBadge({ status }: { status: ClubDisplayStatus }) {
   )
 }
 
-export function RegisteredClubCard({ club }: { club: RegisteredClub }) {
+export function RegisteredClubCard({
+  club,
+  onEdit,
+  onDelete,
+}: {
+  club: RegisteredClub
+  onEdit?: (club: RegisteredClub) => void
+  onDelete?: (club: RegisteredClub) => void
+}) {
   return (
     <li className="flex items-center gap-4 rounded-xl border border-hairline bg-surface-card p-3 sm:p-4">
       {club.imageUrl ? (
@@ -74,7 +87,7 @@ export function RegisteredClubCard({ club }: { club: RegisteredClub }) {
 
         <p className="flex items-center gap-1.5 text-sm text-ink-muted">
           <MapPin aria-hidden="true" className="size-3.5 shrink-0" />
-          <span className="truncate">{club.location}</span>
+          <span className="truncate">{club.address}</span>
         </p>
 
         <div className="flex flex-wrap gap-1.5">
@@ -95,6 +108,7 @@ export function RegisteredClubCard({ club }: { club: RegisteredClub }) {
               size="icon"
               className="text-ink-muted hover:text-ink"
               aria-label={`Editar ${club.name}`}
+              onClick={() => onEdit?.(club)}
             >
               <Pencil aria-hidden="true" />
             </Button>
@@ -109,6 +123,7 @@ export function RegisteredClubCard({ club }: { club: RegisteredClub }) {
               size="icon"
               className="text-ink-muted hover:text-error"
               aria-label={`Eliminar ${club.name}`}
+              onClick={() => onDelete?.(club)}
             >
               <Trash2 aria-hidden="true" />
             </Button>

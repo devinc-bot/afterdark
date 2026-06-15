@@ -10,6 +10,21 @@ export {
   CardHeader,
   CardTitle,
 } from './components/ui/card.tsx'
+export {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  dialogContentVariants,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogOverlay,
+  dialogOverlayVariants,
+  DialogPortal,
+  DialogTitle,
+  DialogTrigger,
+  type DialogContentProps,
+} from './components/ui/dialog.tsx'
 export { Input, type InputProps } from './components/ui/input.tsx'
 export {
   KpiInformation,
