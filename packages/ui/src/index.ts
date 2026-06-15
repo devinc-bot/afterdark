@@ -18,6 +18,7 @@ export {
 } from './components/ui/kpi-information.tsx'
 export { Label } from './components/ui/label.tsx'
 export { Link, type LinkProps } from './components/ui/link.tsx'
+export { NotImage, notImageVariants, type NotImageProps } from './components/ui/not-image.tsx'
 export {
   Select,
   SelectContent,
@@ -44,4 +45,10 @@ export {
   type TabsTriggerProps,
 } from './components/ui/tabs.tsx'
 export { Textarea, type TextareaProps } from './components/ui/textarea.tsx'
+export {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from './components/ui/tooltip.tsx'
 export { Typography } from './components/ui/typography.tsx'
