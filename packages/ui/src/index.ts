@@ -48,6 +48,14 @@ export {
   SelectValue,
   type SelectFieldProps,
 } from './components/ui/select.tsx'
+export {
+  SidebarNav,
+  SidebarNavMenuButton,
+  type SidebarNavItem,
+  type SidebarNavLinkRenderProps,
+  type SidebarNavLogo,
+  type SidebarNavProps,
+} from './components/ui/sidebar-nav.tsx'
 export { Separator } from './components/ui/separator.tsx'
 export {
   Tabs,
