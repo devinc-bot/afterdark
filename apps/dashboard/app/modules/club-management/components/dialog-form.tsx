@@ -3,7 +3,10 @@ import { createClubSchema, type CreateClubInput } from '@afterdark/validators'
 import {
   Button,
   Dialog,
+  DialogClose,
   DialogContent,
+  DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   Input,
@@ -18,6 +21,8 @@ export const CLUB_FORM_MODE = {
 
 export type ClubFormMode = (typeof CLUB_FORM_MODE)[keyof typeof CLUB_FORM_MODE]
 
+const CLUB_DIALOG_FORM_ID = 'club-dialog-form'
+
 const EMPTY_CLUB_FORM_VALUES: CreateClubInput = {
   name: '',
   address: '',
@@ -31,6 +36,9 @@ const EMPTY_CLUB_FORM_VALUES: CreateClubInput = {
 const fieldLabelClassName =
   'font-label text-xs font-semibold uppercase tracking-label-xs text-ink-muted'
 
+const fieldErrorClassName =
+  'border-destructive focus-visible:border-destructive focus-visible:ring-destructive/40'
+
 function fieldErrorMessage(errors: ReadonlyArray<unknown>): string | null {
   const [first] = errors
   if (!first) return null
@@ -41,6 +49,10 @@ function fieldErrorMessage(errors: ReadonlyArray<unknown>): string | null {
   return null
 }
 
+function sanitizeNonNegativeDigits(value: string): string {
+  return value.replace(/\D/g, '')
+}
+
 type ClubFormFieldProps = {
   id: string
   label: string
@@ -49,51 +61,8 @@ type ClubFormFieldProps = {
   error: string | null
   onBlur: () => void
   onChange: (value: string) => void
-}
-
-function sanitizeNonNegativeDigits(value: string): string {
-  return value.replace(/\D/g, '')
-}
-
-function ClubNumericFormField({
-  id,
-  label,
-  placeholder,
-  value,
-  error,
-  onBlur,
-  onChange,
-}: ClubFormFieldProps) {
-  return (
-    <div className="flex flex-col gap-2">
-      <Label htmlFor={id} className={fieldLabelClassName}>
-        {label}
-      </Label>
-      <Input
-        id={id}
-        name={id}
-        type="text"
-        inputMode="numeric"
-        autoComplete="off"
-        value={value}
-        placeholder={placeholder}
-        onBlur={onBlur}
-        onChange={(event) => onChange(sanitizeNonNegativeDigits(event.target.value))}
-        aria-invalid={error ? true : undefined}
-        aria-describedby={error ? `${id}-error` : undefined}
-        className={
-          error
-            ? 'border-destructive focus-visible:border-destructive focus-visible:ring-destructive/40'
-            : undefined
-        }
-      />
-      {error ? (
-        <p id={`${id}-error`} role="alert" className="text-xs text-error">
-          {error}
-        </p>
-      ) : null}
-    </div>
-  )
+  inputMode?: React.HTMLAttributes<HTMLInputElement>['inputMode']
+  sanitize?: (value: string) => string
 }
 
 function ClubFormField({
@@ -104,6 +73,8 @@ function ClubFormField({
   error,
   onBlur,
   onChange,
+  inputMode,
+  sanitize,
 }: ClubFormFieldProps) {
   return (
     <div className="flex flex-col gap-2">
@@ -113,17 +84,16 @@ function ClubFormField({
       <Input
         id={id}
         name={id}
+        type="text"
+        inputMode={inputMode}
+        autoComplete="off"
         value={value}
         placeholder={placeholder}
         onBlur={onBlur}
-        onChange={(event) => onChange(event.target.value)}
+        onChange={(event) => onChange(sanitize ? sanitize(event.target.value) : event.target.value)}
         aria-invalid={error ? true : undefined}
         aria-describedby={error ? `${id}-error` : undefined}
-        className={
-          error
-            ? 'border-destructive focus-visible:border-destructive focus-visible:ring-destructive/40'
-            : undefined
-        }
+        className={error ? fieldErrorClassName : undefined}
       />
       {error ? (
         <p id={`${id}-error`} role="alert" className="text-xs text-error">
@@ -131,6 +101,30 @@ function ClubFormField({
         </p>
       ) : null}
     </div>
+  )
+}
+
+function FormSection({
+  title,
+  description,
+  children,
+}: {
+  title: string
+  description?: string
+  children: React.ReactNode
+}) {
+  const headingId = title.toLowerCase().replace(/\s+/g, '-')
+
+  return (
+    <section className="flex flex-col gap-4" aria-labelledby={headingId}>
+      <div className="flex flex-col gap-1 border-b border-hairline pb-3">
+        <h3 id={headingId} className="font-heading text-sm font-semibold text-ink">
+          {title}
+        </h3>
+        {description ? <p className="text-sm text-ink-muted">{description}</p> : null}
+      </div>
+      {children}
+    </section>
   )
 }
 
@@ -144,7 +138,7 @@ type ClubDialogFormProps = {
   formKey?: string
 }
 
-function ClubDialogFormFields({
+function ClubDialogFormInner({
   mode,
   defaultValues,
   onSubmit,
@@ -160,152 +154,186 @@ function ClubDialogFormFields({
   })
 
   return (
-    <form
-      noValidate
-      className="flex flex-col gap-6 px-6 py-6"
-      onSubmit={(event) => {
-        event.preventDefault()
-        event.stopPropagation()
-        void form.handleSubmit()
-      }}
-    >
-      <form.Field name="name" validators={{ onSubmit: createClubSchema.shape.name }}>
-        {(field) => (
-          <ClubFormField
-            id={field.name}
-            label="Nombre del club"
-            placeholder="e.g. Neon Void"
-            value={field.state.value}
-            error={fieldErrorMessage(field.state.meta.errors)}
-            onBlur={field.handleBlur}
-            onChange={field.handleChange}
-          />
-        )}
-      </form.Field>
+    <>
+      <div className="min-h-0 flex-1 overflow-y-auto overscroll-y-contain p-6">
+        <form
+          id={CLUB_DIALOG_FORM_ID}
+          noValidate
+          className="flex flex-col gap-8 px-6 py-6"
+          onSubmit={(event) => {
+            event.preventDefault()
+            event.stopPropagation()
+            void form.handleSubmit()
+          }}
+        >
+          <FormSection
+            title="Información general"
+            description="Datos básicos del club que verán los usuarios en la plataforma."
+          >
+            <form.Field name="name" validators={{ onSubmit: createClubSchema.shape.name }}>
+              {(field) => (
+                <ClubFormField
+                  id={field.name}
+                  label="Nombre del club"
+                  placeholder="Club Neón"
+                  value={field.state.value}
+                  error={fieldErrorMessage(field.state.meta.errors)}
+                  onBlur={field.handleBlur}
+                  onChange={field.handleChange}
+                />
+              )}
+            </form.Field>
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <form.Field name="address" validators={{ onSubmit: createClubSchema.shape.address }}>
-          {(field) => (
-            <ClubFormField
-              id={field.name}
-              label="Dirección"
-              placeholder="Calle Principal"
-              value={field.state.value}
-              error={fieldErrorMessage(field.state.meta.errors)}
-              onBlur={field.handleBlur}
-              onChange={field.handleChange}
-            />
-          )}
-        </form.Field>
+            <form.Field name="capacity" validators={{ onSubmit: createClubSchema.shape.capacity }}>
+              {(field) => (
+                <ClubFormField
+                  id={field.name}
+                  label="Capacidad"
+                  placeholder="500"
+                  inputMode="numeric"
+                  sanitize={sanitizeNonNegativeDigits}
+                  value={field.state.value}
+                  error={fieldErrorMessage(field.state.meta.errors)}
+                  onBlur={field.handleBlur}
+                  onChange={field.handleChange}
+                />
+              )}
+            </form.Field>
 
-        <form.Field name="capacity" validators={{ onSubmit: createClubSchema.shape.capacity }}>
-          {(field) => (
-            <ClubNumericFormField
-              id={field.name}
-              label="Capacidad"
-              placeholder="500"
-              value={field.state.value}
-              error={fieldErrorMessage(field.state.meta.errors)}
-              onBlur={field.handleBlur}
-              onChange={field.handleChange}
-            />
-          )}
-        </form.Field>
-      </div>
+            <form.Field
+              name="description"
+              validators={{ onSubmit: createClubSchema.shape.description }}
+            >
+              {(field) => {
+                const error = fieldErrorMessage(field.state.meta.errors)
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <form.Field name="city" validators={{ onSubmit: createClubSchema.shape.city }}>
-          {(field) => (
-            <ClubFormField
-              id={field.name}
-              label="Ciudad"
-              placeholder="Madrid"
-              value={field.state.value}
-              error={fieldErrorMessage(field.state.meta.errors)}
-              onBlur={field.handleBlur}
-              onChange={field.handleChange}
-            />
-          )}
-        </form.Field>
+                return (
+                  <div className="flex flex-col gap-2">
+                    <Label htmlFor={field.name} className={fieldLabelClassName}>
+                      Información adicional
+                    </Label>
+                    <Textarea
+                      id={field.name}
+                      name={field.name}
+                      value={field.state.value}
+                      placeholder="Ambiente, reglas de acceso, dress code…"
+                      onBlur={field.handleBlur}
+                      onChange={(event) => field.handleChange(event.target.value)}
+                      error={error ?? undefined}
+                    />
+                  </div>
+                )
+              }}
+            </form.Field>
+          </FormSection>
 
-        <form.Field name="state" validators={{ onSubmit: createClubSchema.shape.state }}>
-          {(field) => (
-            <ClubFormField
-              id={field.name}
-              label="Estado"
-              placeholder="Madrid"
-              value={field.state.value}
-              error={fieldErrorMessage(field.state.meta.errors)}
-              onBlur={field.handleBlur}
-              onChange={field.handleChange}
-            />
-          )}
-        </form.Field>
-      </div>
+          <FormSection
+            title="Ubicación"
+            description="Dirección física del local para operaciones y referencias internas."
+          >
+            <form.Field name="address" validators={{ onSubmit: createClubSchema.shape.address }}>
+              {(field) => (
+                <ClubFormField
+                  id={field.name}
+                  label="Dirección"
+                  placeholder="Calle Principal"
+                  value={field.state.value}
+                  error={fieldErrorMessage(field.state.meta.errors)}
+                  onBlur={field.handleBlur}
+                  onChange={field.handleChange}
+                />
+              )}
+            </form.Field>
 
-      <form.Field
-        name="street_number"
-        validators={{ onSubmit: createClubSchema.shape.street_number }}
-      >
-        {(field) => (
-          <ClubNumericFormField
-            id={field.name}
-            label="Número de calle"
-            placeholder="123"
-            value={field.state.value}
-            error={fieldErrorMessage(field.state.meta.errors)}
-            onBlur={field.handleBlur}
-            onChange={field.handleChange}
-          />
-        )}
-      </form.Field>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <form.Field
+                name="street_number"
+                validators={{ onSubmit: createClubSchema.shape.street_number }}
+              >
+                {(field) => (
+                  <ClubFormField
+                    id={field.name}
+                    label="Número de calle"
+                    placeholder="123"
+                    inputMode="numeric"
+                    sanitize={sanitizeNonNegativeDigits}
+                    value={field.state.value}
+                    error={fieldErrorMessage(field.state.meta.errors)}
+                    onBlur={field.handleBlur}
+                    onChange={field.handleChange}
+                  />
+                )}
+              </form.Field>
 
-      <form.Field name="description" validators={{ onSubmit: createClubSchema.shape.description }}>
-        {(field) => {
-          const error = fieldErrorMessage(field.state.meta.errors)
-
-          return (
-            <div className="flex flex-col gap-2">
-              <Label htmlFor={field.name} className={fieldLabelClassName}>
-                Información adicional
-              </Label>
-              <Textarea
-                id={field.name}
-                name={field.name}
-                value={field.state.value}
-                placeholder="Describe la atmósfera y reglas del club…"
-                onBlur={field.handleBlur}
-                onChange={(event) => field.handleChange(event.target.value)}
-                error={error ?? undefined}
-              />
+              <form.Field name="city" validators={{ onSubmit: createClubSchema.shape.city }}>
+                {(field) => (
+                  <ClubFormField
+                    id={field.name}
+                    label="Ciudad"
+                    placeholder="Madrid"
+                    value={field.state.value}
+                    error={fieldErrorMessage(field.state.meta.errors)}
+                    onBlur={field.handleBlur}
+                    onChange={field.handleChange}
+                  />
+                )}
+              </form.Field>
             </div>
-          )
-        }}
-      </form.Field>
+
+            <form.Field name="state" validators={{ onSubmit: createClubSchema.shape.state }}>
+              {(field) => (
+                <ClubFormField
+                  id={field.name}
+                  label="Provincia"
+                  placeholder="Comunidad de Madrid"
+                  value={field.state.value}
+                  error={fieldErrorMessage(field.state.meta.errors)}
+                  onBlur={field.handleBlur}
+                  onChange={field.handleChange}
+                />
+              )}
+            </form.Field>
+          </FormSection>
+        </form>
+      </div>
 
       <form.Subscribe selector={(state) => state.isSubmitting}>
         {(isFormSubmitting) => {
           const pending = isSubmitting || isFormSubmitting
 
           return (
-            <Button
-              type="submit"
-              size="lg"
-              loading={pending}
-              className="w-full uppercase tracking-label-sm"
-            >
-              {pending
-                ? isCreate
-                  ? 'Registrando…'
-                  : 'Actualizando…'
-                : isCreate
-                  ? 'Registrar club'
-                  : 'Actualizar club'}
-            </Button>
+            <DialogFooter className="mx-0 mb-0 mt-0 shrink-0 gap-3 px-6 py-6 sm:flex-row sm:justify-end sm:px-8">
+              <DialogClose asChild>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="default"
+                  disabled={pending}
+                  className="min-w-36 sm:min-w-40"
+                >
+                  Cancelar
+                </Button>
+              </DialogClose>
+              <Button
+                type="submit"
+                form={CLUB_DIALOG_FORM_ID}
+                size="default"
+                loading={pending}
+                className="min-w-36 sm:min-w-40"
+              >
+                {pending
+                  ? isCreate
+                    ? 'Registrando…'
+                    : 'Actualizando…'
+                  : isCreate
+                    ? 'Registrar club'
+                    : 'Actualizar club'}
+              </Button>
+            </DialogFooter>
           )
         }}
       </form.Subscribe>
-    </form>
+    </>
   )
 }
 
@@ -324,18 +352,21 @@ export function ClubDialogForm({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="flex max-h-[min(90dvh,48rem)] flex-col gap-0 overflow-hidden p-0">
         <DialogHeader className="shrink-0 border-b border-hairline bg-surface-container-high px-6 py-5">
-          <DialogTitle>{isCreate ? 'Añadir Nuevo Club' : 'Editar Club'}</DialogTitle>
+          <DialogTitle>{isCreate ? 'Añadir nuevo club' : 'Editar club'}</DialogTitle>
+          <DialogDescription>
+            {isCreate
+              ? 'Completá los datos para registrar un club en la plataforma.'
+              : 'Actualizá la información del club. Los cambios se reflejan de inmediato.'}
+          </DialogDescription>
         </DialogHeader>
 
-        <div className="min-h-0 flex-1 overflow-y-auto overscroll-y-contain">
-          <ClubDialogFormFields
-            key={formKey}
-            mode={mode}
-            defaultValues={defaultValues}
-            onSubmit={onSubmit}
-            isSubmitting={isSubmitting}
-          />
-        </div>
+        <ClubDialogFormInner
+          key={formKey}
+          mode={mode}
+          defaultValues={defaultValues}
+          onSubmit={onSubmit}
+          isSubmitting={isSubmitting}
+        />
       </DialogContent>
     </Dialog>
   )

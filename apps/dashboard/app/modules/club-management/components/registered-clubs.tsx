@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import type { CreateClubInput } from '@afterdark/validators'
-import { Button, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@afterdark/ui'
+import { Button, TooltipProvider } from '@afterdark/ui'
 import { Plus } from 'lucide-react'
 import {
   CLUB_FORM_MODE,
@@ -69,6 +69,11 @@ function clubToFormValues(club: RegisteredClub): CreateClubInput {
   }
 }
 
+function formatClubCount(count: number): string {
+  if (count === 1) return '1 club registrado'
+  return `${count} clubes registrados`
+}
+
 export function RegisteredClubs({ clubs = REGISTERED_CLUBS_MOCK }: { clubs?: RegisteredClub[] }) {
   const [dialogOpen, setDialogOpen] = useState(false)
   const [removeDialogOpen, setRemoveDialogOpen] = useState(false)
@@ -111,47 +116,58 @@ export function RegisteredClubs({ clubs = REGISTERED_CLUBS_MOCK }: { clubs?: Reg
 
   return (
     <TooltipProvider>
-      <section
-        aria-labelledby="registered-clubs-heading"
-        className="rounded-xl border border-hairline bg-surface-container-low"
-      >
-        <header className="flex items-center justify-between gap-4 border-b border-hairline px-5 py-4 sm:px-6 sm:py-5">
-          <h2
-            id="registered-clubs-heading"
-            className="font-heading text-lg font-bold text-ink sm:text-xl"
-          >
-            Clubes Registrados
-          </h2>
-
-          <div className="flex items-center gap-2">
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="icon"
-                  className="rounded-lg"
-                  aria-label="Agregar club"
-                  onClick={openCreateDialog}
-                >
-                  <Plus aria-hidden="true" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>Agregar club</TooltipContent>
-            </Tooltip>
+      <section aria-labelledby="registered-clubs-heading" className="flex flex-col gap-4">
+        <header className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="min-w-0">
+            <h2
+              id="registered-clubs-heading"
+              className="font-heading text-lg font-semibold text-ink sm:text-xl"
+            >
+              Clubes registrados
+            </h2>
+            <p className="mt-1 text-sm text-ink-muted">{formatClubCount(clubs.length)}</p>
           </div>
+
+          <Button
+            type="button"
+            variant="outline"
+            className="w-full shrink-0 sm:w-auto"
+            iconLeft={<Plus aria-hidden="true" />}
+            onClick={openCreateDialog}
+          >
+            Agregar club
+          </Button>
         </header>
 
-        <ul className="flex flex-col gap-3 p-4 sm:gap-4 sm:p-5">
-          {clubs.map((club) => (
-            <RegisteredClubCard
-              key={club.id}
-              club={club}
-              onEdit={openEditDialog}
-              onDelete={openRemoveDialog}
-            />
-          ))}
-        </ul>
+        {clubs.length === 0 ? (
+          <div className="rounded-xl border border-dashed border-hairline bg-surface-container-low px-6 py-12 text-center">
+            <p className="font-heading text-base font-semibold text-ink">Todavía no hay clubes</p>
+            <p className="mx-auto mt-2 max-w-sm text-sm text-ink-muted">
+              Registrá el primer club para empezar a gestionar su información y disponibilidad.
+            </p>
+            <Button
+              type="button"
+              className="mt-6"
+              iconLeft={<Plus aria-hidden="true" />}
+              onClick={openCreateDialog}
+            >
+              Registrar club
+            </Button>
+          </div>
+        ) : (
+          <div className="overflow-hidden rounded-xl border border-hairline bg-surface-container-low">
+            <ul className="divide-y divide-hairline">
+              {clubs.map((club) => (
+                <RegisteredClubCard
+                  key={club.id}
+                  club={club}
+                  onEdit={openEditDialog}
+                  onDelete={openRemoveDialog}
+                />
+              ))}
+            </ul>
+          </div>
+        )}
       </section>
 
       <ClubDialogForm
