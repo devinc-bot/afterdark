@@ -3,48 +3,51 @@ import { Banknote, CalendarCheck, CircleAlert, TrendingUp } from 'lucide-react'
 
 export function KpiInformation() {
   return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+    <div
+      className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4"
+      aria-label="Indicadores de clubes"
+    >
       <KpiCard
         variant="primary"
-        label="Total Clubs"
+        label="Clubes totales"
         value="24"
         subtext={
           <>
             <TrendingUp aria-hidden="true" />
-            +3 this month
+            +3 este mes
           </>
         }
       />
 
       <KpiCard
-        label="Live Tickets"
-        value="1,842"
+        label="Entradas activas"
+        value="1.842"
         subtext={
           <>
             <CalendarCheck aria-hidden="true" className="text-primary" />
-            <span className="text-primary">Active sessions</span>
+            <span className="text-primary">Sesiones en curso</span>
           </>
         }
       />
 
       <KpiCard
-        label="Revenue (24h)"
-        value="€12.5k"
+        label="Ingresos (24 h)"
+        value="€12,5k"
         subtext={
           <>
             <Banknote aria-hidden="true" className="text-on-primary-container" />
-            <span className="text-on-primary-container">Beat yesterday</span>
+            <span className="text-on-primary-container">Por encima de ayer</span>
           </>
         }
       />
 
       <KpiCard
-        label="Pending Verif."
+        label="Verificaciones pendientes"
         value="02"
         subtext={
           <>
             <CircleAlert aria-hidden="true" className="text-error" />
-            <span className="text-error">Urgent attention</span>
+            <span className="text-error">Requieren atención</span>
           </>
         }
       />

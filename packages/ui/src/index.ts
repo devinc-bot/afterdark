@@ -67,7 +67,7 @@ export {
   type TabsListProps,
   type TabsTriggerProps,
 } from './components/ui/tabs.tsx'
-export { Textarea, type TextareaProps } from './components/ui/textarea.tsx'
+export { Textarea, textareaVariants, type TextareaProps } from './components/ui/textarea.tsx'
 export {
   Tooltip,
   TooltipContent,
