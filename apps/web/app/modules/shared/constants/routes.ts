@@ -6,3 +6,9 @@ export const WEB_ROUTES = {
   register: () => '/register' as const,
   forgotPassword: () => '/forgot-password' as const,
 } as const
+
+export const AUTH_ROUTE_PATHS = new Set<string>([
+  WEB_ROUTES.login(),
+  WEB_ROUTES.register(),
+  WEB_ROUTES.forgotPassword(),
+])

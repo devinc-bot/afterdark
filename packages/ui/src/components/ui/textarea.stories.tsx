@@ -10,6 +10,10 @@ const meta = {
     placeholder: { control: 'text' },
     disabled: { control: 'boolean' },
     error: { control: 'text' },
+    variant: {
+      control: 'select',
+      options: ['default', 'secondary'],
+    },
   },
 } satisfies Meta<typeof Textarea>
 
@@ -25,6 +29,18 @@ export const Default: Story = {
     </div>
   ),
   args: {
+    placeholder: 'Describe la atmósfera y reglas del club…',
+  },
+}
+
+export const Secondary: Story = {
+  render: (args) => (
+    <div className={fieldShellClassName}>
+      <Textarea {...args} />
+    </div>
+  ),
+  args: {
+    variant: 'secondary',
     placeholder: 'Describe la atmósfera y reglas del club…',
   },
 }

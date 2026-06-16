@@ -12,7 +12,7 @@ export function useLogin() {
     mutationFn: (input: LoginInput) => loginFn({ data: input }),
     onSuccess: async (session) => {
       saveAuthSession(session)
-      await navigate({ to: DASHBOARD_ROUTES.properties() })
+      await navigate({ to: DASHBOARD_ROUTES.home() })
     },
   })
 }
