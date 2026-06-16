@@ -1,11 +1,11 @@
 import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core'
 import { USER_ASSET_LINK_TYPE } from '@afterdark/types'
-import { baseColumns } from './base.ts'
+import { createBaseColumns } from './base.ts'
 import { assets } from './asset.ts'
 import { users } from './user.ts'
 
 export const userAssetsLnk = sqliteTable('user_assets_lnk', {
-  ...baseColumns,
+  ...createBaseColumns('user_assets_lnk'),
   userId: integer('user_id')
     .notNull()
     .references(() => users.id),

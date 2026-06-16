@@ -1,8 +1,8 @@
 import { sqliteTable } from 'drizzle-orm/sqlite-core'
-import { baseColumns } from './base.ts'
+import { createBaseColumns } from './base.ts'
 
 export const chats = sqliteTable('chat', {
-  ...baseColumns,
+  ...createBaseColumns('chat'),
 })
 
 export type ChatSelect = typeof chats.$inferSelect

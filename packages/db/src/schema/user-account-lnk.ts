@@ -1,11 +1,11 @@
 import { integer, sqliteTable } from 'drizzle-orm/sqlite-core'
-import { baseColumns } from './base.ts'
+import { createBaseColumns } from './base.ts'
 import { accounts } from './account.ts'
 import { roles } from './role.ts'
 import { users } from './user.ts'
 
 export const userAccountsLnk = sqliteTable('user_accounts_lnk', {
-  ...baseColumns,
+  ...createBaseColumns('user_accounts_lnk'),
   userId: integer('user_id')
     .notNull()
     .references(() => users.id),

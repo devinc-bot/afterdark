@@ -1,8 +1,8 @@
 import { sqliteTable, text } from 'drizzle-orm/sqlite-core'
-import { baseColumns } from './base.ts'
+import { createBaseColumns } from './base.ts'
 
 export const services = sqliteTable('services', {
-  ...baseColumns,
+  ...createBaseColumns('services'),
   name: text('name').notNull(),
   description: text('description'),
 })

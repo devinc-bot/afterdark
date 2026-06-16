@@ -1,12 +1,12 @@
 import { integer, real, sqliteTable, text } from 'drizzle-orm/sqlite-core'
 import { PAYMENT_STATUS } from '@afterdark/types'
-import { baseColumns } from './base.ts'
+import { createBaseColumns } from './base.ts'
 import { clubs } from './club.ts'
 import { tickets } from './ticket.ts'
 import { users } from './user.ts'
 
 export const payments = sqliteTable('payments', {
-  ...baseColumns,
+  ...createBaseColumns('payments'),
   ticketId: integer('ticket_id')
     .notNull()
     .references(() => tickets.id),

@@ -1,10 +1,10 @@
 import { integer, sqliteTable } from 'drizzle-orm/sqlite-core'
-import { baseColumns } from './base.ts'
+import { createBaseColumns } from './base.ts'
 import { assets } from './asset.ts'
 import { clubs } from './club.ts'
 
 export const clubAssetsLnk = sqliteTable('club_assets_lnk', {
-  ...baseColumns,
+  ...createBaseColumns('club_assets_lnk'),
   clubId: integer('club_id')
     .notNull()
     .references(() => clubs.id),
