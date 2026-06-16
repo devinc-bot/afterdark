@@ -67,6 +67,17 @@ export {
   type TabsListProps,
   type TabsTriggerProps,
 } from './components/ui/tabs.tsx'
+export {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+  tableVariants,
+} from './components/ui/table.tsx'
 export { Textarea, textareaVariants, type TextareaProps } from './components/ui/textarea.tsx'
 export {
   Tooltip,

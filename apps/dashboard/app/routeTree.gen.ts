@@ -14,6 +14,7 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as AppIndexRouteImport } from './routes/_app/index'
+import { Route as AppTicketsRouteImport } from './routes/_app/tickets'
 import { Route as AppClubManagementRouteImport } from './routes/_app/club-management'
 import { Route as AppPropertiesIndexRouteImport } from './routes/_app/properties/index'
 import { Route as AppPropertiesNewRouteImport } from './routes/_app/properties/new'
@@ -43,6 +44,11 @@ const AppIndexRoute = AppIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AppRoute,
 } as any)
+const AppTicketsRoute = AppTicketsRouteImport.update({
+  id: '/tickets',
+  path: '/tickets',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppClubManagementRoute = AppClubManagementRouteImport.update({
   id: '/club-management',
   path: '/club-management',
@@ -70,6 +76,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/club-management': typeof AppClubManagementRoute
+  '/tickets': typeof AppTicketsRoute
   '/properties/new': typeof AppPropertiesNewRoute
   '/properties/': typeof AppPropertiesIndexRoute
   '/properties/$id/edit': typeof AppPropertiesIdEditRoute
@@ -79,6 +86,7 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/club-management': typeof AppClubManagementRoute
+  '/tickets': typeof AppTicketsRoute
   '/': typeof AppIndexRoute
   '/properties/new': typeof AppPropertiesNewRoute
   '/properties': typeof AppPropertiesIndexRoute
@@ -91,6 +99,7 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/_app/club-management': typeof AppClubManagementRoute
+  '/_app/tickets': typeof AppTicketsRoute
   '/_app/': typeof AppIndexRoute
   '/_app/properties/new': typeof AppPropertiesNewRoute
   '/_app/properties/': typeof AppPropertiesIndexRoute
@@ -104,6 +113,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/register'
     | '/club-management'
+    | '/tickets'
     | '/properties/new'
     | '/properties/'
     | '/properties/$id/edit'
@@ -113,6 +123,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/register'
     | '/club-management'
+    | '/tickets'
     | '/'
     | '/properties/new'
     | '/properties'
@@ -124,6 +135,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/register'
     | '/_app/club-management'
+    | '/_app/tickets'
     | '/_app/'
     | '/_app/properties/new'
     | '/_app/properties/'
@@ -174,6 +186,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppIndexRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/tickets': {
+      id: '/_app/tickets'
+      path: '/tickets'
+      fullPath: '/tickets'
+      preLoaderRoute: typeof AppTicketsRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/club-management': {
       id: '/_app/club-management'
       path: '/club-management'
@@ -207,6 +226,7 @@ declare module '@tanstack/react-router' {
 
 interface AppRouteChildren {
   AppClubManagementRoute: typeof AppClubManagementRoute
+  AppTicketsRoute: typeof AppTicketsRoute
   AppIndexRoute: typeof AppIndexRoute
   AppPropertiesNewRoute: typeof AppPropertiesNewRoute
   AppPropertiesIndexRoute: typeof AppPropertiesIndexRoute
@@ -215,6 +235,7 @@ interface AppRouteChildren {
 
 const AppRouteChildren: AppRouteChildren = {
   AppClubManagementRoute: AppClubManagementRoute,
+  AppTicketsRoute: AppTicketsRoute,
   AppIndexRoute: AppIndexRoute,
   AppPropertiesNewRoute: AppPropertiesNewRoute,
   AppPropertiesIndexRoute: AppPropertiesIndexRoute,
