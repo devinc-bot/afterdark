@@ -1,6 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { AuthCard } from '~/modules/auth/components/auth-card'
 import { AuthShell } from '~/modules/auth/components/auth-shell'
+import { RequireGuest } from '~/modules/common/components/require-guest'
 
 export const Route = createFileRoute('/register')({
   head: () => ({ meta: [{ title: 'Crear cuenta · afterdark Admin' }] }),
@@ -9,8 +10,10 @@ export const Route = createFileRoute('/register')({
 
 function RegisterPage() {
   return (
-    <AuthShell>
-      <AuthCard />
-    </AuthShell>
+    <RequireGuest>
+      <AuthShell>
+        <AuthCard />
+      </AuthShell>
+    </RequireGuest>
   )
 }
