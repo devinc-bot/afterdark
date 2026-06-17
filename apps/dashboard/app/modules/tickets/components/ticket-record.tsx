@@ -3,6 +3,10 @@ import {
   Badge,
   Button,
   cn,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
   Table,
   TableBody,
   TableCell,
@@ -12,13 +16,13 @@ import {
   Tabs,
   TabsList,
   TabsTrigger,
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
 } from '@afterdark/ui'
 import { TICKET_STATUS, type TicketStatus } from '@afterdark/types'
-import { EllipsisVertical } from 'lucide-react'
+import { EllipsisVertical, Eye, Pencil, Trash2 } from 'lucide-react'
+import { TicketViewDialog } from '~/modules/tickets/components/dialog-view-ticket'
+
+const ticketActionIconClassName = '!size-[20px] shrink-0'
+const ticketActionItemClassName = 'gap-3 py-2.5 text-base'
 
 export const TICKET_STOCK_STATUS = {
   LIMITED: 'limited',
@@ -202,10 +206,14 @@ function StockStatusCell({
 
 function TicketRecordRow({
   record,
-  onActions,
+  onView,
+  onEdit,
+  onDelete,
 }: {
   record: TicketRecordItem
-  onActions?: (record: TicketRecordItem) => void
+  onView?: (record: TicketRecordItem) => void
+  onEdit?: (record: TicketRecordItem) => void
+  onDelete?: (record: TicketRecordItem) => void
 }) {
   return (
     <TableRow>
@@ -226,21 +234,42 @@ function TicketRecordRow({
       <TableCell className="text-ink">{formatSoldCount(record.totalSold)}</TableCell>
       <TableCell className="font-semibold text-ink">{formatCurrency(record.revenue)}</TableCell>
       <TableCell className="text-right">
-        <Tooltip>
-          <TooltipTrigger asChild>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
             <Button
               type="button"
               variant="ghost"
               size="icon"
               className="text-ink-muted hover:text-ink"
               aria-label={`Acciones para ${record.ticketTypeLabel} en ${record.clubName}`}
-              onClick={() => onActions?.(record)}
             >
               <EllipsisVertical aria-hidden="true" />
             </Button>
-          </TooltipTrigger>
-          <TooltipContent>Acciones</TooltipContent>
-        </Tooltip>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="min-w-44 p-1.5">
+            <DropdownMenuItem
+              className={ticketActionItemClassName}
+              onClick={() => onEdit?.(record)}
+            >
+              <Pencil aria-hidden="true" className={ticketActionIconClassName} />
+              Editar
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              className={ticketActionItemClassName}
+              onClick={() => onView?.(record)}
+            >
+              <Eye aria-hidden="true" className={ticketActionIconClassName} />
+              Ver
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              className={cn(ticketActionItemClassName, 'text-error focus:text-error')}
+              onClick={() => onDelete?.(record)}
+            >
+              <Trash2 aria-hidden="true" className={cn(ticketActionIconClassName, 'text-error')} />
+              Borrar
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </TableCell>
     </TableRow>
   )
@@ -248,12 +277,16 @@ function TicketRecordRow({
 
 export function TicketRecords({
   records = TICKET_RECORDS_MOCK,
-  onActions,
+  onEdit,
+  onDelete,
 }: {
   records?: TicketRecordItem[]
-  onActions?: (record: TicketRecordItem) => void
+  onEdit?: (record: TicketRecordItem) => void
+  onDelete?: (record: TicketRecordItem) => void
 }) {
   const [inventoryTab, setInventoryTab] = useState<InventoryTab>(INVENTORY_TAB.ACTIVE)
+  const [viewDialogOpen, setViewDialogOpen] = useState(false)
+  const [recordToView, setRecordToView] = useState<TicketRecordItem | null>(null)
 
   const filteredRecords = useMemo(() => {
     if (inventoryTab === INVENTORY_TAB.ACTIVE) {
@@ -263,8 +296,28 @@ export function TicketRecords({
     return records.filter((record) => record.status === TICKET_STATUS.INACTIVE)
   }, [inventoryTab, records])
 
+  const handleViewRecord = (record: TicketRecordItem) => {
+    setRecordToView(record)
+    setViewDialogOpen(true)
+  }
+
+  const handleEditRecord = (record: TicketRecordItem) => {
+    onEdit?.(record)
+  }
+
+  const handleDeleteRecord = (record: TicketRecordItem) => {
+    onDelete?.(record)
+  }
+
+  const handleViewDialogOpenChange = (open: boolean) => {
+    setViewDialogOpen(open)
+    if (!open) {
+      setRecordToView(null)
+    }
+  }
+
   return (
-    <TooltipProvider>
+    <>
       <section
         aria-labelledby="ticket-inventory-heading"
         className="overflow-hidden rounded-xl border border-hairline bg-surface-container-low"
@@ -326,12 +379,24 @@ export function TicketRecords({
             </TableHeader>
             <TableBody>
               {filteredRecords.map((record) => (
-                <TicketRecordRow key={record.id} record={record} onActions={onActions} />
+                <TicketRecordRow
+                  key={record.id}
+                  record={record}
+                  onView={handleViewRecord}
+                  onEdit={handleEditRecord}
+                  onDelete={handleDeleteRecord}
+                />
               ))}
             </TableBody>
           </Table>
         )}
       </section>
-    </TooltipProvider>
+
+      <TicketViewDialog
+        record={recordToView}
+        open={viewDialogOpen}
+        onOpenChange={handleViewDialogOpenChange}
+      />
+    </>
   )
 }
