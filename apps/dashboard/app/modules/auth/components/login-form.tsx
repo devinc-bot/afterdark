@@ -6,7 +6,7 @@ import { Button } from '@afterdark/ui'
 import { DASHBOARD_ROUTES } from '../../shared/constants/routes'
 import { useLogin } from '../mutations/use-auth-mutations'
 import { fieldErrorMessage } from '../utils/form-field.utils'
-import { AuthField } from './auth-field'
+import { Field } from '@afterdark/ui'
 import { AuthInput } from './auth-input'
 
 export function LoginForm() {
@@ -36,7 +36,7 @@ export function LoginForm() {
         {(field) => {
           const error = fieldErrorMessage(field.state.meta.errors)
           return (
-            <AuthField
+            <Field
               label="Correo"
               htmlFor={field.name}
               icon={<Mail aria-hidden="true" />}
@@ -55,7 +55,7 @@ export function LoginForm() {
                 aria-invalid={error ? true : undefined}
                 aria-describedby={error ? `${field.name}-error` : undefined}
               />
-            </AuthField>
+            </Field>
           )
         }}
       </form.Field>
@@ -67,7 +67,7 @@ export function LoginForm() {
         {(field) => {
           const error = fieldErrorMessage(field.state.meta.errors)
           return (
-            <AuthField
+            <Field
               label="Contraseña"
               htmlFor={field.name}
               icon={<Lock aria-hidden="true" />}
@@ -94,7 +94,7 @@ export function LoginForm() {
                 aria-invalid={error ? true : undefined}
                 aria-describedby={error ? `${field.name}-error` : undefined}
               />
-            </AuthField>
+            </Field>
           )
         }}
       </form.Field>

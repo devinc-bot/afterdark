@@ -1,7 +1,8 @@
 import type { ReactNode } from 'react'
-import { Label, cn } from '@afterdark/ui'
+import { cn } from '../../lib/utils'
+import { Label } from './label'
 
-interface AuthFieldProps {
+export interface FieldProps {
   label: string
   htmlFor: string
   icon?: ReactNode
@@ -11,7 +12,7 @@ interface AuthFieldProps {
   className?: string
 }
 
-export function AuthField({
+export function Field({
   label,
   htmlFor,
   icon,
@@ -19,7 +20,7 @@ export function AuthField({
   labelAction,
   children,
   className,
-}: AuthFieldProps) {
+}: FieldProps) {
   return (
     <div className={cn('flex flex-col gap-2', className)}>
       <div className="flex items-center justify-between gap-3">

@@ -1,4 +1,4 @@
-export const ACCESS_TOKEN_TTL = '1h'
+export const ACCESS_TOKEN_TTL = '1d'
 
 export const AUTH_MESSAGE = {
   INVALID_CREDENTIALS: 'Credenciales inválidas',

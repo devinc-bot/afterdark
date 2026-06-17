@@ -1,4 +1,4 @@
-import type { LoginResponse } from '../types/auth.types'
+import type { LoginResponse } from '@afterdark/types'
 
 const AUTH_STORAGE_KEY = 'afterdark.auth'
 

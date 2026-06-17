@@ -6,18 +6,18 @@ Code conventions, naming rules, dependency policy, and quality toolchain.
 
 ## Naming conventions
 
-| What                  | Convention                              | Example                                |
-| --------------------- | --------------------------------------- | -------------------------------------- |
-| Files                 | `kebab-case`                            | `property-card.tsx`                    |
-| Components            | `PascalCase`                            | `PropertyCard`                         |
-| Hooks                 | `camelCase` with `use` prefix           | `useProperties`                        |
-| Server fns            | `camelCase` with `Fn` suffix            | `getPropertiesFn`                      |
-| Query options         | `camelCase` with `QueryOptions` suffix  | `propertiesQueryOptions`               |
-| Routes paths          | English, kebab-case                     | `/properties/new`                      |
+| What                  | Convention                                | Example                                |
+| --------------------- | ----------------------------------------- | -------------------------------------- |
+| Files                 | `kebab-case`                              | `property-card.tsx`                    |
+| Components            | `PascalCase`                              | `PropertyCard`                         |
+| Hooks                 | `camelCase` with `use` prefix             | `useProperties`                        |
+| Server fns            | `camelCase` with `Fn` suffix              | `getPropertiesFn`                      |
+| Query options         | `camelCase` with `QueryOptions` suffix    | `propertiesQueryOptions`               |
+| Routes paths          | English, kebab-case                       | `/properties/new`                      |
 | Constant maps         | `SCREAMING_SNAKE_CASE` export, `as const` | `SESSION_STORAGE_KEYS`, `MODE`         |
 | Map keys (grouped)    | `camelCase`                               | `accessToken`, `sessionToken`          |
 | External key values   | `snake_case` string literals              | `'access_token'`, `'session_token'`    |
-| String values in code | Use constant maps, not inline literals  | `MODE.DEVELOPMENT` not `"development"` |
+| String values in code | Use constant maps, not inline literals    | `MODE.DEVELOPMENT` not `"development"` |
 
 > UI **display text** (labels, messages, placeholders shown to users) stays in **Spanish** per product requirements. All identifiers (files, functions, constants, routes) must be in **English**. See [DOMAIN.md](./DOMAIN.md) for language rules.
 
@@ -38,11 +38,11 @@ Define constant maps with `as const`. Derive TypeScript types from the map when 
 
 For storage keys, cookie names, query keys, and similar **grouped identifiers**, use one exported map per domain:
 
-| Part            | Convention              | Example              |
-| --------------- | ----------------------- | -------------------- |
-| Export name     | `SCREAMING_SNAKE_CASE`  | `SESSION_STORAGE_KEYS` |
-| Property keys   | `camelCase`             | `accessToken`        |
-| String values   | `snake_case`            | `'access_token'`     |
+| Part          | Convention             | Example                |
+| ------------- | ---------------------- | ---------------------- |
+| Export name   | `SCREAMING_SNAKE_CASE` | `SESSION_STORAGE_KEYS` |
+| Property keys | `camelCase`            | `accessToken`          |
+| String values | `snake_case`           | `'access_token'`       |
 
 ```ts
 // app/modules/shared/constants/storage.ts

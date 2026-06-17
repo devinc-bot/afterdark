@@ -1,7 +1,7 @@
 import { createServerFn } from '@tanstack/react-start'
 import { loginSchema } from '@afterdark/validators'
 import { API_ROUTES } from '~/config/constants/api'
-import type { LoginResponse } from '../types/auth.types'
+import type { LoginResponse } from '@afterdark/types'
 
 const LOGIN_FALLBACK_ERROR = 'No pudimos iniciar sesión. Intentá de nuevo en unos minutos.'
 

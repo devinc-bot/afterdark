@@ -8,3 +8,7 @@ export interface ApiError {
   code: string
   success: false
 }
+
+export interface LoginResponse {
+  accessToken: string
+}

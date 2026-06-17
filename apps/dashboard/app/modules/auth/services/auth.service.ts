@@ -1,69 +1,50 @@
 import { createServerFn } from '@tanstack/react-start'
 import { loginSchema, registerSchema } from '@afterdark/validators'
+import { api } from '~/config/api'
 import { API_ROUTES } from '~/config/constants/api'
-import type { LoginResponse } from '../types/auth.types'
+import { QueryFactoryError } from '~/modules/shared/utils/query-factory'
+import type { LoginResponse } from '@afterdark/types'
 
 const LOGIN_FALLBACK_ERROR = 'No pudimos iniciar sesión. Intentá de nuevo en unos minutos.'
 const REGISTER_FALLBACK_ERROR = 'No pudimos crear tu cuenta. Intentá de nuevo en unos minutos.'
 
-async function parseAuthError(response: Response, fallback: string): Promise<never> {
-  let body: { message?: string } | null = null
+function authApiPath(path: string) {
+  return `${API_ROUTES.auth.prefix}${path}`
+}
 
-  try {
-    body = await response.json()
-  } catch {
-    body = null
+function throwAuthError(error: unknown, fallback: string): never {
+  if (error instanceof QueryFactoryError) {
+    const apiMessage = error.body?.message
+    throw new Error(typeof apiMessage === 'string' ? apiMessage : fallback)
   }
 
-  const apiMessage = body?.message
+  throw new Error(fallback)
+}
 
-  const message = typeof apiMessage === 'string' ? apiMessage : fallback
-
-  throw new Error(message)
+async function postAuth<T>(path: string, data: unknown, fallback: string): Promise<T> {
+  try {
+    return await api.post<T>(path, data)
+  } catch (error) {
+    throwAuthError(error, fallback)
+  }
 }
 
 export const loginFn = createServerFn({ method: 'POST' })
   .inputValidator(loginSchema)
   .handler(async ({ data }): Promise<LoginResponse> => {
-    let response: Response
-
-    try {
-      response = await fetch(API_ROUTES.login(), {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-      })
-    } catch {
-      throw new Error(LOGIN_FALLBACK_ERROR)
-    }
-
-    if (!response.ok) {
-      await parseAuthError(response, LOGIN_FALLBACK_ERROR)
-    }
-
-    return (await response.json()) as LoginResponse
+    return postAuth<LoginResponse>(
+      authApiPath(API_ROUTES.auth.path.login()),
+      data,
+      LOGIN_FALLBACK_ERROR
+    )
   })
 
 export const registerFn = createServerFn({ method: 'POST' })
   .inputValidator(registerSchema)
   .handler(async ({ data }): Promise<LoginResponse> => {
-    let response: Response
-
-    try {
-      response = await fetch(API_ROUTES.register(), {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-      })
-    } catch {
-      throw new Error(REGISTER_FALLBACK_ERROR)
-    }
-
-    if (!response.ok) {
-      await parseAuthError(response, REGISTER_FALLBACK_ERROR)
-    }
-
-    const json = (await response.json()) as LoginResponse
-
-    return json
+    return postAuth<LoginResponse>(
+      authApiPath(API_ROUTES.auth.path.register()),
+      data,
+      REGISTER_FALLBACK_ERROR
+    )
   })

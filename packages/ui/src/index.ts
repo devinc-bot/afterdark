@@ -25,6 +25,7 @@ export {
   DialogTrigger,
   type DialogContentProps,
 } from './components/ui/dialog.tsx'
+export { Field, type FieldProps } from './components/ui/field.tsx'
 export { Input, type InputProps } from './components/ui/input.tsx'
 export {
   KpiInformation,
