@@ -3,15 +3,18 @@ import { Link, useNavigate, useRouterState } from '@tanstack/react-router'
 import { useState } from 'react'
 import { LayoutGrid, LogOut, Martini, Settings, Ticket, Users } from 'lucide-react'
 import { clearAuthSession } from '~/modules/auth/utils/auth-storage.utils'
+import { useSession } from '~/modules/shared/hooks/use-session'
 import { DASHBOARD_ROUTES } from '~/modules/shared/constants/routes'
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const pathname = useRouterState({ select: (state) => state.location.pathname })
   const navigate = useNavigate()
+  const { clearSession } = useSession()
 
   const handleLogout = () => {
     clearAuthSession()
+    clearSession()
     void navigate({ to: DASHBOARD_ROUTES.login() })
   }
 

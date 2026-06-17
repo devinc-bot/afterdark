@@ -1,6 +1,7 @@
 import { useMutation } from '@tanstack/react-query'
 import { useNavigate } from '@tanstack/react-router'
 import type { LoginInput, RegisterInput } from '@afterdark/validators'
+import { useSessionStore } from '~/modules/shared/stores/session.store'
 import { DASHBOARD_ROUTES } from '../../shared/constants/routes'
 import { loginFn, registerFn } from '../services/auth.service'
 import { saveAuthSession } from '../utils/auth-storage.utils'
@@ -12,6 +13,7 @@ export function useLogin() {
     mutationFn: (input: LoginInput) => loginFn({ data: input }),
     onSuccess: async (session) => {
       saveAuthSession(session)
+      await useSessionStore.getState().loadSession()
       await navigate({ to: DASHBOARD_ROUTES.home() })
     },
   })
