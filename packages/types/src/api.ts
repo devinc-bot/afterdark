@@ -12,3 +12,17 @@ export interface ApiError {
 export interface LoginResponse {
   accessToken: string
 }
+
+export interface JwtPayload {
+  sub: string
+  email: string
+  role: string
+}
+
+export interface CurrentUserResponse {
+  sub: string
+  name: string
+  lastName: string
+  email: string
+  avatar: string | null
+}

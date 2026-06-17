@@ -14,6 +14,6 @@ import { ACCESS_TOKEN_TTL } from './auth.constants'
   ],
   controllers: [AuthController],
   providers: [AuthService],
-  exports: [AuthService],
+  exports: [AuthService, JwtModule],
 })
 export class AuthModule {}
