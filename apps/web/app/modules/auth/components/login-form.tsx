@@ -1,7 +1,7 @@
 import { useForm } from '@tanstack/react-form'
 import { Link } from '@tanstack/react-router'
 import { loginSchema } from '@afterdark/validators'
-import { WEB_ROUTES } from '../../shared/constants/routes'
+import { WEB_ROUTES } from '../../common/constants/routes'
 import { useLogin } from '../mutations/use-auth-mutations'
 
 function fieldErrorMessage(errors: ReadonlyArray<unknown>): string | null {

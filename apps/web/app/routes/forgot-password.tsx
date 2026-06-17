@@ -1,5 +1,5 @@
 import { Link, createFileRoute } from '@tanstack/react-router'
-import { WEB_ROUTES } from '~/modules/shared/constants/routes'
+import { WEB_ROUTES } from '~/modules/common/constants/routes'
 
 export const Route = createFileRoute('/forgot-password')({
   head: () => ({ meta: [{ title: 'Recuperar contraseña · afterdark' }] }),

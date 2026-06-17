@@ -1,8 +1,8 @@
 import { queryOptions, useQuery, useSuspenseQuery } from '@tanstack/react-query'
-import { COOKIE_KEYS } from '~/modules/shared/constants/cookies'
-import { QUERY_KEYS } from '~/modules/shared/constants/query-keys'
-import { fetchCurrentUser } from '~/modules/shared/services/current-user.service'
-import { getCookieSync } from '~/modules/shared/utils/cookies.utils'
+import { COOKIE_KEYS } from '~/modules/common/constants/cookies'
+import { QUERY_KEYS } from '~/modules/common/constants/query-keys'
+import { fetchCurrentUser } from '~/modules/common/services/current-user.service'
+import { getCookieSync } from '~/modules/common/utils/cookies.utils'
 
 export const currentUserQueryOptions = () =>
   queryOptions({

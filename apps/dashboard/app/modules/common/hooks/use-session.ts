@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
-import { SESSION_STATUS } from '~/modules/shared/constants/session-status'
-import { useSessionStore } from '~/modules/shared/stores/session.store'
+import { SESSION_STATUS } from '~/modules/common/constants/session-status'
+import { useSessionStore } from '~/modules/common/stores/session.store'
 
 export function useSession() {
   const user = useSessionStore((state) => state.user)

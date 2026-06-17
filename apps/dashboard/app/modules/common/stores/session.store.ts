@@ -1,10 +1,10 @@
 import type { CurrentUserResponse } from '@afterdark/types'
 import { create } from 'zustand'
-import { COOKIE_KEYS } from '~/modules/shared/constants/cookies'
-import { SESSION_STATUS, type SessionStatus } from '~/modules/shared/constants/session-status'
-import { getCurrentUser } from '~/modules/shared/services/current-user.service'
-import { getCookieSync } from '~/modules/shared/utils/cookies.utils'
-import { QueryFactoryError } from '~/modules/shared/utils/query-factory'
+import { COOKIE_KEYS } from '~/modules/common/constants/cookies'
+import { SESSION_STATUS, type SessionStatus } from '~/modules/common/constants/session-status'
+import { getCurrentUser } from '~/modules/common/services/current-user.service'
+import { getCookieSync } from '~/modules/common/utils/cookies.utils'
+import { QueryFactoryError } from '~/modules/common/utils/query-factory'
 
 type SessionState = {
   user: CurrentUserResponse | null

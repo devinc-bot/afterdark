@@ -29,7 +29,7 @@ Do not repeat string literals in application logic (env modes, statuses, roles, 
 
 | Scope    | Location                                                   |
 | -------- | ---------------------------------------------------------- |
-| App-wide | `app/config/constants/` or `app/modules/shared/constants/` |
+| App-wide | `app/config/constants/` or `app/modules/common/constants/` |
 | Domain   | `@afterdark/types` or `@afterdark/validators`              |
 
 Define constant maps with `as const`. Derive TypeScript types from the map when needed.
@@ -45,14 +45,14 @@ For storage keys, cookie names, query keys, and similar **grouped identifiers**,
 | String values | `snake_case`           | `'access_token'`       |
 
 ```ts
-// app/modules/shared/constants/storage.ts
+// app/modules/common/constants/storage.ts
 export const SESSION_STORAGE_KEYS = {
   accessToken: 'access_token',
 } as const
 ```
 
 ```ts
-// app/modules/shared/constants/cookies.ts
+// app/modules/common/constants/cookies.ts
 export const COOKIE_KEYS = {
   sessionToken: 'session_token',
 } as const

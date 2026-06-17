@@ -1,6 +1,6 @@
 import { useNavigate, useRouterState } from '@tanstack/react-router'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@afterdark/ui'
-import { DASHBOARD_ROUTES } from '../../shared/constants/routes'
+import { DASHBOARD_ROUTES } from '../../common/constants/routes'
 import { LoginForm } from './login-form'
 import { RegisterForm } from './register-form'
 const AUTH_TAB = {

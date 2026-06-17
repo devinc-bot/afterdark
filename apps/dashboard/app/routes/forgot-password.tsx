@@ -1,6 +1,6 @@
 import { Link, createFileRoute } from '@tanstack/react-router'
 import { AuthShell } from '~/modules/auth/components/auth-shell'
-import { DASHBOARD_ROUTES } from '~/modules/shared/constants/routes'
+import { DASHBOARD_ROUTES } from '~/modules/common/constants/routes'
 
 export const Route = createFileRoute('/forgot-password')({
   head: () => ({ meta: [{ title: 'Recuperar contraseña · afterdark Admin' }] }),

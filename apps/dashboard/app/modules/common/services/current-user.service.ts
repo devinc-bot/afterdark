@@ -1,7 +1,7 @@
 import type { CurrentUserResponse } from '@afterdark/types'
 import { api } from '~/config/api'
 import { API_ROUTES } from '~/config/constants/api'
-import { QueryFactoryError } from '~/modules/shared/utils/query-factory'
+import { QueryFactoryError } from '~/modules/common/utils/query-factory'
 
 const CURRENT_USER_FALLBACK_ERROR = 'No pudimos cargar tu perfil. Intentá de nuevo en unos minutos.'
 

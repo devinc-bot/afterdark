@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query'
 import { useNavigate } from '@tanstack/react-router'
 import type { LoginInput } from '@afterdark/validators'
-import { WEB_ROUTES } from '../../shared/constants/routes'
+import { WEB_ROUTES } from '../../common/constants/routes'
 import { loginFn } from '../services/auth.service'
 import { saveAuthSession } from '../utils/auth-storage.utils'
 

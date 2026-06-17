@@ -1,8 +1,8 @@
 import { useMutation } from '@tanstack/react-query'
 import { useNavigate } from '@tanstack/react-router'
 import type { LoginInput, RegisterInput } from '@afterdark/validators'
-import { useSessionStore } from '~/modules/shared/stores/session.store'
-import { DASHBOARD_ROUTES } from '../../shared/constants/routes'
+import { useSessionStore } from '~/modules/common/stores/session.store'
+import { DASHBOARD_ROUTES } from '../../common/constants/routes'
 import { loginFn, registerFn } from '../services/auth.service'
 import { saveAuthSession } from '../utils/auth-storage.utils'
 

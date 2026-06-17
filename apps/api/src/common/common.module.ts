@@ -4,4 +4,4 @@ import { Global, Module } from '@nestjs/common'
 @Module({
   exports: [],
 })
-export class SharedModule {}
+export class CommonModule {}

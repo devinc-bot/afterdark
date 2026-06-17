@@ -2,7 +2,7 @@ import { createServerFn } from '@tanstack/react-start'
 import { loginSchema, registerSchema } from '@afterdark/validators'
 import { api } from '~/config/api'
 import { API_ROUTES } from '~/config/constants/api'
-import { QueryFactoryError } from '~/modules/shared/utils/query-factory'
+import { QueryFactoryError } from '~/modules/common/utils/query-factory'
 import type { LoginResponse } from '@afterdark/types'
 
 const LOGIN_FALLBACK_ERROR = 'No pudimos iniciar sesión. Intentá de nuevo en unos minutos.'

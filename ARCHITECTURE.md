@@ -46,7 +46,7 @@ afterdark/
 │   │   │   │   │   │   └── property.service.ts
 │   │   │   │   │   ├── types/
 │   │   │   │   │   └── utils/
-│   │   │   │   └── shared/     # Cross-module shared code (same sub-structure)
+│   │   │   │   └── common/     # Cross-module shared code (same sub-structure)
 │   │   │   ├── routes/
 │   │   │   │   ├── __root.tsx
 │   │   │   │   ├── index.tsx
@@ -74,7 +74,7 @@ afterdark/
 │   │   │   │   │   │   └── property.service.ts
 │   │   │   │   │   ├── types/
 │   │   │   │   │   └── utils/
-│   │   │   │   └── shared/
+│   │   │   │   └── common/
 │   │   │   ├── routes/
 │   │   │   │   ├── __root.tsx
 │   │   │   │   ├── index.tsx       # redirects → /properties
@@ -102,13 +102,13 @@ afterdark/
 │       │   │   ├── orders/
 │       │   │   ├── users/
 │       │   │   └── index.ts
-│       │   ├── shared/         # Infra helpers
+│       │   ├── common/         # Infra helpers
 │       │   │   ├── config/
 │       │   │   ├── filters/
 │       │   │   ├── lib/
 │       │   │   ├── pipes/
 │       │   │   ├── index.ts
-│       │   │   └── shared.module.ts
+│       │   │   └── common.module.ts
 │       │   ├── templates/      # React Email templates
 │       │   ├── app.controller.ts
 │       │   ├── app.controller.spec.ts
@@ -166,7 +166,7 @@ afterdark/
 #### Structure
 
 - `src/modules/*` domain modules (`auth`, `categories`, `users`, `orders`, `health`) — each module exposes `*.module.ts`, `*.controller.ts`, `*.service.ts` and re-exports via `index.ts`
-- `src/shared/*` infra helpers (`config`, `filters`, `pipes`, `lib`) wired through `shared.module.ts`
+- `src/common/*` infra helpers (`config`, `filters`, `pipes`, `lib`) wired through `common.module.ts`
 - `src/templates/` React Email templates
 - `src/app.module.ts` root module; `src/main.ts` bootstrap
 
@@ -198,7 +198,7 @@ Each feature module inside `app/modules/<module>/` follows this layout:
 | `types/`      | Module-local TypeScript types not shared across packages                   | `*.types.ts`         |
 | `utils/`      | Pure helper functions                                                      | `*.utils.ts`         |
 
-`modules/shared/` follows the exact same structure and holds code shared **between modules** within the same app.
+`modules/common/` follows the exact same structure and holds code shared **between modules** within the same app.
 
 ### Import rules
 
@@ -208,14 +208,14 @@ routes/
                        modules/<module>/mutations
                        modules/<module>/components
                        modules/<module>/services   (server fns)
-                       modules/shared/...
+                       modules/common/...
                        @afterdark/ui
                        @afterdark/validators
                        @afterdark/types
 
 modules/<module>/
   └── must NOT import from other sibling modules
-      → move shared code to modules/shared/ instead
+      → move shared code to modules/common/ instead
 ```
 
 ---
@@ -251,7 +251,7 @@ modules/<module>/
 
 To avoid hardcoding route strings across the app and prevent subtle mistakes like `"/catalog"` vs `"/catalog/"`, each app keeps route paths centralized in:
 
-- `apps/<name>/app/modules/shared/constants/routes.ts` (`WEB_ROUTES`, etc.)
+- `apps/<name>/app/modules/common/constants/routes.ts` (`WEB_ROUTES`, etc.)
 
 Use these constants for **navigation** (`Link`, `navigate`, redirects). TanStack Router codegen requires a **string literal** in `createFileRoute` — do not pass `WEB_ROUTES.*()` there.
 

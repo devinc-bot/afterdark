@@ -1,7 +1,7 @@
 import type { LoginResponse } from '@afterdark/types'
-import { SESSION_DURATION_MS } from '~/modules/shared/constants/auth-storage'
-import { COOKIE_KEYS } from '~/modules/shared/constants/cookies'
-import { deleteCookie, getCookieSync, setCookie } from '~/modules/shared/utils/cookies.utils'
+import { SESSION_DURATION_MS } from '~/modules/common/constants/auth-storage'
+import { COOKIE_KEYS } from '~/modules/common/constants/cookies'
+import { deleteCookie, getCookieSync, setCookie } from '~/modules/common/utils/cookies.utils'
 
 const accessTokenCookie = { name: COOKIE_KEYS.accessToken } as const
 

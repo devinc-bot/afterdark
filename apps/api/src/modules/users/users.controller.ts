@@ -1,7 +1,7 @@
 import { Controller, Get, Inject, UseGuards } from '@nestjs/common'
 import type { CurrentUserResponse, JwtPayload } from '@afterdark/types'
-import { CurrentUser } from '../../shared/decorators/current-user.decorator'
-import { JwtAuthGuard } from '../../shared/guards/jwt-auth.guard'
+import { CurrentUser } from '../../common/decorators/current-user.decorator'
+import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard'
 import { UsersService } from './users.service'
 
 @Controller('users')
