@@ -1,8 +1,8 @@
 import { sqliteTable, text } from 'drizzle-orm/sqlite-core'
-import { baseColumns } from './base.ts'
+import { createBaseColumns } from './base.ts'
 
 export const roles = sqliteTable('roles', {
-  ...baseColumns,
+  ...createBaseColumns('roles'),
   name: text('name').notNull(),
   description: text('description'),
 })

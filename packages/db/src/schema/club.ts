@@ -1,9 +1,9 @@
 import { sqliteTable, text } from 'drizzle-orm/sqlite-core'
 import { CLUB_STATUS } from '@afterdark/types'
-import { baseColumns } from './base.ts'
+import { createBaseColumns } from './base.ts'
 
 export const clubs = sqliteTable('clubs', {
-  ...baseColumns,
+  ...createBaseColumns('clubs'),
   name: text('name').notNull(),
   capacity: text('capacity').notNull(),
   description: text('description'),

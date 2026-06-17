@@ -1,10 +1,10 @@
 import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core'
-import { baseColumns } from './base.ts'
+import { createBaseColumns } from './base.ts'
 import { chats } from './chat.ts'
 import { users } from './user.ts'
 
 export const messages = sqliteTable('messages', {
-  ...baseColumns,
+  ...createBaseColumns('messages'),
   fromId: integer('from_id')
     .notNull()
     .references(() => users.id),

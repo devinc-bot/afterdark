@@ -1,10 +1,10 @@
 import { integer, real, sqliteTable, text } from 'drizzle-orm/sqlite-core'
 import { TICKET_STATUS, TICKET_TYPE } from '@afterdark/types'
-import { baseColumns } from './base.ts'
+import { createBaseColumns } from './base.ts'
 import { clubs } from './club.ts'
 
 export const tickets = sqliteTable('tickets', {
-  ...baseColumns,
+  ...createBaseColumns('tickets'),
   name: text('name').notNull(),
   price: real('price').notNull(),
   quantity: integer('quantity').notNull(),

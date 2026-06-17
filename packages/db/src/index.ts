@@ -12,3 +12,5 @@ export const db = drizzle(client, { schema })
 
 export * from './schema/index.ts'
 export type { DatabaseEnv } from '@afterdark/validators/database'
+
+export type Transaction = Parameters<Parameters<typeof db.transaction>[0]>[0]
