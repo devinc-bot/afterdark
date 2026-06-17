@@ -1,5 +1,5 @@
 export const DASHBOARD_ROUTES = {
-  home: () => '/' as const,
+  home: () => '/dashboard' as const,
   clubManagement: () => '/club-management' as const,
   tickets: () => '/tickets' as const,
   userManagement: () => '/users' as const,
