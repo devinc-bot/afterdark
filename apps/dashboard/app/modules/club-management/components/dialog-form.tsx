@@ -155,11 +155,11 @@ function ClubDialogFormInner({
 
   return (
     <>
-      <div className="min-h-0 flex-1 overflow-y-auto overscroll-y-contain p-6">
+      <div className="min-h-0 flex-1 overflow-y-auto overscroll-y-contain">
         <form
           id={CLUB_DIALOG_FORM_ID}
           noValidate
-          className="flex flex-col gap-8 px-6 py-6"
+          className="flex flex-col gap-8 px-8 py-6"
           onSubmit={(event) => {
             event.preventDefault()
             event.stopPropagation()
@@ -351,7 +351,7 @@ export function ClubDialogForm({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="flex max-h-[min(90dvh,48rem)] flex-col gap-0 overflow-hidden p-0">
-        <DialogHeader className="shrink-0 border-b border-hairline bg-surface-container-high px-6 py-5">
+        <DialogHeader className="shrink-0 border-b border-hairline bg-surface-container-high px-8 pb-6 pt-8">
           <DialogTitle>{isCreate ? 'Añadir nuevo club' : 'Editar club'}</DialogTitle>
           <DialogDescription>
             {isCreate
