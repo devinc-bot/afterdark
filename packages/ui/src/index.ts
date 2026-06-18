@@ -33,6 +33,7 @@ export {
   type KpiInformationProps,
 } from './components/ui/kpi-information.tsx'
 export { Label } from './components/ui/label.tsx'
+export { Loader, type LoaderProps } from './components/ui/loader.tsx'
 export { Link, type LinkProps } from './components/ui/link.tsx'
 export { NotImage, notImageVariants, type NotImageProps } from './components/ui/not-image.tsx'
 export {

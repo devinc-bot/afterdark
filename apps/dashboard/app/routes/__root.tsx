@@ -1,10 +1,4 @@
-import {
-  HeadContent,
-  Outlet,
-  Scripts,
-  ScrollRestoration,
-  createRootRouteWithContext,
-} from '@tanstack/react-router'
+import { HeadContent, Outlet, Scripts, createRootRouteWithContext } from '@tanstack/react-router'
 import { QueryClientProvider, type QueryClient } from '@tanstack/react-query'
 import globalsCssUrl from '@afterdark/ui/globals.css?url'
 
@@ -17,7 +11,7 @@ export const Route = createRootRouteWithContext<RouterContext>()({
     meta: [
       { charSet: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { title: 'afterdark · Admin' },
+      { title: 'Afterdark · Dashboard' },
     ],
     links: [{ rel: 'stylesheet', href: globalsCssUrl }],
   }),
@@ -33,7 +27,6 @@ function RootComponent() {
           <HeadContent />
         </head>
         <body>
-          <ScrollRestoration />
           <Outlet />
           <Scripts />
         </body>
