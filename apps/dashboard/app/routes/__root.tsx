@@ -1,5 +1,6 @@
 import { HeadContent, Outlet, Scripts, createRootRouteWithContext } from '@tanstack/react-router'
 import { QueryClientProvider, type QueryClient } from '@tanstack/react-query'
+import { Toaster } from '@afterdark/ui'
 import globalsCssUrl from '@afterdark/ui/globals.css?url'
 
 interface RouterContext {
@@ -28,6 +29,7 @@ function RootComponent() {
         </head>
         <body>
           <Outlet />
+          <Toaster position="top-right" />
           <Scripts />
         </body>
       </html>
