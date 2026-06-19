@@ -1,4 +1,4 @@
-import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core'
+import { sqliteTable, text } from 'drizzle-orm/sqlite-core'
 import { USER_STATUS } from '@afterdark/types'
 import { createBaseColumns } from './base.ts'
 
@@ -8,7 +8,9 @@ export const users = sqliteTable('users', {
   lastName: text('last_name').notNull(),
   phone: text('phone').notNull(),
   avatar: text('avatar'),
-  age: integer('age'),
+  birthday: text('birthday'),
+  nationalId: text('national_id'),
+  taxId: text('tax_id'),
   status: text('status', {
     enum: [USER_STATUS.ACTIVE, USER_STATUS.INACTIVE, USER_STATUS.PRIVATE],
   })

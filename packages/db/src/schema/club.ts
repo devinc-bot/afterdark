@@ -10,10 +10,6 @@ export const clubs = sqliteTable('clubs', {
   status: text('status', { enum: [CLUB_STATUS.ACTIVE, CLUB_STATUS.INACTIVE] })
     .notNull()
     .default(CLUB_STATUS.ACTIVE),
-  address: text('address').notNull(),
-  streetNumber: text('street_number').notNull(),
-  state: text('state').notNull(),
-  city: text('city').notNull(),
 })
 
 export type ClubSelect = typeof clubs.$inferSelect

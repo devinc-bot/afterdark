@@ -2,6 +2,7 @@ export { cn } from './lib/utils'
 
 export { Badge, badgeVariants, type BadgeProps } from './components/ui/badge.tsx'
 export { Button, buttonVariants, type ButtonProps } from './components/ui/button.tsx'
+export { Checkbox } from './components/ui/checkbox.tsx'
 export {
   Card,
   CardContent,
@@ -76,6 +77,7 @@ export {
   type SidebarNavProps,
 } from './components/ui/sidebar-nav.tsx'
 export { Separator } from './components/ui/separator.tsx'
+export { Switch } from './components/ui/switch.tsx'
 export {
   Tabs,
   TabsContent,
