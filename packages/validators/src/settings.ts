@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { updateCurrentUserSchema } from './user.ts'
 
 export const SETTINGS_LANGUAGE = {
   ES: 'es',
@@ -19,18 +20,7 @@ export const settingsNotificationsSchema = z.object({
   securityLog: z.boolean(),
 })
 
-export const settingsProfileSchema = z.object({
-  name: z
-    .string()
-    .trim()
-    .min(2, 'Ingresá al menos 2 caracteres para el nombre.')
-    .max(255, 'El nombre admite hasta 255 caracteres.'),
-  lastName: z
-    .string()
-    .trim()
-    .min(2, 'Ingresá al menos 2 caracteres para el apellido.')
-    .max(255, 'El apellido admite hasta 255 caracteres.'),
-})
+export const settingsProfileSchema = updateCurrentUserSchema
 
 export const settingsOrganizationSchema = z.object({
   brandName: z

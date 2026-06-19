@@ -19,10 +19,22 @@ export interface JwtPayload {
   role: string
 }
 
+export interface CurrentUserAddress {
+  address: string
+  streetNumber: string
+  state: string
+  city: string
+}
+
 export interface CurrentUserResponse {
   sub: string
   name: string
   lastName: string
   email: string
   avatar: string | null
+  phone: string
+  birthday: string | null
+  nationalId: string | null
+  taxId: string | null
+  address: CurrentUserAddress | null
 }

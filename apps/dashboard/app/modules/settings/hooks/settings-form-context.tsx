@@ -41,7 +41,14 @@ type SettingsFormContextValue = {
   isDirty: boolean
   saveStatus: SettingsSaveStatus
   saveMessage: string | null
-  setProfileField: (field: 'name' | 'lastName', value: string) => void
+  setProfileField: (
+    field: 'name' | 'lastName' | 'phone' | 'birthday' | 'nationalId' | 'taxId',
+    value: string
+  ) => void
+  setProfileAddressField: (
+    field: keyof SettingsFormValues['profile']['address'],
+    value: string
+  ) => void
   setOrganizationField: (field: 'brandName' | 'location', value: string) => void
   setTwoFactorEnabled: (enabled: boolean) => void
   setLanguage: (language: SettingsFormValues['preferences']['language']) => void
@@ -133,10 +140,23 @@ export function SettingsFormProvider({ children }: { children: ReactNode }) {
   )
 
   const setProfileField = useCallback(
-    (field: 'name' | 'lastName', value: string) => {
+    (field: 'name' | 'lastName' | 'phone' | 'birthday' | 'nationalId' | 'taxId', value: string) => {
       updateValues((current) => ({
         ...current,
         profile: { ...current.profile, [field]: value },
+      }))
+    },
+    [updateValues]
+  )
+
+  const setProfileAddressField = useCallback(
+    (field: keyof SettingsFormValues['profile']['address'], value: string) => {
+      updateValues((current) => ({
+        ...current,
+        profile: {
+          ...current.profile,
+          address: { ...current.profile.address, [field]: value },
+        },
       }))
     },
     [updateValues]
@@ -221,10 +241,7 @@ export function SettingsFormProvider({ children }: { children: ReactNode }) {
     setErrors({})
 
     try {
-      const updatedUser = await updateCurrentUser({
-        name: validation.data.profile.name,
-        lastName: validation.data.profile.lastName,
-      })
+      const updatedUser = await updateCurrentUser(validation.data.profile)
 
       const storedPayload = {
         organization: validation.data.organization,
@@ -265,6 +282,7 @@ export function SettingsFormProvider({ children }: { children: ReactNode }) {
         saveStatus,
         saveMessage,
         setProfileField,
+        setProfileAddressField,
         setOrganizationField,
         setTwoFactorEnabled,
         setLanguage,

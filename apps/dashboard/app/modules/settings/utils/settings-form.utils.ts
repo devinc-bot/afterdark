@@ -3,8 +3,13 @@ import { NOTIFICATION_FIELD_BY_ID } from '~/modules/settings/constants/settings-
 import { settingsFormSchema, type SettingsFormValues } from '@afterdark/validators'
 import type { ZodError } from 'zod'
 
+type ProfileField = 'name' | 'lastName' | 'phone' | 'birthday' | 'nationalId' | 'taxId'
+type ProfileAddressField = keyof SettingsFormValues['profile']['address']
+
 export type SettingsFieldErrors = {
-  profile?: Partial<Record<'name' | 'lastName', string>>
+  profile?: Partial<Record<ProfileField, string>> & {
+    address?: Partial<Record<ProfileAddressField, string>>
+  }
   organization?: Partial<Record<'brandName' | 'location', string>>
   security?: Partial<Record<'twoFactorEnabled', string>>
   preferences?: {
@@ -22,6 +27,19 @@ export function mapSettingsFormErrors(error: ZodError): SettingsFieldErrors {
     const [section, field, nestedField] = issue.path
 
     if (typeof section !== 'string' || typeof field !== 'string') {
+      continue
+    }
+
+    if (section === 'profile' && field === 'address' && typeof nestedField === 'string') {
+      fieldErrors.profile ??= { address: {} }
+      fieldErrors.profile.address ??= {}
+      fieldErrors.profile.address[nestedField as ProfileAddressField] = issue.message
+      continue
+    }
+
+    if (section === 'profile' && field !== 'address') {
+      fieldErrors.profile ??= {}
+      fieldErrors.profile[field as ProfileField] = issue.message
       continue
     }
 
@@ -43,9 +61,7 @@ export function mapSettingsFormErrors(error: ZodError): SettingsFieldErrors {
     >
     sectionErrors[field] = issue.message
 
-    if (section === 'profile') {
-      fieldErrors.profile = sectionErrors as SettingsFieldErrors['profile']
-    } else if (section === 'organization') {
+    if (section === 'organization') {
       fieldErrors.organization = sectionErrors as SettingsFieldErrors['organization']
     } else if (section === 'security') {
       fieldErrors.security = sectionErrors as SettingsFieldErrors['security']
@@ -68,6 +84,30 @@ export function getFirstInvalidFieldId(errors: SettingsFieldErrors): string | nu
   }
   if (errors.profile?.lastName) {
     return 'settings-last-name'
+  }
+  if (errors.profile?.phone) {
+    return 'settings-phone'
+  }
+  if (errors.profile?.birthday) {
+    return 'settings-birthday'
+  }
+  if (errors.profile?.nationalId) {
+    return 'settings-national-id'
+  }
+  if (errors.profile?.taxId) {
+    return 'settings-tax-id'
+  }
+  if (errors.profile?.address?.address) {
+    return 'settings-address-line'
+  }
+  if (errors.profile?.address?.streetNumber) {
+    return 'settings-street-number'
+  }
+  if (errors.profile?.address?.state) {
+    return 'settings-address-state'
+  }
+  if (errors.profile?.address?.city) {
+    return 'settings-address-city'
   }
   if (errors.organization?.brandName) {
     return 'settings-brand-name'

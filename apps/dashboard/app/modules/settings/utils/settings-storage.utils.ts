@@ -47,6 +47,16 @@ export function createSettingsFormValues(user: CurrentUserResponse): SettingsFor
     profile: {
       name: user.name,
       lastName: user.lastName,
+      phone: user.phone,
+      birthday: user.birthday ?? '',
+      nationalId: user.nationalId ?? '',
+      taxId: user.taxId ?? '',
+      address: {
+        address: user.address?.address ?? '',
+        streetNumber: user.address?.streetNumber ?? '',
+        state: user.address?.state ?? '',
+        city: user.address?.city ?? '',
+      },
     },
     organization: stored.organization,
     security: stored.security,
