@@ -3,12 +3,12 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '../../lib/utils'
 
 const textareaVariants = cva(
-  'flex min-h-[120px] w-full resize-y rounded-md border px-4 py-3 text-[16px] text-ink tracking-[0.16px] placeholder:text-ink-muted-soft focus-visible:outline-none focus-visible:ring-2 disabled:cursor-not-allowed disabled:resize-none',
+  'flex min-h-[120px] w-full resize-y rounded-lg border px-4 py-3 text-base text-on-surface placeholder:text-on-surface-variant/70 focus-visible:outline-none focus-visible:ring-2 aria-invalid:border-error aria-invalid:focus-visible:border-error aria-invalid:focus-visible:ring-error/25 disabled:cursor-not-allowed disabled:resize-none',
   {
     variants: {
       variant: {
         default:
-          'border-hairline-strong bg-surface-card focus-visible:border-ink focus-visible:ring-ink disabled:opacity-50',
+          'border-outline-variant bg-surface-container-low focus-visible:border-primary focus-visible:ring-primary/25 disabled:opacity-50',
         secondary:
           'border-hairline-strong bg-surface-container-lowest focus-visible:border-ink focus-visible:ring-ink disabled:bg-surface-container-low disabled:text-ink-muted-soft disabled:opacity-60',
       },
@@ -37,12 +37,7 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
         disabled={disabled}
         aria-invalid={hasError || undefined}
         aria-describedby={errorId}
-        className={cn(
-          textareaVariants({ variant }),
-          hasError &&
-            'border-destructive focus-visible:border-destructive focus-visible:ring-destructive/40',
-          className
-        )}
+        className={cn(textareaVariants({ variant }), className)}
         ref={ref}
         {...props}
       />
@@ -55,7 +50,7 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
     return (
       <div className="flex flex-col gap-1.5">
         {field}
-        <p id={errorId} role="alert" className="text-xs text-error">
+        <p id={errorId} role="alert" className="text-sm text-error">
           {error}
         </p>
       </div>

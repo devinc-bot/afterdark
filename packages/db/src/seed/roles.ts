@@ -15,8 +15,5 @@ for (const role of defaultRoles) {
 
   if (!existing) {
     await db.insert(roles).values(role)
-    console.log(`Seeded role: ${role.name}`)
   }
 }
-
-console.log('Role seed complete')

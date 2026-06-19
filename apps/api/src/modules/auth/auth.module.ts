@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common'
 import { JwtModule } from '@nestjs/jwt'
-import { ENV } from '../../shared/config/env'
+import { ENV } from '../../common/config/env'
 import { AuthController } from './auth.controller'
 import { AuthService } from './auth.service'
 import { ACCESS_TOKEN_TTL } from './auth.constants'
@@ -14,6 +14,6 @@ import { ACCESS_TOKEN_TTL } from './auth.constants'
   ],
   controllers: [AuthController],
   providers: [AuthService],
-  exports: [AuthService],
+  exports: [AuthService, JwtModule],
 })
 export class AuthModule {}

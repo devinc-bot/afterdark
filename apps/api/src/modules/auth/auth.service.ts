@@ -9,7 +9,7 @@ import { JwtService } from '@nestjs/jwt'
 import { compare, hash } from 'bcryptjs'
 import { eq } from 'drizzle-orm'
 import { accounts, db, roles, userAccountsLnk, users, type Transaction } from '@afterdark/db'
-import { USER_ROLE } from '@afterdark/types'
+import { USER_ROLE, type LoginResponse } from '@afterdark/types'
 import type { LoginInput, RegisterInput } from '@afterdark/validators'
 import { AUTH_MESSAGE } from './auth.constants'
 
@@ -25,7 +25,7 @@ type AuthAccountRow = {
 export class AuthService {
   constructor(@Inject(JwtService) private readonly jwtService: JwtService) {}
 
-  async login(input: LoginInput) {
+  async login(input: LoginInput): Promise<LoginResponse> {
     const row = await this.findAccountByEmail(input.email)
 
     if (!row) {
@@ -38,10 +38,10 @@ export class AuthService {
       throw new UnauthorizedException(AUTH_MESSAGE.INVALID_CREDENTIALS)
     }
 
-    return this.buildAuthResponse(row)
+    return this.createAccessToken(row)
   }
 
-  async register(input: RegisterInput) {
+  async register(input: RegisterInput): Promise<LoginResponse> {
     const existingAccount = await this.findAccountByEmail(input.email)
 
     if (existingAccount) {
@@ -91,7 +91,7 @@ export class AuthService {
       } satisfies AuthAccountRow
     })
 
-    return this.buildAuthResponse(row)
+    return this.createAccessToken(row)
   }
 
   private async findAccountByEmail(email: string): Promise<AuthAccountRow | null> {
@@ -111,21 +111,13 @@ export class AuthService {
     return row ?? null
   }
 
-  private async buildAuthResponse(row: AuthAccountRow) {
+  private async createAccessToken(row: AuthAccountRow): Promise<LoginResponse> {
     const accessToken = await this.jwtService.signAsync({
       sub: row.user.documentId,
       email: row.account.email,
       role: row.role.name,
     })
 
-    return {
-      accessToken,
-      user: {
-        id: row.user.documentId,
-        name: `${row.user.name} ${row.user.lastName}`.trim(),
-        email: row.account.email,
-        role: row.role.name,
-      },
-    }
+    return { accessToken }
   }
 }

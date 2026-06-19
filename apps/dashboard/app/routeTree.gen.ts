@@ -15,10 +15,8 @@ import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as AppIndexRouteImport } from './routes/_app/index'
 import { Route as AppTicketsRouteImport } from './routes/_app/tickets'
+import { Route as AppDashboardRouteImport } from './routes/_app/dashboard'
 import { Route as AppClubManagementRouteImport } from './routes/_app/club-management'
-import { Route as AppPropertiesIndexRouteImport } from './routes/_app/properties/index'
-import { Route as AppPropertiesNewRouteImport } from './routes/_app/properties/new'
-import { Route as AppPropertiesIdEditRouteImport } from './routes/_app/properties/$id/edit'
 
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
@@ -49,24 +47,14 @@ const AppTicketsRoute = AppTicketsRouteImport.update({
   path: '/tickets',
   getParentRoute: () => AppRoute,
 } as any)
+const AppDashboardRoute = AppDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppClubManagementRoute = AppClubManagementRouteImport.update({
   id: '/club-management',
   path: '/club-management',
-  getParentRoute: () => AppRoute,
-} as any)
-const AppPropertiesIndexRoute = AppPropertiesIndexRouteImport.update({
-  id: '/properties/',
-  path: '/properties/',
-  getParentRoute: () => AppRoute,
-} as any)
-const AppPropertiesNewRoute = AppPropertiesNewRouteImport.update({
-  id: '/properties/new',
-  path: '/properties/new',
-  getParentRoute: () => AppRoute,
-} as any)
-const AppPropertiesIdEditRoute = AppPropertiesIdEditRouteImport.update({
-  id: '/properties/$id/edit',
-  path: '/properties/$id/edit',
   getParentRoute: () => AppRoute,
 } as any)
 
@@ -76,21 +64,17 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/club-management': typeof AppClubManagementRoute
+  '/dashboard': typeof AppDashboardRoute
   '/tickets': typeof AppTicketsRoute
-  '/properties/new': typeof AppPropertiesNewRoute
-  '/properties/': typeof AppPropertiesIndexRoute
-  '/properties/$id/edit': typeof AppPropertiesIdEditRoute
 }
 export interface FileRoutesByTo {
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/club-management': typeof AppClubManagementRoute
+  '/dashboard': typeof AppDashboardRoute
   '/tickets': typeof AppTicketsRoute
   '/': typeof AppIndexRoute
-  '/properties/new': typeof AppPropertiesNewRoute
-  '/properties': typeof AppPropertiesIndexRoute
-  '/properties/$id/edit': typeof AppPropertiesIdEditRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -99,11 +83,9 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/_app/club-management': typeof AppClubManagementRoute
+  '/_app/dashboard': typeof AppDashboardRoute
   '/_app/tickets': typeof AppTicketsRoute
   '/_app/': typeof AppIndexRoute
-  '/_app/properties/new': typeof AppPropertiesNewRoute
-  '/_app/properties/': typeof AppPropertiesIndexRoute
-  '/_app/properties/$id/edit': typeof AppPropertiesIdEditRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -113,21 +95,17 @@ export interface FileRouteTypes {
     | '/login'
     | '/register'
     | '/club-management'
+    | '/dashboard'
     | '/tickets'
-    | '/properties/new'
-    | '/properties/'
-    | '/properties/$id/edit'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/forgot-password'
     | '/login'
     | '/register'
     | '/club-management'
+    | '/dashboard'
     | '/tickets'
     | '/'
-    | '/properties/new'
-    | '/properties'
-    | '/properties/$id/edit'
   id:
     | '__root__'
     | '/_app'
@@ -135,11 +113,9 @@ export interface FileRouteTypes {
     | '/login'
     | '/register'
     | '/_app/club-management'
+    | '/_app/dashboard'
     | '/_app/tickets'
     | '/_app/'
-    | '/_app/properties/new'
-    | '/_app/properties/'
-    | '/_app/properties/$id/edit'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -193,6 +169,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppTicketsRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/dashboard': {
+      id: '/_app/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AppDashboardRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/club-management': {
       id: '/_app/club-management'
       path: '/club-management'
@@ -200,46 +183,21 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppClubManagementRouteImport
       parentRoute: typeof AppRoute
     }
-    '/_app/properties/': {
-      id: '/_app/properties/'
-      path: '/properties'
-      fullPath: '/properties/'
-      preLoaderRoute: typeof AppPropertiesIndexRouteImport
-      parentRoute: typeof AppRoute
-    }
-    '/_app/properties/new': {
-      id: '/_app/properties/new'
-      path: '/properties/new'
-      fullPath: '/properties/new'
-      preLoaderRoute: typeof AppPropertiesNewRouteImport
-      parentRoute: typeof AppRoute
-    }
-    '/_app/properties/$id/edit': {
-      id: '/_app/properties/$id/edit'
-      path: '/properties/$id/edit'
-      fullPath: '/properties/$id/edit'
-      preLoaderRoute: typeof AppPropertiesIdEditRouteImport
-      parentRoute: typeof AppRoute
-    }
   }
 }
 
 interface AppRouteChildren {
   AppClubManagementRoute: typeof AppClubManagementRoute
+  AppDashboardRoute: typeof AppDashboardRoute
   AppTicketsRoute: typeof AppTicketsRoute
   AppIndexRoute: typeof AppIndexRoute
-  AppPropertiesNewRoute: typeof AppPropertiesNewRoute
-  AppPropertiesIndexRoute: typeof AppPropertiesIndexRoute
-  AppPropertiesIdEditRoute: typeof AppPropertiesIdEditRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
   AppClubManagementRoute: AppClubManagementRoute,
+  AppDashboardRoute: AppDashboardRoute,
   AppTicketsRoute: AppTicketsRoute,
   AppIndexRoute: AppIndexRoute,
-  AppPropertiesNewRoute: AppPropertiesNewRoute,
-  AppPropertiesIndexRoute: AppPropertiesIndexRoute,
-  AppPropertiesIdEditRoute: AppPropertiesIdEditRoute,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)

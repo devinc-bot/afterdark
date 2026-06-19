@@ -5,7 +5,7 @@ import { registerSchema } from '@afterdark/validators'
 import { Button } from '@afterdark/ui'
 import { useRegister } from '../mutations/use-auth-mutations'
 import { fieldErrorMessage } from '../utils/form-field.utils'
-import { AuthField } from './auth-field'
+import { Field } from '@afterdark/ui'
 import { AuthInput } from './auth-input'
 
 const registerFormSchema = registerSchema
@@ -56,7 +56,7 @@ export function RegisterForm() {
           {(field) => {
             const error = fieldErrorMessage(field.state.meta.errors)
             return (
-              <AuthField
+              <Field
                 label="Nombre"
                 htmlFor={field.name}
                 icon={<User aria-hidden="true" />}
@@ -75,7 +75,7 @@ export function RegisterForm() {
                   aria-invalid={error ? true : undefined}
                   aria-describedby={error ? `${field.name}-error` : undefined}
                 />
-              </AuthField>
+              </Field>
             )
           }}
         </form.Field>
@@ -90,7 +90,7 @@ export function RegisterForm() {
           {(field) => {
             const error = fieldErrorMessage(field.state.meta.errors)
             return (
-              <AuthField
+              <Field
                 label="Apellido"
                 htmlFor={field.name}
                 icon={<User aria-hidden="true" />}
@@ -109,7 +109,7 @@ export function RegisterForm() {
                   aria-invalid={error ? true : undefined}
                   aria-describedby={error ? `${field.name}-error` : undefined}
                 />
-              </AuthField>
+              </Field>
             )
           }}
         </form.Field>
@@ -125,7 +125,7 @@ export function RegisterForm() {
         {(field) => {
           const error = fieldErrorMessage(field.state.meta.errors)
           return (
-            <AuthField
+            <Field
               label="Correo corporativo"
               htmlFor={field.name}
               icon={<Mail aria-hidden="true" />}
@@ -144,7 +144,7 @@ export function RegisterForm() {
                 aria-invalid={error ? true : undefined}
                 aria-describedby={error ? `${field.name}-error` : undefined}
               />
-            </AuthField>
+            </Field>
           )
         }}
       </form.Field>
@@ -160,7 +160,7 @@ export function RegisterForm() {
           {(field) => {
             const error = fieldErrorMessage(field.state.meta.errors)
             return (
-              <AuthField
+              <Field
                 label="Contraseña"
                 htmlFor={field.name}
                 icon={<Lock aria-hidden="true" />}
@@ -179,7 +179,7 @@ export function RegisterForm() {
                   aria-invalid={error ? true : undefined}
                   aria-describedby={error ? `${field.name}-error` : undefined}
                 />
-              </AuthField>
+              </Field>
             )
           }}
         </form.Field>
@@ -194,7 +194,7 @@ export function RegisterForm() {
           {(field) => {
             const error = fieldErrorMessage(field.state.meta.errors)
             return (
-              <AuthField
+              <Field
                 label="Confirmar contraseña"
                 htmlFor={field.name}
                 icon={<Lock aria-hidden="true" />}
@@ -213,7 +213,7 @@ export function RegisterForm() {
                   aria-invalid={error ? true : undefined}
                   aria-describedby={error ? `${field.name}-error` : undefined}
                 />
-              </AuthField>
+              </Field>
             )
           }}
         </form.Field>
