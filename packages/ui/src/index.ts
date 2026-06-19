@@ -77,6 +77,8 @@ export {
   type SidebarNavProps,
 } from './components/ui/sidebar-nav.tsx'
 export { Separator } from './components/ui/separator.tsx'
+export { Toaster } from './components/ui/sonner.tsx'
+export { toast, type ExternalToast } from 'sonner'
 export { Switch } from './components/ui/switch.tsx'
 export {
   Tabs,

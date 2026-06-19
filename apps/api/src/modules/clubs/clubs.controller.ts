@@ -8,7 +8,7 @@ import { ClubsService } from './clubs.service'
 export class ClubsController {
   constructor(@Inject(ClubsService) private readonly clubsService: ClubsService) {}
 
-  @Post()
+  @Post('create')
   @HttpCode(HttpStatus.CREATED)
   @UseGuards(JwtAuthGuard)
   create(@Body(new ZodValidationPipe(createClubSchema)) body: CreateClubInput) {

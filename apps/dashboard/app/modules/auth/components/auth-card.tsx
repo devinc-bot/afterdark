@@ -1,10 +1,16 @@
 import { useNavigate, useRouterState } from '@tanstack/react-router'
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@afterdark/ui'
+
 import { DASHBOARD_ROUTES } from '../../common/constants/routes'
+
 import { LoginForm } from './login-form'
+
 import { RegisterForm } from './register-form'
+
 const AUTH_TAB = {
   LOGIN: 'login',
+
   REGISTER: 'register',
 } as const
 
@@ -12,12 +18,14 @@ type AuthTab = (typeof AUTH_TAB)[keyof typeof AUTH_TAB]
 
 export function AuthCard() {
   const navigate = useNavigate()
+
   const pathname = useRouterState({ select: (state) => state.location.pathname })
+
   const activeTab: AuthTab =
     pathname === DASHBOARD_ROUTES.register() ? AUTH_TAB.REGISTER : AUTH_TAB.LOGIN
 
   return (
-    <div className="rounded-xl border border-outline-variant bg-surface-container p-6 shadow-glass md:p-8">
+    <div className="gradient-border rounded-xl p-6 md:p-8">
       <Tabs
         value={activeTab}
         onValueChange={(value) => {
