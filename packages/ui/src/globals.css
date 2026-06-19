@@ -9,6 +9,7 @@
 @import '@fontsource/geist-mono/400.css';
 @import '@fontsource/geist-mono/500.css';
 @import '@fontsource/geist-mono/700.css';
+@import 'sonner/dist/styles.css';
 
 @source "../../../apps/web/app";
 @source "../../../apps/dashboard/app";
@@ -206,6 +207,36 @@
       transform: scale(1) translate(0, 0);
       opacity: 0.3;
     }
+  }
+}
+
+@layer components {
+  .cn-toast {
+    --gradient-border-fill: var(--color-surface-container-high);
+    border: 2px solid transparent !important;
+    border-radius: var(--radius-lg);
+    background:
+      linear-gradient(var(--gradient-border-fill), var(--gradient-border-fill)) padding-box,
+      linear-gradient(
+        135deg,
+        var(--color-primary-fixed) 0%,
+        var(--color-primary) 50%,
+        var(--color-inverse-primary) 100%
+      )
+      border-box !important;
+    color: var(--color-ink);
+    box-shadow: var(--shadow-glass), var(--shadow-primary-glow);
+    font-family: var(--font-sans);
+  }
+
+  .toaster [data-sonner-toast][data-styled='true'] [data-icon] {
+    width: 24px;
+    height: 24px;
+  }
+
+  .toaster [data-sonner-toast][data-styled='true'] [data-icon] svg {
+    width: 24px;
+    height: 24px;
   }
 }
 

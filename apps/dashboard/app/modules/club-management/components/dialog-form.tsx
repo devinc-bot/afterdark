@@ -12,7 +12,9 @@ import {
   Input,
   Label,
   Textarea,
+  toast,
 } from '@afterdark/ui'
+import { useCreateClub } from '~/modules/club-management/mutation/use-club-management-mutations'
 
 export const CLUB_FORM_MODE = {
   CREATE: 'create',
@@ -143,12 +145,32 @@ function ClubDialogFormInner({
   defaultValues,
   onSubmit,
   isSubmitting = false,
-}: Pick<ClubDialogFormProps, 'mode' | 'defaultValues' | 'onSubmit' | 'isSubmitting'>) {
+  onOpenChange,
+}: Pick<
+  ClubDialogFormProps,
+  'mode' | 'defaultValues' | 'onSubmit' | 'isSubmitting' | 'onOpenChange'
+>) {
   const isCreate = mode === CLUB_FORM_MODE.CREATE
+  const createClubMutation = useCreateClub()
 
   const form = useForm({
     defaultValues: { ...EMPTY_CLUB_FORM_VALUES, ...defaultValues },
     onSubmit: async ({ value }) => {
+      if (isCreate) {
+        try {
+          await createClubMutation.mutateAsync(value)
+          toast.success('Club registrado correctamente')
+          onOpenChange(false)
+        } catch (error) {
+          toast.error(
+            error instanceof Error
+              ? error.message
+              : 'No pudimos registrar el club. Intentá de nuevo.'
+          )
+        }
+        return
+      }
+
       await onSubmit(value)
     },
   })
@@ -299,10 +321,10 @@ function ClubDialogFormInner({
 
       <form.Subscribe selector={(state) => state.isSubmitting}>
         {(isFormSubmitting) => {
-          const pending = isSubmitting || isFormSubmitting
+          const pending = isSubmitting || isFormSubmitting || createClubMutation.isPending
 
           return (
-            <DialogFooter className="mx-0 mb-0 mt-0 shrink-0 gap-3 px-6 py-6 sm:flex-row sm:justify-end sm:px-8">
+            <DialogFooter className="mx-0 mb-0 mt-0 shrink-0 flex-col gap-3 px-6 py-6 sm:flex-row sm:justify-end sm:px-8">
               <DialogClose asChild>
                 <Button
                   type="button"
@@ -366,6 +388,7 @@ export function ClubDialogForm({
           defaultValues={defaultValues}
           onSubmit={onSubmit}
           isSubmitting={isSubmitting}
+          onOpenChange={onOpenChange}
         />
       </DialogContent>
     </Dialog>
