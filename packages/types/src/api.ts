@@ -1,3 +1,5 @@
+import type { ClubStatus } from './domain.ts'
+
 export interface ApiResponse<T> {
   data: T
   success: true
@@ -25,4 +27,18 @@ export interface CurrentUserResponse {
   lastName: string
   email: string
   avatar: string | null
+}
+
+export interface ClubResponse {
+  documentId: string
+  name: string
+  capacity: string
+  description: string | null
+  status: ClubStatus
+  address: string
+  streetNumber: string
+  state: string
+  city: string
+  createdAt: Date
+  updatedAt: Date
 }
