@@ -1,6 +1,19 @@
-import type { ReactNode } from 'react'
+import { cloneElement, isValidElement, type ReactElement, type ReactNode } from 'react'
 import { cn } from '../../lib/utils'
 import { Label } from './label'
+
+function withFieldDescribedBy(child: ReactNode, errorId: string | undefined): ReactNode {
+  if (!errorId || !isValidElement(child)) {
+    return child
+  }
+
+  const element = child as ReactElement<{ 'aria-describedby'?: string }>
+  const describedBy = [element.props['aria-describedby'], errorId].filter(Boolean).join(' ')
+
+  return cloneElement(element, {
+    'aria-describedby': describedBy || undefined,
+  })
+}
 
 export interface FieldProps {
   label: string
@@ -21,6 +34,8 @@ export function Field({
   children,
   className,
 }: FieldProps) {
+  const errorId = error ? `${htmlFor}-error` : undefined
+
   return (
     <div className={cn('flex flex-col gap-2', className)}>
       <div className="flex items-center justify-between gap-3">
@@ -38,10 +53,10 @@ export function Field({
             {icon}
           </span>
         ) : null}
-        {children}
+        {withFieldDescribedBy(children, errorId)}
       </div>
       {error ? (
-        <p id={`${htmlFor}-error`} className="text-sm text-error" role="alert">
+        <p id={errorId} className="text-sm text-error" role="alert">
           {error}
         </p>
       ) : null}

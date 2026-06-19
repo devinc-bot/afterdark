@@ -50,7 +50,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         ]}
         secondary={[
           {
-            label: 'Settings',
+            label: 'Configuración',
             href: DASHBOARD_ROUTES.settings(),
             icon: <Settings aria-hidden="true" />,
           },

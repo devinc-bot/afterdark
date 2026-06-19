@@ -14,6 +14,7 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as AppIndexRouteImport } from './routes/_app/index'
+import { Route as AppSettingsRouteImport } from './routes/_app/settings'
 import { Route as AppDashboardRouteImport } from './routes/_app/dashboard'
 import { Route as AppClubManagementRouteImport } from './routes/_app/club-management'
 
@@ -41,6 +42,11 @@ const AppIndexRoute = AppIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AppRoute,
 } as any)
+const AppSettingsRoute = AppSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppDashboardRoute = AppDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -59,6 +65,7 @@ export interface FileRoutesByFullPath {
   '/register': typeof RegisterRoute
   '/club-management': typeof AppClubManagementRoute
   '/dashboard': typeof AppDashboardRoute
+  '/settings': typeof AppSettingsRoute
 }
 export interface FileRoutesByTo {
   '/forgot-password': typeof ForgotPasswordRoute
@@ -66,6 +73,7 @@ export interface FileRoutesByTo {
   '/register': typeof RegisterRoute
   '/club-management': typeof AppClubManagementRoute
   '/dashboard': typeof AppDashboardRoute
+  '/settings': typeof AppSettingsRoute
   '/': typeof AppIndexRoute
 }
 export interface FileRoutesById {
@@ -76,6 +84,7 @@ export interface FileRoutesById {
   '/register': typeof RegisterRoute
   '/_app/club-management': typeof AppClubManagementRoute
   '/_app/dashboard': typeof AppDashboardRoute
+  '/_app/settings': typeof AppSettingsRoute
   '/_app/': typeof AppIndexRoute
 }
 export interface FileRouteTypes {
@@ -87,6 +96,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/club-management'
     | '/dashboard'
+    | '/settings'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/forgot-password'
@@ -94,6 +104,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/club-management'
     | '/dashboard'
+    | '/settings'
     | '/'
   id:
     | '__root__'
@@ -103,6 +114,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/_app/club-management'
     | '/_app/dashboard'
+    | '/_app/settings'
     | '/_app/'
   fileRoutesById: FileRoutesById
 }
@@ -150,6 +162,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppIndexRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/settings': {
+      id: '/_app/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof AppSettingsRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/dashboard': {
       id: '/_app/dashboard'
       path: '/dashboard'
@@ -170,12 +189,14 @@ declare module '@tanstack/react-router' {
 interface AppRouteChildren {
   AppClubManagementRoute: typeof AppClubManagementRoute
   AppDashboardRoute: typeof AppDashboardRoute
+  AppSettingsRoute: typeof AppSettingsRoute
   AppIndexRoute: typeof AppIndexRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
   AppClubManagementRoute: AppClubManagementRoute,
   AppDashboardRoute: AppDashboardRoute,
+  AppSettingsRoute: AppSettingsRoute,
   AppIndexRoute: AppIndexRoute,
 }
 
