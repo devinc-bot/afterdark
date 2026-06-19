@@ -1,3 +1,4 @@
+import { FormLayout } from '@afterdark/ui'
 import { useSession } from '~/modules/common/hooks/use-session'
 import { ProfileSettingsSection } from '~/modules/settings/components/profile-settings-section'
 import { SettingsFormActions } from '~/modules/settings/components/settings-form-actions'
@@ -19,16 +20,23 @@ function SettingsFormContent() {
   return (
     <form
       id={SETTINGS_FORM_ID}
-      className="flex flex-col gap-2 sm:gap-4"
       noValidate
       onSubmit={(event) => {
         event.preventDefault()
         void save()
       }}
     >
-      <SettingsStatusBanner />
-      <ProfileSettingsSection />
-      <SettingsFormActions />
+      <FormLayout className="gap-2 sm:gap-4">
+        <FormLayout.Span span={12}>
+          <SettingsStatusBanner />
+        </FormLayout.Span>
+        <FormLayout.Span span={12}>
+          <ProfileSettingsSection />
+        </FormLayout.Span>
+        <FormLayout.Span span={12}>
+          <SettingsFormActions />
+        </FormLayout.Span>
+      </FormLayout>
     </form>
   )
 }

@@ -9,7 +9,7 @@
 @import '@fontsource/geist-mono/400.css';
 @import '@fontsource/geist-mono/500.css';
 @import '@fontsource/geist-mono/700.css';
-@import 'sonner/dist/styles.css';
+@import 'sileo/styles.css';
 
 @source "../../../apps/web/app";
 @source "../../../apps/dashboard/app";
@@ -211,32 +211,34 @@
 }
 
 @layer components {
-  .cn-toast {
+  .cn-gradient-border {
     --gradient-border-fill: var(--color-surface-container-high);
-    border: 2px solid transparent !important;
-    border-radius: var(--radius-lg);
+    --gradient-border-width: 2px;
+    border: var(--gradient-border-width) solid transparent;
     background:
       linear-gradient(var(--gradient-border-fill), var(--gradient-border-fill)) padding-box,
       linear-gradient(
         135deg,
-        var(--color-primary-fixed) 0%,
-        var(--color-primary) 50%,
-        var(--color-inverse-primary) 100%
+        var(--color-primary) 0%,
+        var(--color-inverse-primary) 10%,
+        var(--color-inverse-primary) 90%,
+        var(--color-primary) 100%
       )
-      border-box !important;
-    color: var(--color-ink);
-    box-shadow: var(--shadow-glass), var(--shadow-primary-glow);
-    font-family: var(--font-sans);
+      border-box;
   }
 
-  .toaster [data-sonner-toast][data-styled='true'] [data-icon] {
-    width: 24px;
-    height: 24px;
+  .cn-gradient-border--card {
+    --gradient-border-fill: var(--color-surface-card);
   }
 
-  .toaster [data-sonner-toast][data-styled='true'] [data-icon] svg {
-    width: 24px;
-    height: 24px;
+  .cn-gradient-border--field {
+    --gradient-border-fill: var(--color-surface-container-low);
+    --gradient-border-width: 1px;
+  }
+
+  .cn-gradient-border--field-secondary {
+    --gradient-border-fill: var(--color-surface-container-lowest);
+    --gradient-border-width: 1px;
   }
 }
 

@@ -13,6 +13,8 @@ const buttonVariants = cva(
         destructive: 'rounded-xl bg-destructive text-white hover:bg-destructive/90',
         outline:
           'rounded-pill border border-hairline-strong bg-surface-card text-ink shadow-sm hover:bg-surface-strong',
+        gradient:
+          'cn-gradient-border cn-gradient-border--field rounded-lg text-ink shadow-sm transition-[box-shadow] hover:opacity-90 focus-visible:ring-primary/25 disabled:opacity-60 motion-reduce:transition-none',
         inverse:
           'rounded-pill border border-white/20 bg-surface-card text-ink shadow-sm hover:bg-white',
         secondary: 'rounded-xl bg-secondary text-secondary-foreground hover:bg-secondary/80',

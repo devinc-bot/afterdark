@@ -3,14 +3,14 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '../../lib/utils'
 
 const textareaVariants = cva(
-  'flex min-h-[120px] w-full resize-y rounded-lg border px-4 py-3 text-base text-ink placeholder:text-ink-muted-soft transition-[border-color,box-shadow] focus-visible:outline-none focus-visible:ring-2 aria-invalid:border-error aria-invalid:focus-visible:border-error aria-invalid:focus-visible:ring-error/25 disabled:cursor-not-allowed disabled:resize-none motion-reduce:transition-none',
+  'cn-gradient-border flex min-h-[120px] w-full resize-y rounded-lg px-4 py-3 text-base text-ink placeholder:text-ink-muted-soft transition-[box-shadow] focus-visible:outline-none focus-visible:ring-2 aria-invalid:focus-visible:ring-error/25 disabled:cursor-not-allowed disabled:resize-none motion-reduce:transition-none',
   {
     variants: {
       variant: {
         default:
-          'border-outline-variant bg-surface-container-low placeholder:text-ink-muted-soft focus-visible:border-primary focus-visible:ring-primary/25 disabled:bg-surface-container-low disabled:text-ink-muted-soft disabled:opacity-60',
+          'cn-gradient-border--field placeholder:text-ink-muted-soft focus-visible:ring-primary/25 disabled:text-ink-muted-soft disabled:opacity-60',
         secondary:
-          'border-hairline-strong bg-surface-container-lowest focus-visible:border-ink focus-visible:ring-ink disabled:bg-surface-container-low disabled:text-ink-muted-soft disabled:opacity-60',
+          'cn-gradient-border--field-secondary focus-visible:ring-ink disabled:text-ink-muted-soft disabled:opacity-60',
       },
     },
     defaultVariants: {

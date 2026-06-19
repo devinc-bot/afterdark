@@ -46,47 +46,48 @@ export function ProfileSettingsSection() {
           </p>
         </div>
 
-        <div className="flex min-w-0 flex-col gap-4">
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <Field
-              label={SETTINGS_COPY.profile.name}
-              htmlFor="settings-name"
-              error={errors.profile?.name ?? null}
-            >
-              <Input
-                id="settings-name"
-                name="name"
-                type="text"
-                autoComplete="given-name"
-                maxLength={255}
-                value={values.profile.name}
-                onChange={(event) => setProfileField('name', event.target.value)}
-                aria-invalid={errors.profile?.name ? true : undefined}
-              />
-            </Field>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-6">
+          <Field
+            label={SETTINGS_COPY.profile.name}
+            htmlFor="settings-name"
+            error={errors.profile?.name ?? null}
+            className="col-span-3"
+          >
+            <Input
+              id="settings-name"
+              name="name"
+              type="text"
+              autoComplete="given-name"
+              maxLength={255}
+              value={values.profile.name}
+              onChange={(event) => setProfileField('name', event.target.value)}
+              aria-invalid={errors.profile?.name ? true : undefined}
+            />
+          </Field>
 
-            <Field
-              label={SETTINGS_COPY.profile.lastName}
-              htmlFor="settings-last-name"
-              error={errors.profile?.lastName ?? null}
-            >
-              <Input
-                id="settings-last-name"
-                name="lastName"
-                type="text"
-                autoComplete="family-name"
-                maxLength={255}
-                value={values.profile.lastName}
-                onChange={(event) => setProfileField('lastName', event.target.value)}
-                aria-invalid={errors.profile?.lastName ? true : undefined}
-              />
-            </Field>
-          </div>
+          <Field
+            label={SETTINGS_COPY.profile.lastName}
+            htmlFor="settings-last-name"
+            error={errors.profile?.lastName ?? null}
+            className="col-span-3"
+          >
+            <Input
+              id="settings-last-name"
+              name="lastName"
+              type="text"
+              autoComplete="family-name"
+              maxLength={255}
+              value={values.profile.lastName}
+              onChange={(event) => setProfileField('lastName', event.target.value)}
+              aria-invalid={errors.profile?.lastName ? true : undefined}
+            />
+          </Field>
 
           <Field
             label={SETTINGS_COPY.profile.phone}
             htmlFor="settings-phone"
             error={errors.profile?.phone ?? null}
+            className="col-span-4"
           >
             <Input
               id="settings-phone"
@@ -105,6 +106,7 @@ export function ProfileSettingsSection() {
             label={SETTINGS_COPY.profile.birthday}
             htmlFor="settings-birthday"
             error={errors.profile?.birthday ?? null}
+            className="col-span-2"
           >
             <Input
               id="settings-birthday"
@@ -117,120 +119,127 @@ export function ProfileSettingsSection() {
             />
           </Field>
 
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <Field
-              label={SETTINGS_COPY.profile.nationalId}
-              htmlFor="settings-national-id"
-              error={errors.profile?.nationalId ?? null}
-            >
-              <Input
-                id="settings-national-id"
-                name="nationalId"
-                type="text"
-                inputMode="numeric"
-                autoComplete="off"
-                maxLength={11}
-                value={values.profile.nationalId}
-                onChange={(event) => setProfileField('nationalId', event.target.value)}
-                aria-invalid={errors.profile?.nationalId ? true : undefined}
-              />
-            </Field>
+          <Field
+            label={SETTINGS_COPY.profile.nationalId}
+            htmlFor="settings-national-id"
+            error={errors.profile?.nationalId ?? null}
+            className="col-span-3"
+          >
+            <Input
+              id="settings-national-id"
+              name="nationalId"
+              type="text"
+              inputMode="numeric"
+              autoComplete="off"
+              maxLength={11}
+              value={values.profile.nationalId}
+              onChange={(event) => setProfileField('nationalId', event.target.value)}
+              aria-invalid={errors.profile?.nationalId ? true : undefined}
+            />
+          </Field>
 
-            <Field
-              label={SETTINGS_COPY.profile.taxId}
-              htmlFor="settings-tax-id"
-              error={errors.profile?.taxId ?? null}
-            >
-              <Input
-                id="settings-tax-id"
-                name="taxId"
-                type="text"
-                inputMode="numeric"
-                autoComplete="off"
-                maxLength={11}
-                value={values.profile.taxId}
-                onChange={(event) => setProfileField('taxId', event.target.value)}
-                aria-invalid={errors.profile?.taxId ? true : undefined}
-              />
-            </Field>
-          </div>
+          <Field
+            label={SETTINGS_COPY.profile.taxId}
+            htmlFor="settings-tax-id"
+            error={errors.profile?.taxId ?? null}
+            className="col-span-3"
+          >
+            <Input
+              id="settings-tax-id"
+              name="taxId"
+              type="text"
+              inputMode="numeric"
+              autoComplete="off"
+              maxLength={11}
+              value={values.profile.taxId}
+              onChange={(event) => setProfileField('taxId', event.target.value)}
+              aria-invalid={errors.profile?.taxId ? true : undefined}
+            />
+          </Field>
 
-          <div className="flex flex-col gap-4 border-t border-hairline/60 pt-4">
-            <Label variant="field">{SETTINGS_COPY.profile.addressSection}</Label>
+          <Label variant="field" className="col-span-6 border-t border-hairline/60 pt-4">
+            {SETTINGS_COPY.profile.addressSection}
+          </Label>
 
-            <Field
-              label={SETTINGS_COPY.profile.address}
-              htmlFor="settings-address-line"
-              error={addressErrors?.address ?? null}
-            >
-              <Input
-                id="settings-address-line"
-                name="addressLine"
-                type="text"
-                autoComplete="street-address"
-                maxLength={255}
-                value={values.profile.address.address}
-                onChange={(event) => setProfileAddressField('address', event.target.value)}
-                aria-invalid={addressErrors?.address ? true : undefined}
-              />
-            </Field>
+          <Field
+            label={SETTINGS_COPY.profile.address}
+            htmlFor="settings-address-line"
+            error={addressErrors?.address ?? null}
+            className="col-span-4"
+          >
+            <Input
+              id="settings-address-line"
+              name="addressLine"
+              type="text"
+              autoComplete="street-address"
+              maxLength={255}
+              value={values.profile.address.address}
+              onChange={(event) => setProfileAddressField('address', event.target.value)}
+              aria-invalid={addressErrors?.address ? true : undefined}
+            />
+          </Field>
 
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <Field
-                label={SETTINGS_COPY.profile.streetNumber}
-                htmlFor="settings-street-number"
-                error={addressErrors?.streetNumber ?? null}
-              >
-                <Input
-                  id="settings-street-number"
-                  name="streetNumber"
-                  type="text"
-                  inputMode="numeric"
-                  autoComplete="off"
-                  maxLength={20}
-                  value={values.profile.address.streetNumber}
-                  onChange={(event) => setProfileAddressField('streetNumber', event.target.value)}
-                  aria-invalid={addressErrors?.streetNumber ? true : undefined}
-                />
-              </Field>
+          <Field
+            label={SETTINGS_COPY.profile.streetNumber}
+            htmlFor="settings-street-number"
+            error={addressErrors?.streetNumber ?? null}
+            className="col-span-2"
+          >
+            <Input
+              id="settings-street-number"
+              name="streetNumber"
+              type="text"
+              inputMode="numeric"
+              autoComplete="off"
+              maxLength={20}
+              value={values.profile.address.streetNumber}
+              onChange={(event) => setProfileAddressField('streetNumber', event.target.value)}
+              aria-invalid={addressErrors?.streetNumber ? true : undefined}
+            />
+          </Field>
 
-              <Field
-                label={SETTINGS_COPY.profile.city}
-                htmlFor="settings-address-city"
-                error={addressErrors?.city ?? null}
-              >
-                <Input
-                  id="settings-address-city"
-                  name="city"
-                  type="text"
-                  autoComplete="address-level2"
-                  maxLength={100}
-                  value={values.profile.address.city}
-                  onChange={(event) => setProfileAddressField('city', event.target.value)}
-                  aria-invalid={addressErrors?.city ? true : undefined}
-                />
-              </Field>
-            </div>
+          <Field
+            label={SETTINGS_COPY.profile.city}
+            htmlFor="settings-address-city"
+            error={addressErrors?.city ?? null}
+            className="col-span-3"
+          >
+            <Input
+              id="settings-address-city"
+              name="city"
+              type="text"
+              autoComplete="address-level2"
+              maxLength={100}
+              value={values.profile.address.city}
+              onChange={(event) => setProfileAddressField('city', event.target.value)}
+              aria-invalid={addressErrors?.city ? true : undefined}
+            />
+          </Field>
 
-            <Field
-              label={SETTINGS_COPY.profile.state}
-              htmlFor="settings-address-state"
-              error={addressErrors?.state ?? null}
-            >
-              <Input
-                id="settings-address-state"
-                name="state"
-                type="text"
-                autoComplete="address-level1"
-                maxLength={100}
-                value={values.profile.address.state}
-                onChange={(event) => setProfileAddressField('state', event.target.value)}
-                aria-invalid={addressErrors?.state ? true : undefined}
-              />
-            </Field>
-          </div>
+          <Field
+            label={SETTINGS_COPY.profile.state}
+            htmlFor="settings-address-state"
+            error={addressErrors?.state ?? null}
+            className="col-span-3"
+          >
+            <Input
+              id="settings-address-state"
+              name="state"
+              type="text"
+              autoComplete="address-level1"
+              maxLength={100}
+              value={values.profile.address.state}
+              onChange={(event) => setProfileAddressField('state', event.target.value)}
+              aria-invalid={addressErrors?.state ? true : undefined}
+            />
+          </Field>
 
-          <Field label={SETTINGS_COPY.profile.email} htmlFor="settings-email">
+          <div className="col-span-6 border-t border-hairline/60 mt-2 mb-2" />
+          <Field
+            label={SETTINGS_COPY.profile.email}
+            htmlFor="settings-email"
+            className="col-span-4"
+          >
             <Input
               id="settings-email"
               name="email"
@@ -241,9 +250,11 @@ export function ProfileSettingsSection() {
               aria-readonly="true"
             />
           </Field>
-          <p className="-mt-2 text-sm text-ink-muted">{SETTINGS_COPY.profile.emailHint}</p>
+          <p className="col-span-6 -mt-2 text-sm text-ink-muted">
+            {SETTINGS_COPY.profile.emailHint}
+          </p>
 
-          <div className="flex flex-col gap-2">
+          <div className="col-span-6 flex flex-col gap-2 border-t border-hairline/60 pt-4">
             <Label variant="field">{SETTINGS_COPY.profile.password}</Label>
             <Button
               type="button"

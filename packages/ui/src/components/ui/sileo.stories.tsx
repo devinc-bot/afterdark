@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { toast } from 'sonner'
 import { Button } from './button'
-import { Toaster } from './sonner'
+import { Toaster } from './sileo'
+import { toast } from '../../lib/toast'
 
-function SonnerShowcase() {
+function SileoShowcase() {
   return (
     <div className="flex max-w-md flex-col gap-4">
       <p className="text-sm text-ink-muted">
@@ -42,15 +42,15 @@ function SonnerShowcase() {
 }
 
 const meta = {
-  title: 'UI/Sonner',
-  component: SonnerShowcase,
+  title: 'UI/Sileo',
+  component: SileoShowcase,
   tags: ['autodocs'],
   parameters: {
     layout: 'centered',
     docs: {
       description: {
         component:
-          'Notificaciones toast con Sonner. Montá `<Toaster />` una vez en el layout y usá `toast()` desde cualquier pantalla.',
+          'Notificaciones toast con Sileo. Montá `<Toaster />` una vez en el layout y usá `toast()` o `sileo` desde cualquier pantalla.',
       },
     },
   },
@@ -62,7 +62,7 @@ const meta = {
       </>
     ),
   ],
-} satisfies Meta<typeof SonnerShowcase>
+} satisfies Meta<typeof SileoShowcase>
 
 export default meta
 type Story = StoryObj<typeof meta>

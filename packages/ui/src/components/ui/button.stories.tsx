@@ -9,7 +9,16 @@ const meta = {
   argTypes: {
     variant: {
       control: 'select',
-      options: ['default', 'destructive', 'outline', 'inverse', 'secondary', 'ghost', 'link'],
+      options: [
+        'default',
+        'destructive',
+        'outline',
+        'gradient',
+        'inverse',
+        'secondary',
+        'ghost',
+        'link',
+      ],
     },
     size: {
       control: 'select',
@@ -74,6 +83,13 @@ export const Outline: Story = {
   },
 }
 
+export const Gradient: Story = {
+  args: {
+    variant: 'gradient',
+    children: 'Ver catálogo',
+  },
+}
+
 export const Destructive: Story = {
   args: {
     variant: 'destructive',
@@ -107,6 +123,7 @@ export const AllVariants: Story = {
     <div className="flex flex-wrap items-center gap-3">
       <Button>Default</Button>
       <Button variant="outline">Outline</Button>
+      <Button variant="gradient">Gradient</Button>
       <Button variant="inverse">Inverse</Button>
       <Button variant="secondary">Secondary</Button>
       <Button variant="ghost">Ghost</Button>
