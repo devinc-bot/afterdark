@@ -25,6 +25,23 @@ export {
   DialogTrigger,
   type DialogContentProps,
 } from './components/ui/dialog.tsx'
+export {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuPortal,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
+} from './components/ui/dropdown-menu.tsx'
 export { Field, type FieldProps } from './components/ui/field.tsx'
 export { Input, type InputProps } from './components/ui/input.tsx'
 export {
@@ -69,6 +86,17 @@ export {
   type TabsListProps,
   type TabsTriggerProps,
 } from './components/ui/tabs.tsx'
+export {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+  tableVariants,
+} from './components/ui/table.tsx'
 export { Textarea, textareaVariants, type TextareaProps } from './components/ui/textarea.tsx'
 export {
   Tooltip,
