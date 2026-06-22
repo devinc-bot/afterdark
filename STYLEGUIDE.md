@@ -101,11 +101,11 @@ Use the same values in Zod enums: `z.enum([MODE.DEVELOPMENT, MODE.PRODUCTION, MO
 
 When `cn()` receives state-dependent Tailwind classes (disabled, active, error, etc.), do not use nested ternaries inline. Extract a named function with early returns that returns the variant string.
 
-| Part            | Convention                                      | Example                              |
-| --------------- | ----------------------------------------------- | ------------------------------------ |
-| Function name   | `camelCase` with `get` prefix + `ClassName` suffix | `getSidebarNavItemStateClassName` |
-| Return value    | Tailwind utility string for one visual state    | `'bg-surface-container text-ink'`    |
-| Location        | Co-located helper, `*.utils.ts`, or `lib/`      | `packages/ui/src/lib/sidebar-nav.ts` |
+| Part          | Convention                                         | Example                              |
+| ------------- | -------------------------------------------------- | ------------------------------------ |
+| Function name | `camelCase` with `get` prefix + `ClassName` suffix | `getSidebarNavItemStateClassName`    |
+| Return value  | Tailwind utility string for one visual state       | `'bg-surface-container text-ink'`    |
+| Location      | Co-located helper, `*.utils.ts`, or `lib/`         | `packages/ui/src/lib/sidebar-nav.ts` |
 
 ```ts
 // incorrect
