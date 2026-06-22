@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { Menu, X } from 'lucide-react'
+import { getSidebarNavItemStateClassName } from '../../lib/sidebar-nav.ts'
 import { cn } from '../../lib/utils'
 import { Button } from './button'
 
@@ -16,6 +17,8 @@ export type SidebarNavItem = {
   href?: string
   onClick?: () => void
   isActive?: boolean
+  disabled?: boolean
+  title?: string
 }
 
 export type SidebarNavLinkRenderProps = {
@@ -31,6 +34,7 @@ export type SidebarNavProps = {
   title?: string
   primary: SidebarNavItem[]
   secondary?: SidebarNavItem[]
+  footer?: React.ReactNode
   activeHref?: string
   className?: string
   open?: boolean
@@ -39,18 +43,23 @@ export type SidebarNavProps = {
 }
 
 const navItemClassName =
-  'group relative flex h-full min-h-12 flex-1 items-center gap-3 rounded-none px-3 text-left text-base font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40'
+  'group flex h-full min-h-11 flex-1 items-center gap-3 rounded-md px-3 text-left text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/25 motion-reduce:transition-none'
+
+export function matchesSidebarNavHref(itemHref: string, activeHref: string): boolean {
+  if (itemHref === activeHref) return true
+  return activeHref.startsWith(`${itemHref}/`)
+}
 
 function isSidebarNavItemActive(item: SidebarNavItem, activeHref: string | undefined): boolean {
   if (item.isActive !== undefined) return item.isActive
   if (!activeHref || !item.href) return false
-  return item.href === activeHref
+  return matchesSidebarNavHref(item.href, activeHref)
 }
 
 function SidebarNavBrand({ logo }: { logo: SidebarNavLogo }) {
   if (typeof logo === 'string') {
     return (
-      <span className="font-heading text-xl font-bold uppercase tracking-[0.2em] text-primary">
+      <span className="font-heading text-base font-semibold tracking-[0.04em] text-ink">
         {logo}
       </span>
     )
@@ -78,22 +87,25 @@ function SidebarNavItemLink({
 }) {
   const className = cn(
     navItemClassName,
-    isActive
-      ? 'bg-gradient-to-r from-surface-container-high to-transparent text-ink'
-      : 'text-ink-muted hover:bg-surface-container hover:text-ink'
+    getSidebarNavItemStateClassName({ disabled: item.disabled, isActive })
   )
 
   const content = (
     <>
-      {isActive ? (
-        <span aria-hidden="true" className="absolute inset-y-0 left-0 w-0.5 bg-primary" />
-      ) : null}
-      <span className="flex size-6 shrink-0 items-center justify-center [&_svg]:size-6">
+      <span className="flex size-5 shrink-0 items-center justify-center [&_svg]:size-5">
         {item.icon}
       </span>
       <span className="truncate">{item.label}</span>
     </>
   )
+
+  if (item.disabled) {
+    return (
+      <span className={className} aria-disabled="true" title={item.title ?? item.label}>
+        {content}
+      </span>
+    )
+  }
 
   if (renderLink && item.href) {
     return (
@@ -177,6 +189,7 @@ function SidebarNavPanel({
   title,
   primary,
   secondary,
+  footer,
   activeHref,
   renderLink,
   onNavigate,
@@ -187,6 +200,7 @@ function SidebarNavPanel({
   title?: string
   primary: SidebarNavItem[]
   secondary: SidebarNavItem[]
+  footer?: React.ReactNode
   activeHref?: string
   renderLink?: SidebarNavProps['renderLink']
   onNavigate?: () => void
@@ -195,7 +209,7 @@ function SidebarNavPanel({
 }) {
   return (
     <>
-      <div className="relative px-5 pt-6 pb-6">
+      <div className="relative px-5 pt-5 pb-4">
         {showCloseButton ? (
           <Button
             type="button"
@@ -209,7 +223,7 @@ function SidebarNavPanel({
           </Button>
         ) : null}
         <SidebarNavBrand logo={logo} />
-        {title ? <p className="mt-2 text-base font-medium text-ink-muted">{title}</p> : null}
+        {title ? <p className="mt-1.5 text-sm text-ink-muted">{title}</p> : null}
       </div>
 
       <nav className="flex min-h-0 flex-1 flex-col">
@@ -221,15 +235,18 @@ function SidebarNavPanel({
           onNavigate={onNavigate}
         />
 
-        {secondary.length > 0 ? (
-          <div className="mt-auto pt-6 pb-5">
-            <SidebarNavList
-              items={secondary}
-              activeHref={activeHref}
-              ariaLabel="Navegación secundaria"
-              renderLink={renderLink}
-              onNavigate={onNavigate}
-            />
+        {footer || secondary.length > 0 ? (
+          <div className="mt-auto space-y-4 px-3 pt-6 pb-5">
+            {footer}
+            {secondary.length > 0 ? (
+              <SidebarNavList
+                items={secondary}
+                activeHref={activeHref}
+                ariaLabel="Navegación secundaria"
+                renderLink={renderLink}
+                onNavigate={onNavigate}
+              />
+            ) : null}
           </div>
         ) : null}
       </nav>
@@ -242,6 +259,7 @@ function SidebarNav({
   title,
   primary,
   secondary = [],
+  footer,
   activeHref,
   className,
   open: openProp,
@@ -297,7 +315,7 @@ function SidebarNav({
         <button
           type="button"
           aria-label="Cerrar menú de navegación"
-          className="fixed inset-0 z-40 bg-surface-strong/80 backdrop-blur-sm lg:hidden"
+          className="fixed inset-0 z-40 bg-surface-strong/70 lg:hidden motion-reduce:transition-none"
           onClick={closeMobile}
         />
       ) : null}
@@ -305,7 +323,7 @@ function SidebarNav({
       <aside
         id="sidebar-navigation"
         className={cn(
-          'fixed inset-y-0 left-0 z-50 flex w-64 max-w-[85vw] flex-col border-r border-hairline bg-surface-container-lowest transition-transform duration-300 ease-in-out',
+          'fixed inset-y-0 left-0 z-50 flex w-64 max-w-[85vw] flex-col border-r border-hairline bg-surface-container-lowest transition-transform duration-200 ease-out motion-reduce:transition-none motion-reduce:duration-0',
           'lg:static lg:z-auto lg:max-w-none lg:min-h-screen lg:shrink-0 lg:translate-x-0',
           open ? 'translate-x-0' : '-translate-x-full lg:translate-x-0',
           className
@@ -316,6 +334,7 @@ function SidebarNav({
           title={title}
           primary={primary}
           secondary={secondary}
+          footer={footer}
           activeHref={activeHref}
           renderLink={renderLink}
           onNavigate={closeMobile}

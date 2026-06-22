@@ -173,6 +173,16 @@
   --color-input: #514254;
   --color-ring: #ecb1ff;
 
+  /* ── Sidebar (shadcn) ─────────────────────────────────────────── */
+  --color-sidebar: var(--color-surface-container-lowest);
+  --color-sidebar-foreground: var(--color-ink);
+  --color-sidebar-primary: var(--color-primary);
+  --color-sidebar-primary-foreground: var(--color-primary-foreground);
+  --color-sidebar-accent: var(--color-surface-container);
+  --color-sidebar-accent-foreground: var(--color-ink);
+  --color-sidebar-border: var(--color-hairline);
+  --color-sidebar-ring: var(--color-ring);
+
   /* ── Component tokens ──────────────────────────────────────────── */
   --color-ink: #e5e2e3;
   --color-ink-muted: #d5c0d7;

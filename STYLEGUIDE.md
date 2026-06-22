@@ -97,6 +97,50 @@ Use the same values in Zod enums: `z.enum([MODE.DEVELOPMENT, MODE.PRODUCTION, MO
 
 ---
 
+## Conditional class names
+
+When `cn()` receives state-dependent Tailwind classes (disabled, active, error, etc.), do not use nested ternaries inline. Extract a named function with early returns that returns the variant string.
+
+| Part            | Convention                                      | Example                              |
+| --------------- | ----------------------------------------------- | ------------------------------------ |
+| Function name   | `camelCase` with `get` prefix + `ClassName` suffix | `getSidebarNavItemStateClassName` |
+| Return value    | Tailwind utility string for one visual state    | `'bg-surface-container text-ink'`    |
+| Location        | Co-located helper, `*.utils.ts`, or `lib/`      | `packages/ui/src/lib/sidebar-nav.ts` |
+
+```ts
+// incorrect
+const className = cn(
+  baseClassName,
+  item.disabled
+    ? 'cursor-not-allowed opacity-50'
+    : isActive
+      ? 'bg-surface-container text-ink'
+      : 'text-ink-muted hover:bg-surface-container/70'
+)
+
+// correct
+function getSidebarNavItemStateClassName({
+  disabled,
+  isActive,
+}: {
+  disabled?: boolean
+  isActive: boolean
+}): string {
+  if (disabled) return 'cursor-not-allowed opacity-50'
+  if (isActive) return 'bg-surface-container text-ink'
+  return 'text-ink-muted hover:bg-surface-container/70 hover:text-ink'
+}
+
+const className = cn(
+  baseClassName,
+  getSidebarNavItemStateClassName({ disabled: item.disabled, isActive })
+)
+```
+
+Compose the final class list with `cn(baseClassName, get…ClassName(input))`. Keep base/layout classes separate from state variants.
+
+---
+
 ## Dependency management
 
 - **No `^` or `~`** — all versions are pinned exactly.

@@ -1,6 +1,7 @@
 export { cn } from './lib/utils'
 
 export { Badge, badgeVariants, type BadgeProps } from './components/ui/badge.tsx'
+export { Avatar, AvatarFallback, AvatarImage } from './components/ui/avatar.tsx'
 export { Button, buttonVariants, type ButtonProps } from './components/ui/button.tsx'
 export { Checkbox } from './components/ui/checkbox.tsx'
 export {
@@ -74,6 +75,47 @@ export {
   SelectValue,
   type SelectFieldProps,
 } from './components/ui/select.tsx'
+export { Separator } from './components/ui/separator.tsx'
+export {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetOverlay,
+  SheetPortal,
+  SheetTitle,
+  SheetTrigger,
+} from './components/ui/sheet.tsx'
+export { Skeleton } from './components/ui/skeleton.tsx'
+export {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupAction,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarHeader,
+  SidebarInput,
+  SidebarInset,
+  SidebarMenu,
+  SidebarMenuAction,
+  SidebarMenuBadge,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarMenuSkeleton,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
+  SidebarProvider,
+  SidebarRail,
+  SidebarSeparator,
+  SidebarTrigger,
+  matchesSidebarNavHref,
+  useSidebar,
+} from './components/ui/sidebar.tsx'
 export {
   SidebarNav,
   SidebarNavMenuButton,
@@ -82,7 +124,6 @@ export {
   type SidebarNavLogo,
   type SidebarNavProps,
 } from './components/ui/sidebar-nav.tsx'
-export { Separator } from './components/ui/separator.tsx'
 export { Toaster } from './components/ui/sileo.tsx'
 export {
   toast,

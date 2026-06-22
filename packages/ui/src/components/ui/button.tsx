@@ -5,20 +5,19 @@ import { Loader2 } from 'lucide-react'
 import { cn } from '../../lib/utils'
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center gap-2 whitespace-nowrap font-sans text-[15px] font-medium leading-none transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0',
+  'inline-flex items-center cursor-pointer justify-center gap-2 whitespace-nowrap rounded-xl font-sans text-[15px] font-medium leading-none transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0',
   {
     variants: {
       variant: {
-        default: 'rounded-pill bg-primary text-primary-foreground shadow-sm hover:bg-primary/90',
-        destructive: 'rounded-xl bg-destructive text-white hover:bg-destructive/90',
+        default: 'bg-primary text-primary-foreground shadow-sm hover:bg-primary/90',
+        destructive: 'bg-destructive text-white hover:bg-destructive/90',
         outline:
-          'rounded-pill border border-hairline-strong bg-surface-card text-ink shadow-sm hover:bg-surface-strong',
+          'border border-hairline-strong bg-surface-card text-ink shadow-sm hover:bg-surface-strong',
         gradient:
-          'cn-gradient-border cn-gradient-border--field rounded-lg text-ink shadow-sm transition-[box-shadow] hover:opacity-90 focus-visible:ring-primary/25 disabled:opacity-60 motion-reduce:transition-none',
-        inverse:
-          'rounded-pill border border-white/20 bg-surface-card text-ink shadow-sm hover:bg-white',
-        secondary: 'rounded-xl bg-secondary text-secondary-foreground hover:bg-secondary/80',
-        ghost: 'rounded-xl hover:bg-surface-strong hover:text-ink',
+          'cn-gradient-border cn-gradient-border--field text-ink shadow-sm transition-[box-shadow] hover:opacity-90 focus-visible:ring-primary/25 disabled:opacity-60 motion-reduce:transition-none',
+        inverse: 'border border-white/20 bg-surface-card text-ink shadow-sm hover:bg-white',
+        secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
+        ghost: 'hover:bg-surface-strong hover:text-ink',
         link: 'text-ink underline-offset-4 hover:underline',
       },
       size: {

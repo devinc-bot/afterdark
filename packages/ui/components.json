@@ -11,10 +11,10 @@
     "prefix": ""
   },
   "aliases": {
-    "components": "@afterdark/ui/components",
-    "utils": "@afterdark/ui/lib/utils",
-    "ui": "@afterdark/ui/components/ui",
-    "lib": "@afterdark/ui/lib",
-    "hooks": "@afterdark/ui/hooks"
+    "components": "@/components",
+    "utils": "@/lib/utils",
+    "ui": "@/components/ui",
+    "lib": "@/lib",
+    "hooks": "@/hooks"
   }
 }
