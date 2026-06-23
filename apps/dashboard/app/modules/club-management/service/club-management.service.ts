@@ -8,6 +8,7 @@ const CREATE_CLUB_FALLBACK_ERROR = 'No pudimos registrar el club. Intentá de nu
 const LIST_CLUBS_FALLBACK_ERROR = 'No pudimos cargar los clubes. Intentá de nuevo en unos minutos.'
 const UPDATE_CLUB_FALLBACK_ERROR =
   'No pudimos actualizar el club. Intentá de nuevo en unos minutos.'
+const DELETE_CLUB_FALLBACK_ERROR = 'No pudimos eliminar el club. Intentá de nuevo en unos minutos.'
 
 function clubsApiPath(path: string) {
   return `${API_ROUTES.clubs.prefix}${path}`
@@ -46,5 +47,13 @@ export async function updateClub(documentId: string, data: UpdateClubInput): Pro
     )
   } catch (error) {
     throw toClubServiceError(error, UPDATE_CLUB_FALLBACK_ERROR)
+  }
+}
+
+export async function deleteClub(documentId: string): Promise<void> {
+  try {
+    await api.delete(clubsApiPath(API_ROUTES.clubs.path.delete(documentId)))
+  } catch (error) {
+    throw toClubServiceError(error, DELETE_CLUB_FALLBACK_ERROR)
   }
 }

@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
   HttpStatus,
@@ -45,5 +46,12 @@ export class ClubsController {
     @Body(new ZodValidationPipe(updateClubSchema)) body: UpdateClubInput
   ) {
     return this.clubsService.updateClub(documentId, body)
+  }
+
+  @Delete(':documentId')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @UseGuards(JwtAuthGuard)
+  delete(@Param('documentId', new ZodValidationPipe(uuidSchema)) documentId: string) {
+    return this.clubsService.deleteClub(documentId)
   }
 }

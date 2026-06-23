@@ -1,5 +1,6 @@
 import { useForm } from '@tanstack/react-form'
-import { createClubSchema, type CreateClubInput } from '@afterdark/validators'
+import { CLUB_STATUS } from '@afterdark/types'
+import { createClubSchema, clubStatusSchema, type CreateClubInput } from '@afterdark/validators'
 import {
   Button,
   Dialog,
@@ -11,6 +12,11 @@ import {
   DialogTitle,
   Input,
   Label,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
   Textarea,
   toast,
 } from '@afterdark/ui'
@@ -33,10 +39,16 @@ const EMPTY_CLUB_FORM_VALUES: CreateClubInput = {
   address: '',
   capacity: '',
   description: '',
+  status: CLUB_STATUS.ACTIVE,
   state: '',
   street_number: '',
   city: '',
 }
+
+const CLUB_STATUS_OPTIONS = [
+  { value: CLUB_STATUS.ACTIVE, label: 'Activo' },
+  { value: CLUB_STATUS.INACTIVE, label: 'Inactivo' },
+] as const
 
 const fieldLabelClassName =
   'font-label text-xs font-semibold uppercase tracking-label-xs text-ink-muted'
@@ -239,6 +251,51 @@ function ClubDialogFormInner({
                   onChange={field.handleChange}
                 />
               )}
+            </form.Field>
+
+            <form.Field name="status" validators={{ onSubmit: clubStatusSchema }}>
+              {(field) => {
+                const error = fieldErrorMessage(field.state.meta.errors)
+
+                return (
+                  <div className="flex flex-col gap-2">
+                    <Label htmlFor={field.name} className={fieldLabelClassName}>
+                      Estado del club
+                    </Label>
+                    <Select
+                      value={field.state.value}
+                      onValueChange={(value) =>
+                        field.handleChange(value as CreateClubInput['status'])
+                      }
+                      onOpenChange={(open) => {
+                        if (!open) field.handleBlur()
+                      }}
+                    >
+                      <SelectTrigger
+                        id={field.name}
+                        error={Boolean(error)}
+                        aria-invalid={error ? true : undefined}
+                        aria-describedby={error ? `${field.name}-error` : undefined}
+                        className={error ? fieldErrorClassName : undefined}
+                      >
+                        <SelectValue placeholder="Seleccioná un estado" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {CLUB_STATUS_OPTIONS.map((option) => (
+                          <SelectItem key={option.value} value={option.value}>
+                            {option.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    {error ? (
+                      <p id={`${field.name}-error`} role="alert" className="text-xs text-error">
+                        {error}
+                      </p>
+                    ) : null}
+                  </div>
+                )
+              }}
             </form.Field>
 
             <form.Field

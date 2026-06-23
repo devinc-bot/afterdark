@@ -5,7 +5,7 @@ import { cn } from '../../lib/utils'
 import { Label } from './label'
 
 const selectTriggerClassName =
-  'flex h-11 w-full items-center justify-between rounded-md border bg-surface-container-lowest px-4 py-3 text-base text-ink tracking-[0.16px] focus:outline-none focus:ring-2 disabled:cursor-not-allowed disabled:bg-surface-container-low disabled:text-ink-muted-soft disabled:opacity-60 [&>span]:line-clamp-1'
+  'cn-gradient-border cn-gradient-border--field flex h-9 w-full items-center justify-between rounded-lg px-4 text-sm text-ink transition-[box-shadow] focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/25 disabled:cursor-not-allowed disabled:text-ink-muted-soft disabled:opacity-60 [&>span]:line-clamp-1 motion-reduce:transition-none'
 
 const Select = SelectPrimitive.Root
 const SelectGroup = SelectPrimitive.Group
@@ -21,9 +21,8 @@ const SelectTrigger = React.forwardRef<
     ref={ref}
     className={cn(
       selectTriggerClassName,
-      error
-        ? 'border-destructive focus:border-destructive focus:ring-destructive/40'
-        : 'border-hairline-strong focus:border-ink focus:ring-ink',
+      error &&
+        'border-destructive focus-visible:border-destructive focus-visible:ring-destructive/40 aria-invalid:focus-visible:ring-error/25',
       className
     )}
     {...props}

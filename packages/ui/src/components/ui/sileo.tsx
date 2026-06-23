@@ -5,8 +5,8 @@ const defaultToastOptions = {
   fill: 'var(--color-surface-container-high)',
   roundness: 16,
   styles: {
-    title: 'font-label text-sm font-medium text-ink',
-    description: 'text-sm text-ink-muted',
+    title: 'font-label text-sm font-medium !text-white text-ink',
+    description: 'text-sm text-ink-muted text-white',
   },
 } satisfies Partial<SileoOptions>
 

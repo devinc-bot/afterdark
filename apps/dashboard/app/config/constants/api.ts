@@ -27,6 +27,7 @@ export const API_ROUTES = {
       list: () => '' as const,
       create: () => '/create' as const,
       update: (documentId: string) => `/${documentId}` as const,
+      delete: (documentId: string) => `/${documentId}` as const,
     },
   },
   login: () => `${API_BASE_URL}${API_AUTH_PREFIX}/login` as const,

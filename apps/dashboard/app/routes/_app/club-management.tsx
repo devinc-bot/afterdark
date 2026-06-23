@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { KpiInformation } from '~/modules/club-management/components/kpi-information'
+// import { KpiInformation } from '~/modules/club-management/components/kpi-information'
 import { RegisteredClubs } from '~/modules/club-management/components/registered-clubs'
 
 export const Route = createFileRoute('/_app/club-management')({
@@ -20,7 +20,7 @@ function ClubManagementPage() {
           </p>
         </header>
 
-        <KpiInformation />
+        {/* <KpiInformation /> */}
 
         <RegisteredClubs />
       </div>

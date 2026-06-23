@@ -3,11 +3,11 @@ import { desc, eq } from 'drizzle-orm'
 import {
   addresses,
   clubAddressesLnk,
+  clubAssetsLnk,
   clubs,
   db,
   type AddressSelect,
   type ClubSelect,
-  type Transaction,
 } from '@afterdark/db'
 import type { ClubResponse } from '@afterdark/types'
 import type { CreateClubInput, UpdateClubInput } from '@afterdark/validators'
@@ -46,13 +46,14 @@ export class ClubsService {
   }
 
   async createClub(input: CreateClubInput): Promise<ClubResponse> {
-    const row = await db.transaction(async (tx: Transaction) => {
+    const row = await db.transaction(async (tx) => {
       const [club] = await tx
         .insert(clubs)
         .values({
           name: input.name,
           capacity: input.capacity,
           description: input.description,
+          status: input.status,
         })
         .returning()
 
@@ -96,7 +97,7 @@ export class ClubsService {
       throw new NotFoundException(CLUB_MESSAGE.NOT_FOUND)
     }
 
-    const row = await db.transaction(async (tx: Transaction) => {
+    const row = await db.transaction(async (tx) => {
       const now = new Date()
 
       const [club] = await tx
@@ -105,6 +106,7 @@ export class ClubsService {
           name: input.name,
           capacity: input.capacity,
           description: input.description,
+          status: input.status,
           updatedAt: now,
         })
         .where(eq(clubs.documentId, documentId))
@@ -144,5 +146,41 @@ export class ClubsService {
     })
 
     return toClubResponse(row.club, row.address)
+  }
+
+  async deleteClub(documentId: string): Promise<void> {
+    const [existing] = await db
+      .select({ id: clubs.id })
+      .from(clubs)
+      .where(eq(clubs.documentId, documentId))
+      .limit(1)
+
+    if (!existing) {
+      throw new NotFoundException(CLUB_MESSAGE.NOT_FOUND)
+    }
+
+    await db.transaction(async (tx) => {
+      const [link] = await tx
+        .select({ addressId: clubAddressesLnk.addressId })
+        .from(clubAddressesLnk)
+        .where(eq(clubAddressesLnk.clubId, existing.id))
+        .limit(1)
+
+      await tx.delete(clubAssetsLnk).where(eq(clubAssetsLnk.clubId, existing.id))
+      await tx.delete(clubAddressesLnk).where(eq(clubAddressesLnk.clubId, existing.id))
+
+      const [deletedClub] = await tx
+        .delete(clubs)
+        .where(eq(clubs.id, existing.id))
+        .returning({ id: clubs.id })
+
+      if (!deletedClub) {
+        throw new InternalServerErrorException(CLUB_MESSAGE.DELETE_FAILED)
+      }
+
+      if (link) {
+        await tx.delete(addresses).where(eq(addresses.id, link.addressId))
+      }
+    })
   }
 }

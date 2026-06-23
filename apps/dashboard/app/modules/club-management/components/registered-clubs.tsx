@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { type ClubResponse } from '@afterdark/types'
 import type { CreateClubInput } from '@afterdark/validators'
-import { Button, TooltipProvider } from '@afterdark/ui'
+import { Button, toast, TooltipProvider } from '@afterdark/ui'
 import { Plus } from 'lucide-react'
 import {
   CLUB_FORM_MODE,
@@ -14,6 +14,7 @@ import {
   type RegisteredClub,
 } from '~/modules/club-management/components/registered-club-card'
 import { useClubs } from '~/modules/club-management/queries/use-club-management-queries'
+import { useDeleteClub } from '~/modules/club-management/mutation/use-club-management-mutations'
 
 function clubResponseToRegisteredClub(club: ClubResponse): RegisteredClub {
   return {
@@ -36,6 +37,7 @@ function clubToFormValues(club: RegisteredClub): CreateClubInput {
     address: club.address,
     capacity: club.capacity ?? '',
     description: club.description ?? '',
+    status: club.status,
     state: club.state ?? '',
     street_number: club.street_number ?? '',
     city: club.city ?? '',
@@ -49,6 +51,7 @@ function formatClubCount(count: number): string {
 
 export function RegisteredClubs() {
   const { data, isLoading, isError, error } = useClubs()
+  const deleteClubMutation = useDeleteClub()
   const clubs = data?.map(clubResponseToRegisteredClub) ?? []
 
   const [dialogOpen, setDialogOpen] = useState(false)
@@ -81,9 +84,19 @@ export function RegisteredClubs() {
     }
   }
 
-  const handleRemoveConfirm = async (_club: RegisteredClub) => {
-    setRemoveDialogOpen(false)
-    setClubToRemove(null)
+  const handleRemoveConfirm = async (club: RegisteredClub) => {
+    try {
+      await deleteClubMutation.mutateAsync(club.id)
+      toast.success('Club eliminado correctamente')
+      setRemoveDialogOpen(false)
+      setClubToRemove(null)
+    } catch (removeError) {
+      toast.error(
+        removeError instanceof Error
+          ? removeError.message
+          : 'No pudimos eliminar el club. Intentá de nuevo.'
+      )
+    }
   }
 
   return (
@@ -132,14 +145,6 @@ export function RegisteredClubs() {
             <p className="mx-auto mt-2 max-w-sm text-sm text-ink-muted">
               Registrá el primer club para empezar a gestionar su información y disponibilidad.
             </p>
-            <Button
-              type="button"
-              className="mt-6"
-              iconLeft={<Plus aria-hidden="true" />}
-              onClick={openCreateDialog}
-            >
-              Registrar club
-            </Button>
           </div>
         ) : (
           <div className="overflow-hidden rounded-xl border border-hairline bg-surface-container-low">
@@ -171,6 +176,7 @@ export function RegisteredClubs() {
         open={removeDialogOpen}
         onOpenChange={handleRemoveDialogOpenChange}
         onConfirm={handleRemoveConfirm}
+        isRemoving={deleteClubMutation.isPending}
       />
     </TooltipProvider>
   )
