@@ -22,7 +22,7 @@ const SelectTrigger = React.forwardRef<
     className={cn(
       selectTriggerClassName,
       error &&
-        'border-destructive focus-visible:border-destructive focus-visible:ring-destructive/40 aria-invalid:focus-visible:ring-error/25',
+        'focus-visible:border-error focus-visible:ring-error/40 aria-invalid:focus-visible:ring-error/40',
       className
     )}
     {...props}

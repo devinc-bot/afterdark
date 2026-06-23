@@ -53,8 +53,7 @@ const CLUB_STATUS_OPTIONS = [
 const fieldLabelClassName =
   'font-label text-xs font-semibold uppercase tracking-label-xs text-ink-muted'
 
-const fieldErrorClassName =
-  'border-destructive focus-visible:border-destructive focus-visible:ring-destructive/40'
+const fieldErrorMessageClassName = 'text-xs text-error'
 
 function fieldErrorMessage(errors: ReadonlyArray<unknown>): string | null {
   const [first] = errors
@@ -110,10 +109,9 @@ function ClubFormField({
         onChange={(event) => onChange(sanitize ? sanitize(event.target.value) : event.target.value)}
         aria-invalid={error ? true : undefined}
         aria-describedby={error ? `${id}-error` : undefined}
-        className={error ? fieldErrorClassName : undefined}
       />
       {error ? (
-        <p id={`${id}-error`} role="alert" className="text-xs text-error">
+        <p id={`${id}-error`} role="alert" className={fieldErrorMessageClassName}>
           {error}
         </p>
       ) : null}
@@ -276,7 +274,6 @@ function ClubDialogFormInner({
                         error={Boolean(error)}
                         aria-invalid={error ? true : undefined}
                         aria-describedby={error ? `${field.name}-error` : undefined}
-                        className={error ? fieldErrorClassName : undefined}
                       >
                         <SelectValue placeholder="Seleccioná un estado" />
                       </SelectTrigger>
@@ -289,7 +286,11 @@ function ClubDialogFormInner({
                       </SelectContent>
                     </Select>
                     {error ? (
-                      <p id={`${field.name}-error`} role="alert" className="text-xs text-error">
+                      <p
+                        id={`${field.name}-error`}
+                        role="alert"
+                        className={fieldErrorMessageClassName}
+                      >
                         {error}
                       </p>
                     ) : null}
@@ -318,6 +319,7 @@ function ClubDialogFormInner({
                       onBlur={field.handleBlur}
                       onChange={(event) => field.handleChange(event.target.value)}
                       error={error ?? undefined}
+                      className="text-sm"
                     />
                   </div>
                 )
