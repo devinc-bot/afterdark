@@ -56,7 +56,7 @@ export function Field({
         {withFieldDescribedBy(children, errorId)}
       </div>
       {error ? (
-        <p id={errorId} className="text-sm text-error" role="alert">
+        <p id={errorId} className="text-xs text-error" role="alert">
           {error}
         </p>
       ) : null}

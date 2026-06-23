@@ -3,7 +3,7 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '../../lib/utils'
 
 const textareaVariants = cva(
-  'cn-gradient-border flex min-h-[120px] w-full resize-y rounded-lg px-4 py-3 text-base text-ink placeholder:text-ink-muted-soft transition-[box-shadow] focus-visible:outline-none focus-visible:ring-2 aria-invalid:focus-visible:ring-error/25 disabled:cursor-not-allowed disabled:resize-none motion-reduce:transition-none',
+  'cn-gradient-border flex min-h-[120px] w-full resize-y rounded-lg px-4 py-3 text-base text-ink placeholder:text-ink-muted-soft transition-[box-shadow] focus-visible:outline-none focus-visible:ring-2 aria-invalid:focus-visible:ring-error/40 disabled:cursor-not-allowed disabled:resize-none motion-reduce:transition-none',
   {
     variants: {
       variant: {
@@ -50,7 +50,7 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
     return (
       <div className="flex flex-col gap-1.5">
         {field}
-        <p id={errorId} role="alert" className="text-sm text-error">
+        <p id={errorId} role="alert" className="text-xs text-error">
           {error}
         </p>
       </div>
