@@ -14,7 +14,7 @@ const badgeVariants = cva(
       },
       size: {
         default: 'gap-1.5 px-2.5 py-1 text-sm tracking-label-sm [&_svg]:size-3',
-        sm: 'gap-1 px-2 py-0.5 text-xs tracking-label-xs [&_svg]:size-2.5',
+        sm: 'gap-1 px-2 py-1 text-xs tracking-label-xs font-light [&_svg]:size-2.5',
       },
     },
     defaultVariants: {
