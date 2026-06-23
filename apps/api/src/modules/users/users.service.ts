@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
 import { eq } from 'drizzle-orm'
 import { accounts, addresses, db, userAccountsLnk, userAddressesLnk, users } from '@afterdark/db'
-import type { CurrentUserAddress, CurrentUserResponse } from '@afterdark/types'
+import { type CurrentUserAddress, type CurrentUserResponse } from '@afterdark/types'
 import type { UpdateCurrentUserInput } from '@afterdark/validators'
 import { USER_MESSAGE } from './users.constants'
 
@@ -34,7 +34,6 @@ export class UsersService {
         phone: users.phone,
         birthday: users.birthday,
         nationalId: users.nationalId,
-        taxId: users.taxId,
         email: accounts.email,
         addressLine: addresses.address,
         streetNumber: addresses.streetNumber,
@@ -62,7 +61,6 @@ export class UsersService {
       phone: row.phone,
       birthday: row.birthday,
       nationalId: row.nationalId,
-      taxId: row.taxId,
       address: toCurrentUserAddress(row),
     }
   }
@@ -89,7 +87,6 @@ export class UsersService {
         phone: input.phone,
         birthday: input.birthday || null,
         nationalId: input.nationalId || null,
-        taxId: input.taxId || null,
         updatedAt: new Date(),
       })
       .where(eq(users.documentId, documentId))

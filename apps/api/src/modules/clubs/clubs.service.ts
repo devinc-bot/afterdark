@@ -1,15 +1,17 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common'
+import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common'
 import {
   addresses,
   clubAddressesLnk,
   clubs,
   db,
+  users,
   type AddressSelect,
   type ClubSelect,
   type Transaction,
 } from '@afterdark/db'
 import type { ClubResponse } from '@afterdark/types'
 import type { CreateClubInput } from '@afterdark/validators'
+import { eq } from 'drizzle-orm'
 import { CLUB_MESSAGE } from './clubs.constants'
 
 function toClubResponse(club: ClubSelect, address: AddressSelect): ClubResponse {
@@ -30,7 +32,17 @@ function toClubResponse(club: ClubSelect, address: AddressSelect): ClubResponse 
 
 @Injectable()
 export class ClubsService {
-  async createClub(input: CreateClubInput): Promise<ClubResponse> {
+  async createClub(ownerDocumentId: string, input: CreateClubInput): Promise<ClubResponse> {
+    const [owner] = await db
+      .select({ id: users.id })
+      .from(users)
+      .where(eq(users.documentId, ownerDocumentId))
+      .limit(1)
+
+    if (!owner) {
+      throw new NotFoundException(CLUB_MESSAGE.OWNER_NOT_FOUND)
+    }
+
     const row = await db.transaction(async (tx: Transaction) => {
       const [club] = await tx
         .insert(clubs)
@@ -38,6 +50,7 @@ export class ClubsService {
           name: input.name,
           capacity: input.capacity,
           description: input.description,
+          ownerUserId: owner.id,
         })
         .returning()
 

@@ -8,7 +8,15 @@ import {
 import { JwtService } from '@nestjs/jwt'
 import { compare, hash } from 'bcryptjs'
 import { eq } from 'drizzle-orm'
-import { accounts, db, roles, userAccountsLnk, users, type Transaction } from '@afterdark/db'
+import {
+  accounts,
+  accountRolesLnk,
+  db,
+  roles,
+  userAccountsLnk,
+  users,
+  type Transaction,
+} from '@afterdark/db'
 import { USER_ROLE, type LoginResponse } from '@afterdark/types'
 import type { LoginInput, RegisterInput } from '@afterdark/validators'
 import { AUTH_MESSAGE } from './auth.constants'
@@ -81,6 +89,10 @@ export class AuthService {
       await tx.insert(userAccountsLnk).values({
         userId: user.id,
         accountId: account.id,
+      })
+
+      await tx.insert(accountRolesLnk).values({
+        accountId: account.id,
         roleId: ownerRole.id,
       })
 
@@ -104,7 +116,8 @@ export class AuthService {
       .from(accounts)
       .innerJoin(userAccountsLnk, eq(userAccountsLnk.accountId, accounts.id))
       .innerJoin(users, eq(users.id, userAccountsLnk.userId))
-      .innerJoin(roles, eq(roles.id, userAccountsLnk.roleId))
+      .innerJoin(accountRolesLnk, eq(accountRolesLnk.accountId, accounts.id))
+      .innerJoin(roles, eq(roles.id, accountRolesLnk.roleId))
       .where(eq(accounts.email, email))
       .limit(1)
 
