@@ -20,3 +20,6 @@ export const createClubSchema = z.object({
   city: z.string().min(1, 'La ciudad es requerida'),
 })
 export type CreateClubInput = z.infer<typeof createClubSchema>
+
+export const updateClubSchema = createClubSchema
+export type UpdateClubInput = z.infer<typeof updateClubSchema>

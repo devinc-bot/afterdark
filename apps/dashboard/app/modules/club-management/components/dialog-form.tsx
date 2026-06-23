@@ -14,7 +14,10 @@ import {
   Textarea,
   toast,
 } from '@afterdark/ui'
-import { useCreateClub } from '~/modules/club-management/mutation/use-club-management-mutations'
+import {
+  useCreateClub,
+  useUpdateClub,
+} from '~/modules/club-management/mutation/use-club-management-mutations'
 
 export const CLUB_FORM_MODE = {
   CREATE: 'create',
@@ -134,24 +137,25 @@ type ClubDialogFormProps = {
   mode: ClubFormMode
   open: boolean
   onOpenChange: (open: boolean) => void
+  clubDocumentId?: string
   defaultValues?: Partial<CreateClubInput>
-  onSubmit: (values: CreateClubInput) => void | Promise<void>
   isSubmitting?: boolean
   formKey?: string
 }
 
 function ClubDialogFormInner({
   mode,
+  clubDocumentId,
   defaultValues,
-  onSubmit,
   isSubmitting = false,
   onOpenChange,
 }: Pick<
   ClubDialogFormProps,
-  'mode' | 'defaultValues' | 'onSubmit' | 'isSubmitting' | 'onOpenChange'
+  'mode' | 'clubDocumentId' | 'defaultValues' | 'isSubmitting' | 'onOpenChange'
 >) {
   const isCreate = mode === CLUB_FORM_MODE.CREATE
   const createClubMutation = useCreateClub()
+  const updateClubMutation = useUpdateClub()
 
   const form = useForm({
     defaultValues: { ...EMPTY_CLUB_FORM_VALUES, ...defaultValues },
@@ -171,7 +175,22 @@ function ClubDialogFormInner({
         return
       }
 
-      await onSubmit(value)
+      if (!clubDocumentId) {
+        toast.error('No pudimos identificar el club a actualizar.')
+        return
+      }
+
+      try {
+        await updateClubMutation.mutateAsync({ documentId: clubDocumentId, input: value })
+        toast.success('Club actualizado correctamente')
+        onOpenChange(false)
+      } catch (error) {
+        toast.error(
+          error instanceof Error
+            ? error.message
+            : 'No pudimos actualizar el club. Intentá de nuevo.'
+        )
+      }
     },
   })
 
@@ -321,7 +340,11 @@ function ClubDialogFormInner({
 
       <form.Subscribe selector={(state) => state.isSubmitting}>
         {(isFormSubmitting) => {
-          const pending = isSubmitting || isFormSubmitting || createClubMutation.isPending
+          const pending =
+            isSubmitting ||
+            isFormSubmitting ||
+            createClubMutation.isPending ||
+            updateClubMutation.isPending
 
           return (
             <DialogFooter className="mx-0 mb-0 mt-0 shrink-0 flex-col gap-3 px-6 py-6 sm:flex-row sm:justify-end sm:px-8">
@@ -363,8 +386,8 @@ export function ClubDialogForm({
   mode,
   open,
   onOpenChange,
+  clubDocumentId,
   defaultValues,
-  onSubmit,
   isSubmitting = false,
   formKey = 'create',
 }: ClubDialogFormProps) {
@@ -385,8 +408,8 @@ export function ClubDialogForm({
         <ClubDialogFormInner
           key={formKey}
           mode={mode}
+          clubDocumentId={clubDocumentId}
           defaultValues={defaultValues}
-          onSubmit={onSubmit}
           isSubmitting={isSubmitting}
           onOpenChange={onOpenChange}
         />

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { type ClubResponse } from '@afterdark/types'
 import type { CreateClubInput } from '@afterdark/validators'
 import { Button, TooltipProvider } from '@afterdark/ui'
 import { Plus } from 'lucide-react'
@@ -9,53 +10,25 @@ import {
 } from '~/modules/club-management/components/dialog-form'
 import { ClubRemoveDialog } from '~/modules/club-management/components/dialog-remove'
 import {
-  CLUB_DISPLAY_STATUS,
   RegisteredClubCard,
   type RegisteredClub,
 } from '~/modules/club-management/components/registered-club-card'
+import { useClubs } from '~/modules/club-management/queries/use-club-management-queries'
 
-const REGISTERED_CLUBS_MOCK: RegisteredClub[] = [
-  {
-    id: '1',
-    name: 'CYBER TOKYO',
-    address: 'Shinjuku District, JP',
-    tags: ['VIP', 'ELECTRO'],
-    status: CLUB_DISPLAY_STATUS.LIVE,
-    capacity: '800',
-    city: 'Shinjuku',
-    state: 'Tokyo',
-    street_number: '12',
-    description: 'Ambiente cyberpunk con pista principal y zona VIP elevada.',
-    imageUrl:
-      'https://img.magnific.com/foto-gratis/amigos-tintinean-vasos-bebida-bar-moderno_1150-18971.jpg?semt=ais_hybrid&w=740&q=80',
-  },
-  {
-    id: '2',
-    name: 'VELVET UNDERGROUND',
-    address: 'Madrid Central, ES',
-    tags: ['PRIVATE', 'JAZZ'],
-    status: CLUB_DISPLAY_STATUS.INACTIVE,
-    capacity: '350',
-    city: 'Madrid',
-    state: 'Madrid',
-    street_number: '45',
-    description: 'Club íntimo con jazz en vivo y acceso restringido.',
-    imageUrl:
-      'https://images.unsplash.com/photo-1556035511-3168381ea4d4?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8bmlnaHQlMjBjbHVifGVufDB8fDB8fHww',
-  },
-  {
-    id: '3',
-    name: 'PRISM ROOFTOP',
-    address: 'Berlin North, DE',
-    tags: ['OPEN BAR', 'TECHNO'],
-    status: CLUB_DISPLAY_STATUS.LIVE,
-    capacity: '500',
-    city: 'Berlin',
-    state: 'Berlin',
-    street_number: '8',
-    description: 'Rooftop al aire libre con vista panorámica y techno hasta el amanecer.',
-  },
-]
+function clubResponseToRegisteredClub(club: ClubResponse): RegisteredClub {
+  return {
+    id: club.documentId,
+    name: club.name,
+    address: club.address,
+    tags: [],
+    status: club.status,
+    capacity: club.capacity,
+    description: club.description ?? undefined,
+    state: club.state,
+    street_number: club.streetNumber,
+    city: club.city,
+  }
+}
 
 function clubToFormValues(club: RegisteredClub): CreateClubInput {
   return {
@@ -74,7 +47,10 @@ function formatClubCount(count: number): string {
   return `${count} clubes registrados`
 }
 
-export function RegisteredClubs({ clubs = REGISTERED_CLUBS_MOCK }: { clubs?: RegisteredClub[] }) {
+export function RegisteredClubs() {
+  const { data, isLoading, isError, error } = useClubs()
+  const clubs = data?.map(clubResponseToRegisteredClub) ?? []
+
   const [dialogOpen, setDialogOpen] = useState(false)
   const [removeDialogOpen, setRemoveDialogOpen] = useState(false)
   const [formMode, setFormMode] = useState<ClubFormMode>(CLUB_FORM_MODE.CREATE)
@@ -105,10 +81,6 @@ export function RegisteredClubs({ clubs = REGISTERED_CLUBS_MOCK }: { clubs?: Reg
     }
   }
 
-  const handleSubmit = async (_values: CreateClubInput) => {
-    setDialogOpen(false)
-  }
-
   const handleRemoveConfirm = async (_club: RegisteredClub) => {
     setRemoveDialogOpen(false)
     setClubToRemove(null)
@@ -125,7 +97,9 @@ export function RegisteredClubs({ clubs = REGISTERED_CLUBS_MOCK }: { clubs?: Reg
             >
               Clubes registrados
             </h2>
-            <p className="mt-1 text-sm text-ink-muted">{formatClubCount(clubs.length)}</p>
+            <p className="mt-1 text-sm text-ink-muted">
+              {isLoading ? 'Cargando clubes…' : formatClubCount(clubs.length)}
+            </p>
           </div>
 
           <Button
@@ -139,7 +113,20 @@ export function RegisteredClubs({ clubs = REGISTERED_CLUBS_MOCK }: { clubs?: Reg
           </Button>
         </header>
 
-        {clubs.length === 0 ? (
+        {isLoading ? (
+          <div className="rounded-xl border border-hairline bg-surface-container-low px-6 py-12 text-center">
+            <p className="text-sm text-ink-muted">Cargando clubes…</p>
+          </div>
+        ) : isError ? (
+          <div className="rounded-xl border border-dashed border-error/40 bg-error-container/20 px-6 py-12 text-center">
+            <p className="font-heading text-base font-semibold text-ink">
+              No pudimos cargar los clubes
+            </p>
+            <p className="mx-auto mt-2 max-w-sm text-sm text-ink-muted">
+              {error instanceof Error ? error.message : 'Intentá de nuevo en unos minutos.'}
+            </p>
+          </div>
+        ) : clubs.length === 0 ? (
           <div className="rounded-xl border border-dashed border-hairline bg-surface-container-low px-6 py-12 text-center">
             <p className="font-heading text-base font-semibold text-ink">Todavía no hay clubes</p>
             <p className="mx-auto mt-2 max-w-sm text-sm text-ink-muted">
@@ -175,8 +162,8 @@ export function RegisteredClubs({ clubs = REGISTERED_CLUBS_MOCK }: { clubs?: Reg
         mode={formMode}
         open={dialogOpen}
         onOpenChange={setDialogOpen}
+        clubDocumentId={editingClub?.id}
         defaultValues={editingClub ? clubToFormValues(editingClub) : undefined}
-        onSubmit={handleSubmit}
       />
 
       <ClubRemoveDialog

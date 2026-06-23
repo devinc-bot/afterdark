@@ -24,7 +24,9 @@ export const API_ROUTES = {
   clubs: {
     prefix: API_CLUBS_PREFIX,
     path: {
+      list: () => '' as const,
       create: () => '/create' as const,
+      update: (documentId: string) => `/${documentId}` as const,
     },
   },
   login: () => `${API_BASE_URL}${API_AUTH_PREFIX}/login` as const,
