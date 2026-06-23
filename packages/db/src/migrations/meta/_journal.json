@@ -64,6 +64,13 @@
       "when": 1782253947416,
       "tag": "0008_aspiring_brood",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "6",
+      "when": 1782254463099,
+      "tag": "0009_acoustic_maverick",
+      "breakpoints": true
     }
   ]
 }

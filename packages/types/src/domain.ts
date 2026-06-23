@@ -13,6 +13,8 @@ export const USER_STATUS = {
   PRIVATE: 'private',
 } as const
 
+export type UserStatus = (typeof USER_STATUS)[keyof typeof USER_STATUS]
+
 export const OWNER_STATUS = {
   ACTIVE: 'active',
   INACTIVE: 'inactive',
@@ -21,7 +23,13 @@ export const OWNER_STATUS = {
 
 export type OwnerStatus = (typeof OWNER_STATUS)[keyof typeof OWNER_STATUS]
 
-export type UserStatus = (typeof USER_STATUS)[keyof typeof USER_STATUS]
+export const STAFF_STATUS = {
+  ACTIVE: 'active',
+  INACTIVE: 'inactive',
+  PENDING: 'pending',
+} as const
+
+export type StaffStatus = (typeof STAFF_STATUS)[keyof typeof STAFF_STATUS]
 
 export const ASSET_TYPE = {
   IMG: 'img',
