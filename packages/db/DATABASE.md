@@ -14,7 +14,7 @@ Documentación del esquema de base de datos del monorepo **afterdark**, alineada
 | Paquete | `@afterdark/db` |
 | Schemas | `packages/db/src/schema/` |
 | Migraciones | `packages/db/src/migrations/` |
-| Tablas | 18 |
+| Tablas | 20 |
 
 La API (`apps/api`) importa el cliente y los schemas desde `@afterdark/db`. No hay capa TypeORM ni entidades con decoradores.
 
@@ -27,6 +27,7 @@ Cada tabla incluye las columnas base (`id`, `document_id`, `created_at`, `update
 | Tabla SQL | Export TS | Archivo schema | Tipo |
 | --------- | --------- | -------------- | ---- |
 | `users` | `users` | `user.ts` | Entidad |
+| `owners` | `owners` | `owner.ts` | Entidad |
 | `accounts` | `accounts` | `account.ts` | Entidad |
 | `roles` | `roles` | `role.ts` | Entidad |
 | `addresses` | `addresses` | `address.ts` | Entidad |
@@ -40,6 +41,7 @@ Cada tabla incluye las columnas base (`id`, `document_id`, `created_at`, `update
 | `staff_invitations` | `staffInvitations` | `staff-invitation.ts` | Entidad |
 | `account_role_lnk` | `accountRolesLnk` | `account-role-lnk.ts` | Enlace |
 | `user_accounts_lnk` | `userAccountsLnk` | `user-account-lnk.ts` | Enlace |
+| `owner_account_lnk` | `ownerAccountsLnk` | `owner-account-lnk.ts` | Enlace |
 | `user_addresses_lnk` | `userAddressesLnk` | `user-address-lnk.ts` | Enlace |
 | `user_assets_lnk` | `userAssetsLnk` | `user-asset-lnk.ts` | Enlace |
 | `club_addresses_lnk` | `clubAddressesLnk` | `club-address-lnk.ts` | Enlace |
@@ -87,6 +89,7 @@ Nota: `staff_invitations.role` solo admite `user`, `owner` y `staff` (no `admin`
 | Tabla | Cardinalidad | Descripción |
 | ----- | ------------ | ----------- |
 | `user_accounts_lnk` | N:1 por lado | Usuario ↔ cuenta |
+| `owner_account_lnk` | N:1 por lado | Owner ↔ cuenta |
 | `account_role_lnk` | 1:1 | Cuenta ↔ rol |
 | `user_addresses_lnk` | 1:1 | Usuario ↔ domicilio |
 | `user_assets_lnk` | N:M | Usuario ↔ asset |
@@ -100,7 +103,9 @@ Nota: `staff_invitations.role` solo admite `user`, `owner` y `staff` (no `admin`
 ```mermaid
 erDiagram
   users ||--o{ user_accounts_lnk : has
+  owners ||--o{ owner_account_lnk : has
   accounts ||--o{ user_accounts_lnk : has
+  accounts ||--o{ owner_account_lnk : has
   accounts ||--o| account_role_lnk : has
   roles ||--o{ account_role_lnk : assigns
   users ||--o| user_addresses_lnk : has
@@ -186,6 +191,21 @@ Perfil de persona (sin credenciales).
 | `taxId` | `tax_id` | text | SÍ | — |
 | `status` | `status` | text | NO | `active` |
 
+#### `owners` — `owner.ts`
+
+Perfil de propietario (mismas columnas que `users`, sin credenciales).
+
+| Columna (TS) | SQL | Tipo | Null | Default |
+| ------------- | --- | ---- | ---- | ------- |
+| `name` | `name` | text | NO | — |
+| `lastName` | `last_name` | text | NO | — |
+| `phone` | `phone` | text | NO | — |
+| `avatar` | `avatar` | text | SÍ | — |
+| `birthday` | `birthday` | text | SÍ | — |
+| `nationalId` | `national_id` | text | SÍ | — |
+| `taxId` | `tax_id` | text | SÍ | — |
+| `status` | `status` | text | NO | `active` |
+
 #### `accounts` — `account.ts`
 
 Credenciales de acceso.
@@ -211,6 +231,13 @@ Catálogo de roles.
 | Columna (TS) | SQL | FK → |
 | ------------- | --- | ---- |
 | `userId` | `user_id` | `users.id` |
+| `accountId` | `account_id` | `accounts.id` |
+
+#### `owner_account_lnk` — `owner-account-lnk.ts`
+
+| Columna (TS) | SQL | FK → |
+| ------------- | --- | ---- |
+| `ownerId` | `owner_id` | `owners.id` |
 | `accountId` | `account_id` | `accounts.id` |
 
 #### `account_role_lnk` — `account-role-lnk.ts`
@@ -390,6 +417,7 @@ Historial en `src/migrations/meta/_journal.json`:
 | 0004 | `0004_cloudy_betty_ross.sql` | `staff_invitations.invited_by_user_id` |
 | 0005 | `0005_complex_gorilla_man.sql` | `clubs.owner_user_id` |
 | 0006 | `0006_blushing_kronos.sql` | `account_role_lnk`; rol sale de `user_accounts_lnk` |
+| 0007 | `0007_shallow_famine.sql` | `owners` + `owner_account_lnk` |
 
 ### Comandos (desde `packages/db`)
 

@@ -13,6 +13,14 @@ export const USER_STATUS = {
   PRIVATE: 'private',
 } as const
 
+export const OWNER_STATUS = {
+  ACTIVE: 'active',
+  INACTIVE: 'inactive',
+  PENDING: 'pending',
+} as const
+
+export type OwnerStatus = (typeof OWNER_STATUS)[keyof typeof OWNER_STATUS]
+
 export type UserStatus = (typeof USER_STATUS)[keyof typeof USER_STATUS]
 
 export const ASSET_TYPE = {

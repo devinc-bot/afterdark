@@ -50,6 +50,13 @@
       "when": 1782252948605,
       "tag": "0006_blushing_kronos",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "6",
+      "when": 1782253786443,
+      "tag": "0007_shallow_famine",
+      "breakpoints": true
     }
   ]
 }
