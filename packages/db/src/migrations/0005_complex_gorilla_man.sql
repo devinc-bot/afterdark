@@ -1,0 +1,1 @@
+ALTER TABLE `clubs` ADD `owner_user_id` integer NOT NULL REFERENCES users(id);

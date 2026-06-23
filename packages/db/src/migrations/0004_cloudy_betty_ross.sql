@@ -1,0 +1,1 @@
+ALTER TABLE `staff_invitations` ADD `invited_by_user_id` integer NOT NULL REFERENCES users(id);

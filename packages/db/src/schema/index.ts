@@ -1,6 +1,7 @@
 export * from './user.ts'
 export * from './account.ts'
 export * from './role.ts'
+export * from './account-role-lnk.ts'
 export * from './asset.ts'
 export * from './address.ts'
 export * from './user-asset-lnk.ts'

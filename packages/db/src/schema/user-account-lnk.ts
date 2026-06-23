@@ -1,7 +1,6 @@
 import { integer, sqliteTable } from 'drizzle-orm/sqlite-core'
 import { createBaseColumns } from './base.ts'
 import { accounts } from './account.ts'
-import { roles } from './role.ts'
 import { users } from './user.ts'
 
 export const userAccountsLnk = sqliteTable('user_accounts_lnk', {
@@ -12,9 +11,6 @@ export const userAccountsLnk = sqliteTable('user_accounts_lnk', {
   accountId: integer('account_id')
     .notNull()
     .references(() => accounts.id),
-  roleId: integer('role_id')
-    .notNull()
-    .references(() => roles.id),
 })
 
 export type UserAccountLnkSelect = typeof userAccountsLnk.$inferSelect
