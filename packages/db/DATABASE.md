@@ -332,7 +332,7 @@ Regla de negocio (API): solo un usuario con rol `owner` puede crear invitaciones
 | `role` | `role` | text | NO | `staff` |
 | `acceptedAt` | `accepted_at` | timestamp | SÍ | — |
 
-**Endpoint:** `POST /api/users/invitations`
+**Endpoint:** `POST /api/invitations/staff`
 
 ---
 
