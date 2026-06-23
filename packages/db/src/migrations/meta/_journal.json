@@ -57,6 +57,13 @@
       "when": 1782253786443,
       "tag": "0007_shallow_famine",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "6",
+      "when": 1782253947416,
+      "tag": "0008_aspiring_brood",
+      "breakpoints": true
     }
   ]
 }

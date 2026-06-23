@@ -37,7 +37,6 @@ export interface CurrentUserResponse {
   phone: string
   birthday: string | null
   nationalId: string | null
-  taxId: string | null
   address: CurrentUserAddress | null
 }
 

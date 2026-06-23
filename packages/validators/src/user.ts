@@ -55,7 +55,6 @@ export const updateCurrentUserSchema = z.object({
     'El DNI solo puede contener números (7 a 11 dígitos).',
     /^\d{7,11}$/
   ),
-  taxId: optionalDigitsField('El CUIT/CUIL debe tener 11 dígitos, sin guiones.', /^\d{11}$/),
   address: userAddressSchema,
 })
 
@@ -66,9 +65,53 @@ export const createUserSchema = z.object({
   role: z.enum([USER_ROLE.USER, USER_ROLE.OWNER, USER_ROLE.STAFF]).default(USER_ROLE.STAFF),
 })
 
+export const createStaffUserSchema = z.object({
+  name: z
+    .string()
+    .trim()
+    .min(2, 'Ingresá al menos 2 caracteres para el nombre.')
+    .max(255, 'El nombre admite hasta 255 caracteres.'),
+  email: z.email('Ingresá un email válido.'),
+  password: z.string().min(8, 'La contraseña debe tener al menos 8 caracteres.'),
+  clubId: z.string().min(1, 'Seleccioná un club.'),
+})
+
+export const createStaffInvitationSchema = z.object({
+  email: z.email('Ingresá un email válido.'),
+  clubId: z.string().min(1, 'Seleccioná un club.'),
+  securityWord: z
+    .string()
+    .trim()
+    .refine(
+      (value) => value === '' || value.length >= 4,
+      'La palabra de seguridad debe tener al menos 4 caracteres.'
+    ),
+})
+
+export const verifyStaffInvitationSecurityWordSchema = z.object({
+  securityWord: z.string().min(1, 'Ingresá la palabra de seguridad.'),
+})
+
+export const acceptStaffInvitationSchema = z
+  .object({
+    securityWord: z.string().trim(),
+    password: z.string().min(8, 'La contraseña debe tener al menos 8 caracteres.'),
+    confirmPassword: z.string().min(8, 'Confirmá la contraseña.'),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: 'Las contraseñas no coinciden.',
+    path: ['confirmPassword'],
+  })
+
 export const updateUserSchema = createUserSchema.partial().omit({ password: true })
 
 export type CreateUserInput = z.infer<typeof createUserSchema>
+export type CreateStaffUserInput = z.infer<typeof createStaffUserSchema>
+export type CreateStaffInvitationInput = z.infer<typeof createStaffInvitationSchema>
+export type VerifyStaffInvitationSecurityWordInput = z.infer<
+  typeof verifyStaffInvitationSecurityWordSchema
+>
+export type AcceptStaffInvitationInput = z.infer<typeof acceptStaffInvitationSchema>
 export type UpdateUserInput = z.infer<typeof updateUserSchema>
 export type UpdateCurrentUserInput = z.infer<typeof updateCurrentUserSchema>
 export type UserAddressInput = z.infer<typeof userAddressSchema>

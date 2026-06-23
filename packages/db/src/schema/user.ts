@@ -10,7 +10,6 @@ export const users = sqliteTable('users', {
   avatar: text('avatar'),
   birthday: text('birthday'),
   nationalId: text('national_id'),
-  taxId: text('tax_id'),
   status: text('status', {
     enum: [USER_STATUS.ACTIVE, USER_STATUS.INACTIVE, USER_STATUS.PRIVATE],
   })

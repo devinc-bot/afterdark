@@ -188,7 +188,6 @@ Perfil de persona (sin credenciales).
 | `avatar` | `avatar` | text | SÍ | — |
 | `birthday` | `birthday` | text | SÍ | — |
 | `nationalId` | `national_id` | text | SÍ | — |
-| `taxId` | `tax_id` | text | SÍ | — |
 | `status` | `status` | text | NO | `active` |
 
 #### `owners` — `owner.ts`
@@ -418,6 +417,7 @@ Historial en `src/migrations/meta/_journal.json`:
 | 0005 | `0005_complex_gorilla_man.sql` | `clubs.owner_user_id` |
 | 0006 | `0006_blushing_kronos.sql` | `account_role_lnk`; rol sale de `user_accounts_lnk` |
 | 0007 | `0007_shallow_famine.sql` | `owners` + `owner_account_lnk` |
+| 0008 | `0008_aspiring_brood.sql` | `users`: −`tax_id` |
 
 ### Comandos (desde `packages/db`)
 
