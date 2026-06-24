@@ -93,9 +93,9 @@ function StatusBadge({ status }: { status: DemoUser['status'] }) {
       variant="outline"
       className={
         status === 'active'
-          ? 'border-transparent bg-surface-strong text-[#4ade80]'
+          ? '[--gradient-border-fill:var(--color-surface-strong)] text-[#4ade80]'
           : status === 'banned'
-            ? 'border-transparent bg-surface-strong text-[#fb923c]'
+            ? '[--gradient-border-fill:var(--color-surface-strong)] text-[#fb923c]'
             : undefined
       }
     >

@@ -3,14 +3,14 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '../../lib/utils'
 
 const badgeVariants = cva(
-  'inline-flex items-center rounded-pill font-semibold uppercase transition-colors focus:outline-none focus:ring-2 focus:ring-ink [&_svg]:pointer-events-none [&_svg]:shrink-0',
+  'cn-gradient-border cn-gradient-border--badge inline-flex items-center rounded-pill font-semibold uppercase transition-[box-shadow] focus:outline-none focus:ring-2 focus:ring-ink [&_svg]:pointer-events-none [&_svg]:shrink-0 motion-reduce:transition-none',
   {
     variants: {
       variant: {
-        default: 'border-transparent bg-surface-strong text-ink',
-        secondary: 'border-transparent bg-secondary text-on-secondary',
-        destructive: 'border-transparent bg-destructive text-white',
-        outline: 'border border-hairline-strong bg-surface-card text-ink',
+        default: 'cn-gradient-border--badge-default text-ink',
+        secondary: 'cn-gradient-border--badge-secondary text-on-secondary',
+        destructive: 'cn-gradient-border--badge-destructive text-white',
+        outline: 'cn-gradient-border--card text-ink',
       },
       size: {
         default: 'gap-1.5 px-2.5 py-1 text-sm tracking-label-sm [&_svg]:size-3',

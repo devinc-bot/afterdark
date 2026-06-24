@@ -6,6 +6,7 @@ export { Button, buttonVariants, type ButtonProps } from './components/ui/button
 export { Checkbox } from './components/ui/checkbox.tsx'
 export {
   Card,
+  cardVariants,
   CardContent,
   CardDescription,
   CardFooter,

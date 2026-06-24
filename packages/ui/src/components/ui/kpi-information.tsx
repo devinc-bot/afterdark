@@ -1,22 +1,20 @@
 import * as React from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '../../lib/utils'
+import { Card } from './card'
 
-const kpiInformationVariants = cva(
-  'rounded-xl border border-hairline bg-surface-container-low p-6 text-ink',
-  {
-    variants: {
-      variant: {
-        default: '',
-        primary: '',
-        warning: '',
-      },
+const kpiInformationVariants = cva('', {
+  variants: {
+    variant: {
+      default: '',
+      primary: '',
+      warning: '',
     },
-    defaultVariants: {
-      variant: 'default',
-    },
-  }
-)
+  },
+  defaultVariants: {
+    variant: 'default',
+  },
+})
 
 const labelVariants = cva('text-base leading-snug', {
   variants: {
@@ -71,7 +69,12 @@ export interface KpiInformationProps
 const KpiInformation = React.forwardRef<HTMLDivElement, KpiInformationProps>(
   ({ className, variant, label, value, subtext, icon, ...props }, ref) => {
     return (
-      <div ref={ref} className={cn(kpiInformationVariants({ variant }), className)} {...props}>
+      <Card
+        ref={ref}
+        variant="gradient"
+        className={cn('p-6', kpiInformationVariants({ variant }), className)}
+        {...props}
+      >
         <div className="flex items-start justify-between gap-4">
           <div className="flex min-w-0 flex-col gap-2">
             <p className={cn(labelVariants({ variant }))}>{label}</p>
@@ -84,7 +87,7 @@ const KpiInformation = React.forwardRef<HTMLDivElement, KpiInformationProps>(
           </div>
           {icon ? <div className={cn(iconContainerVariants({ variant }))}>{icon}</div> : null}
         </div>
-      </div>
+      </Card>
     )
   }
 )

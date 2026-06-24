@@ -223,7 +223,7 @@
 @layer components {
   .cn-gradient-border {
     --gradient-border-fill: var(--color-surface-container-high);
-    --gradient-border-width: 2px;
+    --gradient-border-width: 1px;
     border: var(--gradient-border-width) solid transparent;
     background:
       linear-gradient(var(--gradient-border-fill), var(--gradient-border-fill)) padding-box,
@@ -233,6 +233,22 @@
           var(--color-inverse-primary) 10%,
           var(--color-inverse-primary) 90%,
           var(--color-primary) 100%
+        )
+        border-box;
+  }
+
+  .cn-gradient-border-from-primary-to-background {
+    --gradient-border-fill: var(--color-surface-container-high);
+    --gradient-border-width: 1px;
+    border: var(--gradient-border-width) solid transparent;
+    background:
+      linear-gradient(var(--gradient-border-fill), var(--gradient-border-fill)) padding-box,
+      linear-gradient(
+          135deg,
+          var(--color-primary) 0%,
+          var(--gradient-border-fill) 20%,
+          var(--gradient-border-fill) 90%,
+          var(--gradient-border-fill) 100%
         )
         border-box;
   }
@@ -255,6 +271,22 @@
   .cn-gradient-border--field-secondary {
     --gradient-border-fill: var(--color-surface-container-lowest);
     --gradient-border-width: 1px;
+  }
+
+  .cn-gradient-border--badge {
+    --gradient-border-width: 1px;
+  }
+
+  .cn-gradient-border--badge-default {
+    --gradient-border-fill: var(--color-surface-strong);
+  }
+
+  .cn-gradient-border--badge-secondary {
+    --gradient-border-fill: var(--color-secondary);
+  }
+
+  .cn-gradient-border--badge-destructive {
+    --gradient-border-fill: var(--color-destructive);
   }
 }
 
