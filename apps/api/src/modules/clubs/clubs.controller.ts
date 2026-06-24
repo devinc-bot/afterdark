@@ -21,6 +21,7 @@ import {
 } from '@afterdark/validators'
 import { CurrentUser } from '../../common/decorators/current-user.decorator'
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard'
+import { OwnerRoleGuard } from '../../common/guards/owner-role.guard'
 import { ZodValidationPipe } from '../../common/pipes/zod-validation.pipe'
 import { ClubsService } from './clubs.service'
 
@@ -28,10 +29,10 @@ import { ClubsService } from './clubs.service'
 export class ClubsController {
   constructor(@Inject(ClubsService) private readonly clubsService: ClubsService) {}
 
-  @Get()
-  @UseGuards(JwtAuthGuard)
-  list() {
-    return this.clubsService.listClubs()
+  @Get('my-clubs')
+  @UseGuards(JwtAuthGuard, OwnerRoleGuard)
+  listMyClubs(@CurrentUser() user: JwtPayload) {
+    return this.clubsService.listMyClubs(user.sub)
   }
 
   @Post('create')

@@ -3,7 +3,7 @@ import {
   createClubWithAddress,
   deleteClubById,
   findClubIdByDocumentId,
-  findClubsWithAddresses,
+  findClubsWithAddressesByOwnerDocumentId,
   findOwnerIdByDocumentId,
   updateClubWithAddress,
   type AddressSelect,
@@ -49,8 +49,8 @@ function mapClubWithAddress({ club, address }: ClubWithAddress): ClubResponse {
 
 @Injectable()
 export class ClubsService {
-  async listClubs(): Promise<ClubResponse[]> {
-    const rows = await findClubsWithAddresses()
+  async listMyClubs(ownerDocumentId: string): Promise<ClubResponse[]> {
+    const rows = await findClubsWithAddressesByOwnerDocumentId(ownerDocumentId)
     return rows.map(mapClubWithAddress)
   }
 

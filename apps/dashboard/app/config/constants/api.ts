@@ -33,7 +33,7 @@ export const API_ROUTES = {
   clubs: {
     prefix: API_CLUBS_PREFIX,
     path: {
-      list: () => '' as const,
+      list: () => '/my-clubs' as const,
       create: () => '/create' as const,
       update: (documentId: string) => `/${documentId}` as const,
       delete: (documentId: string) => `/${documentId}` as const,

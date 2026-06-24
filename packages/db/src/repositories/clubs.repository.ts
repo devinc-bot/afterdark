@@ -4,6 +4,7 @@ import { addresses } from '../schema/address.ts'
 import { clubAddressesLnk } from '../schema/club-address-lnk.ts'
 import { clubAssetsLnk } from '../schema/club-asset-lnk.ts'
 import { clubs, type ClubSelect } from '../schema/club.ts'
+import { owners } from '../schema/owner.ts'
 import type { AddressSelect } from '../schema/address.ts'
 
 export type ClubWithAddress = {
@@ -34,6 +35,22 @@ export async function findClubsWithAddresses(): Promise<ClubWithAddress[]> {
     .from(clubs)
     .innerJoin(clubAddressesLnk, eq(clubAddressesLnk.clubId, clubs.id))
     .innerJoin(addresses, eq(addresses.id, clubAddressesLnk.addressId))
+    .orderBy(desc(clubs.createdAt))
+}
+
+export async function findClubsWithAddressesByOwnerDocumentId(
+  ownerDocumentId: string
+): Promise<ClubWithAddress[]> {
+  return db
+    .select({
+      club: clubs,
+      address: addresses,
+    })
+    .from(clubs)
+    .innerJoin(owners, eq(owners.id, clubs.ownerId))
+    .innerJoin(clubAddressesLnk, eq(clubAddressesLnk.clubId, clubs.id))
+    .innerJoin(addresses, eq(addresses.id, clubAddressesLnk.addressId))
+    .where(eq(owners.documentId, ownerDocumentId))
     .orderBy(desc(clubs.createdAt))
 }
 
