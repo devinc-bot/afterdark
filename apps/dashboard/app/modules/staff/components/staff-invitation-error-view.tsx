@@ -1,5 +1,5 @@
 import { Link } from '@tanstack/react-router'
-import { Button } from '@afterdark/ui'
+import { Button, Card } from '@afterdark/ui'
 import { DASHBOARD_ROUTES } from '~/modules/common/constants/routes'
 import { STAFF_COPY } from '~/modules/staff/constants/staff.copy'
 
@@ -23,12 +23,14 @@ export function StaffInvitationErrorView({ title, description }: StaffInvitation
       </header>
 
       <main className="grid flex-1 place-items-center px-6 py-12">
-        <div className="w-full max-w-md rounded-xl border border-hairline bg-surface-container-low p-6 text-center sm:p-8">
-          <h1 className="font-heading text-xl font-semibold text-ink">{title}</h1>
-          <p className="mt-3 text-sm text-ink-muted">{description}</p>
-          <Button asChild className="mt-6">
-            <Link to={DASHBOARD_ROUTES.login()}>{copy.goToLogin}</Link>
-          </Button>
+        <div className="motion-reduce:animate-none animate-fade-up w-full max-w-md">
+          <Card variant="gradient" className="p-6 text-center sm:p-8">
+            <h1 className="font-heading text-xl font-semibold text-ink">{title}</h1>
+            <p className="mt-3 text-sm text-ink-muted">{description}</p>
+            <Button asChild className="mt-6">
+              <Link to={DASHBOARD_ROUTES.login()}>{copy.goToLogin}</Link>
+            </Button>
+          </Card>
         </div>
       </main>
     </div>

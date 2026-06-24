@@ -1,5 +1,14 @@
 import { CLUB_STATUS, type ClubStatus } from '@afterdark/types'
-import { Badge, Button, cn, NotImage, Tooltip, TooltipContent, TooltipTrigger } from '@afterdark/ui'
+import {
+  Badge,
+  Button,
+  Card,
+  cn,
+  NotImage,
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@afterdark/ui'
 import { MapPin, Pencil, Trash2, Users } from 'lucide-react'
 
 export type RegisteredClub = {
@@ -38,7 +47,7 @@ function ClubStatusBadge({ status }: { status: ClubStatus }) {
       size="sm"
       className={cn(
         statusBadgeClassName,
-        'gap-2 border-error/50 bg-error-container/30 text-error w-fit'
+        'gap-2 [--gradient-border-fill:color-mix(in_oklab,var(--color-error-container)_30%,transparent)] text-error w-fit'
       )}
       icon={<span className="size-1.5 rounded-full bg-error" aria-hidden="true" />}
     >
@@ -56,8 +65,8 @@ export function RegisteredClubCard({
   onDelete?: (club: RegisteredClub) => void
 }) {
   return (
-    <li className="group transition-colors hover:bg-surface-container">
-      <div className="flex flex-col gap-4 p-4 sm:flex-row sm:items-center sm:gap-5 sm:p-5">
+    <Card as="li" variant="gradient" className="p-4 sm:p-5">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-5">
         <div className="flex min-w-0 flex-1 items-start gap-4">
           {club.imageUrl ? (
             <img
@@ -137,6 +146,6 @@ export function RegisteredClubCard({
           </Tooltip>
         </div>
       </div>
-    </li>
+    </Card>
   )
 }

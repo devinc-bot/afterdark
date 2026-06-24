@@ -2,10 +2,8 @@ import { useForm } from '@tanstack/react-form'
 import { Lock, Mail, User } from 'lucide-react'
 import { z } from 'zod'
 import { registerOwnerSchema } from '@afterdark/validators'
-import { Button } from '@afterdark/ui'
+import { Button, Field, fieldErrorMessage } from '@afterdark/ui'
 import { useRegister } from '../mutations/use-auth-mutations'
-import { fieldErrorMessage } from '../utils/form-field.utils'
-import { Field } from '@afterdark/ui'
 import { AuthInput } from './auth-input'
 
 const registerFormSchema = registerOwnerSchema

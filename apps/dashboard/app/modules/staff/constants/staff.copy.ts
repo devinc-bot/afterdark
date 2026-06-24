@@ -15,6 +15,9 @@ export const STAFF_COPY = {
     emailPlaceholder: 'juan@afterdark.com',
     club: 'Club asignado',
     clubPlaceholder: 'Seleccioná un club…',
+    clubLoading: 'Cargando clubes…',
+    clubEmpty: 'No tenés clubes registrados',
+    clubsLoadError: 'No pudimos cargar tus clubes. Intentá de nuevo.',
     securityWord: 'Palabra de seguridad (opcional)',
     securityWordPlaceholder: 'Ej. afterdark-2026',
     securityWordHint:

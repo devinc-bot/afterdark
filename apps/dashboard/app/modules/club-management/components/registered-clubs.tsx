@@ -146,18 +146,16 @@ export function RegisteredClubs() {
             </p>
           </div>
         ) : (
-          <div className="overflow-hidden rounded-xl border border-hairline bg-surface-container-low">
-            <ul className="divide-y divide-hairline">
-              {clubs.map((club) => (
-                <RegisteredClubCard
-                  key={club.id}
-                  club={club}
-                  onEdit={openEditDialog}
-                  onDelete={openRemoveDialog}
-                />
-              ))}
-            </ul>
-          </div>
+          <ul className="flex flex-col gap-3">
+            {clubs.map((club) => (
+              <RegisteredClubCard
+                key={club.id}
+                club={club}
+                onEdit={openEditDialog}
+                onDelete={openRemoveDialog}
+              />
+            ))}
+          </ul>
         )}
       </section>
 

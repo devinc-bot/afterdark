@@ -4,6 +4,7 @@ import {
   AvatarFallback,
   Badge,
   Button,
+  Card,
   cn,
   Switch,
   Table,
@@ -256,7 +257,7 @@ export function StaffUserRecords({ records, onStatusChange }: StaffUserRecordsPr
             ) : null}
 
             {visibleRecords.length > 0 ? (
-              <div className="overflow-hidden rounded-xl bg-surface-container-low">
+              <Card variant="gradient">
                 <Table variant="compact">
                   <TableHeader>
                     <TableRow>
@@ -279,7 +280,7 @@ export function StaffUserRecords({ records, onStatusChange }: StaffUserRecordsPr
                     ))}
                   </TableBody>
                 </Table>
-              </div>
+              </Card>
             ) : null}
           </>
         )}
