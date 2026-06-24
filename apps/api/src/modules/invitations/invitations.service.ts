@@ -5,19 +5,13 @@ import {
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common'
-import { eq } from 'drizzle-orm'
 import {
-  accounts,
-  accountRolesLnk,
-  clubs,
-  db,
-  ownerAccountsLnk,
-  owners,
-  roles,
-  staffInvitations,
-  type ClubSelect,
-  type StaffInvitationSelect,
+  accountExistsByEmail,
+  createStaffInvitation as insertStaffInvitation,
+  findClubByDocumentId,
+  findInviterOwnerWithRole,
 } from '@afterdark/db'
+import type { ClubSelect, StaffInvitationSelect } from '@afterdark/db'
 import {
   STAFF_INVITATION_STATUS,
   USER_ROLE,
@@ -59,18 +53,7 @@ export class InvitationsService {
     inviterDocumentId: string,
     input: CreateStaffInvitationInput
   ): Promise<CreateStaffInvitationResponse> {
-    const [inviter] = await db
-      .select({
-        id: owners.id,
-        documentId: owners.documentId,
-        role: roles.name,
-      })
-      .from(owners)
-      .innerJoin(ownerAccountsLnk, eq(ownerAccountsLnk.ownerId, owners.id))
-      .innerJoin(accountRolesLnk, eq(accountRolesLnk.accountId, ownerAccountsLnk.accountId))
-      .innerJoin(roles, eq(roles.id, accountRolesLnk.roleId))
-      .where(eq(owners.documentId, inviterDocumentId))
-      .limit(1)
+    const inviter = await findInviterOwnerWithRole(inviterDocumentId)
 
     if (!inviter) {
       throw new NotFoundException(INVITATION_MESSAGE.INVITER_NOT_FOUND)
@@ -80,17 +63,11 @@ export class InvitationsService {
       throw new ForbiddenException(INVITATION_MESSAGE.FORBIDDEN)
     }
 
-    const [existingAccount] = await db
-      .select({ id: accounts.id })
-      .from(accounts)
-      .where(eq(accounts.email, input.email))
-      .limit(1)
-
-    if (existingAccount) {
+    if (await accountExistsByEmail(input.email)) {
       throw new ConflictException(INVITATION_MESSAGE.EMAIL_ALREADY_REGISTERED)
     }
 
-    const [club] = await db.select().from(clubs).where(eq(clubs.documentId, input.clubId)).limit(1)
+    const club = await findClubByDocumentId(input.clubId)
 
     if (!club) {
       throw new NotFoundException(INVITATION_MESSAGE.CLUB_NOT_FOUND)
@@ -102,9 +79,8 @@ export class InvitationsService {
       securityWord: input.securityWord,
     })
 
-    const [invitation] = await db
-      .insert(staffInvitations)
-      .values({
+    try {
+      const invitation = await insertStaffInvitation({
         email: input.email,
         clubId: club.id,
         invitedByOwnerId: inviter.id,
@@ -115,12 +91,10 @@ export class InvitationsService {
         status: STAFF_INVITATION_STATUS.PENDING,
         role: USER_ROLE.STAFF,
       })
-      .returning()
 
-    if (!invitation) {
+      return toStaffInvitationResponse(invitation, club, inviter.documentId)
+    } catch {
       throw new InternalServerErrorException(INVITATION_MESSAGE.CREATE_FAILED)
     }
-
-    return toStaffInvitationResponse(invitation, club, inviter.documentId)
   }
 }

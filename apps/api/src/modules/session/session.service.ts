@@ -1,25 +1,12 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
-import { eq } from 'drizzle-orm'
 import {
-  accounts,
-  db,
-  ownerAccountsLnk,
-  owners,
-  staff,
-  staffAccountsLnk,
-  userAccountsLnk,
-  users,
+  findAccountEmailByEmail,
+  findOwnerProfileByDocumentId,
+  findStaffProfileByDocumentId,
+  findUserProfileByDocumentId,
 } from '@afterdark/db'
 import { USER_ROLE, type JwtPayload, type SessionResponse } from '@afterdark/types'
 import { SESSION_MESSAGE } from './session.constants'
-
-type ProfileRow = {
-  documentId: string
-  name: string
-  lastName: string
-  avatar: string | null
-  email: string
-}
 
 @Injectable()
 export class SessionService {
@@ -39,17 +26,17 @@ export class SessionService {
     }
   }
 
-  private findProfileByRole(payload: JwtPayload): Promise<ProfileRow | null> {
+  private findProfileByRole(payload: JwtPayload) {
     if (payload.role === USER_ROLE.OWNER) {
-      return this.findOwnerProfile(payload.sub)
+      return findOwnerProfileByDocumentId(payload.sub)
     }
 
     if (payload.role === USER_ROLE.STAFF) {
-      return this.findStaffProfile(payload.sub)
+      return findStaffProfileByDocumentId(payload.sub)
     }
 
     if (payload.role === USER_ROLE.USER) {
-      return this.findUserProfile(payload.sub)
+      return findUserProfileByDocumentId(payload.sub)
     }
 
     if (payload.role === USER_ROLE.ADMIN) {
@@ -59,71 +46,10 @@ export class SessionService {
     return Promise.resolve(null)
   }
 
-  private async findOwnerProfile(documentId: string): Promise<ProfileRow | null> {
-    const [row] = await db
-      .select({
-        documentId: owners.documentId,
-        name: owners.name,
-        lastName: owners.lastName,
-        avatar: owners.avatar,
-        email: accounts.email,
-      })
-      .from(owners)
-      .innerJoin(ownerAccountsLnk, eq(ownerAccountsLnk.ownerId, owners.id))
-      .innerJoin(accounts, eq(accounts.id, ownerAccountsLnk.accountId))
-      .where(eq(owners.documentId, documentId))
-      .limit(1)
+  private async findAdminProfile(payload: JwtPayload) {
+    const email = await findAccountEmailByEmail(payload.email)
 
-    return row ?? null
-  }
-
-  private async findStaffProfile(documentId: string): Promise<ProfileRow | null> {
-    const [row] = await db
-      .select({
-        documentId: staff.documentId,
-        name: staff.name,
-        lastName: staff.lastName,
-        avatar: staff.avatar,
-        email: accounts.email,
-      })
-      .from(staff)
-      .innerJoin(staffAccountsLnk, eq(staffAccountsLnk.staffId, staff.id))
-      .innerJoin(accounts, eq(accounts.id, staffAccountsLnk.accountId))
-      .where(eq(staff.documentId, documentId))
-      .limit(1)
-
-    return row ?? null
-  }
-
-  private async findUserProfile(documentId: string): Promise<ProfileRow | null> {
-    const [row] = await db
-      .select({
-        documentId: users.documentId,
-        name: users.name,
-        lastName: users.lastName,
-        avatar: users.avatar,
-        email: accounts.email,
-      })
-      .from(users)
-      .innerJoin(userAccountsLnk, eq(userAccountsLnk.userId, users.id))
-      .innerJoin(accounts, eq(accounts.id, userAccountsLnk.accountId))
-      .where(eq(users.documentId, documentId))
-      .limit(1)
-
-    return row ?? null
-  }
-
-  private async findAdminProfile(payload: JwtPayload): Promise<ProfileRow | null> {
-    const [row] = await db
-      .select({
-        documentId: accounts.documentId,
-        email: accounts.email,
-      })
-      .from(accounts)
-      .where(eq(accounts.email, payload.email))
-      .limit(1)
-
-    if (!row) {
+    if (!email) {
       return null
     }
 
@@ -132,7 +58,7 @@ export class SessionService {
       name: '',
       lastName: '',
       avatar: null,
-      email: row.email,
+      email,
     }
   }
 }
