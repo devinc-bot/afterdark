@@ -20,8 +20,6 @@ function ClubManagementPage() {
           </p>
         </header>
 
-        {/* <KpiInformation /> */}
-
         <RegisteredClubs />
       </div>
     </main>

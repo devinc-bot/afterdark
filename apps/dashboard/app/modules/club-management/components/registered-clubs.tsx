@@ -117,7 +117,6 @@ export function RegisteredClubs() {
 
           <Button
             type="button"
-            variant="outline"
             className="w-full shrink-0 sm:w-auto"
             iconLeft={<Plus aria-hidden="true" />}
             onClick={openCreateDialog}
