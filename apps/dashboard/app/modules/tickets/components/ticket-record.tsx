@@ -1,7 +1,8 @@
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import {
   Badge,
   Button,
+  Card,
   cn,
   DropdownMenu,
   DropdownMenuContent,
@@ -13,13 +14,12 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-  Tabs,
-  TabsList,
-  TabsTrigger,
 } from '@afterdark/ui'
 import { TICKET_STATUS, type TicketStatus } from '@afterdark/types'
 import { EllipsisVertical, Eye, Pencil, Trash2 } from 'lucide-react'
 import { TicketViewDialog } from '~/modules/tickets/components/dialog-view-ticket'
+import { TICKETS_COPY } from '~/modules/tickets/constants/tickets.copy'
+import { TICKET_TAB, type TicketTab } from '~/modules/tickets/constants/tickets-tabs.constants'
 
 const ticketActionIconClassName = '!size-[20px] shrink-0'
 const ticketActionItemClassName = 'gap-3 py-2.5 text-base'
@@ -48,7 +48,7 @@ export type TicketRecordItem = {
   status: TicketStatus
 }
 
-const TICKET_RECORDS_MOCK: TicketRecordItem[] = [
+export const TICKET_RECORDS_MOCK: TicketRecordItem[] = [
   {
     id: '1',
     clubName: 'Neon Vault',
@@ -114,13 +114,6 @@ const TICKET_RECORDS_MOCK: TicketRecordItem[] = [
   },
 ]
 
-const INVENTORY_TAB = {
-  ACTIVE: 'active',
-  ARCHIVED: 'archived',
-} as const
-
-type InventoryTab = (typeof INVENTORY_TAB)[keyof typeof INVENTORY_TAB]
-
 function formatCurrency(value: number): string {
   return new Intl.NumberFormat('es-AR', {
     style: 'currency',
@@ -167,8 +160,10 @@ function TicketTypeBadge({
       variant="outline"
       size="sm"
       className={cn(
-        tone === 'primary' && 'border-primary/40 bg-primary/10 text-primary',
-        tone === 'tertiary' && 'border-tertiary/40 bg-tertiary/10 text-tertiary'
+        tone === 'primary' &&
+          '[--gradient-border-fill:color-mix(in_oklab,var(--color-primary)_10%,transparent)] text-primary',
+        tone === 'tertiary' &&
+          '[--gradient-border-fill:color-mix(in_oklab,var(--color-tertiary)_10%,transparent)] text-tertiary'
       )}
     >
       {label}
@@ -216,24 +211,24 @@ function TicketRecordRow({
   onDelete?: (record: TicketRecordItem) => void
 }) {
   return (
-    <TableRow>
-      <TableCell>
+    <TableRow className="border-0">
+      <TableCell className="p-6">
         <ClubIdentityCell
           clubName={record.clubName}
           clubInitials={record.clubInitials}
           clubAvatarClassName={record.clubAvatarClassName}
         />
       </TableCell>
-      <TableCell>
+      <TableCell className="p-6">
         <TicketTypeBadge label={record.ticketTypeLabel} tone={record.ticketTypeTone} />
       </TableCell>
-      <TableCell className="text-ink">{formatCurrency(record.price)}</TableCell>
-      <TableCell>
+      <TableCell className="p-6 text-ink">{formatCurrency(record.price)}</TableCell>
+      <TableCell className="p-6">
         <StockStatusCell stockStatus={record.stockStatus} stockRemaining={record.stockRemaining} />
       </TableCell>
-      <TableCell className="text-ink">{formatSoldCount(record.totalSold)}</TableCell>
-      <TableCell className="font-semibold text-ink">{formatCurrency(record.revenue)}</TableCell>
-      <TableCell className="text-right">
+      <TableCell className="p-6 text-ink">{formatSoldCount(record.totalSold)}</TableCell>
+      <TableCell className="p-6 font-semibold text-ink">{formatCurrency(record.revenue)}</TableCell>
+      <TableCell className="p-6 text-right">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
@@ -276,25 +271,21 @@ function TicketRecordRow({
 }
 
 export function TicketRecords({
-  records = TICKET_RECORDS_MOCK,
+  records,
+  inventoryTab,
   onEdit,
   onDelete,
 }: {
-  records?: TicketRecordItem[]
+  records: TicketRecordItem[]
+  inventoryTab: TicketTab
   onEdit?: (record: TicketRecordItem) => void
   onDelete?: (record: TicketRecordItem) => void
 }) {
-  const [inventoryTab, setInventoryTab] = useState<InventoryTab>(INVENTORY_TAB.ACTIVE)
   const [viewDialogOpen, setViewDialogOpen] = useState(false)
   const [recordToView, setRecordToView] = useState<TicketRecordItem | null>(null)
 
-  const filteredRecords = useMemo(() => {
-    if (inventoryTab === INVENTORY_TAB.ACTIVE) {
-      return records.filter((record) => record.status === TICKET_STATUS.ACTIVE)
-    }
-
-    return records.filter((record) => record.status === TICKET_STATUS.INACTIVE)
-  }, [inventoryTab, records])
+  const copy = TICKETS_COPY.table
+  const registrySubtitle = records.length > 0 ? copy.registryCount(records.length) : null
 
   const handleViewRecord = (record: TicketRecordItem) => {
     setRecordToView(record)
@@ -318,77 +309,59 @@ export function TicketRecords({
 
   return (
     <>
-      <section
-        aria-labelledby="ticket-inventory-heading"
-        className="overflow-hidden rounded-xl border border-hairline bg-surface-container-low"
-      >
-        <header className="flex flex-col gap-4 border-b border-hairline px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-5">
-          <h2
-            id="ticket-inventory-heading"
-            className="font-heading text-lg font-semibold text-ink sm:text-xl"
-          >
-            Detalle del inventario de tickets
-          </h2>
-
-          <Tabs
-            value={inventoryTab}
-            onValueChange={(value) => setInventoryTab(value as InventoryTab)}
-          >
-            <TabsList className="h-9 rounded-lg border border-hairline bg-surface-container p-1">
-              <TabsTrigger
-                value={INVENTORY_TAB.ACTIVE}
-                className="rounded-md px-4 py-1 text-sm text-ink-muted data-[state=active]:bg-surface-container-high data-[state=active]:text-ink data-[state=active]:shadow-none"
-              >
-                Activos
-              </TabsTrigger>
-              <TabsTrigger
-                value={INVENTORY_TAB.ARCHIVED}
-                className="rounded-md px-4 py-1 text-sm text-ink-muted data-[state=active]:bg-surface-container-high data-[state=active]:text-ink data-[state=active]:shadow-none"
-              >
-                Archivados
-              </TabsTrigger>
-            </TabsList>
-          </Tabs>
+      <section aria-labelledby="ticket-inventory-heading">
+        <header className="py-4">
+          <div className="min-w-0">
+            <h2
+              id="ticket-inventory-heading"
+              className="font-heading text-lg font-semibold text-ink sm:text-xl"
+            >
+              {copy.title}
+            </h2>
+            {registrySubtitle ? (
+              <p className="mt-1 text-sm text-ink-muted">{registrySubtitle}</p>
+            ) : null}
+          </div>
         </header>
 
-        {filteredRecords.length === 0 ? (
+        {records.length === 0 ? (
           <div className="px-6 py-12 text-center">
             <p className="font-heading text-base font-semibold text-ink">
-              {inventoryTab === INVENTORY_TAB.ACTIVE
-                ? 'No hay tickets activos'
-                : 'No hay tickets archivados'}
+              {inventoryTab === TICKET_TAB.ACTIVE ? copy.emptyActiveTitle : copy.emptyArchivedTitle}
             </p>
             <p className="mx-auto mt-2 max-w-sm text-sm text-ink-muted">
-              {inventoryTab === INVENTORY_TAB.ACTIVE
-                ? 'Los tickets activos aparecerán acá cuando estén publicados para la venta.'
-                : 'Los tickets archivados aparecerán acá cuando desactives una entrada.'}
+              {inventoryTab === TICKET_TAB.ACTIVE
+                ? copy.emptyActiveDescription
+                : copy.emptyArchivedDescription}
             </p>
           </div>
         ) : (
-          <Table variant="compact" className="min-w-[960px]">
-            <TableHeader>
-              <TableRow>
-                <TableHead>Club nocturno</TableHead>
-                <TableHead>Tipo de entrada</TableHead>
-                <TableHead>Precio</TableHead>
-                <TableHead>Estado de stock</TableHead>
-                <TableHead>Total vendido</TableHead>
-                <TableHead>Ingresos</TableHead>
-                <TableHead className="text-right">Acciones</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filteredRecords.map((record) => (
-                <TicketRecordRow
-                  key={record.id}
-                  record={record}
-                  onView={handleViewRecord}
-                  onEdit={handleEditRecord}
-                  onDelete={handleDeleteRecord}
-                />
-              ))}
-            </TableBody>
-          </Table>
+          <Card variant="gradient">
+            <Table variant="compact" className="min-w-[960px]">
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="p-6">{copy.club}</TableHead>
+                  <TableHead className="p-6">{copy.ticketType}</TableHead>
+                  <TableHead className="p-6">{copy.price}</TableHead>
+                  <TableHead className="p-6">{copy.stockStatus}</TableHead>
+                  <TableHead className="p-6">{copy.totalSold}</TableHead>
+                  <TableHead className="p-6">{copy.revenue}</TableHead>
+                  <TableHead className="p-6 text-right">{copy.actions}</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {records.map((record) => (
+                  <TicketRecordRow
+                    key={record.id}
+                    record={record}
+                    onView={handleViewRecord}
+                    onEdit={handleEditRecord}
+                    onDelete={handleDeleteRecord}
+                  />
+                ))}
+              </TableBody>
+            </Table>
+          </Card>
         )}
       </section>
 
