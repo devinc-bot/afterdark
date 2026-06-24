@@ -141,6 +141,71 @@ Compose the final class list with `cn(baseClassName, get…ClassName(input))`. K
 
 ---
 
+## Derived display values
+
+When placeholder, error message, disabled state copy, or similar **UI strings** depend on multiple flags (loading, empty, error, validation), do not use nested ternaries inside JSX or render callbacks. Extract a named function **outside the component** with early returns.
+
+| Part          | Convention                                      | Example                         |
+| ------------- | ----------------------------------------------- | ------------------------------- |
+| Function name | `camelCase` with `get` prefix                   | `getClubSelectFieldDisplay`     |
+| Return value  | Object or primitive for one visual/copy state   | `{ placeholder, error }`        |
+| Location      | Co-located in the same file (above component) or `*.utils.ts` | `staff-user-form.tsx` |
+
+```tsx
+// incorrect — nested ternaries in render (see staff-user-form.tsx before refactor)
+const clubPlaceholder = isClubsLoading
+  ? STAFF_COPY.form.clubLoading
+  : clubs.length === 0
+    ? STAFF_COPY.form.clubEmpty
+    : STAFF_COPY.form.clubPlaceholder
+const clubFieldError = isClubsError
+  ? STAFF_COPY.form.clubsLoadError
+  : (error ?? undefined)
+
+// correct — early returns in a module-level helper (getClubSelectFieldDisplay in staff-user-form.tsx)
+type ClubSelectFieldDisplayInput = {
+  isLoading: boolean
+  isError: boolean
+  clubCount: number
+  fieldError: string | null
+}
+
+type ClubSelectFieldDisplay = {
+  placeholder: string
+  error: string | undefined
+}
+
+function getClubSelectFieldDisplay({
+  isLoading,
+  isError,
+  clubCount,
+  fieldError,
+}: ClubSelectFieldDisplayInput): ClubSelectFieldDisplay {
+  if (isLoading) {
+    return { placeholder: STAFF_COPY.form.clubLoading, error: fieldError ?? undefined }
+  }
+  if (isError) {
+    return { placeholder: STAFF_COPY.form.clubPlaceholder, error: STAFF_COPY.form.clubsLoadError }
+  }
+  if (clubCount === 0) {
+    return { placeholder: STAFF_COPY.form.clubEmpty, error: fieldError ?? undefined }
+  }
+  return { placeholder: STAFF_COPY.form.clubPlaceholder, error: fieldError ?? undefined }
+}
+
+// in the component
+const { placeholder, error: clubFieldError } = getClubSelectFieldDisplay({
+  isLoading: isClubsLoading,
+  isError: isClubsError,
+  clubCount: clubs.length,
+  fieldError: error,
+})
+```
+
+Same rule applies to conditional **class names** — see [Conditional class names](#conditional-class-names) above.
+
+---
+
 ## Dependency management
 
 - **No `^` or `~`** — all versions are pinned exactly.
