@@ -160,10 +160,8 @@ function TicketTypeBadge({
       variant="outline"
       size="sm"
       className={cn(
-        tone === 'primary' &&
-          '[--gradient-border-fill:color-mix(in_oklab,var(--color-primary)_10%,transparent)] text-primary',
-        tone === 'tertiary' &&
-          '[--gradient-border-fill:color-mix(in_oklab,var(--color-tertiary)_10%,transparent)] text-tertiary'
+        tone === 'primary' && 'border-primary/40 bg-primary/10 text-primary',
+        tone === 'tertiary' && 'border-tertiary/40 bg-tertiary/10 text-tertiary'
       )}
     >
       {label}
