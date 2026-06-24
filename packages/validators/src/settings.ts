@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { updateCurrentUserSchema } from './user.ts'
+import { updateCurrentOwnerSchema } from './owner.ts'
 
 export const SETTINGS_LANGUAGE = {
   ES: 'es',
@@ -20,7 +20,7 @@ export const settingsNotificationsSchema = z.object({
   securityLog: z.boolean(),
 })
 
-export const settingsProfileSchema = updateCurrentUserSchema
+export const settingsProfileSchema = updateCurrentOwnerSchema
 
 export const settingsOrganizationSchema = z.object({
   brandName: z

@@ -1,4 +1,4 @@
-import type { ClubStatus, StaffInvitationStatus, UserRole } from './domain.ts'
+import type { ClubStatus, OwnerStatus, StaffInvitationStatus, UserRole } from './domain.ts'
 
 export interface ApiResponse<T> {
   data: T
@@ -15,20 +15,25 @@ export interface LoginResponse {
   accessToken: string
 }
 
+export interface RegisterResponse {
+  message: string
+}
+
 export interface JwtPayload {
   sub: string
   email: string
   role: string
 }
 
-export interface CurrentUserAddress {
-  address: string
-  streetNumber: string
-  state: string
-  city: string
+export interface SessionResponse {
+  sub: string
+  name: string
+  lastName: string
+  email: string
+  avatar: string | null
 }
 
-export interface CurrentUserResponse {
+export interface CurrentOwnerResponse {
   sub: string
   name: string
   lastName: string
@@ -37,7 +42,18 @@ export interface CurrentUserResponse {
   phone: string
   birthday: string | null
   nationalId: string | null
-  address: CurrentUserAddress | null
+  taxId: string | null
+  status: OwnerStatus
+}
+
+/** @deprecated Use SessionResponse */
+export type CurrentUserResponse = SessionResponse
+
+export interface CurrentUserAddress {
+  address: string
+  streetNumber: string
+  state: string
+  city: string
 }
 
 export interface ClubResponse {
@@ -59,7 +75,7 @@ export interface CreateStaffInvitationResponse {
   email: string
   clubId: string
   clubName: string
-  invitedByUserId: string
+  invitedByOwnerId: string
   slug: string
   url: string
   expiresAt: Date
