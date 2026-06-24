@@ -24,8 +24,6 @@ import { APP_SHELL_COPY } from '~/modules/common/constants/app-shell.copy'
 import { useSession } from '~/modules/common/hooks/use-session'
 import { DASHBOARD_ROUTES } from '~/modules/common/constants/routes'
 
-const USERS_ROUTE_ENABLED = false
-
 type AppShellNavItem = {
   label: string
   icon: ReactNode
@@ -55,8 +53,7 @@ function buildPrimaryNav(): AppShellNavItem[] {
     {
       label: APP_SHELL_COPY.nav.users,
       icon: <Users aria-hidden="true" />,
-      disabled: !USERS_ROUTE_ENABLED,
-      title: USERS_ROUTE_ENABLED ? undefined : APP_SHELL_COPY.nav.usersUnavailable,
+      href: DASHBOARD_ROUTES.staff(),
     },
   ]
 }

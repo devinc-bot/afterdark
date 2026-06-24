@@ -15,9 +15,11 @@ import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as AppIndexRouteImport } from './routes/_app/index'
 import { Route as AppTicketsRouteImport } from './routes/_app/tickets'
+import { Route as AppStaffRouteImport } from './routes/_app/staff'
 import { Route as AppSettingsRouteImport } from './routes/_app/settings'
 import { Route as AppDashboardRouteImport } from './routes/_app/dashboard'
 import { Route as AppClubManagementRouteImport } from './routes/_app/club-management'
+import { Route as NameTokenRouteImport } from './routes/$name.$token'
 
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
@@ -48,6 +50,11 @@ const AppTicketsRoute = AppTicketsRouteImport.update({
   path: '/tickets',
   getParentRoute: () => AppRoute,
 } as any)
+const AppStaffRoute = AppStaffRouteImport.update({
+  id: '/staff',
+  path: '/staff',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppSettingsRoute = AppSettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
@@ -63,24 +70,33 @@ const AppClubManagementRoute = AppClubManagementRouteImport.update({
   path: '/club-management',
   getParentRoute: () => AppRoute,
 } as any)
+const NameTokenRoute = NameTokenRouteImport.update({
+  id: '/$name/$token',
+  path: '/$name/$token',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof AppIndexRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/$name/$token': typeof NameTokenRoute
   '/club-management': typeof AppClubManagementRoute
   '/dashboard': typeof AppDashboardRoute
   '/settings': typeof AppSettingsRoute
+  '/staff': typeof AppStaffRoute
   '/tickets': typeof AppTicketsRoute
 }
 export interface FileRoutesByTo {
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/$name/$token': typeof NameTokenRoute
   '/club-management': typeof AppClubManagementRoute
   '/dashboard': typeof AppDashboardRoute
   '/settings': typeof AppSettingsRoute
+  '/staff': typeof AppStaffRoute
   '/tickets': typeof AppTicketsRoute
   '/': typeof AppIndexRoute
 }
@@ -90,9 +106,11 @@ export interface FileRoutesById {
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/$name/$token': typeof NameTokenRoute
   '/_app/club-management': typeof AppClubManagementRoute
   '/_app/dashboard': typeof AppDashboardRoute
   '/_app/settings': typeof AppSettingsRoute
+  '/_app/staff': typeof AppStaffRoute
   '/_app/tickets': typeof AppTicketsRoute
   '/_app/': typeof AppIndexRoute
 }
@@ -103,18 +121,22 @@ export interface FileRouteTypes {
     | '/forgot-password'
     | '/login'
     | '/register'
+    | '/$name/$token'
     | '/club-management'
     | '/dashboard'
     | '/settings'
+    | '/staff'
     | '/tickets'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/forgot-password'
     | '/login'
     | '/register'
+    | '/$name/$token'
     | '/club-management'
     | '/dashboard'
     | '/settings'
+    | '/staff'
     | '/tickets'
     | '/'
   id:
@@ -123,9 +145,11 @@ export interface FileRouteTypes {
     | '/forgot-password'
     | '/login'
     | '/register'
+    | '/$name/$token'
     | '/_app/club-management'
     | '/_app/dashboard'
     | '/_app/settings'
+    | '/_app/staff'
     | '/_app/tickets'
     | '/_app/'
   fileRoutesById: FileRoutesById
@@ -135,6 +159,7 @@ export interface RootRouteChildren {
   ForgotPasswordRoute: typeof ForgotPasswordRoute
   LoginRoute: typeof LoginRoute
   RegisterRoute: typeof RegisterRoute
+  NameTokenRoute: typeof NameTokenRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -181,6 +206,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppTicketsRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/staff': {
+      id: '/_app/staff'
+      path: '/staff'
+      fullPath: '/staff'
+      preLoaderRoute: typeof AppStaffRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/settings': {
       id: '/_app/settings'
       path: '/settings'
@@ -202,6 +234,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppClubManagementRouteImport
       parentRoute: typeof AppRoute
     }
+    '/$name/$token': {
+      id: '/$name/$token'
+      path: '/$name/$token'
+      fullPath: '/$name/$token'
+      preLoaderRoute: typeof NameTokenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -209,6 +248,7 @@ interface AppRouteChildren {
   AppClubManagementRoute: typeof AppClubManagementRoute
   AppDashboardRoute: typeof AppDashboardRoute
   AppSettingsRoute: typeof AppSettingsRoute
+  AppStaffRoute: typeof AppStaffRoute
   AppTicketsRoute: typeof AppTicketsRoute
   AppIndexRoute: typeof AppIndexRoute
 }
@@ -217,6 +257,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppClubManagementRoute: AppClubManagementRoute,
   AppDashboardRoute: AppDashboardRoute,
   AppSettingsRoute: AppSettingsRoute,
+  AppStaffRoute: AppStaffRoute,
   AppTicketsRoute: AppTicketsRoute,
   AppIndexRoute: AppIndexRoute,
 }
@@ -228,6 +269,7 @@ const rootRouteChildren: RootRouteChildren = {
   ForgotPasswordRoute: ForgotPasswordRoute,
   LoginRoute: LoginRoute,
   RegisterRoute: RegisterRoute,
+  NameTokenRoute: NameTokenRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
