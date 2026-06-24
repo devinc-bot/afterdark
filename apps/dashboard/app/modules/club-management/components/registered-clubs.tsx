@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { type ClubResponse } from '@afterdark/types'
 import type { CreateClubInput } from '@afterdark/validators'
-import { Button, toast, TooltipProvider } from '@afterdark/ui'
+import { Button, toast } from '@afterdark/ui'
 import { Plus } from 'lucide-react'
 import {
   CLUB_FORM_MODE,
@@ -10,9 +10,9 @@ import {
 } from '~/modules/club-management/components/dialog-form'
 import { ClubRemoveDialog } from '~/modules/club-management/components/dialog-remove'
 import {
-  RegisteredClubCard,
+  RegisteredClubRecords,
   type RegisteredClub,
-} from '~/modules/club-management/components/registered-club-card'
+} from '~/modules/club-management/components/registered-club-records'
 import { useClubs } from '~/modules/club-management/queries/use-club-management-queries'
 import { useDeleteClub } from '~/modules/club-management/mutation/use-club-management-mutations'
 
@@ -100,7 +100,7 @@ export function RegisteredClubs() {
   }
 
   return (
-    <TooltipProvider>
+    <>
       <section aria-labelledby="registered-clubs-heading" className="flex flex-col gap-4">
         <header className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="min-w-0">
@@ -146,16 +146,11 @@ export function RegisteredClubs() {
             </p>
           </div>
         ) : (
-          <ul className="flex flex-col gap-3">
-            {clubs.map((club) => (
-              <RegisteredClubCard
-                key={club.id}
-                club={club}
-                onEdit={openEditDialog}
-                onDelete={openRemoveDialog}
-              />
-            ))}
-          </ul>
+          <RegisteredClubRecords
+            clubs={clubs}
+            onEdit={openEditDialog}
+            onDelete={openRemoveDialog}
+          />
         )}
       </section>
 
@@ -175,6 +170,6 @@ export function RegisteredClubs() {
         onConfirm={handleRemoveConfirm}
         isRemoving={deleteClubMutation.isPending}
       />
-    </TooltipProvider>
+    </>
   )
 }

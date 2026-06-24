@@ -7,7 +7,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@afterdark/ui'
-import type { RegisteredClub } from '~/modules/club-management/components/registered-club-card'
+import type { RegisteredClub } from '~/modules/club-management/components/registered-club-records'
 
 export type ClubRemoveDialogProps = {
   club: RegisteredClub | null
