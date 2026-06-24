@@ -1,13 +1,13 @@
-import type { CurrentUserResponse } from '@afterdark/types'
+import type { SessionResponse } from '@afterdark/types'
 import { create } from 'zustand'
 import { COOKIE_KEYS } from '~/modules/common/constants/cookies'
 import { SESSION_STATUS, type SessionStatus } from '~/modules/common/constants/session-status'
-import { getCurrentUser } from '~/modules/common/services/current-user.service'
+import { fetchSession } from '~/modules/common/services/session.service'
 import { getCookieSync } from '~/modules/common/utils/cookies.utils'
 import { QueryFactoryError } from '~/modules/common/utils/query-factory'
 
 type SessionState = {
-  user: CurrentUserResponse | null
+  user: SessionResponse | null
   status: SessionStatus
   error: string | null
   loadSession: () => Promise<void>
@@ -32,7 +32,7 @@ export const useSessionStore = create<SessionState>((set) => ({
     set({ status: SESSION_STATUS.LOADING, error: null })
 
     try {
-      const user = await getCurrentUser()
+      const user = await fetchSession()
       set({ user, status: SESSION_STATUS.AUTHENTICATED, error: null })
     } catch (error) {
       const message =

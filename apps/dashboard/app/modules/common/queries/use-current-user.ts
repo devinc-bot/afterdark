@@ -1,24 +1,24 @@
 import { queryOptions, useQuery, useSuspenseQuery } from '@tanstack/react-query'
 import { COOKIE_KEYS } from '~/modules/common/constants/cookies'
 import { QUERY_KEYS } from '~/modules/common/constants/query-keys'
-import { fetchCurrentUser } from '~/modules/common/services/current-user.service'
+import { fetchCurrentOwner } from '~/modules/common/services/owner.service'
 import { getCookieSync } from '~/modules/common/utils/cookies.utils'
 
-export const currentUserQueryOptions = () =>
+export const currentOwnerQueryOptions = () =>
   queryOptions({
     queryKey: QUERY_KEYS.currentUser(),
-    queryFn: fetchCurrentUser,
+    queryFn: fetchCurrentOwner,
   })
 
-export function useCurrentUser() {
+export function useCurrentOwner() {
   const hasToken = getCookieSync({ name: COOKIE_KEYS.accessToken }) !== null
 
   return useQuery({
-    ...currentUserQueryOptions(),
+    ...currentOwnerQueryOptions(),
     enabled: hasToken,
   })
 }
 
-export function useCurrentUserSuspense() {
-  return useSuspenseQuery(currentUserQueryOptions())
+export function useCurrentOwnerSuspense() {
+  return useSuspenseQuery(currentOwnerQueryOptions())
 }

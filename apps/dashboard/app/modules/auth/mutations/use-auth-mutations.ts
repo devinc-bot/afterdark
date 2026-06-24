@@ -1,9 +1,9 @@
 import { useMutation } from '@tanstack/react-query'
 import { useNavigate } from '@tanstack/react-router'
-import type { LoginInput, RegisterInput } from '@afterdark/validators'
+import type { LoginInput, RegisterOwnerInput } from '@afterdark/validators'
 import { useSessionStore } from '~/modules/common/stores/session.store'
 import { DASHBOARD_ROUTES } from '../../common/constants/routes'
-import { loginFn, registerFn } from '../services/auth.service'
+import { loginFn, registerOwnerFn } from '../services/auth.service'
 import { saveAuthSession } from '../utils/auth-storage.utils'
 
 export function useLogin() {
@@ -23,9 +23,8 @@ export function useRegister() {
   const navigate = useNavigate()
 
   return useMutation({
-    mutationFn: (input: RegisterInput) => registerFn({ data: input }),
-    onSuccess: async (session) => {
-      saveAuthSession(session)
+    mutationFn: (input: RegisterOwnerInput) => registerOwnerFn({ data: input }),
+    onSuccess: async () => {
       await navigate({ to: DASHBOARD_ROUTES.login() })
     },
   })

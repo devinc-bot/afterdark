@@ -1,4 +1,4 @@
-import type { CurrentUserResponse } from '@afterdark/types'
+import type { SessionResponse } from '@afterdark/types'
 
 function getFirstGrapheme(value: string): string {
   const trimmed = value.trim()
@@ -15,7 +15,7 @@ export function getUserInitials(name: string, lastName: string): string {
 }
 
 export function getUserDisplayName(
-  user: Pick<CurrentUserResponse, 'name' | 'lastName' | 'email'>,
+  user: Pick<SessionResponse, 'name' | 'lastName' | 'email'>,
   fallbackName: string
 ): string {
   const fullName = `${user.name ?? ''} ${user.lastName ?? ''}`.trim()

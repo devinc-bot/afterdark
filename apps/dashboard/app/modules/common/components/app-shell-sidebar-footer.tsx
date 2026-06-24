@@ -1,4 +1,4 @@
-import type { CurrentUserResponse } from '@afterdark/types'
+import type { SessionResponse } from '@afterdark/types'
 import { Avatar, AvatarFallback, AvatarImage, Button, cn } from '@afterdark/ui'
 import { Link } from '@tanstack/react-router'
 import { APP_SHELL_COPY } from '~/modules/common/constants/app-shell.copy'
@@ -9,7 +9,7 @@ import {
 } from '~/modules/common/utils/app-shell-user.utils'
 
 type AppShellSidebarFooterProps = {
-  user: CurrentUserResponse | null
+  user: SessionResponse | null
   isLoading: boolean
   error: string | null
   settingsHref: string

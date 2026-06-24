@@ -113,7 +113,8 @@ export class QueryFactory {
     return (
       pathname.includes(`${authPrefix}${API_ROUTES.auth.path.login()}`) ||
       pathname.includes(`${authPrefix}${API_ROUTES.auth.path.refreshToken()}`) ||
-      pathname.includes(`${authPrefix}${API_ROUTES.auth.path.register()}`)
+      pathname.includes(`${authPrefix}${API_ROUTES.auth.path.registerUser()}`) ||
+      pathname.includes(`${authPrefix}${API_ROUTES.auth.path.registerOwner()}`)
     )
   }
 

@@ -1,9 +1,9 @@
 import { createServerFn } from '@tanstack/react-start'
-import { loginSchema, registerSchema } from '@afterdark/validators'
+import { loginSchema, registerOwnerSchema } from '@afterdark/validators'
 import { api } from '~/config/api'
 import { API_ROUTES } from '~/config/constants/api'
 import { QueryFactoryError } from '~/modules/common/utils/query-factory'
-import type { LoginResponse } from '@afterdark/types'
+import type { LoginResponse, RegisterResponse } from '@afterdark/types'
 
 const LOGIN_FALLBACK_ERROR = 'No pudimos iniciar sesión. Intentá de nuevo en unos minutos.'
 const REGISTER_FALLBACK_ERROR = 'No pudimos crear tu cuenta. Intentá de nuevo en unos minutos.'
@@ -39,11 +39,11 @@ export const loginFn = createServerFn({ method: 'POST' })
     )
   })
 
-export const registerFn = createServerFn({ method: 'POST' })
-  .inputValidator(registerSchema)
-  .handler(async ({ data }): Promise<LoginResponse> => {
-    return postAuth<LoginResponse>(
-      authApiPath(API_ROUTES.auth.path.register()),
+export const registerOwnerFn = createServerFn({ method: 'POST' })
+  .inputValidator(registerOwnerSchema)
+  .handler(async ({ data }): Promise<RegisterResponse> => {
+    return postAuth<RegisterResponse>(
+      authApiPath(API_ROUTES.auth.path.registerOwner()),
       data,
       REGISTER_FALLBACK_ERROR
     )
