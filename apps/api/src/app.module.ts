@@ -7,7 +7,8 @@ import { ClubsModule } from './modules/clubs'
 import { HealthModule } from './modules/health'
 import { InvitationsModule } from './modules/invitations'
 import { OrdersModule } from './modules/orders'
-import { UsersModule } from './modules/users'
+import { OwnerModule } from './modules/owner'
+import { SessionModule } from './modules/session'
 
 @Module({
   imports: [
@@ -18,7 +19,8 @@ import { UsersModule } from './modules/users'
     HealthModule,
     InvitationsModule,
     OrdersModule,
-    UsersModule,
+    OwnerModule,
+    SessionModule,
   ],
   controllers: [AppController],
 })

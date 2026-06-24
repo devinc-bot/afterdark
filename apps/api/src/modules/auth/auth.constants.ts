@@ -4,4 +4,5 @@ export const AUTH_MESSAGE = {
   INVALID_CREDENTIALS: 'Credenciales inválidas',
   EMAIL_ALREADY_REGISTERED: 'No puedes registrarte con este correo.',
   ROLE_NOT_CONFIGURED: 'No pudimos completar el registro. Contactá al administrador.',
+  REGISTER_SUCCESS: 'Cuenta creada correctamente. Ya podés iniciar sesión.',
 } as const

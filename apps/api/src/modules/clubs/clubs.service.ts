@@ -4,7 +4,7 @@ import {
   clubAddressesLnk,
   clubs,
   db,
-  users,
+  owners,
   type AddressSelect,
   type ClubSelect,
   type Transaction,
@@ -34,9 +34,9 @@ function toClubResponse(club: ClubSelect, address: AddressSelect): ClubResponse 
 export class ClubsService {
   async createClub(ownerDocumentId: string, input: CreateClubInput): Promise<ClubResponse> {
     const [owner] = await db
-      .select({ id: users.id })
-      .from(users)
-      .where(eq(users.documentId, ownerDocumentId))
+      .select({ id: owners.id })
+      .from(owners)
+      .where(eq(owners.documentId, ownerDocumentId))
       .limit(1)
 
     if (!owner) {
@@ -50,7 +50,7 @@ export class ClubsService {
           name: input.name,
           capacity: input.capacity,
           description: input.description,
-          ownerUserId: owner.id,
+          ownerId: owner.id,
         })
         .returning()
 

@@ -1,5 +1,5 @@
 export const INVITATION_MESSAGE = {
-  INVITER_NOT_FOUND: 'Usuario no encontrado',
+  INVITER_NOT_FOUND: 'Propietario no encontrado',
   CLUB_NOT_FOUND: 'Club no encontrado',
   EMAIL_ALREADY_REGISTERED: 'Este correo ya está registrado.',
   FORBIDDEN: 'Solo un propietario puede crear invitaciones.',

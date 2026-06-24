@@ -1,9 +1,11 @@
 import { Body, Controller, HttpCode, HttpStatus, Inject, Post } from '@nestjs/common'
 import {
   loginSchema,
-  registerSchema,
+  registerOwnerSchema,
+  registerUserSchema,
   type LoginInput,
-  type RegisterInput,
+  type RegisterOwnerInput,
+  type RegisterUserInput,
 } from '@afterdark/validators'
 import { ZodValidationPipe } from '../../common/pipes/zod-validation.pipe'
 import { AuthService } from './auth.service'
@@ -18,9 +20,15 @@ export class AuthController {
     return this.authService.login(body)
   }
 
-  @Post('register')
+  @Post('register/user')
   @HttpCode(HttpStatus.CREATED)
-  register(@Body(new ZodValidationPipe(registerSchema)) body: RegisterInput) {
-    return this.authService.register(body)
+  registerUser(@Body(new ZodValidationPipe(registerUserSchema)) body: RegisterUserInput) {
+    return this.authService.registerUser(body)
+  }
+
+  @Post('register/owner')
+  @HttpCode(HttpStatus.CREATED)
+  registerOwner(@Body(new ZodValidationPipe(registerOwnerSchema)) body: RegisterOwnerInput) {
+    return this.authService.registerOwner(body)
   }
 }

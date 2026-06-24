@@ -11,12 +11,12 @@ import {
   accountRolesLnk,
   clubs,
   db,
+  ownerAccountsLnk,
+  owners,
   roles,
   staffInvitations,
   type ClubSelect,
   type StaffInvitationSelect,
-  userAccountsLnk,
-  users,
 } from '@afterdark/db'
 import {
   STAFF_INVITATION_STATUS,
@@ -34,14 +34,14 @@ import {
 function toStaffInvitationResponse(
   invitation: StaffInvitationSelect,
   club: ClubSelect,
-  invitedByUserDocumentId: string
+  invitedByOwnerDocumentId: string
 ): CreateStaffInvitationResponse {
   return {
     documentId: invitation.documentId,
     email: invitation.email,
     clubId: club.documentId,
     clubName: club.name,
-    invitedByUserId: invitedByUserDocumentId,
+    invitedByOwnerId: invitedByOwnerDocumentId,
     slug: invitation.slug,
     url: buildStaffInvitationUrl(ENV.DASHBOARD_URL, invitation.slug, invitation.token),
     expiresAt: invitation.expiresAt,
@@ -61,15 +61,15 @@ export class InvitationsService {
   ): Promise<CreateStaffInvitationResponse> {
     const [inviter] = await db
       .select({
-        id: users.id,
-        documentId: users.documentId,
+        id: owners.id,
+        documentId: owners.documentId,
         role: roles.name,
       })
-      .from(users)
-      .innerJoin(userAccountsLnk, eq(userAccountsLnk.userId, users.id))
-      .innerJoin(accountRolesLnk, eq(accountRolesLnk.accountId, userAccountsLnk.accountId))
+      .from(owners)
+      .innerJoin(ownerAccountsLnk, eq(ownerAccountsLnk.ownerId, owners.id))
+      .innerJoin(accountRolesLnk, eq(accountRolesLnk.accountId, ownerAccountsLnk.accountId))
       .innerJoin(roles, eq(roles.id, accountRolesLnk.roleId))
-      .where(eq(users.documentId, inviterDocumentId))
+      .where(eq(owners.documentId, inviterDocumentId))
       .limit(1)
 
     if (!inviter) {
@@ -107,7 +107,7 @@ export class InvitationsService {
       .values({
         email: input.email,
         clubId: club.id,
-        invitedByUserId: inviter.id,
+        invitedByOwnerId: inviter.id,
         slug,
         token,
         securityWordHash: securityWordHash ?? null,
