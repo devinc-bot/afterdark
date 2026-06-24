@@ -246,6 +246,12 @@
     --gradient-border-width: 1px;
   }
 
+  .cn-gradient-border--field[aria-invalid='true'] {
+    background:
+      linear-gradient(var(--gradient-border-fill), var(--gradient-border-fill)) padding-box,
+      linear-gradient(var(--color-error), var(--color-error)) border-box;
+  }
+
   .cn-gradient-border--field-secondary {
     --gradient-border-fill: var(--color-surface-container-lowest);
     --gradient-border-width: 1px;

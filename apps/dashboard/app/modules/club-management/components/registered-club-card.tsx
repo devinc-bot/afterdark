@@ -1,19 +1,13 @@
+import { CLUB_STATUS, type ClubStatus } from '@afterdark/types'
 import { Badge, Button, cn, NotImage, Tooltip, TooltipContent, TooltipTrigger } from '@afterdark/ui'
 import { MapPin, Pencil, Trash2, Users } from 'lucide-react'
-
-export const CLUB_DISPLAY_STATUS = {
-  LIVE: 'live',
-  INACTIVE: 'inactive',
-} as const
-
-export type ClubDisplayStatus = (typeof CLUB_DISPLAY_STATUS)[keyof typeof CLUB_DISPLAY_STATUS]
 
 export type RegisteredClub = {
   id: string
   name: string
   address: string
   tags: string[]
-  status: ClubDisplayStatus
+  status: ClubStatus
   imageUrl?: string
   capacity?: string
   description?: string
@@ -22,10 +16,10 @@ export type RegisteredClub = {
   city?: string
 }
 
-function ClubStatusBadge({ status }: { status: ClubDisplayStatus }) {
+function ClubStatusBadge({ status }: { status: ClubStatus }) {
   const statusBadgeClassName = 'px-2.5 py-1'
 
-  if (status === CLUB_DISPLAY_STATUS.LIVE) {
+  if (status === CLUB_STATUS.ACTIVE) {
     return (
       <Badge
         variant="outline"
@@ -33,7 +27,7 @@ function ClubStatusBadge({ status }: { status: ClubDisplayStatus }) {
         className={cn(statusBadgeClassName, 'gap-2 w-fit')}
         icon={<span className="size-1.5 rounded-full bg-green-400" aria-hidden="true" />}
       >
-        En vivo
+        Activo
       </Badge>
     )
   }
@@ -52,7 +46,6 @@ function ClubStatusBadge({ status }: { status: ClubDisplayStatus }) {
     </Badge>
   )
 }
-
 export function RegisteredClubCard({
   club,
   onEdit,

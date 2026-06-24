@@ -1,5 +1,6 @@
 import { useForm } from '@tanstack/react-form'
-import { createClubSchema, type CreateClubInput } from '@afterdark/validators'
+import { CLUB_STATUS } from '@afterdark/types'
+import { createClubSchema, clubStatusSchema, type CreateClubInput } from '@afterdark/validators'
 import {
   Button,
   Dialog,
@@ -11,10 +12,18 @@ import {
   DialogTitle,
   Input,
   Label,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
   Textarea,
   toast,
 } from '@afterdark/ui'
-import { useCreateClub } from '~/modules/club-management/mutation/use-club-management-mutations'
+import {
+  useCreateClub,
+  useUpdateClub,
+} from '~/modules/club-management/mutation/use-club-management-mutations'
 
 export const CLUB_FORM_MODE = {
   CREATE: 'create',
@@ -30,16 +39,21 @@ const EMPTY_CLUB_FORM_VALUES: CreateClubInput = {
   address: '',
   capacity: '',
   description: '',
+  status: CLUB_STATUS.ACTIVE,
   state: '',
   street_number: '',
   city: '',
 }
 
+const CLUB_STATUS_OPTIONS = [
+  { value: CLUB_STATUS.ACTIVE, label: 'Activo' },
+  { value: CLUB_STATUS.INACTIVE, label: 'Inactivo' },
+] as const
+
 const fieldLabelClassName =
   'font-label text-xs font-semibold uppercase tracking-label-xs text-ink-muted'
 
-const fieldErrorClassName =
-  'border-destructive focus-visible:border-destructive focus-visible:ring-destructive/40'
+const fieldErrorMessageClassName = 'text-xs text-error'
 
 function fieldErrorMessage(errors: ReadonlyArray<unknown>): string | null {
   const [first] = errors
@@ -95,10 +109,9 @@ function ClubFormField({
         onChange={(event) => onChange(sanitize ? sanitize(event.target.value) : event.target.value)}
         aria-invalid={error ? true : undefined}
         aria-describedby={error ? `${id}-error` : undefined}
-        className={error ? fieldErrorClassName : undefined}
       />
       {error ? (
-        <p id={`${id}-error`} role="alert" className="text-xs text-error">
+        <p id={`${id}-error`} role="alert" className={fieldErrorMessageClassName}>
           {error}
         </p>
       ) : null}
@@ -134,24 +147,25 @@ type ClubDialogFormProps = {
   mode: ClubFormMode
   open: boolean
   onOpenChange: (open: boolean) => void
+  clubDocumentId?: string
   defaultValues?: Partial<CreateClubInput>
-  onSubmit: (values: CreateClubInput) => void | Promise<void>
   isSubmitting?: boolean
   formKey?: string
 }
 
 function ClubDialogFormInner({
   mode,
+  clubDocumentId,
   defaultValues,
-  onSubmit,
   isSubmitting = false,
   onOpenChange,
 }: Pick<
   ClubDialogFormProps,
-  'mode' | 'defaultValues' | 'onSubmit' | 'isSubmitting' | 'onOpenChange'
+  'mode' | 'clubDocumentId' | 'defaultValues' | 'isSubmitting' | 'onOpenChange'
 >) {
   const isCreate = mode === CLUB_FORM_MODE.CREATE
   const createClubMutation = useCreateClub()
+  const updateClubMutation = useUpdateClub()
 
   const form = useForm({
     defaultValues: { ...EMPTY_CLUB_FORM_VALUES, ...defaultValues },
@@ -171,7 +185,22 @@ function ClubDialogFormInner({
         return
       }
 
-      await onSubmit(value)
+      if (!clubDocumentId) {
+        toast.error('No pudimos identificar el club a actualizar.')
+        return
+      }
+
+      try {
+        await updateClubMutation.mutateAsync({ documentId: clubDocumentId, input: value })
+        toast.success('Club actualizado correctamente')
+        onOpenChange(false)
+      } catch (error) {
+        toast.error(
+          error instanceof Error
+            ? error.message
+            : 'No pudimos actualizar el club. Intentá de nuevo.'
+        )
+      }
     },
   })
 
@@ -222,6 +251,54 @@ function ClubDialogFormInner({
               )}
             </form.Field>
 
+            <form.Field name="status" validators={{ onSubmit: clubStatusSchema }}>
+              {(field) => {
+                const error = fieldErrorMessage(field.state.meta.errors)
+
+                return (
+                  <div className="flex flex-col gap-2">
+                    <Label htmlFor={field.name} className={fieldLabelClassName}>
+                      Estado del club
+                    </Label>
+                    <Select
+                      value={field.state.value}
+                      onValueChange={(value) =>
+                        field.handleChange(value as CreateClubInput['status'])
+                      }
+                      onOpenChange={(open) => {
+                        if (!open) field.handleBlur()
+                      }}
+                    >
+                      <SelectTrigger
+                        id={field.name}
+                        error={Boolean(error)}
+                        aria-invalid={error ? true : undefined}
+                        aria-describedby={error ? `${field.name}-error` : undefined}
+                      >
+                        <SelectValue placeholder="Seleccioná un estado" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {CLUB_STATUS_OPTIONS.map((option) => (
+                          <SelectItem key={option.value} value={option.value}>
+                            {option.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    {error ? (
+                      <p
+                        id={`${field.name}-error`}
+                        role="alert"
+                        className={fieldErrorMessageClassName}
+                      >
+                        {error}
+                      </p>
+                    ) : null}
+                  </div>
+                )
+              }}
+            </form.Field>
+
             <form.Field
               name="description"
               validators={{ onSubmit: createClubSchema.shape.description }}
@@ -242,6 +319,7 @@ function ClubDialogFormInner({
                       onBlur={field.handleBlur}
                       onChange={(event) => field.handleChange(event.target.value)}
                       error={error ?? undefined}
+                      className="text-sm"
                     />
                   </div>
                 )
@@ -321,7 +399,11 @@ function ClubDialogFormInner({
 
       <form.Subscribe selector={(state) => state.isSubmitting}>
         {(isFormSubmitting) => {
-          const pending = isSubmitting || isFormSubmitting || createClubMutation.isPending
+          const pending =
+            isSubmitting ||
+            isFormSubmitting ||
+            createClubMutation.isPending ||
+            updateClubMutation.isPending
 
           return (
             <DialogFooter className="mx-0 mb-0 mt-0 shrink-0 flex-col gap-3 px-6 py-6 sm:flex-row sm:justify-end sm:px-8">
@@ -363,8 +445,8 @@ export function ClubDialogForm({
   mode,
   open,
   onOpenChange,
+  clubDocumentId,
   defaultValues,
-  onSubmit,
   isSubmitting = false,
   formKey = 'create',
 }: ClubDialogFormProps) {
@@ -385,8 +467,8 @@ export function ClubDialogForm({
         <ClubDialogFormInner
           key={formKey}
           mode={mode}
+          clubDocumentId={clubDocumentId}
           defaultValues={defaultValues}
-          onSubmit={onSubmit}
           isSubmitting={isSubmitting}
           onOpenChange={onOpenChange}
         />

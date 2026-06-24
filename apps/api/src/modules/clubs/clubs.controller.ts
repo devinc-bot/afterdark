@@ -1,6 +1,24 @@
-import { Body, Controller, HttpCode, HttpStatus, Inject, Post, UseGuards } from '@nestjs/common'
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Inject,
+  Param,
+  Patch,
+  Post,
+  UseGuards,
+} from '@nestjs/common'
 import type { JwtPayload } from '@afterdark/types'
-import { createClubSchema, type CreateClubInput } from '@afterdark/validators'
+import {
+  createClubSchema,
+  updateClubSchema,
+  uuidSchema,
+  type CreateClubInput,
+  type UpdateClubInput,
+} from '@afterdark/validators'
 import { CurrentUser } from '../../common/decorators/current-user.decorator'
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard'
 import { ZodValidationPipe } from '../../common/pipes/zod-validation.pipe'
@@ -10,6 +28,12 @@ import { ClubsService } from './clubs.service'
 export class ClubsController {
   constructor(@Inject(ClubsService) private readonly clubsService: ClubsService) {}
 
+  @Get()
+  @UseGuards(JwtAuthGuard)
+  list() {
+    return this.clubsService.listClubs()
+  }
+
   @Post('create')
   @HttpCode(HttpStatus.CREATED)
   @UseGuards(JwtAuthGuard)
@@ -18,5 +42,21 @@ export class ClubsController {
     @Body(new ZodValidationPipe(createClubSchema)) body: CreateClubInput
   ) {
     return this.clubsService.createClub(user.sub, body)
+  }
+
+  @Patch(':documentId')
+  @UseGuards(JwtAuthGuard)
+  update(
+    @Param('documentId', new ZodValidationPipe(uuidSchema)) documentId: string,
+    @Body(new ZodValidationPipe(updateClubSchema)) body: UpdateClubInput
+  ) {
+    return this.clubsService.updateClub(documentId, body)
+  }
+
+  @Delete(':documentId')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @UseGuards(JwtAuthGuard)
+  delete(@Param('documentId', new ZodValidationPipe(uuidSchema)) documentId: string) {
+    return this.clubsService.deleteClub(documentId)
   }
 }
