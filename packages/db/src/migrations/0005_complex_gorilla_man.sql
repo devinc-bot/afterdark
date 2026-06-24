@@ -1,1 +1,1 @@
-ALTER TABLE `clubs` ADD `owner_user_id` integer NOT NULL REFERENCES users(id);
+ALTER TABLE `clubs` ADD `owner_user_id` integer DEFAULT 0 NOT NULL REFERENCES users(id);

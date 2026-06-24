@@ -2,7 +2,7 @@ import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core'
 import { STAFF_INVITATION_STATUS, USER_ROLE } from '@afterdark/types'
 import { createBaseColumns } from './base.ts'
 import { clubs } from './club.ts'
-import { users } from './user.ts'
+import { owners } from './owner.ts'
 
 export const staffInvitations = sqliteTable('staff_invitations', {
   ...createBaseColumns('staff_invitations'),
@@ -10,9 +10,9 @@ export const staffInvitations = sqliteTable('staff_invitations', {
   clubId: integer('club_id')
     .notNull()
     .references(() => clubs.id),
-  invitedByUserId: integer('invited_by_user_id')
+  invitedByOwnerId: integer('invited_by_owner_id')
     .notNull()
-    .references(() => users.id),
+    .references(() => owners.id),
   slug: text('slug').notNull(),
   token: text('token').notNull().unique(),
   securityWordHash: text('security_word_hash'),
