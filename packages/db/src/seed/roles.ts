@@ -1,6 +1,6 @@
 import { eq } from 'drizzle-orm'
 import { USER_ROLE } from '@afterdark/types'
-import { db } from '../index.ts'
+import { db } from '../client.ts'
 import { roles } from '../schema/role.ts'
 
 const defaultRoles = [
