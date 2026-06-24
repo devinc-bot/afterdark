@@ -6,6 +6,10 @@ import {
   Button,
   Card,
   cn,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
   Switch,
   Table,
   TableBody,
@@ -13,13 +17,9 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
 } from '@afterdark/ui'
 import { STAFF_STATUS, type StaffStatus } from '@afterdark/types'
-import { Pencil } from 'lucide-react'
+import { EllipsisVertical, Pencil } from 'lucide-react'
 import { StaffUserDeactivateDialog } from '~/modules/staff/components/staff-user-deactivate-dialog'
 import { StaffUserRecordsToolbar } from '~/modules/staff/components/staff-user-records-toolbar'
 import { STAFF_COPY } from '~/modules/staff/constants/staff.copy'
@@ -34,6 +34,9 @@ type StaffUserRecordsProps = {
   records: StaffUserRecord[]
   onStatusChange: (recordId: string, status: StaffStatus) => void
 }
+
+const staffActionIconClassName = '!size-[20px] shrink-0'
+const staffActionItemClassName = 'gap-3 py-2.5 text-base'
 
 function StaffUserIdentityCell({ record }: { record: StaffUserRecord }) {
   const initials = getStaffUserInitials(record.name)
@@ -62,25 +65,31 @@ function StaffUserRoleCell({ role }: { role: StaffUserRecord['role'] }) {
   return <span className="text-sm text-ink-muted">{getStaffUserRoleLabel(role)}</span>
 }
 
-function StaffUserEditAction({ recordName }: { recordName: string }) {
+function StaffUserRecordActions({ record }: { record: StaffUserRecord }) {
   return (
-    <Tooltip>
-      <TooltipTrigger asChild>
-        <span className="inline-flex">
-          <Button
-            type="button"
-            variant="ghost"
-            size="icon"
-            className="text-ink-muted"
-            disabled
-            aria-label={`${STAFF_COPY.table.edit}: ${recordName}`}
-          >
-            <Pencil aria-hidden="true" className="size-4" />
-          </Button>
-        </span>
-      </TooltipTrigger>
-      <TooltipContent>{STAFF_COPY.table.editUnavailableTooltip}</TooltipContent>
-    </Tooltip>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button
+          type="button"
+          variant="ghost"
+          size="icon"
+          className="text-ink-muted hover:text-ink"
+          aria-label={`${STAFF_COPY.table.actions} para ${record.name}`}
+        >
+          <EllipsisVertical aria-hidden="true" />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="min-w-44 p-1.5">
+        <DropdownMenuItem
+          className={staffActionItemClassName}
+          disabled
+          title={STAFF_COPY.table.editUnavailableTooltip}
+        >
+          <Pencil aria-hidden="true" className={staffActionIconClassName} />
+          Editar
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   )
 }
 
@@ -149,8 +158,8 @@ function StaffUserRecordRow({
           onDeactivateRequest={onDeactivateRequest}
         />
       </TableCell>
-      <TableCell className="text-right p-6">
-        <StaffUserEditAction recordName={record.name} />
+      <TableCell className="p-6 text-right">
+        <StaffUserRecordActions record={record} />
       </TableCell>
     </TableRow>
   )
@@ -200,98 +209,96 @@ export function StaffUserRecords({ records, onStatusChange }: StaffUserRecordsPr
       : null
 
   return (
-    <TooltipProvider>
-      <section aria-labelledby="staff-user-records-heading">
-        <header className="py-4">
-          <div className="min-w-0">
-            <h2
-              id="staff-user-records-heading"
-              className="font-heading text-lg font-semibold text-ink sm:text-xl"
-            >
-              {STAFF_COPY.table.title}
-            </h2>
-            {registrySubtitle ? (
-              <p className="mt-1 text-sm text-ink-muted">{registrySubtitle}</p>
-            ) : null}
-          </div>
-        </header>
+    <section aria-labelledby="staff-user-records-heading">
+      <header className="py-4">
+        <div className="min-w-0">
+          <h2
+            id="staff-user-records-heading"
+            className="font-heading text-lg font-semibold text-ink sm:text-xl"
+          >
+            {STAFF_COPY.table.title}
+          </h2>
+          {registrySubtitle ? (
+            <p className="mt-1 text-sm text-ink-muted">{registrySubtitle}</p>
+          ) : null}
+        </div>
+      </header>
 
-        {records.length > 0 ? (
-          <StaffUserRecordsToolbar
-            searchQuery={searchQuery}
-            hasActiveSearch={hasActiveSearch}
-            onSearchQueryChange={setSearchQuery}
-            onClearSearch={handleClearSearch}
-          />
-        ) : null}
-
-        {records.length === 0 ? (
-          <div className="px-6 py-12 text-center">
-            <p className="font-heading text-base font-semibold text-ink">
-              {STAFF_COPY.table.emptyTitle}
-            </p>
-            <p className="mx-auto mt-2 max-w-sm text-sm text-ink-muted">
-              {STAFF_COPY.table.emptyDescription}
-            </p>
-          </div>
-        ) : (
-          <>
-            {visibleRecords.length === 0 ? (
-              <div className="px-6 py-12 text-center">
-                <p className="font-heading text-base font-semibold text-ink">
-                  {STAFF_COPY.table.noResultsTitle}
-                </p>
-                <p className="mx-auto mt-2 max-w-sm text-sm text-ink-muted">
-                  {STAFF_COPY.table.noResultsDescription}
-                </p>
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  className="mt-4"
-                  onClick={handleClearSearch}
-                >
-                  {STAFF_COPY.table.search.clear}
-                </Button>
-              </div>
-            ) : null}
-
-            {visibleRecords.length > 0 ? (
-              <Card variant="gradient">
-                <Table variant="compact">
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead className="p-6">{STAFF_COPY.table.name}</TableHead>
-                      <TableHead className="p-6">{STAFF_COPY.table.venue}</TableHead>
-                      <TableHead className="p-6">{STAFF_COPY.table.role}</TableHead>
-                      <TableHead className="p-6">{STAFF_COPY.table.lastActive}</TableHead>
-                      <TableHead className="p-6">{STAFF_COPY.table.status}</TableHead>
-                      <TableHead className="text-right p-6">{STAFF_COPY.table.actions}</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {visibleRecords.map((record) => (
-                      <StaffUserRecordRow
-                        key={record.id}
-                        record={record}
-                        onActivate={handleActivate}
-                        onDeactivateRequest={handleDeactivateRequest}
-                      />
-                    ))}
-                  </TableBody>
-                </Table>
-              </Card>
-            ) : null}
-          </>
-        )}
-
-        <StaffUserDeactivateDialog
-          record={deactivateTarget}
-          open={deactivateDialogOpen}
-          onOpenChange={setDeactivateDialogOpen}
-          onConfirm={handleDeactivateConfirm}
+      {records.length > 0 ? (
+        <StaffUserRecordsToolbar
+          searchQuery={searchQuery}
+          hasActiveSearch={hasActiveSearch}
+          onSearchQueryChange={setSearchQuery}
+          onClearSearch={handleClearSearch}
         />
-      </section>
-    </TooltipProvider>
+      ) : null}
+
+      {records.length === 0 ? (
+        <div className="px-6 py-12 text-center">
+          <p className="font-heading text-base font-semibold text-ink">
+            {STAFF_COPY.table.emptyTitle}
+          </p>
+          <p className="mx-auto mt-2 max-w-sm text-sm text-ink-muted">
+            {STAFF_COPY.table.emptyDescription}
+          </p>
+        </div>
+      ) : (
+        <>
+          {visibleRecords.length === 0 ? (
+            <div className="px-6 py-12 text-center">
+              <p className="font-heading text-base font-semibold text-ink">
+                {STAFF_COPY.table.noResultsTitle}
+              </p>
+              <p className="mx-auto mt-2 max-w-sm text-sm text-ink-muted">
+                {STAFF_COPY.table.noResultsDescription}
+              </p>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                className="mt-4"
+                onClick={handleClearSearch}
+              >
+                {STAFF_COPY.table.search.clear}
+              </Button>
+            </div>
+          ) : null}
+
+          {visibleRecords.length > 0 ? (
+            <Card variant="gradient">
+              <Table variant="compact">
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="p-6">{STAFF_COPY.table.name}</TableHead>
+                    <TableHead className="p-6">{STAFF_COPY.table.venue}</TableHead>
+                    <TableHead className="p-6">{STAFF_COPY.table.role}</TableHead>
+                    <TableHead className="p-6">{STAFF_COPY.table.lastActive}</TableHead>
+                    <TableHead className="p-6">{STAFF_COPY.table.status}</TableHead>
+                    <TableHead className="text-right p-6">{STAFF_COPY.table.actions}</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {visibleRecords.map((record) => (
+                    <StaffUserRecordRow
+                      key={record.id}
+                      record={record}
+                      onActivate={handleActivate}
+                      onDeactivateRequest={handleDeactivateRequest}
+                    />
+                  ))}
+                </TableBody>
+              </Table>
+            </Card>
+          ) : null}
+        </>
+      )}
+
+      <StaffUserDeactivateDialog
+        record={deactivateTarget}
+        open={deactivateDialogOpen}
+        onOpenChange={setDeactivateDialogOpen}
+        onConfirm={handleDeactivateConfirm}
+      />
+    </section>
   )
 }
