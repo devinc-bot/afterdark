@@ -1,4 +1,5 @@
 import {
+  cn,
   matchesSidebarNavHref,
   Sidebar,
   SidebarContent,
@@ -81,7 +82,9 @@ function resolveMobileHeaderTitle(pathname: string, items: AppShellNavItem[]): s
   return match?.label ?? APP_SHELL_COPY.mobileFallbackTitle
 }
 
-const navMenuButtonClassName = 'gap-3'
+const navMenuButtonClassName = 'gap-3 rounded-none border-l border-l-hairline'
+
+const navMenuButtonClassNameActive = 'gap-3 rounded-none border-l-2 border-primary'
 
 function AppShellNavIcon({ icon }: { icon: ReactNode }) {
   return (
@@ -143,7 +146,7 @@ function AppShellNavMenu({
             <SidebarMenuButton
               asChild
               size="lg"
-              className={navMenuButtonClassName}
+              className={cn(navMenuButtonClassName, isActive && navMenuButtonClassNameActive)}
               isActive={isActive}
               tooltip={item.title}
             >
@@ -220,7 +223,7 @@ function AppShellLayout({ children }: { children: React.ReactNode }) {
         </SidebarHeader>
 
         <SidebarContent>
-          <SidebarGroup>
+          <SidebarGroup className="px-0">
             <SidebarGroupContent>
               <AppShellNavMenu
                 items={primaryNav}
@@ -231,7 +234,7 @@ function AppShellLayout({ children }: { children: React.ReactNode }) {
           </SidebarGroup>
         </SidebarContent>
 
-        <SidebarFooter className="gap-4">
+        <SidebarFooter className="gap-4 px-0">
           <AppShellSidebarFooter
             user={user}
             isLoading={isLoading}

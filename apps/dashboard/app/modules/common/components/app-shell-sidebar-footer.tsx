@@ -88,14 +88,15 @@ export function AppShellSidebarFooter({
     APP_SHELL_COPY.user.profileLinkLabel
   )
 
+  const selectedItemClassName = 'bg-surface-container text-ink border-l-2 border-primary'
+  const itemClassName = 'text-ink hover:bg-surface-container/70'
+
   return (
     <Link
       to={settingsHref}
       className={cn(
-        'flex min-w-0 items-center gap-3 rounded-md px-2 py-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/25 motion-reduce:transition-none',
-        isSettingsActive
-          ? 'bg-surface-container text-ink'
-          : 'text-ink hover:bg-surface-container/70',
+        'flex min-w-0 items-center gap-3 px-2 py-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/25 motion-reduce:transition-none',
+        isSettingsActive ? selectedItemClassName : itemClassName,
         isLoading && 'pointer-events-none opacity-70'
       )}
       aria-label={profileAriaLabel}
