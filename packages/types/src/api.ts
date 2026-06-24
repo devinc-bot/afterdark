@@ -1,4 +1,10 @@
-import type { ClubStatus, OwnerStatus, StaffInvitationStatus, UserRole } from './domain.ts'
+import type {
+  ClubStatus,
+  OwnerStatus,
+  StaffInvitationStatus,
+  StaffStatus,
+  UserRole,
+} from './domain.ts'
 
 export interface ApiResponse<T> {
   data: T
@@ -84,4 +90,16 @@ export interface CreateStaffInvitationResponse {
   role: UserRole
   createdAt: Date
   updatedAt: Date
+}
+
+export interface StaffPersonnelItem {
+  documentId: string
+  name: string
+  email: string
+  clubId: string
+  clubName: string
+  role: UserRole
+  status: StaffStatus
+  avatar: string | null
+  lastActiveAt: Date
 }

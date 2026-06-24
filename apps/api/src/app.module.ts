@@ -9,6 +9,7 @@ import { InvitationsModule } from './modules/invitations'
 import { OrdersModule } from './modules/orders'
 import { OwnerModule } from './modules/owner'
 import { SessionModule } from './modules/session'
+import { StaffModule } from './modules/staff'
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { SessionModule } from './modules/session'
     OrdersModule,
     OwnerModule,
     SessionModule,
+    StaffModule,
   ],
   controllers: [AppController],
 })
