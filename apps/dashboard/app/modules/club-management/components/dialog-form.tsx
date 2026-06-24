@@ -10,6 +10,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
+  fieldErrorMessage,
   Input,
   Label,
   Select,
@@ -54,16 +55,6 @@ const fieldLabelClassName =
   'font-label text-xs font-semibold uppercase tracking-label-xs text-ink-muted'
 
 const fieldErrorMessageClassName = 'text-xs text-error'
-
-function fieldErrorMessage(errors: ReadonlyArray<unknown>): string | null {
-  const [first] = errors
-  if (!first) return null
-  if (typeof first === 'string') return first
-  if (typeof first === 'object' && 'message' in first) {
-    return String((first as { message: unknown }).message)
-  }
-  return null
-}
 
 function sanitizeNonNegativeDigits(value: string): string {
   return value.replace(/\D/g, '')

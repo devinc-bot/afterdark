@@ -1,18 +1,9 @@
 import { useForm } from '@tanstack/react-form'
 import { Link } from '@tanstack/react-router'
 import { loginSchema } from '@afterdark/validators'
+import { fieldErrorMessage } from '@afterdark/ui'
 import { WEB_ROUTES } from '../../common/constants/routes'
 import { useLogin } from '../mutations/use-auth-mutations'
-
-function fieldErrorMessage(errors: ReadonlyArray<unknown>): string | null {
-  const [first] = errors
-  if (!first) return null
-  if (typeof first === 'string') return first
-  if (typeof first === 'object' && 'message' in first) {
-    return String((first as { message: unknown }).message)
-  }
-  return null
-}
 
 export function LoginForm() {
   const login = useLogin()

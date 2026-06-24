@@ -1,4 +1,5 @@
 export { cn } from './lib/utils'
+export { fieldErrorMessage } from './lib/form-field.utils'
 
 export { Badge, badgeVariants, type BadgeProps } from './components/ui/badge.tsx'
 export { Avatar, AvatarFallback, AvatarImage } from './components/ui/avatar.tsx'

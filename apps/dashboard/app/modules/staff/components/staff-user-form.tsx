@@ -6,15 +6,13 @@ import {
   DialogClose,
   DialogFooter,
   Field,
+  fieldErrorMessage,
   Input,
   SelectField,
   SelectItem,
   toast,
 } from '@afterdark/ui'
-import {
-  STAFF_CLUB_OPTIONS,
-  getStaffClubLabel,
-} from '~/modules/staff/constants/staff-clubs.constants'
+import { useClubs } from '~/modules/club-management/queries/use-club-management-queries'
 import { STAFF_COPY } from '~/modules/staff/constants/staff.copy'
 import {
   STAFF_USER_AVATAR_TONE,
@@ -34,14 +32,43 @@ const EMPTY_STAFF_INVITATION_FORM_VALUES: CreateStaffInvitationInput = {
   securityWord: '',
 }
 
-function fieldErrorMessage(errors: ReadonlyArray<unknown>): string | null {
-  const [first] = errors
-  if (!first) return null
-  if (typeof first === 'string') return first
-  if (typeof first === 'object' && 'message' in first) {
-    return String((first as { message: unknown }).message)
+type ClubSelectFieldDisplayInput = {
+  isLoading: boolean
+  isError: boolean
+  clubCount: number
+  fieldError: string | null
+}
+
+type ClubSelectFieldDisplay = {
+  placeholder: string
+  error: string | undefined
+}
+
+function getClubSelectFieldDisplay({
+  isLoading,
+  isError,
+  clubCount,
+  fieldError,
+}: ClubSelectFieldDisplayInput): ClubSelectFieldDisplay {
+  if (isLoading) {
+    return { placeholder: STAFF_COPY.form.clubLoading, error: fieldError ?? undefined }
   }
-  return null
+
+  if (isError) {
+    return {
+      placeholder: STAFF_COPY.form.clubPlaceholder,
+      error: STAFF_COPY.form.clubsLoadError,
+    }
+  }
+
+  if (clubCount === 0) {
+    return { placeholder: STAFF_COPY.form.clubEmpty, error: fieldError ?? undefined }
+  }
+
+  return {
+    placeholder: STAFF_COPY.form.clubPlaceholder,
+    error: fieldError ?? undefined,
+  }
 }
 
 export type StaffInvitationResult = {
@@ -54,6 +81,8 @@ type StaffUserFormProps = {
 }
 
 export function StaffUserForm({ onInvite }: StaffUserFormProps) {
+  const { data: clubs = [], isLoading: isClubsLoading, isError: isClubsError } = useClubs()
+
   const form = useForm({
     defaultValues: EMPTY_STAFF_INVITATION_FORM_VALUES,
     validators: {
@@ -71,7 +100,7 @@ export function StaffUserForm({ onInvite }: StaffUserFormProps) {
         name: getStaffUserDisplayNameFromEmail(value.email),
         email: value.email,
         clubId: value.clubId,
-        clubName: getStaffClubLabel(value.clubId),
+        clubName: clubs.find((club) => club.documentId === value.clubId)?.name ?? value.clubId,
         role: USER_ROLE.STAFF,
         lastActiveLabel: STAFF_COPY.invitation.pending,
         lastActiveAt: Date.now(),
@@ -129,18 +158,26 @@ export function StaffUserForm({ onInvite }: StaffUserFormProps) {
           >
             {(field) => {
               const error = fieldErrorMessage(field.state.meta.errors)
+              const { placeholder: clubPlaceholder, error: clubFieldError } =
+                getClubSelectFieldDisplay({
+                  isLoading: isClubsLoading,
+                  isError: isClubsError,
+                  clubCount: clubs.length,
+                  fieldError: error,
+                })
 
               return (
                 <SelectField
                   label={STAFF_COPY.form.club}
                   value={field.state.value || undefined}
                   onValueChange={(value) => field.handleChange(value)}
-                  placeholder={STAFF_COPY.form.clubPlaceholder}
-                  error={error ?? undefined}
+                  placeholder={clubPlaceholder}
+                  error={clubFieldError}
+                  disabled={isClubsLoading || clubs.length === 0}
                 >
-                  {STAFF_CLUB_OPTIONS.map((club) => (
-                    <SelectItem key={club.id} value={club.id}>
-                      {club.label}
+                  {clubs.map((club) => (
+                    <SelectItem key={club.documentId} value={club.documentId}>
+                      {club.name}
                     </SelectItem>
                   ))}
                 </SelectField>
