@@ -12,7 +12,7 @@ The monorepo hosts two full-stack SSR applications and a REST API that share int
 | ----------- | ---------------------------------------------- | ---- |
 | `web`       | Public webfront — catalog and product detail   | 3001 |
 | `dashboard` | Admin panel — catalog and inventory management | 3002 |
-| `api`       | Backend REST API — NestJS + TypeORM            | 3000 |
+| `api`       | Backend REST API — NestJS + Drizzle              | 3000 |
 
 ---
 
@@ -128,12 +128,16 @@ afterdark/
     ├── db/                     # Drizzle data layer (Turso / libSQL)
     │   └── src/
     │       ├── schema/
-    │       │   ├── base.ts     # baseColumns: id (UUID), createdAt, updatedAt
+    │       │   ├── base.ts     # createBaseColumns: id, documentId, timestamps
     │       │   ├── user.ts
-    │       │   └── property.ts
+    │       │   └── club.ts
+    │       ├── repositories/   # DB access functions (queries, writes, transactions)
+    │       │   ├── clubs.repository.ts
+    │       │   └── index.ts
     │       ├── config/
     │       │   └── env.server.ts        # serverEnv (validated process.env)
-    │       └── index.ts                 # db client (drizzle + @libsql/client)
+    │       ├── client.ts                # db client (drizzle + @libsql/client)
+    │       └── index.ts                 # re-exports client, schema, repositories
     │
     ├── validators/             # Shared Zod schemas
     │   └── src/
@@ -172,14 +176,17 @@ afterdark/
 
 #### Database conventions
 
-- Schemas live in `packages/db/src/schema/` (`sqliteTable`) — the API consumes them via `@afterdark/db`.
+- Schemas live in `packages/db/src/schema/` (`sqliteTable`) — table definitions and `*Select` / `*Insert` types.
+- **Repositories** live in `packages/db/src/repositories/` — all Drizzle queries and writes used by `apps/api` belong here, not in NestJS services.
+- The API imports repositories (and types) from `@afterdark/db`; services orchestrate business rules and HTTP exceptions only.
 - In development, `drizzle-kit push` may sync schema changes; for production prefer migrations.
 
 #### API conventions
 
-- Use contracts from `@repo/shared`, never duplicate request/response shapes locally.
+- Use contracts from `@afterdark/types` and `@afterdark/validators`, never duplicate request/response shapes locally.
 - Keep validation at controller boundary with Zod schemas.
 - Keep business logic in services, not controllers.
+- Keep **database access** in `@afterdark/db` repositories, not services.
 - Avoid logging secrets/tokens/plain passwords.
 
 ---
@@ -355,7 +362,25 @@ export default {
 
 ### `@afterdark/db`
 
-Entities extend `BaseAppEntity` (UUID PK, `createdAt`, `updatedAt`). `reflect-metadata` is imported once in `packages/db/src/index.ts`. `synchronize: true` in development only — use migrations in production.
+Drizzle ORM over Turso/libSQL. Package layout:
+
+| Path | Responsibility |
+| ---- | -------------- |
+| `src/client.ts` | `db` singleton and `Transaction` type |
+| `src/schema/` | Table definitions (`sqliteTable`), column types |
+| `src/repositories/` | Pure functions for queries, inserts, updates, and transactions |
+| `src/migrations/` | SQL migrations (`drizzle-kit`) |
+| `src/index.ts` | Re-exports `db`, schema, and repositories |
+
+**Repository rules:**
+
+- One file per aggregate or bounded context: `<name>.repository.ts` (e.g. `clubs.repository.ts`, `owners.repository.ts`).
+- Export named functions (no NestJS, no HTTP exceptions). Return `null` when a row is missing; let the API service map that to `NotFoundException`, etc.
+- Accept plain data shapes or schema-derived types — avoid importing NestJS or API-layer code.
+- Use `db` from `client.ts` inside repositories; use `Transaction` for operations composed in `db.transaction()`.
+- Export new functions from `repositories/index.ts` so consumers can `import { findClubByDocumentId } from '@afterdark/db'`.
+
+Use migrations in production; `drizzle-kit push` is for local dev only.
 
 ### `@afterdark/validators`
 
@@ -390,12 +415,20 @@ Validation (Zod) runs at startup:
 
 ### New entity
 
-1. `packages/db/src/entities/<name>.entity.ts` — extend `BaseAppEntity`
-2. Register in `AppDataSource` entities array
-3. `packages/db/src/repositories/<name>.repository.ts`
-4. Export from `entities/index.ts` and `repositories/index.ts`
-5. `packages/validators/src/<name>.ts` — Zod schemas
-6. `packages/types/src/domain.ts` — TypeScript interfaces
+1. `packages/db/src/schema/<name>.ts` — `sqliteTable` + `*Select` / `*Insert` types (see `createBaseColumns` in `base.ts`)
+2. Export from `packages/db/src/schema/index.ts`
+3. `pnpm db:generate` + `pnpm db:migrate` (from `packages/db`)
+4. `packages/db/src/repositories/<name>.repository.ts` — queries and writes for the new table
+5. Export from `packages/db/src/repositories/index.ts`
+6. `packages/validators/src/<name>.ts` — Zod schemas
+7. `packages/types/src/domain.ts` — TypeScript interfaces
+8. `apps/api/src/modules/<name>/` — NestJS module; service calls repositories, maps errors to HTTP
+
+### New API endpoint (existing entity)
+
+1. Add or extend functions in the matching `packages/db/src/repositories/<name>.repository.ts`
+2. Call them from `apps/api/src/modules/<name>/<name>.service.ts`
+3. Expose via controller + Zod pipe; do not query `db` directly from the service
 
 ### New module
 

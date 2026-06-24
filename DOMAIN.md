@@ -60,9 +60,10 @@ Domain interfaces and enums are defined in `@afterdark/types`:
 
 ### Data integrity
 
-- Entity IDs are UUIDs — never use auto-increment integers.
+- Entity `documentId` values are UUIDs exposed in API/JWT; internal `id` columns are integers for FK joins.
 - Forms validate against Zod schemas from `@afterdark/validators` before persisting.
-- In development, TypeORM `synchronize: true` is allowed; production requires migrations.
+- Database access from `apps/api` goes through `packages/db/src/repositories/`; do not query `db` directly in NestJS services.
+- In development, `drizzle-kit push` may sync schema locally; production requires migrations (`drizzle-kit generate` + `migrate`).
 
 ### App responsibilities
 

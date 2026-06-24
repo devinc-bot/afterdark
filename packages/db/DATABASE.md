@@ -1,6 +1,6 @@
 # DATABASE.md — afterdark
 
-Documentación del esquema de base de datos del monorepo **afterdark**, alineada con `packages/db/src/schema/`.
+Documentación del esquema y la capa de acceso a datos del monorepo **afterdark**, alineada con `packages/db/src/schema/` y `packages/db/src/repositories/`.
 
 ---
 
@@ -11,12 +11,13 @@ Documentación del esquema de base de datos del monorepo **afterdark**, alineada
 | Motor       | SQLite (libSQL)                                                         |
 | Hosting     | [Turso](https://turso.tech/) en producción; archivo local en desarrollo |
 | ORM         | [Drizzle ORM](https://orm.drizzle.team/)                                |
-| Paquete     | `@afterdark/db`                                                         |
-| Schemas     | `packages/db/src/schema/`                                               |
-| Migraciones | `packages/db/src/migrations/`                                           |
-| Tablas      | 22                                                                      |
+| Paquete       | `@afterdark/db`                                                         |
+| Schemas       | `packages/db/src/schema/`                                               |
+| Repositorios  | `packages/db/src/repositories/`                                       |
+| Migraciones   | `packages/db/src/migrations/`                                           |
+| Tablas        | 22                                                                      |
 
-La API (`apps/api`) importa el cliente y los schemas desde `@afterdark/db`. No hay capa TypeORM ni entidades con decoradores.
+La API (`apps/api`) importa **repositorios**, tipos y el cliente desde `@afterdark/db`. Las consultas Drizzle viven en `repositories/`; los servicios NestJS solo orquestan reglas de negocio y excepciones HTTP. No hay TypeORM ni entidades con decoradores.
 
 ---
 
@@ -469,7 +470,47 @@ Definidas en `packages/validators/src/database.ts`:
 
 ---
 
+## Repositorios
+
+Capa de acceso a datos en `src/repositories/`. Cada archivo agrupa las operaciones Drizzle de un dominio:
+
+| Archivo | Responsabilidad |
+| ------- | --------------- |
+| `accounts.repository.ts` | Cuentas (`accounts`), búsqueda por email, join con roles |
+| `auth.repository.ts` | Registro de cuenta + perfil, login lookup compuesto |
+| `clubs.repository.ts` | CRUD de clubes con dirección (transacciones) |
+| `owners.repository.ts` | Perfiles owner, actualización, invitador |
+| `staff.repository.ts` | Perfiles staff |
+| `users.repository.ts` | Perfiles user |
+| `roles.repository.ts` | Roles por nombre |
+| `staff-invitations.repository.ts` | Alta de invitaciones staff |
+
+**Convenciones:**
+
+- Funciones exportadas con nombre (`findClubByDocumentId`, `createClubWithAddress`, …).
+- Sin dependencias de NestJS ni excepciones HTTP — devolver `null` o lanzar `Error` genérico en fallos de persistencia inesperados.
+- El servicio en `apps/api` traduce `null` → `NotFoundException`, etc.
+- Tipos de entrada/salida del repositorio pueden definirse en el mismo archivo (`ClubUpsertInput`, `OwnerProfileRow`, …).
+- Nuevas funciones: exportar en `repositories/index.ts` (re-exportadas por `src/index.ts`).
+
+**Cliente:** `src/client.ts` exporta `db` y `Transaction`. Los repositorios importan desde ahí para evitar dependencias circulares con `index.ts`.
+
+---
+
 ## Uso en código
+
+### API (`apps/api`) — preferir repositorios
+
+```ts
+import { findClubByDocumentId, createClubWithAddress } from '@afterdark/db'
+
+const club = await findClubByDocumentId(documentId)
+if (!club) throw new NotFoundException(CLUB_MESSAGE.NOT_FOUND)
+
+const row = await createClubWithAddress(ownerId, input)
+```
+
+### Acceso directo a `db` (seeds, scripts, casos excepcionales)
 
 ```ts
 import { db, users, clubs, staffInvitations } from '@afterdark/db'
@@ -482,18 +523,19 @@ const [user] = await db.select().from(users).where(eq(users.documentId, document
 const [club] = await db
   .select()
   .from(clubs)
-  .where(and(eq(clubs.documentId, clubDocumentId), eq(clubs.ownerUserId, user.id)))
+  .where(and(eq(clubs.documentId, clubDocumentId), eq(clubs.ownerId, owner.id)))
   .limit(1)
 ```
 
-Transacciones: tipo `Transaction` exportado desde `@afterdark/db`.
+Transacciones: tipo `Transaction` exportado desde `@afterdark/db`. Los repositorios que componen varias escrituras encapsulan `db.transaction()` internamente o aceptan `tx: Transaction` como parámetro.
 
 ---
 
 ## Referencias
 
-- [ARCHITECTURE.md](../../ARCHITECTURE.md) — capa de datos y paquetes
+- [ARCHITECTURE.md](../../ARCHITECTURE.md) — capa de datos, repositorios y paquetes
 - [DOMAIN.md](../../DOMAIN.md) — reglas de negocio y lenguaje de UI
 - [AGENTS.md](../../AGENTS.md) — comandos y gotchas de Drizzle
 - Schemas fuente: `src/schema/`
+- Repositorios: `src/repositories/`
 - Enums de dominio: `packages/types/src/domain.ts`

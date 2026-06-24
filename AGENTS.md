@@ -13,6 +13,7 @@ Read the relevant doc before making changes:
 | [ARCHITECTURE.md](./ARCHITECTURE.md) | Project structure, modules, routes, layers, packages |
 | [STYLEGUIDE.md](./STYLEGUIDE.md)     | Naming, constants, dependencies, lint/format         |
 | [DOMAIN.md](./DOMAIN.md)             | Business context, entities, validation, UI language  |
+| [packages/db/DATABASE.md](./packages/db/DATABASE.md) | Schema, migrations, repositories           |
 
 ---
 
@@ -60,6 +61,7 @@ pnpm dlx shadcn@latest add table
 ## Framework gotchas
 
 - **Drizzle schemas** are plain TypeScript in `packages/db/src/schema/` — use `sqliteTable` (Turso/libSQL); no decorators or `reflect-metadata`.
+- **Repositories** — all Drizzle queries used by `apps/api` live in `packages/db/src/repositories/`. NestJS services call repository functions from `@afterdark/db`; do not import `db` directly in API services unless adding a new repository first.
 - **Tailwind v4** has a different config format than v3 — consult the [v4 docs](https://tailwindcss.com/docs) before making changes.
 - **Zod v4** has breaking changes from v3 — consult the [migration guide](https://zod.dev/v4) before modifying validators.
 - **Drizzle migrations** use `drizzle-kit` — generate and run SQL migrations for schema changes; do not rely on auto-sync in production.
@@ -73,6 +75,7 @@ pnpm dlx shadcn@latest add table
 | Task                 | Start here                                                                   |
 | -------------------- | ---------------------------------------------------------------------------- |
 | New entity           | [ARCHITECTURE.md → New entity](./ARCHITECTURE.md#new-entity)                 |
+| New DB query in API  | `packages/db/src/repositories/<entity>.repository.ts` → export in `index.ts` |
 | New feature module   | [ARCHITECTURE.md → New module](./ARCHITECTURE.md#new-module)                 |
 | New ShadCN component | [ARCHITECTURE.md → New shared UI](./ARCHITECTURE.md#new-shared-ui-component) |
 | New validation rule  | `packages/validators/src/<module>.ts`                                        |
