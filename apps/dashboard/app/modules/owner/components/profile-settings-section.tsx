@@ -1,16 +1,15 @@
 import { Button, Field, Input, Label } from '@afterdark/ui'
-import { SETTINGS_COPY } from '~/modules/settings/constants/settings.copy'
-import { SettingsSection } from '~/modules/settings/components/settings-section'
-import { useSettingsForm } from '~/modules/settings/hooks/settings-form-context'
+import { SETTINGS_COPY } from '~/modules/owner/constants/settings.copy'
+import { SettingsSection } from '~/modules/owner/components/settings-section'
+import { useSettingsForm } from '~/modules/owner/hooks/settings-form-context'
 
 export function ProfileSettingsSection() {
-  const { user, values, errors, setProfileField, setProfileAddressField } = useSettingsForm()
+  const { user, values, errors, setProfileField } = useSettingsForm()
   const avatarSrc = user.avatar
   const avatarLabel =
     `${values.profile.name} ${values.profile.lastName}`.trim() ||
     user.email ||
     SETTINGS_COPY.profile.avatarFallback
-  const addressErrors = errors.profile?.address
 
   return (
     <SettingsSection title={SETTINGS_COPY.sections.profile}>
@@ -154,83 +153,6 @@ export function ProfileSettingsSection() {
               value={values.profile.taxId}
               onChange={(event) => setProfileField('taxId', event.target.value)}
               aria-invalid={errors.profile?.taxId ? true : undefined}
-            />
-          </Field>
-
-          <Label variant="field" className="col-span-6 border-t border-hairline/60 pt-4">
-            {SETTINGS_COPY.profile.addressSection}
-          </Label>
-
-          <Field
-            label={SETTINGS_COPY.profile.address}
-            htmlFor="settings-address-line"
-            error={addressErrors?.address ?? null}
-            className="col-span-4"
-          >
-            <Input
-              id="settings-address-line"
-              name="addressLine"
-              type="text"
-              autoComplete="street-address"
-              maxLength={255}
-              value={values.profile.address.address}
-              onChange={(event) => setProfileAddressField('address', event.target.value)}
-              aria-invalid={addressErrors?.address ? true : undefined}
-            />
-          </Field>
-
-          <Field
-            label={SETTINGS_COPY.profile.streetNumber}
-            htmlFor="settings-street-number"
-            error={addressErrors?.streetNumber ?? null}
-            className="col-span-2"
-          >
-            <Input
-              id="settings-street-number"
-              name="streetNumber"
-              type="text"
-              inputMode="numeric"
-              autoComplete="off"
-              maxLength={20}
-              value={values.profile.address.streetNumber}
-              onChange={(event) => setProfileAddressField('streetNumber', event.target.value)}
-              aria-invalid={addressErrors?.streetNumber ? true : undefined}
-            />
-          </Field>
-
-          <Field
-            label={SETTINGS_COPY.profile.city}
-            htmlFor="settings-address-city"
-            error={addressErrors?.city ?? null}
-            className="col-span-3"
-          >
-            <Input
-              id="settings-address-city"
-              name="city"
-              type="text"
-              autoComplete="address-level2"
-              maxLength={100}
-              value={values.profile.address.city}
-              onChange={(event) => setProfileAddressField('city', event.target.value)}
-              aria-invalid={addressErrors?.city ? true : undefined}
-            />
-          </Field>
-
-          <Field
-            label={SETTINGS_COPY.profile.state}
-            htmlFor="settings-address-state"
-            error={addressErrors?.state ?? null}
-            className="col-span-3"
-          >
-            <Input
-              id="settings-address-state"
-              name="state"
-              type="text"
-              autoComplete="address-level1"
-              maxLength={100}
-              value={values.profile.address.state}
-              onChange={(event) => setProfileAddressField('state', event.target.value)}
-              aria-invalid={addressErrors?.state ? true : undefined}
             />
           </Field>
 

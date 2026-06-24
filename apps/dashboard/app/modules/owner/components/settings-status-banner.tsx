@@ -3,8 +3,8 @@ import {
   SETTINGS_STATUS_BANNER_ARIA_LIVE,
   SETTINGS_STATUS_BANNER_ROLE,
   type SettingsSaveStatus,
-} from '~/modules/settings/constants/settings-form'
-import { useSettingsForm } from '~/modules/settings/hooks/settings-form-context'
+} from '~/modules/owner/constants/settings-form'
+import { useSettingsForm } from '~/modules/owner/hooks/settings-form-context'
 
 function getStatusBannerTone(saveStatus: SettingsSaveStatus): string {
   if (saveStatus === SETTINGS_SAVE_STATUS.SUCCESS) {

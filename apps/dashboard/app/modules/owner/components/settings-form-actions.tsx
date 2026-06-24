@@ -1,7 +1,7 @@
 import { Button } from '@afterdark/ui'
-import { SETTINGS_COPY } from '~/modules/settings/constants/settings.copy'
-import { SETTINGS_FORM_ID, SETTINGS_SAVE_STATUS } from '~/modules/settings/constants/settings-form'
-import { useSettingsForm } from '~/modules/settings/hooks/settings-form-context'
+import { SETTINGS_COPY } from '~/modules/owner/constants/settings.copy'
+import { SETTINGS_FORM_ID, SETTINGS_SAVE_STATUS } from '~/modules/owner/constants/settings-form'
+import { useSettingsForm } from '~/modules/owner/hooks/settings-form-context'
 
 export function SettingsFormActions() {
   const { isDirty, saveStatus, discard } = useSettingsForm()

@@ -1,5 +1,5 @@
 import { Button, Loader } from '@afterdark/ui'
-import { SETTINGS_COPY } from '~/modules/settings/constants/settings.copy'
+import { SETTINGS_COPY } from '~/modules/owner/constants/settings.copy'
 
 export function SettingsFormSkeleton() {
   return (

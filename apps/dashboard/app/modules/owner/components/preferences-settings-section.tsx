@@ -8,11 +8,11 @@ import {
   SelectValue,
 } from '@afterdark/ui'
 import type { SettingsFormValues } from '@afterdark/validators'
-import { SETTINGS_COPY } from '~/modules/settings/constants/settings.copy'
-import { LANGUAGE_OPTIONS, NOTIFICATION_OPTIONS } from '~/modules/settings/constants/settings.mock'
-import { NOTIFICATION_FIELD_BY_ID } from '~/modules/settings/constants/settings-form'
-import { SettingsSection } from '~/modules/settings/components/settings-section'
-import { useSettingsForm } from '~/modules/settings/hooks/settings-form-context'
+import { SETTINGS_COPY } from '~/modules/owner/constants/settings.copy'
+import { LANGUAGE_OPTIONS, NOTIFICATION_OPTIONS } from '~/modules/owner/constants/settings.mock'
+import { NOTIFICATION_FIELD_BY_ID } from '~/modules/owner/constants/settings-form'
+import { SettingsSection } from '~/modules/owner/components/settings-section'
+import { useSettingsForm } from '~/modules/owner/hooks/settings-form-context'
 
 export function PreferencesSettingsSection() {
   const { values, errors, setLanguage, setNotification } = useSettingsForm()

@@ -1,7 +1,7 @@
 import { Field, Input } from '@afterdark/ui'
-import { SETTINGS_COPY } from '~/modules/settings/constants/settings.copy'
-import { SettingsSection } from '~/modules/settings/components/settings-section'
-import { useSettingsForm } from '~/modules/settings/hooks/settings-form-context'
+import { SETTINGS_COPY } from '~/modules/owner/constants/settings.copy'
+import { SettingsSection } from '~/modules/owner/components/settings-section'
+import { useSettingsForm } from '~/modules/owner/hooks/settings-form-context'
 
 export function OrganizationSettingsSection() {
   const { values, errors, setOrganizationField } = useSettingsForm()

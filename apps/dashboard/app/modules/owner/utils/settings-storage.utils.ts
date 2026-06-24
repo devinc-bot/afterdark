@@ -3,10 +3,10 @@ import {
   type SettingsFormValues,
   type SettingsStoredValues,
 } from '@afterdark/validators'
-import type { CurrentUserResponse } from '@afterdark/types'
-import { SETTINGS_STORAGE_KEY } from '~/modules/settings/constants/settings-form'
-import { NOTIFICATION_FIELD_BY_ID } from '~/modules/settings/constants/settings-form'
-import { NOTIFICATION_OPTIONS } from '~/modules/settings/constants/settings.mock'
+import type { CurrentOwnerResponse } from '@afterdark/types'
+import { SETTINGS_STORAGE_KEY } from '~/modules/owner/constants/settings-form'
+import { NOTIFICATION_FIELD_BY_ID } from '~/modules/owner/constants/settings-form'
+import { NOTIFICATION_OPTIONS } from '~/modules/owner/constants/settings.mock'
 
 function defaultNotifications(): SettingsStoredValues['preferences']['notifications'] {
   const notifications: SettingsStoredValues['preferences']['notifications'] = {
@@ -40,7 +40,7 @@ export function createDefaultStoredSettings(): SettingsStoredValues {
   }
 }
 
-export function createSettingsFormValues(user: CurrentUserResponse): SettingsFormValues {
+export function createSettingsFormValues(user: CurrentOwnerResponse): SettingsFormValues {
   const stored = loadStoredSettings()
 
   return {
@@ -51,12 +51,6 @@ export function createSettingsFormValues(user: CurrentUserResponse): SettingsFor
       birthday: user.birthday ?? '',
       nationalId: user.nationalId ?? '',
       taxId: user.taxId ?? '',
-      address: {
-        address: user.address?.address ?? '',
-        streetNumber: user.address?.streetNumber ?? '',
-        state: user.address?.state ?? '',
-        city: user.address?.city ?? '',
-      },
     },
     organization: stored.organization,
     security: stored.security,

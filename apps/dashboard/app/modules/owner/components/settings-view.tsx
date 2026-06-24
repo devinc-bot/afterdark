@@ -1,18 +1,15 @@
 import { FormLayout } from '@afterdark/ui'
-import { useSession } from '~/modules/common/hooks/use-session'
-import { ProfileSettingsSection } from '~/modules/settings/components/profile-settings-section'
-import { SettingsFormActions } from '~/modules/settings/components/settings-form-actions'
+import { useCurrentOwner } from '~/modules/common/queries/use-current-user'
+import { ProfileSettingsSection } from '~/modules/owner/components/profile-settings-section'
+import { SettingsFormActions } from '~/modules/owner/components/settings-form-actions'
 import {
   SettingsFormSkeleton,
   SettingsLoadError,
-} from '~/modules/settings/components/settings-form-states'
-import { SettingsStatusBanner } from '~/modules/settings/components/settings-status-banner'
-import { SETTINGS_COPY } from '~/modules/settings/constants/settings.copy'
-import { SETTINGS_FORM_ID } from '~/modules/settings/constants/settings-form'
-import {
-  SettingsFormProvider,
-  useSettingsForm,
-} from '~/modules/settings/hooks/settings-form-context'
+} from '~/modules/owner/components/settings-form-states'
+import { SettingsStatusBanner } from '~/modules/owner/components/settings-status-banner'
+import { SETTINGS_COPY } from '~/modules/owner/constants/settings.copy'
+import { SETTINGS_FORM_ID } from '~/modules/owner/constants/settings-form'
+import { SettingsFormProvider, useSettingsForm } from '~/modules/owner/hooks/settings-form-context'
 
 function SettingsFormContent() {
   const { save } = useSettingsForm()
@@ -42,17 +39,17 @@ function SettingsFormContent() {
 }
 
 export function SettingsView() {
-  const { user, isLoading, error, refresh } = useSession()
+  const { data: owner, isLoading, error, refetch } = useCurrentOwner()
 
   if (isLoading) {
     return <SettingsFormSkeleton />
   }
 
   if (error) {
-    return <SettingsLoadError message={error} onRetry={refresh} />
+    return <SettingsLoadError message={error.message} onRetry={() => void refetch()} />
   }
 
-  if (!user) {
+  if (!owner) {
     return null
   }
 
@@ -68,7 +65,7 @@ export function SettingsView() {
           </p>
         </header>
 
-        <SettingsFormProvider>
+        <SettingsFormProvider owner={owner}>
           <SettingsFormContent />
         </SettingsFormProvider>
       </div>

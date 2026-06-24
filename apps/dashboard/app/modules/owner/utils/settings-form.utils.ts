@@ -1,15 +1,12 @@
-import { SETTINGS_COPY } from '~/modules/settings/constants/settings.copy'
-import { NOTIFICATION_FIELD_BY_ID } from '~/modules/settings/constants/settings-form'
+import { SETTINGS_COPY } from '~/modules/owner/constants/settings.copy'
+import { NOTIFICATION_FIELD_BY_ID } from '~/modules/owner/constants/settings-form'
 import { settingsFormSchema, type SettingsFormValues } from '@afterdark/validators'
 import type { ZodError } from 'zod'
 
 type ProfileField = 'name' | 'lastName' | 'phone' | 'birthday' | 'nationalId' | 'taxId'
-type ProfileAddressField = keyof SettingsFormValues['profile']['address']
 
 export type SettingsFieldErrors = {
-  profile?: Partial<Record<ProfileField, string>> & {
-    address?: Partial<Record<ProfileAddressField, string>>
-  }
+  profile?: Partial<Record<ProfileField, string>>
   organization?: Partial<Record<'brandName' | 'location', string>>
   security?: Partial<Record<'twoFactorEnabled', string>>
   preferences?: {
@@ -30,14 +27,7 @@ export function mapSettingsFormErrors(error: ZodError): SettingsFieldErrors {
       continue
     }
 
-    if (section === 'profile' && field === 'address' && typeof nestedField === 'string') {
-      fieldErrors.profile ??= { address: {} }
-      fieldErrors.profile.address ??= {}
-      fieldErrors.profile.address[nestedField as ProfileAddressField] = issue.message
-      continue
-    }
-
-    if (section === 'profile' && field !== 'address') {
+    if (section === 'profile') {
       fieldErrors.profile ??= {}
       fieldErrors.profile[field as ProfileField] = issue.message
       continue
@@ -96,18 +86,6 @@ export function getFirstInvalidFieldId(errors: SettingsFieldErrors): string | nu
   }
   if (errors.profile?.taxId) {
     return 'settings-tax-id'
-  }
-  if (errors.profile?.address?.address) {
-    return 'settings-address-line'
-  }
-  if (errors.profile?.address?.streetNumber) {
-    return 'settings-street-number'
-  }
-  if (errors.profile?.address?.state) {
-    return 'settings-address-state'
-  }
-  if (errors.profile?.address?.city) {
-    return 'settings-address-city'
   }
   if (errors.organization?.brandName) {
     return 'settings-brand-name'

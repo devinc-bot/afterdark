@@ -8,17 +8,18 @@ import {
   useState,
   type ReactNode,
 } from 'react'
-import type { CurrentUserResponse } from '@afterdark/types'
+import type { CurrentOwnerResponse } from '@afterdark/types'
 import type { SettingsFormValues } from '@afterdark/validators'
-import { useSession } from '~/modules/common/hooks/use-session'
+import { useCurrentOwner } from '~/modules/common/queries/use-current-user'
+import { toSessionUser } from '~/modules/common/services/owner.service'
 import { useSessionStore } from '~/modules/common/stores/session.store'
-import { SETTINGS_COPY } from '~/modules/settings/constants/settings.copy'
+import { SETTINGS_COPY } from '~/modules/owner/constants/settings.copy'
 import {
   SETTINGS_SAVE_STATUS,
   SETTINGS_SUCCESS_DISMISS_MS,
   type SettingsSaveStatus,
-} from '~/modules/settings/constants/settings-form'
-import { updateCurrentUser } from '~/modules/settings/services/update-current-user.service'
+} from '~/modules/owner/constants/settings-form'
+import { updateCurrentOwner } from '~/modules/owner/services/update-current-user.service'
 import {
   focusSettingsField,
   getFirstInvalidFieldId,
@@ -26,15 +27,15 @@ import {
   resolveSaveErrorMessage,
   validateSettingsForm,
   type SettingsFieldErrors,
-} from '~/modules/settings/utils/settings-form.utils'
+} from '~/modules/owner/utils/settings-form.utils'
 import {
   createSettingsFormValues,
   saveStoredSettings,
   settingsValuesEqual,
-} from '~/modules/settings/utils/settings-storage.utils'
+} from '~/modules/owner/utils/settings-storage.utils'
 
 type SettingsFormContextValue = {
-  user: CurrentUserResponse
+  user: CurrentOwnerResponse
   values: SettingsFormValues
   savedValues: SettingsFormValues
   errors: SettingsFieldErrors
@@ -43,10 +44,6 @@ type SettingsFormContextValue = {
   saveMessage: string | null
   setProfileField: (
     field: 'name' | 'lastName' | 'phone' | 'birthday' | 'nationalId' | 'taxId',
-    value: string
-  ) => void
-  setProfileAddressField: (
-    field: keyof SettingsFormValues['profile']['address'],
     value: string
   ) => void
   setOrganizationField: (field: 'brandName' | 'location', value: string) => void
@@ -62,13 +59,19 @@ type SettingsFormContextValue = {
 
 const SettingsFormContext = createContext<SettingsFormContextValue | null>(null)
 
-export function SettingsFormProvider({ children }: { children: ReactNode }) {
-  const { user, refresh } = useSession()
+export function SettingsFormProvider({
+  owner,
+  children,
+}: {
+  owner: CurrentOwnerResponse
+  children: ReactNode
+}) {
+  const { refetch: refetchOwner } = useCurrentOwner()
   const [values, setValues] = useState<SettingsFormValues | null>(() =>
-    user ? createSettingsFormValues(user) : null
+    createSettingsFormValues(owner)
   )
   const [savedValues, setSavedValues] = useState<SettingsFormValues | null>(() =>
-    user ? createSettingsFormValues(user) : null
+    createSettingsFormValues(owner)
   )
   const [errors, setErrors] = useState<SettingsFieldErrors>({})
   const [saveStatus, setSaveStatus] = useState<SettingsSaveStatus>(SETTINGS_SAVE_STATUS.IDLE)
@@ -76,17 +79,13 @@ export function SettingsFormProvider({ children }: { children: ReactNode }) {
   const isSavingRef = useRef(false)
 
   useEffect(() => {
-    if (!user) {
-      return
-    }
-
-    const initialValues = createSettingsFormValues(user)
+    const initialValues = createSettingsFormValues(owner)
     setValues(initialValues)
     setSavedValues(initialValues)
     setErrors({})
     setSaveStatus(SETTINGS_SAVE_STATUS.IDLE)
     setSaveMessage(null)
-  }, [user])
+  }, [owner])
 
   useEffect(() => {
     if (!values || !savedValues || settingsValuesEqual(values, savedValues)) {
@@ -144,19 +143,6 @@ export function SettingsFormProvider({ children }: { children: ReactNode }) {
       updateValues((current) => ({
         ...current,
         profile: { ...current.profile, [field]: value },
-      }))
-    },
-    [updateValues]
-  )
-
-  const setProfileAddressField = useCallback(
-    (field: keyof SettingsFormValues['profile']['address'], value: string) => {
-      updateValues((current) => ({
-        ...current,
-        profile: {
-          ...current.profile,
-          address: { ...current.profile.address, [field]: value },
-        },
       }))
     },
     [updateValues]
@@ -241,7 +227,7 @@ export function SettingsFormProvider({ children }: { children: ReactNode }) {
     setErrors({})
 
     try {
-      const updatedUser = await updateCurrentUser(validation.data.profile)
+      const updatedOwner = await updateCurrentOwner(validation.data.profile)
 
       const storedPayload = {
         organization: validation.data.organization,
@@ -251,30 +237,30 @@ export function SettingsFormProvider({ children }: { children: ReactNode }) {
 
       saveStoredSettings(storedPayload)
 
-      const nextValues = createSettingsFormValues(updatedUser)
+      const nextValues = createSettingsFormValues(updatedOwner)
       setValues(nextValues)
       setSavedValues(nextValues)
       setSaveStatus(SETTINGS_SAVE_STATUS.SUCCESS)
       setSaveMessage(SETTINGS_COPY.messages.saveSuccess)
 
-      useSessionStore.setState({ user: updatedUser })
-      void refresh()
+      useSessionStore.setState({ user: toSessionUser(updatedOwner) })
+      void refetchOwner()
     } catch (error) {
       setSaveStatus(SETTINGS_SAVE_STATUS.ERROR)
       setSaveMessage(resolveSaveErrorMessage(error))
     } finally {
       isSavingRef.current = false
     }
-  }, [refresh, savedValues, values])
+  }, [owner, refetchOwner, savedValues, values])
 
-  if (!user || !values || !savedValues) {
+  if (!values || !savedValues) {
     return null
   }
 
   return (
     <SettingsFormContext
       value={{
-        user,
+        user: owner,
         values,
         savedValues,
         errors,
@@ -282,7 +268,6 @@ export function SettingsFormProvider({ children }: { children: ReactNode }) {
         saveStatus,
         saveMessage,
         setProfileField,
-        setProfileAddressField,
         setOrganizationField,
         setTwoFactorEnabled,
         setLanguage,
