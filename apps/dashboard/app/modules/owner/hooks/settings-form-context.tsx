@@ -251,7 +251,7 @@ export function SettingsFormProvider({
     } finally {
       isSavingRef.current = false
     }
-  }, [owner, refetchOwner, savedValues, values])
+  }, [refetchOwner, savedValues, values])
 
   if (!values || !savedValues) {
     return null
