@@ -105,7 +105,7 @@ function StaffInvitationExpiryCell({ invitation }: { invitation: StaffInvitation
     updateLabel()
     const interval = window.setInterval(updateLabel, 1000)
     return () => window.clearInterval(interval)
-  }, [invitation.expiresAt])
+  }, [invitation.expiresAt, invitation])
 
   return (
     <span
