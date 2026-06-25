@@ -1,4 +1,5 @@
 export * from './accounts.repository.ts'
+export * from './assets.repository.ts'
 export * from './auth.repository.ts'
 export * from './clubs.repository.ts'
 export * from './owners.repository.ts'
