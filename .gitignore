@@ -6,3 +6,4 @@ dist/
 *.tsbuildinfo
 pnpm-debug.log
 local.db*
+apps/api/uploads/
