@@ -12,7 +12,7 @@ The monorepo hosts two full-stack SSR applications and a REST API that share int
 | ----------- | ---------------------------------------------- | ---- |
 | `web`       | Public webfront — catalog and product detail   | 3001 |
 | `dashboard` | Admin panel — catalog and inventory management | 3002 |
-| `api`       | Backend REST API — NestJS + Drizzle              | 3000 |
+| `api`       | Backend REST API — NestJS + Drizzle            | 3000 |
 
 ---
 
@@ -364,13 +364,13 @@ export default {
 
 Drizzle ORM over Turso/libSQL. Package layout:
 
-| Path | Responsibility |
-| ---- | -------------- |
-| `src/client.ts` | `db` singleton and `Transaction` type |
-| `src/schema/` | Table definitions (`sqliteTable`), column types |
+| Path                | Responsibility                                                 |
+| ------------------- | -------------------------------------------------------------- |
+| `src/client.ts`     | `db` singleton and `Transaction` type                          |
+| `src/schema/`       | Table definitions (`sqliteTable`), column types                |
 | `src/repositories/` | Pure functions for queries, inserts, updates, and transactions |
-| `src/migrations/` | SQL migrations (`drizzle-kit`) |
-| `src/index.ts` | Re-exports `db`, schema, and repositories |
+| `src/migrations/`   | SQL migrations (`drizzle-kit`)                                 |
+| `src/index.ts`      | Re-exports `db`, schema, and repositories                      |
 
 **Repository rules:**
 

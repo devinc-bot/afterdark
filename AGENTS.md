@@ -8,12 +8,12 @@ Instructions for AI assistants (Claude Code, Cursor, etc.) working on this proje
 
 Read the relevant doc before making changes:
 
-| Doc                                  | When to consult                                      |
-| ------------------------------------ | ---------------------------------------------------- |
-| [ARCHITECTURE.md](./ARCHITECTURE.md) | Project structure, modules, routes, layers, packages |
-| [STYLEGUIDE.md](./STYLEGUIDE.md)     | Naming, constants, dependencies, lint/format         |
-| [DOMAIN.md](./DOMAIN.md)             | Business context, entities, validation, UI language  |
-| [packages/db/DATABASE.md](./packages/db/DATABASE.md) | Schema, migrations, repositories           |
+| Doc                                                  | When to consult                                      |
+| ---------------------------------------------------- | ---------------------------------------------------- |
+| [ARCHITECTURE.md](./ARCHITECTURE.md)                 | Project structure, modules, routes, layers, packages |
+| [STYLEGUIDE.md](./STYLEGUIDE.md)                     | Naming, constants, dependencies, lint/format         |
+| [DOMAIN.md](./DOMAIN.md)                             | Business context, entities, validation, UI language  |
+| [packages/db/DATABASE.md](./packages/db/DATABASE.md) | Schema, migrations, repositories                     |
 
 ---
 

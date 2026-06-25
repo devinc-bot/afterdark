@@ -145,11 +145,11 @@ Compose the final class list with `cn(baseClassName, get…ClassName(input))`. K
 
 When placeholder, error message, disabled state copy, or similar **UI strings** depend on multiple flags (loading, empty, error, validation), do not use nested ternaries inside JSX or render callbacks. Extract a named function **outside the component** with early returns.
 
-| Part          | Convention                                      | Example                         |
-| ------------- | ----------------------------------------------- | ------------------------------- |
-| Function name | `camelCase` with `get` prefix                   | `getClubSelectFieldDisplay`     |
-| Return value  | Object or primitive for one visual/copy state   | `{ placeholder, error }`        |
-| Location      | Co-located in the same file (above component) or `*.utils.ts` | `staff-user-form.tsx` |
+| Part          | Convention                                                    | Example                     |
+| ------------- | ------------------------------------------------------------- | --------------------------- |
+| Function name | `camelCase` with `get` prefix                                 | `getClubSelectFieldDisplay` |
+| Return value  | Object or primitive for one visual/copy state                 | `{ placeholder, error }`    |
+| Location      | Co-located in the same file (above component) or `*.utils.ts` | `staff-user-form.tsx`       |
 
 ```tsx
 // incorrect — nested ternaries in render (see staff-user-form.tsx before refactor)
@@ -158,9 +158,7 @@ const clubPlaceholder = isClubsLoading
   : clubs.length === 0
     ? STAFF_COPY.form.clubEmpty
     : STAFF_COPY.form.clubPlaceholder
-const clubFieldError = isClubsError
-  ? STAFF_COPY.form.clubsLoadError
-  : (error ?? undefined)
+const clubFieldError = isClubsError ? STAFF_COPY.form.clubsLoadError : (error ?? undefined)
 
 // correct — early returns in a module-level helper (getClubSelectFieldDisplay in staff-user-form.tsx)
 type ClubSelectFieldDisplayInput = {

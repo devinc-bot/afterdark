@@ -6,16 +6,16 @@ Documentación del esquema y la capa de acceso a datos del monorepo **afterdark*
 
 ## Resumen
 
-| Aspecto     | Detalle                                                                 |
-| ----------- | ----------------------------------------------------------------------- |
-| Motor       | SQLite (libSQL)                                                         |
-| Hosting     | [Turso](https://turso.tech/) en producción; archivo local en desarrollo |
-| ORM         | [Drizzle ORM](https://orm.drizzle.team/)                                |
-| Paquete       | `@afterdark/db`                                                         |
-| Schemas       | `packages/db/src/schema/`                                               |
-| Repositorios  | `packages/db/src/repositories/`                                       |
-| Migraciones   | `packages/db/src/migrations/`                                           |
-| Tablas        | 22                                                                      |
+| Aspecto      | Detalle                                                                 |
+| ------------ | ----------------------------------------------------------------------- |
+| Motor        | SQLite (libSQL)                                                         |
+| Hosting      | [Turso](https://turso.tech/) en producción; archivo local en desarrollo |
+| ORM          | [Drizzle ORM](https://orm.drizzle.team/)                                |
+| Paquete      | `@afterdark/db`                                                         |
+| Schemas      | `packages/db/src/schema/`                                               |
+| Repositorios | `packages/db/src/repositories/`                                         |
+| Migraciones  | `packages/db/src/migrations/`                                           |
+| Tablas       | 22                                                                      |
 
 La API (`apps/api`) importa **repositorios**, tipos y el cliente desde `@afterdark/db`. Las consultas Drizzle viven en `repositories/`; los servicios NestJS solo orquestan reglas de negocio y excepciones HTTP. No hay TypeORM ni entidades con decoradores.
 
@@ -474,16 +474,16 @@ Definidas en `packages/validators/src/database.ts`:
 
 Capa de acceso a datos en `src/repositories/`. Cada archivo agrupa las operaciones Drizzle de un dominio:
 
-| Archivo | Responsabilidad |
-| ------- | --------------- |
-| `accounts.repository.ts` | Cuentas (`accounts`), búsqueda por email, join con roles |
-| `auth.repository.ts` | Registro de cuenta + perfil, login lookup compuesto |
-| `clubs.repository.ts` | CRUD de clubes con dirección (transacciones) |
-| `owners.repository.ts` | Perfiles owner, actualización, invitador |
-| `staff.repository.ts` | Perfiles staff |
-| `users.repository.ts` | Perfiles user |
-| `roles.repository.ts` | Roles por nombre |
-| `staff-invitations.repository.ts` | Alta de invitaciones staff |
+| Archivo                           | Responsabilidad                                          |
+| --------------------------------- | -------------------------------------------------------- |
+| `accounts.repository.ts`          | Cuentas (`accounts`), búsqueda por email, join con roles |
+| `auth.repository.ts`              | Registro de cuenta + perfil, login lookup compuesto      |
+| `clubs.repository.ts`             | CRUD de clubes con dirección (transacciones)             |
+| `owners.repository.ts`            | Perfiles owner, actualización, invitador                 |
+| `staff.repository.ts`             | Perfiles staff                                           |
+| `users.repository.ts`             | Perfiles user                                            |
+| `roles.repository.ts`             | Roles por nombre                                         |
+| `staff-invitations.repository.ts` | Alta de invitaciones staff                               |
 
 **Convenciones:**
 
