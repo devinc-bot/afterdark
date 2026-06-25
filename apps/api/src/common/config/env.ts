@@ -1,7 +1,7 @@
-import { databaseEnvSchema, MODE } from '@afterdark/validators'
+import { databaseEnvSchema, MODE, uploadEnvSchema } from '@afterdark/validators'
 import { z } from 'zod'
 
-const envSchema = databaseEnvSchema.extend({
+const envSchema = databaseEnvSchema.extend(uploadEnvSchema.shape).extend({
   PORT: z.coerce.number().default(3000),
   JWT_SECRET: z.string().default('afterdark-dev-secret'),
   DASHBOARD_URL: z.url().default('http://localhost:3002'),
