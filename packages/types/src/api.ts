@@ -1,4 +1,5 @@
 import type {
+  AssetType,
   ClubStatus,
   OwnerStatus,
   StaffInvitationStatus,
@@ -102,4 +103,13 @@ export interface StaffPersonnelItem {
   status: StaffStatus
   avatar: string | null
   lastActiveAt: Date
+}
+
+export interface UploadedAssetResponse {
+  documentId: string
+  name: string
+  url: string
+  type: AssetType
+  createdAt: Date
+  updatedAt: Date
 }
