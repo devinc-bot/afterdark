@@ -2,6 +2,7 @@ import { useCallback, useMemo, useState } from 'react'
 import {
   Avatar,
   AvatarFallback,
+  AvatarImage,
   Badge,
   Button,
   Card,
@@ -32,7 +33,8 @@ import { getStaffUserInitials, getStaffUserRoleLabel } from '~/modules/staff/uti
 
 type StaffUserRecordsProps = {
   records: StaffUserRecord[]
-  onStatusChange: (recordId: string, status: StaffStatus) => void
+  statusControlsDisabled?: boolean
+  onStatusChange?: (recordId: string, status: StaffStatus) => void
 }
 
 const staffActionIconClassName = '!size-[20px] shrink-0'
@@ -40,10 +42,15 @@ const staffActionItemClassName = 'gap-3 py-2.5 text-base'
 
 function StaffUserIdentityCell({ record }: { record: StaffUserRecord }) {
   const initials = getStaffUserInitials(record.name)
+  const [avatarImageFailed, setAvatarImageFailed] = useState(false)
+  const showAvatarImage = Boolean(record.avatarUrl) && !avatarImageFailed
 
   return (
     <div className="flex items-center gap-3">
       <Avatar className="size-9 shrink-0">
+        {showAvatarImage ? (
+          <AvatarImage src={record.avatarUrl!} alt="" onError={() => setAvatarImageFailed(true)} />
+        ) : null}
         <AvatarFallback
           className={cn(
             'flex items-center justify-center rounded-full border text-xs font-semibold uppercase',
@@ -97,10 +104,12 @@ function StaffUserStatusControl({
   record,
   onActivate,
   onDeactivateRequest,
+  statusControlsDisabled = false,
 }: {
   record: StaffUserRecord
   onActivate: (recordId: string) => void
   onDeactivateRequest: (record: StaffUserRecord) => void
+  statusControlsDisabled?: boolean
 }) {
   const isActive = record.status === STAFF_STATUS.ACTIVE
 
@@ -108,7 +117,9 @@ function StaffUserStatusControl({
     <div className="flex items-center gap-3">
       <Switch
         checked={isActive}
+        disabled={statusControlsDisabled}
         onCheckedChange={(checked) => {
+          if (statusControlsDisabled) return
           if (checked) {
             onActivate(record.id)
             return
@@ -132,10 +143,12 @@ function StaffUserRecordRow({
   record,
   onActivate,
   onDeactivateRequest,
+  statusControlsDisabled = false,
 }: {
   record: StaffUserRecord
   onActivate: (recordId: string) => void
   onDeactivateRequest: (record: StaffUserRecord) => void
+  statusControlsDisabled?: boolean
 }) {
   return (
     <TableRow className="border-0">
@@ -156,6 +169,7 @@ function StaffUserRecordRow({
           record={record}
           onActivate={onActivate}
           onDeactivateRequest={onDeactivateRequest}
+          statusControlsDisabled={statusControlsDisabled}
         />
       </TableCell>
       <TableCell className="p-6 text-right">
@@ -165,7 +179,11 @@ function StaffUserRecordRow({
   )
 }
 
-export function StaffUserRecords({ records, onStatusChange }: StaffUserRecordsProps) {
+export function StaffUserRecords({
+  records,
+  statusControlsDisabled = false,
+  onStatusChange,
+}: StaffUserRecordsProps) {
   const [searchQuery, setSearchQuery] = useState('')
   const [deactivateTarget, setDeactivateTarget] = useState<StaffUserRecord | null>(null)
   const [deactivateDialogOpen, setDeactivateDialogOpen] = useState(false)
@@ -183,19 +201,23 @@ export function StaffUserRecords({ records, onStatusChange }: StaffUserRecordsPr
 
   const handleActivate = useCallback(
     (recordId: string) => {
-      onStatusChange(recordId, STAFF_STATUS.ACTIVE)
+      onStatusChange?.(recordId, STAFF_STATUS.ACTIVE)
     },
     [onStatusChange]
   )
 
-  const handleDeactivateRequest = useCallback((record: StaffUserRecord) => {
-    setDeactivateTarget(record)
-    setDeactivateDialogOpen(true)
-  }, [])
+  const handleDeactivateRequest = useCallback(
+    (record: StaffUserRecord) => {
+      if (statusControlsDisabled) return
+      setDeactivateTarget(record)
+      setDeactivateDialogOpen(true)
+    },
+    [statusControlsDisabled]
+  )
 
   const handleDeactivateConfirm = useCallback(
     (record: StaffUserRecord) => {
-      onStatusChange(record.id, STAFF_STATUS.INACTIVE)
+      onStatusChange?.(record.id, STAFF_STATUS.INACTIVE)
       setDeactivateTarget(null)
     },
     [onStatusChange]
@@ -284,6 +306,7 @@ export function StaffUserRecords({ records, onStatusChange }: StaffUserRecordsPr
                       record={record}
                       onActivate={handleActivate}
                       onDeactivateRequest={handleDeactivateRequest}
+                      statusControlsDisabled={statusControlsDisabled}
                     />
                   ))}
                 </TableBody>

@@ -1,7 +1,7 @@
 import type { CurrentOwnerResponse, SessionResponse } from '@afterdark/types'
 import { api } from '~/config/api'
 import { API_ROUTES } from '~/config/constants/api'
-import { QueryFactoryError } from '~/modules/common/utils/query-factory'
+import { toApiServiceError } from '~/modules/common/utils/api-service-error.utils'
 
 const CURRENT_OWNER_FALLBACK_ERROR =
   'No pudimos cargar tu perfil. Intentá de nuevo en unos minutos.'
@@ -18,12 +18,7 @@ export async function fetchCurrentOwner(): Promise<CurrentOwnerResponse> {
   try {
     return await getCurrentOwner()
   } catch (error) {
-    if (error instanceof QueryFactoryError) {
-      const apiMessage = error.body?.message
-      throw new Error(typeof apiMessage === 'string' ? apiMessage : CURRENT_OWNER_FALLBACK_ERROR)
-    }
-
-    throw new Error(CURRENT_OWNER_FALLBACK_ERROR)
+    throw toApiServiceError(error, CURRENT_OWNER_FALLBACK_ERROR)
   }
 }
 

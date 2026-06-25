@@ -1,47 +1,23 @@
 import { useCallback, useState } from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@afterdark/ui'
-import { STAFF_STATUS, type StaffStatus } from '@afterdark/types'
 import { StaffInvitations } from '~/modules/staff/components/staff-invitations'
+import { StaffPersonnelTab } from '~/modules/staff/components/staff-personnel-tab'
 import { StaffUserCreateDialog } from '~/modules/staff/components/staff-user-create-dialog'
 import type { StaffInvitationResult } from '~/modules/staff/components/staff-user-form'
-import { StaffUserRecords } from '~/modules/staff/components/staff-user-records'
 import { STAFF_COPY } from '~/modules/staff/constants/staff.copy'
 import { STAFF_TAB } from '~/modules/staff/constants/staff-tabs.constants'
 import {
   createStaffInvitationRecord,
   type StaffInvitationRecord,
 } from '~/modules/staff/types/staff-invitation-record'
-import {
-  STAFF_USER_RECORDS_MOCK,
-  type StaffUserRecord,
-} from '~/modules/staff/types/staff-user-record'
 
 export function StaffManagementView() {
   const [activeTab, setActiveTab] = useState<string>(STAFF_TAB.STAFF)
-  const [records, setRecords] = useState<StaffUserRecord[]>(STAFF_USER_RECORDS_MOCK)
   const [invitations, setInvitations] = useState<StaffInvitationRecord[]>([])
 
   const handleInvite = useCallback((result: StaffInvitationResult) => {
     setInvitations((current) => [createStaffInvitationRecord(result), ...current])
     setActiveTab(STAFF_TAB.INVITATIONS)
-  }, [])
-
-  const handleStatusChange = useCallback((recordId: string, status: StaffStatus) => {
-    setRecords((current) =>
-      current.map((record) =>
-        record.id === recordId
-          ? {
-              ...record,
-              status,
-              lastActiveLabel:
-                status === STAFF_STATUS.ACTIVE
-                  ? STAFF_COPY.table.justActivated
-                  : STAFF_COPY.table.offline,
-              lastActiveAt: status === STAFF_STATUS.ACTIVE ? Date.now() : record.lastActiveAt,
-            }
-          : record
-      )
-    )
   }, [])
 
   return (
@@ -69,7 +45,7 @@ export function StaffManagementView() {
           </div>
 
           <TabsContent value={STAFF_TAB.STAFF} className="mt-0">
-            <StaffUserRecords records={records} onStatusChange={handleStatusChange} />
+            <StaffPersonnelTab />
           </TabsContent>
 
           <TabsContent value={STAFF_TAB.INVITATIONS} className="mt-0">

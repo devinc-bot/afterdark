@@ -1,7 +1,7 @@
 import type { SessionResponse } from '@afterdark/types'
 import { api } from '~/config/api'
 import { API_ROUTES } from '~/config/constants/api'
-import { QueryFactoryError } from '~/modules/common/utils/query-factory'
+import { toApiServiceError } from '~/modules/common/utils/api-service-error.utils'
 
 const SESSION_FALLBACK_ERROR = 'No pudimos cargar tu perfil. Intentá de nuevo en unos minutos.'
 
@@ -17,11 +17,6 @@ export async function fetchSession(): Promise<SessionResponse> {
   try {
     return await getSession()
   } catch (error) {
-    if (error instanceof QueryFactoryError) {
-      const apiMessage = error.body?.message
-      throw new Error(typeof apiMessage === 'string' ? apiMessage : SESSION_FALLBACK_ERROR)
-    }
-
-    throw new Error(SESSION_FALLBACK_ERROR)
+    throw toApiServiceError(error, SESSION_FALLBACK_ERROR)
   }
 }

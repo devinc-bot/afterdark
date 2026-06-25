@@ -105,6 +105,7 @@ export function StaffUserForm({ onInvite }: StaffUserFormProps) {
         lastActiveLabel: STAFF_COPY.invitation.pending,
         lastActiveAt: Date.now(),
         status: STAFF_STATUS.PENDING,
+        avatarUrl: null,
         avatarClassName: STAFF_USER_AVATAR_TONE.neutral,
       }
 

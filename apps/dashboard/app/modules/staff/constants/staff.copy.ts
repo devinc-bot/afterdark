@@ -109,6 +109,8 @@ export const STAFF_COPY = {
     },
     noResultsTitle: 'Ningún usuario coincide',
     noResultsDescription: 'Probá con otro nombre o correo electrónico.',
+    loadError: 'No pudimos cargar el personal. Intentá de nuevo.',
+    retry: 'Reintentar',
     emptyTitle: 'Todavía no hay usuarios',
     emptyDescription: 'Creá el primer usuario para empezar a asignar accesos operativos por club.',
     editUnavailableTooltip: 'La edición estará disponible pronto.',

@@ -1,0 +1,63 @@
+import { Button, Card, Skeleton } from '@afterdark/ui'
+import { STAFF_COPY } from '~/modules/staff/constants/staff.copy'
+
+export function StaffPersonnelTabSkeleton() {
+  return (
+    <section aria-busy="true" aria-label={STAFF_COPY.table.title} className="py-4">
+      <Skeleton className="h-7 w-48" />
+      <Skeleton className="mt-2 h-4 w-64" />
+      <Skeleton className="mt-6 h-10 w-full max-w-sm" />
+      <Card variant="gradient" className="mt-6 p-6">
+        <div className="flex flex-col gap-4">
+          {Array.from({ length: 4 }, (_, index) => (
+            <Skeleton key={index} className="h-14 w-full" />
+          ))}
+        </div>
+      </Card>
+    </section>
+  )
+}
+
+type StaffPersonnelLoadErrorBannerProps = {
+  onRetry: () => void
+  isRetrying: boolean
+}
+
+export function StaffPersonnelLoadErrorBanner({
+  onRetry,
+  isRetrying,
+}: StaffPersonnelLoadErrorBannerProps) {
+  return (
+    <div
+      role="alert"
+      className="rounded-lg border border-destructive/30 bg-destructive/5 px-4 py-4 sm:px-6"
+    >
+      <p className="text-sm text-ink">{STAFF_COPY.table.loadError}</p>
+      <Button
+        type="button"
+        variant="outline"
+        size="sm"
+        className="mt-3"
+        onClick={onRetry}
+        disabled={isRetrying}
+      >
+        {STAFF_COPY.table.retry}
+      </Button>
+    </div>
+  )
+}
+
+type StaffPersonnelEmptyStateProps = {
+  className?: string
+}
+
+export function StaffPersonnelEmptyState({ className }: StaffPersonnelEmptyStateProps) {
+  return (
+    <div className={className ?? 'px-6 py-12 text-center'}>
+      <p className="font-heading text-base font-semibold text-ink">{STAFF_COPY.table.emptyTitle}</p>
+      <p className="mx-auto mt-2 max-w-sm text-sm text-ink-muted">
+        {STAFF_COPY.table.emptyDescription}
+      </p>
+    </div>
+  )
+}
