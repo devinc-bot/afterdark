@@ -18,7 +18,7 @@ import {
   type CreateStaffInvitationResponse,
 } from '@afterdark/types'
 import type { CreateStaffInvitationInput } from '@afterdark/validators'
-import { ENV } from '../../common/config/env'
+import { ENV } from '../common/config/env'
 import { INVITATION_MESSAGE } from './invitations.constants'
 import {
   buildStaffInvitationPayload,

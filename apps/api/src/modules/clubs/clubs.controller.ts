@@ -19,10 +19,10 @@ import {
   type CreateClubInput,
   type UpdateClubInput,
 } from '@afterdark/validators'
-import { CurrentUser } from '../../common/decorators/current-user.decorator'
-import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard'
-import { OwnerRoleGuard } from '../../common/guards/owner-role.guard'
-import { ZodValidationPipe } from '../../common/pipes/zod-validation.pipe'
+import { CurrentUser } from '../common/decorators/current-user.decorator'
+import { JwtAuthGuard } from '../common/guards/jwt-auth.guard'
+import { OwnerRoleGuard } from '../common/guards/owner-role.guard'
+import { ZodValidationPipe } from '../common/pipes/zod-validation.pipe'
 import { ClubsService } from './clubs.service'
 
 @Controller('clubs')

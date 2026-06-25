@@ -8,7 +8,7 @@ import {
   isAllowedImageMimeType,
   type AllowedImageMimeType,
 } from '@afterdark/validators'
-import { ENV } from '../../common/config/env'
+import { ENV } from '../common/config/env'
 
 function resolveImageExtension(mimeType: AllowedImageMimeType, originalName: string): string {
   return IMAGE_EXTENSION_BY_MIME_TYPE[mimeType] ?? (extname(originalName).toLowerCase() || '.img')

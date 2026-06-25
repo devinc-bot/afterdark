@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common'
 import { AppController } from './app.controller'
-import { CommonModule } from './common/common.module'
+import { CommonModule } from './modules/common/common.module'
 import { AuthModule } from './modules/auth'
 import { CategoriesModule } from './modules/categories'
 import { ClubsModule } from './modules/clubs'

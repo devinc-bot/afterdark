@@ -1,9 +1,9 @@
 import { Body, Controller, Get, Inject, Patch, UseGuards } from '@nestjs/common'
 import type { CurrentOwnerResponse, JwtPayload } from '@afterdark/types'
 import { updateCurrentOwnerSchema, type UpdateCurrentOwnerInput } from '@afterdark/validators'
-import { CurrentUser } from '../../common/decorators/current-user.decorator'
-import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard'
-import { ZodValidationPipe } from '../../common/pipes/zod-validation.pipe'
+import { CurrentUser } from '../common/decorators/current-user.decorator'
+import { JwtAuthGuard } from '../common/guards/jwt-auth.guard'
+import { ZodValidationPipe } from '../common/pipes/zod-validation.pipe'
 import { OwnerService } from './owner.service'
 
 @Controller('owners')

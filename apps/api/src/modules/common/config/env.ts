@@ -1,5 +1,9 @@
+import { resolve } from 'node:path'
+import { config } from 'dotenv'
 import { databaseEnvSchema, MODE, uploadEnvSchema } from '@afterdark/validators'
 import { z } from 'zod'
+
+config({ path: resolve(__dirname, '../../../../.env') })
 
 const envSchema = databaseEnvSchema.extend(uploadEnvSchema.shape).extend({
   PORT: z.coerce.number().default(3000),

@@ -7,7 +7,7 @@ import {
   type RegisterOwnerInput,
   type RegisterUserInput,
 } from '@afterdark/validators'
-import { ZodValidationPipe } from '../../common/pipes/zod-validation.pipe'
+import { ZodValidationPipe } from '../common/pipes/zod-validation.pipe'
 import { AuthService } from './auth.service'
 
 @Controller('auth')

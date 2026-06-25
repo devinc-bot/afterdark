@@ -1,9 +1,9 @@
 import { Body, Controller, HttpCode, HttpStatus, Inject, Post, UseGuards } from '@nestjs/common'
 import type { CreateStaffInvitationResponse, JwtPayload } from '@afterdark/types'
 import { createStaffInvitationSchema, type CreateStaffInvitationInput } from '@afterdark/validators'
-import { CurrentUser } from '../../common/decorators/current-user.decorator'
-import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard'
-import { ZodValidationPipe } from '../../common/pipes/zod-validation.pipe'
+import { CurrentUser } from '../common/decorators/current-user.decorator'
+import { JwtAuthGuard } from '../common/guards/jwt-auth.guard'
+import { ZodValidationPipe } from '../common/pipes/zod-validation.pipe'
 import { InvitationsService } from './invitations.service'
 
 @Controller('invitations')

@@ -1,7 +1,7 @@
 import { memoryStorage } from 'multer'
 import type { MulterOptions } from '@nestjs/platform-express/multer/interfaces/multer-options.interface'
 import { isAllowedImageMimeType } from '@afterdark/validators'
-import { ENV } from '../../common/config/env'
+import { ENV } from '../common/config/env'
 import { FILE_MESSAGE } from './files.constants'
 
 export const imageUploadOptions: MulterOptions = {
