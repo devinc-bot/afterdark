@@ -1,6 +1,7 @@
 # Plan de implementación — [Título]
 
-> Cómo se implementa esta feature. Complementa `spec.md`; no repetir criterios de aceptación.
+> Cómo se implementa esta feature. Complementa `spec.md`; no repetir criterios de aceptación.  
+> Borrador en **fase 6** de la entrevista ([INTERVIEW.md](../../INTERVIEW.md)), después de `spec.md` en `approved` o casi listo.
 
 ## Orden de capas
 
