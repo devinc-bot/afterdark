@@ -1,4 +1,4 @@
-import { desc, eq } from 'drizzle-orm'
+import { and, desc, eq } from 'drizzle-orm'
 import { db } from '../client.ts'
 import { clubs } from '../schema/club.ts'
 import { owners } from '../schema/owner.ts'
@@ -61,4 +61,27 @@ export async function findStaffInvitationsByOwnerDocumentId(
     clubDocumentId: row.clubDocumentId,
     clubName: row.clubName,
   }))
+}
+
+export async function findStaffInvitationByDocumentIdForOwner(
+  invitationDocumentId: string,
+  ownerDocumentId: string
+): Promise<StaffInvitationSelect | null> {
+  const [row] = await db
+    .select({ invitation: staffInvitations })
+    .from(staffInvitations)
+    .innerJoin(owners, eq(owners.id, staffInvitations.invitedByOwnerId))
+    .where(
+      and(
+        eq(staffInvitations.documentId, invitationDocumentId),
+        eq(owners.documentId, ownerDocumentId)
+      )
+    )
+    .limit(1)
+
+  return row?.invitation ?? null
+}
+
+export async function deleteStaffInvitationById(id: number): Promise<void> {
+  await db.delete(staffInvitations).where(eq(staffInvitations.id, id))
 }
