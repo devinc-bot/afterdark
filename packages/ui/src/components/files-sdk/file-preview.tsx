@@ -63,7 +63,7 @@ const Body = ({
   if (src) {
     return (
       // eslint-disable-next-line nextjs/no-img-element
-      <img alt={alt} className="max-h-72 w-auto rounded object-contain" src={src} />
+      <img alt={alt} className="absolute inset-0 h-full w-full object-cover" src={src} />
     )
   }
   if (text !== undefined) {
@@ -189,15 +189,17 @@ export const FilePreview = ({
 
   return (
     <figure className={cn('overflow-hidden rounded-lg border border-border bg-card', className)}>
-      <div className="flex min-h-40 items-center justify-center bg-muted/30 p-4">
-        <Body
-          alt={meta?.name ?? key}
-          error={loadError}
-          isLoading={isLoading}
-          src={src}
-          text={text}
-          type={meta?.type ?? (file instanceof File ? file.type : undefined)}
-        />
+      <div className="relative aspect-4/3 w-full overflow-hidden bg-muted/30">
+        <div className="absolute inset-0 flex items-center justify-center p-4">
+          <Body
+            alt={meta?.name ?? key}
+            error={loadError}
+            isLoading={isLoading}
+            src={src}
+            text={text}
+            type={meta?.type ?? (file instanceof File ? file.type : undefined)}
+          />
+        </div>
       </div>
       <figcaption className="border-border border-t px-3 py-2">
         <p className="truncate font-medium text-sm">{meta?.name ?? key}</p>

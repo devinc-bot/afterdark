@@ -253,7 +253,7 @@ function AppShellLayout({ children }: { children: React.ReactNode }) {
         </SidebarFooter>
       </Sidebar>
 
-      <SidebarInset>
+      <SidebarInset className="min-h-0">
         <header className="sticky top-0 z-30 flex items-center gap-3 border-b border-hairline bg-surface-container-lowest px-4 py-3 md:hidden">
           <SidebarTrigger />
           <p className="min-w-0 truncate text-sm font-medium text-ink">{mobileHeaderTitle}</p>

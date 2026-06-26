@@ -1,6 +1,8 @@
 export const DASHBOARD_ROUTES = {
   home: () => '/dashboard' as const,
   clubManagement: () => '/club-management' as const,
+  clubManagementNew: () => '/club-management/new' as const,
+  clubManagementEdit: (documentId: string) => `/club-management/${documentId}/edit` as const,
   tickets: () => '/tickets' as const,
   staff: () => '/staff' as const,
   settings: () => '/settings' as const,

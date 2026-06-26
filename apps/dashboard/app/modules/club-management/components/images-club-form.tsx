@@ -36,8 +36,12 @@ function fileKey(file: File, index: number): string {
 function ExistingClubImagePreview({ image }: { image: ClubImageResponse }) {
   return (
     <figure className="overflow-hidden rounded-lg border border-border bg-card">
-      <div className="flex min-h-40 items-center justify-center bg-muted/30 p-4">
-        <img alt={image.name} className="max-h-72 w-auto rounded object-contain" src={image.url} />
+      <div className="relative aspect-4/3 w-full overflow-hidden bg-muted/30">
+        <img
+          alt={image.name}
+          className="absolute inset-0 h-full w-full object-cover"
+          src={image.url}
+        />
       </div>
       <figcaption className="border-border border-t px-3 py-2">
         <p className="truncate font-medium text-sm">{image.name}</p>
