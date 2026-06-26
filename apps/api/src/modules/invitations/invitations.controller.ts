@@ -10,7 +10,11 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common'
-import type { CreateStaffInvitationResponse, JwtPayload } from '@afterdark/types'
+import type {
+  CreateStaffInvitationResponse,
+  JwtPayload,
+  StaffInvitationPublicResponse,
+} from '@afterdark/types'
 import {
   createStaffInvitationSchema,
   uuidSchema,
@@ -41,6 +45,14 @@ export class InvitationsController {
   @UseGuards(JwtAuthGuard)
   listStaffInvitations(@CurrentUser() user: JwtPayload): Promise<CreateStaffInvitationResponse[]> {
     return this.invitationsService.listStaffInvitations(user.sub)
+  }
+
+  @Get('staff/:slug/:token')
+  getStaffInvitationByLink(
+    @Param('slug') slug: string,
+    @Param('token') token: string
+  ): Promise<StaffInvitationPublicResponse> {
+    return this.invitationsService.getStaffInvitationByLink(slug, token)
   }
 
   @Delete('staff/:documentId')

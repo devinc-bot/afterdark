@@ -8,4 +8,9 @@ export const INVITATION_MESSAGE = {
   NOT_FOUND: 'Invitación no encontrada',
   DELETE_ACCEPTED: 'No se puede eliminar una invitación ya aceptada.',
   DELETE_FAILED: 'No se pudo eliminar la invitación',
+  PUBLIC_INVALID: 'El enlace de invitación no es válido.',
+  PUBLIC_SLUG_MISMATCH: 'El enlace de invitación no coincide.',
+  PUBLIC_EXPIRED: 'El enlace de invitación expiró.',
+  PUBLIC_ALREADY_ACCEPTED: 'Esta invitación ya fue aceptada.',
+  PUBLIC_GET_FAILED: 'No se pudo obtener la invitación',
 } as const

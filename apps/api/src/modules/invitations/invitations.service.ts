@@ -1,6 +1,8 @@
 import {
+  BadRequestException,
   ConflictException,
   ForbiddenException,
+  GoneException,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
@@ -12,6 +14,7 @@ import {
   findInviterOwnerWithRole,
   deleteStaffInvitationById,
   findStaffInvitationByDocumentIdForOwner,
+  findStaffInvitationByTokenWithClub,
   findStaffInvitationsByOwnerDocumentId,
 } from '@afterdark/db'
 import type { ClubSelect, StaffInvitationSelect } from '@afterdark/db'
@@ -19,6 +22,7 @@ import {
   STAFF_INVITATION_STATUS,
   USER_ROLE,
   type CreateStaffInvitationResponse,
+  type StaffInvitationPublicResponse,
 } from '@afterdark/types'
 import type { CreateStaffInvitationInput } from '@afterdark/validators'
 import { ENV } from '../common/config/env'
@@ -158,6 +162,64 @@ export class InvitationsService {
       await deleteStaffInvitationById(invitation.id)
     } catch {
       throw new InternalServerErrorException(INVITATION_MESSAGE.DELETE_FAILED)
+    }
+  }
+
+  async getStaffInvitationByLink(
+    slug: string,
+    token: string
+  ): Promise<StaffInvitationPublicResponse> {
+    try {
+      const row = await findStaffInvitationByTokenWithClub(token)
+
+      if (!row) {
+        throw new NotFoundException(INVITATION_MESSAGE.PUBLIC_INVALID)
+      }
+
+      if (row.invitation.slug !== slug) {
+        throw new BadRequestException(INVITATION_MESSAGE.PUBLIC_SLUG_MISMATCH)
+      }
+
+      if (row.invitation.status === STAFF_INVITATION_STATUS.ACCEPTED) {
+        throw new ConflictException(INVITATION_MESSAGE.PUBLIC_ALREADY_ACCEPTED)
+      }
+
+      if (
+        row.invitation.status === STAFF_INVITATION_STATUS.CANCELLED ||
+        row.invitation.status === STAFF_INVITATION_STATUS.EXPIRED
+      ) {
+        throw new GoneException(INVITATION_MESSAGE.PUBLIC_EXPIRED)
+      }
+
+      if (row.invitation.expiresAt.getTime() <= Date.now()) {
+        throw new GoneException(INVITATION_MESSAGE.PUBLIC_EXPIRED)
+      }
+
+      if (row.invitation.status !== STAFF_INVITATION_STATUS.PENDING) {
+        throw new NotFoundException(INVITATION_MESSAGE.PUBLIC_INVALID)
+      }
+
+      return {
+        documentId: row.invitation.documentId,
+        email: row.invitation.email,
+        clubId: row.clubDocumentId,
+        clubName: row.clubName,
+        slug: row.invitation.slug,
+        expiresAt: row.invitation.expiresAt,
+        hasSecurityWord: Boolean(row.invitation.securityWordHash),
+        securityWordHash: row.invitation.securityWordHash,
+      }
+    } catch (error) {
+      if (
+        error instanceof NotFoundException ||
+        error instanceof BadRequestException ||
+        error instanceof GoneException ||
+        error instanceof ConflictException
+      ) {
+        throw error
+      }
+
+      throw new InternalServerErrorException(INVITATION_MESSAGE.PUBLIC_GET_FAILED)
     }
   }
 }
