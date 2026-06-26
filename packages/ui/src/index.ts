@@ -165,3 +165,13 @@ export {
   TooltipTrigger,
 } from './components/ui/tooltip.tsx'
 export { Typography } from './components/ui/typography.tsx'
+export {
+  Dropzone,
+  DropzoneContent,
+  DropzoneEmptyState,
+  type DropzoneContentProps,
+  type DropzoneEmptyStateProps,
+  type DropzoneProps,
+} from './components/files-sdk/dropzone.tsx'
+export { FilePreview, type FilePreviewProps } from './components/files-sdk/file-preview.tsx'
+export { useFiles, type UseFilesOptions, type UseFilesResult } from 'files-sdk/react'

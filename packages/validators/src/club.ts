@@ -1,5 +1,21 @@
 import { z } from 'zod'
 import { CLUB_STATUS } from '@afterdark/types'
+import { uuidSchema } from './common.ts'
+import { CLUB_IMAGE_MAX_COUNT } from './upload.ts'
+
+function multipartUuidListSchema() {
+  return z
+    .union([z.string(), z.array(z.string())])
+    .optional()
+    .transform((value) => {
+      if (value === undefined) {
+        return []
+      }
+
+      return Array.isArray(value) ? value : [value]
+    })
+    .pipe(z.array(uuidSchema))
+}
 
 function nonNegativeDigitsField(requiredMessage: string, invalidMessage: string) {
   return z.string().min(1, requiredMessage).regex(/^\d+$/, invalidMessage)
@@ -27,3 +43,10 @@ export type CreateClubInput = z.infer<typeof createClubSchema>
 
 export const updateClubSchema = createClubSchema
 export type UpdateClubInput = z.infer<typeof updateClubSchema>
+
+export const updateClubMultipartSchema = createClubSchema.extend({
+  keepImageIds: multipartUuidListSchema(),
+})
+export type UpdateClubMultipartInput = z.infer<typeof updateClubMultipartSchema>
+
+export { CLUB_IMAGE_MAX_COUNT }

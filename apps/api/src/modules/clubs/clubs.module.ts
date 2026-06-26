@@ -4,9 +4,10 @@ import { JwtAuthGuard } from '../common/guards/jwt-auth.guard'
 import { OwnerRoleGuard } from '../common/guards/owner-role.guard'
 import { ClubsController } from './clubs.controller'
 import { ClubsService } from './clubs.service'
+import { FilesModule } from '../files/files.module'
 
 @Module({
-  imports: [AuthModule],
+  imports: [AuthModule, FilesModule],
   controllers: [ClubsController],
   providers: [ClubsService, JwtAuthGuard, OwnerRoleGuard],
   exports: [ClubsService],

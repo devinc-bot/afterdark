@@ -1,5 +1,5 @@
 import { useForm } from '@tanstack/react-form'
-import { CLUB_STATUS } from '@afterdark/types'
+import { CLUB_STATUS, type ClubImageResponse } from '@afterdark/types'
 import { createClubSchema, clubStatusSchema, type CreateClubInput } from '@afterdark/validators'
 import {
   Button,
@@ -25,6 +25,7 @@ import {
   useCreateClub,
   useUpdateClub,
 } from '~/modules/club-management/mutation/use-club-management-mutations'
+import { ImagesClubForm } from '~/modules/club-management/components/images-club-form'
 
 export const CLUB_FORM_MODE = {
   CREATE: 'create',
@@ -35,7 +36,12 @@ export type ClubFormMode = (typeof CLUB_FORM_MODE)[keyof typeof CLUB_FORM_MODE]
 
 const CLUB_DIALOG_FORM_ID = 'club-dialog-form'
 
-const EMPTY_CLUB_FORM_VALUES: CreateClubInput = {
+export type ClubDialogFormValues = CreateClubInput & {
+  existingImages: ClubImageResponse[]
+  clubImg: File[]
+}
+
+const EMPTY_CLUB_FORM_VALUES: ClubDialogFormValues = {
   name: '',
   address: '',
   capacity: '',
@@ -44,6 +50,8 @@ const EMPTY_CLUB_FORM_VALUES: CreateClubInput = {
   state: '',
   street_number: '',
   city: '',
+  existingImages: [],
+  clubImg: [],
 }
 
 const CLUB_STATUS_OPTIONS = [
@@ -139,7 +147,7 @@ type ClubDialogFormProps = {
   open: boolean
   onOpenChange: (open: boolean) => void
   clubDocumentId?: string
-  defaultValues?: Partial<CreateClubInput>
+  defaultValues?: Partial<ClubDialogFormValues>
   isSubmitting?: boolean
   formKey?: string
 }
@@ -162,8 +170,24 @@ function ClubDialogFormInner({
     defaultValues: { ...EMPTY_CLUB_FORM_VALUES, ...defaultValues },
     onSubmit: async ({ value }) => {
       if (isCreate) {
+        const formData = new FormData()
+
+        formData.append('name', value.name)
+        formData.append('capacity', value.capacity)
+        formData.append('description', value.description)
+        formData.append('status', value.status)
+
+        formData.append('address', value.address)
+        formData.append('street_number', value.street_number)
+        formData.append('city', value.city)
+        formData.append('state', value.state)
+
+        for (const image of value.clubImg) {
+          formData.append('images', image)
+        }
+
         try {
-          await createClubMutation.mutateAsync(value)
+          await createClubMutation.mutateAsync(formData)
           toast.success('Club registrado correctamente')
           onOpenChange(false)
         } catch (error) {
@@ -176,13 +200,34 @@ function ClubDialogFormInner({
         return
       }
 
+      const { clubImg, existingImages, ...clubPayload } = value
+
       if (!clubDocumentId) {
         toast.error('No pudimos identificar el club a actualizar.')
         return
       }
 
+      const formData = new FormData()
+
+      formData.append('name', clubPayload.name)
+      formData.append('capacity', clubPayload.capacity)
+      formData.append('description', clubPayload.description)
+      formData.append('status', clubPayload.status)
+      formData.append('address', clubPayload.address)
+      formData.append('street_number', clubPayload.street_number)
+      formData.append('city', clubPayload.city)
+      formData.append('state', clubPayload.state)
+
+      for (const image of existingImages) {
+        formData.append('keepImageIds', image.documentId)
+      }
+
+      for (const image of clubImg) {
+        formData.append('images', image)
+      }
+
       try {
-        await updateClubMutation.mutateAsync({ documentId: clubDocumentId, input: value })
+        await updateClubMutation.mutateAsync({ documentId: clubDocumentId, formData })
         toast.success('Club actualizado correctamente')
         onOpenChange(false)
       } catch (error) {
@@ -315,6 +360,26 @@ function ClubDialogFormInner({
                   </div>
                 )
               }}
+            </form.Field>
+          </FormSection>
+
+          <FormSection
+            title="Imágenes"
+            description="Fotos del local que se mostrarán en la plataforma. Podés subir hasta 5 imágenes."
+          >
+            <form.Field name="existingImages">
+              {(existingField) => (
+                <form.Field name="clubImg">
+                  {(newField) => (
+                    <ImagesClubForm
+                      existingImages={existingField.state.value}
+                      onExistingImagesChange={existingField.handleChange}
+                      newImages={newField.state.value}
+                      onNewImagesChange={newField.handleChange}
+                    />
+                  )}
+                </form.Field>
+              )}
             </form.Field>
           </FormSection>
 

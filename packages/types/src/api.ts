@@ -63,6 +63,12 @@ export interface CurrentUserAddress {
   city: string
 }
 
+export interface ClubImageResponse {
+  documentId: string
+  name: string
+  url: string
+}
+
 export interface ClubResponse {
   documentId: string
   name: string
@@ -73,6 +79,7 @@ export interface ClubResponse {
   streetNumber: string
   state: string
   city: string
+  images: ClubImageResponse[]
   createdAt: Date
   updatedAt: Date
 }

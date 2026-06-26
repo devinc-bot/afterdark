@@ -1,11 +1,11 @@
 import { useState } from 'react'
 import { type ClubResponse } from '@afterdark/types'
-import type { CreateClubInput } from '@afterdark/validators'
 import { Button, toast } from '@afterdark/ui'
 import { Plus } from 'lucide-react'
 import {
   CLUB_FORM_MODE,
   ClubDialogForm,
+  type ClubDialogFormValues,
   type ClubFormMode,
 } from '~/modules/club-management/components/dialog-form'
 import { ClubRemoveDialog } from '~/modules/club-management/components/dialog-remove'
@@ -23,6 +23,8 @@ function clubResponseToRegisteredClub(club: ClubResponse): RegisteredClub {
     address: club.address,
     tags: [],
     status: club.status,
+    images: club.images,
+    imageUrl: club.images[0]?.url,
     capacity: club.capacity,
     description: club.description ?? undefined,
     state: club.state,
@@ -31,7 +33,7 @@ function clubResponseToRegisteredClub(club: ClubResponse): RegisteredClub {
   }
 }
 
-function clubToFormValues(club: RegisteredClub): CreateClubInput {
+function clubToFormValues(club: RegisteredClub): Partial<ClubDialogFormValues> {
   return {
     name: club.name,
     address: club.address,
@@ -41,6 +43,8 @@ function clubToFormValues(club: RegisteredClub): CreateClubInput {
     state: club.state ?? '',
     street_number: club.street_number ?? '',
     city: club.city ?? '',
+    existingImages: club.images,
+    clubImg: [],
   }
 }
 

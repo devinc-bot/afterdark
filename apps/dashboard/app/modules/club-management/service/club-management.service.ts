@@ -1,5 +1,4 @@
 import type { ClubResponse } from '@afterdark/types'
-import type { CreateClubInput, UpdateClubInput } from '@afterdark/validators'
 import { api } from '~/config/api'
 import { API_ROUTES } from '~/config/constants/api'
 import { toApiServiceError } from '~/modules/common/utils/api-service-error.utils'
@@ -22,19 +21,19 @@ export async function fetchClubs(): Promise<ClubResponse[]> {
   }
 }
 
-export async function createClub(data: CreateClubInput): Promise<ClubResponse> {
+export async function createClub(formData: FormData): Promise<ClubResponse> {
   try {
-    return await api.post<ClubResponse>(clubsApiPath(API_ROUTES.clubs.path.create()), data)
+    return await api.post<ClubResponse>(clubsApiPath(API_ROUTES.clubs.path.create()), formData)
   } catch (error) {
     throw toApiServiceError(error, CREATE_CLUB_FALLBACK_ERROR)
   }
 }
 
-export async function updateClub(documentId: string, data: UpdateClubInput): Promise<ClubResponse> {
+export async function updateClub(documentId: string, formData: FormData): Promise<ClubResponse> {
   try {
     return await api.patch<ClubResponse>(
       clubsApiPath(API_ROUTES.clubs.path.update(documentId)),
-      data
+      formData
     )
   } catch (error) {
     throw toApiServiceError(error, UPDATE_CLUB_FALLBACK_ERROR)
