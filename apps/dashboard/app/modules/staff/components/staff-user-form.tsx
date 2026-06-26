@@ -1,5 +1,4 @@
 import { useForm } from '@tanstack/react-form'
-import { USER_ROLE, STAFF_STATUS } from '@afterdark/types'
 import { createStaffInvitationSchema, type CreateStaffInvitationInput } from '@afterdark/validators'
 import {
   Button,
@@ -14,15 +13,7 @@ import {
 } from '@afterdark/ui'
 import { useClubs } from '~/modules/club-management/queries/use-club-management-queries'
 import { STAFF_COPY } from '~/modules/staff/constants/staff.copy'
-import {
-  STAFF_USER_AVATAR_TONE,
-  type StaffUserRecord,
-} from '~/modules/staff/types/staff-user-record'
-import {
-  createStaffInvitation,
-  type StaffInvitation,
-} from '~/modules/staff/utils/staff-invitation.utils'
-import { getStaffUserDisplayNameFromEmail } from '~/modules/staff/utils/staff-user.utils'
+import { postStaffInvitation } from '~/modules/staff/services/staff-invitations.service'
 
 const STAFF_USER_FORM_ID = 'staff-user-form'
 
@@ -71,16 +62,17 @@ function getClubSelectFieldDisplay({
   }
 }
 
-export type StaffInvitationResult = {
-  record: StaffUserRecord
-  invitation: StaffInvitation
+export type StaffInvitationSuccess = {
+  url: string
+  expiresAt: number
+  hasSecurityWord: boolean
 }
 
 type StaffUserFormProps = {
-  onInvite: (result: StaffInvitationResult) => void
+  onInviteSuccess: (invitation: StaffInvitationSuccess) => void
 }
 
-export function StaffUserForm({ onInvite }: StaffUserFormProps) {
+export function StaffUserForm({ onInviteSuccess }: StaffUserFormProps) {
   const { data: clubs = [], isLoading: isClubsLoading, isError: isClubsError } = useClubs()
 
   const form = useForm({
@@ -89,29 +81,18 @@ export function StaffUserForm({ onInvite }: StaffUserFormProps) {
       onSubmit: createStaffInvitationSchema,
     },
     onSubmit: async ({ value }) => {
-      const invitation = await createStaffInvitation(value, window.location.origin)
-      if (!invitation) {
+      try {
+        const response = await postStaffInvitation(value)
+        onInviteSuccess({
+          url: response.url,
+          expiresAt: new Date(response.expiresAt).getTime(),
+          hasSecurityWord: response.hasSecurityWord,
+        })
+        toast.success(STAFF_COPY.form.success)
+        form.reset()
+      } catch {
         toast.error(STAFF_COPY.form.error)
-        return
       }
-
-      const record: StaffUserRecord = {
-        id: crypto.randomUUID(),
-        name: getStaffUserDisplayNameFromEmail(value.email),
-        email: value.email,
-        clubId: value.clubId,
-        clubName: clubs.find((club) => club.documentId === value.clubId)?.name ?? value.clubId,
-        role: USER_ROLE.STAFF,
-        lastActiveLabel: STAFF_COPY.invitation.pending,
-        lastActiveAt: Date.now(),
-        status: STAFF_STATUS.PENDING,
-        avatarUrl: null,
-        avatarClassName: STAFF_USER_AVATAR_TONE.neutral,
-      }
-
-      onInvite({ record, invitation })
-      toast.success(STAFF_COPY.form.success)
-      form.reset()
     },
   })
 
