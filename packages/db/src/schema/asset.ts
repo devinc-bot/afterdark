@@ -6,6 +6,7 @@ export const assets = sqliteTable('assets', {
   ...createBaseColumns('assets'),
   name: text('name').notNull(),
   url: text('url'),
+  storageKey: text('storage_key'),
   type: text('type', { enum: [ASSET_TYPE.IMG, ASSET_TYPE.VIDEO] }),
 })
 

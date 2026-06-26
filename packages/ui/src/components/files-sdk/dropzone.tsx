@@ -20,6 +20,7 @@ interface DropzoneContextValue {
   isUploading: boolean
   uploaded: UploadedEntry[]
   open: () => void
+  local: boolean
 }
 
 const formatBytes = (bytes: number): string => {
@@ -42,8 +43,10 @@ const useDropzoneContext = (): DropzoneContextValue => {
 }
 
 export interface DropzoneProps {
-  /** A `useFiles()` instance — the dropzone uploads through it. */
-  files: UseFilesResult
+  /** When true, files stay in the browser — no upload. */
+  local?: boolean
+  /** Required when `local` is false — uploads through `files-sdk`. */
+  files?: UseFilesResult
   /** Key prefix (folder) for explicit keys, e.g. `"docs/"`. Empty = server mints the key. */
   prefix?: string
   /** `accept` attribute for the file input, e.g. `"image/*"`. */
@@ -52,7 +55,9 @@ export interface DropzoneProps {
   maxFiles?: number
   /** Max bytes per file; larger files are skipped. */
   maxSize?: number
-  /** Called after each successful upload. */
+  /** Local mode: called with the picked files (no upload). */
+  onSelect?: (files: File[]) => void
+  /** Remote mode: called after each successful upload. */
   onUploaded?: (entry: UploadedEntry) => void
   className?: string
   children?: ReactNode
@@ -63,11 +68,13 @@ export interface DropzoneProps {
  * `<DropzoneEmptyState />` and `<DropzoneContent />`, or pass your own children.
  */
 export const Dropzone = ({
+  local = false,
   files,
   prefix = '',
   accept,
   maxFiles = 1,
   maxSize,
+  onSelect,
   onUploaded,
   className,
   children,
@@ -81,6 +88,25 @@ export const Dropzone = ({
       if (!list?.length) {
         return
       }
+
+      if (local) {
+        const selected: File[] = []
+        for (const file of [...list].slice(0, maxFiles)) {
+          if (maxSize && file.size > maxSize) {
+            continue
+          }
+          selected.push(file)
+        }
+        if (selected.length) {
+          onSelect?.(selected)
+        }
+        return
+      }
+
+      if (!files) {
+        return
+      }
+
       for (const file of [...list].slice(0, maxFiles)) {
         if (maxSize && file.size > maxSize) {
           continue
@@ -95,16 +121,18 @@ export const Dropzone = ({
         onUploaded?.(entry)
       }
     },
-    [files, maxFiles, maxSize, onUploaded, prefix]
+    [files, local, maxFiles, maxSize, onSelect, onUploaded, prefix]
   )
 
   const open = useCallback(() => inputRef.current?.click(), [])
+  const isUploading = !local && Boolean(files?.isUploading)
 
   return (
     <DropzoneContext.Provider
       value={{
         accept,
-        isUploading: files.isUploading,
+        isUploading,
+        local,
         maxFiles,
         maxSize,
         open,
@@ -117,7 +145,7 @@ export const Dropzone = ({
           isDragActive && 'border-primary ring-1 ring-primary',
           className
         )}
-        disabled={files.isUploading}
+        disabled={isUploading}
         onClick={open}
         onDragLeave={() => setIsDragActive(false)}
         onDragOver={(event: DragEvent<HTMLButtonElement>) => {
@@ -157,9 +185,9 @@ export interface DropzoneEmptyStateProps {
 
 /** Default prompt shown before anything has been uploaded. */
 export const DropzoneEmptyState = ({ className, children }: DropzoneEmptyStateProps) => {
-  const { accept, isUploading, maxFiles, maxSize, uploaded } = useDropzoneContext()
+  const { accept, isUploading, local, maxFiles, maxSize, uploaded } = useDropzoneContext()
 
-  if (uploaded.length) {
+  if (!local && uploaded.length) {
     return null
   }
 

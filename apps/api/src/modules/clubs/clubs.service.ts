@@ -1,100 +1,190 @@
-import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common'
+import { Inject, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common'
 import {
+  createClubImageAssets,
   createClubWithAddress,
   deleteClubById,
+  deleteClubImageAssetsByIds,
   findClubIdByDocumentId,
+  findClubImageAssetsByClubIds,
+  findClubImageAssetsNotInKeepList,
   findClubsWithAddressesByOwnerDocumentId,
   findOwnerIdByDocumentId,
   updateClubWithAddress,
-  type AddressSelect,
-  type ClubSelect,
-  type ClubWithAddress,
 } from '@afterdark/db'
-import type { ClubResponse } from '@afterdark/types'
+import type { ClubImageResponse, ClubResponse } from '@afterdark/types'
 import type { CreateClubInput, UpdateClubInput } from '@afterdark/validators'
+import { FilesService } from '../files/files.service'
 import { CLUB_MESSAGE } from './clubs.constants'
+import {
+  assertValidKeepImageIds,
+  groupClubImagesByClubId,
+  toClubImageResponse,
+  toClubResponse,
+  toClubUpsertInput,
+  validateImageLimit,
+} from './utils/clubs.mapper'
 
-function toClubResponse(club: ClubSelect, address: AddressSelect): ClubResponse {
-  return {
-    documentId: club.documentId,
-    name: club.name,
-    capacity: club.capacity,
-    description: club.description,
-    status: club.status,
-    address: address.address,
-    streetNumber: address.streetNumber,
-    state: address.state,
-    city: address.city,
-    createdAt: club.createdAt,
-    updatedAt: club.updatedAt,
-  }
-}
-
-function toClubUpsertInput(input: CreateClubInput | UpdateClubInput) {
-  return {
-    name: input.name,
-    capacity: input.capacity,
-    description: input.description,
-    status: input.status,
-    address: input.address,
-    streetNumber: input.street_number,
-    state: input.state,
-    city: input.city,
-  }
-}
-
-function mapClubWithAddress({ club, address }: ClubWithAddress): ClubResponse {
-  return toClubResponse(club, address)
-}
+type UploadedImage = { key: string; url: string }
 
 @Injectable()
 export class ClubsService {
+  constructor(@Inject(FilesService) private readonly filesService: FilesService) {}
+
   async listMyClubs(ownerDocumentId: string): Promise<ClubResponse[]> {
-    const rows = await findClubsWithAddressesByOwnerDocumentId(ownerDocumentId)
-    return rows.map(mapClubWithAddress)
+    const clubs = await findClubsWithAddressesByOwnerDocumentId(ownerDocumentId)
+    const clubIds = clubs.map(({ club }) => club.id)
+    const imageRows = await findClubImageAssetsByClubIds(clubIds)
+    const imagesByClubId = groupClubImagesByClubId(imageRows)
+
+    return clubs.map(({ club, address }) =>
+      toClubResponse(club, address, imagesByClubId.get(club.id) ?? [])
+    )
   }
 
-  async createClub(ownerDocumentId: string, input: CreateClubInput): Promise<ClubResponse> {
+  async createClub(
+    ownerDocumentId: string,
+    input: CreateClubInput,
+    files: Express.Multer.File[] = []
+  ): Promise<ClubResponse> {
     const ownerId = await findOwnerIdByDocumentId(ownerDocumentId)
 
     if (!ownerId) {
       throw new NotFoundException(CLUB_MESSAGE.OWNER_NOT_FOUND)
     }
 
+    validateImageLimit([], files)
+
+    const uploads = await this.uploadClubImages(files)
+    const row = await this.createClubRecord(ownerId, input)
+    const images = await this.saveNewImages(row.club.id, files, uploads)
+
+    return toClubResponse(row.club, row.address, images)
+  }
+
+  async updateClub(
+    documentId: string,
+    input: UpdateClubInput,
+    files: Express.Multer.File[] = [],
+    keepImageIds: string[] = []
+  ): Promise<ClubResponse> {
+    const clubId = await this.requireClubId(documentId)
+    const currentImages = await findClubImageAssetsByClubIds([clubId])
+
+    assertValidKeepImageIds(
+      currentImages.map(({ asset }) => asset.documentId),
+      keepImageIds
+    )
+    validateImageLimit(keepImageIds, files)
+
+    const uploadedImages = await this.uploadClubImages(files)
+
     try {
-      const row = await createClubWithAddress(ownerId, toClubUpsertInput(input))
-      return mapClubWithAddress(row)
+      const clubData = await this.updateClubData(documentId, clubId, input)
+      await this.removeUnwantedImages(clubId, keepImageIds)
+      await this.saveNewImages(clubId, files, uploadedImages)
+
+      const images = await this.getClubImages(clubId)
+
+      return toClubResponse(clubData.club, clubData.address, images)
+    } catch (error) {
+      await this.rollbackUploadedImages(uploadedImages)
+      throw error
+    }
+  }
+
+  async deleteClub(documentId: string): Promise<void> {
+    const clubId = await this.requireClubId(documentId)
+
+    try {
+      await this.removeUnwantedImages(clubId, [])
+      await deleteClubById(clubId)
+    } catch {
+      throw new InternalServerErrorException(CLUB_MESSAGE.DELETE_FAILED)
+    }
+  }
+
+  private async requireClubId(documentId: string): Promise<number> {
+    const clubId = await findClubIdByDocumentId(documentId)
+
+    if (!clubId) {
+      throw new NotFoundException(CLUB_MESSAGE.NOT_FOUND)
+    }
+
+    return clubId
+  }
+
+  private async uploadClubImages(files: Express.Multer.File[]): Promise<UploadedImage[]> {
+    if (files.length === 0) {
+      return []
+    }
+
+    try {
+      return await Promise.all(files.map((file) => this.filesService.uploadImage(file)))
+    } catch {
+      throw new InternalServerErrorException(CLUB_MESSAGE.IMAGE_UPLOAD_FAILED)
+    }
+  }
+
+  private async rollbackUploadedImages(uploads: UploadedImage[]): Promise<void> {
+    if (uploads.length === 0) {
+      return
+    }
+
+    await this.filesService.deleteImages(uploads.map((upload) => upload.key))
+  }
+
+  private async createClubRecord(ownerId: number, input: CreateClubInput) {
+    try {
+      return await createClubWithAddress(ownerId, toClubUpsertInput(input))
     } catch {
       throw new InternalServerErrorException(CLUB_MESSAGE.CREATE_FAILED)
     }
   }
 
-  async updateClub(documentId: string, input: UpdateClubInput): Promise<ClubResponse> {
-    const clubId = await findClubIdByDocumentId(documentId)
-
-    if (!clubId) {
-      throw new NotFoundException(CLUB_MESSAGE.NOT_FOUND)
-    }
-
-    try {
-      const row = await updateClubWithAddress(documentId, clubId, toClubUpsertInput(input))
-      return mapClubWithAddress(row)
-    } catch {
-      throw new InternalServerErrorException(CLUB_MESSAGE.UPDATE_FAILED)
-    }
+  private async updateClubData(documentId: string, clubId: number, input: UpdateClubInput) {
+    return updateClubWithAddress(documentId, clubId, toClubUpsertInput(input))
   }
 
-  async deleteClub(documentId: string): Promise<void> {
-    const clubId = await findClubIdByDocumentId(documentId)
+  private async removeUnwantedImages(clubId: number, keepImageIds: string[]): Promise<void> {
+    const assetsToRemove = await findClubImageAssetsNotInKeepList(clubId, keepImageIds)
+    const storageKeys = assetsToRemove
+      .map((asset) => asset.storageKey)
+      .filter((key): key is string => Boolean(key))
 
-    if (!clubId) {
-      throw new NotFoundException(CLUB_MESSAGE.NOT_FOUND)
+    if (storageKeys.length > 0) {
+      await this.filesService.deleteImages(storageKeys)
     }
 
-    try {
-      await deleteClubById(clubId)
-    } catch {
-      throw new InternalServerErrorException(CLUB_MESSAGE.DELETE_FAILED)
+    await deleteClubImageAssetsByIds(
+      clubId,
+      assetsToRemove.map((asset) => asset.id)
+    )
+  }
+
+  private async saveNewImages(
+    clubId: number,
+    files: Express.Multer.File[],
+    uploads: UploadedImage[]
+  ): Promise<ClubImageResponse[]> {
+    if (uploads.length === 0) {
+      return []
     }
+
+    const images = await createClubImageAssets(
+      clubId,
+      uploads.map((upload, index) => ({
+        name: files[index]?.originalname ?? upload.key,
+        url: upload.url,
+        storageKey: upload.key,
+      }))
+    )
+
+    return images.map(toClubImageResponse)
+  }
+
+  private async getClubImages(clubId: number): Promise<ClubImageResponse[]> {
+    const imageRows = await findClubImageAssetsByClubIds([clubId])
+
+    return imageRows.map(({ asset }) => toClubImageResponse(asset))
   }
 }

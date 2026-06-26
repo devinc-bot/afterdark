@@ -1,5 +1,4 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import type { CreateClubInput, UpdateClubInput } from '@afterdark/validators'
 import { QUERY_KEYS } from '~/modules/common/constants/query-keys'
 import {
   createClub,
@@ -11,7 +10,7 @@ export function useCreateClub() {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: (input: CreateClubInput) => createClub(input),
+    mutationFn: (formData: FormData) => createClub(formData),
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: QUERY_KEYS.clubs() })
     },
@@ -20,14 +19,14 @@ export function useCreateClub() {
 
 type UpdateClubVariables = {
   documentId: string
-  input: UpdateClubInput
+  formData: FormData
 }
 
 export function useUpdateClub() {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: ({ documentId, input }: UpdateClubVariables) => updateClub(documentId, input),
+    mutationFn: ({ documentId, formData }: UpdateClubVariables) => updateClub(documentId, formData),
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: QUERY_KEYS.clubs() })
     },

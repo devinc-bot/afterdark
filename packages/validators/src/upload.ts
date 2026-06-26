@@ -23,12 +23,14 @@ export const IMAGE_EXTENSION_BY_MIME_TYPE: Record<AllowedImageMimeType, string> 
   [ALLOWED_IMAGE_MIME_TYPE.JPG]: '.jpg',
 }
 
+export const IMAGE_UPLOAD_MAX_BYTES = 5 * 1024 * 1024
+
+export const IMAGE_UPLOAD_MAX_MEGABYTES = IMAGE_UPLOAD_MAX_BYTES / (1024 * 1024)
+
+export const CLUB_IMAGE_MAX_COUNT = 5
+
 export const uploadEnvSchema = z.object({
-  UPLOAD_MAX_BYTES: z.coerce
-    .number()
-    .int()
-    .positive()
-    .default(5 * 1024 * 1024),
+  UPLOAD_MAX_BYTES: z.coerce.number().int().positive().default(IMAGE_UPLOAD_MAX_BYTES),
   R2_ACCOUNT_ID: z.string().min(1),
   R2_ACCESS_KEY_ID: z.string().min(1),
   R2_SECRET_ACCESS_KEY: z.string().min(1),

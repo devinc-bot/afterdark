@@ -78,6 +78,13 @@
       "when": 1782255000000,
       "tag": "0010_owner_entity_refs",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "6",
+      "when": 1782502696550,
+      "tag": "0011_new_column_storage_key",
+      "breakpoints": true
     }
   ]
 }

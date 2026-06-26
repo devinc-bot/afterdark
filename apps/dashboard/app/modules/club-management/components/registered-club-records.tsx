@@ -1,4 +1,4 @@
-import { CLUB_STATUS, type ClubStatus } from '@afterdark/types'
+import { CLUB_STATUS, type ClubImageResponse, type ClubStatus } from '@afterdark/types'
 import {
   Badge,
   Button,
@@ -24,6 +24,7 @@ export type RegisteredClub = {
   address: string
   tags: string[]
   status: ClubStatus
+  images: ClubImageResponse[]
   imageUrl?: string
   capacity?: string
   description?: string

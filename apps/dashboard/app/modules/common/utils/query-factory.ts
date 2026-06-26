@@ -57,6 +57,14 @@ export class QueryFactory {
   }
 
   post<T>(path: string, data: unknown, requestInit?: RequestInit) {
+    if (data instanceof FormData) {
+      return this.request<T>(path, {
+        ...requestInit,
+        method: 'POST',
+        body: data,
+      })
+    }
+
     return this.request<T>(path, {
       ...requestInit,
       method: 'POST',
@@ -77,6 +85,14 @@ export class QueryFactory {
   }
 
   patch<T>(path: string, data: unknown, requestInit?: RequestInit) {
+    if (data instanceof FormData) {
+      return this.request<T>(path, {
+        ...requestInit,
+        method: 'PATCH',
+        body: data,
+      })
+    }
+
     return this.request<T>(path, {
       ...requestInit,
       method: 'PATCH',
@@ -89,11 +105,19 @@ export class QueryFactory {
   }
 
   private mergeInit(requestInit?: RequestInit): RequestConfig {
-    return {
+    const init: RequestConfig = {
       ...this.defaultInit,
       ...requestInit,
       headers: mergeHeaders(this.defaultInit.headers, requestInit?.headers),
     }
+
+    if (init.body instanceof FormData) {
+      const headers = new Headers(init.headers)
+      headers.delete('Content-Type')
+      init.headers = headers
+    }
+
+    return init
   }
 
   private async buildHeaders(init: RequestConfig): Promise<Headers> {

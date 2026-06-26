@@ -7,11 +7,19 @@ import { useEffect, useRef, useState } from 'react'
 
 import { cn } from '../../lib/utils'
 
+type FilePreviewMeta = {
+  key: string
+  name: string
+  size: number
+  type: string
+  etag?: string
+}
+
 export interface FilePreviewProps {
-  /** A `useFiles()` instance — resolves metadata and bytes through it. */
-  files: UseFilesResult
-  /** A key string, or an already-resolved `StoredFile`. */
-  file: string | StoredFile
+  /** Required for remote keys — resolves metadata and bytes through it. */
+  files?: UseFilesResult
+  /** A storage key, `StoredFile`, or a local `File` (no upload). */
+  file: string | StoredFile | File
   /** Endpoint for the gateway download-proxy fallback. Default `"/api/files"`. */
   endpoint?: string
   className?: string
@@ -27,12 +35,14 @@ const formatBytes = (bytes: number): string => {
 }
 
 const Body = ({
+  alt,
   error,
   isLoading,
   src,
   text,
   type,
 }: {
+  alt: string
   error?: string
   isLoading: boolean
   src?: string
@@ -51,10 +61,9 @@ const Body = ({
     )
   }
   if (src) {
-    // Portable <img> rather than next/image so the component drops into any app.
     return (
       // eslint-disable-next-line nextjs/no-img-element
-      <img alt="preview" className="max-h-72 w-auto rounded object-contain" src={src} />
+      <img alt={alt} className="max-h-72 w-auto rounded object-contain" src={src} />
     )
   }
   if (text !== undefined) {
@@ -69,9 +78,8 @@ const Body = ({
 }
 
 /**
- * Lazy preview of a single stored file. Images and PDFs prefer a direct
- * `url()`, falling back to the gateway download proxy; text is fetched and
- * shown inline. Bytes are only loaded when the component mounts.
+ * Preview of a stored file or a local `File`. Remote files load through
+ * `files-sdk`; local files use an object URL (no network).
  */
 export const FilePreview = ({
   files,
@@ -79,26 +87,53 @@ export const FilePreview = ({
   endpoint = '/api/files',
   className,
 }: FilePreviewProps) => {
-  const key = typeof file === 'string' ? file : file.key
-  const [meta, setMeta] = useState<StoredFile | undefined>(
-    typeof file === 'string' ? undefined : file
-  )
+  const isLocalFile = file instanceof File
+  const key = isLocalFile ? file.name : typeof file === 'string' ? file : file.key
+  const [meta, setMeta] = useState<FilePreviewMeta | undefined>(() => {
+    if (file instanceof File) {
+      return { key: file.name, name: file.name, size: file.size, type: file.type }
+    }
+    if (typeof file === 'string') {
+      return undefined
+    }
+    return { key: file.key, name: file.name, size: file.size, type: file.type, etag: file.etag }
+  })
   const [src, setSrc] = useState<string>()
   const [text, setText] = useState<string>()
   const [loadError, setLoadError] = useState<string>()
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(!isLocalFile)
 
-  // Read `files` through a ref so the effect doesn't depend on the hook's
-  // identity — it returns a fresh object whenever its store changes (e.g. when
-  // `url()` throws on an adapter that can't sign), which would otherwise re-run
-  // this effect on its own error and loop forever.
   const filesRef = useRef(files)
   filesRef.current = files
 
   useEffect(() => {
+    if (!(file instanceof File)) {
+      return
+    }
+
+    const objectUrl = URL.createObjectURL(file)
+    setMeta({ key: file.name, name: file.name, size: file.size, type: file.type })
+    setSrc(objectUrl)
+    setLoadError(undefined)
+    setIsLoading(false)
+
+    return () => URL.revokeObjectURL(objectUrl)
+  }, [file])
+
+  useEffect(() => {
+    if (file instanceof File) {
+      return
+    }
+
     const controller = new AbortController()
 
     const run = async () => {
+      if (!filesRef.current) {
+        setLoadError('Missing files client.')
+        setIsLoading(false)
+        return
+      }
+
       setLoadError(undefined)
       setSrc(undefined)
       setText(undefined)
@@ -108,7 +143,13 @@ export const FilePreview = ({
         if (controller.signal.aborted) {
           return
         }
-        setMeta(resolved)
+        setMeta({
+          key: resolved.key,
+          name: resolved.name,
+          size: resolved.size,
+          type: resolved.type,
+          etag: resolved.etag,
+        })
 
         if (resolved.type.startsWith('text/') || resolved.type === 'application/json') {
           const downloaded = await filesRef.current.download(key)
@@ -117,9 +158,6 @@ export const FilePreview = ({
             setText(body)
           }
         } else if (resolved.type.startsWith('image/') || resolved.type === 'application/pdf') {
-          // Prefer a signed/direct URL, but only when the adapter can actually
-          // sign — otherwise `url()` returns a non-loadable placeholder. Fall
-          // back to the gateway download proxy, which works on every adapter.
           const proxy = `${endpoint}?op=download&key=${encodeURIComponent(key)}`
           let resolvedSrc = proxy
           const caps = await filesRef.current.capabilities()
@@ -152,10 +190,17 @@ export const FilePreview = ({
   return (
     <figure className={cn('overflow-hidden rounded-lg border border-border bg-card', className)}>
       <div className="flex min-h-40 items-center justify-center bg-muted/30 p-4">
-        <Body error={loadError} isLoading={isLoading} src={src} text={text} type={meta?.type} />
+        <Body
+          alt={meta?.name ?? key}
+          error={loadError}
+          isLoading={isLoading}
+          src={src}
+          text={text}
+          type={meta?.type ?? (file instanceof File ? file.type : undefined)}
+        />
       </div>
       <figcaption className="border-border border-t px-3 py-2">
-        <p className="truncate font-medium text-sm">{key}</p>
+        <p className="truncate font-medium text-sm">{meta?.name ?? key}</p>
         <p className="text-muted-foreground text-xs">
           {meta ? `${formatBytes(meta.size)} · ${meta.type || 'unknown'}` : '—'}
           {meta?.etag ? ` · ${meta.etag}` : ''}
