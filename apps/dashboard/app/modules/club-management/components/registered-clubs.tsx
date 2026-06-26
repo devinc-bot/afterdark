@@ -1,13 +1,8 @@
 import { useState } from 'react'
+import { Link, useNavigate } from '@tanstack/react-router'
 import { type ClubResponse } from '@afterdark/types'
 import { Button, toast } from '@afterdark/ui'
 import { Plus } from 'lucide-react'
-import {
-  CLUB_FORM_MODE,
-  ClubDialogForm,
-  type ClubDialogFormValues,
-  type ClubFormMode,
-} from '~/modules/club-management/components/dialog-form'
 import { ClubRemoveDialog } from '~/modules/club-management/components/dialog-remove'
 import {
   RegisteredClubRecords,
@@ -15,6 +10,7 @@ import {
 } from '~/modules/club-management/components/registered-club-records'
 import { useClubs } from '~/modules/club-management/queries/use-club-management-queries'
 import { useDeleteClub } from '~/modules/club-management/mutation/use-club-management-mutations'
+import { DASHBOARD_ROUTES } from '~/modules/common/constants/routes'
 
 function clubResponseToRegisteredClub(club: ClubResponse): RegisteredClub {
   return {
@@ -33,48 +29,19 @@ function clubResponseToRegisteredClub(club: ClubResponse): RegisteredClub {
   }
 }
 
-function clubToFormValues(club: RegisteredClub): Partial<ClubDialogFormValues> {
-  return {
-    name: club.name,
-    address: club.address,
-    capacity: club.capacity ?? '',
-    description: club.description ?? '',
-    status: club.status,
-    state: club.state ?? '',
-    street_number: club.street_number ?? '',
-    city: club.city ?? '',
-    existingImages: club.images,
-    clubImg: [],
-  }
-}
-
 function formatClubCount(count: number): string {
   if (count === 1) return '1 club registrado'
   return `${count} clubes registrados`
 }
 
 export function RegisteredClubs() {
+  const navigate = useNavigate()
   const { data, isLoading, isError, error } = useClubs()
   const deleteClubMutation = useDeleteClub()
   const clubs = data?.map(clubResponseToRegisteredClub) ?? []
 
-  const [dialogOpen, setDialogOpen] = useState(false)
   const [removeDialogOpen, setRemoveDialogOpen] = useState(false)
-  const [formMode, setFormMode] = useState<ClubFormMode>(CLUB_FORM_MODE.CREATE)
-  const [editingClub, setEditingClub] = useState<RegisteredClub | null>(null)
   const [clubToRemove, setClubToRemove] = useState<RegisteredClub | null>(null)
-
-  const openCreateDialog = () => {
-    setEditingClub(null)
-    setFormMode(CLUB_FORM_MODE.CREATE)
-    setDialogOpen(true)
-  }
-
-  const openEditDialog = (club: RegisteredClub) => {
-    setEditingClub(club)
-    setFormMode(CLUB_FORM_MODE.EDIT)
-    setDialogOpen(true)
-  }
 
   const openRemoveDialog = (club: RegisteredClub) => {
     setClubToRemove(club)
@@ -103,6 +70,13 @@ export function RegisteredClubs() {
     }
   }
 
+  const handleEdit = (club: RegisteredClub) => {
+    navigate({
+      to: '/club-management/$documentId/edit',
+      params: { documentId: club.id },
+    })
+  }
+
   return (
     <>
       <section aria-labelledby="registered-clubs-heading" className="flex flex-col gap-4">
@@ -120,12 +94,12 @@ export function RegisteredClubs() {
           </div>
 
           <Button
+            asChild
             type="button"
             className="w-full shrink-0 sm:w-auto"
             iconLeft={<Plus aria-hidden="true" />}
-            onClick={openCreateDialog}
           >
-            Agregar club
+            <Link to={DASHBOARD_ROUTES.clubManagementNew()}>Agregar club</Link>
           </Button>
         </header>
 
@@ -150,22 +124,9 @@ export function RegisteredClubs() {
             </p>
           </div>
         ) : (
-          <RegisteredClubRecords
-            clubs={clubs}
-            onEdit={openEditDialog}
-            onDelete={openRemoveDialog}
-          />
+          <RegisteredClubRecords clubs={clubs} onEdit={handleEdit} onDelete={openRemoveDialog} />
         )}
       </section>
-
-      <ClubDialogForm
-        formKey={editingClub?.id ?? CLUB_FORM_MODE.CREATE}
-        mode={formMode}
-        open={dialogOpen}
-        onOpenChange={setDialogOpen}
-        clubDocumentId={editingClub?.id}
-        defaultValues={editingClub ? clubToFormValues(editingClub) : undefined}
-      />
 
       <ClubRemoveDialog
         club={clubToRemove}
