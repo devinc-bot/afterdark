@@ -11,18 +11,17 @@ import { UserPlus } from 'lucide-react'
 import { StaffInvitationSuccessPanel } from '~/modules/staff/components/staff-invitation-success-panel'
 import {
   StaffUserForm,
-  type StaffInvitationResult,
+  type StaffInvitationSuccess,
 } from '~/modules/staff/components/staff-user-form'
 import { STAFF_COPY } from '~/modules/staff/constants/staff.copy'
-import type { StaffInvitation } from '~/modules/staff/utils/staff-invitation.utils'
 
 type StaffUserCreateDialogProps = {
-  onInvite: (result: StaffInvitationResult) => void
+  onInviteSuccess: () => void
 }
 
-export function StaffUserCreateDialog({ onInvite }: StaffUserCreateDialogProps) {
+export function StaffUserCreateDialog({ onInviteSuccess }: StaffUserCreateDialogProps) {
   const [open, setOpen] = useState(false)
-  const [invitation, setInvitation] = useState<StaffInvitation | null>(null)
+  const [invitation, setInvitation] = useState<StaffInvitationSuccess | null>(null)
 
   const handleOpenChange = (nextOpen: boolean) => {
     setOpen(nextOpen)
@@ -31,9 +30,9 @@ export function StaffUserCreateDialog({ onInvite }: StaffUserCreateDialogProps) 
     }
   }
 
-  const handleInvite = (result: StaffInvitationResult) => {
-    onInvite(result)
-    setInvitation(result.invitation)
+  const handleInviteSuccess = (result: StaffInvitationSuccess) => {
+    onInviteSuccess()
+    setInvitation(result)
   }
 
   const handleCloseSuccess = () => {
@@ -63,7 +62,9 @@ export function StaffUserCreateDialog({ onInvite }: StaffUserCreateDialogProps) 
                 <DialogDescription>{STAFF_COPY.form.description}</DialogDescription>
               </DialogHeader>
 
-              {open ? <StaffUserForm key="create-staff-user" onInvite={handleInvite} /> : null}
+              {open ? (
+                <StaffUserForm key="create-staff-user" onInviteSuccess={handleInviteSuccess} />
+              ) : null}
             </>
           )}
         </DialogContent>

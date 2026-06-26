@@ -6,6 +6,8 @@ export const API_AUTH_PREFIX = '/api/auth' as const
 export const API_OWNERS_PREFIX = '/api/owners' as const
 export const API_SESSION_PREFIX = '/api/session' as const
 export const API_CLUBS_PREFIX = '/api/clubs' as const
+export const API_STAFF_PREFIX = '/api/staff' as const
+export const API_INVITATIONS_PREFIX = '/api/invitations' as const
 
 export const API_ROUTES = {
   auth: {
@@ -37,6 +39,18 @@ export const API_ROUTES = {
       create: () => '/create' as const,
       update: (documentId: string) => `/${documentId}` as const,
       delete: (documentId: string) => `/${documentId}` as const,
+    },
+  },
+  staff: {
+    prefix: API_STAFF_PREFIX,
+    path: {
+      listMyPersonnel: () => '/my-personnel' as const,
+    },
+  },
+  invitations: {
+    prefix: API_INVITATIONS_PREFIX,
+    path: {
+      staff: () => '/staff' as const,
     },
   },
   login: () => `${API_BASE_URL}${API_AUTH_PREFIX}/login` as const,

@@ -2,7 +2,7 @@ import { createServerFn } from '@tanstack/react-start'
 import { loginSchema, registerOwnerSchema } from '@afterdark/validators'
 import { api } from '~/config/api'
 import { API_ROUTES } from '~/config/constants/api'
-import { QueryFactoryError } from '~/modules/common/utils/query-factory'
+import { throwApiServiceError } from '~/modules/common/utils/api-service-error.utils'
 import type { LoginResponse, RegisterResponse } from '@afterdark/types'
 
 const LOGIN_FALLBACK_ERROR = 'No pudimos iniciar sesión. Intentá de nuevo en unos minutos.'
@@ -12,20 +12,11 @@ function authApiPath(path: string) {
   return `${API_ROUTES.auth.prefix}${path}`
 }
 
-function throwAuthError(error: unknown, fallback: string): never {
-  if (error instanceof QueryFactoryError) {
-    const apiMessage = error.body?.message
-    throw new Error(typeof apiMessage === 'string' ? apiMessage : fallback)
-  }
-
-  throw new Error(fallback)
-}
-
 async function postAuth<T>(path: string, data: unknown, fallback: string): Promise<T> {
   try {
     return await api.post<T>(path, data)
   } catch (error) {
-    throwAuthError(error, fallback)
+    throwApiServiceError(error, fallback)
   }
 }
 

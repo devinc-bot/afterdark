@@ -4,4 +4,5 @@ export const INVITATION_MESSAGE = {
   EMAIL_ALREADY_REGISTERED: 'Este correo ya está registrado.',
   FORBIDDEN: 'Solo un propietario puede crear invitaciones.',
   CREATE_FAILED: 'No se pudo crear la invitación',
+  LIST_FAILED: 'No se pudo listar las invitaciones',
 } as const

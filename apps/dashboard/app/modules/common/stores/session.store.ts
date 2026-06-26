@@ -4,7 +4,6 @@ import { COOKIE_KEYS } from '~/modules/common/constants/cookies'
 import { SESSION_STATUS, type SessionStatus } from '~/modules/common/constants/session-status'
 import { fetchSession } from '~/modules/common/services/session.service'
 import { getCookieSync } from '~/modules/common/utils/cookies.utils'
-import { QueryFactoryError } from '~/modules/common/utils/query-factory'
 
 type SessionState = {
   user: SessionResponse | null
@@ -35,10 +34,7 @@ export const useSessionStore = create<SessionState>((set) => ({
       const user = await fetchSession()
       set({ user, status: SESSION_STATUS.AUTHENTICATED, error: null })
     } catch (error) {
-      const message =
-        error instanceof QueryFactoryError
-          ? (error.body?.message ?? error.message)
-          : SESSION_FALLBACK_ERROR
+      const message = error instanceof Error ? error.message : SESSION_FALLBACK_ERROR
 
       set({ user: null, status: SESSION_STATUS.ERROR, error: message })
     }

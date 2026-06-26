@@ -2,14 +2,11 @@ import { useEffect, useState } from 'react'
 import { Button, Input, toast } from '@afterdark/ui'
 import { Check, Copy } from 'lucide-react'
 import { STAFF_COPY } from '~/modules/staff/constants/staff.copy'
-import type { StaffInvitation } from '~/modules/staff/utils/staff-invitation.utils'
-import {
-  formatInvitationTimeRemaining,
-  staffInvitationRequiresSecurityWord,
-} from '~/modules/staff/utils/staff-invitation.utils'
+import type { StaffInvitationSuccess } from '~/modules/staff/components/staff-user-form'
+import { formatInvitationTimeRemaining } from '~/modules/staff/utils/staff-invitation.utils'
 
 type StaffInvitationSuccessPanelProps = {
-  invitation: StaffInvitation
+  invitation: StaffInvitationSuccess
   onClose: () => void
 }
 
@@ -42,7 +39,7 @@ export function StaffInvitationSuccessPanel({
   }
 
   const isExpired = invitation.expiresAt <= Date.now()
-  const hasSecurityWord = staffInvitationRequiresSecurityWord(invitation.payload)
+  const hasSecurityWord = invitation.hasSecurityWord
 
   return (
     <div className="flex flex-1 flex-col">

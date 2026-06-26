@@ -1,5 +1,7 @@
 # [Título de la feature]
 
+> Completar con la entrevista guiada — [INTERVIEW.md](../../INTERVIEW.md). Estado por fase en `progress.md`.
+
 | Campo | Valor |
 | ----- | ----- |
 | **ID** | `00N-<slug>` |

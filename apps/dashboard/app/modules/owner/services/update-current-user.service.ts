@@ -3,7 +3,7 @@ import type { CurrentOwnerResponse } from '@afterdark/types'
 import type { UpdateCurrentOwnerInput } from '@afterdark/validators'
 import { api } from '~/config/api'
 import { API_ROUTES } from '~/config/constants/api'
-import { QueryFactoryError } from '~/modules/common/utils/query-factory'
+import { toApiServiceError } from '~/modules/common/utils/api-service-error.utils'
 
 const UPDATE_OWNER_FALLBACK_ERROR = SETTINGS_COPY.messages.saveFallback
 
@@ -17,11 +17,6 @@ export async function updateCurrentOwner(
   try {
     return await api.patch<CurrentOwnerResponse>(ownersApiPath(API_ROUTES.owners.path.me()), input)
   } catch (error) {
-    if (error instanceof QueryFactoryError) {
-      const apiMessage = error.body?.message
-      throw new Error(typeof apiMessage === 'string' ? apiMessage : UPDATE_OWNER_FALLBACK_ERROR)
-    }
-
-    throw new Error(UPDATE_OWNER_FALLBACK_ERROR)
+    throw toApiServiceError(error, UPDATE_OWNER_FALLBACK_ERROR)
   }
 }

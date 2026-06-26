@@ -10,6 +10,7 @@ import {
   createStaffInvitation as insertStaffInvitation,
   findClubByDocumentId,
   findInviterOwnerWithRole,
+  findStaffInvitationsByOwnerDocumentId,
 } from '@afterdark/db'
 import type { ClubSelect, StaffInvitationSelect } from '@afterdark/db'
 import {
@@ -27,7 +28,7 @@ import {
 
 function toStaffInvitationResponse(
   invitation: StaffInvitationSelect,
-  club: ClubSelect,
+  club: Pick<ClubSelect, 'documentId' | 'name'>,
   invitedByOwnerDocumentId: string
 ): CreateStaffInvitationResponse {
   return {
@@ -95,6 +96,32 @@ export class InvitationsService {
       return toStaffInvitationResponse(invitation, club, inviter.documentId)
     } catch {
       throw new InternalServerErrorException(INVITATION_MESSAGE.CREATE_FAILED)
+    }
+  }
+
+  async listStaffInvitations(inviterDocumentId: string): Promise<CreateStaffInvitationResponse[]> {
+    const inviter = await findInviterOwnerWithRole(inviterDocumentId)
+
+    if (!inviter) {
+      throw new NotFoundException(INVITATION_MESSAGE.INVITER_NOT_FOUND)
+    }
+
+    if (inviter.role !== USER_ROLE.OWNER) {
+      throw new ForbiddenException(INVITATION_MESSAGE.FORBIDDEN)
+    }
+
+    try {
+      const rows = await findStaffInvitationsByOwnerDocumentId(inviterDocumentId)
+
+      return rows.map(({ invitation, clubDocumentId, clubName }) =>
+        toStaffInvitationResponse(
+          invitation,
+          { documentId: clubDocumentId, name: clubName },
+          inviter.documentId
+        )
+      )
+    } catch {
+      throw new InternalServerErrorException(INVITATION_MESSAGE.LIST_FAILED)
     }
   }
 }

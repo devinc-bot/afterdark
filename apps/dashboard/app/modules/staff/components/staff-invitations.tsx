@@ -10,10 +10,15 @@ import {
   TableRow,
   toast,
 } from '@afterdark/ui'
+import { STAFF_INVITATION_STATUS } from '@afterdark/types'
 import { Check, Copy } from 'lucide-react'
 import { STAFF_COPY } from '~/modules/staff/constants/staff.copy'
 import type { StaffInvitationRecord } from '~/modules/staff/types/staff-invitation-record'
-import { isStaffInvitationExpired } from '~/modules/staff/types/staff-invitation-record'
+import {
+  canCopyStaffInvitationLink,
+  isStaffInvitationExpired,
+  resolveStaffInvitationDisplayStatus,
+} from '~/modules/staff/types/staff-invitation-record'
 import { formatInvitationTimeRemaining } from '~/modules/staff/utils/staff-invitation.utils'
 
 type StaffInvitationsProps = {
@@ -22,9 +27,29 @@ type StaffInvitationsProps = {
 
 function StaffInvitationStatusBadge({ invitation }: { invitation: StaffInvitationRecord }) {
   const copy = STAFF_COPY.invitationsTable
-  const expired = isStaffInvitationExpired(invitation)
+  const displayStatus = resolveStaffInvitationDisplayStatus(invitation)
 
-  if (expired) {
+  if (displayStatus === STAFF_INVITATION_STATUS.ACCEPTED) {
+    return (
+      <Badge variant="outline" size="sm" className="border-success/40 bg-success/10 text-success">
+        {copy.statusAccepted}
+      </Badge>
+    )
+  }
+
+  if (displayStatus === STAFF_INVITATION_STATUS.CANCELLED) {
+    return (
+      <Badge
+        variant="outline"
+        size="sm"
+        className="border-hairline bg-surface-container text-ink-muted"
+      >
+        {copy.statusCancelled}
+      </Badge>
+    )
+  }
+
+  if (displayStatus === STAFF_INVITATION_STATUS.EXPIRED) {
     return (
       <Badge
         variant="outline"
@@ -85,14 +110,32 @@ function StaffInvitationCopyAction({ url }: { url: string }) {
 }
 
 function StaffInvitationExpiryCell({ invitation }: { invitation: StaffInvitationRecord }) {
+  const displayStatus = resolveStaffInvitationDisplayStatus(invitation)
+
   const [label, setLabel] = useState(() => {
+    if (displayStatus === STAFF_INVITATION_STATUS.ACCEPTED) {
+      return STAFF_COPY.invitationsTable.statusAccepted
+    }
+
+    if (displayStatus === STAFF_INVITATION_STATUS.CANCELLED) {
+      return STAFF_COPY.invitationsTable.statusCancelled
+    }
+
     if (isStaffInvitationExpired(invitation)) {
       return STAFF_COPY.invitation.expired
     }
+
     return STAFF_COPY.invitation.expiresIn(formatInvitationTimeRemaining(invitation.expiresAt))
   })
 
   useEffect(() => {
+    if (
+      displayStatus === STAFF_INVITATION_STATUS.ACCEPTED ||
+      displayStatus === STAFF_INVITATION_STATUS.CANCELLED
+    ) {
+      return
+    }
+
     const updateLabel = () => {
       if (isStaffInvitationExpired(invitation)) {
         setLabel(STAFF_COPY.invitation.expired)
@@ -105,7 +148,7 @@ function StaffInvitationExpiryCell({ invitation }: { invitation: StaffInvitation
     updateLabel()
     const interval = window.setInterval(updateLabel, 1000)
     return () => window.clearInterval(interval)
-  }, [invitation.expiresAt, invitation])
+  }, [displayStatus, invitation])
 
   return (
     <span
@@ -136,26 +179,24 @@ export function StaffInvitations({ invitations }: StaffInvitationsProps) {
         ) : null}
       </header>
 
-      {invitations.length === 0 ? (
-        <div className="px-6 py-12 text-center">
-          <p className="font-heading text-base font-semibold text-ink">{copy.emptyTitle}</p>
-          <p className="mx-auto mt-2 max-w-sm text-sm text-ink-muted">{copy.emptyDescription}</p>
-        </div>
-      ) : (
-        <div className="overflow-hidden rounded-xl bg-surface-container-low">
-          <Table variant="compact">
-            <TableHeader>
-              <TableRow>
-                <TableHead className="p-6">{copy.email}</TableHead>
-                <TableHead className="p-6">{copy.venue}</TableHead>
-                <TableHead className="p-6">{copy.security}</TableHead>
-                <TableHead className="p-6">{copy.expires}</TableHead>
-                <TableHead className="p-6">{copy.status}</TableHead>
-                <TableHead className="text-right p-6">{copy.actions}</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {invitations.map((invitation) => (
+      <div className="overflow-hidden rounded-xl bg-surface-container-low">
+        <Table variant="compact">
+          <TableHeader>
+            <TableRow>
+              <TableHead className="p-6">{copy.email}</TableHead>
+              <TableHead className="p-6">{copy.venue}</TableHead>
+              <TableHead className="p-6">{copy.security}</TableHead>
+              <TableHead className="p-6">{copy.expires}</TableHead>
+              <TableHead className="p-6">{copy.status}</TableHead>
+              <TableHead className="text-right p-6">{copy.actions}</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {invitations.map((invitation) => {
+              const displayStatus = resolveStaffInvitationDisplayStatus(invitation)
+              const showCopyAction = canCopyStaffInvitationLink(displayStatus)
+
+              return (
                 <TableRow key={invitation.id}>
                   <TableCell className="p-6">
                     <p className="font-medium text-ink">{invitation.email}</p>
@@ -175,14 +216,14 @@ export function StaffInvitations({ invitations }: StaffInvitationsProps) {
                     <StaffInvitationStatusBadge invitation={invitation} />
                   </TableCell>
                   <TableCell className="text-right p-6">
-                    <StaffInvitationCopyAction url={invitation.url} />
+                    {showCopyAction ? <StaffInvitationCopyAction url={invitation.url} /> : null}
                   </TableCell>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
-      )}
+              )
+            })}
+          </TableBody>
+        </Table>
+      </div>
     </section>
   )
 }

@@ -4,8 +4,9 @@
 
 ## Spec & plan
 
+- [ ] Entrevista completa (`progress.md` fases 1–5 en `done`)
 - [ ] `spec.md` completo y en status `approved`
-- [ ] `plan.md` revisado
+- [ ] `plan.md` revisado (fase 6)
 - [ ] Entrada en `spec/constitution/roadmap.md`
 
 ## Shared packages

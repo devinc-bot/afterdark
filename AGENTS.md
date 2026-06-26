@@ -10,6 +10,8 @@ Read the relevant doc before making changes:
 
 | Doc                                                  | When to consult                                      |
 | ---------------------------------------------------- | ---------------------------------------------------- |
+| [spec/INTERVIEW.md](./spec/INTERVIEW.md)             | Creating a feature spec (guided Q&A; do not fill alone) |
+| [spec/README.md](./spec/README.md)                   | SDD layout, spec folder conventions                  |
 | [ARCHITECTURE.md](./ARCHITECTURE.md)                 | Project structure, modules, routes, layers, packages |
 | [STYLEGUIDE.md](./STYLEGUIDE.md)                     | Naming, constants, dependencies, lint/format         |
 | [DOMAIN.md](./DOMAIN.md)                             | Business context, entities, validation, UI language  |
