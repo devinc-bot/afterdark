@@ -51,6 +51,7 @@ export const API_ROUTES = {
     prefix: API_INVITATIONS_PREFIX,
     path: {
       staff: () => '/staff' as const,
+      deleteStaff: (documentId: string) => `/staff/${documentId}` as const,
     },
   },
   login: () => `${API_BASE_URL}${API_AUTH_PREFIX}/login` as const,

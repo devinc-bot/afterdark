@@ -2,6 +2,12 @@ import { useEffect, useState } from 'react'
 import {
   Badge,
   Button,
+  Card,
+  cn,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
   Table,
   TableBody,
   TableCell,
@@ -11,11 +17,12 @@ import {
   toast,
 } from '@afterdark/ui'
 import { STAFF_INVITATION_STATUS } from '@afterdark/types'
-import { Check, Copy } from 'lucide-react'
+import { Copy, EllipsisVertical, Trash2 } from 'lucide-react'
 import { STAFF_COPY } from '~/modules/staff/constants/staff.copy'
 import type { StaffInvitationRecord } from '~/modules/staff/types/staff-invitation-record'
 import {
   canCopyStaffInvitationLink,
+  canDeleteStaffInvitation,
   isStaffInvitationExpired,
   resolveStaffInvitationDisplayStatus,
 } from '~/modules/staff/types/staff-invitation-record'
@@ -23,7 +30,12 @@ import { formatInvitationTimeRemaining } from '~/modules/staff/utils/staff-invit
 
 type StaffInvitationsProps = {
   invitations: StaffInvitationRecord[]
+  onDelete?: (invitationId: string) => void
+  deletingInvitationId?: string | null
 }
+
+const staffActionIconClassName = '!size-[20px] shrink-0'
+const staffActionItemClassName = 'gap-3 py-2.5 text-base'
 
 function StaffInvitationStatusBadge({ invitation }: { invitation: StaffInvitationRecord }) {
   const copy = STAFF_COPY.invitationsTable
@@ -73,39 +85,72 @@ function StaffInvitationStatusBadge({ invitation }: { invitation: StaffInvitatio
   )
 }
 
-function StaffInvitationCopyAction({ url }: { url: string }) {
-  const [copied, setCopied] = useState(false)
+function StaffInvitationRecordActions({
+  invitation,
+  onDelete,
+  isDeleting = false,
+}: {
+  invitation: StaffInvitationRecord
+  onDelete?: (invitationId: string) => void
+  isDeleting?: boolean
+}) {
   const copy = STAFF_COPY.invitationsTable
+  const showCopyLink = canCopyStaffInvitationLink(invitation)
+  const showDelete = canDeleteStaffInvitation(invitation)
 
-  const handleCopy = async () => {
+  if (!showCopyLink && !showDelete) {
+    return null
+  }
+
+  const handleCopyLink = async () => {
     try {
-      await navigator.clipboard.writeText(url)
-      setCopied(true)
+      await navigator.clipboard.writeText(invitation.url)
       toast.success(STAFF_COPY.invitation.copied)
-      window.setTimeout(() => setCopied(false), 2000)
     } catch {
       toast.error(STAFF_COPY.form.error)
     }
   }
 
+  const handleDelete = () => {
+    onDelete?.(invitation.id)
+  }
+
   return (
-    <Button
-      type="button"
-      variant="ghost"
-      size="sm"
-      className="text-ink-muted hover:text-ink"
-      iconLeft={
-        copied ? (
-          <Check aria-hidden="true" className="size-4" />
-        ) : (
-          <Copy aria-hidden="true" className="size-4" />
-        )
-      }
-      onClick={() => void handleCopy()}
-      disabled={copied}
-    >
-      {copy.copyLink}
-    </Button>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button
+          type="button"
+          variant="ghost"
+          size="icon"
+          className="text-ink-muted hover:text-ink"
+          aria-label={`${copy.actions} para ${invitation.email}`}
+          disabled={isDeleting}
+        >
+          <EllipsisVertical aria-hidden="true" />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="min-w-44 p-1.5">
+        {showCopyLink ? (
+          <DropdownMenuItem
+            className={staffActionItemClassName}
+            onClick={() => void handleCopyLink()}
+          >
+            <Copy aria-hidden="true" className={staffActionIconClassName} />
+            {copy.copyLink}
+          </DropdownMenuItem>
+        ) : null}
+        {showDelete ? (
+          <DropdownMenuItem
+            className={cn(staffActionItemClassName, 'text-error focus:text-error')}
+            disabled={isDeleting}
+            onClick={handleDelete}
+          >
+            <Trash2 aria-hidden="true" className={cn(staffActionIconClassName, 'text-error')} />
+            {copy.delete}
+          </DropdownMenuItem>
+        ) : null}
+      </DropdownMenuContent>
+    </DropdownMenu>
   )
 }
 
@@ -161,7 +206,11 @@ function StaffInvitationExpiryCell({ invitation }: { invitation: StaffInvitation
   )
 }
 
-export function StaffInvitations({ invitations }: StaffInvitationsProps) {
+export function StaffInvitations({
+  invitations,
+  onDelete,
+  deletingInvitationId = null,
+}: StaffInvitationsProps) {
   const copy = STAFF_COPY.invitationsTable
   const registrySubtitle = invitations.length > 0 ? copy.registryCount(invitations.length) : null
 
@@ -179,7 +228,7 @@ export function StaffInvitations({ invitations }: StaffInvitationsProps) {
         ) : null}
       </header>
 
-      <div className="overflow-hidden rounded-xl bg-surface-container-low">
+      <Card variant="gradient">
         <Table variant="compact">
           <TableHeader>
             <TableRow>
@@ -192,38 +241,37 @@ export function StaffInvitations({ invitations }: StaffInvitationsProps) {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {invitations.map((invitation) => {
-              const displayStatus = resolveStaffInvitationDisplayStatus(invitation)
-              const showCopyAction = canCopyStaffInvitationLink(displayStatus)
-
-              return (
-                <TableRow key={invitation.id}>
-                  <TableCell className="p-6">
-                    <p className="font-medium text-ink">{invitation.email}</p>
-                  </TableCell>
-                  <TableCell className="p-6">
-                    <Badge variant="outline" size="sm">
-                      {invitation.clubName}
-                    </Badge>
-                  </TableCell>
-                  <TableCell className="p-6 text-sm text-ink-muted">
-                    {invitation.hasSecurityWord ? copy.securityEnabled : copy.securityDisabled}
-                  </TableCell>
-                  <TableCell className="p-6">
-                    <StaffInvitationExpiryCell invitation={invitation} />
-                  </TableCell>
-                  <TableCell className="p-6">
-                    <StaffInvitationStatusBadge invitation={invitation} />
-                  </TableCell>
-                  <TableCell className="text-right p-6">
-                    {showCopyAction ? <StaffInvitationCopyAction url={invitation.url} /> : null}
-                  </TableCell>
-                </TableRow>
-              )
-            })}
+            {invitations.map((invitation) => (
+              <TableRow key={invitation.id}>
+                <TableCell className="p-6">
+                  <p className="font-medium text-ink">{invitation.email}</p>
+                </TableCell>
+                <TableCell className="p-6">
+                  <Badge variant="outline" size="sm">
+                    {invitation.clubName}
+                  </Badge>
+                </TableCell>
+                <TableCell className="p-6 text-sm text-ink-muted">
+                  {invitation.hasSecurityWord ? copy.securityEnabled : copy.securityDisabled}
+                </TableCell>
+                <TableCell className="p-6">
+                  <StaffInvitationExpiryCell invitation={invitation} />
+                </TableCell>
+                <TableCell className="p-6">
+                  <StaffInvitationStatusBadge invitation={invitation} />
+                </TableCell>
+                <TableCell className="p-6 text-right">
+                  <StaffInvitationRecordActions
+                    invitation={invitation}
+                    onDelete={onDelete}
+                    isDeleting={deletingInvitationId === invitation.id}
+                  />
+                </TableCell>
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
-      </div>
+      </Card>
     </section>
   )
 }

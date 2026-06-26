@@ -9,6 +9,8 @@ const LIST_STAFF_INVITATIONS_FALLBACK_ERROR =
 
 const CREATE_STAFF_INVITATION_FALLBACK_ERROR = 'No se pudo crear la invitación.'
 
+const DELETE_STAFF_INVITATION_FALLBACK_ERROR = 'No se pudo eliminar la invitación.'
+
 function invitationsApiPath(path: string) {
   return `${API_ROUTES.invitations.prefix}${path}`
 }
@@ -33,5 +35,13 @@ export async function postStaffInvitation(
     )
   } catch (error) {
     throw toApiServiceError(error, CREATE_STAFF_INVITATION_FALLBACK_ERROR)
+  }
+}
+
+export async function deleteStaffInvitation(documentId: string): Promise<void> {
+  try {
+    await api.delete(invitationsApiPath(API_ROUTES.invitations.path.deleteStaff(documentId)))
+  } catch (error) {
+    throw toApiServiceError(error, DELETE_STAFF_INVITATION_FALLBACK_ERROR)
   }
 }

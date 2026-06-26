@@ -38,6 +38,20 @@ export function isStaffInvitationExpired(
   return resolveStaffInvitationDisplayStatus(invitation, now) === STAFF_INVITATION_STATUS.EXPIRED
 }
 
-export function canCopyStaffInvitationLink(status: StaffInvitationStatus): boolean {
-  return status === STAFF_INVITATION_STATUS.PENDING || status === STAFF_INVITATION_STATUS.EXPIRED
+export function canCopyStaffInvitationLink(
+  invitation: StaffInvitationRecord,
+  now = Date.now()
+): boolean {
+  return resolveStaffInvitationDisplayStatus(invitation, now) === STAFF_INVITATION_STATUS.PENDING
+}
+
+export function canDeleteStaffInvitation(
+  invitation: StaffInvitationRecord,
+  now = Date.now()
+): boolean {
+  const displayStatus = resolveStaffInvitationDisplayStatus(invitation, now)
+  return (
+    displayStatus === STAFF_INVITATION_STATUS.PENDING ||
+    displayStatus === STAFF_INVITATION_STATUS.EXPIRED
+  )
 }
