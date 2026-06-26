@@ -100,6 +100,19 @@ export interface CreateStaffInvitationResponse {
   updatedAt: Date
 }
 
+/** Public invitation data for the accept link flow (no auth). */
+export interface StaffInvitationPublicResponse {
+  documentId: string
+  email: string
+  clubId: string
+  clubName: string
+  slug: string
+  expiresAt: Date
+  hasSecurityWord: boolean
+  /** Present when `hasSecurityWord`; used to verify the word before accept. */
+  securityWordHash: string | null
+}
+
 export interface StaffPersonnelItem {
   documentId: string
   name: string
