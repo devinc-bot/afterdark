@@ -1,5 +1,6 @@
 import { useForm } from '@tanstack/react-form'
 import { Link, useNavigate } from '@tanstack/react-router'
+import type { StaffInvitationPublicResponse } from '@afterdark/types'
 import {
   acceptStaffInvitationSchema,
   verifyStaffInvitationSecurityWordSchema,
@@ -17,22 +18,17 @@ import {
   toast,
 } from '@afterdark/ui'
 import { DASHBOARD_ROUTES } from '~/modules/common/constants/routes'
-import { getStaffClubLabel } from '~/modules/staff/constants/staff-clubs.constants'
 import { STAFF_COPY } from '~/modules/staff/constants/staff.copy'
-import type { StaffInvitationPayload } from '~/modules/staff/utils/staff-invitation.utils'
-import {
-  staffInvitationRequiresSecurityWord,
-  verifyStaffInvitationSecurityWord,
-} from '~/modules/staff/utils/staff-invitation.utils'
+import { verifyStaffInvitationSecurityWordHash } from '~/modules/staff/utils/staff-invitation-link.utils'
 
 type StaffInvitationAcceptViewProps = {
-  payload: StaffInvitationPayload
+  invitation: StaffInvitationPublicResponse
 }
 
-export function StaffInvitationAcceptView({ payload }: StaffInvitationAcceptViewProps) {
+export function StaffInvitationAcceptView({ invitation }: StaffInvitationAcceptViewProps) {
   const navigate = useNavigate()
   const copy = STAFF_COPY.invitation.accept
-  const requiresSecurityWord = staffInvitationRequiresSecurityWord(payload)
+  const requiresSecurityWord = invitation.hasSecurityWord
 
   const form = useForm({
     defaultValues: { securityWord: '', password: '', confirmPassword: '' },
@@ -43,8 +39,8 @@ export function StaffInvitationAcceptView({ payload }: StaffInvitationAcceptView
         })
         if (!securityParsed.success) return
 
-        const isValidSecurityWord = await verifyStaffInvitationSecurityWord(
-          payload,
+        const isValidSecurityWord = await verifyStaffInvitationSecurityWordHash(
+          invitation.securityWordHash,
           securityParsed.data.securityWord
         )
         if (!isValidSecurityWord) {
@@ -86,13 +82,13 @@ export function StaffInvitationAcceptView({ payload }: StaffInvitationAcceptView
               <dl className="flex flex-wrap gap-5 rounded-lg bg-surface-container-high p-4 text-sm">
                 <div>
                   <dt className="text-ink-muted">{copy.invitedAs}</dt>
-                  <dd className="mt-1 font-medium text-ink">{payload.email}</dd>
+                  <dd className="mt-1 font-medium text-ink">{invitation.email}</dd>
                 </div>
                 <div>
                   <dt className="text-ink-muted">{copy.clubLabel}</dt>
                   <dd className="mt-1">
                     <Badge variant="outline" size="sm">
-                      {getStaffClubLabel(payload.clubId)}
+                      {invitation.clubName}
                     </Badge>
                   </dd>
                 </div>

@@ -51,6 +51,8 @@ export const API_ROUTES = {
     prefix: API_INVITATIONS_PREFIX,
     path: {
       staff: () => '/staff' as const,
+      staffByLink: (slug: string, token: string) =>
+        `/staff/${encodeURIComponent(slug)}/${encodeURIComponent(token)}` as const,
       deleteStaff: (documentId: string) => `/staff/${documentId}` as const,
     },
   },
