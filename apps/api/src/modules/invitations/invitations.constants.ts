@@ -5,4 +5,7 @@ export const INVITATION_MESSAGE = {
   FORBIDDEN: 'Solo un propietario puede crear invitaciones.',
   CREATE_FAILED: 'No se pudo crear la invitación',
   LIST_FAILED: 'No se pudo listar las invitaciones',
+  NOT_FOUND: 'Invitación no encontrada',
+  DELETE_ACCEPTED: 'No se puede eliminar una invitación ya aceptada.',
+  DELETE_FAILED: 'No se pudo eliminar la invitación',
 } as const

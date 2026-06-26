@@ -10,6 +10,8 @@ import {
   createStaffInvitation as insertStaffInvitation,
   findClubByDocumentId,
   findInviterOwnerWithRole,
+  deleteStaffInvitationById,
+  findStaffInvitationByDocumentIdForOwner,
   findStaffInvitationsByOwnerDocumentId,
 } from '@afterdark/db'
 import type { ClubSelect, StaffInvitationSelect } from '@afterdark/db'
@@ -122,6 +124,40 @@ export class InvitationsService {
       )
     } catch {
       throw new InternalServerErrorException(INVITATION_MESSAGE.LIST_FAILED)
+    }
+  }
+
+  async deleteStaffInvitation(
+    inviterDocumentId: string,
+    invitationDocumentId: string
+  ): Promise<void> {
+    const inviter = await findInviterOwnerWithRole(inviterDocumentId)
+
+    if (!inviter) {
+      throw new NotFoundException(INVITATION_MESSAGE.INVITER_NOT_FOUND)
+    }
+
+    if (inviter.role !== USER_ROLE.OWNER) {
+      throw new ForbiddenException(INVITATION_MESSAGE.FORBIDDEN)
+    }
+
+    const invitation = await findStaffInvitationByDocumentIdForOwner(
+      invitationDocumentId,
+      inviterDocumentId
+    )
+
+    if (!invitation) {
+      throw new NotFoundException(INVITATION_MESSAGE.NOT_FOUND)
+    }
+
+    if (invitation.status === STAFF_INVITATION_STATUS.ACCEPTED) {
+      throw new ConflictException(INVITATION_MESSAGE.DELETE_ACCEPTED)
+    }
+
+    try {
+      await deleteStaffInvitationById(invitation.id)
+    } catch {
+      throw new InternalServerErrorException(INVITATION_MESSAGE.DELETE_FAILED)
     }
   }
 }
