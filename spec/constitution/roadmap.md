@@ -6,7 +6,7 @@
 | - | ---- | ------ | ------ | ---- | ----- |
 | 001 | `auth-sessions` | Autenticación y sesiones | `in-progress` | `api`, `web`, `dashboard` | Login, registro user/owner, JWT + refresh, `GET /session/me`. Dashboard integrado; `web` con rutas auth, sesión por cerrar. |
 | 002 | `club-management` | Gestión de clubes | `in-progress` | `api`, `dashboard` | CRUD de clubes del dueño (`/clubs/*`). Dashboard en `/club-management` conectado a API. |
-| 003 | `staff-invitations` | Staff e invitaciones | `in-progress` | `api`, `dashboard` | Spec activa: [listado personal](../features/003-staff-invitations/spec.md) (dashboard ← `GET /staff/my-personnel`). Invitaciones (`POST /invitations/staff`); falta aceptación y PATCH de estado. |
+| 003 | `staff-invitations` | Staff e invitaciones | `in-progress` | `api`, `dashboard` | Entrega 1: listado personal (`GET /staff/my-personnel`). Entrega 2 (en spec): listado invitaciones del dueño. `POST /invitations/staff` existe; falta aceptación y PATCH de estado. |
 | 004 | `owner-settings` | Perfil y configuración del dueño | `in-progress` | `api`, `dashboard` | `GET/PATCH /owners/*`, pantalla `/settings`. Ajustes de organización y preferencias en evolución. |
 | 005 | `club-assets` | Medios de clubes | `draft` | `api`, `dashboard` | Módulo `files` + R2; tablas `assets` y `club_assets_lnk`. Pendiente enlazar subida/galería al flujo de clubes. |
 | 006 | `tickets` | Entradas y tipos de ticket | `draft` | `api`, `dashboard` | Esquema `tickets` listo; dashboard en `/tickets` con datos mock. Falta API, repositorio y CRUD real. |
