@@ -2,6 +2,7 @@ import { useForm } from '@tanstack/react-form'
 import { Link, useNavigate } from '@tanstack/react-router'
 import type { StaffInvitationPublicResponse } from '@afterdark/types'
 import {
+  acceptStaffInvitationBaseSchema,
   acceptStaffInvitationSchema,
   verifyStaffInvitationSecurityWordSchema,
 } from '@afterdark/validators'
@@ -19,41 +20,52 @@ import {
 } from '@afterdark/ui'
 import { DASHBOARD_ROUTES } from '~/modules/common/constants/routes'
 import { STAFF_COPY } from '~/modules/staff/constants/staff.copy'
-import { verifyStaffInvitationSecurityWordHash } from '~/modules/staff/utils/staff-invitation-link.utils'
+import { acceptStaffInvitation } from '~/modules/staff/services/staff-invitations.service'
 
 type StaffInvitationAcceptViewProps = {
   invitation: StaffInvitationPublicResponse
+  token: string
 }
 
-export function StaffInvitationAcceptView({ invitation }: StaffInvitationAcceptViewProps) {
+export function StaffInvitationAcceptView({ invitation, token }: StaffInvitationAcceptViewProps) {
   const navigate = useNavigate()
   const copy = STAFF_COPY.invitation.accept
   const requiresSecurityWord = invitation.hasSecurityWord
 
   const form = useForm({
-    defaultValues: { securityWord: '', password: '', confirmPassword: '' },
+    defaultValues: {
+      name: '',
+      lastName: '',
+      phone: '',
+      securityWord: '',
+      password: '',
+      confirmPassword: '',
+    },
     onSubmit: async ({ value }) => {
       if (requiresSecurityWord) {
         const securityParsed = verifyStaffInvitationSecurityWordSchema.safeParse({
           securityWord: value.securityWord,
         })
         if (!securityParsed.success) return
-
-        const isValidSecurityWord = await verifyStaffInvitationSecurityWordHash(
-          invitation.securityWordHash,
-          securityParsed.data.securityWord
-        )
-        if (!isValidSecurityWord) {
-          toast.error(copy.securityWordWrong)
-          return
-        }
       }
 
       const parsed = acceptStaffInvitationSchema.safeParse(value)
       if (!parsed.success) return
 
-      toast.success(copy.success)
-      void navigate({ to: DASHBOARD_ROUTES.login(), replace: true })
+      try {
+        await acceptStaffInvitation(invitation.slug, token, {
+          name: parsed.data.name,
+          lastName: parsed.data.lastName,
+          phone: parsed.data.phone,
+          password: parsed.data.password,
+          securityWord: parsed.data.securityWord,
+        })
+
+        toast.success(copy.success)
+        void navigate({ to: DASHBOARD_ROUTES.login(), replace: true })
+      } catch (error) {
+        toast.error(error instanceof Error ? error.message : copy.error)
+      }
     },
   })
 
@@ -103,6 +115,81 @@ export function StaffInvitationAcceptView({ invitation }: StaffInvitationAcceptV
                   void form.handleSubmit()
                 }}
               >
+                <form.Field
+                  name="name"
+                  validators={{ onSubmit: acceptStaffInvitationBaseSchema.shape.name }}
+                >
+                  {(field) => {
+                    const error = fieldErrorMessage(field.state.meta.errors)
+
+                    return (
+                      <Field label={copy.name} htmlFor={field.name} error={error}>
+                        <Input
+                          id={field.name}
+                          name={field.name}
+                          type="text"
+                          autoComplete="given-name"
+                          value={field.state.value}
+                          placeholder={copy.namePlaceholder}
+                          onBlur={field.handleBlur}
+                          onChange={(event) => field.handleChange(event.target.value)}
+                          aria-invalid={error ? true : undefined}
+                        />
+                      </Field>
+                    )
+                  }}
+                </form.Field>
+
+                <form.Field
+                  name="lastName"
+                  validators={{ onSubmit: acceptStaffInvitationBaseSchema.shape.lastName }}
+                >
+                  {(field) => {
+                    const error = fieldErrorMessage(field.state.meta.errors)
+
+                    return (
+                      <Field label={copy.lastName} htmlFor={field.name} error={error}>
+                        <Input
+                          id={field.name}
+                          name={field.name}
+                          type="text"
+                          autoComplete="family-name"
+                          value={field.state.value}
+                          placeholder={copy.lastNamePlaceholder}
+                          onBlur={field.handleBlur}
+                          onChange={(event) => field.handleChange(event.target.value)}
+                          aria-invalid={error ? true : undefined}
+                        />
+                      </Field>
+                    )
+                  }}
+                </form.Field>
+
+                <form.Field
+                  name="phone"
+                  validators={{ onSubmit: acceptStaffInvitationBaseSchema.shape.phone }}
+                >
+                  {(field) => {
+                    const error = fieldErrorMessage(field.state.meta.errors)
+
+                    return (
+                      <Field label={copy.phone} htmlFor={field.name} error={error}>
+                        <Input
+                          id={field.name}
+                          name={field.name}
+                          type="tel"
+                          autoComplete="tel"
+                          value={field.state.value}
+                          placeholder={copy.phonePlaceholder}
+                          onBlur={field.handleBlur}
+                          onChange={(event) => field.handleChange(event.target.value)}
+                          aria-invalid={error ? true : undefined}
+                        />
+                      </Field>
+                    )
+                  }}
+                </form.Field>
+
                 {requiresSecurityWord ? (
                   <form.Field
                     name="securityWord"
@@ -134,7 +221,7 @@ export function StaffInvitationAcceptView({ invitation }: StaffInvitationAcceptV
 
                 <form.Field
                   name="password"
-                  validators={{ onSubmit: acceptStaffInvitationSchema.shape.password }}
+                  validators={{ onSubmit: acceptStaffInvitationBaseSchema.shape.password }}
                 >
                   {(field) => {
                     const error = fieldErrorMessage(field.state.meta.errors)
@@ -163,6 +250,9 @@ export function StaffInvitationAcceptView({ invitation }: StaffInvitationAcceptV
                     onSubmit: ({ value, fieldApi }) => {
                       const password = fieldApi.form.getFieldValue('password')
                       const result = acceptStaffInvitationSchema.safeParse({
+                        name: fieldApi.form.getFieldValue('name'),
+                        lastName: fieldApi.form.getFieldValue('lastName'),
+                        phone: fieldApi.form.getFieldValue('phone'),
                         securityWord: fieldApi.form.getFieldValue('securityWord'),
                         password,
                         confirmPassword: value,

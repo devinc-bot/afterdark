@@ -53,6 +53,8 @@ export const API_ROUTES = {
       staff: () => '/staff' as const,
       staffByLink: (slug: string, token: string) =>
         `/staff/${encodeURIComponent(slug)}/${encodeURIComponent(token)}` as const,
+      acceptStaff: (slug: string, token: string) =>
+        `/staff/${encodeURIComponent(slug)}/${encodeURIComponent(token)}/accept` as const,
       deleteStaff: (documentId: string) => `/staff/${documentId}` as const,
     },
   },

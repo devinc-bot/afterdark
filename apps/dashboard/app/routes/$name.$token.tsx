@@ -56,5 +56,5 @@ function StaffInvitationPage() {
     )
   }
 
-  return <StaffInvitationAcceptView invitation={data} />
+  return <StaffInvitationAcceptView invitation={data} token={token} />
 }
