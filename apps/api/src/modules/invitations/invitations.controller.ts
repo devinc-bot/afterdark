@@ -16,8 +16,10 @@ import type {
   StaffInvitationPublicResponse,
 } from '@afterdark/types'
 import {
+  acceptStaffInvitationSchema,
   createStaffInvitationSchema,
   uuidSchema,
+  type AcceptStaffInvitationInput,
   type CreateStaffInvitationInput,
 } from '@afterdark/validators'
 import { CurrentUser } from '../common/decorators/current-user.decorator'
@@ -45,6 +47,16 @@ export class InvitationsController {
   @UseGuards(JwtAuthGuard)
   listStaffInvitations(@CurrentUser() user: JwtPayload): Promise<CreateStaffInvitationResponse[]> {
     return this.invitationsService.listStaffInvitations(user.sub)
+  }
+
+  @Post('staff/:slug/:token/accept')
+  @HttpCode(HttpStatus.OK)
+  acceptStaffInvitation(
+    @Param('slug') slug: string,
+    @Param('token') token: string,
+    @Body(new ZodValidationPipe(acceptStaffInvitationSchema)) body: AcceptStaffInvitationInput
+  ): Promise<{ message: string }> {
+    return this.invitationsService.acceptStaffInvitation(slug, token, body)
   }
 
   @Get('staff/:slug/:token')

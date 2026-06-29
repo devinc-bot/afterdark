@@ -13,4 +13,7 @@ export const INVITATION_MESSAGE = {
   PUBLIC_EXPIRED: 'El enlace de invitación expiró.',
   PUBLIC_ALREADY_ACCEPTED: 'Esta invitación ya fue aceptada.',
   PUBLIC_GET_FAILED: 'No se pudo obtener la invitación',
+  SECURITY_WORD_INVALID: 'La palabra de seguridad es incorrecta.',
+  ACCEPT_SUCCESS: 'Cuenta creada. Ya podés iniciar sesión.',
+  ACCEPT_FAILED: 'No se pudo crear la cuenta. Intentá de nuevo.',
 } as const

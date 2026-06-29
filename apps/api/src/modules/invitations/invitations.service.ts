@@ -7,15 +7,19 @@ import {
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common'
+import { compare, hash } from 'bcryptjs'
 import {
   accountExistsByEmail,
   createStaffInvitation as insertStaffInvitation,
   findClubByDocumentId,
   findInviterOwnerWithRole,
   deleteStaffInvitationById,
+  findRoleByName,
   findStaffInvitationByDocumentIdForOwner,
   findStaffInvitationByTokenWithClub,
   findStaffInvitationsByOwnerDocumentId,
+  registerAccount,
+  updateStaffInvitationAccepted,
 } from '@afterdark/db'
 import type { ClubSelect, StaffInvitationSelect } from '@afterdark/db'
 import {
@@ -24,7 +28,7 @@ import {
   type CreateStaffInvitationResponse,
   type StaffInvitationPublicResponse,
 } from '@afterdark/types'
-import type { CreateStaffInvitationInput } from '@afterdark/validators'
+import type { AcceptStaffInvitationInput, CreateStaffInvitationInput } from '@afterdark/validators'
 import { ENV } from '../common/config/env'
 import { INVITATION_MESSAGE } from './invitations.constants'
 import {
@@ -165,6 +169,76 @@ export class InvitationsService {
     }
   }
 
+  async acceptStaffInvitation(
+    slug: string,
+    token: string,
+    input: AcceptStaffInvitationInput
+  ): Promise<{ message: string }> {
+    const row = await findStaffInvitationByTokenWithClub(token)
+
+    if (!row) {
+      throw new NotFoundException(INVITATION_MESSAGE.PUBLIC_INVALID)
+    }
+
+    if (row.invitation.slug !== slug) {
+      throw new BadRequestException(INVITATION_MESSAGE.PUBLIC_SLUG_MISMATCH)
+    }
+
+    if (row.invitation.status === STAFF_INVITATION_STATUS.ACCEPTED) {
+      throw new ConflictException(INVITATION_MESSAGE.PUBLIC_ALREADY_ACCEPTED)
+    }
+
+    if (
+      row.invitation.status === STAFF_INVITATION_STATUS.CANCELLED ||
+      row.invitation.status === STAFF_INVITATION_STATUS.EXPIRED
+    ) {
+      throw new GoneException(INVITATION_MESSAGE.PUBLIC_EXPIRED)
+    }
+
+    if (row.invitation.expiresAt.getTime() <= Date.now()) {
+      throw new GoneException(INVITATION_MESSAGE.PUBLIC_EXPIRED)
+    }
+
+    if (row.invitation.status !== STAFF_INVITATION_STATUS.PENDING) {
+      throw new NotFoundException(INVITATION_MESSAGE.PUBLIC_INVALID)
+    }
+
+    if (await accountExistsByEmail(row.invitation.email)) {
+      throw new ConflictException(INVITATION_MESSAGE.EMAIL_ALREADY_REGISTERED)
+    }
+
+    if (row.invitation.securityWordHash) {
+      const isValid = await compare(input.securityWord ?? '', row.invitation.securityWordHash)
+      if (!isValid) {
+        throw new ForbiddenException(INVITATION_MESSAGE.SECURITY_WORD_INVALID)
+      }
+    }
+
+    const staffRole = await findRoleByName(USER_ROLE.STAFF)
+
+    if (!staffRole) {
+      throw new InternalServerErrorException(INVITATION_MESSAGE.ACCEPT_FAILED)
+    }
+
+    const hashedPassword = await hash(input.password, 10)
+
+    try {
+      await registerAccount({
+        email: row.invitation.email,
+        hashedPassword,
+        roleId: staffRole.id,
+        roleName: USER_ROLE.STAFF,
+        profile: { name: input.name, lastName: input.lastName, phone: input.phone },
+      })
+
+      await updateStaffInvitationAccepted(row.invitation.id)
+    } catch {
+      throw new InternalServerErrorException(INVITATION_MESSAGE.ACCEPT_FAILED)
+    }
+
+    return { message: INVITATION_MESSAGE.ACCEPT_SUCCESS }
+  }
+
   async getStaffInvitationByLink(
     slug: string,
     token: string
@@ -207,7 +281,6 @@ export class InvitationsService {
         slug: row.invitation.slug,
         expiresAt: row.invitation.expiresAt,
         hasSecurityWord: Boolean(row.invitation.securityWordHash),
-        securityWordHash: row.invitation.securityWordHash,
       }
     } catch (error) {
       if (
