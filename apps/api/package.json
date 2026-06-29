@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@afterdark/db": "workspace:*",
+    "@afterdark/i18n": "workspace:*",
     "@afterdark/types": "workspace:*",
     "@afterdark/validators": "workspace:*",
     "@aws-sdk/client-s3": "3.1071.0",

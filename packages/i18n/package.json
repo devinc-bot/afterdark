@@ -1,0 +1,38 @@
+{
+  "name": "@afterdark/i18n",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./client": "./src/client/index.ts",
+    "./server": "./src/server/index.ts",
+    "./config": "./src/config/index.ts",
+    "./constants": "./src/constants/index.ts",
+    "./utils/zod": "./src/utils/zod-error-map.ts"
+  },
+  "dependencies": {
+    "i18next": "23.16.8",
+    "react-i18next": "15.5.3",
+    "i18next-icu": "2.4.3"
+  },
+  "peerDependencies": {
+    "react": "^19",
+    "@nestjs/common": "^11",
+    "zod": "^4"
+  },
+  "peerDependenciesMeta": {
+    "react": { "optional": true },
+    "@nestjs/common": { "optional": true }
+  },
+  "scripts": {
+    "check:i18n": "tsx src/scripts/check-i18n.ts"
+  },
+  "devDependencies": {
+    "@types/express": "5.0.3",
+    "@types/node": "22.15.0",
+    "@types/react": "19.1.6",
+    "tsx": "4.19.4",
+    "typescript": "6.0.3"
+  }
+}

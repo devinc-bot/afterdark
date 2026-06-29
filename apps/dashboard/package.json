@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@afterdark/db": "workspace:*",
+    "@afterdark/i18n": "workspace:*",
     "@afterdark/types": "workspace:*",
     "@afterdark/ui": "workspace:*",
     "@afterdark/validators": "workspace:*",
