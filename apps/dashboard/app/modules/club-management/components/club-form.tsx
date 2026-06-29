@@ -1,15 +1,8 @@
+import { useEffect, useRef } from 'react'
 import { useForm } from '@tanstack/react-form'
 import { CLUB_STATUS, type ClubImageResponse } from '@afterdark/types'
 import { createClubSchema, clubStatusSchema, type CreateClubInput } from '@afterdark/validators'
 import {
-  Button,
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
   fieldErrorMessage,
   Input,
   Label,
@@ -21,11 +14,13 @@ import {
   Textarea,
   toast,
 } from '@afterdark/ui'
-import {
-  useCreateClub,
-  useUpdateClub,
-} from '~/modules/club-management/mutation/use-club-management-mutations'
 import { ImagesClubForm } from '~/modules/club-management/components/images-club-form'
+import {
+  type useCreateClub,
+  type useUpdateClub,
+} from '~/modules/club-management/mutation/use-club-management-mutations'
+import { CLUB_COPY } from '~/modules/club-management/constants/club.copy'
+import { snapshotClubFormValues } from '~/modules/club-management/utils/club-form.mapper'
 
 export const CLUB_FORM_MODE = {
   CREATE: 'create',
@@ -34,14 +29,14 @@ export const CLUB_FORM_MODE = {
 
 export type ClubFormMode = (typeof CLUB_FORM_MODE)[keyof typeof CLUB_FORM_MODE]
 
-const CLUB_DIALOG_FORM_ID = 'club-dialog-form'
+export const CLUB_FORM_ID = 'club-form'
 
-export type ClubDialogFormValues = CreateClubInput & {
+export type ClubFormValues = CreateClubInput & {
   existingImages: ClubImageResponse[]
   clubImg: File[]
 }
 
-const EMPTY_CLUB_FORM_VALUES: ClubDialogFormValues = {
+export const EMPTY_CLUB_FORM_VALUES: ClubFormValues = {
   name: '',
   address: '',
   capacity: '',
@@ -132,9 +127,9 @@ function FormSection({
   return (
     <section className="flex flex-col gap-4" aria-labelledby={headingId}>
       <div className="flex flex-col gap-1 border-b border-hairline pb-3">
-        <h3 id={headingId} className="font-heading text-sm font-semibold text-ink">
+        <h2 id={headingId} className="font-heading text-sm font-semibold text-ink">
           {title}
-        </h3>
+        </h2>
         {description ? <p className="text-sm text-ink-muted">{description}</p> : null}
       </div>
       {children}
@@ -142,29 +137,29 @@ function FormSection({
   )
 }
 
-type ClubDialogFormProps = {
+type ClubFormProps = {
   mode: ClubFormMode
-  open: boolean
-  onOpenChange: (open: boolean) => void
   clubDocumentId?: string
-  defaultValues?: Partial<ClubDialogFormValues>
-  isSubmitting?: boolean
-  formKey?: string
+  defaultValues?: Partial<ClubFormValues>
+  createClubMutation: ReturnType<typeof useCreateClub>
+  updateClubMutation: ReturnType<typeof useUpdateClub>
+  onDirtyChange?: (isDirty: boolean) => void
+  onSuccess?: () => void
 }
 
-function ClubDialogFormInner({
+export function ClubForm({
   mode,
   clubDocumentId,
   defaultValues,
-  isSubmitting = false,
-  onOpenChange,
-}: Pick<
-  ClubDialogFormProps,
-  'mode' | 'clubDocumentId' | 'defaultValues' | 'isSubmitting' | 'onOpenChange'
->) {
+  createClubMutation,
+  updateClubMutation,
+  onDirtyChange,
+  onSuccess,
+}: ClubFormProps) {
   const isCreate = mode === CLUB_FORM_MODE.CREATE
-  const createClubMutation = useCreateClub()
-  const updateClubMutation = useUpdateClub()
+  const initialSnapshotRef = useRef(
+    snapshotClubFormValues({ ...EMPTY_CLUB_FORM_VALUES, ...defaultValues })
+  )
 
   const form = useForm({
     defaultValues: { ...EMPTY_CLUB_FORM_VALUES, ...defaultValues },
@@ -176,7 +171,6 @@ function ClubDialogFormInner({
         formData.append('capacity', value.capacity)
         formData.append('description', value.description)
         formData.append('status', value.status)
-
         formData.append('address', value.address)
         formData.append('street_number', value.street_number)
         formData.append('city', value.city)
@@ -188,14 +182,10 @@ function ClubDialogFormInner({
 
         try {
           await createClubMutation.mutateAsync(formData)
-          toast.success('Club registrado correctamente')
-          onOpenChange(false)
+          toast.success(CLUB_COPY.formPage.toastCreateSuccess)
+          onSuccess?.()
         } catch (error) {
-          toast.error(
-            error instanceof Error
-              ? error.message
-              : 'No pudimos registrar el club. Intentá de nuevo.'
-          )
+          toast.error(error instanceof Error ? error.message : CLUB_COPY.formPage.toastCreateError)
         }
         return
       }
@@ -203,7 +193,7 @@ function ClubDialogFormInner({
       const { clubImg, existingImages, ...clubPayload } = value
 
       if (!clubDocumentId) {
-        toast.error('No pudimos identificar el club a actualizar.')
+        toast.error(CLUB_COPY.formPage.toastMissingClubId)
         return
       }
 
@@ -228,34 +218,39 @@ function ClubDialogFormInner({
 
       try {
         await updateClubMutation.mutateAsync({ documentId: clubDocumentId, formData })
-        toast.success('Club actualizado correctamente')
-        onOpenChange(false)
+        toast.success(CLUB_COPY.formPage.toastEditSuccess)
+        onSuccess?.()
       } catch (error) {
-        toast.error(
-          error instanceof Error
-            ? error.message
-            : 'No pudimos actualizar el club. Intentá de nuevo.'
-        )
+        toast.error(error instanceof Error ? error.message : CLUB_COPY.formPage.toastEditError)
       }
     },
   })
 
   return (
-    <>
-      <div className="min-h-0 flex-1 overflow-y-auto overscroll-y-contain">
-        <form
-          id={CLUB_DIALOG_FORM_ID}
-          noValidate
-          className="flex flex-col gap-8 px-8 py-6"
-          onSubmit={(event) => {
-            event.preventDefault()
-            event.stopPropagation()
-            void form.handleSubmit()
-          }}
-        >
+    <form
+      id={CLUB_FORM_ID}
+      noValidate
+      onSubmit={(event) => {
+        event.preventDefault()
+        event.stopPropagation()
+        void form.handleSubmit()
+      }}
+    >
+      <form.Subscribe selector={(state) => state.values}>
+        {(values) => (
+          <DirtyTracker
+            values={values}
+            initialSnapshot={initialSnapshotRef.current}
+            onDirtyChange={onDirtyChange}
+          />
+        )}
+      </form.Subscribe>
+
+      <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:items-start">
+        <div className="flex flex-col gap-8">
           <FormSection
-            title="Información general"
-            description="Datos básicos del club que verán los usuarios en la plataforma."
+            title={CLUB_COPY.sections.generalTitle}
+            description={CLUB_COPY.sections.generalDescription}
           >
             <form.Field name="name" validators={{ onSubmit: createClubSchema.shape.name }}>
               {(field) => (
@@ -364,28 +359,8 @@ function ClubDialogFormInner({
           </FormSection>
 
           <FormSection
-            title="Imágenes"
-            description="Fotos del local que se mostrarán en la plataforma. Podés subir hasta 5 imágenes."
-          >
-            <form.Field name="existingImages">
-              {(existingField) => (
-                <form.Field name="clubImg">
-                  {(newField) => (
-                    <ImagesClubForm
-                      existingImages={existingField.state.value}
-                      onExistingImagesChange={existingField.handleChange}
-                      newImages={newField.state.value}
-                      onNewImagesChange={newField.handleChange}
-                    />
-                  )}
-                </form.Field>
-              )}
-            </form.Field>
-          </FormSection>
-
-          <FormSection
-            title="Ubicación"
-            description="Dirección física del local para operaciones y referencias internas."
+            title={CLUB_COPY.sections.locationTitle}
+            description={CLUB_COPY.sections.locationDescription}
           >
             <form.Field name="address" validators={{ onSubmit: createClubSchema.shape.address }}>
               {(field) => (
@@ -450,85 +425,45 @@ function ClubDialogFormInner({
               )}
             </form.Field>
           </FormSection>
-        </form>
+        </div>
+
+        <FormSection
+          title={CLUB_COPY.sections.imagesTitle}
+          description={CLUB_COPY.sections.imagesDescription}
+        >
+          <form.Field name="existingImages">
+            {(existingField) => (
+              <form.Field name="clubImg">
+                {(newField) => (
+                  <ImagesClubForm
+                    existingImages={existingField.state.value}
+                    onExistingImagesChange={existingField.handleChange}
+                    newImages={newField.state.value}
+                    onNewImagesChange={newField.handleChange}
+                  />
+                )}
+              </form.Field>
+            )}
+          </form.Field>
+        </FormSection>
       </div>
-
-      <form.Subscribe selector={(state) => state.isSubmitting}>
-        {(isFormSubmitting) => {
-          const pending =
-            isSubmitting ||
-            isFormSubmitting ||
-            createClubMutation.isPending ||
-            updateClubMutation.isPending
-
-          return (
-            <DialogFooter className="mx-0 mb-0 mt-0 shrink-0 flex-col gap-3 px-6 py-6 sm:flex-row sm:justify-end sm:px-8">
-              <DialogClose asChild>
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="default"
-                  disabled={pending}
-                  className="min-w-36 sm:min-w-40"
-                >
-                  Cancelar
-                </Button>
-              </DialogClose>
-              <Button
-                type="submit"
-                form={CLUB_DIALOG_FORM_ID}
-                size="default"
-                loading={pending}
-                className="min-w-36 sm:min-w-40"
-              >
-                {pending
-                  ? isCreate
-                    ? 'Registrando…'
-                    : 'Actualizando…'
-                  : isCreate
-                    ? 'Registrar club'
-                    : 'Actualizar club'}
-              </Button>
-            </DialogFooter>
-          )
-        }}
-      </form.Subscribe>
-    </>
+    </form>
   )
 }
 
-export function ClubDialogForm({
-  mode,
-  open,
-  onOpenChange,
-  clubDocumentId,
-  defaultValues,
-  isSubmitting = false,
-  formKey = 'create',
-}: ClubDialogFormProps) {
-  const isCreate = mode === CLUB_FORM_MODE.CREATE
+function DirtyTracker({
+  values,
+  initialSnapshot,
+  onDirtyChange,
+}: {
+  values: ClubFormValues
+  initialSnapshot: string
+  onDirtyChange?: (isDirty: boolean) => void
+}) {
+  useEffect(() => {
+    const isDirty = snapshotClubFormValues(values) !== initialSnapshot
+    onDirtyChange?.(isDirty)
+  }, [values, initialSnapshot, onDirtyChange])
 
-  return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="flex max-h-[min(90dvh,48rem)] flex-col gap-0 overflow-hidden p-0">
-        <DialogHeader className="shrink-0 border-b border-hairline bg-surface-container-high px-8 pb-6 pt-8">
-          <DialogTitle>{isCreate ? 'Añadir nuevo club' : 'Editar club'}</DialogTitle>
-          <DialogDescription>
-            {isCreate
-              ? 'Completá los datos para registrar un club en la plataforma.'
-              : 'Actualizá la información del club. Los cambios se reflejan de inmediato.'}
-          </DialogDescription>
-        </DialogHeader>
-
-        <ClubDialogFormInner
-          key={formKey}
-          mode={mode}
-          clubDocumentId={clubDocumentId}
-          defaultValues={defaultValues}
-          isSubmitting={isSubmitting}
-          onOpenChange={onOpenChange}
-        />
-      </DialogContent>
-    </Dialog>
-  )
+  return null
 }

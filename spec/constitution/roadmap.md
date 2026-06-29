@@ -13,6 +13,7 @@
 | 007 | `web-catalog` | Catálogo público | `draft` | `api`, `web` | Descubrimiento de clubes/eventos para clientes. Sustituye el placeholder `properties` en `web`. |
 | 008 | `checkout-payments` | Compra y pagos | `draft` | `api`, `web` | Tabla `payments` y módulo `orders` (stub). Checkout de entradas y estados de pago. |
 | 009 | `operational-chat` | Chat operativo | `paused` | `api`, `dashboard`, `web` | Esquema `chat` / `messages`. Pausado hasta cerrar catálogo y checkout. |
+| 010 | `club-create-edit-page` | Formulario club en pantalla completa | `approved` | `dashboard` | Rutas `/club-management/new` y `/:documentId/edit`. Spec lista para implementar. |
 
 ## Status
 
@@ -36,6 +37,7 @@
 007-web-catalog         →  requiere 002, 006 (listado público con entradas publicadas)
 008-checkout-payments   →  requiere 001, 006, 007
 009-operational-chat    →  requiere 001, 002 (opcional: 008)
+010-club-create-edit-page →  requiere 002
 ```
 
 ## Decisiones de prioridad
