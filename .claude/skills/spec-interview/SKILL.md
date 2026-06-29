@@ -1,9 +1,10 @@
 ---
 name: spec-interview
 description: >-
-  Entrevista guiada para crear specs de features en spec/features/. Usar cuando
-  el usuario pida crear, empezar, completar o retomar una spec, nueva feature
-  SDD, o escribir spec.md/plan.md/tasks.md desde cero.
+  Entrevista guiada para crear o ampliar specs de features en spec/features/.
+  Usar cuando el usuario pida un cambio nuevo, feature, endpoint, pantalla o
+  regla de negocio no cubierta por la spec actual — o crear/retomar spec SDD.
+  Regla persistente: .claude/rules/spec-interview-before-changes.md
 ---
 
 # Spec interview (afterdark)
@@ -18,7 +19,7 @@ description: >-
 
 - **Preguntar por fases**; no volcar una spec completa sin respuestas del usuario.
 - **Un turno = una fase** (máx. ~5 preguntas). Tras cada respuesta: actualizar archivos y resumir.
-- Usar **AskQuestion** para opciones finitas (apps, roadmap, approved/draft).
+- Usar **AskUserQuestion** para opciones finitas (apps, roadmap, approved/draft).
 - Pre-rellenar desde código/roadmap y **confirmar** con el usuario.
 - **No implementar código** durante la entrevista salvo pedido explícito.
 

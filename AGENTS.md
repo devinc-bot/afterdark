@@ -11,6 +11,8 @@ Read the relevant doc before making changes:
 | Doc                                                  | When to consult                                      |
 | ---------------------------------------------------- | ---------------------------------------------------- |
 | [spec/INTERVIEW.md](./spec/INTERVIEW.md)             | Creating a feature spec (guided Q&A; do not fill alone) |
+| [.claude/rules/spec-interview-before-changes.md](./.claude/rules/spec-interview-before-changes.md) | **Antes de cada cambio nuevo** — entrevista obligatoria (Claude Code) |
+| [.cursor/rules/spec-interview-before-changes.mdc](./.cursor/rules/spec-interview-before-changes.mdc) | **Antes de cada cambio nuevo** — entrevista obligatoria (Cursor) |
 | [spec/README.md](./spec/README.md)                   | SDD layout, spec folder conventions                  |
 | [ARCHITECTURE.md](./ARCHITECTURE.md)                 | Project structure, modules, routes, layers, packages |
 | [STYLEGUIDE.md](./STYLEGUIDE.md)                     | Naming, constants, dependencies, lint/format         |
