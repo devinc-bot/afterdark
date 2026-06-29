@@ -92,16 +92,31 @@ export const verifyStaffInvitationSecurityWordSchema = z.object({
   securityWord: z.string().min(1, 'Ingresá la palabra de seguridad.'),
 })
 
-export const acceptStaffInvitationSchema = z
-  .object({
-    securityWord: z.string().trim(),
-    password: z.string().min(8, 'La contraseña debe tener al menos 8 caracteres.'),
-    confirmPassword: z.string().min(8, 'Confirmá la contraseña.'),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: 'Las contraseñas no coinciden.',
-    path: ['confirmPassword'],
-  })
+export const acceptStaffInvitationBaseSchema = z.object({
+  name: z
+    .string()
+    .trim()
+    .min(2, 'Ingresá al menos 2 caracteres para el nombre.')
+    .max(255, 'El nombre admite hasta 255 caracteres.'),
+  lastName: z
+    .string()
+    .trim()
+    .min(2, 'Ingresá al menos 2 caracteres para el apellido.')
+    .max(255, 'El apellido admite hasta 255 caracteres.'),
+  phone: z
+    .string()
+    .trim()
+    .min(8, 'Ingresá un teléfono válido.')
+    .max(30, 'El teléfono admite hasta 30 caracteres.'),
+  securityWord: z.string().trim(),
+  password: z.string().min(8, 'La contraseña debe tener al menos 8 caracteres.'),
+  confirmPassword: z.string().min(8, 'Confirmá la contraseña.'),
+})
+
+export const acceptStaffInvitationSchema = acceptStaffInvitationBaseSchema.refine(
+  (data) => data.password === data.confirmPassword,
+  { message: 'Las contraseñas no coinciden.', path: ['confirmPassword'] }
+)
 
 export const updateUserSchema = createUserSchema.partial().omit({ password: true })
 
