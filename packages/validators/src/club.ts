@@ -17,27 +17,27 @@ function multipartUuidListSchema() {
     .pipe(z.array(uuidSchema))
 }
 
-function nonNegativeDigitsField(requiredMessage: string, invalidMessage: string) {
-  return z.string().min(1, requiredMessage).regex(/^\d+$/, invalidMessage)
+function nonNegativeDigitsField(requiredKey: string, invalidKey: string) {
+  return z.string().min(1, requiredKey).regex(/^\d+$/, invalidKey)
 }
 
 export const clubStatusSchema = z.enum([CLUB_STATUS.ACTIVE, CLUB_STATUS.INACTIVE])
 
 export const createClubSchema = z.object({
-  name: z.string().min(1, 'El nombre del club es requerido'),
-  address: z.string().min(1, 'La dirección del club es requerida'),
+  name: z.string().min(1, 'validation:field.club.name'),
+  address: z.string().min(1, 'validation:field.club.address'),
   capacity: nonNegativeDigitsField(
-    'La capacidad es requerida',
-    'La capacidad solo puede contener números'
+    'validation:field.club.capacity.required',
+    'validation:field.club.capacity.invalid'
   ),
-  description: z.string().min(1, 'La información adicional es requerida'),
+  description: z.string().min(1, 'validation:field.club.description'),
   status: clubStatusSchema.default(CLUB_STATUS.ACTIVE),
-  state: z.string().min(1, 'El estado es requerido'),
+  state: z.string().min(1, 'validation:field.club.state'),
   street_number: nonNegativeDigitsField(
-    'El número de calle es requerido',
-    'El número de calle solo puede contener números'
+    'validation:field.club.streetNumber.required',
+    'validation:field.club.streetNumber.invalid'
   ),
-  city: z.string().min(1, 'La ciudad es requerida'),
+  city: z.string().min(1, 'validation:field.club.city'),
 })
 export type CreateClubInput = z.infer<typeof createClubSchema>
 

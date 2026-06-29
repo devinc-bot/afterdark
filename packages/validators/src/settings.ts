@@ -26,9 +26,9 @@ export const settingsOrganizationSchema = z.object({
   brandName: z
     .string()
     .trim()
-    .min(1, 'Ingresá el nombre comercial.')
-    .max(100, 'El nombre comercial admite hasta 100 caracteres.'),
-  location: z.string().trim().max(200, 'La ubicación admite hasta 200 caracteres.'),
+    .min(1, 'validation:field.organization.brandName.required')
+    .max(100, 'validation:field.organization.brandName.max'),
+  location: z.string().trim().max(200, 'validation:field.organization.location.max'),
 })
 
 export const settingsSecuritySchema = z.object({

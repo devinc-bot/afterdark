@@ -1,15 +1,15 @@
 import { z } from 'zod'
 
 export const loginSchema = z.object({
-  email: z.email('Ingresá un correo electrónico válido'),
-  password: z.string().min(8, 'La contraseña debe tener al menos 8 caracteres'),
+  email: z.email(),
+  password: z.string().min(8),
 })
 
 const registerProfileSchema = z.object({
-  name: z.string().min(2, 'El nombre debe tener al menos 2 caracteres').max(255),
-  lastName: z.string().min(2, 'El apellido debe tener al menos 2 caracteres').max(255),
-  email: z.email('Ingresá un correo electrónico válido'),
-  password: z.string().min(8, 'La contraseña debe tener al menos 8 caracteres'),
+  name: z.string().min(2).max(255),
+  lastName: z.string().min(2).max(255),
+  email: z.email(),
+  password: z.string().min(8),
 })
 
 export const registerUserSchema = registerProfileSchema

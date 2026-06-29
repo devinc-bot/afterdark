@@ -1,18 +1,18 @@
 import { z } from 'zod'
 import { USER_ROLE } from '@afterdark/types'
 
-const optionalDigitsField = (invalidMessage: string, pattern: RegExp) =>
+const optionalDigitsField = (invalidKey: string, pattern: RegExp) =>
   z
     .string()
     .trim()
-    .refine((value) => value === '' || pattern.test(value), invalidMessage)
+    .refine((value) => value === '' || pattern.test(value), invalidKey)
 
 export const userAddressSchema = z
   .object({
-    address: z.string().trim().max(255, 'La dirección admite hasta 255 caracteres.'),
-    streetNumber: z.string().trim().max(20, 'El número admite hasta 20 caracteres.'),
-    state: z.string().trim().max(100, 'La provincia admite hasta 100 caracteres.'),
-    city: z.string().trim().max(100, 'La ciudad admite hasta 100 caracteres.'),
+    address: z.string().trim().max(255),
+    streetNumber: z.string().trim().max(20),
+    state: z.string().trim().max(100),
+    city: z.string().trim().max(100),
   })
   .superRefine((data, ctx) => {
     const values = [data.address, data.streetNumber, data.state, data.city]
@@ -22,39 +22,28 @@ export const userAddressSchema = z
     if (anyFilled && !allFilled) {
       ctx.addIssue({
         code: 'custom',
-        message: 'Completá todos los campos de domicilio o dejalos vacíos.',
+        message: 'validation:field.address.allOrNone',
         path: ['address'],
       })
     }
   })
 
 export const updateCurrentUserSchema = z.object({
-  name: z
-    .string()
-    .trim()
-    .min(2, 'Ingresá al menos 2 caracteres para el nombre.')
-    .max(255, 'El nombre admite hasta 255 caracteres.'),
-  lastName: z
-    .string()
-    .trim()
-    .min(2, 'Ingresá al menos 2 caracteres para el apellido.')
-    .max(255, 'El apellido admite hasta 255 caracteres.'),
+  name: z.string().trim().min(2).max(255),
+  lastName: z.string().trim().min(2).max(255),
   phone: z
     .string()
     .trim()
-    .min(8, 'Ingresá un teléfono válido.')
-    .max(30, 'El teléfono admite hasta 30 caracteres.'),
+    .min(8, 'validation:field.phone.invalid')
+    .max(30, 'validation:field.phone.tooLong'),
   birthday: z
     .string()
     .trim()
     .refine(
       (value) => value === '' || /^\d{4}-\d{2}-\d{2}$/.test(value),
-      'Usá el formato AAAA-MM-DD.'
+      'validation:field.birthday.format'
     ),
-  nationalId: optionalDigitsField(
-    'El DNI solo puede contener números (7 a 11 dígitos).',
-    /^\d{7,11}$/
-  ),
+  nationalId: optionalDigitsField('validation:field.nationalId.invalid', /^\d{7,11}$/),
   address: userAddressSchema,
 })
 
@@ -66,56 +55,41 @@ export const createUserSchema = z.object({
 })
 
 export const createStaffUserSchema = z.object({
-  name: z
-    .string()
-    .trim()
-    .min(2, 'Ingresá al menos 2 caracteres para el nombre.')
-    .max(255, 'El nombre admite hasta 255 caracteres.'),
-  email: z.email('Ingresá un email válido.'),
-  password: z.string().min(8, 'La contraseña debe tener al menos 8 caracteres.'),
-  clubId: z.string().min(1, 'Seleccioná un club.'),
+  name: z.string().trim().min(2).max(255),
+  email: z.email('validation:field.invitation.email'),
+  password: z.string().min(8),
+  clubId: z.string().min(1, 'validation:field.invitation.club'),
 })
 
 export const createStaffInvitationSchema = z.object({
-  email: z.email('Ingresá un email válido.'),
-  clubId: z.string().min(1, 'Seleccioná un club.'),
+  email: z.email('validation:field.invitation.email'),
+  clubId: z.string().min(1, 'validation:field.invitation.club'),
   securityWord: z
     .string()
     .trim()
-    .refine(
-      (value) => value === '' || value.length >= 4,
-      'La palabra de seguridad debe tener al menos 4 caracteres.'
-    ),
+    .refine((value) => value === '' || value.length >= 4, 'validation:field.securityWord.min'),
 })
 
 export const verifyStaffInvitationSecurityWordSchema = z.object({
-  securityWord: z.string().min(1, 'Ingresá la palabra de seguridad.'),
+  securityWord: z.string().min(1, 'validation:field.securityWord.required'),
 })
 
 export const acceptStaffInvitationBaseSchema = z.object({
-  name: z
-    .string()
-    .trim()
-    .min(2, 'Ingresá al menos 2 caracteres para el nombre.')
-    .max(255, 'El nombre admite hasta 255 caracteres.'),
-  lastName: z
-    .string()
-    .trim()
-    .min(2, 'Ingresá al menos 2 caracteres para el apellido.')
-    .max(255, 'El apellido admite hasta 255 caracteres.'),
+  name: z.string().trim().min(2).max(255),
+  lastName: z.string().trim().min(2).max(255),
   phone: z
     .string()
     .trim()
-    .min(8, 'Ingresá un teléfono válido.')
-    .max(30, 'El teléfono admite hasta 30 caracteres.'),
+    .min(8, 'validation:field.phone.invalid')
+    .max(30, 'validation:field.phone.tooLong'),
   securityWord: z.string().trim(),
-  password: z.string().min(8, 'La contraseña debe tener al menos 8 caracteres.'),
-  confirmPassword: z.string().min(8, 'Confirmá la contraseña.'),
+  password: z.string().min(8),
+  confirmPassword: z.string().min(8),
 })
 
 export const acceptStaffInvitationSchema = acceptStaffInvitationBaseSchema.refine(
   (data) => data.password === data.confirmPassword,
-  { message: 'Las contraseñas no coinciden.', path: ['confirmPassword'] }
+  { message: 'validation:field.password.noMatch', path: ['confirmPassword'] }
 )
 
 export const updateUserSchema = createUserSchema.partial().omit({ password: true })
