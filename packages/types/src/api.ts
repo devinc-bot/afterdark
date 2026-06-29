@@ -109,8 +109,6 @@ export interface StaffInvitationPublicResponse {
   slug: string
   expiresAt: Date
   hasSecurityWord: boolean
-  /** Present when `hasSecurityWord`; used to verify the word before accept. */
-  securityWordHash: string | null
 }
 
 export interface StaffPersonnelItem {
