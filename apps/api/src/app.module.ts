@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common'
 import { AppController } from './app.controller'
+import { I18nModule } from '@afterdark/i18n/server'
 import { CommonModule } from './modules/common/common.module'
 import { AuthModule } from './modules/auth'
 import { CategoriesModule } from './modules/categories'
@@ -13,6 +14,7 @@ import { StaffModule } from './modules/staff'
 
 @Module({
   imports: [
+    I18nModule,
     CommonModule,
     AuthModule,
     CategoriesModule,

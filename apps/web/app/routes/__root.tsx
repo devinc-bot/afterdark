@@ -1,11 +1,6 @@
-import {
-  HeadContent,
-  Outlet,
-  Scripts,
-  ScrollRestoration,
-  createRootRouteWithContext,
-} from '@tanstack/react-router'
+import { HeadContent, Outlet, Scripts, createRootRouteWithContext } from '@tanstack/react-router'
 import { QueryClientProvider, type QueryClient } from '@tanstack/react-query'
+import { I18nProvider } from '@afterdark/i18n/client'
 import globalsCssUrl from '@afterdark/ui/globals.css?url'
 
 interface RouterContext {
@@ -27,17 +22,18 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 function RootComponent() {
   const { queryClient } = Route.useRouteContext()
   return (
-    <QueryClientProvider client={queryClient}>
-      <html lang="es">
-        <head>
-          <HeadContent />
-        </head>
-        <body>
-          <ScrollRestoration />
-          <Outlet />
-          <Scripts />
-        </body>
-      </html>
-    </QueryClientProvider>
+    <I18nProvider>
+      <QueryClientProvider client={queryClient}>
+        <html lang="es">
+          <head>
+            <HeadContent />
+          </head>
+          <body>
+            <Outlet />
+            <Scripts />
+          </body>
+        </html>
+      </QueryClientProvider>
+    </I18nProvider>
   )
 }
