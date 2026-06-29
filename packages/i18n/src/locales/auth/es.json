@@ -1,0 +1,55 @@
+{
+  "login": {
+    "title": "Iniciar sesión",
+    "email": "Correo electrónico",
+    "emailPlaceholder": "tu@correo.com",
+    "password": "Contraseña",
+    "passwordPlaceholder": "••••••••",
+    "submit": "Entrar",
+    "submitting": "Entrando…",
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "noAccount": "¿No tenés cuenta?",
+    "error": {
+      "invalidCredentials": "Credenciales inválidas. Revisá tu correo y contraseña.",
+      "generic": "No se pudo iniciar sesión. Intentá de nuevo."
+    }
+  },
+  "register": {
+    "title": "Crear cuenta",
+    "name": "Nombre",
+    "namePlaceholder": "Tu nombre",
+    "lastName": "Apellido",
+    "lastNamePlaceholder": "Tu apellido",
+    "email": "Correo electrónico",
+    "emailPlaceholder": "tu@correo.com",
+    "password": "Contraseña",
+    "passwordPlaceholder": "••••••••",
+    "submit": "Crear cuenta",
+    "submitting": "Creando…",
+    "alreadyHaveAccount": "¿Ya tenés cuenta?",
+    "error": {
+      "emailTaken": "Este correo ya está registrado.",
+      "generic": "No se pudo crear la cuenta. Intentá de nuevo."
+    }
+  },
+  "logout": "Cerrar sesión",
+  "session": {
+    "expired": "Tu sesión expiró. Volvé a iniciar sesión."
+  },
+  "password": {
+    "min": "La contraseña debe tener al menos {{min}} caracteres.",
+    "noMatch": "Las contraseñas no coinciden.",
+    "confirm": "Confirmar contraseña",
+    "confirmPlaceholder": "••••••••"
+  },
+  "profile": {
+    "name": {
+      "min": "Ingresá al menos 2 caracteres para el nombre.",
+      "max": "El nombre admite hasta 255 caracteres."
+    },
+    "lastName": {
+      "min": "Ingresá al menos 2 caracteres para el apellido.",
+      "max": "El apellido admite hasta 255 caracteres."
+    }
+  }
+}

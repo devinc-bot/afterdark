@@ -1,0 +1,31 @@
+{
+  "common": {
+    "greeting": "Hola {{name}}",
+    "footer": "Este correo fue enviado por Afterdark.",
+    "unsubscribe": "Para dejar de recibir estos correos, hacé clic aquí.",
+    "copyright": "© {{year}} Afterdark. Todos los derechos reservados."
+  },
+  "staffInvitation": {
+    "subject": "Te invitaron a unirte al equipo de {{clubName}}",
+    "title": "Invitación al equipo",
+    "body": "{{inviterName}} te invitó a unirte al equipo de {{clubName}} en Afterdark.",
+    "cta": "Activar acceso",
+    "expires": "Este enlace vence en {{hours}} horas.",
+    "securityWordNote": "Recordá la palabra de seguridad que acordaste con tu administrador.",
+    "ignore": "Si no esperabas esta invitación, podés ignorar este correo."
+  },
+  "passwordReset": {
+    "subject": "Restablecé tu contraseña",
+    "title": "Restablecer contraseña",
+    "body": "Recibimos una solicitud para restablecer la contraseña de tu cuenta.",
+    "cta": "Restablecer contraseña",
+    "expires": "Este enlace vence en {{minutes}} minutos.",
+    "ignore": "Si no solicitaste este cambio, ignorá este correo."
+  },
+  "welcome": {
+    "subject": "Bienvenido a Afterdark",
+    "title": "¡Bienvenido, {{name}}!",
+    "body": "Tu cuenta fue creada exitosamente. Ya podés iniciar sesión.",
+    "cta": "Ir al panel"
+  }
+}

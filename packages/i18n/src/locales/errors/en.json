@@ -1,0 +1,54 @@
+{
+  "generic": "An unexpected error occurred.",
+  "network": "Network error. Check your connection.",
+  "timeout": "The request timed out. Please try again.",
+  "unauthorized": "You are not authenticated. Please sign in.",
+  "forbidden": "You do not have permission to perform this action.",
+  "notFound": "The requested resource does not exist.",
+  "conflict": "Conflict with an existing resource.",
+  "validation": "The submitted data is invalid.",
+  "server": "Internal server error.",
+  "auth": {
+    "USER_NOT_FOUND": "User not found.",
+    "INVALID_CREDENTIALS": "Invalid credentials.",
+    "EMAIL_ALREADY_REGISTERED": "This email is already registered.",
+    "UNAUTHORIZED": "You are not authorized.",
+    "TOKEN_EXPIRED": "The token has expired.",
+    "TOKEN_INVALID": "The token is invalid.",
+    "SESSION_NOT_FOUND": "Session not found.",
+    "REFRESH_TOKEN_INVALID": "Invalid refresh token."
+  },
+  "invitation": {
+    "INVITER_NOT_FOUND": "Owner not found.",
+    "CLUB_NOT_FOUND": "Club not found.",
+    "NOT_FOUND": "Invitation not found.",
+    "FORBIDDEN": "Only an owner can create invitations.",
+    "CREATE_FAILED": "Could not create invitation.",
+    "LIST_FAILED": "Could not load invitations.",
+    "DELETE_ACCEPTED": "Cannot delete an already accepted invitation.",
+    "DELETE_FAILED": "Could not delete invitation.",
+    "PUBLIC_INVALID": "The invitation link is invalid.",
+    "PUBLIC_SLUG_MISMATCH": "The invitation link does not match.",
+    "PUBLIC_EXPIRED": "The invitation link has expired.",
+    "PUBLIC_ALREADY_ACCEPTED": "This invitation has already been accepted.",
+    "PUBLIC_GET_FAILED": "Could not retrieve invitation.",
+    "SECURITY_WORD_INVALID": "The security word is incorrect.",
+    "ACCEPT_SUCCESS": "Account created. You can now sign in.",
+    "ACCEPT_FAILED": "Could not create account. Please try again."
+  },
+  "club": {
+    "NOT_FOUND": "Club not found.",
+    "FORBIDDEN": "You do not have permission for this club.",
+    "CREATE_FAILED": "Could not create club.",
+    "UPDATE_FAILED": "Could not update club.",
+    "DELETE_FAILED": "Could not delete club."
+  },
+  "staff": {
+    "NOT_FOUND": "Staff member not found.",
+    "LIST_FAILED": "Could not load staff."
+  },
+  "owner": {
+    "NOT_FOUND": "Owner not found.",
+    "UPDATE_FAILED": "Could not update profile."
+  }
+}

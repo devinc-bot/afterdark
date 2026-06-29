@@ -1,0 +1,54 @@
+{
+  "generic": "Ocurrió un error inesperado.",
+  "network": "Error de red. Verificá tu conexión.",
+  "timeout": "La solicitud tardó demasiado. Intentá de nuevo.",
+  "unauthorized": "No estás autenticado. Iniciá sesión.",
+  "forbidden": "No tenés permiso para realizar esta acción.",
+  "notFound": "El recurso solicitado no existe.",
+  "conflict": "Conflicto con un recurso existente.",
+  "validation": "Los datos enviados son inválidos.",
+  "server": "Error interno del servidor.",
+  "auth": {
+    "USER_NOT_FOUND": "Usuario no encontrado.",
+    "INVALID_CREDENTIALS": "Credenciales inválidas.",
+    "EMAIL_ALREADY_REGISTERED": "Este correo ya está registrado.",
+    "UNAUTHORIZED": "No estás autorizado.",
+    "TOKEN_EXPIRED": "El token expiró.",
+    "TOKEN_INVALID": "El token es inválido.",
+    "SESSION_NOT_FOUND": "Sesión no encontrada.",
+    "REFRESH_TOKEN_INVALID": "Token de refresco inválido."
+  },
+  "invitation": {
+    "INVITER_NOT_FOUND": "Propietario no encontrado.",
+    "CLUB_NOT_FOUND": "Club no encontrado.",
+    "NOT_FOUND": "Invitación no encontrada.",
+    "FORBIDDEN": "Solo un propietario puede crear invitaciones.",
+    "CREATE_FAILED": "No se pudo crear la invitación.",
+    "LIST_FAILED": "No se pudo cargar las invitaciones.",
+    "DELETE_ACCEPTED": "No se puede eliminar una invitación ya aceptada.",
+    "DELETE_FAILED": "No se pudo eliminar la invitación.",
+    "PUBLIC_INVALID": "El enlace de invitación no es válido.",
+    "PUBLIC_SLUG_MISMATCH": "El enlace de invitación no coincide.",
+    "PUBLIC_EXPIRED": "El enlace de invitación expiró.",
+    "PUBLIC_ALREADY_ACCEPTED": "Esta invitación ya fue aceptada.",
+    "PUBLIC_GET_FAILED": "No se pudo obtener la invitación.",
+    "SECURITY_WORD_INVALID": "La palabra de seguridad es incorrecta.",
+    "ACCEPT_SUCCESS": "Cuenta creada. Ya podés iniciar sesión.",
+    "ACCEPT_FAILED": "No se pudo crear la cuenta. Intentá de nuevo."
+  },
+  "club": {
+    "NOT_FOUND": "Club no encontrado.",
+    "FORBIDDEN": "No tenés permiso para este club.",
+    "CREATE_FAILED": "No se pudo crear el club.",
+    "UPDATE_FAILED": "No se pudo actualizar el club.",
+    "DELETE_FAILED": "No se pudo eliminar el club."
+  },
+  "staff": {
+    "NOT_FOUND": "Personal no encontrado.",
+    "LIST_FAILED": "No se pudo cargar el personal."
+  },
+  "owner": {
+    "NOT_FOUND": "Propietario no encontrado.",
+    "UPDATE_FAILED": "No se pudo actualizar el perfil."
+  }
+}

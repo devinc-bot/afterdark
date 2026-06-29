@@ -1,0 +1,81 @@
+{
+  "zod": {
+    "invalid_type": "Este campo es requerido.",
+    "too_small": {
+      "string": "{minimum, plural, one {Mínimo # carácter.} other {Mínimo # caracteres.}}",
+      "number": "El valor debe ser al menos {{minimum}}.",
+      "array": "{minimum, plural, one {Se requiere al menos # elemento.} other {Se requieren al menos # elementos.}}"
+    },
+    "too_big": {
+      "string": "{maximum, plural, one {Máximo # carácter.} other {Máximo # caracteres.}}",
+      "number": "El valor debe ser como máximo {{maximum}}.",
+      "array": "{maximum, plural, one {Máximo # elemento.} other {Máximo # elementos.}}"
+    },
+    "invalid_string": {
+      "email": "Ingresá un correo electrónico válido.",
+      "url": "Ingresá una URL válida.",
+      "uuid": "El formato del ID es inválido.",
+      "regex": "El formato es inválido."
+    },
+    "invalid_enum_value": "Opción no válida.",
+    "invalid_union": "El formato no es válido.",
+    "not_multiple_of": "Debe ser múltiplo de {{multipleOf}}.",
+    "custom": "El valor no es válido."
+  },
+  "field": {
+    "required": "Este campo es requerido.",
+    "email": "Ingresá un correo electrónico válido.",
+    "phone": {
+      "invalid": "Ingresá un teléfono válido.",
+      "tooLong": "El teléfono admite hasta {{max}} caracteres."
+    },
+    "birthday": {
+      "format": "Usá el formato AAAA-MM-DD."
+    },
+    "nationalId": {
+      "invalid": "El DNI solo puede contener números (7 a 11 dígitos)."
+    },
+    "taxId": {
+      "invalid": "El CUIT/CUIL debe tener 11 dígitos, sin guiones."
+    },
+    "password": {
+      "min": "La contraseña debe tener al menos {{min}} caracteres.",
+      "noMatch": "Las contraseñas no coinciden."
+    },
+    "securityWord": {
+      "required": "Ingresá la palabra de seguridad.",
+      "min": "La palabra de seguridad debe tener al menos {{min}} caracteres."
+    },
+    "address": {
+      "allOrNone": "Completá todos los campos de domicilio o dejalos vacíos."
+    },
+    "invitation": {
+      "email": "Ingresá un email válido.",
+      "club": "Seleccioná un club."
+    },
+    "club": {
+      "name": "El nombre del club es requerido.",
+      "address": "La dirección del club es requerida.",
+      "capacity": {
+        "required": "La capacidad es requerida.",
+        "invalid": "La capacidad solo puede contener números."
+      },
+      "description": "La información adicional es requerida.",
+      "state": "El estado es requerido.",
+      "streetNumber": {
+        "required": "El número de calle es requerido.",
+        "invalid": "El número de calle solo puede contener números."
+      },
+      "city": "La ciudad es requerida."
+    },
+    "organization": {
+      "brandName": {
+        "required": "Ingresá el nombre comercial.",
+        "max": "El nombre comercial admite hasta {{max}} caracteres."
+      },
+      "location": {
+        "max": "La ubicación admite hasta {{max}} caracteres."
+      }
+    }
+  }
+}

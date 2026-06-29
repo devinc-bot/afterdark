@@ -1,0 +1,81 @@
+{
+  "zod": {
+    "invalid_type": "This field is required.",
+    "too_small": {
+      "string": "{minimum, plural, one {Minimum # character.} other {Minimum # characters.}}",
+      "number": "Value must be at least {{minimum}}.",
+      "array": "{minimum, plural, one {At least # item required.} other {At least # items required.}}"
+    },
+    "too_big": {
+      "string": "{maximum, plural, one {Maximum # character.} other {Maximum # characters.}}",
+      "number": "Value must be at most {{maximum}}.",
+      "array": "{maximum, plural, one {Maximum # item.} other {Maximum # items.}}"
+    },
+    "invalid_string": {
+      "email": "Enter a valid email address.",
+      "url": "Enter a valid URL.",
+      "uuid": "Invalid ID format.",
+      "regex": "Invalid format."
+    },
+    "invalid_enum_value": "Invalid option.",
+    "invalid_union": "Invalid format.",
+    "not_multiple_of": "Must be a multiple of {{multipleOf}}.",
+    "custom": "Invalid value."
+  },
+  "field": {
+    "required": "This field is required.",
+    "email": "Enter a valid email address.",
+    "phone": {
+      "invalid": "Enter a valid phone number.",
+      "tooLong": "Phone cannot exceed {{max}} characters."
+    },
+    "birthday": {
+      "format": "Use the YYYY-MM-DD format."
+    },
+    "nationalId": {
+      "invalid": "National ID must contain only digits (7 to 11)."
+    },
+    "taxId": {
+      "invalid": "Tax ID must be 11 digits with no dashes."
+    },
+    "password": {
+      "min": "Password must be at least {{min}} characters.",
+      "noMatch": "Passwords do not match."
+    },
+    "securityWord": {
+      "required": "Enter the security word.",
+      "min": "Security word must be at least {{min}} characters."
+    },
+    "address": {
+      "allOrNone": "Fill in all address fields or leave them all empty."
+    },
+    "invitation": {
+      "email": "Enter a valid email.",
+      "club": "Select a club."
+    },
+    "club": {
+      "name": "Club name is required.",
+      "address": "Club address is required.",
+      "capacity": {
+        "required": "Capacity is required.",
+        "invalid": "Capacity must contain only digits."
+      },
+      "description": "Additional info is required.",
+      "state": "State is required.",
+      "streetNumber": {
+        "required": "Street number is required.",
+        "invalid": "Street number must contain only digits."
+      },
+      "city": "City is required."
+    },
+    "organization": {
+      "brandName": {
+        "required": "Enter a brand name.",
+        "max": "Brand name cannot exceed {{max}} characters."
+      },
+      "location": {
+        "max": "Location cannot exceed {{max}} characters."
+      }
+    }
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "login": {
+    "title": "Sign in",
+    "email": "Email address",
+    "emailPlaceholder": "you@email.com",
+    "password": "Password",
+    "passwordPlaceholder": "••••••••",
+    "submit": "Sign in",
+    "submitting": "Signing in…",
+    "forgotPassword": "Forgot your password?",
+    "noAccount": "Don't have an account?",
+    "error": {
+      "invalidCredentials": "Invalid credentials. Check your email and password.",
+      "generic": "Could not sign in. Please try again."
+    }
+  },
+  "register": {
+    "title": "Create account",
+    "name": "First name",
+    "namePlaceholder": "Your first name",
+    "lastName": "Last name",
+    "lastNamePlaceholder": "Your last name",
+    "email": "Email address",
+    "emailPlaceholder": "you@email.com",
+    "password": "Password",
+    "passwordPlaceholder": "••••••••",
+    "submit": "Create account",
+    "submitting": "Creating…",
+    "alreadyHaveAccount": "Already have an account?",
+    "error": {
+      "emailTaken": "This email is already registered.",
+      "generic": "Could not create account. Please try again."
+    }
+  },
+  "logout": "Sign out",
+  "session": {
+    "expired": "Your session expired. Please sign in again."
+  },
+  "password": {
+    "min": "Password must be at least {{min}} characters.",
+    "noMatch": "Passwords do not match.",
+    "confirm": "Confirm password",
+    "confirmPlaceholder": "••••••••"
+  },
+  "profile": {
+    "name": {
+      "min": "Enter at least 2 characters for your name.",
+      "max": "Name cannot exceed 255 characters."
+    },
+    "lastName": {
+      "min": "Enter at least 2 characters for your last name.",
+      "max": "Last name cannot exceed 255 characters."
+    }
+  }
+}
