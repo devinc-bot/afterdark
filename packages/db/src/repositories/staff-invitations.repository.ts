@@ -1,4 +1,5 @@
 import { and, desc, eq } from 'drizzle-orm'
+import { STAFF_INVITATION_STATUS } from '@afterdark/types'
 import { db } from '../client.ts'
 import { clubs } from '../schema/club.ts'
 import { owners } from '../schema/owner.ts'
@@ -84,6 +85,13 @@ export async function findStaffInvitationByDocumentIdForOwner(
 
 export async function deleteStaffInvitationById(id: number): Promise<void> {
   await db.delete(staffInvitations).where(eq(staffInvitations.id, id))
+}
+
+export async function updateStaffInvitationAccepted(id: number): Promise<void> {
+  await db
+    .update(staffInvitations)
+    .set({ status: STAFF_INVITATION_STATUS.ACCEPTED, acceptedAt: new Date() })
+    .where(eq(staffInvitations.id, id))
 }
 
 export async function findStaffInvitationByTokenWithClub(
