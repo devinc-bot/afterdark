@@ -1,4 +1,10 @@
-# Plan de implementación — Staff e invitaciones (listado de personal)
+# Plan de implementación — Staff e invitaciones
+
+> Ver también Entrega 3 al final de este archivo.
+
+---
+
+# Entrega 1 — Listado de personal (dashboard)
 
 > Complementa [spec.md](./spec.md). Status spec: `approved`.
 
@@ -72,3 +78,98 @@ loader (/staff)
 | 3. API caída o 500 | Banner + Reintentar; al recuperar API, lista carga |
 | 4. Switch de estado | Deshabilitado en todas las filas |
 | 5. `pnpm type-check` + `lint` | Sin errores |
+
+---
+
+# Entrega 3 — Aceptar invitación por link
+
+> Status spec: `approved`.
+
+## Orden de capas
+
+```text
+1. packages/validators — ampliar acceptStaffInvitationSchema (name, lastName, phone)
+2. packages/db       — nueva función updateStaffInvitationAccepted + export
+3. apps/api          — service.acceptStaffInvitation + controller POST /:slug/:token/accept
+4. apps/dashboard    — actualizar acceptStaffInvitationSchema bindings + campos en el form
+5. apps/dashboard    — service acceptStaffInvitation + llamada real en onSubmit
+6. apps/dashboard    — eliminar verificación client-side de securityWordHash
+```
+
+## Archivos a crear / modificar
+
+### `packages/validators`
+
+| Archivo | Cambio |
+| ------- | ------ |
+| `src/user.ts` | `acceptStaffInvitationSchema` → agregar `name` (min 2, max 255), `lastName` (min 2, max 255), `phone` (min 8, max 30) |
+
+### `packages/db`
+
+| Archivo | Cambio |
+| ------- | ------ |
+| `src/repositories/staff-invitations.repository.ts` | Agregar `updateStaffInvitationAccepted(id: number): Promise<void>` |
+| `src/repositories/index.ts` | Exportar `updateStaffInvitationAccepted` |
+
+### `apps/api`
+
+| Archivo | Cambio |
+| ------- | ------ |
+| `src/modules/invitations/invitations.constants.ts` | Agregar `ACCEPT_FAILED`, `SECURITY_WORD_INVALID`, `EMAIL_ALREADY_REGISTERED` (si no existe) |
+| `src/modules/invitations/invitations.service.ts` | Método `acceptStaffInvitation(slug, token, input)` |
+| `src/modules/invitations/invitations.controller.ts` | `@Post('staff/:slug/:token/accept')` → sin guard → llama `acceptStaffInvitation` |
+
+### `apps/dashboard`
+
+| Archivo | Cambio |
+| ------- | ------ |
+| `app/modules/staff/services/staff-invitation.service.ts` | Agregar `acceptStaffInvitation(slug, token, body)` → `POST /api/invitations/staff/:slug/:token/accept` |
+| `app/modules/staff/components/staff-invitation-accept-view.tsx` | Agregar campos name/lastName/phone; reemplazar submit vacío por llamada real; eliminar client-side hash verify |
+| `app/modules/staff/constants/staff.copy.ts` | Copy para nuevos campos + errores de aceptación |
+
+## Diseño técnico
+
+### Service `acceptStaffInvitation` (API)
+
+```text
+1. findStaffInvitationByTokenWithClub(token)     → null → 404
+2. invitation.slug !== slug                       → 400
+3. status === ACCEPTED                            → 409
+4. status === CANCELLED || EXPIRED               → 410
+5. expiresAt <= Date.now()                       → 410
+6. status !== PENDING                            → 404
+7. accountExistsByEmail(invitation.email)         → 409
+8. invitation.securityWordHash && !bcrypt.compare(securityWord, hash) → 403
+9. findRoleByName(USER_ROLE.STAFF)               → null → 500
+10. registerAccount({ email, bcrypt(password), roleId, STAFF, { name, lastName, phone } })
+11. updateStaffInvitationAccepted(invitation.id)
+12. return { message: INVITATION_MESSAGE.ACCEPT_SUCCESS }
+```
+
+### Dashboard form changes
+
+- `defaultValues` agrega `name: '', lastName: '', phone: ''`
+- `onSubmit` llama `acceptStaffInvitation(invitation.slug, routeToken, { password, name, lastName, phone, securityWord? })`
+- Quitar `verifyStaffInvitationSecurityWordHash` (ya no necesario).
+- `toast.success` → mantener; `navigate` → mantener.
+
+## Riesgos / edge cases
+
+| Caso | Comportamiento esperado |
+| ---- | ----------------------- |
+| Token válido pero slug incorrecto | 400 |
+| Invitación sin security word, cliente envía `securityWord: ''` | API ignora (no hay hash en DB) |
+| Invitación ya aceptada | 409 — no re-crear cuenta |
+| Email del invitado ya tiene cuenta (registro previo) | 409 |
+| `registerAccount` falla a mitad (rollback) | La invitación NO queda en `accepted`; rollback de transacción |
+
+## Verificación manual
+
+| Paso | Resultado esperado |
+| ---- | ------------------ |
+| 1. Link válido, completar form, submit | Cuenta creada, toast éxito, redirect a login |
+| 2. Link expirado | 410 → error en UI |
+| 3. Security word incorrecta | 403 → toast/error en UI |
+| 4. Submit dos veces con mismo link | Segundo submit → 409 ya aceptada |
+| 5. Email ya registrado en otra cuenta | 409 → error en UI |
+| 6. `pnpm type-check` + `lint` | Sin errores |

@@ -69,6 +69,23 @@ El tab *Invitaciones* hoy acumula solo invitaciones creadas en la sesión actual
 
 ### No incluye (global, entregas futuras)
 
+### Entrega 3 — Aceptar invitación por link — Incluye
+
+- Endpoint público `POST /invitations/staff/:slug/:token/accept`.
+- Verificación server-side de security word (bcrypt compare).
+- Creación de `account` + `staff` + `staff_account_lnk` en transacción (reutilizar `registerAccount`).
+- Marcar `staff_invitations.status = 'accepted'` + `acceptedAt`.
+- Ampliar `acceptStaffInvitationSchema` con `name`, `lastName`, `phone`.
+- Ampliar form `staff-invitation-accept-view.tsx` con los nuevos campos.
+- Conexión real desde el form al endpoint (reemplazar submit vacío actual).
+- Eliminar verificación client-side de security word hash (mover a API).
+
+### Entrega 3 — No incluye
+
+- Emitir JWT tras aceptar (staff debe iniciar sesión manualmente).
+- Reenviar invitación.
+- Perfil del staff editable desde la vista de aceptación (solo campos requeridos para crear la cuenta).
+
 ---
 
 ## User stories
@@ -306,6 +323,82 @@ El tab *Invitaciones* hoy acumula solo invitaciones creadas en la sesión actual
 
 ---
 
+### API — Entrega 3 (aceptar invitación)
+
+| Método | Ruta | Auth |
+| ------ | ---- | ---- |
+| `POST` | `/api/invitations/staff/:slug/:token/accept` | Público (sin JWT) |
+
+**Body:** `AcceptStaffInvitationInput` (schema ampliado)
+
+```ts
+{
+  name: string        // min 2, max 255
+  lastName: string    // min 2, max 255
+  phone: string       // min 8, max 30
+  password: string    // min 8
+  securityWord?: string  // solo si hasSecurityWord = true
+}
+```
+
+> `confirmPassword` se valida solo en cliente; no se envía al API.
+
+**Response 200:**
+
+```ts
+{ message: string }  // "Cuenta creada. Ya podés iniciar sesión."
+```
+
+**Errores `POST` (mensaje al usuario en español)**
+
+| HTTP | Cuándo | Mensaje |
+| ---- | ------ | ------- |
+| 400 | Slug no coincide con el token | `El enlace de invitación no es válido.` |
+| 403 | Security word incorrecta | `La palabra de seguridad es incorrecta.` |
+| 404 | Token no encontrado | `El enlace de invitación no es válido.` |
+| 409 | Ya aceptada | `Esta invitación ya fue aceptada.` |
+| 409 | Email ya registrado | `Este correo ya está registrado.` |
+| 410 | Vencida o cancelada | `El enlace de invitación expiró.` |
+| 500 | Error al crear cuenta | `No se pudo crear la cuenta. Intentá de nuevo.` |
+
+**DB — Entrega 3**
+
+| Operación | Tabla | Función |
+| --------- | ----- | ------- |
+| Leer invitación | `staff_invitations` JOIN `clubs` | `findStaffInvitationByTokenWithClub` (existente) |
+| Verificar email libre | `accounts` | `accountExistsByEmail` (existente) |
+| Crear cuenta + staff + rol + lnk | `accounts`, `staff`, `staff_account_lnk`, `account_role_lnk` | `registerAccount` (existente en `auth.repository.ts`) |
+| Marcar accepted | `staff_invitations` | `updateStaffInvitationAccepted` (nueva) |
+
+**UI — Entrega 3 (dashboard)**
+
+| Ruta | Pantalla |
+| ---- | -------- |
+| `/_public/invitations/staff/:slug/:token` | `StaffInvitationAcceptView` — form ampliado |
+
+**Nuevos campos en el form**
+
+| Campo | Label | Validación |
+| ----- | ----- | ---------- |
+| `name` | Nombre | min 2, max 255 |
+| `lastName` | Apellido | min 2, max 255 |
+| `phone` | Teléfono | min 8, max 30 |
+
+**Copy (español)**
+
+| Contexto | Texto |
+| -------- | ----- |
+| Campo nombre | `Nombre` / placeholder `Tu nombre` |
+| Campo apellido | `Apellido` / placeholder `Tu apellido` |
+| Campo teléfono | `Teléfono` / placeholder `Ej: 11 1234-5678` |
+| Submit | `Crear cuenta` / submitting `Creando cuenta…` |
+| Éxito (toast) | `Cuenta creada. Ya podés iniciar sesión.` |
+| Error security word | `La palabra de seguridad es incorrecta.` |
+| Error email registrado | `Este correo ya está registrado.` |
+| Error genérico | `No se pudo crear la cuenta. Intentá de nuevo.` |
+
+---
+
 ## Reglas de negocio
 
 ### Entrega 1 — Personal
@@ -323,6 +416,15 @@ El tab *Invitaciones* hoy acumula solo invitaciones creadas en la sesión actual
 - Badge: priorizar `status` de DB; si `pending` y `expiresAt` ya pasó, mostrar como *Vencida* en UI.
 - Copiar enlace: visible solo para `pending` y `expired`; oculto si `accepted` o `cancelled`.
 - Carga lazy al activar tab; tras `POST` exitoso, invalidar query de invitaciones.
+
+### Entrega 3 — Aceptar invitación
+
+- Orden de validaciones: token existe → slug coincide → status `pending` → no expirado (`expiresAt > now`) → email libre → security word (si aplica).
+- Si algún paso falla, no se crea ningún registro (nada parcial en DB).
+- La creación es transaccional: `registerAccount` ya usa `db.transaction`; `updateStaffInvitationAccepted` se ejecuta fuera de esa transacción pero inmediatamente después.
+- El `staff` se crea con `status = 'active'` por defecto (valor del schema).
+- La verificación de security word ocurre server-side con `bcrypt.compare(securityWord, invitation.securityWordHash)`. Si la invitación no tiene security word, se omite.
+- `confirmPassword` no se envía al API; se valida solo en el form del dashboard.
 
 ## Preguntas abiertas
 

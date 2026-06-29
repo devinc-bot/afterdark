@@ -102,6 +102,48 @@ Estados: `pending` · `in_progress` · `done`
 
 ---
 
+### Entrega 3 — Aceptar invitación por link
+
+| Fase | Nombre | Estado |
+| ---- | ------ | ------ |
+| 1 | Identidad | `done` |
+| 2 | Comportamiento y alcance | `done` |
+| 3 | Contratos | `done` |
+| 4 | Reglas y cierre | `done` |
+| 5 | Plan técnico | `done` |
+
+### Entrega 3 — Fase 1 — Identidad
+
+- **Encaje:** ampliar `003-staff-invitations` (no nueva fila en roadmap).
+- **Foco:** endpoint público `POST /invitations/staff/:slug/:token/accept` + conexión en `staff-invitation-accept-view.tsx`.
+- **Apps:** `api` + `dashboard`.
+- **Dependencias:** `001-auth-sessions` (crea account), `003-staff-invitations` E1+E2 (invitación preexistente).
+
+### Entrega 3 — Fase 2 — Comportamiento y alcance
+
+- **Crea:** `account` (email + bcrypt password) + `staff` (name, lastName, phone) + `staff_account_lnk` + marca invitación `accepted`.
+- **Auth endpoint:** público — el token en URL actúa como credencial.
+- **Response:** `{ message: string }` 200 OK. Frontend muestra toast y redirige a login.
+- **Sin JWT emitido:** el staff debe iniciar sesión manualmente tras aceptar.
+
+### Entrega 3 — Fase 3 — Contratos
+
+- **Ruta:** `POST /invitations/staff/:slug/:token/accept`
+- **Body:** `{ password, name, lastName, phone, securityWord? }` (expandir `acceptStaffInvitationSchema`).
+- **Security word:** verificación server-side — cliente envía plaintext, API compara contra hash en DB. El hash nunca sale en `StaffInvitationPublicResponse`.
+- **Response 200:** `{ message: 'Cuenta creada. Ya podés iniciar sesión.' }`
+- **Errores:** 404 token inválido · 400 slug mismatch · 410 vencida/cancelada · 409 ya aceptada / email ya registrado · 403 security word incorrecta · 500 error interno.
+- **DB:** nueva función `updateStaffInvitationAccepted(id)` en `staff-invitations.repository.ts`; reutilizar `registerAccount` de `auth.repository.ts`.
+
+### Entrega 3 — Fase 4 — Reglas y cierre
+
+- Validaciones en orden: token existe → slug coincide → status pending → no expirado → email libre → security word (si aplica) → crear registros → marcar accepted.
+- El `staff` se crea con `status = 'active'` desde el inicio.
+- `confirmPassword` se valida solo en cliente; el API recibe solo `password`.
+- Status spec → `approved`.
+
+---
+
 ## Supuestos del asistente
 
 -

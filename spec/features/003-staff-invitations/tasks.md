@@ -41,3 +41,33 @@
 ## Cierre
 
 - [ ] Status → `done` en `spec.md` y `roadmap.md`
+
+---
+
+# Entrega 3 — Aceptar invitación por link
+
+## Shared packages
+
+- [ ] `packages/validators/src/user.ts` — `acceptStaffInvitationSchema` agregar `name`, `lastName`, `phone`
+- [ ] `packages/db/src/repositories/staff-invitations.repository.ts` — `updateStaffInvitationAccepted(id)`
+- [ ] `packages/db/src/repositories/index.ts` — exportar `updateStaffInvitationAccepted`
+
+## API (`apps/api`)
+
+- [ ] `invitations.constants.ts` — agregar `ACCEPT_SUCCESS`, `ACCEPT_FAILED`, `SECURITY_WORD_INVALID`
+- [ ] `invitations.service.ts` — método `acceptStaffInvitation(slug, token, input)`
+- [ ] `invitations.controller.ts` — `POST /staff/:slug/:token/accept` sin guard → `acceptStaffInvitation`
+
+## Dashboard (`apps/dashboard`)
+
+- [ ] `staff-invitation.service.ts` (o equivalente) — `acceptStaffInvitation(slug, token, body)` → fetch
+- [ ] `staff.copy.ts` — copy para name/lastName/phone + errores de aceptación
+- [ ] `staff-invitation-accept-view.tsx` — agregar campos name/lastName/phone al form
+- [ ] `staff-invitation-accept-view.tsx` — reemplazar submit vacío por llamada real a API
+- [ ] `staff-invitation-accept-view.tsx` — eliminar `verifyStaffInvitationSecurityWordHash` client-side
+
+## Calidad
+
+- [ ] `pnpm type-check`
+- [ ] `pnpm lint`
+- [ ] Verificación manual según `plan.md` Entrega 3
