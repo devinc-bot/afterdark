@@ -67,6 +67,21 @@ El tab *Invitaciones* hoy acumula solo invitaciones creadas en la sesión actual
 - Filtros o búsqueda en tab Invitaciones.
 - Cambios en tab Personal (entrega 1).
 
+### Entrega 4 — Campo de vencimiento en formulario — Incluye
+
+- Agregar campo `expiresInMs` a `createStaffInvitationSchema` (Zod enum de valores permitidos; default 48 h).
+- Ampliar `buildStaffInvitationPayload` para aceptar `expiresInMs` en lugar del TTL hardcodeado.
+- Pasar `input.expiresInMs` desde `InvitationsService.createStaffInvitation`.
+- `SelectField` en `StaffUserForm` con opciones 12 h / 24 h / 48 h / 7 días; default 48 h pre-seleccionado.
+- Claves i18n en `staff/es.json` y `staff/en.json` (label, placeholder, opciones).
+- `invitation.successDescription` dinámico: mostrar la duración elegida en lugar de "5 minutos".
+
+### Entrega 4 — No incluye
+
+- TTL personalizado (número libre).
+- Cambiar `expiresAt` de invitaciones ya creadas.
+- Opciones distintas a las cuatro fijas (12 h / 24 h / 48 h / 7 días).
+
 ### No incluye (global, entregas futuras)
 
 ### Entrega 3 — Aceptar invitación por link — Incluye
@@ -323,6 +338,57 @@ El tab *Invitaciones* hoy acumula solo invitaciones creadas en la sesión actual
 
 ---
 
+### API — Entrega 4 (campo de vencimiento)
+
+`POST /api/invitations/staff` — mismo endpoint de E1; se amplía el body.
+
+**Body ampliado:** `CreateStaffInvitationInput`
+
+```ts
+{
+  email: string
+  clubId: string
+  securityWord?: string
+  expiresInMs: 43200000 | 86400000 | 172800000 | 604800000  // 12h | 24h | 48h | 7d
+}
+```
+
+**Validación:** Zod enum con los cuatro valores; cualquier otro valor → 400.
+
+**`expiresAt` calculado:** `new Date(Date.now() + input.expiresInMs)`.
+
+**`successDescription` dinámico (UI):** mapeado desde `expiresInMs` a una etiqueta legible (ej. `"48 horas"`).
+
+### UI — Entrega 4 (`dashboard`)
+
+**Nuevo campo en `StaffUserForm`:**
+
+| Campo | Tipo | Label | Default |
+| ----- | ---- | ----- | ------- |
+| `expiresInMs` | `SelectField` | `form.expiresIn` | `172800000` (48 h) |
+
+**Opciones del select:**
+
+| Valor (ms) | Etiqueta |
+| ----------- | -------- |
+| `43200000`  | `form.expires12h` → `"12 horas"` |
+| `86400000`  | `form.expires24h` → `"24 horas"` |
+| `172800000` | `form.expires48h` → `"48 horas"` |
+| `604800000` | `form.expires7d` → `"7 días"` |
+
+**`invitation.successDescription`:** interpolado con la duración elegida.
+
+| Clave i18n | ES | EN |
+| ---------- | -- | -- |
+| `form.expiresIn` | `"Vencimiento del enlace"` | `"Link expiry"` |
+| `form.expires12h` | `"12 horas"` | `"12 hours"` |
+| `form.expires24h` | `"24 horas"` | `"24 hours"` |
+| `form.expires48h` | `"48 horas"` | `"48 hours"` |
+| `form.expires7d` | `"7 días"` | `"7 days"` |
+| `invitation.successDescription` | `"Compartí este enlace con la persona invitada. Vence en {duration}."` | `"Share this link with the invited staff member. It expires in {duration}."` |
+
+---
+
 ### API — Entrega 3 (aceptar invitación)
 
 | Método | Ruta | Auth |
@@ -425,6 +491,13 @@ El tab *Invitaciones* hoy acumula solo invitaciones creadas en la sesión actual
 - El `staff` se crea con `status = 'active'` por defecto (valor del schema).
 - La verificación de security word ocurre server-side con `bcrypt.compare(securityWord, invitation.securityWordHash)`. Si la invitación no tiene security word, se omite.
 - `confirmPassword` no se envía al API; se valida solo en el form del dashboard.
+
+### Entrega 4 — Campo de vencimiento
+
+- `expiresInMs` es obligatorio en el form; el `SelectField` siempre tiene el valor default (48 h) pre-seleccionado.
+- Valores permitidos fijos: `43200000` (12 h), `86400000` (24 h), `172800000` (48 h), `604800000` (7 d). La API rechaza cualquier otro valor con 400.
+- El TTL hardcodeado (`STAFF_INVITATION_TTL_MS`) en `staff-invitation.utils.ts` queda como fallback del API si `expiresInMs` no se provee (compatibilidad); en la práctica el form siempre lo envía.
+- El `successDescription` en la UI usa la duración elegida, no un texto fijo.
 
 ## Preguntas abiertas
 

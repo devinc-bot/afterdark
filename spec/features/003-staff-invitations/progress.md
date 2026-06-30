@@ -147,3 +147,29 @@ Estados: `pending` · `in_progress` · `done`
 ## Supuestos del asistente
 
 -
+
+---
+
+### Entrega 4 — Campo de vencimiento en formulario de invitación
+
+| Fase | Nombre | Estado |
+| ---- | ------ | ------ |
+| 1 | Identidad y alcance | `done` |
+| 2 | Contratos | `done` |
+
+### Entrega 4 — Fase 1 — Identidad y alcance
+
+- **Encaje:** ampliar `003-staff-invitations` (no nueva fila en roadmap).
+- **Foco:** agregar selector de tiempo de expiración en `StaffUserForm` (formulario de crear invitación).
+- **Apps:** `api` + `dashboard` + `packages/validators`.
+- **Dependencias:** E1–E3 ya `approved`.
+
+### Entrega 4 — Fase 2 — Contratos
+
+- **Opciones:** 12 h · 24 h · 48 h · 7 días — `SelectField` fijo, no input libre.
+- **Default:** 48 h (172 800 000 ms).
+- **Campo obligatorio:** con default pre-seleccionado; no se puede enviar sin valor.
+- **Contrato API:** el cliente envía `expiresInMs: number` (ms). La API calcula `expiresAt = now + expiresInMs`.
+- **Validación API:** `expiresInMs` debe ser uno de los valores permitidos (enum en schema Zod) — evita TTLs arbitrarios.
+- **`successDescription`:** texto dinámico usando la opción elegida (no hardcoded "5 minutos").
+- **Status spec:** `approved`.
