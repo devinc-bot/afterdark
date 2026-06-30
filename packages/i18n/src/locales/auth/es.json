@@ -39,7 +39,7 @@
     "expired": "Tu sesión expiró. Volvé a iniciar sesión."
   },
   "password": {
-    "min": "La contraseña debe tener al menos {{min}} caracteres.",
+    "min": "La contraseña debe tener al menos {min} caracteres.",
     "noMatch": "Las contraseñas no coinciden.",
     "confirm": "Confirmar contraseña",
     "confirmPlaceholder": "••••••••"

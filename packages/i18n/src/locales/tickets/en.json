@@ -10,7 +10,7 @@
   },
   "table": {
     "title": "Ticket inventory detail",
-    "registryCount": "{count, plural, one {1 ticket registered} other {# tickets registered}}",
+    "registryCount": "{count, plural, one {1 ticket registered} other {# tickets registered}",
     "club": "Nightclub",
     "ticketType": "Ticket type",
     "price": "Price",
@@ -29,6 +29,6 @@
     "actionEdit": "Edit",
     "actionView": "View",
     "actionDelete": "Delete",
-    "rowActionsLabel": "Actions for {{type}} at {{club}}"
+    "rowActionsLabel": "Actions for {type} at {club}"
   }
 }

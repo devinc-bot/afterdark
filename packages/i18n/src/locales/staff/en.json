@@ -31,7 +31,7 @@
     "linkLabel": "Access link",
     "copy": "Copy link",
     "copied": "Link copied",
-    "expiresIn": "Expires in {{time}}",
+    "expiresIn": "Expires in {time}",
     "expired": "This link has already expired",
     "close": "Close",
     "pending": "Pending invitation",
@@ -70,8 +70,8 @@
   "kpi": {
     "totalStaff": "Total team",
     "ariaLabel": "Operational team indicators",
-    "activeCount": "{count, plural, one {1 active} other {# active}}",
-    "inactiveCount": "{count, plural, one {1 inactive} other {# inactive}}"
+    "activeCount": "{count, plural, one {1 active} other {# active}",
+    "inactiveCount": "{count, plural, one {1 inactive} other {# inactive}"
   },
   "deactivate": {
     "title": "Deactivate access",
@@ -89,8 +89,8 @@
     "status": "Status",
     "actions": "Actions",
     "edit": "Edit user",
-    "registryCount": "{count, plural, one {1 user in registry} other {# users in registry}}",
-    "showingFiltered": "Showing {{visible}} of {{total}} users",
+    "registryCount": "{count, plural, one {1 user in registry} other {# users in registry}",
+    "showingFiltered": "Showing {visible} of {total} users",
     "search": {
       "label": "Search registry",
       "placeholder": "Search by name or email…",
@@ -134,7 +134,7 @@
     "expires": "Expires",
     "status": "Status",
     "actions": "Actions",
-    "registryCount": "{count, plural, one {1 invitation created} other {# invitations created}}",
+    "registryCount": "{count, plural, one {1 invitation created} other {# invitations created}",
     "securityEnabled": "With word",
     "securityDisabled": "No word",
     "statusPending": "Pending",

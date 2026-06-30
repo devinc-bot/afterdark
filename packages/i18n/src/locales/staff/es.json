@@ -31,7 +31,7 @@
     "linkLabel": "Enlace de acceso",
     "copy": "Copiar enlace",
     "copied": "Enlace copiado",
-    "expiresIn": "Vence en {{time}}",
+    "expiresIn": "Vence en {time}",
     "expired": "Este enlace ya venció",
     "close": "Cerrar",
     "pending": "Invitación pendiente",
@@ -70,8 +70,8 @@
   "kpi": {
     "totalStaff": "Equipo total",
     "ariaLabel": "Indicadores del equipo operativo",
-    "activeCount": "{count, plural, one {1 activo} other {# activos}}",
-    "inactiveCount": "{count, plural, one {1 inactivo} other {# inactivos}}"
+    "activeCount": "{count, plural, one {1 activo} other {# activos}",
+    "inactiveCount": "{count, plural, one {1 inactivo} other {# inactivos}"
   },
   "deactivate": {
     "title": "Desactivar acceso",
@@ -89,8 +89,8 @@
     "status": "Estado",
     "actions": "Acciones",
     "edit": "Editar usuario",
-    "registryCount": "{count, plural, one {1 usuario en el registro} other {# usuarios en el registro}}",
-    "showingFiltered": "Mostrando {{visible}} de {{total}} usuarios",
+    "registryCount": "{count, plural, one {1 usuario en el registro} other {# usuarios en el registro}",
+    "showingFiltered": "Mostrando {visible} de {total} usuarios",
     "search": {
       "label": "Buscar en el registro",
       "placeholder": "Buscar por nombre o correo…",
@@ -134,7 +134,7 @@
     "expires": "Vencimiento",
     "status": "Estado",
     "actions": "Acciones",
-    "registryCount": "{count, plural, one {1 invitación creada} other {# invitaciones creadas}}",
+    "registryCount": "{count, plural, one {1 invitación creada} other {# invitaciones creadas}",
     "securityEnabled": "Con palabra",
     "securityDisabled": "Sin palabra",
     "statusPending": "Pendiente",

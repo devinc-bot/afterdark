@@ -45,7 +45,7 @@
     "UPDATE_FAILED": "No se pudo actualizar el club.",
     "DELETE_FAILED": "No se pudo eliminar el club.",
     "IMAGE_UPLOAD_FAILED": "No pudimos guardar las imágenes. Intentá de nuevo.",
-    "TOO_MANY_IMAGES": "Podés subir hasta {{max}} imágenes por club.",
+    "TOO_MANY_IMAGES": "Podés subir hasta {max} imágenes por club.",
     "INVALID_IMAGE_IDS": "Una o más imágenes no pertenecen a este club."
   },
   "staff": {

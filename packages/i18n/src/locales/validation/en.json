@@ -2,14 +2,14 @@
   "zod": {
     "invalid_type": "This field is required.",
     "too_small": {
-      "string": "{minimum, plural, one {Minimum # character.} other {Minimum # characters.}}",
-      "number": "Value must be at least {{minimum}}.",
-      "array": "{minimum, plural, one {At least # item required.} other {At least # items required.}}"
+      "string": "{minimum, plural, one {Minimum # character.} other {Minimum # characters.}",
+      "number": "Value must be at least {minimum}.",
+      "array": "{minimum, plural, one {At least # item required.} other {At least # items required.}"
     },
     "too_big": {
-      "string": "{maximum, plural, one {Maximum # character.} other {Maximum # characters.}}",
-      "number": "Value must be at most {{maximum}}.",
-      "array": "{maximum, plural, one {Maximum # item.} other {Maximum # items.}}"
+      "string": "{maximum, plural, one {Maximum # character.} other {Maximum # characters.}",
+      "number": "Value must be at most {maximum}.",
+      "array": "{maximum, plural, one {Maximum # item.} other {Maximum # items.}"
     },
     "invalid_string": {
       "email": "Enter a valid email address.",
@@ -19,7 +19,7 @@
     },
     "invalid_enum_value": "Invalid option.",
     "invalid_union": "Invalid format.",
-    "not_multiple_of": "Must be a multiple of {{multipleOf}}.",
+    "not_multiple_of": "Must be a multiple of {multipleOf}.",
     "custom": "Invalid value."
   },
   "field": {
@@ -27,7 +27,7 @@
     "email": "Enter a valid email address.",
     "phone": {
       "invalid": "Enter a valid phone number.",
-      "tooLong": "Phone cannot exceed {{max}} characters."
+      "tooLong": "Phone cannot exceed {max} characters."
     },
     "birthday": {
       "format": "Use the YYYY-MM-DD format."
@@ -39,12 +39,12 @@
       "invalid": "Tax ID must be 11 digits with no dashes."
     },
     "password": {
-      "min": "Password must be at least {{min}} characters.",
+      "min": "Password must be at least {min} characters.",
       "noMatch": "Passwords do not match."
     },
     "securityWord": {
       "required": "Enter the security word.",
-      "min": "Security word must be at least {{min}} characters."
+      "min": "Security word must be at least {min} characters."
     },
     "address": {
       "allOrNone": "Fill in all address fields or leave them all empty."
@@ -71,10 +71,10 @@
     "organization": {
       "brandName": {
         "required": "Enter a brand name.",
-        "max": "Brand name cannot exceed {{max}} characters."
+        "max": "Brand name cannot exceed {max} characters."
       },
       "location": {
-        "max": "Location cannot exceed {{max}} characters."
+        "max": "Location cannot exceed {max} characters."
       }
     }
   }
