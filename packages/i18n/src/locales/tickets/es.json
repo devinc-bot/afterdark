@@ -22,7 +22,7 @@
     "emptyActiveDescription": "Los tickets activos aparecerán acá cuando estén publicados para la venta.",
     "emptyArchivedTitle": "No hay tickets archivados",
     "emptyArchivedDescription": "Los tickets archivados aparecerán acá cuando desactives una entrada.",
-    "stockLimited": "Limitado ({{remaining}} restantes)",
+    "stockLimited": "Limitado ({remaining} restantes)",
     "stockInStock": "En stock",
     "stockAvailable": "Disponible",
     "stockSoldOut": "Agotado",

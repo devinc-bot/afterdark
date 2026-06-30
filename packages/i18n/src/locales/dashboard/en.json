@@ -1,7 +1,8 @@
 {
   "brand": {
     "logo": "AFTERDARK",
-    "subtitle": "Operations panel"
+    "subtitle": "Operations panel",
+    "metaTitle": "Afterdark · Panel"
   },
   "nav": {
     "panel": "Dashboard",

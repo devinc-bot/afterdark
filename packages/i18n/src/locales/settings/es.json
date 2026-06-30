@@ -1,7 +1,8 @@
 {
   "page": {
     "title": "Configuración",
-    "description": "Administrá tu cuenta, la organización y las preferencias del panel."
+    "description": "Administrá tu cuenta, la organización y las preferencias del panel.",
+    "metaTitle": "Configuración · afterdark Admin"
   },
   "sections": {
     "profile": "Perfil",

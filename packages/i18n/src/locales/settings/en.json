@@ -1,7 +1,8 @@
 {
   "page": {
     "title": "Settings",
-    "description": "Manage your account, organization, and panel preferences."
+    "description": "Manage your account, organization, and panel preferences.",
+    "metaTitle": "Settings · afterdark Admin"
   },
   "sections": {
     "profile": "Profile",

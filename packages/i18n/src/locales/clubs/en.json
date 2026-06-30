@@ -2,8 +2,10 @@
   "formPage": {
     "back": "Back to clubs",
     "cancel": "Cancel",
+    "createMetaTitle": "Add new club · afterdark Admin",
     "createTitle": "Add new club",
     "createDescription": "Fill in the details to register a club on the platform.",
+    "editMetaTitle": "Edit club · afterdark Admin",
     "editTitle": "Edit club",
     "editDescription": "Update the club information. Changes are reflected immediately.",
     "submitCreate": "Register club",

@@ -9,7 +9,8 @@
     "./server": "./src/server/index.ts",
     "./config": "./src/config/index.ts",
     "./constants": "./src/constants/index.ts",
-    "./utils/zod": "./src/utils/zod-error-map.ts"
+    "./utils/zod": "./src/utils/zod-error-map.ts",
+    "./locales/*": "./src/locales/*"
   },
   "dependencies": {
     "i18next": "23.16.8",
