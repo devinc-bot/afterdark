@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next'
-import { Button, Card, Skeleton } from '@afterdark/ui'
+import { Card, Skeleton } from '@afterdark/ui'
+import { LoadErrorBanner } from '~/modules/common/components/load-error-banner'
 
 export function StaffPersonnelTabSkeleton() {
   const { t } = useTranslation('staff')
@@ -32,22 +33,12 @@ export function StaffPersonnelLoadErrorBanner({
   const { t } = useTranslation('staff')
 
   return (
-    <div
-      role="alert"
-      className="rounded-lg border border-destructive/30 bg-destructive/5 px-4 py-4 sm:px-6"
-    >
-      <p className="text-sm text-ink">{t('table.loadError')}</p>
-      <Button
-        type="button"
-        variant="outline"
-        size="sm"
-        className="mt-3"
-        onClick={onRetry}
-        disabled={isRetrying}
-      >
-        {t('table.retry')}
-      </Button>
-    </div>
+    <LoadErrorBanner
+      message={t('table.loadError')}
+      retryLabel={t('table.retry')}
+      onRetry={onRetry}
+      isRetrying={isRetrying}
+    />
   )
 }
 
