@@ -33,6 +33,13 @@
   "shell": {
     "tagline": "Administration panel for venues and events"
   },
+  "error": {
+    "title": "Something went wrong",
+    "description": "An unexpected error occurred. You can try reloading the page or go back home.",
+    "retry": "Retry",
+    "goHome": "Go home",
+    "details": "Error details"
+  },
   "pages": {
     "panel": {
       "title": "Dashboard",

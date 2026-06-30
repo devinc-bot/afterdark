@@ -6,6 +6,7 @@ import { Toaster } from '@afterdark/ui'
 import { I18nProvider } from '@afterdark/i18n/client'
 import { installZodI18n } from '@afterdark/i18n'
 import dashboardEs from '@afterdark/i18n/locales/dashboard/es.json'
+import { ErrorBoundaryView } from '~/modules/common/components/error-boundary-view'
 import globalsCssUrl from '@afterdark/ui/globals.css?url'
 
 interface RouterContext {
@@ -21,8 +22,35 @@ export const Route = createRootRouteWithContext<RouterContext>()({
     ],
     links: [{ rel: 'stylesheet', href: globalsCssUrl }],
   }),
+  errorComponent: RootErrorBoundary,
   component: RootComponent,
 })
+
+function RootErrorBoundary({ error, reset }: { error: Error; reset: () => void }) {
+  const { t } = useTranslation('dashboard')
+
+  return (
+    <html lang="es">
+      <head>
+        <HeadContent />
+      </head>
+      <body>
+        <ErrorBoundaryView
+          error={error}
+          reset={reset}
+          strings={{
+            title: t('error.title'),
+            description: t('error.description'),
+            retry: t('error.retry'),
+            goHome: t('error.goHome'),
+            details: t('error.details'),
+          }}
+        />
+        <Scripts />
+      </body>
+    </html>
+  )
+}
 
 function ZodI18nBridge() {
   const { t, ready } = useTranslation('validation', { useSuspense: false })

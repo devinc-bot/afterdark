@@ -33,6 +33,13 @@
   "shell": {
     "tagline": "Panel de administración para locales y eventos"
   },
+  "error": {
+    "title": "Algo salió mal",
+    "description": "Ocurrió un error inesperado. Podés intentar recargar la página o volver al inicio.",
+    "retry": "Reintentar",
+    "goHome": "Ir al inicio",
+    "details": "Detalles del error"
+  },
   "pages": {
     "panel": {
       "title": "Panel",
