@@ -33,6 +33,11 @@
   "shell": {
     "tagline": "Panel de administración para locales y eventos"
   },
+  "notFound": {
+    "title": "Página no encontrada",
+    "description": "La página que buscás no existe o fue movida.",
+    "goHome": "Ir al inicio"
+  },
   "error": {
     "title": "Algo salió mal",
     "description": "Ocurrió un error inesperado. Podés intentar recargar la página o volver al inicio.",
