@@ -6,15 +6,17 @@ import {
   findUserProfileByDocumentId,
 } from '@afterdark/db'
 import { USER_ROLE, type JwtPayload, type SessionResponse } from '@afterdark/types'
-import { SESSION_MESSAGE } from './session.constants'
+import { TranslationService } from '@afterdark/i18n/server'
 
 @Injectable()
 export class SessionService {
+  constructor(private readonly ts: TranslationService) {}
+
   async getCurrentSession(payload: JwtPayload): Promise<SessionResponse> {
     const row = await this.findProfileByRole(payload)
 
     if (!row) {
-      throw new NotFoundException(SESSION_MESSAGE.NOT_FOUND)
+      throw new NotFoundException(this.ts.translateError('auth.SESSION_NOT_FOUND'))
     }
 
     return {

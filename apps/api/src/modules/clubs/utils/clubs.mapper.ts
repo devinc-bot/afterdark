@@ -6,7 +6,6 @@ import {
   type CreateClubInput,
   type UpdateClubInput,
 } from '@afterdark/validators'
-import { CLUB_MESSAGE } from '../clubs.constants'
 
 export function toClubImageResponse(asset: AssetSelect): ClubImageResponse {
   return {
@@ -68,19 +67,24 @@ export function groupClubImagesByClubId(
 
 export function assertValidKeepImageIds(
   currentImageDocumentIds: Iterable<string>,
-  keepImageIds: string[]
+  keepImageIds: string[],
+  errorMessage: string
 ): void {
   const currentIds = new Set(currentImageDocumentIds)
 
   for (const documentId of keepImageIds) {
     if (!currentIds.has(documentId)) {
-      throw new BadRequestException(CLUB_MESSAGE.INVALID_IMAGE_IDS)
+      throw new BadRequestException(errorMessage)
     }
   }
 }
 
-export function validateImageLimit(keepImageIds: string[], files: Express.Multer.File[]): void {
+export function validateImageLimit(
+  keepImageIds: string[],
+  files: Express.Multer.File[],
+  errorMessage: string
+): void {
   if (keepImageIds.length + files.length > CLUB_IMAGE_MAX_COUNT) {
-    throw new BadRequestException(CLUB_MESSAGE.TOO_MANY_IMAGES)
+    throw new BadRequestException(errorMessage)
   }
 }

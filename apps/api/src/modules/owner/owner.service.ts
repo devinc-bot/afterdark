@@ -6,15 +6,17 @@ import {
 } from '@afterdark/db'
 import type { CurrentOwnerResponse } from '@afterdark/types'
 import type { UpdateCurrentOwnerInput } from '@afterdark/validators'
-import { OWNER_MESSAGE } from './owner.constants'
+import { TranslationService } from '@afterdark/i18n/server'
 
 @Injectable()
 export class OwnerService {
+  constructor(private readonly ts: TranslationService) {}
+
   async getCurrentOwner(documentId: string): Promise<CurrentOwnerResponse> {
     const row = await findCurrentOwnerByDocumentId(documentId)
 
     if (!row) {
-      throw new NotFoundException(OWNER_MESSAGE.NOT_FOUND)
+      throw new NotFoundException(this.ts.translateError('owner.NOT_FOUND'))
     }
 
     return {
@@ -38,7 +40,7 @@ export class OwnerService {
     const ownerId = await findOwnerIdByDocumentId(documentId)
 
     if (!ownerId) {
-      throw new NotFoundException(OWNER_MESSAGE.NOT_FOUND)
+      throw new NotFoundException(this.ts.translateError('owner.NOT_FOUND'))
     }
 
     await updateOwnerByDocumentId(documentId, {

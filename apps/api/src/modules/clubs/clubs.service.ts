@@ -12,9 +12,13 @@ import {
   updateClubWithAddress,
 } from '@afterdark/db'
 import type { ClubImageResponse, ClubResponse } from '@afterdark/types'
-import type { CreateClubInput, UpdateClubInput } from '@afterdark/validators'
+import {
+  CLUB_IMAGE_MAX_COUNT,
+  type CreateClubInput,
+  type UpdateClubInput,
+} from '@afterdark/validators'
+import { TranslationService } from '@afterdark/i18n/server'
 import { FilesService } from '../files/files.service'
-import { CLUB_MESSAGE } from './clubs.constants'
 import {
   assertValidKeepImageIds,
   groupClubImagesByClubId,
@@ -28,7 +32,10 @@ type UploadedImage = { key: string; url: string }
 
 @Injectable()
 export class ClubsService {
-  constructor(@Inject(FilesService) private readonly filesService: FilesService) {}
+  constructor(
+    @Inject(FilesService) private readonly filesService: FilesService,
+    private readonly ts: TranslationService
+  ) {}
 
   async listMyClubs(ownerDocumentId: string): Promise<ClubResponse[]> {
     const clubs = await findClubsWithAddressesByOwnerDocumentId(ownerDocumentId)
@@ -49,10 +56,14 @@ export class ClubsService {
     const ownerId = await findOwnerIdByDocumentId(ownerDocumentId)
 
     if (!ownerId) {
-      throw new NotFoundException(CLUB_MESSAGE.OWNER_NOT_FOUND)
+      throw new NotFoundException(this.ts.translateError('owner.NOT_FOUND'))
     }
 
-    validateImageLimit([], files)
+    validateImageLimit(
+      [],
+      files,
+      this.ts.translateError('club.TOO_MANY_IMAGES', { max: CLUB_IMAGE_MAX_COUNT })
+    )
 
     const uploads = await this.uploadClubImages(files)
     const row = await this.createClubRecord(ownerId, input)
@@ -72,9 +83,14 @@ export class ClubsService {
 
     assertValidKeepImageIds(
       currentImages.map(({ asset }) => asset.documentId),
-      keepImageIds
+      keepImageIds,
+      this.ts.translateError('club.INVALID_IMAGE_IDS')
     )
-    validateImageLimit(keepImageIds, files)
+    validateImageLimit(
+      keepImageIds,
+      files,
+      this.ts.translateError('club.TOO_MANY_IMAGES', { max: CLUB_IMAGE_MAX_COUNT })
+    )
 
     const uploadedImages = await this.uploadClubImages(files)
 
@@ -99,7 +115,7 @@ export class ClubsService {
       await this.removeUnwantedImages(clubId, [])
       await deleteClubById(clubId)
     } catch {
-      throw new InternalServerErrorException(CLUB_MESSAGE.DELETE_FAILED)
+      throw new InternalServerErrorException(this.ts.translateError('club.DELETE_FAILED'))
     }
   }
 
@@ -107,7 +123,7 @@ export class ClubsService {
     const clubId = await findClubIdByDocumentId(documentId)
 
     if (!clubId) {
-      throw new NotFoundException(CLUB_MESSAGE.NOT_FOUND)
+      throw new NotFoundException(this.ts.translateError('club.NOT_FOUND'))
     }
 
     return clubId
@@ -121,7 +137,7 @@ export class ClubsService {
     try {
       return await Promise.all(files.map((file) => this.filesService.uploadImage(file)))
     } catch {
-      throw new InternalServerErrorException(CLUB_MESSAGE.IMAGE_UPLOAD_FAILED)
+      throw new InternalServerErrorException(this.ts.translateError('club.IMAGE_UPLOAD_FAILED'))
     }
   }
 
@@ -137,7 +153,7 @@ export class ClubsService {
     try {
       return await createClubWithAddress(ownerId, toClubUpsertInput(input))
     } catch {
-      throw new InternalServerErrorException(CLUB_MESSAGE.CREATE_FAILED)
+      throw new InternalServerErrorException(this.ts.translateError('club.CREATE_FAILED'))
     }
   }
 

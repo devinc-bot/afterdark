@@ -29,8 +29,8 @@ import {
   type StaffInvitationPublicResponse,
 } from '@afterdark/types'
 import type { AcceptStaffInvitationInput, CreateStaffInvitationInput } from '@afterdark/validators'
+import { TranslationService } from '@afterdark/i18n/server'
 import { ENV } from '../common/config/env'
-import { INVITATION_MESSAGE } from './invitations.constants'
 import {
   buildStaffInvitationPayload,
   buildStaffInvitationUrl,
@@ -60,6 +60,8 @@ function toStaffInvitationResponse(
 
 @Injectable()
 export class InvitationsService {
+  constructor(private readonly ts: TranslationService) {}
+
   async createStaffInvitation(
     inviterDocumentId: string,
     input: CreateStaffInvitationInput
@@ -67,21 +69,21 @@ export class InvitationsService {
     const inviter = await findInviterOwnerWithRole(inviterDocumentId)
 
     if (!inviter) {
-      throw new NotFoundException(INVITATION_MESSAGE.INVITER_NOT_FOUND)
+      throw new NotFoundException(this.ts.translateError('invitation.INVITER_NOT_FOUND'))
     }
 
     if (inviter.role !== USER_ROLE.OWNER) {
-      throw new ForbiddenException(INVITATION_MESSAGE.FORBIDDEN)
+      throw new ForbiddenException(this.ts.translateError('invitation.FORBIDDEN'))
     }
 
     if (await accountExistsByEmail(input.email)) {
-      throw new ConflictException(INVITATION_MESSAGE.EMAIL_ALREADY_REGISTERED)
+      throw new ConflictException(this.ts.translateError('auth.EMAIL_ALREADY_REGISTERED'))
     }
 
     const club = await findClubByDocumentId(input.clubId)
 
     if (!club) {
-      throw new NotFoundException(INVITATION_MESSAGE.CLUB_NOT_FOUND)
+      throw new NotFoundException(this.ts.translateError('invitation.CLUB_NOT_FOUND'))
     }
 
     const { slug, token, expiresAt, securityWordHash } = buildStaffInvitationPayload({
@@ -105,7 +107,7 @@ export class InvitationsService {
 
       return toStaffInvitationResponse(invitation, club, inviter.documentId)
     } catch {
-      throw new InternalServerErrorException(INVITATION_MESSAGE.CREATE_FAILED)
+      throw new InternalServerErrorException(this.ts.translateError('invitation.CREATE_FAILED'))
     }
   }
 
@@ -113,11 +115,11 @@ export class InvitationsService {
     const inviter = await findInviterOwnerWithRole(inviterDocumentId)
 
     if (!inviter) {
-      throw new NotFoundException(INVITATION_MESSAGE.INVITER_NOT_FOUND)
+      throw new NotFoundException(this.ts.translateError('invitation.INVITER_NOT_FOUND'))
     }
 
     if (inviter.role !== USER_ROLE.OWNER) {
-      throw new ForbiddenException(INVITATION_MESSAGE.FORBIDDEN)
+      throw new ForbiddenException(this.ts.translateError('invitation.FORBIDDEN'))
     }
 
     try {
@@ -131,7 +133,7 @@ export class InvitationsService {
         )
       )
     } catch {
-      throw new InternalServerErrorException(INVITATION_MESSAGE.LIST_FAILED)
+      throw new InternalServerErrorException(this.ts.translateError('invitation.LIST_FAILED'))
     }
   }
 
@@ -142,11 +144,11 @@ export class InvitationsService {
     const inviter = await findInviterOwnerWithRole(inviterDocumentId)
 
     if (!inviter) {
-      throw new NotFoundException(INVITATION_MESSAGE.INVITER_NOT_FOUND)
+      throw new NotFoundException(this.ts.translateError('invitation.INVITER_NOT_FOUND'))
     }
 
     if (inviter.role !== USER_ROLE.OWNER) {
-      throw new ForbiddenException(INVITATION_MESSAGE.FORBIDDEN)
+      throw new ForbiddenException(this.ts.translateError('invitation.FORBIDDEN'))
     }
 
     const invitation = await findStaffInvitationByDocumentIdForOwner(
@@ -155,17 +157,17 @@ export class InvitationsService {
     )
 
     if (!invitation) {
-      throw new NotFoundException(INVITATION_MESSAGE.NOT_FOUND)
+      throw new NotFoundException(this.ts.translateError('invitation.NOT_FOUND'))
     }
 
     if (invitation.status === STAFF_INVITATION_STATUS.ACCEPTED) {
-      throw new ConflictException(INVITATION_MESSAGE.DELETE_ACCEPTED)
+      throw new ConflictException(this.ts.translateError('invitation.DELETE_ACCEPTED'))
     }
 
     try {
       await deleteStaffInvitationById(invitation.id)
     } catch {
-      throw new InternalServerErrorException(INVITATION_MESSAGE.DELETE_FAILED)
+      throw new InternalServerErrorException(this.ts.translateError('invitation.DELETE_FAILED'))
     }
   }
 
@@ -177,47 +179,47 @@ export class InvitationsService {
     const row = await findStaffInvitationByTokenWithClub(token)
 
     if (!row) {
-      throw new NotFoundException(INVITATION_MESSAGE.PUBLIC_INVALID)
+      throw new NotFoundException(this.ts.translateError('invitation.PUBLIC_INVALID'))
     }
 
     if (row.invitation.slug !== slug) {
-      throw new BadRequestException(INVITATION_MESSAGE.PUBLIC_SLUG_MISMATCH)
+      throw new BadRequestException(this.ts.translateError('invitation.PUBLIC_SLUG_MISMATCH'))
     }
 
     if (row.invitation.status === STAFF_INVITATION_STATUS.ACCEPTED) {
-      throw new ConflictException(INVITATION_MESSAGE.PUBLIC_ALREADY_ACCEPTED)
+      throw new ConflictException(this.ts.translateError('invitation.PUBLIC_ALREADY_ACCEPTED'))
     }
 
     if (
       row.invitation.status === STAFF_INVITATION_STATUS.CANCELLED ||
       row.invitation.status === STAFF_INVITATION_STATUS.EXPIRED
     ) {
-      throw new GoneException(INVITATION_MESSAGE.PUBLIC_EXPIRED)
+      throw new GoneException(this.ts.translateError('invitation.PUBLIC_EXPIRED'))
     }
 
     if (row.invitation.expiresAt.getTime() <= Date.now()) {
-      throw new GoneException(INVITATION_MESSAGE.PUBLIC_EXPIRED)
+      throw new GoneException(this.ts.translateError('invitation.PUBLIC_EXPIRED'))
     }
 
     if (row.invitation.status !== STAFF_INVITATION_STATUS.PENDING) {
-      throw new NotFoundException(INVITATION_MESSAGE.PUBLIC_INVALID)
+      throw new NotFoundException(this.ts.translateError('invitation.PUBLIC_INVALID'))
     }
 
     if (await accountExistsByEmail(row.invitation.email)) {
-      throw new ConflictException(INVITATION_MESSAGE.EMAIL_ALREADY_REGISTERED)
+      throw new ConflictException(this.ts.translateError('auth.EMAIL_ALREADY_REGISTERED'))
     }
 
     if (row.invitation.securityWordHash) {
       const isValid = await compare(input.securityWord ?? '', row.invitation.securityWordHash)
       if (!isValid) {
-        throw new ForbiddenException(INVITATION_MESSAGE.SECURITY_WORD_INVALID)
+        throw new ForbiddenException(this.ts.translateError('invitation.SECURITY_WORD_INVALID'))
       }
     }
 
     const staffRole = await findRoleByName(USER_ROLE.STAFF)
 
     if (!staffRole) {
-      throw new InternalServerErrorException(INVITATION_MESSAGE.ACCEPT_FAILED)
+      throw new InternalServerErrorException(this.ts.translateError('invitation.ACCEPT_FAILED'))
     }
 
     const hashedPassword = await hash(input.password, 10)
@@ -233,10 +235,10 @@ export class InvitationsService {
 
       await updateStaffInvitationAccepted(row.invitation.id)
     } catch {
-      throw new InternalServerErrorException(INVITATION_MESSAGE.ACCEPT_FAILED)
+      throw new InternalServerErrorException(this.ts.translateError('invitation.ACCEPT_FAILED'))
     }
 
-    return { message: INVITATION_MESSAGE.ACCEPT_SUCCESS }
+    return { message: this.ts.translateError('invitation.ACCEPT_SUCCESS') }
   }
 
   async getStaffInvitationByLink(
@@ -247,30 +249,30 @@ export class InvitationsService {
       const row = await findStaffInvitationByTokenWithClub(token)
 
       if (!row) {
-        throw new NotFoundException(INVITATION_MESSAGE.PUBLIC_INVALID)
+        throw new NotFoundException(this.ts.translateError('invitation.PUBLIC_INVALID'))
       }
 
       if (row.invitation.slug !== slug) {
-        throw new BadRequestException(INVITATION_MESSAGE.PUBLIC_SLUG_MISMATCH)
+        throw new BadRequestException(this.ts.translateError('invitation.PUBLIC_SLUG_MISMATCH'))
       }
 
       if (row.invitation.status === STAFF_INVITATION_STATUS.ACCEPTED) {
-        throw new ConflictException(INVITATION_MESSAGE.PUBLIC_ALREADY_ACCEPTED)
+        throw new ConflictException(this.ts.translateError('invitation.PUBLIC_ALREADY_ACCEPTED'))
       }
 
       if (
         row.invitation.status === STAFF_INVITATION_STATUS.CANCELLED ||
         row.invitation.status === STAFF_INVITATION_STATUS.EXPIRED
       ) {
-        throw new GoneException(INVITATION_MESSAGE.PUBLIC_EXPIRED)
+        throw new GoneException(this.ts.translateError('invitation.PUBLIC_EXPIRED'))
       }
 
       if (row.invitation.expiresAt.getTime() <= Date.now()) {
-        throw new GoneException(INVITATION_MESSAGE.PUBLIC_EXPIRED)
+        throw new GoneException(this.ts.translateError('invitation.PUBLIC_EXPIRED'))
       }
 
       if (row.invitation.status !== STAFF_INVITATION_STATUS.PENDING) {
-        throw new NotFoundException(INVITATION_MESSAGE.PUBLIC_INVALID)
+        throw new NotFoundException(this.ts.translateError('invitation.PUBLIC_INVALID'))
       }
 
       return {
@@ -292,7 +294,7 @@ export class InvitationsService {
         throw error
       }
 
-      throw new InternalServerErrorException(INVITATION_MESSAGE.PUBLIC_GET_FAILED)
+      throw new InternalServerErrorException(this.ts.translateError('invitation.PUBLIC_GET_FAILED'))
     }
   }
 }
