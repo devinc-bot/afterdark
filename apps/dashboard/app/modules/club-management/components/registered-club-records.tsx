@@ -22,7 +22,6 @@ export type RegisteredClub = {
   id: string
   name: string
   address: string
-  tags: string[]
   status: ClubStatus
   images: ClubImageResponse[]
   imageUrl?: string
@@ -112,22 +111,6 @@ function ClubCapacityCell({ capacity }: { capacity?: string }) {
   )
 }
 
-function ClubTagsCell({ tags }: { tags: string[] }) {
-  if (tags.length === 0) {
-    return <span className="text-sm text-ink-muted">—</span>
-  }
-
-  return (
-    <div className="flex flex-wrap gap-1.5">
-      {tags.map((tag) => (
-        <Badge key={tag} variant="outline" size="sm">
-          {tag}
-        </Badge>
-      ))}
-    </div>
-  )
-}
-
 function ClubRecordActions({
   club,
   onEdit,
@@ -188,9 +171,6 @@ function ClubRecordRow({
         <ClubCapacityCell capacity={club.capacity} />
       </TableCell>
       <TableCell className="p-6">
-        <ClubTagsCell tags={club.tags} />
-      </TableCell>
-      <TableCell className="p-6">
         <ClubStatusBadge status={club.status} />
       </TableCell>
       <TableCell className="p-6 text-right">
@@ -217,7 +197,6 @@ export function RegisteredClubRecords({
             <TableHead className="p-6">Club</TableHead>
             <TableHead className="p-6">Dirección</TableHead>
             <TableHead className="p-6">Capacidad</TableHead>
-            <TableHead className="p-6">Etiquetas</TableHead>
             <TableHead className="p-6">Estado</TableHead>
             <TableHead className="p-6 text-right">Acciones</TableHead>
           </TableRow>
