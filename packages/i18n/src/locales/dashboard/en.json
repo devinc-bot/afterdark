@@ -47,6 +47,7 @@
   },
   "pages": {
     "panel": {
+      "metaTitle": "Dashboard · afterdark Admin",
       "title": "Dashboard",
       "description": "Daily operations summary: clubs, tickets and recent activity."
     }
