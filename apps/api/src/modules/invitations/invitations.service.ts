@@ -29,6 +29,7 @@ import {
   type StaffInvitationPublicResponse,
 } from '@afterdark/types'
 import type { AcceptStaffInvitationInput, CreateStaffInvitationInput } from '@afterdark/validators'
+import { Inject } from '@nestjs/common'
 import { TranslationService } from '@afterdark/i18n/server'
 import { ENV } from '../common/config/env'
 import {
@@ -60,7 +61,7 @@ function toStaffInvitationResponse(
 
 @Injectable()
 export class InvitationsService {
-  constructor(private readonly ts: TranslationService) {}
+  constructor(@Inject(TranslationService) private readonly ts: TranslationService) {}
 
   async createStaffInvitation(
     inviterDocumentId: string,

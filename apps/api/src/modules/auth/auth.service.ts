@@ -28,7 +28,7 @@ const PASSWORD_SALT_ROUNDS = 10
 export class AuthService {
   constructor(
     @Inject(JwtService) private readonly jwtService: JwtService,
-    private readonly ts: TranslationService
+    @Inject(TranslationService) private readonly ts: TranslationService
   ) {}
 
   async login(input: LoginInput): Promise<LoginResponse> {

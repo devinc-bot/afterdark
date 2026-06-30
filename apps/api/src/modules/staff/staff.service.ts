@@ -1,4 +1,4 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common'
+import { Inject, Injectable, InternalServerErrorException } from '@nestjs/common'
 import { findPersonnelByOwnerDocumentId, type OwnerStaffPersonnelRow } from '@afterdark/db'
 import type { StaffPersonnelItem } from '@afterdark/types'
 import { TranslationService } from '@afterdark/i18n/server'
@@ -19,7 +19,7 @@ function toStaffPersonnelItem(row: OwnerStaffPersonnelRow): StaffPersonnelItem {
 
 @Injectable()
 export class StaffService {
-  constructor(private readonly ts: TranslationService) {}
+  constructor(@Inject(TranslationService) private readonly ts: TranslationService) {}
 
   async listPersonnelForOwner(ownerDocumentId: string): Promise<StaffPersonnelItem[]> {
     try {

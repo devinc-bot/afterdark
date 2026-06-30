@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common'
+import { Inject, Injectable, NotFoundException } from '@nestjs/common'
 import {
   findAccountEmailByEmail,
   findOwnerProfileByDocumentId,
@@ -10,7 +10,7 @@ import { TranslationService } from '@afterdark/i18n/server'
 
 @Injectable()
 export class SessionService {
-  constructor(private readonly ts: TranslationService) {}
+  constructor(@Inject(TranslationService) private readonly ts: TranslationService) {}
 
   async getCurrentSession(payload: JwtPayload): Promise<SessionResponse> {
     const row = await this.findProfileByRole(payload)

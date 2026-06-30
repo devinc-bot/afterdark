@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common'
+import { Inject, Injectable, NotFoundException } from '@nestjs/common'
 import {
   findCurrentOwnerByDocumentId,
   findOwnerIdByDocumentId,
@@ -10,7 +10,7 @@ import { TranslationService } from '@afterdark/i18n/server'
 
 @Injectable()
 export class OwnerService {
-  constructor(private readonly ts: TranslationService) {}
+  constructor(@Inject(TranslationService) private readonly ts: TranslationService) {}
 
   async getCurrentOwner(documentId: string): Promise<CurrentOwnerResponse> {
     const row = await findCurrentOwnerByDocumentId(documentId)

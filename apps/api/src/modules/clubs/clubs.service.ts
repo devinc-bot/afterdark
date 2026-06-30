@@ -34,7 +34,7 @@ type UploadedImage = { key: string; url: string }
 export class ClubsService {
   constructor(
     @Inject(FilesService) private readonly filesService: FilesService,
-    private readonly ts: TranslationService
+    @Inject(TranslationService) private readonly ts: TranslationService
   ) {}
 
   async listMyClubs(ownerDocumentId: string): Promise<ClubResponse[]> {
