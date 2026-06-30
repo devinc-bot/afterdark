@@ -14,7 +14,9 @@ export const BASE_I18N_OPTIONS: InitOptions = {
     useSuspense: true,
   },
   missingKeyHandler: (lngs, ns, key) => {
+    /* TODO: Use MODE.DEVELOPMENT from @afterdark/validators and serverEnv from @afterdark/db */
     if (process.env.NODE_ENV === 'development') {
+      // eslint-disable-next-line no-console
       console.warn(`[i18n] Missing key: ${ns}:${key} (${lngs.join(', ')})`)
     }
   },

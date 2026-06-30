@@ -1,0 +1,41 @@
+{
+  "brand": {
+    "logo": "AFTERDARK",
+    "subtitle": "Panel operativo"
+  },
+  "nav": {
+    "panel": "Panel",
+    "clubs": "Clubes",
+    "tickets": "Entradas",
+    "users": "Usuarios",
+    "settings": "Configuración",
+    "signOut": "Cerrar sesión"
+  },
+  "session": {
+    "errorTitle": "No pudimos verificar tu sesión",
+    "errorFallback": "Revisá tu conexión e intentá de nuevo.",
+    "retry": "Reintentar",
+    "loadProfileError": "No pudimos cargar tu perfil"
+  },
+  "signOut": {
+    "title": "Cerrar sesión",
+    "description": "¿Querés salir del panel? Vas a tener que iniciar sesión de nuevo para volver.",
+    "cancel": "Cancelar",
+    "confirm": "Cerrar sesión",
+    "loading": "Cerrando sesión…"
+  },
+  "user": {
+    "profileLinkLabel": "Ir a configuración de perfil",
+    "fallbackName": "Usuario",
+    "loadingProfile": "Cargando perfil"
+  },
+  "shell": {
+    "tagline": "Panel de administración para locales y eventos"
+  },
+  "pages": {
+    "panel": {
+      "title": "Panel",
+      "description": "Resumen de operaciones del día: clubes, entradas y actividad reciente."
+    }
+  }
+}

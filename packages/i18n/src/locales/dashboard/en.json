@@ -1,0 +1,41 @@
+{
+  "brand": {
+    "logo": "AFTERDARK",
+    "subtitle": "Operations panel"
+  },
+  "nav": {
+    "panel": "Dashboard",
+    "clubs": "Clubs",
+    "tickets": "Tickets",
+    "users": "Users",
+    "settings": "Settings",
+    "signOut": "Sign out"
+  },
+  "session": {
+    "errorTitle": "We couldn't verify your session",
+    "errorFallback": "Check your connection and try again.",
+    "retry": "Retry",
+    "loadProfileError": "We couldn't load your profile"
+  },
+  "signOut": {
+    "title": "Sign out",
+    "description": "Do you want to leave the panel? You'll need to sign in again to come back.",
+    "cancel": "Cancel",
+    "confirm": "Sign out",
+    "loading": "Signing out…"
+  },
+  "user": {
+    "profileLinkLabel": "Go to profile settings",
+    "fallbackName": "User",
+    "loadingProfile": "Loading profile"
+  },
+  "shell": {
+    "tagline": "Administration panel for venues and events"
+  },
+  "pages": {
+    "panel": {
+      "title": "Dashboard",
+      "description": "Daily operations summary: clubs, tickets and recent activity."
+    }
+  }
+}

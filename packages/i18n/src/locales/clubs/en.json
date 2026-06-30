@@ -1,0 +1,59 @@
+{
+  "formPage": {
+    "back": "Back to clubs",
+    "cancel": "Cancel",
+    "createTitle": "Add new club",
+    "createDescription": "Fill in the details to register a club on the platform.",
+    "editTitle": "Edit club",
+    "editDescription": "Update the club information. Changes are reflected immediately.",
+    "submitCreate": "Register club",
+    "submitCreatePending": "Registering…",
+    "submitEdit": "Update club",
+    "submitEditPending": "Updating…",
+    "toastCreateSuccess": "Club registered successfully",
+    "toastEditSuccess": "Club updated successfully",
+    "toastCreateError": "We couldn't register the club. Try again.",
+    "toastEditError": "We couldn't update the club. Try again.",
+    "toastMissingClubId": "We couldn't identify the club to update."
+  },
+  "sections": {
+    "generalTitle": "General information",
+    "generalDescription": "Basic club details that users will see on the platform.",
+    "imagesTitle": "Images",
+    "imagesDescription": "Photos of the venue that will appear on the platform. You can upload up to 5 images.",
+    "locationTitle": "Location",
+    "locationDescription": "Physical address of the venue for operations and internal references."
+  },
+  "unsaved": {
+    "title": "Leave without saving?",
+    "description": "You have unsaved changes. If you leave now, they will be lost.",
+    "stay": "Keep editing",
+    "leave": "Leave without saving"
+  },
+  "notFound": {
+    "title": "We couldn't find the club you want to edit.",
+    "description": "The club doesn't exist or you don't have permission to edit it."
+  },
+  "form": {
+    "fields": {
+      "name": "Club name",
+      "namePlaceholder": "Neon Club",
+      "capacity": "Capacity",
+      "capacityPlaceholder": "500",
+      "status": "Status",
+      "statusPlaceholder": "Select a status",
+      "statusActive": "Active",
+      "statusInactive": "Inactive",
+      "additionalInfo": "Additional information",
+      "additionalInfoPlaceholder": "Atmosphere, dress code, access rules…",
+      "address": "Address",
+      "addressPlaceholder": "Main Street",
+      "streetNumber": "Street number",
+      "streetNumberPlaceholder": "123",
+      "city": "City",
+      "cityPlaceholder": "Madrid",
+      "state": "State",
+      "statePlaceholder": "Community of Madrid"
+    }
+  }
+}

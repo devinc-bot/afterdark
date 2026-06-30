@@ -26,6 +26,26 @@ const localeImports: Record<
     es: () => import('../locales/emails/es.json'),
     en: () => import('../locales/emails/en.json'),
   },
+  dashboard: {
+    es: () => import('../locales/dashboard/es.json'),
+    en: () => import('../locales/dashboard/en.json'),
+  },
+  staff: {
+    es: () => import('../locales/staff/es.json'),
+    en: () => import('../locales/staff/en.json'),
+  },
+  clubs: {
+    es: () => import('../locales/clubs/es.json'),
+    en: () => import('../locales/clubs/en.json'),
+  },
+  settings: {
+    es: () => import('../locales/settings/es.json'),
+    en: () => import('../locales/settings/en.json'),
+  },
+  tickets: {
+    es: () => import('../locales/tickets/es.json'),
+    en: () => import('../locales/tickets/en.json'),
+  },
 }
 
 export const defaultLoad: LoadFn = async (language, namespace) => {

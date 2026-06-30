@@ -12,6 +12,7 @@ type I18nProviderProps = {
 export function I18nProvider({ children, language }: I18nProviderProps) {
   useEffect(() => {
     if (!i18next.isInitialized) {
+      // eslint-disable-next-line no-console
       initI18n(language).catch(console.error)
     }
   }, [language])

@@ -11,6 +11,7 @@ export function getCurrentLanguage(): Language {
 
 export async function setLanguage(language: Language): Promise<void> {
   if (!SUPPORTED_LANGUAGES.includes(language)) {
+    // eslint-disable-next-line no-console
     console.warn(`[i18n] Unsupported language: ${language}. Using fallback.`)
     return
   }
