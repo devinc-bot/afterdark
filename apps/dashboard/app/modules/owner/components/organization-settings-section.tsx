@@ -1,16 +1,17 @@
+import { useTranslation } from 'react-i18next'
 import { Field, Input } from '@afterdark/ui'
-import { SETTINGS_COPY } from '~/modules/owner/constants/settings.copy'
 import { SettingsSection } from '~/modules/owner/components/settings-section'
 import { useSettingsForm } from '~/modules/owner/hooks/settings-form-context'
 
 export function OrganizationSettingsSection() {
+  const { t } = useTranslation('settings')
   const { values, errors, setOrganizationField } = useSettingsForm()
 
   return (
-    <SettingsSection title={SETTINGS_COPY.sections.organization}>
+    <SettingsSection title={t('sections.organization')}>
       <div className="flex flex-col gap-4">
         <Field
-          label={SETTINGS_COPY.organization.brandName}
+          label={t('organization.brandName')}
           htmlFor="settings-brand-name"
           error={errors.organization?.brandName ?? null}
         >
@@ -26,7 +27,7 @@ export function OrganizationSettingsSection() {
         </Field>
 
         <Field
-          label={SETTINGS_COPY.organization.location}
+          label={t('organization.location')}
           htmlFor="settings-club-location"
           error={errors.organization?.location ?? null}
         >
@@ -36,13 +37,13 @@ export function OrganizationSettingsSection() {
             type="text"
             maxLength={200}
             value={values.organization.location}
-            placeholder={SETTINGS_COPY.organization.locationPlaceholder}
+            placeholder={t('organization.locationPlaceholder')}
             onChange={(event) => setOrganizationField('location', event.target.value)}
             aria-invalid={errors.organization?.location ? true : undefined}
           />
         </Field>
 
-        <p className="text-sm text-ink-muted">{SETTINGS_COPY.organization.localHint}</p>
+        <p className="text-sm text-ink-muted">{t('organization.localHint')}</p>
       </div>
     </SettingsSection>
   )

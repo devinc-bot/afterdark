@@ -1,10 +1,10 @@
 import { createFileRoute } from '@tanstack/react-router'
+import clubsEs from '@afterdark/i18n/locales/clubs/es.json'
 import { ClubEditNotFound, ClubEditPage } from '~/modules/club-management/components/club-edit-page'
-import { CLUB_COPY } from '~/modules/club-management/constants/club.copy'
 import { clubsQueryOptions } from '~/modules/club-management/queries/use-club-management-queries'
 
 export const Route = createFileRoute('/_app/club-management/$documentId/edit')({
-  head: () => ({ meta: [{ title: CLUB_COPY.formPage.editTitle }] }),
+  head: () => ({ meta: [{ title: clubsEs.formPage.editMetaTitle }] }),
   loader: async ({ context: { queryClient }, params }) => {
     const clubs = await queryClient.ensureQueryData(clubsQueryOptions())
     const club = clubs.find((item) => item.documentId === params.documentId)

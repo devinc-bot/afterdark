@@ -8,12 +8,12 @@ import {
   useState,
   type ReactNode,
 } from 'react'
+import { useTranslation } from 'react-i18next'
 import type { CurrentOwnerResponse } from '@afterdark/types'
 import type { SettingsFormValues } from '@afterdark/validators'
 import { useCurrentOwner } from '~/modules/common/queries/use-current-user'
 import { toSessionUser } from '~/modules/common/services/owner.service'
 import { useSessionStore } from '~/modules/common/stores/session.store'
-import { SETTINGS_COPY } from '~/modules/owner/constants/settings.copy'
 import {
   SETTINGS_SAVE_STATUS,
   SETTINGS_SUCCESS_DISMISS_MS,
@@ -66,6 +66,7 @@ export function SettingsFormProvider({
   owner: CurrentOwnerResponse
   children: ReactNode
 }) {
+  const { t } = useTranslation('settings')
   const { refetch: refetchOwner } = useCurrentOwner()
   const [values, setValues] = useState<SettingsFormValues | null>(() =>
     createSettingsFormValues(owner)
@@ -212,7 +213,7 @@ export function SettingsFormProvider({
       const fieldErrors = mapSettingsFormErrors(validation.error)
       setErrors(fieldErrors)
       setSaveStatus(SETTINGS_SAVE_STATUS.ERROR)
-      setSaveMessage(SETTINGS_COPY.messages.validationSummary)
+      setSaveMessage(t('messages.validationSummary'))
 
       const firstInvalidFieldId = getFirstInvalidFieldId(fieldErrors)
       if (firstInvalidFieldId) {
@@ -223,7 +224,7 @@ export function SettingsFormProvider({
 
     isSavingRef.current = true
     setSaveStatus(SETTINGS_SAVE_STATUS.SAVING)
-    setSaveMessage(SETTINGS_COPY.messages.saving)
+    setSaveMessage(t('messages.saving'))
     setErrors({})
 
     try {
@@ -241,17 +242,17 @@ export function SettingsFormProvider({
       setValues(nextValues)
       setSavedValues(nextValues)
       setSaveStatus(SETTINGS_SAVE_STATUS.SUCCESS)
-      setSaveMessage(SETTINGS_COPY.messages.saveSuccess)
+      setSaveMessage(t('messages.saveSuccess'))
 
       useSessionStore.setState({ user: toSessionUser(updatedOwner) })
       void refetchOwner()
     } catch (error) {
       setSaveStatus(SETTINGS_SAVE_STATUS.ERROR)
-      setSaveMessage(resolveSaveErrorMessage(error))
+      setSaveMessage(resolveSaveErrorMessage(error, t('messages.saveFallback')))
     } finally {
       isSavingRef.current = false
     }
-  }, [refetchOwner, savedValues, values])
+  }, [t, refetchOwner, savedValues, values])
 
   if (!values || !savedValues) {
     return null

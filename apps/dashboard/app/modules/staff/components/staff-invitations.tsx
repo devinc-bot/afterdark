@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import {
   Badge,
   Button,
@@ -18,7 +19,6 @@ import {
 } from '@afterdark/ui'
 import { STAFF_INVITATION_STATUS } from '@afterdark/types'
 import { Copy, EllipsisVertical, Trash2 } from 'lucide-react'
-import { STAFF_COPY } from '~/modules/staff/constants/staff.copy'
 import type { StaffInvitationRecord } from '~/modules/staff/types/staff-invitation-record'
 import {
   canCopyStaffInvitationLink,
@@ -38,13 +38,13 @@ const staffActionIconClassName = '!size-[20px] shrink-0'
 const staffActionItemClassName = 'gap-3 py-2.5 text-base'
 
 function StaffInvitationStatusBadge({ invitation }: { invitation: StaffInvitationRecord }) {
-  const copy = STAFF_COPY.invitationsTable
+  const { t } = useTranslation('staff')
   const displayStatus = resolveStaffInvitationDisplayStatus(invitation)
 
   if (displayStatus === STAFF_INVITATION_STATUS.ACCEPTED) {
     return (
       <Badge variant="outline" size="sm" className="border-success/40 bg-success/10 text-success">
-        {copy.statusAccepted}
+        {t('invitationsTable.statusAccepted')}
       </Badge>
     )
   }
@@ -56,7 +56,7 @@ function StaffInvitationStatusBadge({ invitation }: { invitation: StaffInvitatio
         size="sm"
         className="border-hairline bg-surface-container text-ink-muted"
       >
-        {copy.statusCancelled}
+        {t('invitationsTable.statusCancelled')}
       </Badge>
     )
   }
@@ -68,7 +68,7 @@ function StaffInvitationStatusBadge({ invitation }: { invitation: StaffInvitatio
         size="sm"
         className="border-error/50 bg-error-container/30 text-error"
       >
-        {copy.statusExpired}
+        {t('invitationsTable.statusExpired')}
       </Badge>
     )
   }
@@ -80,7 +80,7 @@ function StaffInvitationStatusBadge({ invitation }: { invitation: StaffInvitatio
       className="gap-2 border-primary/40 bg-primary/10 text-primary"
       icon={<span className="size-1.5 rounded-full bg-primary" aria-hidden="true" />}
     >
-      {copy.statusPending}
+      {t('invitationsTable.statusPending')}
     </Badge>
   )
 }
@@ -94,7 +94,7 @@ function StaffInvitationRecordActions({
   onDelete?: (invitationId: string) => void
   isDeleting?: boolean
 }) {
-  const copy = STAFF_COPY.invitationsTable
+  const { t } = useTranslation('staff')
   const showCopyLink = canCopyStaffInvitationLink(invitation)
   const showDelete = canDeleteStaffInvitation(invitation)
 
@@ -105,9 +105,9 @@ function StaffInvitationRecordActions({
   const handleCopyLink = async () => {
     try {
       await navigator.clipboard.writeText(invitation.url)
-      toast.success(STAFF_COPY.invitation.copied)
+      toast.success(t('invitation.copied'))
     } catch {
-      toast.error(STAFF_COPY.form.error)
+      toast.error(t('form.error'))
     }
   }
 
@@ -123,7 +123,7 @@ function StaffInvitationRecordActions({
           variant="ghost"
           size="icon"
           className="text-ink-muted hover:text-ink"
-          aria-label={`${copy.actions} para ${invitation.email}`}
+          aria-label={`${t('invitationsTable.actions')} para ${invitation.email}`}
           disabled={isDeleting}
         >
           <EllipsisVertical aria-hidden="true" />
@@ -136,7 +136,7 @@ function StaffInvitationRecordActions({
             onClick={() => void handleCopyLink()}
           >
             <Copy aria-hidden="true" className={staffActionIconClassName} />
-            {copy.copyLink}
+            {t('invitationsTable.copyLink')}
           </DropdownMenuItem>
         ) : null}
         {showDelete ? (
@@ -146,7 +146,7 @@ function StaffInvitationRecordActions({
             onClick={handleDelete}
           >
             <Trash2 aria-hidden="true" className={cn(staffActionIconClassName, 'text-error')} />
-            {copy.delete}
+            {t('invitationsTable.delete')}
           </DropdownMenuItem>
         ) : null}
       </DropdownMenuContent>
@@ -155,22 +155,23 @@ function StaffInvitationRecordActions({
 }
 
 function StaffInvitationExpiryCell({ invitation }: { invitation: StaffInvitationRecord }) {
+  const { t } = useTranslation('staff')
   const displayStatus = resolveStaffInvitationDisplayStatus(invitation)
 
   const [label, setLabel] = useState(() => {
     if (displayStatus === STAFF_INVITATION_STATUS.ACCEPTED) {
-      return STAFF_COPY.invitationsTable.statusAccepted
+      return t('invitationsTable.statusAccepted')
     }
 
     if (displayStatus === STAFF_INVITATION_STATUS.CANCELLED) {
-      return STAFF_COPY.invitationsTable.statusCancelled
+      return t('invitationsTable.statusCancelled')
     }
 
     if (isStaffInvitationExpired(invitation)) {
-      return STAFF_COPY.invitation.expired
+      return t('invitation.expired')
     }
 
-    return STAFF_COPY.invitation.expiresIn(formatInvitationTimeRemaining(invitation.expiresAt))
+    return t('invitation.expiresIn', { time: formatInvitationTimeRemaining(invitation.expiresAt) })
   })
 
   useEffect(() => {
@@ -183,17 +184,19 @@ function StaffInvitationExpiryCell({ invitation }: { invitation: StaffInvitation
 
     const updateLabel = () => {
       if (isStaffInvitationExpired(invitation)) {
-        setLabel(STAFF_COPY.invitation.expired)
+        setLabel(t('invitation.expired'))
         return
       }
 
-      setLabel(STAFF_COPY.invitation.expiresIn(formatInvitationTimeRemaining(invitation.expiresAt)))
+      setLabel(
+        t('invitation.expiresIn', { time: formatInvitationTimeRemaining(invitation.expiresAt) })
+      )
     }
 
     updateLabel()
     const interval = window.setInterval(updateLabel, 1000)
     return () => window.clearInterval(interval)
-  }, [displayStatus, invitation])
+  }, [displayStatus, invitation, t])
 
   return (
     <span
@@ -211,8 +214,11 @@ export function StaffInvitations({
   onDelete,
   deletingInvitationId = null,
 }: StaffInvitationsProps) {
-  const copy = STAFF_COPY.invitationsTable
-  const registrySubtitle = invitations.length > 0 ? copy.registryCount(invitations.length) : null
+  const { t } = useTranslation('staff')
+  const registrySubtitle =
+    invitations.length > 0
+      ? t('invitationsTable.registryCount', { count: invitations.length })
+      : null
 
   return (
     <section aria-labelledby="staff-invitations-heading">
@@ -221,7 +227,7 @@ export function StaffInvitations({
           id="staff-invitations-heading"
           className="font-heading text-lg font-semibold text-ink sm:text-xl"
         >
-          {copy.title}
+          {t('invitationsTable.title')}
         </h2>
         {registrySubtitle ? (
           <p className="mt-1 text-sm text-ink-muted">{registrySubtitle}</p>
@@ -232,12 +238,12 @@ export function StaffInvitations({
         <Table variant="compact">
           <TableHeader>
             <TableRow>
-              <TableHead className="p-6">{copy.email}</TableHead>
-              <TableHead className="p-6">{copy.venue}</TableHead>
-              <TableHead className="p-6">{copy.security}</TableHead>
-              <TableHead className="p-6">{copy.expires}</TableHead>
-              <TableHead className="p-6">{copy.status}</TableHead>
-              <TableHead className="text-right p-6">{copy.actions}</TableHead>
+              <TableHead className="p-6">{t('invitationsTable.email')}</TableHead>
+              <TableHead className="p-6">{t('invitationsTable.venue')}</TableHead>
+              <TableHead className="p-6">{t('invitationsTable.security')}</TableHead>
+              <TableHead className="p-6">{t('invitationsTable.expires')}</TableHead>
+              <TableHead className="p-6">{t('invitationsTable.status')}</TableHead>
+              <TableHead className="text-right p-6">{t('invitationsTable.actions')}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -252,7 +258,9 @@ export function StaffInvitations({
                   </Badge>
                 </TableCell>
                 <TableCell className="p-6 text-sm text-ink-muted">
-                  {invitation.hasSecurityWord ? copy.securityEnabled : copy.securityDisabled}
+                  {invitation.hasSecurityWord
+                    ? t('invitationsTable.securityEnabled')
+                    : t('invitationsTable.securityDisabled')}
                 </TableCell>
                 <TableCell className="p-6">
                   <StaffInvitationExpiryCell invitation={invitation} />

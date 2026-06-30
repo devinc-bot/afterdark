@@ -1,18 +1,19 @@
+import { useTranslation } from 'react-i18next'
 import { Button, Field, Input, Label } from '@afterdark/ui'
-import { SETTINGS_COPY } from '~/modules/owner/constants/settings.copy'
 import { SettingsSection } from '~/modules/owner/components/settings-section'
 import { useSettingsForm } from '~/modules/owner/hooks/settings-form-context'
 
 export function ProfileSettingsSection() {
+  const { t } = useTranslation('settings')
   const { user, values, errors, setProfileField } = useSettingsForm()
   const avatarSrc = user.avatar
   const avatarLabel =
     `${values.profile.name} ${values.profile.lastName}`.trim() ||
     user.email ||
-    SETTINGS_COPY.profile.avatarFallback
+    t('profile.avatarFallback')
 
   return (
-    <SettingsSection title={SETTINGS_COPY.sections.profile}>
+    <SettingsSection title={t('sections.profile')}>
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-[auto_1fr] sm:gap-8">
         <div className="flex flex-col items-start gap-3">
           {avatarSrc ? (
@@ -38,16 +39,16 @@ export function ProfileSettingsSection() {
             disabled
             aria-describedby="settings-avatar-hint"
           >
-            {SETTINGS_COPY.profile.changePhoto}
+            {t('profile.changePhoto')}
           </Button>
           <p id="settings-avatar-hint" className="max-w-44 text-sm text-ink-muted">
-            {SETTINGS_COPY.profile.photoHint}
+            {t('profile.photoHint')}
           </p>
         </div>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-6">
           <Field
-            label={SETTINGS_COPY.profile.name}
+            label={t('profile.name')}
             htmlFor="settings-name"
             error={errors.profile?.name ?? null}
             className="col-span-3"
@@ -65,7 +66,7 @@ export function ProfileSettingsSection() {
           </Field>
 
           <Field
-            label={SETTINGS_COPY.profile.lastName}
+            label={t('profile.lastName')}
             htmlFor="settings-last-name"
             error={errors.profile?.lastName ?? null}
             className="col-span-3"
@@ -83,7 +84,7 @@ export function ProfileSettingsSection() {
           </Field>
 
           <Field
-            label={SETTINGS_COPY.profile.phone}
+            label={t('profile.phone')}
             htmlFor="settings-phone"
             error={errors.profile?.phone ?? null}
             className="col-span-4"
@@ -102,7 +103,7 @@ export function ProfileSettingsSection() {
           </Field>
 
           <Field
-            label={SETTINGS_COPY.profile.birthday}
+            label={t('profile.birthday')}
             htmlFor="settings-birthday"
             error={errors.profile?.birthday ?? null}
             className="col-span-2"
@@ -119,7 +120,7 @@ export function ProfileSettingsSection() {
           </Field>
 
           <Field
-            label={SETTINGS_COPY.profile.nationalId}
+            label={t('profile.nationalId')}
             htmlFor="settings-national-id"
             error={errors.profile?.nationalId ?? null}
             className="col-span-3"
@@ -138,7 +139,7 @@ export function ProfileSettingsSection() {
           </Field>
 
           <Field
-            label={SETTINGS_COPY.profile.taxId}
+            label={t('profile.taxId')}
             htmlFor="settings-tax-id"
             error={errors.profile?.taxId ?? null}
             className="col-span-3"
@@ -157,11 +158,7 @@ export function ProfileSettingsSection() {
           </Field>
 
           <div className="col-span-6 border-t border-hairline/60 mt-2 mb-2" />
-          <Field
-            label={SETTINGS_COPY.profile.email}
-            htmlFor="settings-email"
-            className="col-span-4"
-          >
+          <Field label={t('profile.email')} htmlFor="settings-email" className="col-span-4">
             <Input
               id="settings-email"
               name="email"
@@ -172,12 +169,10 @@ export function ProfileSettingsSection() {
               aria-readonly="true"
             />
           </Field>
-          <p className="col-span-6 -mt-2 text-sm text-ink-muted">
-            {SETTINGS_COPY.profile.emailHint}
-          </p>
+          <p className="col-span-6 -mt-2 text-sm text-ink-muted">{t('profile.emailHint')}</p>
 
           <div className="col-span-6 flex flex-col gap-2 border-t border-hairline/60 pt-4">
-            <Label variant="field">{SETTINGS_COPY.profile.password}</Label>
+            <Label variant="field">{t('profile.password')}</Label>
             <Button
               type="button"
               variant="ghost"
@@ -186,10 +181,10 @@ export function ProfileSettingsSection() {
               disabled
               aria-describedby="settings-password-hint"
             >
-              {SETTINGS_COPY.profile.changePassword}
+              {t('profile.changePassword')}
             </Button>
             <p id="settings-password-hint" className="text-sm text-ink-muted">
-              {SETTINGS_COPY.profile.passwordHint}
+              {t('profile.passwordHint')}
             </p>
           </div>
         </div>

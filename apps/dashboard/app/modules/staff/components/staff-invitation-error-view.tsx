@@ -1,7 +1,7 @@
+import { useTranslation } from 'react-i18next'
 import { Link } from '@tanstack/react-router'
 import { Button, Card } from '@afterdark/ui'
 import { DASHBOARD_ROUTES } from '~/modules/common/constants/routes'
-import { STAFF_COPY } from '~/modules/staff/constants/staff.copy'
 
 type StaffInvitationErrorViewProps = {
   title: string
@@ -9,7 +9,7 @@ type StaffInvitationErrorViewProps = {
 }
 
 export function StaffInvitationErrorView({ title, description }: StaffInvitationErrorViewProps) {
-  const copy = STAFF_COPY.invitation.accept
+  const { t } = useTranslation('staff')
 
   return (
     <div className="flex min-h-dvh flex-col bg-background">
@@ -28,7 +28,7 @@ export function StaffInvitationErrorView({ title, description }: StaffInvitation
             <h1 className="font-heading text-xl font-semibold text-ink">{title}</h1>
             <p className="mt-3 text-sm text-ink-muted">{description}</p>
             <Button asChild className="mt-6">
-              <Link to={DASHBOARD_ROUTES.login()}>{copy.goToLogin}</Link>
+              <Link to={DASHBOARD_ROUTES.login()}>{t('invitation.accept.goToLogin')}</Link>
             </Button>
           </Card>
         </div>

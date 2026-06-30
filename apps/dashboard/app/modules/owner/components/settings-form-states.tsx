@@ -1,7 +1,9 @@
+import { useTranslation } from 'react-i18next'
 import { Button, Loader } from '@afterdark/ui'
-import { SETTINGS_COPY } from '~/modules/owner/constants/settings.copy'
 
 export function SettingsFormSkeleton() {
+  const { t } = useTranslation('settings')
+
   return (
     <main className="bg-background px-4 py-6 sm:px-8 sm:py-8">
       <div className="mx-auto flex max-w-3xl flex-col gap-8">
@@ -11,7 +13,7 @@ export function SettingsFormSkeleton() {
         </div>
         <div className="flex items-center justify-center py-16">
           <Loader size={24} />
-          <span className="sr-only">{SETTINGS_COPY.messages.loading}</span>
+          <span className="sr-only">{t('messages.loading')}</span>
         </div>
       </div>
     </main>
@@ -19,6 +21,8 @@ export function SettingsFormSkeleton() {
 }
 
 export function SettingsLoadError({ message, onRetry }: { message: string; onRetry: () => void }) {
+  const { t } = useTranslation('settings')
+
   return (
     <main className="bg-background px-4 py-6 sm:px-8 sm:py-8">
       <div
@@ -26,11 +30,11 @@ export function SettingsLoadError({ message, onRetry }: { message: string; onRet
         className="mx-auto flex max-w-3xl flex-col items-start gap-4 rounded-xl border border-hairline/60 p-6"
       >
         <h1 className="font-heading text-lg font-medium text-ink">
-          {SETTINGS_COPY.messages.loadErrorTitle}
+          {t('messages.loadErrorTitle')}
         </h1>
         <p className="text-sm text-ink-muted">{message}</p>
         <Button type="button" variant="outline" onClick={() => void onRetry()}>
-          {SETTINGS_COPY.actions.retryLoad}
+          {t('actions.retryLoad')}
         </Button>
       </div>
     </main>

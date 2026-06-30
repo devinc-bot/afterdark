@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next'
+import type { TFunction } from 'i18next'
 import {
   cn,
   matchesSidebarNavHref,
@@ -21,7 +23,6 @@ import { LayoutGrid, LogOut, Martini, Ticket, Users } from 'lucide-react'
 import { clearAuthSession } from '~/modules/auth/utils/auth-storage.utils'
 import { AppShellSidebarFooter } from '~/modules/common/components/app-shell-sidebar-footer'
 import { AppShellSignOutDialog } from '~/modules/common/components/app-shell-sign-out-dialog'
-import { APP_SHELL_COPY } from '~/modules/common/constants/app-shell.copy'
 import { useSession } from '~/modules/common/hooks/use-session'
 import { DASHBOARD_ROUTES } from '~/modules/common/constants/routes'
 
@@ -34,42 +35,46 @@ type AppShellNavItem = {
   title?: string
 }
 
-function buildPrimaryNav(): AppShellNavItem[] {
+function buildPrimaryNav(t: TFunction<'dashboard'>): AppShellNavItem[] {
   return [
     {
-      label: APP_SHELL_COPY.nav.panel,
+      label: t('nav.panel'),
       href: DASHBOARD_ROUTES.home(),
       icon: <LayoutGrid aria-hidden="true" />,
     },
     {
-      label: APP_SHELL_COPY.nav.clubs,
+      label: t('nav.clubs'),
       href: DASHBOARD_ROUTES.clubManagement(),
       icon: <Martini aria-hidden="true" />,
     },
     {
-      label: APP_SHELL_COPY.nav.tickets,
+      label: t('nav.tickets'),
       href: DASHBOARD_ROUTES.tickets(),
       icon: <Ticket aria-hidden="true" />,
     },
     {
-      label: APP_SHELL_COPY.nav.users,
+      label: t('nav.users'),
       icon: <Users aria-hidden="true" />,
       href: DASHBOARD_ROUTES.staff(),
     },
   ]
 }
 
-function buildSecondaryNav(onSignOut: () => void): AppShellNavItem[] {
+function buildSecondaryNav(t: TFunction<'dashboard'>, onSignOut: () => void): AppShellNavItem[] {
   return [
     {
-      label: APP_SHELL_COPY.nav.signOut,
+      label: t('nav.signOut'),
       icon: <LogOut aria-hidden="true" />,
       onClick: onSignOut,
     },
   ]
 }
 
-function resolveMobileHeaderTitle(pathname: string, items: AppShellNavItem[]): string {
+function resolveMobileHeaderTitle(
+  pathname: string,
+  items: AppShellNavItem[],
+  fallback: string
+): string {
   const withHref = items.filter(
     (item): item is AppShellNavItem & { href: string } =>
       typeof item.href === 'string' && !item.disabled
@@ -79,7 +84,7 @@ function resolveMobileHeaderTitle(pathname: string, items: AppShellNavItem[]): s
     .filter((item) => matchesSidebarNavHref(item.href, pathname))
     .sort((left, right) => right.href.length - left.href.length)[0]
 
-  return match?.label ?? APP_SHELL_COPY.mobileFallbackTitle
+  return match?.label ?? fallback
 }
 
 const navMenuButtonClassName = 'gap-3 rounded-none border-l border-l-hairline'
@@ -167,6 +172,7 @@ function AppShellNavMenu({
 }
 
 function AppShellLayout({ children }: { children: React.ReactNode }) {
+  const { t } = useTranslation('dashboard')
   const [signOutOpen, setSignOutOpen] = useState(false)
   const [isSigningOut, setIsSigningOut] = useState(false)
   const signOutInFlight = useRef(false)
@@ -174,8 +180,9 @@ function AppShellLayout({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate()
   const { setOpenMobile } = useSidebar()
   const { user, isLoading, error, refresh, clearSession } = useSession()
-  const primaryNav = useMemo(() => buildPrimaryNav(), [])
   const settingsHref = DASHBOARD_ROUTES.settings()
+
+  const primaryNav = useMemo(() => buildPrimaryNav(t), [t])
 
   const handleSignOut = useCallback(async () => {
     if (signOutInFlight.current) return
@@ -203,11 +210,14 @@ function AppShellLayout({ children }: { children: React.ReactNode }) {
     setSignOutOpen(true)
   }, [closeMobileSidebar])
 
-  const secondaryNav = useMemo(() => buildSecondaryNav(openSignOutDialog), [openSignOutDialog])
+  const secondaryNav = useMemo(
+    () => buildSecondaryNav(t, openSignOutDialog),
+    [t, openSignOutDialog]
+  )
 
   const mobileHeaderTitle = useMemo(
-    () => resolveMobileHeaderTitle(pathname, [...primaryNav, ...secondaryNav]),
-    [pathname, primaryNav, secondaryNav]
+    () => resolveMobileHeaderTitle(pathname, [...primaryNav, ...secondaryNav], t('nav.panel')),
+    [pathname, primaryNav, secondaryNav, t]
   )
 
   const isSettingsActive = matchesSidebarNavHref(settingsHref, pathname)
@@ -217,9 +227,9 @@ function AppShellLayout({ children }: { children: React.ReactNode }) {
       <Sidebar collapsible="offcanvas">
         <SidebarHeader className="px-4 pt-5 pb-3">
           <span className="font-heading text-base font-semibold tracking-[0.04em] text-sidebar-foreground">
-            {APP_SHELL_COPY.brand.logo}
+            {t('brand.logo')}
           </span>
-          <p className="text-sm text-sidebar-foreground/70">{APP_SHELL_COPY.brand.subtitle}</p>
+          <p className="text-sm text-sidebar-foreground/70">{t('brand.subtitle')}</p>
         </SidebarHeader>
 
         <SidebarContent>

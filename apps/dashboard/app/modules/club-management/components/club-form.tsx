@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useForm } from '@tanstack/react-form'
 import { CLUB_STATUS, type ClubImageResponse } from '@afterdark/types'
 import { createClubSchema, clubStatusSchema, type CreateClubInput } from '@afterdark/validators'
@@ -19,7 +20,6 @@ import {
   type useCreateClub,
   type useUpdateClub,
 } from '~/modules/club-management/mutation/use-club-management-mutations'
-import { CLUB_COPY } from '~/modules/club-management/constants/club.copy'
 import { snapshotClubFormValues } from '~/modules/club-management/utils/club-form.mapper'
 
 export const CLUB_FORM_MODE = {
@@ -48,11 +48,6 @@ export const EMPTY_CLUB_FORM_VALUES: ClubFormValues = {
   existingImages: [],
   clubImg: [],
 }
-
-const CLUB_STATUS_OPTIONS = [
-  { value: CLUB_STATUS.ACTIVE, label: 'Activo' },
-  { value: CLUB_STATUS.INACTIVE, label: 'Inactivo' },
-] as const
 
 const fieldLabelClassName =
   'font-label text-xs font-semibold uppercase tracking-label-xs text-ink-muted'
@@ -156,10 +151,16 @@ export function ClubForm({
   onDirtyChange,
   onSuccess,
 }: ClubFormProps) {
+  const { t } = useTranslation('clubs')
   const isCreate = mode === CLUB_FORM_MODE.CREATE
   const initialSnapshotRef = useRef(
     snapshotClubFormValues({ ...EMPTY_CLUB_FORM_VALUES, ...defaultValues })
   )
+
+  const clubStatusOptions = [
+    { value: CLUB_STATUS.ACTIVE, label: t('form.fields.statusActive') },
+    { value: CLUB_STATUS.INACTIVE, label: t('form.fields.statusInactive') },
+  ]
 
   const form = useForm({
     defaultValues: { ...EMPTY_CLUB_FORM_VALUES, ...defaultValues },
@@ -182,10 +183,10 @@ export function ClubForm({
 
         try {
           await createClubMutation.mutateAsync(formData)
-          toast.success(CLUB_COPY.formPage.toastCreateSuccess)
+          toast.success(t('formPage.toastCreateSuccess'))
           onSuccess?.()
         } catch (error) {
-          toast.error(error instanceof Error ? error.message : CLUB_COPY.formPage.toastCreateError)
+          toast.error(error instanceof Error ? error.message : t('formPage.toastCreateError'))
         }
         return
       }
@@ -193,7 +194,7 @@ export function ClubForm({
       const { clubImg, existingImages, ...clubPayload } = value
 
       if (!clubDocumentId) {
-        toast.error(CLUB_COPY.formPage.toastMissingClubId)
+        toast.error(t('formPage.toastMissingClubId'))
         return
       }
 
@@ -218,10 +219,10 @@ export function ClubForm({
 
       try {
         await updateClubMutation.mutateAsync({ documentId: clubDocumentId, formData })
-        toast.success(CLUB_COPY.formPage.toastEditSuccess)
+        toast.success(t('formPage.toastEditSuccess'))
         onSuccess?.()
       } catch (error) {
-        toast.error(error instanceof Error ? error.message : CLUB_COPY.formPage.toastEditError)
+        toast.error(error instanceof Error ? error.message : t('formPage.toastEditError'))
       }
     },
   })
@@ -249,15 +250,15 @@ export function ClubForm({
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:items-start">
         <div className="flex flex-col gap-8">
           <FormSection
-            title={CLUB_COPY.sections.generalTitle}
-            description={CLUB_COPY.sections.generalDescription}
+            title={t('sections.generalTitle')}
+            description={t('sections.generalDescription')}
           >
             <form.Field name="name" validators={{ onSubmit: createClubSchema.shape.name }}>
               {(field) => (
                 <ClubFormField
                   id={field.name}
-                  label="Nombre del club"
-                  placeholder="Club Neón"
+                  label={t('form.fields.name')}
+                  placeholder={t('form.fields.namePlaceholder')}
                   value={field.state.value}
                   error={fieldErrorMessage(field.state.meta.errors)}
                   onBlur={field.handleBlur}
@@ -270,8 +271,8 @@ export function ClubForm({
               {(field) => (
                 <ClubFormField
                   id={field.name}
-                  label="Capacidad"
-                  placeholder="500"
+                  label={t('form.fields.capacity')}
+                  placeholder={t('form.fields.capacityPlaceholder')}
                   inputMode="numeric"
                   sanitize={sanitizeNonNegativeDigits}
                   value={field.state.value}
@@ -289,7 +290,7 @@ export function ClubForm({
                 return (
                   <div className="flex flex-col gap-2">
                     <Label htmlFor={field.name} className={fieldLabelClassName}>
-                      Estado del club
+                      {t('form.fields.status')}
                     </Label>
                     <Select
                       value={field.state.value}
@@ -306,10 +307,10 @@ export function ClubForm({
                         aria-invalid={error ? true : undefined}
                         aria-describedby={error ? `${field.name}-error` : undefined}
                       >
-                        <SelectValue placeholder="Seleccioná un estado" />
+                        <SelectValue placeholder={t('form.fields.statusPlaceholder')} />
                       </SelectTrigger>
                       <SelectContent>
-                        {CLUB_STATUS_OPTIONS.map((option) => (
+                        {clubStatusOptions.map((option) => (
                           <SelectItem key={option.value} value={option.value}>
                             {option.label}
                           </SelectItem>
@@ -340,13 +341,13 @@ export function ClubForm({
                 return (
                   <div className="flex flex-col gap-2">
                     <Label htmlFor={field.name} className={fieldLabelClassName}>
-                      Información adicional
+                      {t('form.fields.additionalInfo')}
                     </Label>
                     <Textarea
                       id={field.name}
                       name={field.name}
                       value={field.state.value}
-                      placeholder="Ambiente, reglas de acceso, dress code…"
+                      placeholder={t('form.fields.additionalInfoPlaceholder')}
                       onBlur={field.handleBlur}
                       onChange={(event) => field.handleChange(event.target.value)}
                       error={error ?? undefined}
@@ -359,15 +360,15 @@ export function ClubForm({
           </FormSection>
 
           <FormSection
-            title={CLUB_COPY.sections.locationTitle}
-            description={CLUB_COPY.sections.locationDescription}
+            title={t('sections.locationTitle')}
+            description={t('sections.locationDescription')}
           >
             <form.Field name="address" validators={{ onSubmit: createClubSchema.shape.address }}>
               {(field) => (
                 <ClubFormField
                   id={field.name}
-                  label="Dirección"
-                  placeholder="Calle Principal"
+                  label={t('form.fields.address')}
+                  placeholder={t('form.fields.addressPlaceholder')}
                   value={field.state.value}
                   error={fieldErrorMessage(field.state.meta.errors)}
                   onBlur={field.handleBlur}
@@ -384,8 +385,8 @@ export function ClubForm({
                 {(field) => (
                   <ClubFormField
                     id={field.name}
-                    label="Número de calle"
-                    placeholder="123"
+                    label={t('form.fields.streetNumber')}
+                    placeholder={t('form.fields.streetNumberPlaceholder')}
                     inputMode="numeric"
                     sanitize={sanitizeNonNegativeDigits}
                     value={field.state.value}
@@ -400,8 +401,8 @@ export function ClubForm({
                 {(field) => (
                   <ClubFormField
                     id={field.name}
-                    label="Ciudad"
-                    placeholder="Madrid"
+                    label={t('form.fields.city')}
+                    placeholder={t('form.fields.cityPlaceholder')}
                     value={field.state.value}
                     error={fieldErrorMessage(field.state.meta.errors)}
                     onBlur={field.handleBlur}
@@ -415,8 +416,8 @@ export function ClubForm({
               {(field) => (
                 <ClubFormField
                   id={field.name}
-                  label="Provincia"
-                  placeholder="Comunidad de Madrid"
+                  label={t('form.fields.state')}
+                  placeholder={t('form.fields.statePlaceholder')}
                   value={field.state.value}
                   error={fieldErrorMessage(field.state.meta.errors)}
                   onBlur={field.handleBlur}
@@ -428,8 +429,8 @@ export function ClubForm({
         </div>
 
         <FormSection
-          title={CLUB_COPY.sections.imagesTitle}
-          description={CLUB_COPY.sections.imagesDescription}
+          title={t('sections.imagesTitle')}
+          description={t('sections.imagesDescription')}
         >
           <form.Field name="existingImages">
             {(existingField) => (

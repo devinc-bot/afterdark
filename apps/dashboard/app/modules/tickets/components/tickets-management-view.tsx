@@ -1,12 +1,13 @@
 import { useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { TICKET_STATUS } from '@afterdark/types'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@afterdark/ui'
 import { KpiInformationTickets } from '~/modules/tickets/components/kpi-information-tickets'
 import { TICKET_RECORDS_MOCK, TicketRecords } from '~/modules/tickets/components/ticket-record'
-import { TICKETS_COPY } from '~/modules/tickets/constants/tickets.copy'
 import { TICKET_TAB } from '~/modules/tickets/constants/tickets-tabs.constants'
 
 export function TicketsManagementView() {
+  const { t } = useTranslation('tickets')
   const [activeTab, setActiveTab] = useState<string>(TICKET_TAB.ACTIVE)
   const records = TICKET_RECORDS_MOCK
 
@@ -25,11 +26,9 @@ export function TicketsManagementView() {
       <div className="mx-auto flex max-w-6xl flex-col gap-6 sm:gap-8">
         <header className="max-w-2xl">
           <h1 className="text-balance font-heading text-2xl font-bold text-ink sm:text-3xl">
-            {TICKETS_COPY.page.title}
+            {t('page.title')}
           </h1>
-          <p className="mt-2 text-pretty text-base text-ink-muted">
-            {TICKETS_COPY.page.description}
-          </p>
+          <p className="mt-2 text-pretty text-base text-ink-muted">{t('page.description')}</p>
         </header>
 
         <KpiInformationTickets />
@@ -38,10 +37,10 @@ export function TicketsManagementView() {
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <TabsList variant="line" className="flex w-full gap-4 sm:w-auto">
               <TabsTrigger variant="line" value={TICKET_TAB.ACTIVE}>
-                {TICKETS_COPY.tabs.active}
+                {t('tabs.active')}
               </TabsTrigger>
               <TabsTrigger variant="line" value={TICKET_TAB.ARCHIVED}>
-                {TICKETS_COPY.tabs.archived}
+                {t('tabs.archived')}
               </TabsTrigger>
             </TabsList>
           </div>

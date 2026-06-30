@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import {
   Button,
   Dialog,
@@ -7,7 +8,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@afterdark/ui'
-import { APP_SHELL_COPY } from '~/modules/common/constants/app-shell.copy'
 
 export type AppShellSignOutDialogProps = {
   open: boolean
@@ -22,6 +22,8 @@ export function AppShellSignOutDialog({
   onConfirm,
   isSigningOut = false,
 }: AppShellSignOutDialogProps) {
+  const { t } = useTranslation('dashboard')
+
   const handleOpenChange = (nextOpen: boolean) => {
     if (isSigningOut && !nextOpen) return
     onOpenChange(nextOpen)
@@ -36,8 +38,8 @@ export function AppShellSignOutDialog({
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent size="sm">
         <DialogHeader>
-          <DialogTitle>{APP_SHELL_COPY.signOutDialog.title}</DialogTitle>
-          <DialogDescription>{APP_SHELL_COPY.signOutDialog.description}</DialogDescription>
+          <DialogTitle>{t('signOut.title')}</DialogTitle>
+          <DialogDescription>{t('signOut.description')}</DialogDescription>
         </DialogHeader>
         <DialogFooter className="gap-4">
           <Button
@@ -46,7 +48,7 @@ export function AppShellSignOutDialog({
             disabled={isSigningOut}
             onClick={() => handleOpenChange(false)}
           >
-            {APP_SHELL_COPY.signOutDialog.cancel}
+            {t('signOut.cancel')}
           </Button>
           <Button
             type="button"
@@ -54,9 +56,7 @@ export function AppShellSignOutDialog({
             loading={isSigningOut}
             onClick={handleConfirm}
           >
-            {isSigningOut
-              ? APP_SHELL_COPY.signOutDialog.signingOut
-              : APP_SHELL_COPY.signOutDialog.confirm}
+            {isSigningOut ? t('signOut.loading') : t('signOut.confirm')}
           </Button>
         </DialogFooter>
       </DialogContent>

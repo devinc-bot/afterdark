@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { FormLayout } from '@afterdark/ui'
 import { useCurrentOwner } from '~/modules/common/queries/use-current-user'
 import { ProfileSettingsSection } from '~/modules/owner/components/profile-settings-section'
@@ -7,7 +8,6 @@ import {
   SettingsLoadError,
 } from '~/modules/owner/components/settings-form-states'
 import { SettingsStatusBanner } from '~/modules/owner/components/settings-status-banner'
-import { SETTINGS_COPY } from '~/modules/owner/constants/settings.copy'
 import { SETTINGS_FORM_ID } from '~/modules/owner/constants/settings-form'
 import { SettingsFormProvider, useSettingsForm } from '~/modules/owner/hooks/settings-form-context'
 
@@ -39,6 +39,7 @@ function SettingsFormContent() {
 }
 
 export function SettingsView() {
+  const { t } = useTranslation('settings')
   const { data: owner, isLoading, error, refetch } = useCurrentOwner()
 
   if (isLoading) {
@@ -58,10 +59,10 @@ export function SettingsView() {
       <div className="mx-auto flex max-w-3xl flex-col gap-2 sm:gap-4">
         <header className="max-w-2xl pb-2">
           <h1 className="text-balance font-heading text-2xl font-semibold text-ink sm:text-3xl">
-            {SETTINGS_COPY.page.title}
+            {t('page.title')}
           </h1>
           <p className="mt-2 text-pretty text-sm text-ink-muted sm:text-base">
-            {SETTINGS_COPY.page.description}
+            {t('page.description')}
           </p>
         </header>
 

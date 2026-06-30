@@ -1,4 +1,3 @@
-import { SETTINGS_COPY } from '~/modules/owner/constants/settings.copy'
 import { NOTIFICATION_FIELD_BY_ID } from '~/modules/owner/constants/settings-form'
 import { settingsFormSchema, type SettingsFormValues } from '@afterdark/validators'
 import type { ZodError } from 'zod'
@@ -115,10 +114,10 @@ export function focusSettingsField(fieldId: string) {
   })
 }
 
-export function resolveSaveErrorMessage(error: unknown): string {
+export function resolveSaveErrorMessage(error: unknown, fallback: string): string {
   if (error instanceof Error && error.message) {
     return error.message
   }
 
-  return SETTINGS_COPY.messages.saveFallback
+  return fallback
 }

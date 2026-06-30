@@ -1,6 +1,6 @@
+import { useTranslation } from 'react-i18next'
 import { ArrowLeft } from 'lucide-react'
 import { Button, cn, useSidebar } from '@afterdark/ui'
-import { CLUB_COPY } from '~/modules/club-management/constants/club.copy'
 
 type ClubFormPageLayoutProps = {
   title: string
@@ -17,6 +17,7 @@ export function ClubFormPageLayout({
   footer,
   children,
 }: ClubFormPageLayoutProps) {
+  const { t } = useTranslation('clubs')
   const { state, isMobile } = useSidebar()
   const sidebarExpanded = !isMobile && state === 'expanded'
 
@@ -32,7 +33,7 @@ export function ClubFormPageLayout({
             onClick={onBack}
           >
             <ArrowLeft className="size-4" aria-hidden="true" />
-            {CLUB_COPY.formPage.back}
+            {t('formPage.back')}
           </Button>
           <div className="max-w-2xl">
             <h1 className="text-balance font-heading text-2xl font-bold text-ink sm:text-3xl">

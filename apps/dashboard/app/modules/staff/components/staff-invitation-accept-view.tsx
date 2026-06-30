@@ -1,4 +1,5 @@
 import { useForm } from '@tanstack/react-form'
+import { useTranslation } from 'react-i18next'
 import { Link, useNavigate } from '@tanstack/react-router'
 import type { StaffInvitationPublicResponse } from '@afterdark/types'
 import {
@@ -19,7 +20,6 @@ import {
   toast,
 } from '@afterdark/ui'
 import { DASHBOARD_ROUTES } from '~/modules/common/constants/routes'
-import { STAFF_COPY } from '~/modules/staff/constants/staff.copy'
 import { acceptStaffInvitation } from '~/modules/staff/services/staff-invitations.service'
 
 type StaffInvitationAcceptViewProps = {
@@ -28,8 +28,8 @@ type StaffInvitationAcceptViewProps = {
 }
 
 export function StaffInvitationAcceptView({ invitation, token }: StaffInvitationAcceptViewProps) {
+  const { t } = useTranslation('staff')
   const navigate = useNavigate()
-  const copy = STAFF_COPY.invitation.accept
   const requiresSecurityWord = invitation.hasSecurityWord
 
   const form = useForm({
@@ -61,10 +61,10 @@ export function StaffInvitationAcceptView({ invitation, token }: StaffInvitation
           securityWord: parsed.data.securityWord,
         })
 
-        toast.success(copy.success)
+        toast.success(t('invitation.accept.success'))
         void navigate({ to: DASHBOARD_ROUTES.login(), replace: true })
       } catch (error) {
-        toast.error(error instanceof Error ? error.message : copy.error)
+        toast.error(error instanceof Error ? error.message : t('invitation.accept.error'))
       }
     },
   })
@@ -85,19 +85,21 @@ export function StaffInvitationAcceptView({ invitation, token }: StaffInvitation
           <Card variant="gradient">
             <CardHeader className="sm:p-8">
               <h1 className="text-balance font-heading text-2xl font-bold text-ink">
-                {copy.title}
+                {t('invitation.accept.title')}
               </h1>
-              <CardDescription className="text-pretty text-sm">{copy.description}</CardDescription>
+              <CardDescription className="text-pretty text-sm">
+                {t('invitation.accept.description')}
+              </CardDescription>
             </CardHeader>
 
             <CardContent className="sm:px-8 sm:pb-8">
               <dl className="flex flex-wrap gap-5 rounded-lg bg-surface-container-high p-4 text-sm">
                 <div>
-                  <dt className="text-ink-muted">{copy.invitedAs}</dt>
+                  <dt className="text-ink-muted">{t('invitation.accept.invitedAs')}</dt>
                   <dd className="mt-1 font-medium text-ink">{invitation.email}</dd>
                 </div>
                 <div>
-                  <dt className="text-ink-muted">{copy.clubLabel}</dt>
+                  <dt className="text-ink-muted">{t('invitation.accept.clubLabel')}</dt>
                   <dd className="mt-1">
                     <Badge variant="outline" size="sm">
                       {invitation.clubName}
@@ -123,14 +125,14 @@ export function StaffInvitationAcceptView({ invitation, token }: StaffInvitation
                     const error = fieldErrorMessage(field.state.meta.errors)
 
                     return (
-                      <Field label={copy.name} htmlFor={field.name} error={error}>
+                      <Field label={t('invitation.accept.name')} htmlFor={field.name} error={error}>
                         <Input
                           id={field.name}
                           name={field.name}
                           type="text"
                           autoComplete="given-name"
                           value={field.state.value}
-                          placeholder={copy.namePlaceholder}
+                          placeholder={t('invitation.accept.namePlaceholder')}
                           onBlur={field.handleBlur}
                           onChange={(event) => field.handleChange(event.target.value)}
                           aria-invalid={error ? true : undefined}
@@ -148,14 +150,18 @@ export function StaffInvitationAcceptView({ invitation, token }: StaffInvitation
                     const error = fieldErrorMessage(field.state.meta.errors)
 
                     return (
-                      <Field label={copy.lastName} htmlFor={field.name} error={error}>
+                      <Field
+                        label={t('invitation.accept.lastName')}
+                        htmlFor={field.name}
+                        error={error}
+                      >
                         <Input
                           id={field.name}
                           name={field.name}
                           type="text"
                           autoComplete="family-name"
                           value={field.state.value}
-                          placeholder={copy.lastNamePlaceholder}
+                          placeholder={t('invitation.accept.lastNamePlaceholder')}
                           onBlur={field.handleBlur}
                           onChange={(event) => field.handleChange(event.target.value)}
                           aria-invalid={error ? true : undefined}
@@ -173,14 +179,18 @@ export function StaffInvitationAcceptView({ invitation, token }: StaffInvitation
                     const error = fieldErrorMessage(field.state.meta.errors)
 
                     return (
-                      <Field label={copy.phone} htmlFor={field.name} error={error}>
+                      <Field
+                        label={t('invitation.accept.phone')}
+                        htmlFor={field.name}
+                        error={error}
+                      >
                         <Input
                           id={field.name}
                           name={field.name}
                           type="tel"
                           autoComplete="tel"
                           value={field.state.value}
-                          placeholder={copy.phonePlaceholder}
+                          placeholder={t('invitation.accept.phonePlaceholder')}
                           onBlur={field.handleBlur}
                           onChange={(event) => field.handleChange(event.target.value)}
                           aria-invalid={error ? true : undefined}
@@ -201,14 +211,18 @@ export function StaffInvitationAcceptView({ invitation, token }: StaffInvitation
                       const error = fieldErrorMessage(field.state.meta.errors)
 
                       return (
-                        <Field label={copy.securityWord} htmlFor={field.name} error={error}>
+                        <Field
+                          label={t('invitation.accept.securityWord')}
+                          htmlFor={field.name}
+                          error={error}
+                        >
                           <Input
                             id={field.name}
                             name={field.name}
                             type="password"
                             autoComplete="off"
                             value={field.state.value}
-                            placeholder={copy.securityWordPlaceholder}
+                            placeholder={t('invitation.accept.securityWordPlaceholder')}
                             onBlur={field.handleBlur}
                             onChange={(event) => field.handleChange(event.target.value)}
                             aria-invalid={error ? true : undefined}
@@ -227,14 +241,18 @@ export function StaffInvitationAcceptView({ invitation, token }: StaffInvitation
                     const error = fieldErrorMessage(field.state.meta.errors)
 
                     return (
-                      <Field label={copy.password} htmlFor={field.name} error={error}>
+                      <Field
+                        label={t('invitation.accept.password')}
+                        htmlFor={field.name}
+                        error={error}
+                      >
                         <Input
                           id={field.name}
                           name={field.name}
                           type="password"
                           autoComplete="new-password"
                           value={field.state.value}
-                          placeholder={copy.passwordPlaceholder}
+                          placeholder={t('invitation.accept.passwordPlaceholder')}
                           onBlur={field.handleBlur}
                           onChange={(event) => field.handleChange(event.target.value)}
                           aria-invalid={error ? true : undefined}
@@ -268,14 +286,18 @@ export function StaffInvitationAcceptView({ invitation, token }: StaffInvitation
                     const error = fieldErrorMessage(field.state.meta.errors)
 
                     return (
-                      <Field label={copy.confirmPassword} htmlFor={field.name} error={error}>
+                      <Field
+                        label={t('invitation.accept.confirmPassword')}
+                        htmlFor={field.name}
+                        error={error}
+                      >
                         <Input
                           id={field.name}
                           name={field.name}
                           type="password"
                           autoComplete="new-password"
                           value={field.state.value}
-                          placeholder={copy.confirmPasswordPlaceholder}
+                          placeholder={t('invitation.accept.confirmPasswordPlaceholder')}
                           onBlur={field.handleBlur}
                           onChange={(event) => field.handleChange(event.target.value)}
                           aria-invalid={error ? true : undefined}
@@ -288,7 +310,9 @@ export function StaffInvitationAcceptView({ invitation, token }: StaffInvitation
                 <form.Subscribe selector={(state) => state.isSubmitting}>
                   {(isSubmitting) => (
                     <Button type="submit" className="w-full" loading={isSubmitting}>
-                      {isSubmitting ? copy.submitting : copy.submit}
+                      {isSubmitting
+                        ? t('invitation.accept.submitting')
+                        : t('invitation.accept.submit')}
                     </Button>
                   )}
                 </form.Subscribe>

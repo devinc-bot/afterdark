@@ -1,4 +1,5 @@
 import { useForm } from '@tanstack/react-form'
+import { useTranslation } from 'react-i18next'
 import { createStaffInvitationSchema, type CreateStaffInvitationInput } from '@afterdark/validators'
 import {
   Button,
@@ -11,8 +12,8 @@ import {
   SelectItem,
   toast,
 } from '@afterdark/ui'
+import type { TFunction } from 'i18next'
 import { useClubs } from '~/modules/club-management/queries/use-club-management-queries'
-import { STAFF_COPY } from '~/modules/staff/constants/staff.copy'
 import { postStaffInvitation } from '~/modules/staff/services/staff-invitations.service'
 
 const STAFF_USER_FORM_ID = 'staff-user-form'
@@ -28,6 +29,7 @@ type ClubSelectFieldDisplayInput = {
   isError: boolean
   clubCount: number
   fieldError: string | null
+  t: TFunction<'staff'>
 }
 
 type ClubSelectFieldDisplay = {
@@ -40,24 +42,25 @@ function getClubSelectFieldDisplay({
   isError,
   clubCount,
   fieldError,
+  t,
 }: ClubSelectFieldDisplayInput): ClubSelectFieldDisplay {
   if (isLoading) {
-    return { placeholder: STAFF_COPY.form.clubLoading, error: fieldError ?? undefined }
+    return { placeholder: t('form.clubLoading'), error: fieldError ?? undefined }
   }
 
   if (isError) {
     return {
-      placeholder: STAFF_COPY.form.clubPlaceholder,
-      error: STAFF_COPY.form.clubsLoadError,
+      placeholder: t('form.clubPlaceholder'),
+      error: t('form.clubsLoadError'),
     }
   }
 
   if (clubCount === 0) {
-    return { placeholder: STAFF_COPY.form.clubEmpty, error: fieldError ?? undefined }
+    return { placeholder: t('form.clubEmpty'), error: fieldError ?? undefined }
   }
 
   return {
-    placeholder: STAFF_COPY.form.clubPlaceholder,
+    placeholder: t('form.clubPlaceholder'),
     error: fieldError ?? undefined,
   }
 }
@@ -73,6 +76,7 @@ type StaffUserFormProps = {
 }
 
 export function StaffUserForm({ onInviteSuccess }: StaffUserFormProps) {
+  const { t } = useTranslation('staff')
   const { data: clubs = [], isLoading: isClubsLoading, isError: isClubsError } = useClubs()
 
   const form = useForm({
@@ -88,10 +92,10 @@ export function StaffUserForm({ onInviteSuccess }: StaffUserFormProps) {
           expiresAt: new Date(response.expiresAt).getTime(),
           hasSecurityWord: response.hasSecurityWord,
         })
-        toast.success(STAFF_COPY.form.success)
+        toast.success(t('form.success'))
         form.reset()
       } catch {
-        toast.error(STAFF_COPY.form.error)
+        toast.error(t('form.error'))
       }
     },
   })
@@ -117,14 +121,14 @@ export function StaffUserForm({ onInviteSuccess }: StaffUserFormProps) {
               const error = fieldErrorMessage(field.state.meta.errors)
 
               return (
-                <Field label={STAFF_COPY.form.email} htmlFor={field.name} error={error}>
+                <Field label={t('form.email')} htmlFor={field.name} error={error}>
                   <Input
                     id={field.name}
                     name={field.name}
                     type="email"
                     autoComplete="email"
                     value={field.state.value}
-                    placeholder={STAFF_COPY.form.emailPlaceholder}
+                    placeholder={t('form.emailPlaceholder')}
                     onBlur={field.handleBlur}
                     onChange={(event) => field.handleChange(event.target.value)}
                     aria-invalid={error ? true : undefined}
@@ -146,11 +150,12 @@ export function StaffUserForm({ onInviteSuccess }: StaffUserFormProps) {
                   isError: isClubsError,
                   clubCount: clubs.length,
                   fieldError: error,
+                  t,
                 })
 
               return (
                 <SelectField
-                  label={STAFF_COPY.form.club}
+                  label={t('form.club')}
                   value={field.state.value || undefined}
                   onValueChange={(value) => field.handleChange(value)}
                   placeholder={clubPlaceholder}
@@ -176,20 +181,20 @@ export function StaffUserForm({ onInviteSuccess }: StaffUserFormProps) {
 
               return (
                 <div className="flex flex-col gap-2">
-                  <Field label={STAFF_COPY.form.securityWord} htmlFor={field.name} error={error}>
+                  <Field label={t('form.securityWord')} htmlFor={field.name} error={error}>
                     <Input
                       id={field.name}
                       name={field.name}
                       type="password"
                       autoComplete="new-password"
                       value={field.state.value}
-                      placeholder={STAFF_COPY.form.securityWordPlaceholder}
+                      placeholder={t('form.securityWordPlaceholder')}
                       onBlur={field.handleBlur}
                       onChange={(event) => field.handleChange(event.target.value)}
                       aria-invalid={error ? true : undefined}
                     />
                   </Field>
-                  <p className="text-xs text-ink-muted">{STAFF_COPY.form.securityWordHint}</p>
+                  <p className="text-xs text-ink-muted">{t('form.securityWordHint')}</p>
                 </div>
               )
             }}
@@ -208,7 +213,7 @@ export function StaffUserForm({ onInviteSuccess }: StaffUserFormProps) {
                 disabled={isSubmitting}
                 className="min-w-36 sm:min-w-40"
               >
-                {STAFF_COPY.form.cancel}
+                {t('form.cancel')}
               </Button>
             </DialogClose>
             <Button
@@ -218,7 +223,7 @@ export function StaffUserForm({ onInviteSuccess }: StaffUserFormProps) {
               loading={isSubmitting}
               className="min-w-36 sm:min-w-40"
             >
-              {isSubmitting ? STAFF_COPY.form.submitting : STAFF_COPY.form.submit}
+              {isSubmitting ? t('form.submitting') : t('form.submit')}
             </Button>
           </DialogFooter>
         )}

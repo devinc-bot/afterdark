@@ -1,6 +1,6 @@
+import { useTranslation } from 'react-i18next'
 import { Button, Input, Label } from '@afterdark/ui'
 import { Search, X } from 'lucide-react'
-import { STAFF_COPY } from '~/modules/staff/constants/staff.copy'
 
 const STAFF_USER_RECORDS_SEARCH_ID = 'staff-user-records-search'
 
@@ -17,12 +17,14 @@ export function StaffUserRecordsToolbar({
   onSearchQueryChange,
   onClearSearch,
 }: StaffUserRecordsToolbarProps) {
+  const { t } = useTranslation('staff')
+
   return (
     <div className="py-4">
       <div className="flex items-center gap-2">
         <div className="relative min-w-0 flex-1">
           <Label htmlFor={STAFF_USER_RECORDS_SEARCH_ID} className="sr-only">
-            {STAFF_COPY.table.search.label}
+            {t('table.search.label')}
           </Label>
           <Search
             aria-hidden="true"
@@ -32,7 +34,7 @@ export function StaffUserRecordsToolbar({
             id={STAFF_USER_RECORDS_SEARCH_ID}
             type="search"
             value={searchQuery}
-            placeholder={STAFF_COPY.table.search.placeholder}
+            placeholder={t('table.search.placeholder')}
             onChange={(event) => onSearchQueryChange(event.target.value)}
             className="pl-9"
             autoComplete="off"
@@ -47,7 +49,7 @@ export function StaffUserRecordsToolbar({
             onClick={onClearSearch}
           >
             <X aria-hidden="true" className="size-4" />
-            {STAFF_COPY.table.search.clear}
+            {t('table.search.clear')}
           </Button>
         ) : null}
       </div>

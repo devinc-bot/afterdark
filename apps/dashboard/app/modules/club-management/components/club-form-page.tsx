@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from '@tanstack/react-router'
 import { Button } from '@afterdark/ui'
 import {
@@ -10,7 +11,6 @@ import {
 } from '~/modules/club-management/components/club-form'
 import { ClubFormPageLayout } from '~/modules/club-management/components/club-form-page-layout'
 import { ClubUnsavedChangesDialog } from '~/modules/club-management/components/club-unsaved-changes-dialog'
-import { CLUB_COPY } from '~/modules/club-management/constants/club.copy'
 import {
   useCreateClub,
   useUpdateClub,
@@ -32,6 +32,7 @@ export function ClubFormPage({
   clubDocumentId,
   defaultValues,
 }: ClubFormPageProps) {
+  const { t } = useTranslation('clubs')
   const navigate = useNavigate()
   const createClubMutation = useCreateClub()
   const updateClubMutation = useUpdateClub()
@@ -87,7 +88,7 @@ export function ClubFormPage({
               className="min-w-36 sm:min-w-40"
               onClick={() => requestLeave(goToList)}
             >
-              {CLUB_COPY.formPage.cancel}
+              {t('formPage.cancel')}
             </Button>
             <Button
               type="submit"
@@ -98,11 +99,11 @@ export function ClubFormPage({
             >
               {pending
                 ? isCreate
-                  ? CLUB_COPY.formPage.submitCreatePending
-                  : CLUB_COPY.formPage.submitEditPending
+                  ? t('formPage.submitCreatePending')
+                  : t('formPage.submitEditPending')
                 : isCreate
-                  ? CLUB_COPY.formPage.submitCreate
-                  : CLUB_COPY.formPage.submitEdit}
+                  ? t('formPage.submitCreate')
+                  : t('formPage.submitEdit')}
             </Button>
           </>
         }

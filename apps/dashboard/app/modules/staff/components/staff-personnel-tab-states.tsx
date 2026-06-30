@@ -1,9 +1,11 @@
+import { useTranslation } from 'react-i18next'
 import { Button, Card, Skeleton } from '@afterdark/ui'
-import { STAFF_COPY } from '~/modules/staff/constants/staff.copy'
 
 export function StaffPersonnelTabSkeleton() {
+  const { t } = useTranslation('staff')
+
   return (
-    <section aria-busy="true" aria-label={STAFF_COPY.table.title} className="py-4">
+    <section aria-busy="true" aria-label={t('table.title')} className="py-4">
       <Skeleton className="h-7 w-48" />
       <Skeleton className="mt-2 h-4 w-64" />
       <Skeleton className="mt-6 h-10 w-full max-w-sm" />
@@ -27,12 +29,14 @@ export function StaffPersonnelLoadErrorBanner({
   onRetry,
   isRetrying,
 }: StaffPersonnelLoadErrorBannerProps) {
+  const { t } = useTranslation('staff')
+
   return (
     <div
       role="alert"
       className="rounded-lg border border-destructive/30 bg-destructive/5 px-4 py-4 sm:px-6"
     >
-      <p className="text-sm text-ink">{STAFF_COPY.table.loadError}</p>
+      <p className="text-sm text-ink">{t('table.loadError')}</p>
       <Button
         type="button"
         variant="outline"
@@ -41,7 +45,7 @@ export function StaffPersonnelLoadErrorBanner({
         onClick={onRetry}
         disabled={isRetrying}
       >
-        {STAFF_COPY.table.retry}
+        {t('table.retry')}
       </Button>
     </div>
   )
@@ -52,12 +56,12 @@ type StaffPersonnelEmptyStateProps = {
 }
 
 export function StaffPersonnelEmptyState({ className }: StaffPersonnelEmptyStateProps) {
+  const { t } = useTranslation('staff')
+
   return (
     <div className={className ?? 'px-6 py-12 text-center'}>
-      <p className="font-heading text-base font-semibold text-ink">{STAFF_COPY.table.emptyTitle}</p>
-      <p className="mx-auto mt-2 max-w-sm text-sm text-ink-muted">
-        {STAFF_COPY.table.emptyDescription}
-      </p>
+      <p className="font-heading text-base font-semibold text-ink">{t('table.emptyTitle')}</p>
+      <p className="mx-auto mt-2 max-w-sm text-sm text-ink-muted">{t('table.emptyDescription')}</p>
     </div>
   )
 }

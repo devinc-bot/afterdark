@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import {
   Checkbox,
   Field,
@@ -8,18 +9,18 @@ import {
   SelectValue,
 } from '@afterdark/ui'
 import type { SettingsFormValues } from '@afterdark/validators'
-import { SETTINGS_COPY } from '~/modules/owner/constants/settings.copy'
 import { LANGUAGE_OPTIONS, NOTIFICATION_OPTIONS } from '~/modules/owner/constants/settings.mock'
 import { NOTIFICATION_FIELD_BY_ID } from '~/modules/owner/constants/settings-form'
 import { SettingsSection } from '~/modules/owner/components/settings-section'
 import { useSettingsForm } from '~/modules/owner/hooks/settings-form-context'
 
 export function PreferencesSettingsSection() {
+  const { t } = useTranslation('settings')
   const { values, errors, setLanguage, setNotification } = useSettingsForm()
   const languageError = errors.preferences?.language ?? null
 
   return (
-    <SettingsSection title={SETTINGS_COPY.sections.preferences}>
+    <SettingsSection title={t('sections.preferences')}>
       <div className="flex flex-col gap-6">
         <Select
           value={values.preferences.language}
@@ -28,7 +29,7 @@ export function PreferencesSettingsSection() {
           }
         >
           <Field
-            label={SETTINGS_COPY.preferences.language}
+            label={t('preferences.language')}
             htmlFor="settings-language"
             error={languageError}
           >
@@ -37,7 +38,7 @@ export function PreferencesSettingsSection() {
               error={Boolean(languageError)}
               aria-invalid={languageError ? true : undefined}
             >
-              <SelectValue placeholder={SETTINGS_COPY.preferences.languagePlaceholder} />
+              <SelectValue placeholder={t('preferences.languagePlaceholder')} />
             </SelectTrigger>
           </Field>
           <SelectContent>
@@ -51,7 +52,7 @@ export function PreferencesSettingsSection() {
 
         <fieldset className="min-w-0 border-0 p-0">
           <legend className="mb-3 font-label text-xs font-semibold uppercase tracking-label-xs text-ink-muted">
-            {SETTINGS_COPY.preferences.notifications}
+            {t('preferences.notifications')}
           </legend>
           <ul className="divide-y divide-hairline/60">
             {NOTIFICATION_OPTIONS.map((option) => {
@@ -91,7 +92,7 @@ export function PreferencesSettingsSection() {
           </ul>
         </fieldset>
 
-        <p className="text-sm text-ink-muted">{SETTINGS_COPY.preferences.localHint}</p>
+        <p className="text-sm text-ink-muted">{t('preferences.localHint')}</p>
       </div>
     </SettingsSection>
   )

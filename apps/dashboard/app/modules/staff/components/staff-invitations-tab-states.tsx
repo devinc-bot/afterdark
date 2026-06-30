@@ -1,11 +1,11 @@
+import { useTranslation } from 'react-i18next'
 import { Button, Skeleton } from '@afterdark/ui'
-import { STAFF_COPY } from '~/modules/staff/constants/staff.copy'
 
 export function StaffInvitationsTabSkeleton() {
-  const copy = STAFF_COPY.invitationsTable
+  const { t } = useTranslation('staff')
 
   return (
-    <section aria-busy="true" aria-label={copy.title} className="py-4">
+    <section aria-busy="true" aria-label={t('invitationsTable.title')} className="py-4">
       <Skeleton className="h-7 w-56" />
       <Skeleton className="mt-2 h-4 w-72" />
       <div className="mt-6 overflow-hidden rounded-xl bg-surface-container-low p-6">
@@ -28,14 +28,14 @@ export function StaffInvitationsLoadErrorBanner({
   onRetry,
   isRetrying,
 }: StaffInvitationsLoadErrorBannerProps) {
-  const copy = STAFF_COPY.invitationsTable
+  const { t } = useTranslation('staff')
 
   return (
     <div
       role="alert"
       className="rounded-lg border border-destructive/30 bg-destructive/5 px-4 py-4 sm:px-6"
     >
-      <p className="text-sm text-ink">{copy.loadError}</p>
+      <p className="text-sm text-ink">{t('invitationsTable.loadError')}</p>
       <Button
         type="button"
         variant="outline"
@@ -44,19 +44,23 @@ export function StaffInvitationsLoadErrorBanner({
         onClick={onRetry}
         disabled={isRetrying}
       >
-        {copy.retry}
+        {t('invitationsTable.retry')}
       </Button>
     </div>
   )
 }
 
 export function StaffInvitationsEmptyState() {
-  const copy = STAFF_COPY.invitationsTable
+  const { t } = useTranslation('staff')
 
   return (
     <div className="px-6 py-12 text-center">
-      <p className="font-heading text-base font-semibold text-ink">{copy.emptyTitle}</p>
-      <p className="mx-auto mt-2 max-w-sm text-sm text-ink-muted">{copy.emptyDescription}</p>
+      <p className="font-heading text-base font-semibold text-ink">
+        {t('invitationsTable.emptyTitle')}
+      </p>
+      <p className="mx-auto mt-2 max-w-sm text-sm text-ink-muted">
+        {t('invitationsTable.emptyDescription')}
+      </p>
     </div>
   )
 }

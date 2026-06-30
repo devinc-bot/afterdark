@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { useForm } from '@tanstack/react-form'
 import { Link } from '@tanstack/react-router'
 import { Lock, Mail } from 'lucide-react'
@@ -8,6 +9,7 @@ import { useLogin } from '../mutations/use-auth-mutations'
 import { AuthInput } from './auth-input'
 
 export function LoginForm() {
+  const { t } = useTranslation('auth')
   const login = useLogin()
 
   const form = useForm({
@@ -35,7 +37,7 @@ export function LoginForm() {
           const error = fieldErrorMessage(field.state.meta.errors)
           return (
             <Field
-              label="Correo"
+              label={t('login.email')}
               htmlFor={field.name}
               icon={<Mail aria-hidden="true" />}
               error={error}
@@ -45,7 +47,7 @@ export function LoginForm() {
                 name={field.name}
                 type="email"
                 autoComplete="email"
-                placeholder="admin@afterdark.io"
+                placeholder={t('login.emailPlaceholder')}
                 hasIcon
                 value={field.state.value}
                 onBlur={field.handleBlur}
@@ -66,7 +68,7 @@ export function LoginForm() {
           const error = fieldErrorMessage(field.state.meta.errors)
           return (
             <Field
-              label="Contraseña"
+              label={t('login.password')}
               htmlFor={field.name}
               icon={<Lock aria-hidden="true" />}
               error={error}
@@ -75,7 +77,7 @@ export function LoginForm() {
                   to={DASHBOARD_ROUTES.forgotPassword()}
                   className="shrink-0 text-sm text-on-surface-variant transition-colors hover:text-primary hover:underline"
                 >
-                  ¿Olvidaste tu contraseña?
+                  {t('login.forgotPassword')}
                 </Link>
               }
             >
@@ -84,7 +86,7 @@ export function LoginForm() {
                 name={field.name}
                 type="password"
                 autoComplete="current-password"
-                placeholder="••••••••"
+                placeholder={t('login.passwordPlaceholder')}
                 hasIcon
                 value={field.state.value}
                 onBlur={field.handleBlur}
@@ -115,7 +117,7 @@ export function LoginForm() {
             loading={isSubmitting}
             disabled={isSubmitting}
           >
-            Iniciar sesión
+            {isSubmitting ? t('login.submitting') : t('login.submit')}
           </Button>
         )}
       </form.Subscribe>

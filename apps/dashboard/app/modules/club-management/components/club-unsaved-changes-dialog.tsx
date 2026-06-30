@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import {
   Button,
   Dialog,
@@ -7,7 +8,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@afterdark/ui'
-import { CLUB_COPY } from '~/modules/club-management/constants/club.copy'
 
 export type ClubUnsavedChangesDialogProps = {
   open: boolean
@@ -20,16 +20,18 @@ export function ClubUnsavedChangesDialog({
   onOpenChange,
   onConfirmLeave,
 }: ClubUnsavedChangesDialogProps) {
+  const { t } = useTranslation('clubs')
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent size="sm">
         <DialogHeader>
-          <DialogTitle>{CLUB_COPY.unsaved.title}</DialogTitle>
-          <DialogDescription>{CLUB_COPY.unsaved.description}</DialogDescription>
+          <DialogTitle>{t('unsaved.title')}</DialogTitle>
+          <DialogDescription>{t('unsaved.description')}</DialogDescription>
         </DialogHeader>
         <DialogFooter>
           <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-            {CLUB_COPY.unsaved.stay}
+            {t('unsaved.stay')}
           </Button>
           <Button
             type="button"
@@ -39,7 +41,7 @@ export function ClubUnsavedChangesDialog({
               onConfirmLeave()
             }}
           >
-            {CLUB_COPY.unsaved.leave}
+            {t('unsaved.leave')}
           </Button>
         </DialogFooter>
       </DialogContent>

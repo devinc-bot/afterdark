@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { useForm } from '@tanstack/react-form'
 import { Lock, Mail, User } from 'lucide-react'
 import { z } from 'zod'
@@ -16,6 +17,7 @@ const registerFormSchema = registerOwnerSchema
   })
 
 export function RegisterForm() {
+  const { t } = useTranslation('auth')
   const register = useRegister()
 
   const form = useForm({
@@ -55,7 +57,7 @@ export function RegisterForm() {
             const error = fieldErrorMessage(field.state.meta.errors)
             return (
               <Field
-                label="Nombre"
+                label={t('register.name')}
                 htmlFor={field.name}
                 icon={<User aria-hidden="true" />}
                 error={error}
@@ -65,7 +67,7 @@ export function RegisterForm() {
                   name={field.name}
                   type="text"
                   autoComplete="given-name"
-                  placeholder="María"
+                  placeholder={t('register.namePlaceholder')}
                   hasIcon
                   value={field.state.value}
                   onBlur={field.handleBlur}
@@ -89,7 +91,7 @@ export function RegisterForm() {
             const error = fieldErrorMessage(field.state.meta.errors)
             return (
               <Field
-                label="Apellido"
+                label={t('register.lastName')}
                 htmlFor={field.name}
                 icon={<User aria-hidden="true" />}
                 error={error}
@@ -99,7 +101,7 @@ export function RegisterForm() {
                   name={field.name}
                   type="text"
                   autoComplete="family-name"
-                  placeholder="González"
+                  placeholder={t('register.lastNamePlaceholder')}
                   hasIcon
                   value={field.state.value}
                   onBlur={field.handleBlur}
@@ -124,7 +126,7 @@ export function RegisterForm() {
           const error = fieldErrorMessage(field.state.meta.errors)
           return (
             <Field
-              label="Correo corporativo"
+              label={t('register.email')}
               htmlFor={field.name}
               icon={<Mail aria-hidden="true" />}
               error={error}
@@ -134,7 +136,7 @@ export function RegisterForm() {
                 name={field.name}
                 type="email"
                 autoComplete="email"
-                placeholder="local@afterdark.io"
+                placeholder={t('register.emailPlaceholder')}
                 hasIcon
                 value={field.state.value}
                 onBlur={field.handleBlur}
@@ -159,7 +161,7 @@ export function RegisterForm() {
             const error = fieldErrorMessage(field.state.meta.errors)
             return (
               <Field
-                label="Contraseña"
+                label={t('register.password')}
                 htmlFor={field.name}
                 icon={<Lock aria-hidden="true" />}
                 error={error}
@@ -169,7 +171,7 @@ export function RegisterForm() {
                   name={field.name}
                   type="password"
                   autoComplete="new-password"
-                  placeholder="Mínimo 8 caracteres"
+                  placeholder={t('register.passwordPlaceholder')}
                   hasIcon
                   value={field.state.value}
                   onBlur={field.handleBlur}
@@ -193,7 +195,7 @@ export function RegisterForm() {
             const error = fieldErrorMessage(field.state.meta.errors)
             return (
               <Field
-                label="Confirmar contraseña"
+                label={t('register.confirmPassword')}
                 htmlFor={field.name}
                 icon={<Lock aria-hidden="true" />}
                 error={error}
@@ -203,7 +205,7 @@ export function RegisterForm() {
                   name={field.name}
                   type="password"
                   autoComplete="new-password"
-                  placeholder="Repetí la contraseña"
+                  placeholder={t('register.confirmPasswordPlaceholder')}
                   hasIcon
                   value={field.state.value}
                   onBlur={field.handleBlur}
@@ -235,7 +237,7 @@ export function RegisterForm() {
             loading={isSubmitting}
             disabled={isSubmitting}
           >
-            Crear cuenta
+            {isSubmitting ? t('register.submitting') : t('register.submit')}
           </Button>
         )}
       </form.Subscribe>

@@ -1,22 +1,23 @@
+import { useTranslation } from 'react-i18next'
 import { createFileRoute } from '@tanstack/react-router'
+import staffEs from '@afterdark/i18n/locales/staff/es.json'
 import { Skeleton } from '@afterdark/ui'
 import { StaffInvitationAcceptView } from '~/modules/staff/components/staff-invitation-accept-view'
 import { StaffInvitationErrorView } from '~/modules/staff/components/staff-invitation-error-view'
 import { STAFF_INVITATION_VALIDATION_REASON } from '~/modules/staff/constants/staff-invitation.constants'
-import { STAFF_COPY } from '~/modules/staff/constants/staff.copy'
 import { useStaffInvitationByLink } from '~/modules/staff/queries/use-staff-invitation-by-link'
 import { mapStaffInvitationLinkError } from '~/modules/staff/utils/staff-invitation-link.utils'
 
 export const Route = createFileRoute('/$name/$token')({
   head: () => ({
-    meta: [{ title: STAFF_COPY.invitation.accept.metaTitle }],
+    meta: [{ title: staffEs.invitation.accept.metaTitle }],
   }),
   component: StaffInvitationPage,
 })
 
 function StaffInvitationPage() {
+  const { t } = useTranslation('staff')
   const { name, token } = Route.useParams()
-  const copy = STAFF_COPY.invitation.accept
   const { data, isPending, isError, error } = useStaffInvitationByLink(name, token)
 
   if (isPending) {
@@ -32,27 +33,36 @@ function StaffInvitationPage() {
 
     if (reason === STAFF_INVITATION_VALIDATION_REASON.EXPIRED) {
       return (
-        <StaffInvitationErrorView title={copy.expiredTitle} description={copy.expiredDescription} />
+        <StaffInvitationErrorView
+          title={t('invitation.accept.expiredTitle')}
+          description={t('invitation.accept.expiredDescription')}
+        />
       )
     }
 
     if (reason === STAFF_INVITATION_VALIDATION_REASON.SLUG_MISMATCH) {
       return (
         <StaffInvitationErrorView
-          title={copy.slugMismatchTitle}
-          description={copy.slugMismatchDescription}
+          title={t('invitation.accept.slugMismatchTitle')}
+          description={t('invitation.accept.slugMismatchDescription')}
         />
       )
     }
 
     return (
-      <StaffInvitationErrorView title={copy.invalidTitle} description={copy.invalidDescription} />
+      <StaffInvitationErrorView
+        title={t('invitation.accept.invalidTitle')}
+        description={t('invitation.accept.invalidDescription')}
+      />
     )
   }
 
   if (!data) {
     return (
-      <StaffInvitationErrorView title={copy.invalidTitle} description={copy.invalidDescription} />
+      <StaffInvitationErrorView
+        title={t('invitation.accept.invalidTitle')}
+        description={t('invitation.accept.invalidDescription')}
+      />
     )
   }
 

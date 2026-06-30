@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import {
   Badge,
   Button,
@@ -18,7 +19,6 @@ import {
 import { TICKET_STATUS, type TicketStatus } from '@afterdark/types'
 import { EllipsisVertical, Eye, Pencil, Trash2 } from 'lucide-react'
 import { TicketViewDialog } from '~/modules/tickets/components/dialog-view-ticket'
-import { TICKETS_COPY } from '~/modules/tickets/constants/tickets.copy'
 import { TICKET_TAB, type TicketTab } from '~/modules/tickets/constants/tickets-tabs.constants'
 
 const ticketActionIconClassName = '!size-[20px] shrink-0'
@@ -173,21 +173,23 @@ function StockStatusCell({
   stockStatus,
   stockRemaining,
 }: Pick<TicketRecordItem, 'stockStatus' | 'stockRemaining'>) {
+  const { t } = useTranslation('tickets')
+
   if (stockStatus === TICKET_STOCK_STATUS.LIMITED) {
     return (
       <div className="flex items-center gap-2 text-sm text-error">
         <span className="size-1.5 shrink-0 rounded-full bg-error" aria-hidden="true" />
-        <span>Limitado ({stockRemaining ?? 0} restantes)</span>
+        <span>{t('table.stockLimited', { remaining: stockRemaining ?? 0 })}</span>
       </div>
     )
   }
 
   const label =
     stockStatus === TICKET_STOCK_STATUS.IN_STOCK
-      ? 'En stock'
+      ? t('table.stockInStock')
       : stockStatus === TICKET_STOCK_STATUS.AVAILABLE
-        ? 'Disponible'
-        : 'Agotado'
+        ? t('table.stockAvailable')
+        : t('table.stockSoldOut')
 
   return (
     <div className="flex items-center gap-2 text-sm text-ink-muted">
@@ -208,6 +210,8 @@ function TicketRecordRow({
   onEdit?: (record: TicketRecordItem) => void
   onDelete?: (record: TicketRecordItem) => void
 }) {
+  const { t } = useTranslation('tickets')
+
   return (
     <TableRow className="border-0">
       <TableCell className="p-6">
@@ -234,7 +238,10 @@ function TicketRecordRow({
               variant="ghost"
               size="icon"
               className="text-ink-muted hover:text-ink"
-              aria-label={`Acciones para ${record.ticketTypeLabel} en ${record.clubName}`}
+              aria-label={t('table.rowActionsLabel', {
+                type: record.ticketTypeLabel,
+                club: record.clubName,
+              })}
             >
               <EllipsisVertical aria-hidden="true" />
             </Button>
@@ -245,21 +252,21 @@ function TicketRecordRow({
               onClick={() => onEdit?.(record)}
             >
               <Pencil aria-hidden="true" className={ticketActionIconClassName} />
-              Editar
+              {t('table.actionEdit')}
             </DropdownMenuItem>
             <DropdownMenuItem
               className={ticketActionItemClassName}
               onClick={() => onView?.(record)}
             >
               <Eye aria-hidden="true" className={ticketActionIconClassName} />
-              Ver
+              {t('table.actionView')}
             </DropdownMenuItem>
             <DropdownMenuItem
               className={cn(ticketActionItemClassName, 'text-error focus:text-error')}
               onClick={() => onDelete?.(record)}
             >
               <Trash2 aria-hidden="true" className={cn(ticketActionIconClassName, 'text-error')} />
-              Borrar
+              {t('table.actionDelete')}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -279,11 +286,12 @@ export function TicketRecords({
   onEdit?: (record: TicketRecordItem) => void
   onDelete?: (record: TicketRecordItem) => void
 }) {
+  const { t } = useTranslation('tickets')
   const [viewDialogOpen, setViewDialogOpen] = useState(false)
   const [recordToView, setRecordToView] = useState<TicketRecordItem | null>(null)
 
-  const copy = TICKETS_COPY.table
-  const registrySubtitle = records.length > 0 ? copy.registryCount(records.length) : null
+  const registrySubtitle =
+    records.length > 0 ? t('table.registryCount', { count: records.length }) : null
 
   const handleViewRecord = (record: TicketRecordItem) => {
     setRecordToView(record)
@@ -314,7 +322,7 @@ export function TicketRecords({
               id="ticket-inventory-heading"
               className="font-heading text-lg font-semibold text-ink sm:text-xl"
             >
-              {copy.title}
+              {t('table.title')}
             </h2>
             {registrySubtitle ? (
               <p className="mt-1 text-sm text-ink-muted">{registrySubtitle}</p>
@@ -325,12 +333,14 @@ export function TicketRecords({
         {records.length === 0 ? (
           <div className="px-6 py-12 text-center">
             <p className="font-heading text-base font-semibold text-ink">
-              {inventoryTab === TICKET_TAB.ACTIVE ? copy.emptyActiveTitle : copy.emptyArchivedTitle}
+              {inventoryTab === TICKET_TAB.ACTIVE
+                ? t('table.emptyActiveTitle')
+                : t('table.emptyArchivedTitle')}
             </p>
             <p className="mx-auto mt-2 max-w-sm text-sm text-ink-muted">
               {inventoryTab === TICKET_TAB.ACTIVE
-                ? copy.emptyActiveDescription
-                : copy.emptyArchivedDescription}
+                ? t('table.emptyActiveDescription')
+                : t('table.emptyArchivedDescription')}
             </p>
           </div>
         ) : (
@@ -338,13 +348,13 @@ export function TicketRecords({
             <Table variant="compact" className="min-w-[960px]">
               <TableHeader>
                 <TableRow>
-                  <TableHead className="p-6">{copy.club}</TableHead>
-                  <TableHead className="p-6">{copy.ticketType}</TableHead>
-                  <TableHead className="p-6">{copy.price}</TableHead>
-                  <TableHead className="p-6">{copy.stockStatus}</TableHead>
-                  <TableHead className="p-6">{copy.totalSold}</TableHead>
-                  <TableHead className="p-6">{copy.revenue}</TableHead>
-                  <TableHead className="p-6 text-right">{copy.actions}</TableHead>
+                  <TableHead className="p-6">{t('table.club')}</TableHead>
+                  <TableHead className="p-6">{t('table.ticketType')}</TableHead>
+                  <TableHead className="p-6">{t('table.price')}</TableHead>
+                  <TableHead className="p-6">{t('table.stockStatus')}</TableHead>
+                  <TableHead className="p-6">{t('table.totalSold')}</TableHead>
+                  <TableHead className="p-6">{t('table.revenue')}</TableHead>
+                  <TableHead className="p-6 text-right">{t('table.actions')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>

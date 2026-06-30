@@ -1,10 +1,13 @@
 import type { ReactNode } from 'react'
+import { useTranslation } from 'react-i18next'
 
 interface AuthShellProps {
   children: ReactNode
 }
 
 export function AuthShell({ children }: AuthShellProps) {
+  const { t } = useTranslation('dashboard')
+
   return (
     <div className="flex min-h-dvh w-full items-center justify-center bg-background px-6 py-10 text-on-surface">
       <div
@@ -23,9 +26,7 @@ export function AuthShell({ children }: AuthShellProps) {
           <h1 className="font-display text-3xl font-bold tracking-tight text-on-surface md:text-4xl">
             Afterdark
           </h1>
-          <p className="mt-2 max-w-xs text-sm text-on-surface-variant">
-            Panel de administración para locales y eventos
-          </p>
+          <p className="mt-2 max-w-xs text-sm text-on-surface-variant">{t('shell.tagline')}</p>
         </header>
 
         {children}

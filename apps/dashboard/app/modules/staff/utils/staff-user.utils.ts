@@ -1,6 +1,3 @@
-import type { UserRole } from '@afterdark/types'
-import { STAFF_COPY } from '~/modules/staff/constants/staff.copy'
-
 function getFirstGrapheme(value: string): string {
   const trimmed = value.trim()
   if (!trimmed) return ''
@@ -14,10 +11,6 @@ export function getStaffUserInitials(fullName: string): string {
   const initials = `${first}${last}`.toLocaleUpperCase('es-AR')
 
   return initials || '?'
-}
-
-export function getStaffUserRoleLabel(role: UserRole): string {
-  return STAFF_COPY.userRoles[role]
 }
 
 export function getStaffUserDisplayNameFromEmail(email: string): string {

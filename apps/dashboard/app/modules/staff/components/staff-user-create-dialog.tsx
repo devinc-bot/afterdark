@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import {
   Button,
   Dialog,
@@ -13,13 +14,13 @@ import {
   StaffUserForm,
   type StaffInvitationSuccess,
 } from '~/modules/staff/components/staff-user-form'
-import { STAFF_COPY } from '~/modules/staff/constants/staff.copy'
 
 type StaffUserCreateDialogProps = {
   onInviteSuccess: () => void
 }
 
 export function StaffUserCreateDialog({ onInviteSuccess }: StaffUserCreateDialogProps) {
+  const { t } = useTranslation('staff')
   const [open, setOpen] = useState(false)
   const [invitation, setInvitation] = useState<StaffInvitationSuccess | null>(null)
 
@@ -48,7 +49,7 @@ export function StaffUserCreateDialog({ onInviteSuccess }: StaffUserCreateDialog
         iconLeft={<UserPlus aria-hidden="true" />}
         onClick={() => setOpen(true)}
       >
-        {STAFF_COPY.form.trigger}
+        {t('form.trigger')}
       </Button>
 
       <Dialog open={open} onOpenChange={handleOpenChange}>
@@ -58,8 +59,8 @@ export function StaffUserCreateDialog({ onInviteSuccess }: StaffUserCreateDialog
           ) : (
             <>
               <DialogHeader className="shrink-0 border-b border-hairline bg-surface-container-high px-8 pb-6 pt-8">
-                <DialogTitle>{STAFF_COPY.form.title}</DialogTitle>
-                <DialogDescription>{STAFF_COPY.form.description}</DialogDescription>
+                <DialogTitle>{t('form.title')}</DialogTitle>
+                <DialogDescription>{t('form.description')}</DialogDescription>
               </DialogHeader>
 
               {open ? (

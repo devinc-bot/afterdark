@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import {
   Button,
   Dialog,
@@ -7,7 +8,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@afterdark/ui'
-import { STAFF_COPY } from '~/modules/staff/constants/staff.copy'
 import type { StaffUserRecord } from '~/modules/staff/types/staff-user-record'
 
 export type StaffUserDeactivateDialogProps = {
@@ -23,6 +23,8 @@ export function StaffUserDeactivateDialog({
   onOpenChange,
   onConfirm,
 }: StaffUserDeactivateDialogProps) {
+  const { t } = useTranslation('staff')
+
   const handleConfirm = () => {
     if (!record) return
     onConfirm(record)
@@ -33,19 +35,19 @@ export function StaffUserDeactivateDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent variant="destructive" size="sm">
         <DialogHeader>
-          <DialogTitle>{STAFF_COPY.deactivate.title}</DialogTitle>
+          <DialogTitle>{t('deactivate.title')}</DialogTitle>
           <DialogDescription>
-            {STAFF_COPY.deactivate.descriptionPrefix}{' '}
+            {t('deactivate.descriptionPrefix')}{' '}
             <span className="font-semibold text-ink">{record?.name}</span>
-            {STAFF_COPY.deactivate.descriptionSuffix}
+            {t('deactivate.descriptionSuffix')}
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
           <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-            {STAFF_COPY.deactivate.cancel}
+            {t('deactivate.cancel')}
           </Button>
           <Button type="button" variant="destructive" disabled={!record} onClick={handleConfirm}>
-            {STAFF_COPY.deactivate.confirm}
+            {t('deactivate.confirm')}
           </Button>
         </DialogFooter>
       </DialogContent>

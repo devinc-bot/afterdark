@@ -1,4 +1,5 @@
 import { useCallback, useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import {
   Avatar,
   AvatarFallback,
@@ -19,17 +20,16 @@ import {
   TableHeader,
   TableRow,
 } from '@afterdark/ui'
-import { STAFF_STATUS, type StaffStatus } from '@afterdark/types'
+import { STAFF_STATUS, type StaffStatus, type UserRole } from '@afterdark/types'
 import { EllipsisVertical, Pencil } from 'lucide-react'
 import { StaffUserDeactivateDialog } from '~/modules/staff/components/staff-user-deactivate-dialog'
 import { StaffUserRecordsToolbar } from '~/modules/staff/components/staff-user-records-toolbar'
-import { STAFF_COPY } from '~/modules/staff/constants/staff.copy'
 import type { StaffUserRecord } from '~/modules/staff/types/staff-user-record'
 import {
   hasActiveStaffUserSearch,
   searchStaffUserRecords,
 } from '~/modules/staff/utils/staff-user-records-filter.utils'
-import { getStaffUserInitials, getStaffUserRoleLabel } from '~/modules/staff/utils/staff-user.utils'
+import { getStaffUserInitials } from '~/modules/staff/utils/staff-user.utils'
 
 type StaffUserRecordsProps = {
   records: StaffUserRecord[]
@@ -68,11 +68,18 @@ function StaffUserIdentityCell({ record }: { record: StaffUserRecord }) {
   )
 }
 
-function StaffUserRoleCell({ role }: { role: StaffUserRecord['role'] }) {
-  return <span className="text-sm text-ink-muted">{getStaffUserRoleLabel(role)}</span>
+function StaffUserRoleCell({ role }: { role: UserRole }) {
+  const { t } = useTranslation('staff')
+  return (
+    <span className="text-sm text-ink-muted">
+      {t(`userRoles.${role}` as `userRoles.${UserRole}`)}
+    </span>
+  )
 }
 
 function StaffUserRecordActions({ record }: { record: StaffUserRecord }) {
+  const { t } = useTranslation('staff')
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -81,7 +88,7 @@ function StaffUserRecordActions({ record }: { record: StaffUserRecord }) {
           variant="ghost"
           size="icon"
           className="text-ink-muted hover:text-ink"
-          aria-label={`${STAFF_COPY.table.actions} para ${record.name}`}
+          aria-label={`${t('table.actions')} para ${record.name}`}
         >
           <EllipsisVertical aria-hidden="true" />
         </Button>
@@ -90,10 +97,10 @@ function StaffUserRecordActions({ record }: { record: StaffUserRecord }) {
         <DropdownMenuItem
           className={staffActionItemClassName}
           disabled
-          title={STAFF_COPY.table.editUnavailableTooltip}
+          title={t('table.editUnavailableTooltip')}
         >
           <Pencil aria-hidden="true" className={staffActionIconClassName} />
-          Editar
+          {t('table.edit')}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
@@ -111,6 +118,7 @@ function StaffUserStatusControl({
   onDeactivateRequest: (record: StaffUserRecord) => void
   statusControlsDisabled?: boolean
 }) {
+  const { t } = useTranslation('staff')
   const isActive = record.status === STAFF_STATUS.ACTIVE
 
   return (
@@ -128,12 +136,12 @@ function StaffUserStatusControl({
         }}
         aria-label={
           isActive
-            ? `${STAFF_COPY.table.deactivateAccess} ${record.name}`
-            : `${STAFF_COPY.table.activateAccess} ${record.name}`
+            ? `${t('table.deactivateAccess')} ${record.name}`
+            : `${t('table.activateAccess')} ${record.name}`
         }
       />
       <span className="text-sm text-ink-muted">
-        {isActive ? STAFF_COPY.table.statusActive : STAFF_COPY.table.statusInactive}
+        {isActive ? t('table.statusActive') : t('table.statusInactive')}
       </span>
     </div>
   )
@@ -184,6 +192,7 @@ export function StaffUserRecords({
   statusControlsDisabled = false,
   onStatusChange,
 }: StaffUserRecordsProps) {
+  const { t } = useTranslation('staff')
   const [searchQuery, setSearchQuery] = useState('')
   const [deactivateTarget, setDeactivateTarget] = useState<StaffUserRecord | null>(null)
   const [deactivateDialogOpen, setDeactivateDialogOpen] = useState(false)
@@ -226,8 +235,11 @@ export function StaffUserRecords({
   const registrySubtitle =
     records.length > 0
       ? hasActiveSearch
-        ? STAFF_COPY.table.showingFiltered(visibleRecords.length, records.length)
-        : STAFF_COPY.table.registryCount(records.length)
+        ? t('table.showingFiltered', {
+            visible: visibleRecords.length,
+            total: records.length,
+          })
+        : t('table.registryCount', { count: records.length })
       : null
 
   return (
@@ -238,7 +250,7 @@ export function StaffUserRecords({
             id="staff-user-records-heading"
             className="font-heading text-lg font-semibold text-ink sm:text-xl"
           >
-            {STAFF_COPY.table.title}
+            {t('table.title')}
           </h2>
           {registrySubtitle ? (
             <p className="mt-1 text-sm text-ink-muted">{registrySubtitle}</p>
@@ -257,11 +269,9 @@ export function StaffUserRecords({
 
       {records.length === 0 ? (
         <div className="px-6 py-12 text-center">
-          <p className="font-heading text-base font-semibold text-ink">
-            {STAFF_COPY.table.emptyTitle}
-          </p>
+          <p className="font-heading text-base font-semibold text-ink">{t('table.emptyTitle')}</p>
           <p className="mx-auto mt-2 max-w-sm text-sm text-ink-muted">
-            {STAFF_COPY.table.emptyDescription}
+            {t('table.emptyDescription')}
           </p>
         </div>
       ) : (
@@ -269,10 +279,10 @@ export function StaffUserRecords({
           {visibleRecords.length === 0 ? (
             <div className="px-6 py-12 text-center">
               <p className="font-heading text-base font-semibold text-ink">
-                {STAFF_COPY.table.noResultsTitle}
+                {t('table.noResultsTitle')}
               </p>
               <p className="mx-auto mt-2 max-w-sm text-sm text-ink-muted">
-                {STAFF_COPY.table.noResultsDescription}
+                {t('table.noResultsDescription')}
               </p>
               <Button
                 type="button"
@@ -281,7 +291,7 @@ export function StaffUserRecords({
                 className="mt-4"
                 onClick={handleClearSearch}
               >
-                {STAFF_COPY.table.search.clear}
+                {t('table.search.clear')}
               </Button>
             </div>
           ) : null}
@@ -291,12 +301,12 @@ export function StaffUserRecords({
               <Table variant="compact">
                 <TableHeader>
                   <TableRow>
-                    <TableHead className="p-6">{STAFF_COPY.table.name}</TableHead>
-                    <TableHead className="p-6">{STAFF_COPY.table.venue}</TableHead>
-                    <TableHead className="p-6">{STAFF_COPY.table.role}</TableHead>
-                    <TableHead className="p-6">{STAFF_COPY.table.lastActive}</TableHead>
-                    <TableHead className="p-6">{STAFF_COPY.table.status}</TableHead>
-                    <TableHead className="text-right p-6">{STAFF_COPY.table.actions}</TableHead>
+                    <TableHead className="p-6">{t('table.name')}</TableHead>
+                    <TableHead className="p-6">{t('table.venue')}</TableHead>
+                    <TableHead className="p-6">{t('table.role')}</TableHead>
+                    <TableHead className="p-6">{t('table.lastActive')}</TableHead>
+                    <TableHead className="p-6">{t('table.status')}</TableHead>
+                    <TableHead className="text-right p-6">{t('table.actions')}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
