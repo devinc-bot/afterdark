@@ -9,6 +9,14 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  getPaginationItems,
+  Pagination,
+  PaginationButton,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationNext,
+  PaginationPrevious,
   Table,
   TableBody,
   TableCell,
@@ -16,7 +24,8 @@ import {
   TableHeader,
   TableRow,
 } from '@afterdark/ui'
-import { TICKET_STATUS, type TicketStatus } from '@afterdark/types'
+import { TICKET_STATUS, TICKET_TYPE, type TicketStatus, type TicketType } from '@afterdark/types'
+import type { TFunction } from 'i18next'
 import { EllipsisVertical, Eye, Pencil, Trash2 } from 'lucide-react'
 import { TicketViewDialog } from '~/modules/tickets/components/dialog-view-ticket'
 import { TICKET_TAB, type TicketTab } from '~/modules/tickets/constants/tickets-tabs.constants'
@@ -24,25 +33,16 @@ import { TICKET_TAB, type TicketTab } from '~/modules/tickets/constants/tickets-
 const ticketActionIconClassName = '!size-[20px] shrink-0'
 const ticketActionItemClassName = 'gap-3 py-2.5 text-base'
 
-export const TICKET_STOCK_STATUS = {
-  LIMITED: 'limited',
-  IN_STOCK: 'in_stock',
-  AVAILABLE: 'available',
-  SOLD_OUT: 'sold_out',
-} as const
-
-export type TicketStockStatus = (typeof TICKET_STOCK_STATUS)[keyof typeof TICKET_STOCK_STATUS]
-
 export type TicketRecordItem = {
   id: string
+  name: string
   clubName: string
   clubInitials: string
   clubAvatarClassName: string
-  ticketTypeLabel: string
+  ticketType: TicketType
   ticketTypeTone?: 'default' | 'primary' | 'tertiary'
   price: number
-  stockStatus: TicketStockStatus
-  stockRemaining?: number
+  quantity: number
   totalSold: number
   revenue: number
   status: TicketStatus
@@ -51,63 +51,67 @@ export type TicketRecordItem = {
 export const TICKET_RECORDS_MOCK: TicketRecordItem[] = [
   {
     id: '1',
+    name: 'Ultra VIP Pass',
     clubName: 'Neon Vault',
     clubInitials: 'NV',
     clubAvatarClassName: 'border-primary/40 bg-primary/20 text-primary',
-    ticketTypeLabel: 'Ultra VIP Pass',
+    ticketType: TICKET_TYPE.VIP,
     ticketTypeTone: 'primary',
     price: 450,
-    stockStatus: TICKET_STOCK_STATUS.LIMITED,
-    stockRemaining: 12,
+    quantity: 12,
     totalSold: 1402,
     revenue: 630_900,
     status: TICKET_STATUS.ACTIVE,
   },
   {
     id: '2',
+    name: 'General Entry',
     clubName: 'Cyber Pulse',
     clubInitials: 'CP',
     clubAvatarClassName: 'border-hairline-strong bg-surface-container-high text-ink-muted',
-    ticketTypeLabel: 'General Entry',
+    ticketType: TICKET_TYPE.GENERAL,
     price: 45,
-    stockStatus: TICKET_STOCK_STATUS.IN_STOCK,
+    quantity: 500,
     totalSold: 850,
     revenue: 38_250,
     status: TICKET_STATUS.ACTIVE,
   },
   {
     id: '3',
+    name: 'Bottle Service',
     clubName: 'The Underworld',
     clubInitials: 'UW',
     clubAvatarClassName: 'border-tertiary/40 bg-tertiary/15 text-tertiary',
-    ticketTypeLabel: 'Bottle Service',
-    ticketTypeTone: 'tertiary',
+    ticketType: TICKET_TYPE.VIP,
+    ticketTypeTone: 'primary',
     price: 1200,
-    stockStatus: TICKET_STOCK_STATUS.AVAILABLE,
+    quantity: 80,
     totalSold: 312,
     revenue: 374_400,
     status: TICKET_STATUS.ACTIVE,
   },
   {
     id: '4',
+    name: 'Early Bird',
     clubName: 'Echo Chamber',
     clubInitials: 'EC',
     clubAvatarClassName: 'border-outline-variant/60 bg-surface-container text-ink-muted',
-    ticketTypeLabel: 'Early Bird',
+    ticketType: TICKET_TYPE.GENERAL,
     price: 25,
-    stockStatus: TICKET_STOCK_STATUS.SOLD_OUT,
+    quantity: 0,
     totalSold: 500,
     revenue: 12_500,
     status: TICKET_STATUS.ACTIVE,
   },
   {
     id: '5',
+    name: 'VIP Backstage',
     clubName: 'Velvet Room',
     clubInitials: 'VR',
     clubAvatarClassName: 'border-secondary/50 bg-secondary/20 text-secondary',
-    ticketTypeLabel: 'VIP Backstage',
+    ticketType: TICKET_TYPE.VIP,
     price: 150,
-    stockStatus: TICKET_STOCK_STATUS.IN_STOCK,
+    quantity: 200,
     totalSold: 145,
     revenue: 21_750,
     status: TICKET_STATUS.INACTIVE,
@@ -117,10 +121,19 @@ export const TICKET_RECORDS_MOCK: TicketRecordItem[] = [
 function formatCurrency(value: number): string {
   return new Intl.NumberFormat('es-AR', {
     style: 'currency',
-    currency: 'USD',
+    currency: 'ARS',
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   }).format(value)
+}
+
+export function getTicketTypeLabel(type: TicketType, t: TFunction<'tickets'>): string {
+  return type === TICKET_TYPE.VIP ? t('form.typeVip') : t('form.typeGeneral')
+}
+
+function getTicketTypeTone(type: TicketType): TicketRecordItem['ticketTypeTone'] {
+  if (type === TICKET_TYPE.VIP) return 'primary'
+  return 'default'
 }
 
 function formatSoldCount(value: number): string {
@@ -169,34 +182,8 @@ function TicketTypeBadge({
   )
 }
 
-function StockStatusCell({
-  stockStatus,
-  stockRemaining,
-}: Pick<TicketRecordItem, 'stockStatus' | 'stockRemaining'>) {
-  const { t } = useTranslation('tickets')
-
-  if (stockStatus === TICKET_STOCK_STATUS.LIMITED) {
-    return (
-      <div className="flex items-center gap-2 text-sm text-error">
-        <span className="size-1.5 shrink-0 rounded-full bg-error" aria-hidden="true" />
-        <span>{t('table.stockLimited', { remaining: stockRemaining ?? 0 })}</span>
-      </div>
-    )
-  }
-
-  const label =
-    stockStatus === TICKET_STOCK_STATUS.IN_STOCK
-      ? t('table.stockInStock')
-      : stockStatus === TICKET_STOCK_STATUS.AVAILABLE
-        ? t('table.stockAvailable')
-        : t('table.stockSoldOut')
-
-  return (
-    <div className="flex items-center gap-2 text-sm text-ink-muted">
-      <span className="size-1.5 shrink-0 rounded-full bg-ink-muted-soft" aria-hidden="true" />
-      <span>{label}</span>
-    </div>
-  )
+function formatQuantity(value: number): string {
+  return value.toLocaleString('es-AR')
 }
 
 function TicketRecordRow({
@@ -212,6 +199,8 @@ function TicketRecordRow({
 }) {
   const { t } = useTranslation('tickets')
 
+  const ticketTypeLabel = getTicketTypeLabel(record.ticketType, t)
+
   return (
     <TableRow className="border-0">
       <TableCell className="p-6">
@@ -222,12 +211,13 @@ function TicketRecordRow({
         />
       </TableCell>
       <TableCell className="p-6">
-        <TicketTypeBadge label={record.ticketTypeLabel} tone={record.ticketTypeTone} />
+        <TicketTypeBadge
+          label={ticketTypeLabel}
+          tone={record.ticketTypeTone ?? getTicketTypeTone(record.ticketType)}
+        />
       </TableCell>
       <TableCell className="p-6 text-ink">{formatCurrency(record.price)}</TableCell>
-      <TableCell className="p-6">
-        <StockStatusCell stockStatus={record.stockStatus} stockRemaining={record.stockRemaining} />
-      </TableCell>
+      <TableCell className="p-6 text-ink">{formatQuantity(record.quantity)}</TableCell>
       <TableCell className="p-6 text-ink">{formatSoldCount(record.totalSold)}</TableCell>
       <TableCell className="p-6 font-semibold text-ink">{formatCurrency(record.revenue)}</TableCell>
       <TableCell className="p-6 text-right">
@@ -239,7 +229,7 @@ function TicketRecordRow({
               size="icon"
               className="text-ink-muted hover:text-ink"
               aria-label={t('table.rowActionsLabel', {
-                type: record.ticketTypeLabel,
+                type: ticketTypeLabel,
                 club: record.clubName,
               })}
             >
@@ -275,23 +265,87 @@ function TicketRecordRow({
   )
 }
 
+export type TicketRecordsPagination = {
+  page: number
+  totalPages: number
+  total: number
+  onPageChange: (page: number) => void
+}
+
+function TicketRecordsPaginationBar({
+  pagination,
+  previousLabel,
+  nextLabel,
+}: {
+  pagination: TicketRecordsPagination
+  previousLabel: string
+  nextLabel: string
+}) {
+  const { page, totalPages, onPageChange } = pagination
+
+  if (totalPages <= 1) return null
+
+  const items = getPaginationItems(page, totalPages)
+
+  return (
+    <div className="border-t border-hairline px-4 py-4 sm:px-6">
+      <Pagination aria-label="Paginación de tickets">
+        <PaginationContent>
+          <PaginationItem>
+            <PaginationPrevious
+              text={previousLabel}
+              disabled={page <= 1}
+              onClick={() => onPageChange(page - 1)}
+            />
+          </PaginationItem>
+
+          {items.map((item, index) =>
+            item === 'ellipsis' ? (
+              <PaginationItem key={`ellipsis-${index}`}>
+                <PaginationEllipsis />
+              </PaginationItem>
+            ) : (
+              <PaginationItem key={item}>
+                <PaginationButton isActive={item === page} onClick={() => onPageChange(item)}>
+                  {item}
+                </PaginationButton>
+              </PaginationItem>
+            )
+          )}
+
+          <PaginationItem>
+            <PaginationNext
+              text={nextLabel}
+              disabled={page >= totalPages}
+              onClick={() => onPageChange(page + 1)}
+            />
+          </PaginationItem>
+        </PaginationContent>
+      </Pagination>
+    </div>
+  )
+}
+
 export function TicketRecords({
   records,
   inventoryTab,
   onEdit,
   onDelete,
+  pagination,
 }: {
   records: TicketRecordItem[]
   inventoryTab: TicketTab
   onEdit?: (record: TicketRecordItem) => void
   onDelete?: (record: TicketRecordItem) => void
+  pagination?: TicketRecordsPagination
 }) {
   const { t } = useTranslation('tickets')
   const [viewDialogOpen, setViewDialogOpen] = useState(false)
   const [recordToView, setRecordToView] = useState<TicketRecordItem | null>(null)
 
+  const registryCount = pagination?.total ?? records.length
   const registrySubtitle =
-    records.length > 0 ? t('table.registryCount', { count: records.length }) : null
+    registryCount > 0 ? t('table.registryCount', { count: registryCount }) : null
 
   const handleViewRecord = (record: TicketRecordItem) => {
     setRecordToView(record)
@@ -335,12 +389,12 @@ export function TicketRecords({
             <p className="font-heading text-base font-semibold text-ink">
               {inventoryTab === TICKET_TAB.ACTIVE
                 ? t('table.emptyActiveTitle')
-                : t('table.emptyArchivedTitle')}
+                : t('table.emptyInactiveTitle')}
             </p>
             <p className="mx-auto mt-2 max-w-sm text-sm text-ink-muted">
               {inventoryTab === TICKET_TAB.ACTIVE
                 ? t('table.emptyActiveDescription')
-                : t('table.emptyArchivedDescription')}
+                : t('table.emptyInactiveDescription')}
             </p>
           </div>
         ) : (
@@ -351,7 +405,7 @@ export function TicketRecords({
                   <TableHead className="p-6">{t('table.club')}</TableHead>
                   <TableHead className="p-6">{t('table.ticketType')}</TableHead>
                   <TableHead className="p-6">{t('table.price')}</TableHead>
-                  <TableHead className="p-6">{t('table.stockStatus')}</TableHead>
+                  <TableHead className="p-6">{t('table.quantity')}</TableHead>
                   <TableHead className="p-6">{t('table.totalSold')}</TableHead>
                   <TableHead className="p-6">{t('table.revenue')}</TableHead>
                   <TableHead className="p-6 text-right">{t('table.actions')}</TableHead>
@@ -369,6 +423,13 @@ export function TicketRecords({
                 ))}
               </TableBody>
             </Table>
+            {pagination ? (
+              <TicketRecordsPaginationBar
+                pagination={pagination}
+                previousLabel={t('pagination.previous')}
+                nextLabel={t('pagination.next')}
+              />
+            ) : null}
           </Card>
         )}
       </section>

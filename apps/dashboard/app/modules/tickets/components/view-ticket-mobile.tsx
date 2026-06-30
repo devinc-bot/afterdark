@@ -39,7 +39,7 @@ function isTicketPreviewReady(ticket?: MobileTicketTemplate | null): boolean {
 function formatTicketPrice(value: number): string {
   return new Intl.NumberFormat('es-AR', {
     style: 'currency',
-    currency: 'USD',
+    currency: 'ARS',
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   }).format(value)

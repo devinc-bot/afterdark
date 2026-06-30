@@ -7,7 +7,7 @@ export const TICKETS_COPY = {
   },
   tabs: {
     active: 'Activos',
-    archived: 'Archivados',
+    inactive: 'Inactivos',
   },
   table: {
     title: 'Detalle del inventario de tickets',
@@ -16,15 +16,14 @@ export const TICKETS_COPY = {
     club: 'Club nocturno',
     ticketType: 'Tipo de entrada',
     price: 'Precio',
-    stockStatus: 'Estado de stock',
+    quantity: 'Cantidad de tickets',
     totalSold: 'Total vendido',
     revenue: 'Ingresos',
     actions: 'Acciones',
     emptyActiveTitle: 'No hay tickets activos',
     emptyActiveDescription:
       'Los tickets activos aparecerán acá cuando estén publicados para la venta.',
-    emptyArchivedTitle: 'No hay tickets archivados',
-    emptyArchivedDescription:
-      'Los tickets archivados aparecerán acá cuando desactives una entrada.',
+    emptyInactiveTitle: 'No hay tickets inactivos',
+    emptyInactiveDescription: 'Los tickets inactivos aparecerán acá cuando desactives una entrada.',
   },
 } as const

@@ -55,5 +55,15 @@
   "owner": {
     "NOT_FOUND": "Propietario no encontrado.",
     "UPDATE_FAILED": "No se pudo actualizar el perfil."
+  },
+  "ticket": {
+    "NOT_FOUND": "Ticket no encontrado.",
+    "FORBIDDEN": "No tenés permiso para este ticket.",
+    "CLUB_NOT_FOUND": "Club no encontrado.",
+    "CREATE_FAILED": "No se pudo crear el ticket.",
+    "UPDATE_FAILED": "No se pudo actualizar el ticket.",
+    "DELETE_FAILED": "No se pudo eliminar el ticket.",
+    "LIST_FAILED": "No se pudo cargar los tickets.",
+    "HAS_PAYMENTS": "No se puede eliminar un ticket con ventas registradas."
   }
 }
