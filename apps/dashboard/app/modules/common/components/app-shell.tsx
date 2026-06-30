@@ -87,7 +87,7 @@ function resolveMobileHeaderTitle(
   return match?.label ?? fallback
 }
 
-const navMenuButtonClassName = 'gap-3 rounded-none border-l border-l-hairline'
+const navMenuButtonClassName = 'gap-3 rounded-none'
 
 const navMenuButtonClassNameActive = 'gap-3 rounded-none border-l-2 border-primary'
 
