@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import { createFileRoute } from '@tanstack/react-router'
-import staffEs from '@afterdark/i18n/locales/staff/es.json'
+import { usePageTitle } from '~/modules/common/hooks/use-page-title'
 import { Skeleton } from '@afterdark/ui'
 import { StaffInvitationAcceptView } from '~/modules/staff/components/staff-invitation-accept-view'
 import { StaffInvitationErrorView } from '~/modules/staff/components/staff-invitation-error-view'
@@ -9,14 +9,13 @@ import { useStaffInvitationByLink } from '~/modules/staff/queries/use-staff-invi
 import { mapStaffInvitationLinkError } from '~/modules/staff/utils/staff-invitation-link.utils'
 
 export const Route = createFileRoute('/$name/$token')({
-  head: () => ({
-    meta: [{ title: staffEs.invitation.accept.metaTitle }],
-  }),
   component: StaffInvitationPage,
 })
 
 function StaffInvitationPage() {
-  const { t } = useTranslation('staff')
+  const { t } = useTranslation('staff', { useSuspense: false })
+
+  usePageTitle('staff', 'invitation.accept.metaTitle')
   const { name, token } = Route.useParams()
   const { data, isPending, isError, error } = useStaffInvitationByLink(name, token)
 

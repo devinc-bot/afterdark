@@ -6,12 +6,13 @@ import { CLUB_FORM_MODE } from '~/modules/club-management/components/club-form'
 import { ClubFormPage } from '~/modules/club-management/components/club-form-page'
 import { clubResponseToFormValues } from '~/modules/club-management/utils/club-form.mapper'
 import { DASHBOARD_ROUTES } from '~/modules/common/constants/routes'
+import { PageLayout } from '~/modules/common/components/page-layout'
 
-type ClubEditPageProps = {
+type ClubEditViewProps = {
   club: ClubResponse
 }
 
-export function ClubEditPage({ club }: ClubEditPageProps) {
+export function ClubEditView({ club }: ClubEditViewProps) {
   const { t } = useTranslation('clubs')
 
   return (
@@ -25,18 +26,16 @@ export function ClubEditPage({ club }: ClubEditPageProps) {
   )
 }
 
-export function ClubEditNotFound() {
+export function ClubEditNotFoundView() {
   const { t } = useTranslation('clubs')
 
   return (
-    <main className="bg-background px-4 py-6 sm:px-8 sm:py-8">
-      <div className="mx-auto flex max-w-lg flex-col items-center gap-4 py-16 text-center">
-        <h1 className="font-heading text-xl font-semibold text-ink">{t('notFound.title')}</h1>
-        <p className="text-sm text-ink-muted">{t('notFound.description')}</p>
+    <PageLayout title={t('notFound.title')} description={t('notFound.description')}>
+      <div>
         <Button asChild variant="outline">
           <Link to={DASHBOARD_ROUTES.clubManagement()}>{t('formPage.back')}</Link>
         </Button>
       </div>
-    </main>
+    </PageLayout>
   )
 }

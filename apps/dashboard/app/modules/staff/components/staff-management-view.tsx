@@ -7,6 +7,7 @@ import { StaffInvitationsTab } from '~/modules/staff/components/staff-invitation
 import { StaffPersonnelTab } from '~/modules/staff/components/staff-personnel-tab'
 import { StaffUserCreateDialog } from '~/modules/staff/components/staff-user-create-dialog'
 import { STAFF_TAB } from '~/modules/staff/constants/staff-tabs.constants'
+import { PageLayout } from '~/modules/common/components/page-layout'
 
 export function StaffManagementView() {
   const { t } = useTranslation('staff')
@@ -19,38 +20,29 @@ export function StaffManagementView() {
   }, [queryClient])
 
   return (
-    <main className="bg-background px-4 py-6 sm:px-8 sm:py-8">
-      <div className="mx-auto flex max-w-6xl flex-col gap-6 sm:gap-8">
-        <header className="max-w-2xl">
-          <h1 className="text-balance font-heading text-2xl font-bold text-ink sm:text-3xl">
-            {t('page.title')}
-          </h1>
-          <p className="mt-2 text-pretty text-base text-ink-muted">{t('page.description')}</p>
-        </header>
+    <PageLayout title={t('page.title')} description={t('page.description')}>
+      <Tabs value={activeTab} onValueChange={setActiveTab}>
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <TabsList variant="line" className="flex w-full gap-4 sm:w-auto">
+            <TabsTrigger variant="line" value={STAFF_TAB.STAFF}>
+              {t('tabs.staff')}
+            </TabsTrigger>
+            <TabsTrigger variant="line" value={STAFF_TAB.INVITATIONS}>
+              {t('tabs.invitations')}
+            </TabsTrigger>
+          </TabsList>
 
-        <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <TabsList variant="line" className="flex w-full gap-4 sm:w-auto">
-              <TabsTrigger variant="line" value={STAFF_TAB.STAFF}>
-                {t('tabs.staff')}
-              </TabsTrigger>
-              <TabsTrigger variant="line" value={STAFF_TAB.INVITATIONS}>
-                {t('tabs.invitations')}
-              </TabsTrigger>
-            </TabsList>
+          <StaffUserCreateDialog onInviteSuccess={handleInviteSuccess} />
+        </div>
 
-            <StaffUserCreateDialog onInviteSuccess={handleInviteSuccess} />
-          </div>
+        <TabsContent value={STAFF_TAB.STAFF} className="mt-0">
+          <StaffPersonnelTab />
+        </TabsContent>
 
-          <TabsContent value={STAFF_TAB.STAFF} className="mt-0">
-            <StaffPersonnelTab />
-          </TabsContent>
-
-          <TabsContent value={STAFF_TAB.INVITATIONS} className="mt-0">
-            <StaffInvitationsTab enabled={activeTab === STAFF_TAB.INVITATIONS} />
-          </TabsContent>
-        </Tabs>
-      </div>
-    </main>
+        <TabsContent value={STAFF_TAB.INVITATIONS} className="mt-0">
+          <StaffInvitationsTab enabled={activeTab === STAFF_TAB.INVITATIONS} />
+        </TabsContent>
+      </Tabs>
+    </PageLayout>
   )
 }

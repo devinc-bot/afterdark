@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next'
 import { CLUB_FORM_MODE } from '~/modules/club-management/components/club-form'
 import { ClubFormPage } from '~/modules/club-management/components/club-form-page'
 
-export function ClubCreatePage() {
+export function ClubCreateView() {
   const { t } = useTranslation('clubs')
 
   return (

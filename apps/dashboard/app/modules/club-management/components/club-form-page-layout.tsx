@@ -27,7 +27,7 @@ export function ClubFormPageLayout({
         <header className="mb-8 flex flex-col gap-4">
           <Button
             type="button"
-            variant="ghost"
+            variant="link"
             size="sm"
             className="w-fit gap-2 px-0 text-ink-muted hover:text-ink"
             onClick={onBack}

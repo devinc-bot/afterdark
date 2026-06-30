@@ -1,8 +1,13 @@
 import { createFileRoute } from '@tanstack/react-router'
-import clubsEs from '@afterdark/i18n/locales/clubs/es.json'
-import { ClubCreatePage } from '~/modules/club-management/components/club-create-page'
+import { ClubCreateView } from '~/modules/club-management/components/club-create-view'
+import { usePageTitle } from '~/modules/common/hooks/use-page-title'
 
 export const Route = createFileRoute('/_app/club-management/new')({
-  head: () => ({ meta: [{ title: clubsEs.formPage.createMetaTitle }] }),
   component: ClubCreatePage,
 })
+
+function ClubCreatePage() {
+  usePageTitle('clubs', 'formPage.createMetaTitle')
+
+  return <ClubCreateView />
+}

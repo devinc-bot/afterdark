@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import { FormLayout } from '@afterdark/ui'
+import { PageLayout } from '~/modules/common/components/page-layout'
 import { useCurrentOwner } from '~/modules/common/queries/use-current-user'
 import { ProfileSettingsSection } from '~/modules/owner/components/profile-settings-section'
 import { SettingsFormActions } from '~/modules/owner/components/settings-form-actions'
@@ -55,21 +56,10 @@ export function SettingsView() {
   }
 
   return (
-    <main className="bg-background px-4 py-6 sm:px-8 sm:py-8">
-      <div className="mx-auto flex max-w-3xl flex-col gap-2 sm:gap-4">
-        <header className="max-w-2xl pb-2">
-          <h1 className="text-balance font-heading text-2xl font-semibold text-ink sm:text-3xl">
-            {t('page.title')}
-          </h1>
-          <p className="mt-2 text-pretty text-sm text-ink-muted sm:text-base">
-            {t('page.description')}
-          </p>
-        </header>
-
-        <SettingsFormProvider owner={owner}>
-          <SettingsFormContent />
-        </SettingsFormProvider>
-      </div>
-    </main>
+    <PageLayout title={t('page.title')} description={t('page.description')} narrow>
+      <SettingsFormProvider owner={owner}>
+        <SettingsFormContent />
+      </SettingsFormProvider>
+    </PageLayout>
   )
 }

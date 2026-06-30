@@ -1,14 +1,15 @@
 import { createFileRoute } from '@tanstack/react-router'
-import staffEs from '@afterdark/i18n/locales/staff/es.json'
 import { StaffManagementView } from '~/modules/staff/components/staff-management-view'
 import { staffPersonnelQueryOptions } from '~/modules/staff/queries/use-staff-personnel'
+import { usePageTitle } from '~/modules/common/hooks/use-page-title'
 
 export const Route = createFileRoute('/_app/staff')({
-  head: () => ({ meta: [{ title: staffEs.page.metaTitle }] }),
   loader: ({ context: { queryClient } }) => queryClient.prefetchQuery(staffPersonnelQueryOptions()),
   component: StaffManagementPage,
 })
 
 function StaffManagementPage() {
+  usePageTitle('staff', 'page.metaTitle')
+
   return <StaffManagementView />
 }

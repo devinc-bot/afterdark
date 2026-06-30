@@ -1,14 +1,16 @@
 import { Link, createFileRoute } from '@tanstack/react-router'
 import { AuthShell } from '~/modules/auth/components/auth-shell'
 import { RequireGuest } from '~/modules/common/components/require-guest'
+import { usePageTitle } from '~/modules/common/hooks/use-page-title'
 import { DASHBOARD_ROUTES } from '~/modules/common/constants/routes'
 
 export const Route = createFileRoute('/forgot-password')({
-  head: () => ({ meta: [{ title: 'Recuperar contraseña · afterdark Admin' }] }),
   component: ForgotPasswordPage,
 })
 
 function ForgotPasswordPage() {
+  usePageTitle('auth', 'forgotPassword.metaTitle')
+
   return (
     <RequireGuest>
       <AuthShell>
