@@ -1,7 +1,14 @@
-import { Module, type MiddlewareConsumer, type NestModule, RequestMethod } from '@nestjs/common'
+import {
+  Global,
+  Module,
+  type MiddlewareConsumer,
+  type NestModule,
+  RequestMethod,
+} from '@nestjs/common'
 import { TranslationService } from './translator.service.ts'
 import { LanguageMiddleware } from './language.middleware.ts'
 
+@Global()
 @Module({
   providers: [TranslationService],
   exports: [TranslationService],

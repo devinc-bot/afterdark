@@ -16,7 +16,9 @@
     "TOKEN_EXPIRED": "El token expiró.",
     "TOKEN_INVALID": "El token es inválido.",
     "SESSION_NOT_FOUND": "Sesión no encontrada.",
-    "REFRESH_TOKEN_INVALID": "Token de refresco inválido."
+    "REFRESH_TOKEN_INVALID": "Token de refresco inválido.",
+    "ROLE_NOT_CONFIGURED": "No pudimos completar el registro. Contactá al administrador.",
+    "REGISTER_SUCCESS": "Cuenta creada correctamente. Ya podés iniciar sesión."
   },
   "invitation": {
     "INVITER_NOT_FOUND": "Propietario no encontrado.",
@@ -41,7 +43,10 @@
     "FORBIDDEN": "No tenés permiso para este club.",
     "CREATE_FAILED": "No se pudo crear el club.",
     "UPDATE_FAILED": "No se pudo actualizar el club.",
-    "DELETE_FAILED": "No se pudo eliminar el club."
+    "DELETE_FAILED": "No se pudo eliminar el club.",
+    "IMAGE_UPLOAD_FAILED": "No pudimos guardar las imágenes. Intentá de nuevo.",
+    "TOO_MANY_IMAGES": "Podés subir hasta {{max}} imágenes por club.",
+    "INVALID_IMAGE_IDS": "Una o más imágenes no pertenecen a este club."
   },
   "staff": {
     "NOT_FOUND": "Personal no encontrado.",

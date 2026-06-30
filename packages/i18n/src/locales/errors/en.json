@@ -16,7 +16,9 @@
     "TOKEN_EXPIRED": "The token has expired.",
     "TOKEN_INVALID": "The token is invalid.",
     "SESSION_NOT_FOUND": "Session not found.",
-    "REFRESH_TOKEN_INVALID": "Invalid refresh token."
+    "REFRESH_TOKEN_INVALID": "Invalid refresh token.",
+    "ROLE_NOT_CONFIGURED": "We could not complete registration. Please contact the administrator.",
+    "REGISTER_SUCCESS": "Account created successfully. You can now sign in."
   },
   "invitation": {
     "INVITER_NOT_FOUND": "Owner not found.",
@@ -41,7 +43,10 @@
     "FORBIDDEN": "You do not have permission for this club.",
     "CREATE_FAILED": "Could not create club.",
     "UPDATE_FAILED": "Could not update club.",
-    "DELETE_FAILED": "Could not delete club."
+    "DELETE_FAILED": "Could not delete club.",
+    "IMAGE_UPLOAD_FAILED": "Could not save the images. Please try again.",
+    "TOO_MANY_IMAGES": "You can upload up to {{max}} images per club.",
+    "INVALID_IMAGE_IDS": "One or more images do not belong to this club."
   },
   "staff": {
     "NOT_FOUND": "Staff member not found.",
