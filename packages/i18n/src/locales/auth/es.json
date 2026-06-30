@@ -1,5 +1,6 @@
 {
   "login": {
+    "metaTitle": "Iniciar sesión · afterdark Admin",
     "title": "Iniciar sesión",
     "email": "Correo",
     "emailPlaceholder": "admin@afterdark.io",
@@ -14,7 +15,11 @@
       "generic": "No se pudo iniciar sesión. Intentá de nuevo."
     }
   },
+  "forgotPassword": {
+    "metaTitle": "Recuperar contraseña · afterdark Admin"
+  },
   "register": {
+    "metaTitle": "Crear cuenta · afterdark Admin",
     "title": "Crear cuenta",
     "name": "Nombre",
     "namePlaceholder": "María",

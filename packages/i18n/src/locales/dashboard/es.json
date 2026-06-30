@@ -47,6 +47,7 @@
   },
   "pages": {
     "panel": {
+      "metaTitle": "Panel · afterdark Admin",
       "title": "Panel",
       "description": "Resumen de operaciones del día: clubes, entradas y actividad reciente."
     }

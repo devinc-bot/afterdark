@@ -1,4 +1,9 @@
 {
+  "listPage": {
+    "metaTitle": "Clubes · afterdark Admin",
+    "title": "Clubes",
+    "description": "Gestioná los clubes registrados, su estado operativo y la información publicada en la plataforma."
+  },
   "formPage": {
     "back": "Volver a clubes",
     "cancel": "Cancelar",

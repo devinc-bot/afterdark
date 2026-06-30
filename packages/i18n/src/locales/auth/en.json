@@ -1,5 +1,6 @@
 {
   "login": {
+    "metaTitle": "Sign in · afterdark Admin",
     "title": "Sign in",
     "email": "Email",
     "emailPlaceholder": "admin@afterdark.io",
@@ -14,7 +15,11 @@
       "generic": "Could not sign in. Please try again."
     }
   },
+  "forgotPassword": {
+    "metaTitle": "Recover password · afterdark Admin"
+  },
   "register": {
+    "metaTitle": "Create account · afterdark Admin",
     "title": "Create account",
     "name": "First name",
     "namePlaceholder": "Maria",
