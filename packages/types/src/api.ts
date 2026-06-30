@@ -4,6 +4,8 @@ import type {
   OwnerStatus,
   StaffInvitationStatus,
   StaffStatus,
+  TicketStatus,
+  TicketType,
   UserRole,
 } from './domain.ts'
 
@@ -80,6 +82,22 @@ export interface ClubResponse {
   state: string
   city: string
   images: ClubImageResponse[]
+  createdAt: Date
+  updatedAt: Date
+}
+
+export interface TicketResponse {
+  documentId: string
+  name: string
+  price: number
+  quantity: number
+  status: TicketStatus
+  startDate: Date
+  endDate: Date
+  description: string
+  type: TicketType
+  clubId: string
+  clubName: string
   createdAt: Date
   updatedAt: Date
 }

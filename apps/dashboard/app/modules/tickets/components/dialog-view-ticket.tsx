@@ -1,6 +1,10 @@
+import { useTranslation } from 'react-i18next'
 import { Button, Dialog, DialogClose, DialogContent } from '@afterdark/ui'
 import { X } from 'lucide-react'
-import type { TicketRecordItem } from '~/modules/tickets/components/ticket-record'
+import {
+  getTicketTypeLabel,
+  type TicketRecordItem,
+} from '~/modules/tickets/components/ticket-record'
 import {
   ViewTicketMobile,
   type MobileTicketTemplate,
@@ -18,10 +22,13 @@ function getTicketBenefits(record: TicketRecordItem): string[] {
   return ['Acceso general', 'Validación en puerta']
 }
 
-function recordToMobileTemplate(record: TicketRecordItem): MobileTicketTemplate {
+function recordToMobileTemplate(
+  record: TicketRecordItem,
+  ticketTypeLabel: string
+): MobileTicketTemplate {
   return {
     clubName: record.clubName,
-    ticketTypeLabel: record.ticketTypeLabel,
+    ticketTypeLabel,
     price: record.price,
     validityLabel: 'Acceso 24h',
     benefits: getTicketBenefits(record),
@@ -35,6 +42,8 @@ export type TicketViewDialogProps = {
 }
 
 export function TicketViewDialog({ record, open, onOpenChange }: TicketViewDialogProps) {
+  const { t } = useTranslation('tickets')
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent showCloseButton={false} className="w-full border-0 bg-transparent">
@@ -51,7 +60,9 @@ export function TicketViewDialog({ record, open, onOpenChange }: TicketViewDialo
                 <X aria-hidden="true" />
               </Button>
             </DialogClose>
-            <ViewTicketMobile ticket={recordToMobileTemplate(record)} />
+            <ViewTicketMobile
+              ticket={recordToMobileTemplate(record, getTicketTypeLabel(record.ticketType, t))}
+            />
           </div>
         ) : null}
       </DialogContent>

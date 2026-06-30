@@ -12,6 +12,11 @@ const t_any = (t: ValidationT, key: string, vars?: Record<string, unknown>): str
   (t as any)(key, vars) as string
 
 function resolveZodMessage(t: ValidationT, issue: RawZodIssue): string {
+  const customMessage = issue.message
+  if (typeof customMessage === 'string' && customMessage.startsWith('validation:')) {
+    return t_any(t, customMessage.slice('validation:'.length))
+  }
+
   if (issue.code === 'invalid_type') {
     return t('zod.invalid_type')
   }
@@ -47,8 +52,8 @@ function resolveZodMessage(t: ValidationT, issue: RawZodIssue): string {
 
   if (issue.code === 'custom') {
     const message = issue.message
-    if (message && message.includes(':')) {
-      return t_any(t, message)
+    if (message?.startsWith('validation:')) {
+      return t_any(t, message.slice('validation:'.length))
     }
     return message ?? t('zod.custom')
   }

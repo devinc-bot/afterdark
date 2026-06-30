@@ -68,6 +68,16 @@
       },
       "city": "City is required."
     },
+    "ticket": {
+      "name": "Ticket type is required.",
+      "price": "Enter a valid price greater than zero.",
+      "quantity": "Enter a valid quantity greater than zero.",
+      "description": "Description is required.",
+      "startDate": "Start date and time are required.",
+      "endDate": "End date and time are required.",
+      "club": "Select a club.",
+      "endDateAfterStart": "End date must be after the event start date."
+    },
     "organization": {
       "brandName": {
         "required": "Enter a brand name.",

@@ -68,6 +68,16 @@
       },
       "city": "La ciudad es requerida."
     },
+    "ticket": {
+      "name": "El tipo de entrada es requerido.",
+      "price": "Ingresá un precio válido mayor a cero.",
+      "quantity": "Ingresá una cantidad válida mayor a cero.",
+      "description": "La descripción es requerida.",
+      "startDate": "La fecha y hora de inicio son requeridas.",
+      "endDate": "La fecha y hora de finalización son requeridas.",
+      "club": "Seleccioná un club.",
+      "endDateAfterStart": "La fecha de finalización debe ser posterior al inicio del evento."
+    },
     "organization": {
       "brandName": {
         "required": "Ingresá el nombre comercial.",

@@ -8,6 +8,7 @@ export const API_SESSION_PREFIX = '/api/session' as const
 export const API_CLUBS_PREFIX = '/api/clubs' as const
 export const API_STAFF_PREFIX = '/api/staff' as const
 export const API_INVITATIONS_PREFIX = '/api/invitations' as const
+export const API_TICKETS_PREFIX = '/api/tickets' as const
 
 export const API_ROUTES = {
   auth: {
@@ -56,6 +57,15 @@ export const API_ROUTES = {
       acceptStaff: (slug: string, token: string) =>
         `/staff/${encodeURIComponent(slug)}/${encodeURIComponent(token)}/accept` as const,
       deleteStaff: (documentId: string) => `/staff/${documentId}` as const,
+    },
+  },
+  tickets: {
+    prefix: API_TICKETS_PREFIX,
+    path: {
+      list: () => '/my-tickets' as const,
+      create: () => '/create' as const,
+      update: (documentId: string) => `/${documentId}` as const,
+      delete: (documentId: string) => `/${documentId}` as const,
     },
   },
   login: () => `${API_BASE_URL}${API_AUTH_PREFIX}/login` as const,

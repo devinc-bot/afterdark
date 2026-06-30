@@ -1,5 +1,6 @@
 export { cn } from './lib/utils'
 export { fieldErrorMessage } from './lib/form-field.utils'
+export { getPaginationItems, type PaginationRangeItem } from './lib/pagination.utils.ts'
 
 export { Badge, badgeVariants, type BadgeProps } from './components/ui/badge.tsx'
 export { Avatar, AvatarFallback, AvatarImage } from './components/ui/avatar.tsx'
@@ -158,6 +159,15 @@ export {
   tableVariants,
 } from './components/ui/table.tsx'
 export { Textarea, textareaVariants, type TextareaProps } from './components/ui/textarea.tsx'
+export {
+  Pagination,
+  PaginationButton,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationNext,
+  PaginationPrevious,
+} from './components/ui/pagination.tsx'
 export {
   Tooltip,
   TooltipContent,
