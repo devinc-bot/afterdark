@@ -19,7 +19,7 @@ import {
   findStaffInvitationByDocumentIdForOwner,
   findStaffInvitationByTokenWithClub,
   findStaffInvitationsByOwnerDocumentId,
-  registerAccount,
+  registerStaffForClub,
 } from '@afterdark/db'
 import {
   CreateStaffInvitationResponse,
@@ -222,12 +222,13 @@ export class InvitationsService {
     const hashedPassword = await hashValue(input.password)
 
     try {
-      await registerAccount({
+      await registerStaffForClub({
         email: row.invitation.email,
         hashedPassword,
         roleId: staffRole.id,
         roleName: USER_ROLE.STAFF,
         profile: { name: input.name, lastName: input.lastName, phone: input.phone },
+        clubId: row.invitation.clubId,
       })
     } catch {
       throw new InternalServerErrorException(this.ts.translateError('invitation.ACCEPT_FAILED'))
