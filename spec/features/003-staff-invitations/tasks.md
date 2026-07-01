@@ -71,3 +71,27 @@
 - [ ] `pnpm type-check`
 - [ ] `pnpm lint`
 - [ ] Verificación manual según `plan.md` Entrega 3
+
+---
+
+# Entrega 5 — Eliminación de invitaciones al aceptar/expirar
+
+## Shared packages (`packages/db`)
+
+- [ ] `staff-invitations.repository.ts` — `deleteStaffInvitationById(id)` (reemplaza `updateStaffInvitationAccepted`)
+- [ ] `staff-invitations.repository.ts` — `deleteExpiredAndCancelledInvitations()`
+- [ ] `repositories/index.ts` — exportar las dos funciones nuevas; quitar `updateStaffInvitationAccepted`
+
+## API (`apps/api`)
+
+- [ ] `apps/api/package.json` — agregar `@nestjs/schedule` a dependencies; correr `pnpm install`
+- [ ] `src/app.module.ts` — `ScheduleModule.forRoot()` en imports
+- [ ] `src/modules/invitations/invitations-cleanup.scheduler.ts` — `InvitationsCleanupScheduler` con `@Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)`
+- [ ] `src/modules/invitations/invitations.module.ts` — agregar `InvitationsCleanupScheduler` a `providers`
+- [ ] `src/modules/invitations/invitations.service.ts` — paso 11 de `acceptStaffInvitation`: `deleteStaffInvitationById` en lugar de `updateStaffInvitationAccepted`
+
+## Calidad
+
+- [ ] `pnpm type-check`
+- [ ] `pnpm lint`
+- [ ] Verificación manual según `plan.md` Entrega 5
