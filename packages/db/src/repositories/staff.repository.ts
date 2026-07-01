@@ -1,12 +1,12 @@
-import { and, desc, eq } from 'drizzle-orm'
-import { STAFF_INVITATION_STATUS, type StaffStatus, type UserRole } from '@afterdark/types'
+import { desc, eq } from 'drizzle-orm'
+import { type StaffStatus, type UserRole, USER_ROLE } from '@afterdark/types'
 import { db, type Transaction } from '../client.ts'
 import { accounts } from '../schema/account.ts'
 import { clubs } from '../schema/club.ts'
 import { owners } from '../schema/owner.ts'
-import { staffInvitations } from '../schema/staff-invitation.ts'
 import { staff } from '../schema/staff.ts'
 import { staffAccountsLnk } from '../schema/staff-account-lnk.ts'
+import { staffClubsLnk } from '../schema/staff-club-lnk.ts'
 
 export type StaffProfileRow = {
   documentId: string
@@ -38,7 +38,7 @@ export type OwnerStaffPersonnelRow = {
 export async function findPersonnelByOwnerDocumentId(
   ownerDocumentId: string
 ): Promise<OwnerStaffPersonnelRow[]> {
-  return db
+  const rows = await db
     .select({
       staffDocumentId: staff.documentId,
       name: staff.name,
@@ -48,22 +48,18 @@ export async function findPersonnelByOwnerDocumentId(
       staffStatus: staff.status,
       clubDocumentId: clubs.documentId,
       clubName: clubs.name,
-      role: staffInvitations.role,
       lastActiveAt: staff.updatedAt,
     })
-    .from(staffInvitations)
-    .innerJoin(clubs, eq(clubs.id, staffInvitations.clubId))
+    .from(staffClubsLnk)
+    .innerJoin(staff, eq(staff.id, staffClubsLnk.staffId))
+    .innerJoin(clubs, eq(clubs.id, staffClubsLnk.clubId))
     .innerJoin(owners, eq(owners.id, clubs.ownerId))
-    .innerJoin(accounts, eq(accounts.email, staffInvitations.email))
-    .innerJoin(staffAccountsLnk, eq(staffAccountsLnk.accountId, accounts.id))
-    .innerJoin(staff, eq(staff.id, staffAccountsLnk.staffId))
-    .where(
-      and(
-        eq(owners.documentId, ownerDocumentId),
-        eq(staffInvitations.status, STAFF_INVITATION_STATUS.ACCEPTED)
-      )
-    )
+    .innerJoin(staffAccountsLnk, eq(staffAccountsLnk.staffId, staff.id))
+    .innerJoin(accounts, eq(accounts.id, staffAccountsLnk.accountId))
+    .where(eq(owners.documentId, ownerDocumentId))
     .orderBy(desc(staff.updatedAt))
+
+  return rows.map((row) => ({ ...row, role: USER_ROLE.STAFF }))
 }
 
 export async function findStaffDocumentIdByAccountId(accountId: number): Promise<string | null> {

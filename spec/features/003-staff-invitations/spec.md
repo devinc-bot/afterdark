@@ -501,6 +501,43 @@ El tab _Invitaciones_ hoy acumula solo invitaciones creadas en la sesión actual
 - El TTL hardcodeado (`STAFF_INVITATION_TTL_MS`) en `staff-invitation.utils.ts` queda como fallback del API si `expiresInMs` no se provee (compatibilidad); en la práctica el form siempre lo envía.
 - El `successDescription` en la UI usa la duración elegida, no un texto fijo.
 
+### Entrega 5 — Eliminación de invitaciones al aceptar/expirar — Incluye
+
+- `deleteStaffInvitationById(id)` en `staff-invitations.repository.ts` — hard delete por ID; reemplaza `updateStaffInvitationAccepted` del plan E3.
+- `deleteExpiredAndCancelledInvitations()` en `staff-invitations.repository.ts` — `DELETE WHERE expiresAt < now OR status = 'cancelled'`.
+- `InvitationsCleanupScheduler` en `apps/api` — `@Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)` llama `deleteExpiredAndCancelledInvitations`.
+- `ScheduleModule.forRoot()` en `AppModule` + instalar `@nestjs/schedule`.
+
+### Entrega 5 — No incluye
+
+- Log o auditoría de invitaciones eliminadas.
+- Restaurar invitaciones borradas.
+- Cambios en `dashboard` (GET devuelve solo las filas existentes, que serán `pending`).
+
+---
+
+### Contratos — Entrega 5
+
+**DB**
+
+| Función                                  | Tabla               | Operación                                                             |
+| ---------------------------------------- | ------------------- | --------------------------------------------------------------------- |
+| `deleteStaffInvitationById(id)`          | `staff_invitations` | `DELETE WHERE id = ?`                                                 |
+| `deleteExpiredAndCancelledInvitations()` | `staff_invitations` | `DELETE WHERE expiresAt < now() OR status IN ('expired','cancelled')` |
+
+> `deleteStaffInvitationById` reemplaza `updateStaffInvitationAccepted` en el flujo de E3 (paso 11 del service).
+
+---
+
+### Reglas de negocio — Entrega 5
+
+- **Al aceptar:** borrar la fila de `staff_invitations` tras crear `account` + `staff` + `staff_account_lnk`. Si el delete falla, loguear el error y no revertir la creación de cuenta.
+- **Cron:** ejecuta diariamente a medianoche UTC. Elimina filas donde `expiresAt < now()` O `status IN ('expired', 'cancelled')`.
+- **Listado E2:** el `GET /invitations/staff` devuelve solo las filas existentes; en la práctica solo `pending` con eventual aparición de `cancelled` en la ventana entre cancelación y cron.
+- **Badge UI "vencida":** sigue siendo válida para `pending` con `expiresAt` pasado en la ventana antes del cron.
+
+---
+
 ## Preguntas abiertas
 
 - ¿Agregar `AvatarImage` cuando `avatar` es URL absoluta de R2 o solo paths relativos? (entrega 1)
