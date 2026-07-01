@@ -12,6 +12,7 @@ import {
   Button,
   DialogClose,
   DialogFooter,
+  DateTimeInput,
   Field,
   Input,
   SelectField,
@@ -304,10 +305,9 @@ export function TicketForm({ mode, documentId, defaultValues, onSuccess }: Ticke
 
                 return (
                   <Field label={t('form.startDate')} htmlFor={field.name} error={error}>
-                    <Input
+                    <DateTimeInput
                       id={field.name}
                       name={field.name}
-                      type="datetime-local"
                       value={field.state.value}
                       onBlur={field.handleBlur}
                       onChange={(event) => field.handleChange(event.target.value)}
@@ -324,10 +324,9 @@ export function TicketForm({ mode, documentId, defaultValues, onSuccess }: Ticke
 
                 return (
                   <Field label={t('form.endDate')} htmlFor={field.name} error={error}>
-                    <Input
+                    <DateTimeInput
                       id={field.name}
                       name={field.name}
-                      type="datetime-local"
                       value={field.state.value}
                       onBlur={field.handleBlur}
                       onChange={(event) => field.handleChange(event.target.value)}

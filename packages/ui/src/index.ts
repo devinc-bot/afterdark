@@ -55,6 +55,7 @@ export {
   type FormLayoutSpanSize,
 } from './components/ui/form-layout.tsx'
 export { Input, type InputProps } from './components/ui/input.tsx'
+export { DateTimeInput, type DateTimeInputProps } from './components/ui/datetime-input.tsx'
 export {
   KpiInformation,
   kpiInformationVariants,
