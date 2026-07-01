@@ -4,13 +4,13 @@ import type { TicketRecordItem } from '~/modules/tickets/components/ticket-recor
 
 export const EMPTY_TICKET_FORM_VALUES: TicketFormValues = {
   name: '',
-  clubId: '',
+  eventId: '',
   type: TICKET_TYPE.GENERAL,
   price: '',
   quantity: '',
   description: '',
-  startDate: '',
-  endDate: '',
+  saleStartsAt: '',
+  saleEndsAt: '',
   status: TICKET_STATUS.ACTIVE,
 }
 
@@ -22,13 +22,15 @@ function formatDateForDatetimeLocal(value: Date): string {
 export function ticketResponseToFormValues(ticket: TicketResponse): TicketFormValues {
   return {
     name: ticket.name,
-    clubId: ticket.clubId,
+    eventId: ticket.eventId ?? '',
     type: ticket.type,
     price: String(ticket.price),
     quantity: String(ticket.quantity),
     description: ticket.description,
-    startDate: formatDateForDatetimeLocal(new Date(ticket.startDate)),
-    endDate: formatDateForDatetimeLocal(new Date(ticket.endDate)),
+    saleStartsAt: ticket.saleStartsAt
+      ? formatDateForDatetimeLocal(new Date(ticket.saleStartsAt))
+      : '',
+    saleEndsAt: ticket.saleEndsAt ? formatDateForDatetimeLocal(new Date(ticket.saleEndsAt)) : '',
     status: ticket.status,
   }
 }
@@ -46,11 +48,13 @@ function resolveTicketTypeTone(type: TicketResponse['type']): TicketRecordItem['
 }
 
 export function ticketResponseToRecordItem(ticket: TicketResponse): TicketRecordItem {
+  const clubName = ticket.clubName ?? '—'
+
   return {
     id: ticket.documentId,
     name: ticket.name,
-    clubName: ticket.clubName,
-    clubInitials: clubInitials(ticket.clubName),
+    clubName,
+    clubInitials: clubInitials(clubName),
     clubAvatarClassName: 'border-hairline-strong bg-surface-container-high text-ink-muted',
     ticketType: ticket.type,
     ticketTypeTone: resolveTicketTypeTone(ticket.type),

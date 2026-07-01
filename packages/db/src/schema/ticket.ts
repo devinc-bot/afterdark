@@ -1,7 +1,7 @@
 import { integer, real, sqliteTable, text } from 'drizzle-orm/sqlite-core'
 import { TICKET_STATUS, TICKET_TYPE } from '@afterdark/types'
 import { createBaseColumns } from './base.ts'
-import { clubs } from './club.ts'
+import { events } from './event.ts'
 
 export const tickets = sqliteTable('tickets', {
   ...createBaseColumns('tickets'),
@@ -11,12 +11,10 @@ export const tickets = sqliteTable('tickets', {
   status: text('status', { enum: [TICKET_STATUS.ACTIVE, TICKET_STATUS.INACTIVE] })
     .notNull()
     .default(TICKET_STATUS.ACTIVE),
-  startDate: integer('start_date', { mode: 'timestamp' }).notNull(),
-  endDate: integer('end_date', { mode: 'timestamp' }).notNull(),
   description: text('description').notNull(),
-  clubId: integer('club_id')
-    .notNull()
-    .references(() => clubs.id),
+  saleStartsAt: integer('sale_starts_at', { mode: 'timestamp' }),
+  saleEndsAt: integer('sale_ends_at', { mode: 'timestamp' }),
+  eventId: integer('event_id').references(() => events.id),
   type: text('type', { enum: [TICKET_TYPE.GENERAL, TICKET_TYPE.VIP] })
     .notNull()
     .default(TICKET_TYPE.GENERAL),
