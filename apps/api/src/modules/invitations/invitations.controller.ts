@@ -16,10 +16,10 @@ import type {
   StaffInvitationPublicResponse,
 } from '@afterdark/types'
 import {
-  acceptStaffInvitationSchema,
+  acceptStaffInvitationApiSchema,
   createStaffInvitationSchema,
   uuidSchema,
-  type AcceptStaffInvitationInput,
+  type AcceptStaffInvitationApiInput,
   type CreateStaffInvitationInput,
 } from '@afterdark/validators'
 import { CurrentUser } from '../common/decorators/current-user.decorator'
@@ -54,7 +54,7 @@ export class InvitationsController {
   acceptStaffInvitation(
     @Param('slug') slug: string,
     @Param('token') token: string,
-    @Body(new ZodValidationPipe(acceptStaffInvitationSchema)) body: AcceptStaffInvitationInput
+    @Body(new ZodValidationPipe(acceptStaffInvitationApiSchema)) body: AcceptStaffInvitationApiInput
   ): Promise<{ message: string }> {
     return this.invitationsService.acceptStaffInvitation(slug, token, body)
   }
