@@ -11,6 +11,7 @@ import { OrdersModule } from './modules/orders'
 import { OwnerModule } from './modules/owner'
 import { SessionModule } from './modules/session'
 import { StaffModule } from './modules/staff'
+import { TicketsModule } from './modules/tickets'
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { StaffModule } from './modules/staff'
     OwnerModule,
     SessionModule,
     StaffModule,
+    TicketsModule,
   ],
   controllers: [AppController],
 })

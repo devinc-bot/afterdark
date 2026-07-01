@@ -17,6 +17,11 @@ const stripNs = (key: string): string =>
   key.includes(':') ? key.split(':').slice(1).join(':') : key
 
 function resolveZodMessage(t: ValidationT, issue: RawZodIssue): string {
+  const customMessage = issue.message
+  if (typeof customMessage === 'string' && customMessage.startsWith('validation:')) {
+    return t_any(t, customMessage.slice('validation:'.length))
+  }
+
   if (issue.code === 'invalid_type') {
     return t('zod.invalid_type')
   }

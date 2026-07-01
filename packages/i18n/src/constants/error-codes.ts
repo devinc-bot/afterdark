@@ -46,11 +46,23 @@ export const OWNER_ERROR_CODE = {
   UPDATE_FAILED: 'owner.UPDATE_FAILED',
 } as const
 
+export const TICKET_ERROR_CODE = {
+  NOT_FOUND: 'ticket.NOT_FOUND',
+  FORBIDDEN: 'ticket.FORBIDDEN',
+  CLUB_NOT_FOUND: 'ticket.CLUB_NOT_FOUND',
+  CREATE_FAILED: 'ticket.CREATE_FAILED',
+  UPDATE_FAILED: 'ticket.UPDATE_FAILED',
+  DELETE_FAILED: 'ticket.DELETE_FAILED',
+  LIST_FAILED: 'ticket.LIST_FAILED',
+  HAS_PAYMENTS: 'ticket.HAS_PAYMENTS',
+} as const
+
 export type AuthErrorCode = (typeof AUTH_ERROR_CODE)[keyof typeof AUTH_ERROR_CODE]
 export type InvitationErrorCode = (typeof INVITATION_ERROR_CODE)[keyof typeof INVITATION_ERROR_CODE]
 export type ClubErrorCode = (typeof CLUB_ERROR_CODE)[keyof typeof CLUB_ERROR_CODE]
 export type StaffErrorCode = (typeof STAFF_ERROR_CODE)[keyof typeof STAFF_ERROR_CODE]
 export type OwnerErrorCode = (typeof OWNER_ERROR_CODE)[keyof typeof OWNER_ERROR_CODE]
+export type TicketErrorCode = (typeof TICKET_ERROR_CODE)[keyof typeof TICKET_ERROR_CODE]
 
 export type ErrorCode =
   | AuthErrorCode
@@ -58,3 +70,4 @@ export type ErrorCode =
   | ClubErrorCode
   | StaffErrorCode
   | OwnerErrorCode
+  | TicketErrorCode

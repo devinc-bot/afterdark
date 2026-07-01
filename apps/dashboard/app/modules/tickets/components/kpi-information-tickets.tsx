@@ -21,7 +21,7 @@ export function KpiInformationTickets() {
 
       <KpiCard
         label="Ingresos totales"
-        value="US$ 14,2M"
+        value="$ 14,2M"
         subtext={
           <>
             <Banknote aria-hidden="true" className="text-on-primary-container" />

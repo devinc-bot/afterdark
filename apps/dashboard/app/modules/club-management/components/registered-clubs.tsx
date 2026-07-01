@@ -17,7 +17,6 @@ function clubResponseToRegisteredClub(club: ClubResponse): RegisteredClub {
     id: club.documentId,
     name: club.name,
     address: club.address,
-    tags: [],
     status: club.status,
     images: club.images,
     imageUrl: club.images[0]?.url,
