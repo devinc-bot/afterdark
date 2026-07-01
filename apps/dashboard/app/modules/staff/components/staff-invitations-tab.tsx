@@ -4,11 +4,11 @@ import { toast } from '@afterdark/ui'
 import { StaffInvitations } from '~/modules/staff/components/staff-invitations'
 import {
   StaffInvitationsEmptyState,
-  StaffInvitationsLoadErrorBanner,
   StaffInvitationsTabSkeleton,
 } from '~/modules/staff/components/staff-invitations-tab-states'
 import { useDeleteStaffInvitation } from '~/modules/staff/mutations/use-staff-invitations-mutations'
 import { useStaffInvitations } from '~/modules/staff/queries/use-staff-invitations'
+import { LoadErrorBanner } from '~/modules/common/components/load-error-banner'
 
 type StaffInvitationsTabProps = {
   enabled: boolean
@@ -43,7 +43,12 @@ export function StaffInvitationsTab({ enabled }: StaffInvitationsTabProps) {
 
   if (isError) {
     return (
-      <StaffInvitationsLoadErrorBanner onRetry={() => void refetch()} isRetrying={isFetching} />
+      <LoadErrorBanner
+        message={t('invitationsTable.loadError')}
+        retryLabel={t('invitationsTable.retry')}
+        onRetry={() => void refetch()}
+        isRetrying={isFetching}
+      />
     )
   }
 

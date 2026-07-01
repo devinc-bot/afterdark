@@ -2,28 +2,28 @@
 
 > Orden de las features. Una fila = una carpeta en `spec/features/`.
 
-| # | Slug | Título | Status | Apps | Notas |
-| - | ---- | ------ | ------ | ---- | ----- |
-| 001 | `auth-sessions` | Autenticación y sesiones | `in-progress` | `api`, `web`, `dashboard` | Login, registro user/owner, JWT + refresh, `GET /session/me`. Dashboard integrado; `web` con rutas auth, sesión por cerrar. |
-| 002 | `club-management` | Gestión de clubes | `in-progress` | `api`, `dashboard` | CRUD de clubes del dueño (`/clubs/*`). Dashboard en `/club-management` conectado a API. |
-| 003 | `staff-invitations` | Staff e invitaciones | `in-progress` | `api`, `dashboard` | Entrega 1: listado personal (`GET /staff/my-personnel`). Entrega 2 (en spec): listado invitaciones del dueño. `POST /invitations/staff` existe; falta aceptación y PATCH de estado. |
-| 004 | `owner-settings` | Perfil y configuración del dueño | `in-progress` | `api`, `dashboard` | `GET/PATCH /owners/*`, pantalla `/settings`. Ajustes de organización y preferencias en evolución. |
-| 005 | `club-assets` | Medios de clubes | `draft` | `api`, `dashboard` | Módulo `files` + R2; tablas `assets` y `club_assets_lnk`. Pendiente enlazar subida/galería al flujo de clubes. |
-| 006 | `tickets` | Entradas y tipos de ticket | `draft` | `api`, `dashboard` | Esquema `tickets` listo; dashboard en `/tickets` con datos mock. Falta API, repositorio y CRUD real. |
-| 007 | `web-catalog` | Catálogo público | `draft` | `api`, `web` | Descubrimiento de clubes/eventos para clientes. Sustituye el placeholder `properties` en `web`. |
-| 008 | `checkout-payments` | Compra y pagos | `draft` | `api`, `web` | Tabla `payments` y módulo `orders` (stub). Checkout de entradas y estados de pago. |
-| 009 | `operational-chat` | Chat operativo | `paused` | `api`, `dashboard`, `web` | Esquema `chat` / `messages`. Pausado hasta cerrar catálogo y checkout. |
-| 010 | `club-create-edit-page` | Formulario club en pantalla completa | `approved` | `dashboard` | Rutas `/club-management/new` y `/:documentId/edit`. Spec lista para implementar. |
+| #   | Slug                    | Título                               | Status        | Apps                      | Notas                                                                                                                                                                               |
+| --- | ----------------------- | ------------------------------------ | ------------- | ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 001 | `auth-sessions`         | Autenticación y sesiones             | `in-progress` | `api`, `web`, `dashboard` | Login, registro user/owner, JWT + refresh, `GET /session/me`. Dashboard integrado; `web` con rutas auth, sesión por cerrar.                                                         |
+| 002 | `club-management`       | Gestión de clubes                    | `in-progress` | `api`, `dashboard`        | CRUD de clubes del dueño (`/clubs/*`). Dashboard en `/club-management` conectado a API.                                                                                             |
+| 003 | `staff-invitations`     | Staff e invitaciones                 | `in-progress` | `api`, `dashboard`        | Entrega 1: listado personal (`GET /staff/my-personnel`). Entrega 2 (en spec): listado invitaciones del dueño. `POST /invitations/staff` existe; falta aceptación y PATCH de estado. |
+| 004 | `owner-settings`        | Perfil y configuración del dueño     | `in-progress` | `api`, `dashboard`        | `GET/PATCH /owners/*`, pantalla `/settings`. Ajustes de organización y preferencias en evolución.                                                                                   |
+| 005 | `club-assets`           | Medios de clubes                     | `draft`       | `api`, `dashboard`        | Módulo `files` + R2; tablas `assets` y `club_assets_lnk`. Pendiente enlazar subida/galería al flujo de clubes.                                                                      |
+| 006 | `tickets`               | Entradas y tipos de ticket           | `draft`       | `api`, `dashboard`        | Esquema `tickets` listo; dashboard en `/tickets` con datos mock. Falta API, repositorio y CRUD real.                                                                                |
+| 007 | `web-catalog`           | Catálogo público                     | `draft`       | `api`, `web`              | Descubrimiento de clubes/eventos para clientes. Sustituye el placeholder `properties` en `web`.                                                                                     |
+| 008 | `checkout-payments`     | Compra y pagos                       | `draft`       | `api`, `web`              | Tabla `payments` y módulo `orders` (stub). Checkout de entradas y estados de pago.                                                                                                  |
+| 009 | `operational-chat`      | Chat operativo                       | `paused`      | `api`, `dashboard`, `web` | Esquema `chat` / `messages`. Pausado hasta cerrar catálogo y checkout.                                                                                                              |
+| 010 | `club-create-edit-page` | Formulario club en pantalla completa | `approved`    | `dashboard`               | Rutas `/club-management/new` y `/:documentId/edit`. Spec lista para implementar.                                                                                                    |
 
 ## Status
 
-| Valor | Significado |
-| ----- | ----------- |
-| `draft` | Spec en progreso |
-| `approved` | Listo para implementar |
-| `in-progress` | Implementación activa |
-| `done` | Entregado y verificado |
-| `paused` | Pausado a propósito |
+| Valor         | Significado            |
+| ------------- | ---------------------- |
+| `draft`       | Spec en progreso       |
+| `approved`    | Listo para implementar |
+| `in-progress` | Implementación activa  |
+| `done`        | Entregado y verificado |
+| `paused`      | Pausado a propósito    |
 
 ## Dependencias
 

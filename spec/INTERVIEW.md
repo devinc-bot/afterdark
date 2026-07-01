@@ -16,12 +16,12 @@
 
 Al iniciar la fase 1, crear `spec/features/00N-<slug>/` copiando `_template/` y renombrar títulos. Mantener siempre:
 
-| Archivo | Cuándo se actualiza |
-| ------- | ------------------- |
-| `progress.md` | Cada fase (estado + log de respuestas) |
-| `spec.md` | Fases 1–5 |
-| `plan.md` | Fase 6 (borrador técnico; el usuario revisa) |
-| `tasks.md` | Fase 6 (checklist inicial; sin marcar hechas) |
+| Archivo       | Cuándo se actualiza                           |
+| ------------- | --------------------------------------------- |
+| `progress.md` | Cada fase (estado + log de respuestas)        |
+| `spec.md`     | Fases 1–5                                     |
+| `plan.md`     | Fase 6 (borrador técnico; el usuario revisa)  |
+| `tasks.md`    | Fase 6 (checklist inicial; sin marcar hechas) |
 
 Actualizar `spec/constitution/roadmap.md` al cerrar la fase 1 (fila nueva o status) y al marcar `approved` / `done`.
 
@@ -53,7 +53,7 @@ Actualizar `spec/constitution/roadmap.md` al cerrar la fase 1 (fila nueva o stat
 - **Incluye:** lista concreta de capacidades.
 - **No incluye:** qué queda explícitamente fuera (evitar scope creep).
 
-**Escribir:** secciones *Qué hace*, *Por qué*, *Alcance* en `spec.md`.
+**Escribir:** secciones _Qué hace_, _Por qué_, _Alcance_ en `spec.md`.
 
 ---
 
@@ -67,7 +67,7 @@ Actualizar `spec/constitution/roadmap.md` al cerrar la fase 1 (fila nueva o stat
 - Por cada rol relevante: una historia **Como / Quiero / Para**.
 - Por historia: al menos 2 criterios **Dado / Cuando / Entonces**.
 
-**Escribir:** sección *User stories* en `spec.md`. Si falta detalle, dejar ítems en *Preguntas abiertas*.
+**Escribir:** sección _User stories_ en `spec.md`. Si falta detalle, dejar ítems en _Preguntas abiertas_.
 
 ---
 
@@ -93,7 +93,7 @@ Actualizar `spec/constitution/roadmap.md` al cerrar la fase 1 (fila nueva o stat
 - Rutas por app (`/staff`, `/tickets`, …).
 - Copy visible: títulos, botones, vacíos, errores.
 
-**Escribir:** sección *Contratos* en `spec.md`.
+**Escribir:** sección _Contratos_ en `spec.md`.
 
 ---
 
@@ -105,10 +105,10 @@ Actualizar `spec/constitution/roadmap.md` al cerrar la fase 1 (fila nueva o stat
 
 - Reglas de negocio no obvias (permisos, estados, límites, validaciones).
 - Edge cases conocidos (concurrencia, datos vacíos, expiración, …).
-- ¿Queda algo sin decidir? → *Preguntas abiertas*.
+- ¿Queda algo sin decidir? → _Preguntas abiertas_.
 - ¿La spec está lista para implementar? Si sí → status `approved`; si no → seguir en `draft`.
 
-**Escribir:** *Reglas de negocio*, *Preguntas abiertas*, actualizar status en `spec.md` y `roadmap.md`.
+**Escribir:** _Reglas de negocio_, _Preguntas abiertas_, actualizar status en `spec.md` y `roadmap.md`.
 
 ---
 
@@ -128,11 +128,12 @@ El asistente puede **proponer** el borrador leyendo `ARCHITECTURE.md` y el códi
 [Preguntas numeradas o formulario AskQuestion]
 
 ---
+
 **Ya escrito** (si aplica): `spec/features/00N-slug/…`
 **Siguiente:** cuando respondas, actualizo … y paso a la fase N+1.
 ```
 
-No pasar a la siguiente fase sin respuesta del usuario, salvo que diga *“seguí con lo que tengas”* o *“inferí vos”* — en ese caso documentar supuestos en *Preguntas abiertas*.
+No pasar a la siguiente fase sin respuesta del usuario, salvo que diga _“seguí con lo que tengas”_ o _“inferí vos”_ — en ese caso documentar supuestos en _Preguntas abiertas_.
 
 ## Retomar una entrevista
 

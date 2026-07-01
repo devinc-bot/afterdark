@@ -7,7 +7,7 @@ import {
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common'
-import { compare, hash } from 'bcryptjs'
+import { hashValue, verifyValue } from '../common'
 import {
   accountExistsByEmail,
   createStaffInvitation as insertStaffInvitation,
@@ -21,47 +21,31 @@ import {
   registerAccount,
   updateStaffInvitationAccepted,
 } from '@afterdark/db'
-import type { ClubSelect, StaffInvitationSelect } from '@afterdark/db'
 import {
+  CreateStaffInvitationResponse,
   STAFF_INVITATION_STATUS,
   USER_ROLE,
-  type CreateStaffInvitationResponse,
   type StaffInvitationPublicResponse,
 } from '@afterdark/types'
-import type { AcceptStaffInvitationInput, CreateStaffInvitationInput } from '@afterdark/validators'
+import type {
+  AcceptStaffInvitationApiInput,
+  CreateStaffInvitationInput,
+} from '@afterdark/validators'
 import { Inject } from '@nestjs/common'
+import { JwtService } from '@nestjs/jwt'
 import { TranslationService } from '@afterdark/i18n/server'
-import { ENV } from '../common/config/env'
 import {
   buildStaffInvitationPayload,
-  buildStaffInvitationUrl,
+  type StaffInvitationPayload,
 } from './utils/staff-invitation.utils'
-
-function toStaffInvitationResponse(
-  invitation: StaffInvitationSelect,
-  club: Pick<ClubSelect, 'documentId' | 'name'>,
-  invitedByOwnerDocumentId: string
-): CreateStaffInvitationResponse {
-  return {
-    documentId: invitation.documentId,
-    email: invitation.email,
-    clubId: club.documentId,
-    clubName: club.name,
-    invitedByOwnerId: invitedByOwnerDocumentId,
-    slug: invitation.slug,
-    url: buildStaffInvitationUrl(ENV.DASHBOARD_URL, invitation.slug, invitation.token),
-    expiresAt: invitation.expiresAt,
-    hasSecurityWord: Boolean(invitation.securityWordHash),
-    status: invitation.status,
-    role: invitation.role,
-    createdAt: invitation.createdAt,
-    updatedAt: invitation.updatedAt,
-  }
-}
+import { toStaffInvitationResponse } from './invitation.formatter'
 
 @Injectable()
 export class InvitationsService {
-  constructor(@Inject(TranslationService) private readonly ts: TranslationService) {}
+  constructor(
+    @Inject(JwtService) private readonly jwtService: JwtService,
+    @Inject(TranslationService) private readonly ts: TranslationService
+  ) {}
 
   async createStaffInvitation(
     inviterDocumentId: string,
@@ -87,11 +71,15 @@ export class InvitationsService {
       throw new NotFoundException(this.ts.translateError('invitation.CLUB_NOT_FOUND'))
     }
 
-    const { slug, token, expiresAt, securityWordHash } = buildStaffInvitationPayload({
-      email: input.email,
-      clubDocumentId: club.documentId,
-      securityWord: input.securityWord,
-    })
+    const { payload, slug, expiresAt, expiresInSeconds, securityWordHash } =
+      await buildStaffInvitationPayload({
+        email: input.email,
+        clubDocumentId: club.documentId,
+        securityWord: input.securityWord,
+        expiresInMs: input.expiresInMs,
+      })
+
+    const token = await this.jwtService.signAsync(payload, { expiresIn: expiresInSeconds })
 
     try {
       const invitation = await insertStaffInvitation({
@@ -175,8 +163,14 @@ export class InvitationsService {
   async acceptStaffInvitation(
     slug: string,
     token: string,
-    input: AcceptStaffInvitationInput
+    input: AcceptStaffInvitationApiInput
   ): Promise<{ message: string }> {
+    try {
+      await this.jwtService.verifyAsync<StaffInvitationPayload>(token)
+    } catch {
+      throw new NotFoundException(this.ts.translateError('invitation.PUBLIC_INVALID'))
+    }
+
     const row = await findStaffInvitationByTokenWithClub(token)
 
     if (!row) {
@@ -211,7 +205,7 @@ export class InvitationsService {
     }
 
     if (row.invitation.securityWordHash) {
-      const isValid = await compare(input.securityWord ?? '', row.invitation.securityWordHash)
+      const isValid = await verifyValue(input.securityWord ?? '', row.invitation.securityWordHash)
       if (!isValid) {
         throw new ForbiddenException(this.ts.translateError('invitation.SECURITY_WORD_INVALID'))
       }
@@ -223,7 +217,7 @@ export class InvitationsService {
       throw new InternalServerErrorException(this.ts.translateError('invitation.ACCEPT_FAILED'))
     }
 
-    const hashedPassword = await hash(input.password, 10)
+    const hashedPassword = await hashValue(input.password)
 
     try {
       await registerAccount({
@@ -246,6 +240,12 @@ export class InvitationsService {
     slug: string,
     token: string
   ): Promise<StaffInvitationPublicResponse> {
+    try {
+      await this.jwtService.verifyAsync<StaffInvitationPayload>(token)
+    } catch {
+      throw new NotFoundException(this.ts.translateError('invitation.PUBLIC_INVALID'))
+    }
+
     try {
       const row = await findStaffInvitationByTokenWithClub(token)
 

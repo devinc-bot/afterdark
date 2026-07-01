@@ -2,14 +2,14 @@
   "zod": {
     "invalid_type": "Este campo es requerido.",
     "too_small": {
-      "string": "{minimum, plural, one {Mínimo # carácter.} other {Mínimo # caracteres.}",
+      "string": "{minimum, plural, one {Mínimo # carácter.} other {Mínimo # caracteres.}}",
       "number": "El valor debe ser al menos {minimum}.",
-      "array": "{minimum, plural, one {Se requiere al menos # elemento.} other {Se requieren al menos # elementos.}"
+      "array": "{minimum, plural, one {Se requiere al menos # elemento.} other {Se requieren al menos # elementos.}}"
     },
     "too_big": {
-      "string": "{maximum, plural, one {Máximo # carácter.} other {Máximo # caracteres.}",
+      "string": "{maximum, plural, one {Máximo # carácter.} other {Máximo # caracteres.}}",
       "number": "El valor debe ser como máximo {maximum}.",
-      "array": "{maximum, plural, one {Máximo # elemento.} other {Máximo # elementos.}"
+      "array": "{maximum, plural, one {Máximo # elemento.} other {Máximo # elementos.}}"
     },
     "invalid_string": {
       "email": "Ingresá un correo electrónico válido.",

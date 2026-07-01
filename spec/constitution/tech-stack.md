@@ -4,20 +4,20 @@
 
 ## Apps
 
-| App | Stack | Puerto |
-| --- | ----- | ------ |
-| `api` | NestJS 11, Express, Drizzle | 3000 |
-| `web` | TanStack Start, React 19, Tailwind v4 | 3001 |
-| `dashboard` | TanStack Start, React 19, Tailwind v4 | 3002 |
+| App         | Stack                                 | Puerto |
+| ----------- | ------------------------------------- | ------ |
+| `api`       | NestJS 11, Express, Drizzle           | 3000   |
+| `web`       | TanStack Start, React 19, Tailwind v4 | 3001   |
+| `dashboard` | TanStack Start, React 19, Tailwind v4 | 3002   |
 
 ## Packages compartidos
 
-| Package | Responsabilidad |
-| ------- | --------------- |
-| `@afterdark/db` | Schema Drizzle, repositories, migraciones (Turso/libSQL) |
-| `@afterdark/types` | Tipos de dominio e interfaces API |
-| `@afterdark/validators` | Schemas Zod (v4) |
-| `@afterdark/ui` | Componentes ShadCN compartidos |
+| Package                 | Responsabilidad                                          |
+| ----------------------- | -------------------------------------------------------- |
+| `@afterdark/db`         | Schema Drizzle, repositories, migraciones (Turso/libSQL) |
+| `@afterdark/types`      | Tipos de dominio e interfaces API                        |
+| `@afterdark/validators` | Schemas Zod (v4)                                         |
+| `@afterdark/ui`         | Componentes ShadCN compartidos                           |
 
 ## Convenciones obligatorias
 

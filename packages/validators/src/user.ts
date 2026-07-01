@@ -61,6 +61,17 @@ export const createStaffUserSchema = z.object({
   clubId: z.string().min(1, 'validation:field.invitation.club'),
 })
 
+export const STAFF_INVITATION_EXPIRY_OPTIONS = {
+  '12h': 43200000,
+  '24h': 86400000,
+  '48h': 172800000,
+  '7d': 604800000,
+} as const
+
+export type StaffInvitationExpiryKey = keyof typeof STAFF_INVITATION_EXPIRY_OPTIONS
+export type StaffInvitationExpiryMs =
+  (typeof STAFF_INVITATION_EXPIRY_OPTIONS)[StaffInvitationExpiryKey]
+
 export const createStaffInvitationSchema = z.object({
   email: z.email('validation:field.invitation.email'),
   clubId: z.string().min(1, 'validation:field.invitation.club'),
@@ -68,6 +79,12 @@ export const createStaffInvitationSchema = z.object({
     .string()
     .trim()
     .refine((value) => value === '' || value.length >= 4, 'validation:field.securityWord.min'),
+  expiresInMs: z.union([
+    z.literal(STAFF_INVITATION_EXPIRY_OPTIONS['12h']),
+    z.literal(STAFF_INVITATION_EXPIRY_OPTIONS['24h']),
+    z.literal(STAFF_INVITATION_EXPIRY_OPTIONS['48h']),
+    z.literal(STAFF_INVITATION_EXPIRY_OPTIONS['7d']),
+  ]),
 })
 
 export const verifyStaffInvitationSecurityWordSchema = z.object({
@@ -92,6 +109,10 @@ export const acceptStaffInvitationSchema = acceptStaffInvitationBaseSchema.refin
   { message: 'validation:field.password.noMatch', path: ['confirmPassword'] }
 )
 
+export const acceptStaffInvitationApiSchema = acceptStaffInvitationBaseSchema.omit({
+  confirmPassword: true,
+})
+
 export const updateUserSchema = createUserSchema.partial().omit({ password: true })
 
 export type CreateUserInput = z.infer<typeof createUserSchema>
@@ -101,6 +122,7 @@ export type VerifyStaffInvitationSecurityWordInput = z.infer<
   typeof verifyStaffInvitationSecurityWordSchema
 >
 export type AcceptStaffInvitationInput = z.infer<typeof acceptStaffInvitationSchema>
+export type AcceptStaffInvitationApiInput = z.infer<typeof acceptStaffInvitationApiSchema>
 export type UpdateUserInput = z.infer<typeof updateUserSchema>
 export type UpdateCurrentUserInput = z.infer<typeof updateCurrentUserSchema>
 export type UserAddressInput = z.infer<typeof userAddressSchema>

@@ -6,7 +6,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
-import { compare, hash } from 'bcryptjs'
+import { hashValue, verifyValue } from '../common'
 import {
   accountExistsByEmail,
   findAuthAccountByEmail,
@@ -22,8 +22,6 @@ import {
 import type { LoginInput, RegisterOwnerInput, RegisterUserInput } from '@afterdark/validators'
 import { TranslationService } from '@afterdark/i18n/server'
 
-const PASSWORD_SALT_ROUNDS = 10
-
 @Injectable()
 export class AuthService {
   constructor(
@@ -38,7 +36,7 @@ export class AuthService {
       throw new UnauthorizedException(this.ts.translateError('auth.INVALID_CREDENTIALS'))
     }
 
-    const passwordMatches = await compare(input.password, row.account.password)
+    const passwordMatches = await verifyValue(input.password, row.account.password)
 
     if (!passwordMatches) {
       throw new UnauthorizedException(this.ts.translateError('auth.INVALID_CREDENTIALS'))
@@ -66,7 +64,7 @@ export class AuthService {
       throw new InternalServerErrorException(this.ts.translateError('auth.ROLE_NOT_CONFIGURED'))
     }
 
-    const hashedPassword = await hash(input.password, PASSWORD_SALT_ROUNDS)
+    const hashedPassword = await hashValue(input.password)
 
     await registerAccount({
       email: input.email,
