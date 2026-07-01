@@ -29,7 +29,15 @@ type StaffInvitationAcceptViewProps = {
 
 export function StaffInvitationAcceptView({ invitation, token }: StaffInvitationAcceptViewProps) {
   const { t } = useTranslation('staff')
+  const { t: tValidation } = useTranslation('validation', { useSuspense: false })
   const navigate = useNavigate()
+
+  const resolveError = (errors: ReadonlyArray<unknown>): string | null => {
+    const raw = fieldErrorMessage(errors)
+    if (!raw) return null
+    if (raw.includes(':')) return tValidation(raw.split(':').slice(1).join(':') as never)
+    return raw
+  }
   const requiresSecurityWord = invitation.hasSecurityWord
 
   const form = useForm({
@@ -122,7 +130,7 @@ export function StaffInvitationAcceptView({ invitation, token }: StaffInvitation
                   validators={{ onSubmit: acceptStaffInvitationBaseSchema.shape.name }}
                 >
                   {(field) => {
-                    const error = fieldErrorMessage(field.state.meta.errors)
+                    const error = resolveError(field.state.meta.errors)
 
                     return (
                       <Field label={t('invitation.accept.name')} htmlFor={field.name} error={error}>
@@ -147,7 +155,7 @@ export function StaffInvitationAcceptView({ invitation, token }: StaffInvitation
                   validators={{ onSubmit: acceptStaffInvitationBaseSchema.shape.lastName }}
                 >
                   {(field) => {
-                    const error = fieldErrorMessage(field.state.meta.errors)
+                    const error = resolveError(field.state.meta.errors)
 
                     return (
                       <Field
@@ -176,7 +184,7 @@ export function StaffInvitationAcceptView({ invitation, token }: StaffInvitation
                   validators={{ onSubmit: acceptStaffInvitationBaseSchema.shape.phone }}
                 >
                   {(field) => {
-                    const error = fieldErrorMessage(field.state.meta.errors)
+                    const error = resolveError(field.state.meta.errors)
 
                     return (
                       <Field
@@ -208,7 +216,7 @@ export function StaffInvitationAcceptView({ invitation, token }: StaffInvitation
                     }}
                   >
                     {(field) => {
-                      const error = fieldErrorMessage(field.state.meta.errors)
+                      const error = resolveError(field.state.meta.errors)
 
                       return (
                         <Field
@@ -238,7 +246,7 @@ export function StaffInvitationAcceptView({ invitation, token }: StaffInvitation
                   validators={{ onSubmit: acceptStaffInvitationBaseSchema.shape.password }}
                 >
                   {(field) => {
-                    const error = fieldErrorMessage(field.state.meta.errors)
+                    const error = resolveError(field.state.meta.errors)
 
                     return (
                       <Field
@@ -283,7 +291,7 @@ export function StaffInvitationAcceptView({ invitation, token }: StaffInvitation
                   }}
                 >
                   {(field) => {
-                    const error = fieldErrorMessage(field.state.meta.errors)
+                    const error = resolveError(field.state.meta.errors)
 
                     return (
                       <Field

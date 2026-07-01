@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Button, Input, toast } from '@afterdark/ui'
 import { Check, Copy } from 'lucide-react'
+import { STAFF_INVITATION_EXPIRY_OPTIONS } from '@afterdark/validators'
 import type { StaffInvitationSuccess } from '~/modules/staff/components/staff-user-form'
 import { formatInvitationTimeRemaining } from '~/modules/staff/utils/staff-invitation.utils'
 
@@ -41,6 +42,15 @@ export function StaffInvitationSuccessPanel({
 
   const isExpired = invitation.expiresAt <= Date.now()
   const hasSecurityWord = invitation.hasSecurityWord
+  const expiryDuration =
+    (
+      {
+        [STAFF_INVITATION_EXPIRY_OPTIONS['12h']]: t('form.expires12h'),
+        [STAFF_INVITATION_EXPIRY_OPTIONS['24h']]: t('form.expires24h'),
+        [STAFF_INVITATION_EXPIRY_OPTIONS['48h']]: t('form.expires48h'),
+        [STAFF_INVITATION_EXPIRY_OPTIONS['7d']]: t('form.expires7d'),
+      } as Record<number, string>
+    )[invitation.expiresInMs] ?? t('form.expires48h')
 
   return (
     <div className="flex flex-1 flex-col">
@@ -49,7 +59,9 @@ export function StaffInvitationSuccessPanel({
           <h3 className="font-heading text-lg font-semibold text-ink">
             {t('invitation.successTitle')}
           </h3>
-          <p className="mt-2 text-sm text-ink-muted">{t('invitation.successDescription')}</p>
+          <p className="mt-2 text-sm text-ink-muted">
+            {t('invitation.successDescription', { duration: expiryDuration })}
+          </p>
         </div>
 
         <div className="space-y-2">

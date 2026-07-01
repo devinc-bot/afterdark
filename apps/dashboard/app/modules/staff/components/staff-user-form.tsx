@@ -1,6 +1,11 @@
 import { useForm } from '@tanstack/react-form'
 import { useTranslation } from 'react-i18next'
-import { createStaffInvitationSchema, type CreateStaffInvitationInput } from '@afterdark/validators'
+import {
+  createStaffInvitationSchema,
+  STAFF_INVITATION_EXPIRY_OPTIONS,
+  type CreateStaffInvitationInput,
+  type StaffInvitationExpiryMs,
+} from '@afterdark/validators'
 import {
   Button,
   DialogClose,
@@ -22,6 +27,7 @@ const EMPTY_STAFF_INVITATION_FORM_VALUES: CreateStaffInvitationInput = {
   email: '',
   clubId: '',
   securityWord: '',
+  expiresInMs: STAFF_INVITATION_EXPIRY_OPTIONS['12h'],
 }
 
 type ClubSelectFieldDisplayInput = {
@@ -68,6 +74,7 @@ function getClubSelectFieldDisplay({
 export type StaffInvitationSuccess = {
   url: string
   expiresAt: number
+  expiresInMs: number
   hasSecurityWord: boolean
 }
 
@@ -90,6 +97,7 @@ export function StaffUserForm({ onInviteSuccess }: StaffUserFormProps) {
         onInviteSuccess({
           url: response.url,
           expiresAt: new Date(response.expiresAt).getTime(),
+          expiresInMs: value.expiresInMs,
           hasSecurityWord: response.hasSecurityWord,
         })
         toast.success(t('form.success'))
@@ -165,6 +173,36 @@ export function StaffUserForm({ onInviteSuccess }: StaffUserFormProps) {
                   {clubs.map((club) => (
                     <SelectItem key={club.documentId} value={club.documentId}>
                       {club.name}
+                    </SelectItem>
+                  ))}
+                </SelectField>
+              )
+            }}
+          </form.Field>
+
+          <form.Field
+            name="expiresInMs"
+            validators={{ onSubmit: createStaffInvitationSchema.shape.expiresInMs }}
+          >
+            {(field) => {
+              const error = fieldErrorMessage(field.state.meta.errors)
+
+              return (
+                <SelectField
+                  label={t('form.expiresIn')}
+                  value={String(field.state.value)}
+                  onValueChange={(value) =>
+                    field.handleChange(Number(value) as StaffInvitationExpiryMs)
+                  }
+                  error={error ?? undefined}
+                >
+                  {(
+                    Object.entries(STAFF_INVITATION_EXPIRY_OPTIONS) as Array<
+                      [keyof typeof STAFF_INVITATION_EXPIRY_OPTIONS, number]
+                    >
+                  ).map(([key, ms]) => (
+                    <SelectItem key={key} value={String(ms)}>
+                      {t(`form.expires${key}`)}
                     </SelectItem>
                   ))}
                 </SelectField>

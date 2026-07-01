@@ -1,6 +1,5 @@
 import { useTranslation } from 'react-i18next'
 import { Card, Skeleton } from '@afterdark/ui'
-import { LoadErrorBanner } from '~/modules/common/components/load-error-banner'
 
 export function StaffPersonnelTabSkeleton() {
   const { t } = useTranslation('staff')
@@ -18,27 +17,6 @@ export function StaffPersonnelTabSkeleton() {
         </div>
       </Card>
     </section>
-  )
-}
-
-type StaffPersonnelLoadErrorBannerProps = {
-  onRetry: () => void
-  isRetrying: boolean
-}
-
-export function StaffPersonnelLoadErrorBanner({
-  onRetry,
-  isRetrying,
-}: StaffPersonnelLoadErrorBannerProps) {
-  const { t } = useTranslation('staff')
-
-  return (
-    <LoadErrorBanner
-      message={t('table.loadError')}
-      retryLabel={t('table.retry')}
-      onRetry={onRetry}
-      isRetrying={isRetrying}
-    />
   )
 }
 
