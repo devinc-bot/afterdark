@@ -170,6 +170,78 @@ loader (/staff)
 | 1. Link válido, completar form, submit | Cuenta creada, toast éxito, redirect a login |
 | 2. Link expirado                       | 410 → error en UI                            |
 | 3. Security word incorrecta            | 403 → toast/error en UI                      |
-| 4. Submit dos veces con mismo link     | Segundo submit → 409 ya aceptada             |
+| 4. Submit dos veces con mismo link     | Segundo submit → 404 (ya fue borrada)        |
 | 5. Email ya registrado en otra cuenta  | 409 → error en UI                            |
 | 6. `pnpm type-check` + `lint`          | Sin errores                                  |
+
+---
+
+# Entrega 5 — Eliminación de invitaciones al aceptar/expirar
+
+> Status spec: `approved`.
+
+## Orden de capas
+
+```text
+1. packages/db       — deleteStaffInvitationById + deleteExpiredAndCancelledInvitations
+2. apps/api          — instalar @nestjs/schedule; ScheduleModule en AppModule
+3. apps/api          — InvitationsCleanupScheduler (@Cron diario)
+4. apps/api          — reemplazar updateStaffInvitationAccepted → deleteStaffInvitationById en service E3
+```
+
+## Archivos a crear / modificar
+
+### `packages/db`
+
+| Archivo                                            | Cambio                                                                                                                             |
+| -------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| `src/repositories/staff-invitations.repository.ts` | **Agregar** `deleteStaffInvitationById(id)` y `deleteExpiredAndCancelledInvitations()`. Reemplaza `updateStaffInvitationAccepted`. |
+| `src/repositories/index.ts`                        | Exportar `deleteStaffInvitationById`, `deleteExpiredAndCancelledInvitations`. Eliminar export de `updateStaffInvitationAccepted`.  |
+
+### `apps/api`
+
+| Archivo                                                    | Cambio                                                                                                                         |
+| ---------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `package.json`                                             | Agregar `@nestjs/schedule` a dependencies                                                                                      |
+| `src/app.module.ts`                                        | Importar `ScheduleModule.forRoot()`                                                                                            |
+| `src/modules/invitations/invitations-cleanup.scheduler.ts` | **Nuevo** — `@Injectable()` con `@Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)` que llama `deleteExpiredAndCancelledInvitations` |
+| `src/modules/invitations/invitations.module.ts`            | Agregar `InvitationsCleanupScheduler` a `providers`                                                                            |
+| `src/modules/invitations/invitations.service.ts`           | Paso 11 de `acceptStaffInvitation`: `deleteStaffInvitationById` en lugar de `updateStaffInvitationAccepted`                    |
+
+## Diseño técnico
+
+```text
+acceptStaffInvitation (service E3, paso 11):
+  - antes: updateStaffInvitationAccepted(invitation.id)
+  - ahora: deleteStaffInvitationById(invitation.id)
+
+InvitationsCleanupScheduler:
+  @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
+  async cleanupInvitations() {
+    await deleteExpiredAndCancelledInvitations()
+  }
+
+deleteExpiredAndCancelledInvitations (repository):
+  DELETE FROM staff_invitations
+  WHERE expires_at < NOW()
+     OR status IN ('expired', 'cancelled')
+```
+
+## Riesgos / edge cases
+
+| Caso                                                | Comportamiento esperado                                                                |
+| --------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| `deleteStaffInvitationById` falla tras crear cuenta | Loguear error; no revertir cuenta. Cron limpiará la fila.                              |
+| Link usado por segunda vez                          | `findStaffInvitationByToken` devuelve null → 404 (fila ya fue borrada)                 |
+| Cron corre mientras alguien acepta                  | Si cron borra antes que el service lea la fila → service recibe null → 404 (aceptable) |
+| `@nestjs/schedule` no instalado                     | App no compila; instalar antes de arrancar                                             |
+
+## Verificación manual
+
+| Paso                                        | Resultado esperado                                   |
+| ------------------------------------------- | ---------------------------------------------------- |
+| 1. Aceptar invitación válida                | Cuenta creada; fila en `staff_invitations` eliminada |
+| 2. Reintentar con el mismo link             | 404 — invitación no encontrada                       |
+| 3. Invocar manualmente `cleanupInvitations` | Filas vencidas/canceladas eliminadas de DB           |
+| 4. `GET /invitations/staff` post-limpieza   | Solo devuelve invitaciones `pending`                 |
+| 5. `pnpm type-check` + `lint`               | Sin errores                                          |

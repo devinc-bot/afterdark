@@ -24,6 +24,13 @@
 
 Estados: `pending` · `in_progress` · `done`
 
+### Entrega 5 — Eliminación de invitaciones al aceptar/expirar
+
+| Fase | Nombre              | Estado |
+| ---- | ------------------- | ------ |
+| 1    | Identidad y alcance | `done` |
+| 6    | Plan técnico        | `done` |
+
 ---
 
 ## Log de respuestas
@@ -143,6 +150,20 @@ Estados: `pending` · `in_progress` · `done`
 - Status spec → `approved`.
 
 ---
+
+### Entrega 5 — Fase 1 — Identidad y alcance
+
+- **Encaje:** ampliar `003-staff-invitations` (no nueva fila en roadmap).
+- **Foco:** hard delete al aceptar + cron diario para vencidas y canceladas.
+- **Apps:** solo `api` (sin cambios en `dashboard`).
+- **Dependencias:** E3 (flujo de aceptación); la función `updateStaffInvitationAccepted` de E3 se reemplaza por `deleteStaffInvitationById`.
+
+### Entrega 5 — Decisiones
+
+- **Al aceptar:** hard delete de la fila (no soft delete).
+- **Expiradas + canceladas:** cron diario, medianoche UTC.
+- **Listado E2:** solo devuelve `pending` (las demás ya no existen en DB).
+- **Status spec:** `approved`.
 
 ## Supuestos del asistente
 

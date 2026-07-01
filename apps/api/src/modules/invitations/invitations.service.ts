@@ -5,6 +5,7 @@ import {
   GoneException,
   Injectable,
   InternalServerErrorException,
+  Logger,
   NotFoundException,
 } from '@nestjs/common'
 import { hashValue, verifyValue } from '../common'
@@ -18,8 +19,7 @@ import {
   findStaffInvitationByDocumentIdForOwner,
   findStaffInvitationByTokenWithClub,
   findStaffInvitationsByOwnerDocumentId,
-  registerAccount,
-  updateStaffInvitationAccepted,
+  registerStaffForClub,
 } from '@afterdark/db'
 import {
   CreateStaffInvitationResponse,
@@ -42,6 +42,8 @@ import { toStaffInvitationResponse } from './invitation.formatter'
 
 @Injectable()
 export class InvitationsService {
+  private readonly logger = new Logger(InvitationsService.name)
+
   constructor(
     @Inject(JwtService) private readonly jwtService: JwtService,
     @Inject(TranslationService) private readonly ts: TranslationService
@@ -220,17 +222,22 @@ export class InvitationsService {
     const hashedPassword = await hashValue(input.password)
 
     try {
-      await registerAccount({
+      await registerStaffForClub({
         email: row.invitation.email,
         hashedPassword,
         roleId: staffRole.id,
         roleName: USER_ROLE.STAFF,
         profile: { name: input.name, lastName: input.lastName, phone: input.phone },
+        clubId: row.invitation.clubId,
       })
-
-      await updateStaffInvitationAccepted(row.invitation.id)
     } catch {
       throw new InternalServerErrorException(this.ts.translateError('invitation.ACCEPT_FAILED'))
+    }
+
+    try {
+      await deleteStaffInvitationById(row.invitation.id)
+    } catch (error) {
+      this.logger.error('Failed to delete invitation after accept', error)
     }
 
     return { message: this.ts.translateError('invitation.ACCEPT_SUCCESS') }

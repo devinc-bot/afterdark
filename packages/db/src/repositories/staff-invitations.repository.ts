@@ -1,4 +1,4 @@
-import { and, desc, eq } from 'drizzle-orm'
+import { and, desc, eq, inArray, lt, or } from 'drizzle-orm'
 import { STAFF_INVITATION_STATUS } from '@afterdark/types'
 import { db } from '../client.ts'
 import { clubs } from '../schema/club.ts'
@@ -87,11 +87,18 @@ export async function deleteStaffInvitationById(id: number): Promise<void> {
   await db.delete(staffInvitations).where(eq(staffInvitations.id, id))
 }
 
-export async function updateStaffInvitationAccepted(id: number): Promise<void> {
+export async function deleteExpiredAndCancelledInvitations(): Promise<void> {
   await db
-    .update(staffInvitations)
-    .set({ status: STAFF_INVITATION_STATUS.ACCEPTED, acceptedAt: new Date() })
-    .where(eq(staffInvitations.id, id))
+    .delete(staffInvitations)
+    .where(
+      or(
+        lt(staffInvitations.expiresAt, new Date()),
+        inArray(staffInvitations.status, [
+          STAFF_INVITATION_STATUS.EXPIRED,
+          STAFF_INVITATION_STATUS.CANCELLED,
+        ])
+      )
+    )
 }
 
 export async function findStaffInvitationByTokenWithClub(

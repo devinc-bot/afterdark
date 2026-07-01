@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common'
+import { ScheduleModule } from '@nestjs/schedule'
 import { AppController } from './app.controller'
 import { I18nModule } from '@afterdark/i18n/server'
 import { CommonModule } from './modules/common/common.module'
@@ -15,6 +16,7 @@ import { TicketsModule } from './modules/tickets'
 
 @Module({
   imports: [
+    ScheduleModule.forRoot(),
     I18nModule,
     CommonModule,
     AuthModule,
