@@ -92,12 +92,13 @@ export interface TicketResponse {
   price: number
   quantity: number
   status: TicketStatus
-  startDate: Date
-  endDate: Date
   description: string
   type: TicketType
-  clubId: string
-  clubName: string
+  saleStartsAt: Date | null
+  saleEndsAt: Date | null
+  eventId: string | null
+  clubId: string | null
+  clubName: string | null
   createdAt: Date
   updatedAt: Date
 }

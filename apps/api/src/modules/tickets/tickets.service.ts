@@ -9,8 +9,8 @@ import {
   countPaymentsByTicketId,
   createTicket,
   deleteTicketByDocumentId,
-  findClubOwnedByOwnerDocumentId,
-  findTicketWithClubOwnedByOwner,
+  findEventOwnedByOwnerDocumentId,
+  findTicketWithRelationsOwnedByOwner,
   findTicketsPaginatedByOwner,
   updateTicketByDocumentId,
 } from '@afterdark/db'
@@ -43,7 +43,7 @@ export class TicketsService {
       const totalPages = total === 0 ? 0 : Math.ceil(total / query.limit)
 
       return {
-        data: rows.map(({ ticket, club }) => toTicketResponse(ticket, club)),
+        data: rows.map(({ ticket, event, club }) => toTicketResponse(ticket, event, club)),
         total,
         page: query.page,
         limit: query.limit,
@@ -55,15 +55,11 @@ export class TicketsService {
   }
 
   async createTicket(ownerDocumentId: string, input: CreateTicketInput): Promise<TicketResponse> {
-    const club = await findClubOwnedByOwnerDocumentId(input.clubId, ownerDocumentId)
-
-    if (!club) {
-      throw new NotFoundException(this.ts.translateError('ticket.CLUB_NOT_FOUND'))
-    }
+    const eventId = await this.resolveEventId(ownerDocumentId, input.eventId)
 
     try {
-      const row = await createTicket(club.id, toTicketUpsertInput(input))
-      return toTicketResponse(row.ticket, row.club)
+      const row = await createTicket(toTicketUpsertInput(input, eventId))
+      return toTicketResponse(row.ticket, row.event, row.club)
     } catch {
       throw new InternalServerErrorException(this.ts.translateError('ticket.CREATE_FAILED'))
     }
@@ -74,22 +70,24 @@ export class TicketsService {
     documentId: string,
     input: UpdateTicketInput
   ): Promise<TicketResponse> {
-    const existing = await findTicketWithClubOwnedByOwner(documentId, ownerDocumentId)
+    const existing = await findTicketWithRelationsOwnedByOwner(documentId, ownerDocumentId)
 
     if (!existing) {
       throw new NotFoundException(this.ts.translateError('ticket.NOT_FOUND'))
     }
 
+    const eventId = await this.resolveEventId(ownerDocumentId, input.eventId)
+
     try {
-      const row = await updateTicketByDocumentId(documentId, toTicketUpsertInput(input))
-      return toTicketResponse(row.ticket, row.club)
+      const row = await updateTicketByDocumentId(documentId, toTicketUpsertInput(input, eventId))
+      return toTicketResponse(row.ticket, row.event, row.club)
     } catch {
       throw new InternalServerErrorException(this.ts.translateError('ticket.UPDATE_FAILED'))
     }
   }
 
   async deleteTicket(ownerDocumentId: string, documentId: string): Promise<void> {
-    const existing = await findTicketWithClubOwnedByOwner(documentId, ownerDocumentId)
+    const existing = await findTicketWithRelationsOwnedByOwner(documentId, ownerDocumentId)
 
     if (!existing) {
       throw new NotFoundException(this.ts.translateError('ticket.NOT_FOUND'))
@@ -106,5 +104,22 @@ export class TicketsService {
     } catch {
       throw new InternalServerErrorException(this.ts.translateError('ticket.DELETE_FAILED'))
     }
+  }
+
+  private async resolveEventId(
+    ownerDocumentId: string,
+    eventDocumentId?: string
+  ): Promise<number | null> {
+    if (!eventDocumentId) {
+      return null
+    }
+
+    const event = await findEventOwnedByOwnerDocumentId(eventDocumentId, ownerDocumentId)
+
+    if (!event) {
+      throw new NotFoundException(this.ts.translateError('ticket.EVENT_NOT_FOUND'))
+    }
+
+    return event.id
   }
 }

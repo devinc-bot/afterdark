@@ -1,10 +1,11 @@
-import type { ClubSelect, TicketSelect } from '@afterdark/db'
+import type { ClubSelect, EventSelect, TicketSelect } from '@afterdark/db'
 import type { TicketResponse } from '@afterdark/types'
 import type { CreateTicketInput, UpdateTicketInput } from '@afterdark/validators'
 
 export function toTicketResponse(
   ticket: TicketSelect,
-  club: Pick<ClubSelect, 'documentId' | 'name'>
+  event: Pick<EventSelect, 'documentId'> | null,
+  club: Pick<ClubSelect, 'documentId' | 'name'> | null
 ): TicketResponse {
   return {
     documentId: ticket.documentId,
@@ -12,26 +13,31 @@ export function toTicketResponse(
     price: ticket.price,
     quantity: ticket.quantity,
     status: ticket.status,
-    startDate: ticket.startDate,
-    endDate: ticket.endDate,
     description: ticket.description,
     type: ticket.type,
-    clubId: club.documentId,
-    clubName: club.name,
+    saleStartsAt: ticket.saleStartsAt,
+    saleEndsAt: ticket.saleEndsAt,
+    eventId: event?.documentId ?? null,
+    clubId: club?.documentId ?? null,
+    clubName: club?.name ?? null,
     createdAt: ticket.createdAt,
     updatedAt: ticket.updatedAt,
   }
 }
 
-export function toTicketUpsertInput(input: CreateTicketInput | UpdateTicketInput) {
+export function toTicketUpsertInput(
+  input: CreateTicketInput | UpdateTicketInput,
+  eventId?: number | null
+) {
   return {
     name: input.name,
     price: input.price,
     quantity: input.quantity,
     description: input.description,
-    startDate: input.startDate,
-    endDate: input.endDate,
     status: input.status,
     type: input.type,
+    saleStartsAt: input.saleStartsAt ?? null,
+    saleEndsAt: input.saleEndsAt ?? null,
+    eventId: eventId ?? null,
   }
 }

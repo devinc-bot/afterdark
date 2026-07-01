@@ -82,11 +82,12 @@ const AppClubManagementNewRoute = AppClubManagementNewRouteImport.update({
   path: '/club-management/new',
   getParentRoute: () => AppRoute,
 } as any)
-const AppClubManagementDocumentIdEditRoute = AppClubManagementDocumentIdEditRouteImport.update({
-  id: '/club-management/$documentId/edit',
-  path: '/club-management/$documentId/edit',
-  getParentRoute: () => AppRoute,
-} as any)
+const AppClubManagementDocumentIdEditRoute =
+  AppClubManagementDocumentIdEditRouteImport.update({
+    id: '/club-management/$documentId/edit',
+    path: '/club-management/$documentId/edit',
+    getParentRoute: () => AppRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof AppIndexRoute

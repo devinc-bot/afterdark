@@ -1,14 +1,16 @@
 import { and, count, desc, eq, type SQL } from 'drizzle-orm'
 import { db } from '../client.ts'
 import { clubs, type ClubSelect } from '../schema/club.ts'
+import { events, type EventSelect } from '../schema/event.ts'
 import { owners } from '../schema/owner.ts'
 import { payments } from '../schema/payment.ts'
 import { tickets, type TicketSelect } from '../schema/ticket.ts'
 import type { TicketStatus } from '@afterdark/types'
 
-export type TicketWithClub = {
+export type TicketWithRelations = {
   ticket: TicketSelect
-  club: ClubSelect
+  event: EventSelect | null
+  club: ClubSelect | null
 }
 
 export type TicketUpsertInput = {
@@ -16,10 +18,11 @@ export type TicketUpsertInput = {
   price: number
   quantity: number
   description: string
-  startDate: Date
-  endDate: Date
   status: TicketSelect['status']
   type: TicketSelect['type']
+  saleStartsAt?: Date | null
+  saleEndsAt?: Date | null
+  eventId?: number | null
 }
 
 export type ListTicketsByOwnerParams = {
@@ -31,7 +34,7 @@ export type ListTicketsByOwnerParams = {
 }
 
 export type PaginatedTicketsResult = {
-  rows: TicketWithClub[]
+  rows: TicketWithRelations[]
   total: number
 }
 
@@ -53,40 +56,28 @@ function buildOwnerTicketFilters({
   return and(...filters)
 }
 
-export async function findClubOwnedByOwnerDocumentId(
-  clubDocumentId: string,
-  ownerDocumentId: string
-): Promise<ClubSelect | null> {
-  const [row] = await db
-    .select({ club: clubs })
-    .from(clubs)
-    .innerJoin(owners, eq(owners.id, clubs.ownerId))
-    .where(and(eq(clubs.documentId, clubDocumentId), eq(owners.documentId, ownerDocumentId)))
-    .limit(1)
-
-  return row?.club ?? null
-}
-
-export async function findTicketWithClubOwnedByOwner(
-  ticketDocumentId: string,
-  ownerDocumentId: string
-): Promise<TicketWithClub | null> {
-  const [row] = await db
+function ticketRelationsQuery() {
+  return db
     .select({
       ticket: tickets,
+      event: events,
       club: clubs,
     })
     .from(tickets)
-    .innerJoin(clubs, eq(clubs.id, tickets.clubId))
+    .innerJoin(events, eq(events.id, tickets.eventId))
+    .innerJoin(clubs, eq(clubs.id, events.clubId))
     .innerJoin(owners, eq(owners.id, clubs.ownerId))
+}
+
+export async function findTicketWithRelationsOwnedByOwner(
+  ticketDocumentId: string,
+  ownerDocumentId: string
+): Promise<TicketWithRelations | null> {
+  const [row] = await ticketRelationsQuery()
     .where(and(eq(tickets.documentId, ticketDocumentId), eq(owners.documentId, ownerDocumentId)))
     .limit(1)
 
-  if (!row) {
-    return null
-  }
-
-  return row
+  return row ?? null
 }
 
 export async function findTicketsPaginatedByOwner(
@@ -96,22 +87,15 @@ export async function findTicketsPaginatedByOwner(
   const offset = (page - 1) * limit
   const where = buildOwnerTicketFilters(params)
 
-  const baseQuery = db
-    .select({
-      ticket: tickets,
-      club: clubs,
-    })
-    .from(tickets)
-    .innerJoin(clubs, eq(clubs.id, tickets.clubId))
-    .innerJoin(owners, eq(owners.id, clubs.ownerId))
-    .where(where)
+  const baseQuery = ticketRelationsQuery().where(where)
 
   const [rows, totalRows] = await Promise.all([
     baseQuery.orderBy(desc(tickets.createdAt)).limit(limit).offset(offset),
     db
       .select({ total: count() })
       .from(tickets)
-      .innerJoin(clubs, eq(clubs.id, tickets.clubId))
+      .innerJoin(events, eq(events.id, tickets.eventId))
+      .innerJoin(clubs, eq(clubs.id, events.clubId))
       .innerJoin(owners, eq(owners.id, clubs.ownerId))
       .where(where),
   ])
@@ -122,10 +106,7 @@ export async function findTicketsPaginatedByOwner(
   }
 }
 
-export async function createTicket(
-  clubId: number,
-  input: TicketUpsertInput
-): Promise<TicketWithClub> {
+export async function createTicket(input: TicketUpsertInput): Promise<TicketWithRelations> {
   const now = new Date()
 
   const [ticket] = await db
@@ -135,11 +116,11 @@ export async function createTicket(
       price: input.price,
       quantity: input.quantity,
       description: input.description,
-      startDate: input.startDate,
-      endDate: input.endDate,
       status: input.status,
       type: input.type,
-      clubId,
+      saleStartsAt: input.saleStartsAt ?? null,
+      saleEndsAt: input.saleEndsAt ?? null,
+      eventId: input.eventId ?? null,
       updatedAt: now,
     })
     .returning()
@@ -148,19 +129,13 @@ export async function createTicket(
     throw new Error('Ticket insert returned no row')
   }
 
-  const [club] = await db.select().from(clubs).where(eq(clubs.id, clubId)).limit(1)
-
-  if (!club) {
-    throw new Error('Club not found after ticket insert')
-  }
-
-  return { ticket, club }
+  return findTicketRelationsByTicketId(ticket.id)
 }
 
 export async function updateTicketByDocumentId(
   documentId: string,
   input: TicketUpsertInput
-): Promise<TicketWithClub> {
+): Promise<TicketWithRelations> {
   const now = new Date()
 
   const [ticket] = await db
@@ -170,10 +145,11 @@ export async function updateTicketByDocumentId(
       price: input.price,
       quantity: input.quantity,
       description: input.description,
-      startDate: input.startDate,
-      endDate: input.endDate,
       status: input.status,
       type: input.type,
+      saleStartsAt: input.saleStartsAt ?? null,
+      saleEndsAt: input.saleEndsAt ?? null,
+      eventId: input.eventId ?? null,
       updatedAt: now,
     })
     .where(eq(tickets.documentId, documentId))
@@ -183,13 +159,27 @@ export async function updateTicketByDocumentId(
     throw new Error('Ticket update returned no row')
   }
 
-  const [club] = await db.select().from(clubs).where(eq(clubs.id, ticket.clubId)).limit(1)
+  return findTicketRelationsByTicketId(ticket.id)
+}
 
-  if (!club) {
-    throw new Error('Club not found after ticket update')
+async function findTicketRelationsByTicketId(ticketId: number): Promise<TicketWithRelations> {
+  const [row] = await db
+    .select({
+      ticket: tickets,
+      event: events,
+      club: clubs,
+    })
+    .from(tickets)
+    .leftJoin(events, eq(events.id, tickets.eventId))
+    .leftJoin(clubs, eq(clubs.id, events.clubId))
+    .where(eq(tickets.id, ticketId))
+    .limit(1)
+
+  if (!row) {
+    throw new Error('Ticket not found after upsert')
   }
 
-  return { ticket, club }
+  return row
 }
 
 export async function countPaymentsByTicketId(ticketId: number): Promise<number> {

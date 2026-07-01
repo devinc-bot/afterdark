@@ -60,6 +60,7 @@
     "NOT_FOUND": "Ticket not found.",
     "FORBIDDEN": "You do not have permission for this ticket.",
     "CLUB_NOT_FOUND": "Club not found.",
+    "EVENT_NOT_FOUND": "Event not found.",
     "CREATE_FAILED": "Could not create ticket.",
     "UPDATE_FAILED": "Could not update ticket.",
     "DELETE_FAILED": "Could not delete ticket.",

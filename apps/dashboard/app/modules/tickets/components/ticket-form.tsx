@@ -20,8 +20,6 @@ import {
   Textarea,
   toast,
 } from '@afterdark/ui'
-import type { TFunction } from 'i18next'
-import { useClubs } from '~/modules/club-management/queries/use-club-management-queries'
 import { useCreateTicket, useUpdateTicket } from '~/modules/tickets/mutation/use-ticket-mutations'
 import { EMPTY_TICKET_FORM_VALUES } from '~/modules/tickets/utils/ticket-form.mapper'
 
@@ -33,47 +31,6 @@ export const TICKET_FORM_MODE = {
 export type TicketFormMode = (typeof TICKET_FORM_MODE)[keyof typeof TICKET_FORM_MODE]
 
 export const TICKET_FORM_ID = 'ticket-form'
-
-type ClubSelectFieldDisplayInput = {
-  isLoading: boolean
-  isError: boolean
-  clubCount: number
-  fieldError: string | null
-  t: TFunction<'tickets'>
-}
-
-type ClubSelectFieldDisplay = {
-  placeholder: string
-  error: string | undefined
-}
-
-function getClubSelectFieldDisplay({
-  isLoading,
-  isError,
-  clubCount,
-  fieldError,
-  t,
-}: ClubSelectFieldDisplayInput): ClubSelectFieldDisplay {
-  if (isLoading) {
-    return { placeholder: t('form.clubLoading'), error: fieldError ?? undefined }
-  }
-
-  if (isError) {
-    return {
-      placeholder: t('form.clubPlaceholder'),
-      error: t('form.clubsLoadError'),
-    }
-  }
-
-  if (clubCount === 0) {
-    return { placeholder: t('form.clubEmpty'), error: fieldError ?? undefined }
-  }
-
-  return {
-    placeholder: t('form.clubPlaceholder'),
-    error: fieldError ?? undefined,
-  }
-}
 
 function sanitizeNonNegativeDigits(value: string): string {
   return value.replace(/\D/g, '')
@@ -93,7 +50,6 @@ type TicketFormProps = {
 export function TicketForm({ mode, documentId, defaultValues, onSuccess }: TicketFormProps) {
   const { t } = useTranslation('tickets')
   const resolveFieldError = useResolveFieldError()
-  const { data: clubs = [], isLoading: isClubsLoading, isError: isClubsError } = useClubs()
   const createTicketMutation = useCreateTicket()
   const updateTicketMutation = useUpdateTicket()
 
@@ -168,37 +124,6 @@ export function TicketForm({ mode, documentId, defaultValues, onSuccess }: Ticke
                     aria-invalid={error ? true : undefined}
                   />
                 </Field>
-              )
-            }}
-          </form.Field>
-
-          <form.Field name="clubId" validators={{ onSubmit: ticketFormSchema.shape.clubId }}>
-            {(field) => {
-              const error = resolveFieldError(field.state.meta.errors)
-              const { placeholder: clubPlaceholder, error: clubFieldError } =
-                getClubSelectFieldDisplay({
-                  isLoading: isClubsLoading,
-                  isError: isClubsError,
-                  clubCount: clubs.length,
-                  fieldError: error,
-                  t,
-                })
-
-              return (
-                <SelectField
-                  label={t('form.club')}
-                  value={field.state.value || undefined}
-                  onValueChange={(value) => field.handleChange(value)}
-                  placeholder={clubPlaceholder}
-                  error={clubFieldError}
-                  disabled={isEdit || isClubsLoading || clubs.length === 0}
-                >
-                  {clubs.map((club) => (
-                    <SelectItem key={club.documentId} value={club.documentId}>
-                      {club.name}
-                    </SelectItem>
-                  ))}
-                </SelectField>
               )
             }}
           </form.Field>
@@ -297,8 +222,8 @@ export function TicketForm({ mode, documentId, defaultValues, onSuccess }: Ticke
 
           <div className="grid gap-5 sm:grid-cols-2">
             <form.Field
-              name="startDate"
-              validators={{ onSubmit: ticketFormSchema.shape.startDate }}
+              name="saleStartsAt"
+              validators={{ onSubmit: ticketFormSchema.shape.saleStartsAt }}
             >
               {(field) => {
                 const error = resolveFieldError(field.state.meta.errors)
@@ -308,7 +233,7 @@ export function TicketForm({ mode, documentId, defaultValues, onSuccess }: Ticke
                     <DateTimeInput
                       id={field.name}
                       name={field.name}
-                      value={field.state.value}
+                      value={field.state.value ?? ''}
                       onBlur={field.handleBlur}
                       onChange={(event) => field.handleChange(event.target.value)}
                       aria-invalid={error ? true : undefined}
@@ -318,7 +243,10 @@ export function TicketForm({ mode, documentId, defaultValues, onSuccess }: Ticke
               }}
             </form.Field>
 
-            <form.Field name="endDate" validators={{ onSubmit: ticketFormSchema.shape.endDate }}>
+            <form.Field
+              name="saleEndsAt"
+              validators={{ onSubmit: ticketFormSchema.shape.saleEndsAt }}
+            >
               {(field) => {
                 const error = resolveFieldError(field.state.meta.errors)
 
@@ -327,7 +255,7 @@ export function TicketForm({ mode, documentId, defaultValues, onSuccess }: Ticke
                     <DateTimeInput
                       id={field.name}
                       name={field.name}
-                      value={field.state.value}
+                      value={field.state.value ?? ''}
                       onBlur={field.handleBlur}
                       onChange={(event) => field.handleChange(event.target.value)}
                       aria-invalid={error ? true : undefined}

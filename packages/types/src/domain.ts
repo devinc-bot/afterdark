@@ -76,6 +76,14 @@ export const TICKET_TYPE = {
 
 export type TicketType = (typeof TICKET_TYPE)[keyof typeof TICKET_TYPE]
 
+export const EVENT_STATUS = {
+  DRAFT: 'draft',
+  PUBLISHED: 'published',
+  FINISHED: 'finished',
+} as const
+
+export type EventStatus = (typeof EVENT_STATUS)[keyof typeof EVENT_STATUS]
+
 export const PAYMENT_STATUS = {
   COMPLETED: 'completed',
   PENDING: 'pending',
