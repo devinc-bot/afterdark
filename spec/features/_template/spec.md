@@ -2,11 +2,11 @@
 
 > Completar con la entrevista guiada — [INTERVIEW.md](../../INTERVIEW.md). Estado por fase en `progress.md`.
 
-| Campo | Valor |
-| ----- | ----- |
-| **ID** | `00N-<slug>` |
+| Campo      | Valor                           |
+| ---------- | ------------------------------- |
+| **ID**     | `00N-<slug>`                    |
 | **Status** | `draft` \| `approved` \| `done` |
-| **Apps** | `api` · `web` · `dashboard` |
+| **Apps**   | `api` · `web` · `dashboard`     |
 
 ---
 
@@ -26,9 +26,7 @@
 
 ### No incluye
 
--
-
----
+- ***
 
 ## User stories
 
@@ -49,9 +47,9 @@
 
 ### API (si aplica)
 
-| Método | Ruta | Auth |
-| ------ | ---- | ---- |
-| | `/api/...` | |
+| Método | Ruta       | Auth |
+| ------ | ---------- | ---- |
+|        | `/api/...` |      |
 
 **Request / Response** — sketch o nombre de schema Zod / tipo en `@afterdark/types`.
 
@@ -59,10 +57,10 @@
 
 | HTTP | Cuándo | Mensaje |
 | ---- | ------ | ------- |
-| 400 | | |
-| 401 | | |
-| 403 | | |
-| 404 | | |
+| 400  |        |         |
+| 401  |        |         |
+| 403  |        |         |
+| 404  |        |         |
 
 ### Datos (si aplica)
 
@@ -73,13 +71,13 @@
 
 | Ruta | Pantalla |
 | ---- | -------- |
-| | |
+|      |          |
 
 **Copy (español)**
 
 | Contexto | Texto |
 | -------- | ----- |
-| | |
+|          |       |
 
 ---
 

@@ -2,14 +2,14 @@
 
 > [INTERVIEW.md](../../INTERVIEW.md)
 
-| Fase | Nombre | Estado |
-| ---- | ------ | ------ |
-| 1 | Identidad | `done` |
-| 2 | Comportamiento y alcance | `done` |
-| 3 | User stories | `done` |
-| 4 | Contratos | `done` |
-| 5 | Reglas y cierre | `done` |
-| 6 | Plan técnico | `done` |
+| Fase | Nombre                   | Estado |
+| ---- | ------------------------ | ------ |
+| 1    | Identidad                | `done` |
+| 2    | Comportamiento y alcance | `done` |
+| 3    | User stories             | `done` |
+| 4    | Contratos                | `done` |
+| 5    | Reglas y cierre          | `done` |
+| 6    | Plan técnico             | `done` |
 
 ---
 
@@ -27,7 +27,7 @@
 - Mantener `ClubRemoveDialog`.
 - Layout desktop: dos columnas (datos/ubicación | imágenes).
 - Footer sticky mobile y desktop.
-- Usuario pidió *seguí* → fases 3–6 inferidas y documentadas.
+- Usuario pidió _seguí_ → fases 3–6 inferidas y documentadas.
 
 ### Fase 3 — User stories
 

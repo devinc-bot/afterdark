@@ -6,11 +6,11 @@
 
 **afterdark** — plataforma de eventos nocturnos.
 
-| Audiencia | App | Rol |
-| --------- | --- | ----- |
-| Clientes | `web` | Descubrir clubes y eventos, ver detalle, comprar entradas |
+| Audiencia        | App         | Rol                                                           |
+| ---------------- | ----------- | ------------------------------------------------------------- |
+| Clientes         | `web`       | Descubrir clubes y eventos, ver detalle, comprar entradas     |
 | Dueños de clubes | `dashboard` | Administrar clubes, entradas, staff y operaciones del negocio |
-| Staff invitado | `dashboard` | Operar con permisos acotados según el club asignado |
+| Staff invitado   | `dashboard` | Operar con permisos acotados según el club asignado           |
 
 ## Problema que resolvemos
 

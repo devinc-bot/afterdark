@@ -2,25 +2,25 @@
 
 > Estado de la entrevista guiada ([INTERVIEW.md](../../INTERVIEW.md)). Actualizar al cerrar cada fase.
 
-| Fase | Nombre | Estado |
-| ---- | ------ | ------ |
-| 1 | Identidad | `done` |
-| 2 | Comportamiento y alcance | `done` |
-| 3 | User stories | `done` |
-| 4 | Contratos | `done` |
-| 5 | Reglas y cierre | `done` |
-| 6 | Plan técnico | `done` |
+| Fase | Nombre                   | Estado |
+| ---- | ------------------------ | ------ |
+| 1    | Identidad                | `done` |
+| 2    | Comportamiento y alcance | `done` |
+| 3    | User stories             | `done` |
+| 4    | Contratos                | `done` |
+| 5    | Reglas y cierre          | `done` |
+| 6    | Plan técnico             | `done` |
 
 ### Entrega 2 — Listado de invitaciones del dueño
 
-| Fase | Nombre | Estado |
-| ---- | ------ | ------ |
-| 1 | Identidad | `done` |
-| 2 | Comportamiento y alcance | `done` |
-| 3 | User stories | `done` |
-| 4 | Contratos | `done` |
-| 5 | Reglas y cierre | `done` |
-| 6 | Plan técnico | `done` |
+| Fase | Nombre                   | Estado |
+| ---- | ------------------------ | ------ |
+| 1    | Identidad                | `done` |
+| 2    | Comportamiento y alcance | `done` |
+| 3    | User stories             | `done` |
+| 4    | Contratos                | `done` |
+| 5    | Reglas y cierre          | `done` |
+| 6    | Plan técnico             | `done` |
 
 Estados: `pending` · `in_progress` · `done`
 
@@ -66,14 +66,14 @@ Estados: `pending` · `in_progress` · `done`
 ### Entrega 2 — Fase 1 — Identidad
 
 - **Encaje:** ampliar `003-staff-invitations` (no nueva fila en roadmap).
-- **Foco:** tab *Invitaciones* en `/staff` — `GET` de invitaciones creadas por el dueño autenticado + conexión en `StaffManagementView` / `StaffInvitations`.
+- **Foco:** tab _Invitaciones_ en `/staff` — `GET` de invitaciones creadas por el dueño autenticado + conexión en `StaffManagementView` / `StaffInvitations`.
 - **Apps:** `api` + `dashboard`.
 - **Dependencias:** `001-auth-sessions`, `002-club-management` (invitaciones ligadas a clubes del dueño).
 
 ### Entrega 2 — Fase 2 — Comportamiento y alcance
 
 - **Listado:** todas las invitaciones del dueño (`pending`, `accepted`, `expired`, `cancelled`).
-- **Carga:** lazy al abrir tab *Invitaciones* (no prefetch en loader de `/staff`).
+- **Carga:** lazy al abrir tab _Invitaciones_ (no prefetch en loader de `/staff`).
 - **Tras crear:** invalidar query y refrescar desde API.
 - **Fuera de alcance:** solo listar y mostrar; sin revocar, reenviar, aceptación por link ni filtros nuevos.
 
@@ -92,7 +92,7 @@ Estados: `pending` · `in_progress` · `done`
 
 ### Entrega 2 — Fase 5 — Reglas y cierre
 
-- **Vencimiento UI:** híbrido — `status` de DB; `pending` + `expiresAt` pasado → *Vencida*.
+- **Vencimiento UI:** híbrido — `status` de DB; `pending` + `expiresAt` pasado → _Vencida_.
 - **Copiar enlace:** oculto en `accepted` y `cancelled`.
 - **Status spec:** `approved`.
 
@@ -104,13 +104,13 @@ Estados: `pending` · `in_progress` · `done`
 
 ### Entrega 3 — Aceptar invitación por link
 
-| Fase | Nombre | Estado |
-| ---- | ------ | ------ |
-| 1 | Identidad | `done` |
-| 2 | Comportamiento y alcance | `done` |
-| 3 | Contratos | `done` |
-| 4 | Reglas y cierre | `done` |
-| 5 | Plan técnico | `done` |
+| Fase | Nombre                   | Estado |
+| ---- | ------------------------ | ------ |
+| 1    | Identidad                | `done` |
+| 2    | Comportamiento y alcance | `done` |
+| 3    | Contratos                | `done` |
+| 4    | Reglas y cierre          | `done` |
+| 5    | Plan técnico             | `done` |
 
 ### Entrega 3 — Fase 1 — Identidad
 
@@ -146,16 +146,14 @@ Estados: `pending` · `in_progress` · `done`
 
 ## Supuestos del asistente
 
--
-
----
+- ***
 
 ### Entrega 4 — Campo de vencimiento en formulario de invitación
 
-| Fase | Nombre | Estado |
-| ---- | ------ | ------ |
-| 1 | Identidad y alcance | `done` |
-| 2 | Contratos | `done` |
+| Fase | Nombre              | Estado |
+| ---- | ------------------- | ------ |
+| 1    | Identidad y alcance | `done` |
+| 2    | Contratos           | `done` |
 
 ### Entrega 4 — Fase 1 — Identidad y alcance
 

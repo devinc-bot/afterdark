@@ -1,10 +1,10 @@
 # Integración i18n — paquete compartido y Zod
 
-| Campo | Valor |
-| ----- | ----- |
-| **ID** | `001-i18n-integration` |
-| **Status** | `done` |
-| **Apps** | `packages/i18n` · `api` · `dashboard` · `web` |
+| Campo      | Valor                                         |
+| ---------- | --------------------------------------------- |
+| **ID**     | `001-i18n-integration`                        |
+| **Status** | `done`                                        |
+| **Apps**   | `packages/i18n` · `api` · `dashboard` · `web` |
 
 ---
 
@@ -42,14 +42,14 @@ Sin una capa i18n centralizada cada app mantendría su propia lógica de traducc
 
 ### Package — sub-path exports
 
-| Sub-path | Contenido |
-| -------- | --------- |
-| `@afterdark/i18n` | config, constantes, tipos, utils (zod, language-detector) |
-| `@afterdark/i18n/client` | `I18nProvider`, `initI18n`, `useTranslation` re-export, `setLanguage` |
-| `@afterdark/i18n/server` | `TranslationService`, `LanguageMiddleware`, `@Language()`, `I18nModule` |
-| `@afterdark/i18n/config` | `LANGUAGE`, `NAMESPACE`, `BASE_I18N_OPTIONS` |
+| Sub-path                    | Contenido                                                                                     |
+| --------------------------- | --------------------------------------------------------------------------------------------- |
+| `@afterdark/i18n`           | config, constantes, tipos, utils (zod, language-detector)                                     |
+| `@afterdark/i18n/client`    | `I18nProvider`, `initI18n`, `useTranslation` re-export, `setLanguage`                         |
+| `@afterdark/i18n/server`    | `TranslationService`, `LanguageMiddleware`, `@Language()`, `I18nModule`                       |
+| `@afterdark/i18n/config`    | `LANGUAGE`, `NAMESPACE`, `BASE_I18N_OPTIONS`                                                  |
 | `@afterdark/i18n/constants` | `AUTH_ERROR_CODE`, `INVITATION_ERROR_CODE`, `CLUB_ERROR_CODE`, `VALIDATION_KEY`, `COMMON_KEY` |
-| `@afterdark/i18n/utils/zod` | `installZodI18n`, `createZodErrorMap` |
+| `@afterdark/i18n/utils/zod` | `installZodI18n`, `createZodErrorMap`                                                         |
 
 ### Convención de claves en validators
 
@@ -67,13 +67,13 @@ El error map detecta `:` en el mensaje y llama `t(clave)` en el namespace corres
 
 ### Namespaces y locales
 
-| Namespace | Claves aprox. | Uso |
-| --------- | ------------- | --- |
-| `common` | 40 | Labels globales, acciones, estados |
-| `auth` | 35 | Flujo login/registro, errores de auth |
-| `validation` | 41 | Mensajes Zod, errores de campos |
-| `errors` | 42 | Errores HTTP, mensajes de API |
-| `emails` | 21 | Plantillas de email transaccional |
+| Namespace    | Claves aprox. | Uso                                   |
+| ------------ | ------------- | ------------------------------------- |
+| `common`     | 40            | Labels globales, acciones, estados    |
+| `auth`       | 35            | Flujo login/registro, errores de auth |
+| `validation` | 41            | Mensajes Zod, errores de campos       |
+| `errors`     | 42            | Errores HTTP, mensajes de API         |
+| `emails`     | 21            | Plantillas de email transaccional     |
 
 Cada namespace tiene `es.json` y `en.json`. El script `check:i18n` verifica paridad.
 
@@ -82,7 +82,7 @@ Cada namespace tiene `es.json` y `en.json`. El script `check:i18n` verifica pari
 ```ts
 // Instalar globalmente (en root de cada app)
 import { installZodI18n } from '@afterdark/i18n/utils/zod'
-installZodI18n(t)  // t = useTranslation('validation').t
+installZodI18n(t) // t = useTranslation('validation').t
 
 // O por instancia de schema
 import { createZodErrorMap } from '@afterdark/i18n/utils/zod'
@@ -91,10 +91,10 @@ schema.parse(data, { errorMap: createZodErrorMap(t) })
 
 **Códigos Zod 4 (diferencias clave respecto a Zod 3):**
 
-| Zod 3 | Zod 4 | Clave en `validation.json` |
-| ----- | ----- | -------------------------- |
-| `invalid_string` | `invalid_format` | `zod.invalid_string.{format}` |
-| `invalid_enum_value` | `invalid_value` | `zod.invalid_enum_value` |
+| Zod 3                | Zod 4            | Clave en `validation.json`    |
+| -------------------- | ---------------- | ----------------------------- |
+| `invalid_string`     | `invalid_format` | `zod.invalid_string.{format}` |
+| `invalid_enum_value` | `invalid_value`  | `zod.invalid_enum_value`      |
 
 **Plurales ICU** para `too_small` y `too_big` (requieren `i18next-icu`):
 
@@ -140,10 +140,10 @@ const { t } = useTranslation('staff', { useSuspense: false })
 
 ### Wiring por app
 
-| App | Cómo |
-| --- | ---- |
-| `dashboard` / `web` | `I18nProvider` envuelve `QueryClientProvider` en `__root.tsx` |
-| `api` | `I18nModule` primero en el array `AppModule.imports`; `LanguageMiddleware` en `configure()` |
+| App                 | Cómo                                                                                        |
+| ------------------- | ------------------------------------------------------------------------------------------- |
+| `dashboard` / `web` | `I18nProvider` envuelve `QueryClientProvider` en `__root.tsx`                               |
+| `api`               | `I18nModule` primero en el array `AppModule.imports`; `LanguageMiddleware` en `configure()` |
 
 ### Configuración pnpm
 

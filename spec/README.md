@@ -31,10 +31,10 @@ Cuando pidas **crear una spec** (al asistente o en el chat), no se completa todo
 
 1. El asistente lee [INTERVIEW.md](./INTERVIEW.md) y hace **preguntas por fases** (identidad → alcance → stories → contratos → reglas → plan).
 2. Con cada respuesta tuya, va **escribiendo** `spec/features/00N-<slug>/` y actualizando `progress.md`.
-3. Podés decir *“seguimos con la spec de tickets”* para **retomar** donde quedó.
+3. Podés decir _“seguimos con la spec de tickets”_ para **retomar** donde quedó.
 4. Cuando la spec está lista, status → `approved`; recién ahí conviene implementar.
 
-Disparadores útiles: *“creá la spec de …”*, *“nueva feature”*, *“completá la spec 006”*.
+Disparadores útiles: _“creá la spec de …”_, _“nueva feature”_, _“completá la spec 006”_.
 
 ### Implementar
 
@@ -48,23 +48,23 @@ Disparadores útiles: *“creá la spec de …”*, *“nueva feature”*, *“c
 
 ## Convenciones
 
-| Qué | Regla |
-| --- | ----- |
-| Carpetas de feature | `001-upload-avatar`, `002-staff-invite` (número + kebab-case) |
-| UI copy en specs | Español |
-| Identificadores / rutas | Inglés |
-| Validación | `@afterdark/validators` — no duplicar reglas en prosa |
-| DB | Repositories en `packages/db` — ver [DATABASE.md](../packages/db/DATABASE.md) |
-| Entrevista | Una fase por turno; ver [INTERVIEW.md](./INTERVIEW.md) |
+| Qué                     | Regla                                                                         |
+| ----------------------- | ----------------------------------------------------------------------------- |
+| Carpetas de feature     | `001-upload-avatar`, `002-staff-invite` (número + kebab-case)                 |
+| UI copy en specs        | Español                                                                       |
+| Identificadores / rutas | Inglés                                                                        |
+| Validación              | `@afterdark/validators` — no duplicar reglas en prosa                         |
+| DB                      | Repositories en `packages/db` — ver [DATABASE.md](../packages/db/DATABASE.md) |
+| Entrevista              | Una fase por turno; ver [INTERVIEW.md](./INTERVIEW.md)                        |
 
 ## Docs del repo
 
-| Doc | Uso |
-| --- | --- |
-| [DOMAIN.md](../DOMAIN.md) | Negocio, entidades, idioma |
-| [ARCHITECTURE.md](../ARCHITECTURE.md) | Módulos, capas, rutas |
-| [STYLEGUIDE.md](../STYLEGUIDE.md) | Naming, lint, format |
-| [AGENTS.md](../AGENTS.md) | Guía para asistentes IA |
+| Doc                                   | Uso                        |
+| ------------------------------------- | -------------------------- |
+| [DOMAIN.md](../DOMAIN.md)             | Negocio, entidades, idioma |
+| [ARCHITECTURE.md](../ARCHITECTURE.md) | Módulos, capas, rutas      |
+| [STYLEGUIDE.md](../STYLEGUIDE.md)     | Naming, lint, format       |
+| [AGENTS.md](../AGENTS.md)             | Guía para asistentes IA    |
 
 ## Para asistentes IA
 

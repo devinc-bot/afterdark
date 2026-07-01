@@ -17,35 +17,35 @@
 
 ### Validators
 
-| Archivo | Cambio |
-| ------- | ------ |
-| `packages/validators/src/<m>.ts` | |
+| Archivo                          | Cambio |
+| -------------------------------- | ------ |
+| `packages/validators/src/<m>.ts` |        |
 
 ### Types
 
-| Archivo | Cambio |
-| ------- | ------ |
-| `packages/types/src/api.ts` | |
+| Archivo                     | Cambio |
+| --------------------------- | ------ |
+| `packages/types/src/api.ts` |        |
 
 ### Database
 
-| Archivo | Cambio |
-| ------- | ------ |
-| `packages/db/src/schema/` | |
-| `packages/db/src/repositories/` | |
+| Archivo                         | Cambio |
+| ------------------------------- | ------ |
+| `packages/db/src/schema/`       |        |
+| `packages/db/src/repositories/` |        |
 
 ### API
 
-| Archivo | Cambio |
-| ------- | ------ |
-| `apps/api/src/modules/<name>/` | |
+| Archivo                        | Cambio |
+| ------------------------------ | ------ |
+| `apps/api/src/modules/<name>/` |        |
 
 ### Client
 
-| App | Archivo | Cambio |
-| --- | ------- | ------ |
-| `dashboard` | `app/modules/<m>/` | |
-| `web` | `app/modules/<m>/` | |
+| App         | Archivo            | Cambio |
+| ----------- | ------------------ | ------ |
+| `dashboard` | `app/modules/<m>/` |        |
+| `web`       | `app/modules/<m>/` |        |
 
 ## Diseño técnico
 
@@ -55,11 +55,11 @@
 
 | Caso | Comportamiento esperado |
 | ---- | ----------------------- |
-| | |
+|      |                         |
 
 ## Verificación manual
 
 | Paso | Resultado esperado |
 | ---- | ------------------ |
-| 1. | |
-| 2. | |
+| 1.   |                    |
+| 2.   |                    |

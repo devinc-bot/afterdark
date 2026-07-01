@@ -2,14 +2,14 @@
 
 > Spec retroactiva — feature ya implementada. Todas las fases marcadas `done`.
 
-| Fase | Nombre | Estado |
-| ---- | ------ | ------ |
-| 1 | Identidad | `done` |
-| 2 | Comportamiento y alcance | `done` |
-| 3 | User stories | `done` |
-| 4 | Contratos | `done` |
-| 5 | Reglas y cierre | `done` |
-| 6 | Plan técnico | `done` |
+| Fase | Nombre                   | Estado |
+| ---- | ------------------------ | ------ |
+| 1    | Identidad                | `done` |
+| 2    | Comportamiento y alcance | `done` |
+| 3    | User stories             | `done` |
+| 4    | Contratos                | `done` |
+| 5    | Reglas y cierre          | `done` |
+| 6    | Plan técnico             | `done` |
 
 ---
 
