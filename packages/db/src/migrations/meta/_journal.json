@@ -85,6 +85,13 @@
       "when": 1782502696550,
       "tag": "0011_new_column_storage_key",
       "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "6",
+      "when": 1782888120178,
+      "tag": "0012_nervous_the_hood",
+      "breakpoints": true
     }
   ]
 }
