@@ -1,6 +1,3 @@
-pnpm format
-git add -u
-
 pnpm lint-staged
 
 pnpm build
