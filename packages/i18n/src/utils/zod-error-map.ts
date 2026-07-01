@@ -11,12 +11,18 @@ type ZodCustomErrorMap = core.$ZodErrorMap
 const t_any = (t: ValidationT, key: string, vars?: Record<string, unknown>): string =>
   (t as any)(key, vars) as string
 
+// t is already bound to the 'validation' namespace; strip the prefix so i18next doesn't
+// interpret it as a literal key path within the bound namespace.
+const stripNs = (key: string): string =>
+  key.includes(':') ? key.split(':').slice(1).join(':') : key
+
 function resolveZodMessage(t: ValidationT, issue: RawZodIssue): string {
   if (issue.code === 'invalid_type') {
     return t('zod.invalid_type')
   }
 
   if (issue.code === 'too_small') {
+    if (issue.message?.includes(':')) return t_any(t, stripNs(issue.message))
     const type = (issue as { type?: string }).type ?? 'string'
     return t_any(t, `zod.too_small.${type}`, {
       minimum: (issue as { minimum?: number }).minimum ?? 0,
@@ -24,6 +30,7 @@ function resolveZodMessage(t: ValidationT, issue: RawZodIssue): string {
   }
 
   if (issue.code === 'too_big') {
+    if (issue.message?.includes(':')) return t_any(t, stripNs(issue.message))
     const type = (issue as { type?: string }).type ?? 'string'
     return t_any(t, `zod.too_big.${type}`, {
       maximum: (issue as { maximum?: number }).maximum ?? 0,
@@ -47,8 +54,8 @@ function resolveZodMessage(t: ValidationT, issue: RawZodIssue): string {
 
   if (issue.code === 'custom') {
     const message = issue.message
-    if (message && message.includes(':')) {
-      return t_any(t, message)
+    if (message?.includes(':')) {
+      return t_any(t, stripNs(message))
     }
     return message ?? t('zod.custom')
   }
