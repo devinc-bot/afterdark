@@ -85,15 +85,25 @@
     "cancel": "Cancelar",
     "confirm": "Desactivar acceso"
   },
+  "delete": {
+    "title": "Eliminar usuario",
+    "descriptionPrefix": "¿Querés eliminar a",
+    "descriptionSuffix": "? Esta acción es irreversible: se borra su cuenta y pierde acceso por completo.",
+    "cancel": "Cancelar",
+    "confirm": "Eliminar usuario"
+  },
   "table": {
     "title": "Registro del equipo",
     "name": "Nombre",
     "venue": "Club",
     "role": "Rol",
-    "lastActive": "Última actividad",
     "status": "Estado",
+    "statusActive": "Activo",
+    "statusInactive": "Inactivo",
     "actions": "Acciones",
-    "edit": "Editar usuario",
+    "deactivateUser": "Desactivar usuario",
+    "activateUser": "Activar usuario",
+    "deleteUser": "Eliminar usuario",
     "registryCount": "{count, plural, one {1 usuario en el registro} other {# usuarios en el registro}",
     "showingFiltered": "Mostrando {visible} de {total} usuarios",
     "search": {
@@ -104,18 +114,11 @@
     "noResultsTitle": "Ningún usuario coincide",
     "noResultsDescription": "Probá con otro nombre o correo electrónico.",
     "loadError": "No pudimos cargar el personal. Intentá de nuevo.",
+    "deleteUserError": "No pudimos eliminar el usuario. Intentá de nuevo.",
+    "updateStatusError": "No pudimos actualizar el estado. Intentá de nuevo.",
     "retry": "Reintentar",
     "emptyTitle": "Todavía no hay usuarios",
-    "emptyDescription": "Creá el primer usuario para empezar a asignar accesos operativos por club.",
-    "editUnavailableTooltip": "La edición estará disponible pronto.",
-    "offline": "Sin conexión",
-    "justCreated": "Recién creado",
-    "justActivated": "Recién activado",
-    "editUnavailable": "La edición estará disponible pronto.",
-    "activateAccess": "Activar acceso de",
-    "deactivateAccess": "Desactivar acceso de",
-    "statusActive": "Activo",
-    "statusInactive": "Inactivo"
+    "emptyDescription": "Creá el primer usuario para empezar a asignar accesos operativos por club."
   },
   "roles": {
     "controller": "Control de entradas",
