@@ -95,3 +95,44 @@
 - [ ] `pnpm type-check`
 - [ ] `pnpm lint`
 - [ ] Verificación manual según `plan.md` Entrega 5
+
+---
+
+# Entrega 6 — Eliminar / desactivar staff desde acciones
+
+## Shared packages
+
+- [x] `packages/types/src/domain.ts` — `STAFF_STATUS`: quitar `PENDING`
+- [x] `packages/db/src/schema/staff.ts` — `enum` sin `PENDING`
+- [x] `packages/db/src/repositories/staff.repository.ts` — `deleteStaffByDocumentId(documentId, ownerDocumentId)`
+- [x] `packages/db/src/repositories/staff.repository.ts` — `updateStaffStatusByDocumentId(documentId, ownerDocumentId, status)`
+- [x] `packages/db/src/repositories/index.ts` — exportar las dos funciones nuevas (ya cubierto por `export *`)
+- [x] `packages/i18n/src/constants/error-codes.ts` — `STAFF_ERROR_CODE`: agregar `UPDATE_FAILED`, `DELETE_FAILED`, `INVALID_STATUS`
+- [x] `packages/i18n/src/locales/errors/es.json` + `en.json` — mensajes de los códigos nuevos
+- [x] `packages/validators/src/user.ts` — `updateStaffStatusSchema`
+
+## API (`apps/api`)
+
+- [x] `src/modules/staff/staff.service.ts` — `deleteStaff(ownerDocumentId, staffDocumentId)`
+- [x] `src/modules/staff/staff.service.ts` — `updateStaffStatus(ownerDocumentId, staffDocumentId, status)`
+- [x] `src/modules/staff/staff.controller.ts` — `DELETE :documentId` (204 No Content)
+- [x] `src/modules/staff/staff.controller.ts` — `PATCH :documentId/status`
+
+## Dashboard (`apps/dashboard`)
+
+- [x] `app/config/constants/api.ts` — rutas `delete` / `updateStatus`
+- [x] `app/modules/staff/services/staff-personnel.service.ts` — `deleteStaffUser`, `updateStaffUserStatus`
+- [x] `app/modules/staff/mutations/use-staff-personnel-mutations.ts` — `useDeleteStaffUser`, `useUpdateStaffUserStatus`
+- [x] `app/modules/staff/components/staff-user-records.tsx` — quitar columnas Última actividad/Estado
+- [x] `app/modules/staff/components/staff-user-records.tsx` — menú de acciones: quitar Editar; agregar toggle activar/desactivar + eliminar
+- [x] `app/modules/staff/components/staff-user-delete-dialog.tsx` — nuevo diálogo de confirmación
+- [x] `app/modules/staff/components/staff-personnel-tab.tsx` — quitar `statusControlsDisabled` fijo, conectar mutations reales
+- [x] `packages/i18n/src/locales/staff/es.json` + `en.json` — `delete.*`, `table.deleteUser`, `table.deactivateUser`, `table.activateUser` (+ limpieza de claves muertas: `lastActive`, `status`, `edit`, `editUnavailableTooltip`, `activateAccess`, `deactivateAccess`, `statusActive`, `statusInactive`, `offline`, `justCreated`, `justActivated`)
+
+## Calidad
+
+- [x] `pnpm type-check` (types, db, validators, api, dashboard — sin errores)
+- [x] `pnpm lint` (oxlint — sin errores)
+- [x] `pnpm check:i18n` (paridad es/en — OK)
+- [ ] Verificación manual en navegador (no ejecutada en esta sesión — falta correr `pnpm dev` y probar el flujo)
+- [ ] Criterios de aceptación US-10 a US-13 de `spec.md` cumplidos (pendiente de verificación manual)
