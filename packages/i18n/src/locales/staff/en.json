@@ -104,7 +104,7 @@
     "deactivateUser": "Deactivate user",
     "activateUser": "Activate user",
     "deleteUser": "Delete user",
-    "registryCount": "{count, plural, one {1 user in registry} other {# users in registry}",
+    "registryCount": "{count, plural, one {1 user in registry} other {# users in registry}}",
     "showingFiltered": "Showing {visible} of {total} users",
     "search": {
       "label": "Search registry",
@@ -142,7 +142,7 @@
     "expires": "Expires",
     "status": "Status",
     "actions": "Actions",
-    "registryCount": "{count, plural, one {1 invitation created} other {# invitations created}",
+    "registryCount": "{count, plural, one {1 invitation created} other {# invitations created}}",
     "securityEnabled": "With word",
     "securityDisabled": "No word",
     "statusPending": "Pending",

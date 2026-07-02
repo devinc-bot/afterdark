@@ -104,7 +104,7 @@
     "deactivateUser": "Desactivar usuario",
     "activateUser": "Activar usuario",
     "deleteUser": "Eliminar usuario",
-    "registryCount": "{count, plural, one {1 usuario en el registro} other {# usuarios en el registro}",
+    "registryCount": "{count, plural, one {1 usuario en el registro} other {# usuarios en el registro}}",
     "showingFiltered": "Mostrando {visible} de {total} usuarios",
     "search": {
       "label": "Buscar en el registro",
@@ -142,7 +142,7 @@
     "expires": "Vencimiento",
     "status": "Estado",
     "actions": "Acciones",
-    "registryCount": "{count, plural, one {1 invitación creada} other {# invitaciones creadas}",
+    "registryCount": "{count, plural, one {1 invitación creada} other {# invitaciones creadas}}",
     "securityEnabled": "Con palabra",
     "securityDisabled": "Sin palabra",
     "statusPending": "Pendiente",
