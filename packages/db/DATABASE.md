@@ -77,7 +77,7 @@ Los valores de columnas `text` con enum provienen de `packages/types/src/domain.
 | ------------------------- | ----------------------------------------------- |
 | `USER_STATUS`             | `active`, `inactive`, `private`                 |
 | `OWNER_STATUS`            | `active`, `inactive`, `pending`                 |
-| `STAFF_STATUS`            | `active`, `inactive`, `pending`                 |
+| `STAFF_STATUS`            | `active`, `inactive`                            |
 | `USER_ROLE`               | `user`, `admin`, `owner`, `staff`               |
 | `CLUB_STATUS`             | `active`, `inactive`                            |
 | `STAFF_INVITATION_STATUS` | `pending`, `accepted`, `expired`, `cancelled`   |
