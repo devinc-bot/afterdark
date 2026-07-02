@@ -39,6 +39,9 @@ export const CLUB_ERROR_CODE = {
 export const STAFF_ERROR_CODE = {
   NOT_FOUND: 'staff.NOT_FOUND',
   LIST_FAILED: 'staff.LIST_FAILED',
+  UPDATE_FAILED: 'staff.UPDATE_FAILED',
+  DELETE_FAILED: 'staff.DELETE_FAILED',
+  INVALID_STATUS: 'staff.INVALID_STATUS',
 } as const
 
 export const OWNER_ERROR_CODE = {

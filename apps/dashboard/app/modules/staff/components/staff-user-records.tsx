@@ -12,7 +12,6 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-  Switch,
   Table,
   TableBody,
   TableCell,
@@ -21,8 +20,9 @@ import {
   TableRow,
 } from '@afterdark/ui'
 import { STAFF_STATUS, type StaffStatus, type UserRole } from '@afterdark/types'
-import { EllipsisVertical, Pencil } from 'lucide-react'
+import { EllipsisVertical, Loader2, Power, PowerOff, Trash2 } from 'lucide-react'
 import { StaffUserDeactivateDialog } from '~/modules/staff/components/staff-user-deactivate-dialog'
+import { StaffUserDeleteDialog } from '~/modules/staff/components/staff-user-delete-dialog'
 import { StaffUserRecordsToolbar } from '~/modules/staff/components/staff-user-records-toolbar'
 import type { StaffUserRecord } from '~/modules/staff/types/staff-user-record'
 import {
@@ -34,7 +34,9 @@ import { getStaffUserInitials } from '~/modules/staff/utils/staff-user.utils'
 type StaffUserRecordsProps = {
   records: StaffUserRecord[]
   statusControlsDisabled?: boolean
+  pendingRecordId?: string | null
   onStatusChange?: (recordId: string, status: StaffStatus) => void
+  onDelete?: (recordId: string) => void
 }
 
 const staffActionIconClassName = '!size-[20px] shrink-0'
@@ -77,8 +79,42 @@ function StaffUserRoleCell({ role }: { role: UserRole }) {
   )
 }
 
-function StaffUserRecordActions({ record }: { record: StaffUserRecord }) {
+function StaffUserStatusBadge({ status }: { status: StaffStatus }) {
   const { t } = useTranslation('staff')
+  const isActive = status === STAFF_STATUS.ACTIVE
+
+  return (
+    <Badge
+      variant="outline"
+      size="sm"
+      className={
+        isActive
+          ? 'border-success/40 bg-success/10 text-success'
+          : 'border-hairline bg-surface-container text-ink-muted'
+      }
+    >
+      {isActive ? t('table.statusActive') : t('table.statusInactive')}
+    </Badge>
+  )
+}
+
+function StaffUserRecordActions({
+  record,
+  onActivate,
+  onDeactivateRequest,
+  onDeleteRequest,
+  statusControlsDisabled = false,
+  isPending = false,
+}: {
+  record: StaffUserRecord
+  onActivate: (recordId: string) => void
+  onDeactivateRequest: (record: StaffUserRecord) => void
+  onDeleteRequest: (record: StaffUserRecord) => void
+  statusControlsDisabled?: boolean
+  isPending?: boolean
+}) {
+  const { t } = useTranslation('staff')
+  const isActive = record.status === STAFF_STATUS.ACTIVE
 
   return (
     <DropdownMenu>
@@ -89,61 +125,45 @@ function StaffUserRecordActions({ record }: { record: StaffUserRecord }) {
           size="icon"
           className="text-ink-muted hover:text-ink"
           aria-label={`${t('table.actions')} para ${record.name}`}
+          disabled={statusControlsDisabled}
+          aria-busy={isPending}
         >
-          <EllipsisVertical aria-hidden="true" />
+          {isPending ? (
+            <Loader2 aria-hidden="true" className={cn(staffActionIconClassName, 'animate-spin')} />
+          ) : (
+            <EllipsisVertical aria-hidden="true" />
+          )}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="min-w-44 p-1.5">
         <DropdownMenuItem
           className={staffActionItemClassName}
-          disabled
-          title={t('table.editUnavailableTooltip')}
+          disabled={statusControlsDisabled}
+          onSelect={() => {
+            if (isActive) {
+              onDeactivateRequest(record)
+              return
+            }
+            onActivate(record.id)
+          }}
         >
-          <Pencil aria-hidden="true" className={staffActionIconClassName} />
-          {t('table.edit')}
+          {isActive ? (
+            <PowerOff aria-hidden="true" className={staffActionIconClassName} />
+          ) : (
+            <Power aria-hidden="true" className={staffActionIconClassName} />
+          )}
+          {isActive ? t('table.deactivateUser') : t('table.activateUser')}
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          className={cn(staffActionItemClassName, 'text-red-600 focus:text-red-600')}
+          disabled={statusControlsDisabled}
+          onSelect={() => onDeleteRequest(record)}
+        >
+          <Trash2 aria-hidden="true" className={staffActionIconClassName} />
+          {t('table.deleteUser')}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
-  )
-}
-
-function StaffUserStatusControl({
-  record,
-  onActivate,
-  onDeactivateRequest,
-  statusControlsDisabled = false,
-}: {
-  record: StaffUserRecord
-  onActivate: (recordId: string) => void
-  onDeactivateRequest: (record: StaffUserRecord) => void
-  statusControlsDisabled?: boolean
-}) {
-  const { t } = useTranslation('staff')
-  const isActive = record.status === STAFF_STATUS.ACTIVE
-
-  return (
-    <div className="flex items-center gap-3">
-      <Switch
-        checked={isActive}
-        disabled={statusControlsDisabled}
-        onCheckedChange={(checked) => {
-          if (statusControlsDisabled) return
-          if (checked) {
-            onActivate(record.id)
-            return
-          }
-          onDeactivateRequest(record)
-        }}
-        aria-label={
-          isActive
-            ? `${t('table.deactivateAccess')} ${record.name}`
-            : `${t('table.activateAccess')} ${record.name}`
-        }
-      />
-      <span className="text-sm text-ink-muted">
-        {isActive ? t('table.statusActive') : t('table.statusInactive')}
-      </span>
-    </div>
   )
 }
 
@@ -151,12 +171,16 @@ function StaffUserRecordRow({
   record,
   onActivate,
   onDeactivateRequest,
+  onDeleteRequest,
   statusControlsDisabled = false,
+  isPending = false,
 }: {
   record: StaffUserRecord
   onActivate: (recordId: string) => void
   onDeactivateRequest: (record: StaffUserRecord) => void
+  onDeleteRequest: (record: StaffUserRecord) => void
   statusControlsDisabled?: boolean
+  isPending?: boolean
 }) {
   return (
     <TableRow className="border-0">
@@ -171,17 +195,18 @@ function StaffUserRecordRow({
       <TableCell className="p-6">
         <StaffUserRoleCell role={record.role} />
       </TableCell>
-      <TableCell className="p-6 text-sm text-ink-muted">{record.lastActiveLabel}</TableCell>
-      <TableCell>
-        <StaffUserStatusControl
+      <TableCell className="p-6">
+        <StaffUserStatusBadge status={record.status} />
+      </TableCell>
+      <TableCell className="p-6 text-right">
+        <StaffUserRecordActions
           record={record}
           onActivate={onActivate}
           onDeactivateRequest={onDeactivateRequest}
+          onDeleteRequest={onDeleteRequest}
           statusControlsDisabled={statusControlsDisabled}
+          isPending={isPending}
         />
-      </TableCell>
-      <TableCell className="p-6 text-right">
-        <StaffUserRecordActions record={record} />
       </TableCell>
     </TableRow>
   )
@@ -190,12 +215,16 @@ function StaffUserRecordRow({
 export function StaffUserRecords({
   records,
   statusControlsDisabled = false,
+  pendingRecordId = null,
   onStatusChange,
+  onDelete,
 }: StaffUserRecordsProps) {
   const { t } = useTranslation('staff')
   const [searchQuery, setSearchQuery] = useState('')
   const [deactivateTarget, setDeactivateTarget] = useState<StaffUserRecord | null>(null)
   const [deactivateDialogOpen, setDeactivateDialogOpen] = useState(false)
+  const [deleteTarget, setDeleteTarget] = useState<StaffUserRecord | null>(null)
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
 
   const hasActiveSearch = hasActiveStaffUserSearch(searchQuery)
 
@@ -232,15 +261,31 @@ export function StaffUserRecords({
     [onStatusChange]
   )
 
-  const registrySubtitle =
-    records.length > 0
-      ? hasActiveSearch
-        ? t('table.showingFiltered', {
-            visible: visibleRecords.length,
-            total: records.length,
-          })
+  const handleDeleteRequest = useCallback(
+    (record: StaffUserRecord) => {
+      if (statusControlsDisabled) return
+      setDeleteTarget(record)
+      setDeleteDialogOpen(true)
+    },
+    [statusControlsDisabled]
+  )
+
+  const handleDeleteConfirm = useCallback(
+    (record: StaffUserRecord) => {
+      onDelete?.(record.id)
+      setDeleteTarget(null)
+    },
+    [onDelete]
+  )
+
+  const getRegistrySubtitle = (): string | null => {
+    if (records.length > 0) {
+      return hasActiveSearch
+        ? t('table.showingFiltered', { visible: visibleRecords.length, total: records.length })
         : t('table.registryCount', { count: records.length })
-      : null
+    }
+    return null
+  }
 
   return (
     <section aria-labelledby="staff-user-records-heading">
@@ -252,8 +297,8 @@ export function StaffUserRecords({
           >
             {t('table.title')}
           </h2>
-          {registrySubtitle ? (
-            <p className="mt-1 text-sm text-ink-muted">{registrySubtitle}</p>
+          {getRegistrySubtitle() ? (
+            <p className="mt-1 text-sm text-ink-muted">{getRegistrySubtitle()}</p>
           ) : null}
         </div>
       </header>
@@ -304,7 +349,6 @@ export function StaffUserRecords({
                     <TableHead className="p-6">{t('table.name')}</TableHead>
                     <TableHead className="p-6">{t('table.venue')}</TableHead>
                     <TableHead className="p-6">{t('table.role')}</TableHead>
-                    <TableHead className="p-6">{t('table.lastActive')}</TableHead>
                     <TableHead className="p-6">{t('table.status')}</TableHead>
                     <TableHead className="text-right p-6">{t('table.actions')}</TableHead>
                   </TableRow>
@@ -316,7 +360,9 @@ export function StaffUserRecords({
                       record={record}
                       onActivate={handleActivate}
                       onDeactivateRequest={handleDeactivateRequest}
+                      onDeleteRequest={handleDeleteRequest}
                       statusControlsDisabled={statusControlsDisabled}
+                      isPending={pendingRecordId === record.id}
                     />
                   ))}
                 </TableBody>
@@ -331,6 +377,13 @@ export function StaffUserRecords({
         open={deactivateDialogOpen}
         onOpenChange={setDeactivateDialogOpen}
         onConfirm={handleDeactivateConfirm}
+      />
+
+      <StaffUserDeleteDialog
+        record={deleteTarget}
+        open={deleteDialogOpen}
+        onOpenChange={setDeleteDialogOpen}
+        onConfirm={handleDeleteConfirm}
       />
     </section>
   )

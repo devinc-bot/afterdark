@@ -4,12 +4,18 @@ import {
   StaffPersonnelTabSkeleton,
 } from '~/modules/staff/components/staff-personnel-tab-states'
 import { useStaffPersonnel } from '~/modules/staff/queries/use-staff-personnel'
+import {
+  useDeleteStaffUser,
+  useUpdateStaffUserStatus,
+} from '~/modules/staff/mutations/use-staff-personnel-mutations'
 import { LoadErrorBanner } from '~/modules/common/components/load-error-banner'
 import { useTranslation } from 'react-i18next'
 
 export function StaffPersonnelTab() {
   const { data, isPending, isError, isFetching, refetch } = useStaffPersonnel()
   const { t } = useTranslation('staff')
+  const updateStatusMutation = useUpdateStaffUserStatus()
+  const deleteMutation = useDeleteStaffUser()
 
   if (isPending) {
     return <StaffPersonnelTabSkeleton />
@@ -33,5 +39,24 @@ export function StaffPersonnelTab() {
     return <StaffPersonnelEmptyState />
   }
 
-  return <StaffUserRecords records={records} statusControlsDisabled />
+  const getPendingRecordId = (): string | null => {
+    if (updateStatusMutation.isPending) {
+      return updateStatusMutation.variables?.documentId ?? null
+    } else if (deleteMutation.isPending) {
+      return deleteMutation.variables ?? null
+    }
+    return null
+  }
+
+  return (
+    <StaffUserRecords
+      records={records}
+      statusControlsDisabled={updateStatusMutation.isPending || deleteMutation.isPending}
+      pendingRecordId={getPendingRecordId()}
+      onStatusChange={(recordId, status) =>
+        updateStatusMutation.mutate({ documentId: recordId, status })
+      }
+      onDelete={(recordId) => deleteMutation.mutate(recordId)}
+    />
+  )
 }

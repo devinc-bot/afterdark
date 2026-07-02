@@ -9,7 +9,7 @@ export const staff = sqliteTable('staff', {
   phone: text('phone').notNull(),
   avatar: text('avatar'),
   status: text('status', {
-    enum: [STAFF_STATUS.ACTIVE, STAFF_STATUS.INACTIVE, STAFF_STATUS.PENDING],
+    enum: [STAFF_STATUS.ACTIVE, STAFF_STATUS.INACTIVE],
   })
     .notNull()
     .default(STAFF_STATUS.ACTIVE),

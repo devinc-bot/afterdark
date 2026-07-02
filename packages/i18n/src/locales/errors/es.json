@@ -50,7 +50,10 @@
   },
   "staff": {
     "NOT_FOUND": "Personal no encontrado.",
-    "LIST_FAILED": "No se pudo cargar el personal."
+    "LIST_FAILED": "No se pudo cargar el personal.",
+    "UPDATE_FAILED": "No pudimos actualizar el estado. Intentá de nuevo.",
+    "DELETE_FAILED": "No pudimos eliminar el usuario. Intentá de nuevo.",
+    "INVALID_STATUS": "Estado inválido."
   },
   "owner": {
     "NOT_FOUND": "Propietario no encontrado.",

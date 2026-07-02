@@ -245,3 +245,134 @@ deleteExpiredAndCancelledInvitations (repository):
 | 3. Invocar manualmente `cleanupInvitations` | Filas vencidas/canceladas eliminadas de DB           |
 | 4. `GET /invitations/staff` post-limpieza   | Solo devuelve invitaciones `pending`                 |
 | 5. `pnpm type-check` + `lint`               | Sin errores                                          |
+
+---
+
+# Entrega 6 — Eliminar / desactivar staff desde acciones
+
+> Status spec: `approved`.
+
+## Orden de capas
+
+```text
+1. packages/types      — STAFF_STATUS: quitar PENDING
+2. packages/db          — schema/staff.ts: enum sin PENDING; staff.repository.ts: deleteStaffByDocumentId + updateStaffStatusByDocumentId
+3. packages/i18n        — STAFF_ERROR_CODE: agregar UPDATE_FAILED, DELETE_FAILED; es/en errors.json
+4. packages/validators  — updateStaffStatusSchema (status: STAFF_STATUS sin PENDING)
+5. apps/api             — staff.service.ts (deleteStaff, updateStaffStatus); staff.controller.ts (DELETE, PATCH)
+6. apps/dashboard       — mutations + invalidación; StaffUserRecords (columnas + menú); nuevo StaffUserDeleteDialog; i18n staff/es.json + en.json
+```
+
+## Archivos a crear / modificar
+
+### `packages/types`
+
+| Archivo         | Cambio                                    |
+| ---------------- | ------------------------------------------ |
+| `src/domain.ts` | `STAFF_STATUS`: quitar `PENDING`           |
+
+### `packages/db`
+
+| Archivo                                | Cambio                                                                                                                                        |
+| ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `src/schema/staff.ts`                  | `enum: [STAFF_STATUS.ACTIVE, STAFF_STATUS.INACTIVE]` (quitar `PENDING` del array)                                                              |
+| `src/repositories/staff.repository.ts` | Agregar `deleteStaffByDocumentId(documentId, ownerDocumentId)` (transacción: `staff_club_lnk` → `staff_account_lnk` → `staff` → `accounts`); `updateStaffStatusByDocumentId(documentId, ownerDocumentId, status)`. Ambas verifican pertenencia al owner (join tipo `findPersonnelByOwnerDocumentId`), devuelven `null` si no pertenece. |
+| `src/repositories/index.ts`            | Exportar las dos funciones nuevas                                                                                                             |
+
+### `packages/i18n`
+
+| Archivo                        | Cambio                                                                                                     |
+| --------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `src/constants/error-codes.ts` | `STAFF_ERROR_CODE`: agregar `UPDATE_FAILED`, `DELETE_FAILED`, `INVALID_STATUS`                             |
+| `src/locales/errors/es.json`   | `staff.UPDATE_FAILED`, `staff.DELETE_FAILED`, `staff.INVALID_STATUS`                                       |
+| `src/locales/errors/en.json`   | ídem en inglés                                                                                            |
+
+### `packages/validators`
+
+| Archivo        | Cambio                                                                                                            |
+| ---------------- | -------------------------------------------------------------------------------------------------------------------- |
+| `src/user.ts`   | Nuevo `updateStaffStatusSchema = z.object({ status: z.enum([STAFF_STATUS.ACTIVE, STAFF_STATUS.INACTIVE]) })`     |
+
+### `apps/api`
+
+| Archivo                                | Cambio                                                                                                                            |
+| ----------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| `src/modules/staff/staff.service.ts`   | Agregar `deleteStaff(ownerDocumentId, staffDocumentId)` y `updateStaffStatus(ownerDocumentId, staffDocumentId, status)`; `NotFoundException` con `STAFF_ERROR_CODE.NOT_FOUND` si no pertenece |
+| `src/modules/staff/staff.controller.ts` | Agregar `@Delete(':documentId')` y `@Patch(':documentId/status')` (mismas guardias `JwtAuthGuard` + `OwnerRoleGuard`)              |
+
+### `apps/dashboard`
+
+| Archivo                                                     | Cambio                                                                                                                     |
+| -------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| `app/config/constants/api.ts`                                | `API_ROUTES.staff.path.delete(documentId)`, `API_ROUTES.staff.path.updateStatus(documentId)`                             |
+| `app/modules/staff/services/staff-personnel.service.ts`     | Agregar `deleteStaffUser(documentId)`, `updateStaffUserStatus(documentId, status)`                                       |
+| `app/modules/staff/mutations/use-staff-personnel-mutations.ts` | Nuevo — `useDeleteStaffUser()`, `useUpdateStaffUserStatus()` (mutations; `onSuccess` invalida `QUERY_KEYS.staffPersonnel()`), mismo patrón que `use-staff-invitations-mutations.ts` |
+| `app/modules/staff/components/staff-user-records.tsx`       | Quitar columnas Última actividad/Estado y `StaffUserStatusControl`; `StaffUserRecordActions` con toggle activar/desactivar + eliminar |
+| `app/modules/staff/components/staff-user-delete-dialog.tsx` | Nuevo — análogo a `staff-user-deactivate-dialog.tsx`                                                                       |
+| `app/modules/staff/components/staff-personnel-tab.tsx`      | Quitar `statusControlsDisabled` fijo; conectar mutations reales                                                          |
+| `packages/i18n/src/locales/staff/es.json` + `en.json`       | `delete.*`, `table.deleteUser`, `table.deactivateUser`, `table.activateUser`                                              |
+
+## Diseño técnico
+
+### Repository — delete transaccional
+
+```text
+deleteStaffByDocumentId(documentId, ownerDocumentId):
+  1. resolver staff.id + verificar pertenencia (join staff_club_lnk -> clubs -> owners)
+     -> si no existe o no pertenece: return null
+  2. resolver accountId via staff_account_lnk
+  3. db.transaction:
+     - DELETE FROM staff_club_lnk WHERE staff_id = ?
+     - DELETE FROM staff_account_lnk WHERE staff_id = ?
+     - DELETE FROM staff WHERE id = ?
+     - DELETE FROM accounts WHERE id = ? (accountId)
+  4. return { deleted: true }
+```
+
+### Service (API)
+
+```text
+deleteStaff(ownerDocumentId, staffDocumentId):
+  result = deleteStaffByDocumentId(staffDocumentId, ownerDocumentId)
+  result === null -> NotFoundException(STAFF_ERROR_CODE.NOT_FOUND)
+  catch -> InternalServerErrorException(STAFF_ERROR_CODE.DELETE_FAILED)
+  return { message }
+
+updateStaffStatus(ownerDocumentId, staffDocumentId, status):
+  result = updateStaffStatusByDocumentId(staffDocumentId, ownerDocumentId, status)
+  result === null -> NotFoundException(STAFF_ERROR_CODE.NOT_FOUND)
+  catch -> InternalServerErrorException(STAFF_ERROR_CODE.UPDATE_FAILED)
+  return { message }
+```
+
+### Dashboard — menú de acciones
+
+```text
+StaffUserRecordActions(record):
+  isActive = record.status === STAFF_STATUS.ACTIVE
+  item 1: isActive ? "Desactivar usuario" (abre StaffUserDeactivateDialog) : "Activar usuario" (mutate directo)
+  item 2: "Eliminar usuario" (abre StaffUserDeleteDialog)
+  ambos onSuccess -> invalidateQueries(QUERY_KEYS.staffPersonnel())
+```
+
+## Riesgos / edge cases
+
+| Caso                                                | Comportamiento esperado                                                                              |
+| ------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------- |
+| `documentId` no pertenece al owner autenticado       | 404 Usuario no encontrado.                                                                                |
+| Staff con varias filas (varios clubes)               | Delete/status afecta el registro `staff` completo -> se refleja en todas sus filas tras invalidar query |
+| Delete falla a mitad de transacción                 | Rollback completo (transacción atómica); ninguna tabla queda parcialmente modificada                    |
+| `status` fuera de `{active, inactive}` en PATCH      | 400 Estado inválido (validación Zod)                                                                    |
+| Refetch tras eliminar el único staff                 | Lista vuelve a `[]` -> empty state                                                                       |
+
+## Verificación manual
+
+| Paso                                                | Resultado esperado                                                       |
+| -------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| 1. Tabla `/staff` tab Personal                       | Solo columnas Nombre, Sede, Rol, Acciones (sin Última actividad/Estado)      |
+| 2. Menú de acciones de un staff activo               | Muestra "Desactivar usuario" y "Eliminar usuario"; no "Editar"                |
+| 3. Desactivar con confirmación                       | Diálogo -> confirmar -> status pasa a inactive, tabla refresca              |
+| 4. Activar un staff inactivo                         | Directo, sin diálogo; status pasa a active                                  |
+| 5. Eliminar con confirmación                         | Diálogo -> confirmar -> fila desaparece; login del staff deja de funcionar  |
+| 6. Staff en 2 clubes (2 filas), eliminar desde una   | Ambas filas desaparecen tras refetch                                         |
+| 7. `pnpm type-check` + `lint`                        | Sin errores                                                                  |

@@ -192,3 +192,68 @@ Estados: `pending` · `in_progress` · `done`
 - **Validación API:** `expiresInMs` debe ser uno de los valores permitidos (enum en schema Zod) — evita TTLs arbitrarios.
 - **`successDescription`:** texto dinámico usando la opción elegida (no hardcoded "5 minutos").
 - **Status spec:** `approved`.
+
+---
+
+### Entrega 6 — Eliminar / desactivar staff desde acciones
+
+| Fase | Nombre                   | Estado        |
+| ---- | ------------------------ | ------------- |
+| 1    | Identidad                | `done`        |
+| 2    | Comportamiento y alcance | `done`        |
+| 3    | User stories             | `done`        |
+| 4    | Contratos                | `done`        |
+| 5    | Reglas y cierre          | `done`        |
+| 6    | Plan técnico             | `done`        |
+
+### Entrega 6 — Fase 1 — Identidad
+
+- **Encaje:** ampliar `003-staff-invitations` (no nueva fila en roadmap).
+- **Foco:** `StaffUserRecords` — quitar columnas "Última actividad" y "Estado"; en el menú de acciones quitar "Editar" y agregar "Eliminar usuario" / "Activar-Desactivar usuario". Simplificar `STAFF_STATUS` (quitar `PENDING`, sin uso real).
+- **Apps:** `types` + `db` + `dashboard` + `api` (hoy no existe endpoint de delete/status persistido para staff).
+- **Dependencias:** Entrega 1 (listado real conectado), Entrega 5 (patrón de hard delete ya usado en invitaciones).
+
+### Entrega 6 — Fase 2 — Comportamiento y alcance
+
+- **Columnas eliminadas:** "Última actividad" (`lastActiveLabel`) y "Estado" (switch `StaffUserStatusControl`). Quedan: Nombre, Sede, Rol, Acciones.
+- **Menú de acciones:** quitar item "Editar" (deshabilitado hoy). Agregar:
+  - **Activar/Desactivar usuario** — toggle dinámico según `record.status`: si está activo, el item dice "Desactivar usuario" y abre `StaffUserDeactivateDialog` (mismo diálogo de confirmación ya existente); si está inactivo, dice "Activar usuario" y activa directo (sin diálogo, igual que el switch actual).
+  - **Eliminar usuario** — hard delete (mismo patrón que `deleteStaffInvitationById` de Entrega 5). Irreversible.
+- **`STAFF_STATUS`:** se quita `PENDING` (sin uso — confirmado por grep). `INACTIVE` no cambia de valor ni significado; solo se limpia el enum en `packages/types` y el `text(..., { enum })` de `packages/db/src/schema/staff.ts` (requiere migración).
+- **Persistencia:** a diferencia de Entrega 1 (controles deshabilitados), esta entrega conecta activar/desactivar y eliminar a endpoints reales de `apps/api`.
+
+### Entrega 6 — Fase 3 — User stories
+
+- **Eliminar (hard delete):** borra `staff` + `staff_account_lnk` + `staff_club_lnk` + `accounts` en una transacción. La persona pierde acceso por completo (no puede volver a loguearse con ese email).
+- **Confirmación:** nuevo `StaffUserDeleteDialog` (análogo a `StaffUserDeactivateDialog`) — copy que aclara que es irreversible y borra la cuenta.
+- **Permisos (asumido, sin objeción):** mismo patrón que `/staff/my-personnel` — `JwtAuthGuard` + `OwnerRoleGuard`; el service verifica que el staff pertenece a un club del dueño autenticado antes de desactivar/eliminar (404 o 403 si no).
+
+### Entrega 6 — Fase 4 — Contratos
+
+- **`DELETE /api/staff/:documentId`** — `JwtAuthGuard` + `OwnerRoleGuard`. Service verifica pertenencia vía join `staff_club_lnk` → `clubs` → `owners`. Transacción: borra `staff_club_lnk`, `staff_account_lnk`, `staff`, `accounts` (en ese orden, por FKs). Response `200 { message: 'Usuario eliminado.' }`.
+- **`PATCH /api/staff/:documentId/status`** — mismas guardias. Body `{ status: 'active' | 'inactive' }` (Zod enum, ya sin `pending`). Response `200 { message: 'Estado actualizado.' }`.
+- **Errores (ambos endpoints, mensaje en español):**
+
+  | HTTP | Cuándo                                  | Mensaje                                               |
+  | ---- | ---------------------------------------- | ------------------------------------------------------ |
+  | 401  | Sin sesión                               | Redirigir a login                                     |
+  | 403  | No es dueño                              | Mensaje de API / fallback dashboard                   |
+  | 404  | `documentId` no existe o no es del dueño | `Usuario no encontrado.`                              |
+  | 400  | `status` fuera del enum (solo PATCH)     | `Estado inválido.`                                    |
+  | 500  | Error al eliminar                        | `No pudimos eliminar el usuario. Intentá de nuevo.`   |
+  | 500  | Error al actualizar estado               | `No pudimos actualizar el estado. Intentá de nuevo.` |
+
+- **DB (`packages/db`):** nuevas funciones en `staff.repository.ts` — `deleteStaffByDocumentId(documentId)` (transacción con los 4 deletes) y `updateStaffStatusByDocumentId(documentId, status)`. Ambas primero resuelven `staff.id` + verifican pertenencia al owner (reuso de join similar a `findPersonnelByOwnerDocumentId`).
+- **Sin migración de schema:** en SQLite, `text(..., { enum })` de Drizzle es solo a nivel TS (no genera `CHECK` — confirmado en migraciones existentes). Quitar `PENDING` de `STAFF_STATUS` y del array `enum` en `schema/staff.ts` no requiere migración nueva.
+- **UI (`dashboard`):** dos mutations con TanStack Query (`useDeleteStaffUser`, `useUpdateStaffUserStatus`); `onSuccess` invalida `QUERY_KEYS.staffPersonnel()`. `StaffUserRecords` deja de recibir `statusControlsDisabled` fijo en `true` desde `StaffPersonnelTab` (ahora hay persistencia real).
+
+### Entrega 6 — Fase 5 — Reglas y cierre
+
+- **Alcance del status/delete:** ambos son sobre el registro `staff` completo (no por club) — si el dueño desactiva/elimina desde una fila, afecta a todas las filas de esa persona (todos sus clubes), porque `status` vive en `staff`, no en `staff_club_lnk`.
+- **Copy:** usar claves i18n (no hardcodear), mismo patrón que `deactivate.*` en `staff/es.json` / `staff/en.json`. Nuevo namespace `delete.*`: `delete.title`, `delete.descriptionPrefix`, `delete.descriptionSuffix`, `delete.cancel`, `delete.confirm`. Reusar `table.deactivateAccess` / `table.activateAccess` para el label del toggle en el menú (ya existen como aria-label; agregar `table.deactivateUser` / `table.activateUser` para el texto del item de menú) y `table.deleteUser` para el nuevo item.
+- **Edge case — activar sin diálogo:** igual que el switch actual, "Activar usuario" ejecuta directo (sin confirmación); solo "Desactivar" y "Eliminar" piden confirmación.
+- **Status spec:** `approved` — pasa a plan técnico (fase 6).
+
+## Preguntas abiertas — Entrega 6
+
+- Copy exacto en español/inglés de las nuevas claves i18n (`delete.*`, `table.deleteUser`, `table.deactivateUser`, `table.activateUser`) se define durante la implementación siguiendo el tono ya usado en `deactivate.*`.
