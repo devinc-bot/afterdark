@@ -26,7 +26,6 @@ export type OwnerStatus = (typeof OWNER_STATUS)[keyof typeof OWNER_STATUS]
 export const STAFF_STATUS = {
   ACTIVE: 'active',
   INACTIVE: 'inactive',
-  PENDING: 'pending',
 } as const
 
 export type StaffStatus = (typeof STAFF_STATUS)[keyof typeof STAFF_STATUS]
