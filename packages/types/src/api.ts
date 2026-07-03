@@ -8,6 +8,7 @@ import type {
   TicketType,
   UserRole,
 } from './domain.ts'
+import { USER_ROLE } from './domain.ts'
 
 export interface ApiResponse<T> {
   data: T
@@ -53,7 +54,14 @@ export interface CurrentOwnerResponse {
   nationalId: string | null
   taxId: string | null
   status: OwnerStatus
+  role: typeof USER_ROLE.OWNER
 }
+
+export interface StaffSettingsResponse {
+  role: typeof USER_ROLE.STAFF
+}
+
+export type SettingsResponse = CurrentOwnerResponse | StaffSettingsResponse
 
 /** @deprecated Use SessionResponse */
 export type CurrentUserResponse = SessionResponse
