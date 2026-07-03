@@ -30,9 +30,10 @@ import {
 } from '~/modules/owner/utils/settings-form.utils'
 import {
   createSettingsFormValues,
-  saveStoredSettings,
   settingsValuesEqual,
 } from '~/modules/owner/utils/settings-storage.utils'
+
+type ProfileField = 'name' | 'lastName' | 'phone' | 'birthday' | 'nationalId' | 'taxId'
 
 type SettingsFormContextValue = {
   user: CurrentOwnerResponse
@@ -42,17 +43,7 @@ type SettingsFormContextValue = {
   isDirty: boolean
   saveStatus: SettingsSaveStatus
   saveMessage: string | null
-  setProfileField: (
-    field: 'name' | 'lastName' | 'phone' | 'birthday' | 'nationalId' | 'taxId',
-    value: string
-  ) => void
-  setOrganizationField: (field: 'brandName' | 'location', value: string) => void
-  setTwoFactorEnabled: (enabled: boolean) => void
-  setLanguage: (language: SettingsFormValues['preferences']['language']) => void
-  setNotification: (
-    field: keyof SettingsFormValues['preferences']['notifications'],
-    enabled: boolean
-  ) => void
+  setProfileField: (field: ProfileField, value: string) => void
   save: () => Promise<void>
   discard: () => void
 }
@@ -95,7 +86,6 @@ export function SettingsFormProvider({
 
     const handleBeforeUnload = (event: BeforeUnloadEvent) => {
       event.preventDefault()
-      event.returnValue = ''
     }
 
     window.addEventListener('beforeunload', handleBeforeUnload)
@@ -140,53 +130,10 @@ export function SettingsFormProvider({
   )
 
   const setProfileField = useCallback(
-    (field: 'name' | 'lastName' | 'phone' | 'birthday' | 'nationalId' | 'taxId', value: string) => {
+    (field: ProfileField, value: string) => {
       updateValues((current) => ({
         ...current,
         profile: { ...current.profile, [field]: value },
-      }))
-    },
-    [updateValues]
-  )
-
-  const setOrganizationField = useCallback(
-    (field: 'brandName' | 'location', value: string) => {
-      updateValues((current) => ({
-        ...current,
-        organization: { ...current.organization, [field]: value },
-      }))
-    },
-    [updateValues]
-  )
-
-  const setTwoFactorEnabled = useCallback(
-    (enabled: boolean) => {
-      updateValues((current) => ({
-        ...current,
-        security: { twoFactorEnabled: enabled },
-      }))
-    },
-    [updateValues]
-  )
-
-  const setLanguage = useCallback(
-    (language: SettingsFormValues['preferences']['language']) => {
-      updateValues((current) => ({
-        ...current,
-        preferences: { ...current.preferences, language },
-      }))
-    },
-    [updateValues]
-  )
-
-  const setNotification = useCallback(
-    (field: keyof SettingsFormValues['preferences']['notifications'], enabled: boolean) => {
-      updateValues((current) => ({
-        ...current,
-        preferences: {
-          ...current.preferences,
-          notifications: { ...current.preferences.notifications, [field]: enabled },
-        },
       }))
     },
     [updateValues]
@@ -230,14 +177,6 @@ export function SettingsFormProvider({
     try {
       const updatedOwner = await updateCurrentOwner(validation.data.profile)
 
-      const storedPayload = {
-        organization: validation.data.organization,
-        security: validation.data.security,
-        preferences: validation.data.preferences,
-      }
-
-      saveStoredSettings(storedPayload)
-
       const nextValues = createSettingsFormValues(updatedOwner)
       setValues(nextValues)
       setSavedValues(nextValues)
@@ -269,10 +208,6 @@ export function SettingsFormProvider({
         saveStatus,
         saveMessage,
         setProfileField,
-        setOrganizationField,
-        setTwoFactorEnabled,
-        setLanguage,
-        setNotification,
         save,
         discard,
       }}
