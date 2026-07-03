@@ -1,14 +1,11 @@
 {
   "page": {
     "title": "Settings",
-    "description": "Manage your account, organization, and panel preferences.",
+    "description": "Manage your profile.",
     "metaTitle": "Settings · afterdark Admin"
   },
   "sections": {
-    "profile": "Profile",
-    "organization": "Organization",
-    "security": "Security",
-    "preferences": "Preferences"
+    "profile": "Profile"
   },
   "profile": {
     "changePhoto": "Change photo",
@@ -30,25 +27,6 @@
     "changePassword": "Change password",
     "passwordHint": "Password change will be available soon.",
     "avatarFallback": "User"
-  },
-  "organization": {
-    "brandName": "Brand name",
-    "location": "Main location",
-    "locationPlaceholder": "City, country",
-    "localHint": "This data is saved in this browser. It is not yet synced with the server."
-  },
-  "security": {
-    "twoFactor": "Two-factor verification",
-    "twoFactorDescription": "Request an extra code when signing in.",
-    "twoFactorHint": "For now we only save your preference in this browser. Real activation is coming soon.",
-    "sessions": "Signed-in devices",
-    "sessionsEmpty": "No other active sessions to show."
-  },
-  "preferences": {
-    "language": "Panel language",
-    "languagePlaceholder": "Choose a language",
-    "notifications": "Email notifications",
-    "localHint": "Language and notifications are saved in this browser. They are not yet synced with the server."
   },
   "actions": {
     "save": "Save changes",
