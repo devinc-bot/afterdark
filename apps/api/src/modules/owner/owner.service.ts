@@ -4,7 +4,7 @@ import {
   findOwnerIdByDocumentId,
   updateOwnerByDocumentId,
 } from '@afterdark/db'
-import type { CurrentOwnerResponse } from '@afterdark/types'
+import { USER_ROLE, type CurrentOwnerResponse } from '@afterdark/types'
 import type { UpdateCurrentOwnerInput } from '@afterdark/validators'
 import { TranslationService } from '@afterdark/i18n/server'
 
@@ -30,6 +30,7 @@ export class OwnerService {
       nationalId: row.nationalId,
       taxId: row.taxId,
       status: row.status,
+      role: USER_ROLE.OWNER,
     }
   }
 
