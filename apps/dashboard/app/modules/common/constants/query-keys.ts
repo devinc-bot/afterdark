@@ -1,5 +1,5 @@
 export const QUERY_KEYS = {
-  currentUser: () => ['current-user'] as const,
+  settings: () => ['settings'] as const,
   clubs: () => ['clubs'] as const,
   staffPersonnel: () => ['staff-personnel'] as const,
   staffInvitations: () => ['staff-invitations'] as const,

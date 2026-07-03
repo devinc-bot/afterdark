@@ -8,6 +8,7 @@
   },
   "messages": {
     "loadErrorTitle": "No pudimos cargar la configuración",
+    "loadFallback": "No pudimos cargar la configuración. Intentá de nuevo en unos minutos.",
     "loading": "Cargando configuración…"
   },
   "owner": {
@@ -43,7 +44,8 @@
       "save": "Guardar cambios",
       "discard": "Descartar cambios",
       "dirty": "Tenés cambios sin guardar.",
-      "clean": "No hay cambios pendientes."
+      "clean": "No hay cambios pendientes.",
+      "confirmLeave": "Tenés cambios sin guardar. ¿Salir de todas formas?"
     },
     "messages": {
       "validationSummary": "Revisá los campos con error antes de guardar.",

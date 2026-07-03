@@ -1,25 +1,19 @@
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-  type ReactNode,
-} from 'react'
+import { createContext, useCallback, useContext, useRef, useState, type ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { CurrentOwnerResponse } from '@afterdark/types'
 import type { SettingsFormValues } from '@afterdark/validators'
-import { useCurrentOwner } from '~/modules/common/queries/use-current-user'
-import { toSessionUser } from '~/modules/common/services/owner.service'
+import { useAutoDismiss } from '~/modules/common/hooks/use-auto-dismiss'
+import { useUnsavedChangesGuard } from '~/modules/common/hooks/use-unsaved-changes-guard'
+import { toSessionUser } from '~/modules/common/formatters/session-user.formatter'
 import { useSessionStore } from '~/modules/common/stores/session.store'
+import { useSettings } from '~/modules/settings/queries/use-settings'
+import { updateSettings } from '~/modules/settings/services/settings.service'
 import {
   SETTINGS_SAVE_STATUS,
   SETTINGS_SUCCESS_DISMISS_MS,
   type SettingsSaveStatus,
 } from '~/modules/owner/constants/settings-form'
-import { updateCurrentOwner } from '~/modules/owner/services/update-current-user.service'
+import { useSettingsFormValues } from '~/modules/owner/hooks/use-settings-form-values'
 import {
   focusSettingsField,
   getFirstInvalidFieldId,
@@ -28,10 +22,7 @@ import {
   validateSettingsForm,
   type SettingsFieldErrors,
 } from '~/modules/owner/utils/settings-form.utils'
-import {
-  createSettingsFormValues,
-  settingsValuesEqual,
-} from '~/modules/owner/utils/settings-storage.utils'
+import { createSettingsFormValues } from '~/modules/owner/utils/settings-storage.utils'
 
 type ProfileField = 'name' | 'lastName' | 'phone' | 'birthday' | 'nationalId' | 'taxId'
 
@@ -58,76 +49,29 @@ export function SettingsFormProvider({
   children: ReactNode
 }) {
   const { t } = useTranslation('settings')
-  const { refetch: refetchOwner } = useCurrentOwner()
-  const [values, setValues] = useState<SettingsFormValues | null>(() =>
-    createSettingsFormValues(owner)
-  )
-  const [savedValues, setSavedValues] = useState<SettingsFormValues | null>(() =>
-    createSettingsFormValues(owner)
-  )
+  const { refetch: refetchSettings } = useSettings()
+  const { values, savedValues, isDirty, updateValues, discard, commit } =
+    useSettingsFormValues(owner)
   const [errors, setErrors] = useState<SettingsFieldErrors>({})
   const [saveStatus, setSaveStatus] = useState<SettingsSaveStatus>(SETTINGS_SAVE_STATUS.IDLE)
   const [saveMessage, setSaveMessage] = useState<string | null>(null)
   const isSavingRef = useRef(false)
 
-  useEffect(() => {
-    const initialValues = createSettingsFormValues(owner)
-    setValues(initialValues)
-    setSavedValues(initialValues)
+  useUnsavedChangesGuard(isDirty, t('owner.actions.confirmLeave'))
+  useAutoDismiss(
+    saveStatus === SETTINGS_SAVE_STATUS.SUCCESS && !!saveMessage,
+    SETTINGS_SUCCESS_DISMISS_MS,
+    () => {
+      setSaveStatus(SETTINGS_SAVE_STATUS.IDLE)
+      setSaveMessage(null)
+    }
+  )
+
+  const clearFeedback = useCallback(() => {
     setErrors({})
     setSaveStatus(SETTINGS_SAVE_STATUS.IDLE)
     setSaveMessage(null)
-  }, [owner])
-
-  useEffect(() => {
-    if (!values || !savedValues || settingsValuesEqual(values, savedValues)) {
-      return
-    }
-
-    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
-      event.preventDefault()
-    }
-
-    window.addEventListener('beforeunload', handleBeforeUnload)
-    return () => window.removeEventListener('beforeunload', handleBeforeUnload)
-  }, [values, savedValues])
-
-  useEffect(() => {
-    if (saveStatus !== SETTINGS_SAVE_STATUS.SUCCESS || !saveMessage) {
-      return
-    }
-
-    const timer = window.setTimeout(() => {
-      setSaveStatus(SETTINGS_SAVE_STATUS.IDLE)
-      setSaveMessage(null)
-    }, SETTINGS_SUCCESS_DISMISS_MS)
-
-    return () => window.clearTimeout(timer)
-  }, [saveMessage, saveStatus])
-
-  const isDirty = useMemo(() => {
-    if (!values || !savedValues) {
-      return false
-    }
-
-    return !settingsValuesEqual(values, savedValues)
-  }, [values, savedValues])
-
-  const updateValues = useCallback(
-    (updater: (current: SettingsFormValues) => SettingsFormValues) => {
-      setValues((current) => {
-        if (!current) {
-          return current
-        }
-
-        return updater(current)
-      })
-      setErrors({})
-      setSaveStatus(SETTINGS_SAVE_STATUS.IDLE)
-      setSaveMessage(null)
-    },
-    []
-  )
+  }, [])
 
   const setProfileField = useCallback(
     (field: ProfileField, value: string) => {
@@ -135,23 +79,18 @@ export function SettingsFormProvider({
         ...current,
         profile: { ...current.profile, [field]: value },
       }))
+      clearFeedback()
     },
-    [updateValues]
+    [updateValues, clearFeedback]
   )
 
-  const discard = useCallback(() => {
-    if (!savedValues) {
-      return
-    }
-
-    setValues(savedValues)
-    setErrors({})
-    setSaveStatus(SETTINGS_SAVE_STATUS.IDLE)
-    setSaveMessage(null)
-  }, [savedValues])
+  const handleDiscard = useCallback(() => {
+    discard()
+    clearFeedback()
+  }, [discard, clearFeedback])
 
   const save = useCallback(async () => {
-    if (!values || !savedValues || isSavingRef.current) {
+    if (isSavingRef.current) {
       return
     }
 
@@ -160,7 +99,7 @@ export function SettingsFormProvider({
       const fieldErrors = mapSettingsFormErrors(validation.error)
       setErrors(fieldErrors)
       setSaveStatus(SETTINGS_SAVE_STATUS.ERROR)
-      setSaveMessage(t('messages.validationSummary'))
+      setSaveMessage(t('owner.messages.validationSummary'))
 
       const firstInvalidFieldId = getFirstInvalidFieldId(fieldErrors)
       if (firstInvalidFieldId) {
@@ -171,31 +110,32 @@ export function SettingsFormProvider({
 
     isSavingRef.current = true
     setSaveStatus(SETTINGS_SAVE_STATUS.SAVING)
-    setSaveMessage(t('messages.saving'))
+    setSaveMessage(t('owner.messages.saving'))
     setErrors({})
 
     try {
-      const updatedOwner = await updateCurrentOwner(validation.data.profile)
+      const updatedOwner = await updateSettings(validation.data.profile)
 
-      const nextValues = createSettingsFormValues(updatedOwner)
-      setValues(nextValues)
-      setSavedValues(nextValues)
+      commit(createSettingsFormValues(updatedOwner as CurrentOwnerResponse))
       setSaveStatus(SETTINGS_SAVE_STATUS.SUCCESS)
-      setSaveMessage(t('messages.saveSuccess'))
+      setSaveMessage(t('owner.messages.saveSuccess'))
 
-      useSessionStore.setState({ user: toSessionUser(updatedOwner) })
-      void refetchOwner()
+      useSessionStore.setState({
+        user: toSessionUser(
+          updatedOwner as Pick<
+            CurrentOwnerResponse,
+            'sub' | 'name' | 'lastName' | 'email' | 'avatar'
+          >
+        ),
+      })
+      void refetchSettings()
     } catch (error) {
       setSaveStatus(SETTINGS_SAVE_STATUS.ERROR)
-      setSaveMessage(resolveSaveErrorMessage(error, t('messages.saveFallback')))
+      setSaveMessage(resolveSaveErrorMessage(error, t('owner.messages.saveFallback')))
     } finally {
       isSavingRef.current = false
     }
-  }, [t, refetchOwner, savedValues, values])
-
-  if (!values || !savedValues) {
-    return null
-  }
+  }, [t, refetchSettings, commit, values])
 
   return (
     <SettingsFormContext
@@ -209,7 +149,7 @@ export function SettingsFormProvider({
         saveMessage,
         setProfileField,
         save,
-        discard,
+        discard: handleDiscard,
       }}
     >
       {children}

@@ -10,7 +10,9 @@ export function SettingsFormActions() {
 
   return (
     <div className="flex flex-col-reverse gap-3 border-t border-hairline/60 pt-6 sm:flex-row sm:items-center sm:justify-between">
-      <p className="text-sm text-ink-muted">{isDirty ? t('actions.dirty') : t('actions.clean')}</p>
+      <p className="text-sm text-ink-muted">
+        {isDirty ? t('owner.actions.dirty') : t('owner.actions.clean')}
+      </p>
 
       <div className="flex flex-col gap-2 sm:flex-row sm:justify-end">
         <Button
@@ -20,7 +22,7 @@ export function SettingsFormActions() {
           disabled={!isDirty || isSaving}
           onClick={discard}
         >
-          {t('actions.discard')}
+          {t('owner.actions.discard')}
         </Button>
         <Button
           type="submit"
@@ -30,7 +32,7 @@ export function SettingsFormActions() {
           loading={isSaving}
           disabled={!isDirty || isSaving}
         >
-          {t('actions.save')}
+          {t('owner.actions.save')}
         </Button>
       </div>
     </div>

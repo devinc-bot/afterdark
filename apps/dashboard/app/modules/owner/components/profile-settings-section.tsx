@@ -10,10 +10,10 @@ export function ProfileSettingsSection() {
   const avatarLabel =
     `${values.profile.name} ${values.profile.lastName}`.trim() ||
     user.email ||
-    t('profile.avatarFallback')
+    t('owner.profile.avatarFallback')
 
   return (
-    <SettingsSection title={t('sections.profile')}>
+    <SettingsSection title={t('owner.sections.profile')}>
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-[auto_1fr] sm:gap-8">
         <div className="flex flex-col items-start gap-3">
           {avatarSrc ? (
@@ -39,16 +39,16 @@ export function ProfileSettingsSection() {
             disabled
             aria-describedby="settings-avatar-hint"
           >
-            {t('profile.changePhoto')}
+            {t('owner.profile.changePhoto')}
           </Button>
           <p id="settings-avatar-hint" className="max-w-44 text-sm text-ink-muted">
-            {t('profile.photoHint')}
+            {t('owner.profile.photoHint')}
           </p>
         </div>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-6">
           <Field
-            label={t('profile.name')}
+            label={t('owner.profile.name')}
             htmlFor="settings-name"
             error={errors.profile?.name ?? null}
             className="col-span-3"
@@ -66,7 +66,7 @@ export function ProfileSettingsSection() {
           </Field>
 
           <Field
-            label={t('profile.lastName')}
+            label={t('owner.profile.lastName')}
             htmlFor="settings-last-name"
             error={errors.profile?.lastName ?? null}
             className="col-span-3"
@@ -84,7 +84,7 @@ export function ProfileSettingsSection() {
           </Field>
 
           <Field
-            label={t('profile.phone')}
+            label={t('owner.profile.phone')}
             htmlFor="settings-phone"
             error={errors.profile?.phone ?? null}
             className="col-span-4"
@@ -103,7 +103,7 @@ export function ProfileSettingsSection() {
           </Field>
 
           <Field
-            label={t('profile.birthday')}
+            label={t('owner.profile.birthday')}
             htmlFor="settings-birthday"
             error={errors.profile?.birthday ?? null}
             className="col-span-2"
@@ -120,7 +120,7 @@ export function ProfileSettingsSection() {
           </Field>
 
           <Field
-            label={t('profile.nationalId')}
+            label={t('owner.profile.nationalId')}
             htmlFor="settings-national-id"
             error={errors.profile?.nationalId ?? null}
             className="col-span-3"
@@ -139,7 +139,7 @@ export function ProfileSettingsSection() {
           </Field>
 
           <Field
-            label={t('profile.taxId')}
+            label={t('owner.profile.taxId')}
             htmlFor="settings-tax-id"
             error={errors.profile?.taxId ?? null}
             className="col-span-3"
@@ -158,7 +158,7 @@ export function ProfileSettingsSection() {
           </Field>
 
           <div className="col-span-6 border-t border-hairline/60 mt-2 mb-2" />
-          <Field label={t('profile.email')} htmlFor="settings-email" className="col-span-4">
+          <Field label={t('owner.profile.email')} htmlFor="settings-email" className="col-span-4">
             <Input
               id="settings-email"
               name="email"
@@ -169,10 +169,10 @@ export function ProfileSettingsSection() {
               aria-readonly="true"
             />
           </Field>
-          <p className="col-span-6 -mt-2 text-sm text-ink-muted">{t('profile.emailHint')}</p>
+          <p className="col-span-6 -mt-2 text-sm text-ink-muted">{t('owner.profile.emailHint')}</p>
 
           <div className="col-span-6 flex flex-col gap-2 border-t border-hairline/60 pt-4">
-            <Label variant="field">{t('profile.password')}</Label>
+            <Label variant="field">{t('owner.profile.password')}</Label>
             <Button
               type="button"
               variant="ghost"
@@ -181,10 +181,10 @@ export function ProfileSettingsSection() {
               disabled
               aria-describedby="settings-password-hint"
             >
-              {t('profile.changePassword')}
+              {t('owner.profile.changePassword')}
             </Button>
             <p id="settings-password-hint" className="text-sm text-ink-muted">
-              {t('profile.passwordHint')}
+              {t('owner.profile.passwordHint')}
             </p>
           </div>
         </div>

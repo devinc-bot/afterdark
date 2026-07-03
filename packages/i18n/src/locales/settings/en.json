@@ -8,6 +8,7 @@
   },
   "messages": {
     "loadErrorTitle": "We couldn't load the settings",
+    "loadFallback": "We couldn't load the settings. Try again in a few minutes.",
     "loading": "Loading settings…"
   },
   "owner": {
@@ -43,7 +44,8 @@
       "save": "Save changes",
       "discard": "Discard changes",
       "dirty": "You have unsaved changes.",
-      "clean": "No pending changes."
+      "clean": "No pending changes.",
+      "confirmLeave": "You have unsaved changes. Leave anyway?"
     },
     "messages": {
       "validationSummary": "Fix the fields with errors before saving.",
