@@ -15,6 +15,7 @@
 | 009 | `operational-chat`      | Chat operativo                       | `paused`      | `api`, `dashboard`, `web` | Esquema `chat` / `messages`. Pausado hasta cerrar catálogo y checkout.                                                                                                                                                                                                                                                                                                                                                                       |
 | 010 | `club-create-edit-page` | Formulario club en pantalla completa | `approved`    | `dashboard`               | Rutas `/club-management/new` y `/:documentId/edit`. Spec lista para implementar.                                                                                                                                                                                                                                                                                                                                                             |
 | 011 | `language-switcher`     | Selector de idioma                   | `in-progress` | `dashboard`               | Select mock "Idioma del panel" conectado a `setLanguage()` real de `@afterdark/i18n`. Type-check/lint OK; falta QA manual en browser (login como dueño). `web` queda afuera (sin header aún).                                                                                                                                                                                                                                                |
+| 012 | `staff-settings`        | Configuración del staff              | `done`        | `api`, `dashboard`        | Reemplaza el placeholder "Hello World" de `StaffSettingsView` (004) por edición real de perfil (nombre, apellido, teléfono; avatar/email solo lectura). `BaseProfileResponse`/`baseProfileSchema` compartidos entre owner y staff; `createSettingsFormProvider<TUser,TProfile>()` genérico en `modules/settings/`. Verificado en browser (Playwright) contra API real. Ver `spec/features/012-staff-settings/`.                              |
 
 ## Status
 
@@ -40,6 +41,7 @@
 009-operational-chat    →  requiere 001, 002 (opcional: 008)
 010-club-create-edit-page →  requiere 002
 011-language-switcher    →  requiere 004 (settings del dueño)
+012-staff-settings       →  requiere 004 (módulo settings), 003 (modelo de datos staff)
 ```
 
 ## Decisiones de prioridad
