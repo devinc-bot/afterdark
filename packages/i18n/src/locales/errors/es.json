@@ -53,7 +53,8 @@
     "LIST_FAILED": "No se pudo cargar el personal.",
     "UPDATE_FAILED": "No pudimos actualizar el estado. Intentá de nuevo.",
     "DELETE_FAILED": "No pudimos eliminar el usuario. Intentá de nuevo.",
-    "INVALID_STATUS": "Estado inválido."
+    "INVALID_STATUS": "Estado inválido.",
+    "INACTIVE": "Tu cuenta de staff está inactiva, no podés editar tu perfil."
   },
   "owner": {
     "NOT_FOUND": "Propietario no encontrado.",
@@ -69,5 +70,15 @@
     "DELETE_FAILED": "No se pudo eliminar el ticket.",
     "LIST_FAILED": "No se pudo cargar los tickets.",
     "HAS_PAYMENTS": "No se puede eliminar un ticket con ventas registradas."
+  },
+  "file": {
+    "FILE_REQUIRED": "Tenés que enviar un archivo de imagen.",
+    "INVALID_IMAGE_TYPE": "El archivo debe ser una imagen JPG, PNG o WEBP.",
+    "FILE_TOO_LARGE": "La imagen supera el tamaño máximo permitido.",
+    "UPLOAD_FAILED": "No pudimos guardar la imagen. Intentá de nuevo en unos minutos.",
+    "DELETE_FAILED": "No pudimos eliminar la imagen. Intentá de nuevo en unos minutos."
+  },
+  "guard": {
+    "OWNER_ONLY": "Solo los propietarios pueden acceder a este recurso."
   }
 }

@@ -42,6 +42,7 @@ export const STAFF_ERROR_CODE = {
   UPDATE_FAILED: 'staff.UPDATE_FAILED',
   DELETE_FAILED: 'staff.DELETE_FAILED',
   INVALID_STATUS: 'staff.INVALID_STATUS',
+  INACTIVE: 'staff.INACTIVE',
 } as const
 
 export const OWNER_ERROR_CODE = {
@@ -61,12 +62,26 @@ export const TICKET_ERROR_CODE = {
   HAS_PAYMENTS: 'ticket.HAS_PAYMENTS',
 } as const
 
+export const FILE_ERROR_CODE = {
+  FILE_REQUIRED: 'file.FILE_REQUIRED',
+  INVALID_IMAGE_TYPE: 'file.INVALID_IMAGE_TYPE',
+  FILE_TOO_LARGE: 'file.FILE_TOO_LARGE',
+  UPLOAD_FAILED: 'file.UPLOAD_FAILED',
+  DELETE_FAILED: 'file.DELETE_FAILED',
+} as const
+
+export const GUARD_ERROR_CODE = {
+  OWNER_ONLY: 'guard.OWNER_ONLY',
+} as const
+
 export type AuthErrorCode = (typeof AUTH_ERROR_CODE)[keyof typeof AUTH_ERROR_CODE]
 export type InvitationErrorCode = (typeof INVITATION_ERROR_CODE)[keyof typeof INVITATION_ERROR_CODE]
 export type ClubErrorCode = (typeof CLUB_ERROR_CODE)[keyof typeof CLUB_ERROR_CODE]
 export type StaffErrorCode = (typeof STAFF_ERROR_CODE)[keyof typeof STAFF_ERROR_CODE]
 export type OwnerErrorCode = (typeof OWNER_ERROR_CODE)[keyof typeof OWNER_ERROR_CODE]
 export type TicketErrorCode = (typeof TICKET_ERROR_CODE)[keyof typeof TICKET_ERROR_CODE]
+export type FileErrorCode = (typeof FILE_ERROR_CODE)[keyof typeof FILE_ERROR_CODE]
+export type GuardErrorCode = (typeof GUARD_ERROR_CODE)[keyof typeof GUARD_ERROR_CODE]
 
 export type ErrorCode =
   | AuthErrorCode
@@ -75,3 +90,5 @@ export type ErrorCode =
   | StaffErrorCode
   | OwnerErrorCode
   | TicketErrorCode
+  | FileErrorCode
+  | GuardErrorCode
