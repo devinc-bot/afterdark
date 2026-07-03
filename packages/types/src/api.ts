@@ -43,25 +43,31 @@ export interface SessionResponse {
   avatar: string | null
 }
 
-export interface CurrentOwnerResponse {
+export interface BaseProfileResponse {
   sub: string
   name: string
   lastName: string
   email: string
   avatar: string | null
+  role: UserRole
+}
+
+export interface CurrentOwnerResponse extends BaseProfileResponse {
+  role: typeof USER_ROLE.OWNER
   phone: string
   birthday: string | null
   nationalId: string | null
   taxId: string | null
   status: OwnerStatus
-  role: typeof USER_ROLE.OWNER
 }
 
-export interface StaffSettingsResponse {
+export interface CurrentStaffResponse extends BaseProfileResponse {
   role: typeof USER_ROLE.STAFF
+  phone: string
+  status: StaffStatus
 }
 
-export type SettingsResponse = CurrentOwnerResponse | StaffSettingsResponse
+export type SettingsResponse = CurrentOwnerResponse | CurrentStaffResponse
 
 /** @deprecated Use SessionResponse */
 export type CurrentUserResponse = SessionResponse
