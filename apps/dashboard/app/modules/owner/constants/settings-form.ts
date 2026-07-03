@@ -1,5 +1,3 @@
-export const SETTINGS_STORAGE_KEY = 'afterdark:dashboard:settings:v1'
-
 export const SETTINGS_SAVE_STATUS = {
   IDLE: 'idle',
   SAVING: 'saving',
@@ -22,13 +20,3 @@ export const SETTINGS_STATUS_BANNER_ARIA_LIVE = {
 export const SETTINGS_FORM_ID = 'settings-form'
 
 export const SETTINGS_SUCCESS_DISMISS_MS = 4000
-
-export const NOTIFICATION_FIELD_BY_ID = {
-  'ticket-sales': 'ticketSales',
-  inventory: 'inventory',
-  registration: 'registration',
-  'security-log': 'securityLog',
-} as const
-
-export type NotificationFieldId =
-  (typeof NOTIFICATION_FIELD_BY_ID)[keyof typeof NOTIFICATION_FIELD_BY_ID]

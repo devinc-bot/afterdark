@@ -1,14 +1,11 @@
 {
   "page": {
     "title": "Configuración",
-    "description": "Administrá tu cuenta, la organización y las preferencias del panel.",
+    "description": "Administrá tu perfil.",
     "metaTitle": "Configuración · afterdark Admin"
   },
   "sections": {
-    "profile": "Perfil",
-    "organization": "Organización",
-    "security": "Seguridad",
-    "preferences": "Preferencias"
+    "profile": "Perfil"
   },
   "profile": {
     "changePhoto": "Cambiar foto",
@@ -30,25 +27,6 @@
     "changePassword": "Cambiar contraseña",
     "passwordHint": "El cambio de contraseña estará disponible pronto.",
     "avatarFallback": "Usuario"
-  },
-  "organization": {
-    "brandName": "Nombre comercial",
-    "location": "Ubicación principal",
-    "locationPlaceholder": "Ciudad, país",
-    "localHint": "Estos datos se guardan en este navegador. Todavía no se sincronizan con el servidor."
-  },
-  "security": {
-    "twoFactor": "Verificación en dos pasos",
-    "twoFactorDescription": "Pedí un código extra al iniciar sesión.",
-    "twoFactorHint": "Por ahora solo guardamos tu preferencia en este navegador. La activación real llegará pronto.",
-    "sessions": "Dispositivos con sesión iniciada",
-    "sessionsEmpty": "No hay otras sesiones activas para mostrar."
-  },
-  "preferences": {
-    "language": "Idioma del panel",
-    "languagePlaceholder": "Elegí un idioma",
-    "notifications": "Notificaciones por email",
-    "localHint": "Idioma y notificaciones se guardan en este navegador. Todavía no se sincronizan con el servidor."
   },
   "actions": {
     "save": "Guardar cambios",
