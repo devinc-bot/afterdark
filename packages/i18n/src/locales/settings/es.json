@@ -1,46 +1,63 @@
 {
   "page": {
     "title": "Configuración",
-    "description": "Administrá tu perfil.",
     "metaTitle": "Configuración · afterdark Admin"
   },
-  "sections": {
-    "profile": "Perfil"
-  },
-  "profile": {
-    "changePhoto": "Cambiar foto",
-    "photoHint": "La carga de foto estará disponible pronto.",
-    "name": "Nombre",
-    "lastName": "Apellido",
-    "phone": "Teléfono",
-    "birthday": "Fecha de nacimiento",
-    "nationalId": "DNI",
-    "taxId": "CUIT/CUIL",
-    "addressSection": "Domicilio",
-    "address": "Calle",
-    "streetNumber": "Número",
-    "state": "Provincia",
-    "city": "Ciudad",
-    "email": "Correo electrónico",
-    "emailHint": "Para cambiar el correo, escribinos a soporte.",
-    "password": "Contraseña",
-    "changePassword": "Cambiar contraseña",
-    "passwordHint": "El cambio de contraseña estará disponible pronto.",
-    "avatarFallback": "Usuario"
-  },
   "actions": {
-    "save": "Guardar cambios",
-    "discard": "Descartar cambios",
-    "retryLoad": "Reintentar",
-    "dirty": "Tenés cambios sin guardar.",
-    "clean": "No hay cambios pendientes."
+    "retryLoad": "Reintentar"
   },
   "messages": {
-    "validationSummary": "Revisá los campos con error antes de guardar.",
-    "saving": "Guardando cambios…",
-    "saveSuccess": "Listo. Actualizamos tu perfil.",
-    "saveFallback": "No pudimos guardar los cambios. Revisá tu conexión e intentá de nuevo.",
     "loadErrorTitle": "No pudimos cargar la configuración",
+    "loadFallback": "No pudimos cargar la configuración. Intentá de nuevo en unos minutos.",
     "loading": "Cargando configuración…"
+  },
+  "owner": {
+    "page": {
+      "title": "Configuración",
+      "description": "Administrá tu perfil."
+    },
+    "sections": {
+      "profile": "Perfil"
+    },
+    "profile": {
+      "changePhoto": "Cambiar foto",
+      "photoHint": "La carga de foto estará disponible pronto.",
+      "name": "Nombre",
+      "lastName": "Apellido",
+      "phone": "Teléfono",
+      "birthday": "Fecha de nacimiento",
+      "nationalId": "DNI",
+      "taxId": "CUIT/CUIL",
+      "addressSection": "Domicilio",
+      "address": "Calle",
+      "streetNumber": "Número",
+      "state": "Provincia",
+      "city": "Ciudad",
+      "email": "Correo electrónico",
+      "emailHint": "Para cambiar el correo, escribinos a soporte.",
+      "password": "Contraseña",
+      "changePassword": "Cambiar contraseña",
+      "passwordHint": "El cambio de contraseña estará disponible pronto.",
+      "avatarFallback": "Usuario"
+    },
+    "actions": {
+      "save": "Guardar cambios",
+      "discard": "Descartar cambios",
+      "dirty": "Tenés cambios sin guardar.",
+      "clean": "No hay cambios pendientes.",
+      "confirmLeave": "Tenés cambios sin guardar. ¿Salir de todas formas?"
+    },
+    "messages": {
+      "validationSummary": "Revisá los campos con error antes de guardar.",
+      "saving": "Guardando cambios…",
+      "saveSuccess": "Listo. Actualizamos tu perfil.",
+      "saveFallback": "No pudimos guardar los cambios. Revisá tu conexión e intentá de nuevo."
+    }
+  },
+  "staff": {
+    "page": {
+      "title": "Configuración"
+    },
+    "placeholder": "Hello World"
   }
 }

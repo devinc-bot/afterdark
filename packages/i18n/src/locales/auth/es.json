@@ -41,7 +41,8 @@
   },
   "logout": "Cerrar sesión",
   "session": {
-    "expired": "Tu sesión expiró. Volvé a iniciar sesión."
+    "expired": "Tu sesión expiró. Volvé a iniciar sesión.",
+    "loadFallback": "No pudimos cargar tu perfil. Intentá de nuevo en unos minutos."
   },
   "password": {
     "min": "La contraseña debe tener al menos {min} caracteres.",

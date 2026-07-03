@@ -9,8 +9,8 @@ import { ClubsModule } from './modules/clubs'
 import { HealthModule } from './modules/health'
 import { InvitationsModule } from './modules/invitations'
 import { OrdersModule } from './modules/orders'
-import { OwnerModule } from './modules/owner'
 import { SessionModule } from './modules/session'
+import { SettingsModule } from './modules/settings'
 import { StaffModule } from './modules/staff'
 import { TicketsModule } from './modules/tickets'
 
@@ -25,8 +25,8 @@ import { TicketsModule } from './modules/tickets'
     HealthModule,
     InvitationsModule,
     OrdersModule,
-    OwnerModule,
     SessionModule,
+    SettingsModule,
     StaffModule,
     TicketsModule,
   ],

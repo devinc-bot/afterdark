@@ -1,46 +1,63 @@
 {
   "page": {
     "title": "Settings",
-    "description": "Manage your profile.",
     "metaTitle": "Settings · afterdark Admin"
   },
-  "sections": {
-    "profile": "Profile"
-  },
-  "profile": {
-    "changePhoto": "Change photo",
-    "photoHint": "Photo upload will be available soon.",
-    "name": "First name",
-    "lastName": "Last name",
-    "phone": "Phone",
-    "birthday": "Date of birth",
-    "nationalId": "National ID",
-    "taxId": "Tax ID",
-    "addressSection": "Address",
-    "address": "Street",
-    "streetNumber": "Number",
-    "state": "State",
-    "city": "City",
-    "email": "Email address",
-    "emailHint": "To change your email, contact support.",
-    "password": "Password",
-    "changePassword": "Change password",
-    "passwordHint": "Password change will be available soon.",
-    "avatarFallback": "User"
-  },
   "actions": {
-    "save": "Save changes",
-    "discard": "Discard changes",
-    "retryLoad": "Retry",
-    "dirty": "You have unsaved changes.",
-    "clean": "No pending changes."
+    "retryLoad": "Retry"
   },
   "messages": {
-    "validationSummary": "Fix the fields with errors before saving.",
-    "saving": "Saving changes…",
-    "saveSuccess": "Done. Your profile has been updated.",
-    "saveFallback": "We couldn't save the changes. Check your connection and try again.",
     "loadErrorTitle": "We couldn't load the settings",
+    "loadFallback": "We couldn't load the settings. Try again in a few minutes.",
     "loading": "Loading settings…"
+  },
+  "owner": {
+    "page": {
+      "title": "Settings",
+      "description": "Manage your profile."
+    },
+    "sections": {
+      "profile": "Profile"
+    },
+    "profile": {
+      "changePhoto": "Change photo",
+      "photoHint": "Photo upload will be available soon.",
+      "name": "First name",
+      "lastName": "Last name",
+      "phone": "Phone",
+      "birthday": "Date of birth",
+      "nationalId": "National ID",
+      "taxId": "Tax ID",
+      "addressSection": "Address",
+      "address": "Street",
+      "streetNumber": "Number",
+      "state": "State",
+      "city": "City",
+      "email": "Email address",
+      "emailHint": "To change your email, contact support.",
+      "password": "Password",
+      "changePassword": "Change password",
+      "passwordHint": "Password change will be available soon.",
+      "avatarFallback": "User"
+    },
+    "actions": {
+      "save": "Save changes",
+      "discard": "Discard changes",
+      "dirty": "You have unsaved changes.",
+      "clean": "No pending changes.",
+      "confirmLeave": "You have unsaved changes. Leave anyway?"
+    },
+    "messages": {
+      "validationSummary": "Fix the fields with errors before saving.",
+      "saving": "Saving changes…",
+      "saveSuccess": "Done. Your profile has been updated.",
+      "saveFallback": "We couldn't save the changes. Check your connection and try again."
+    }
+  },
+  "staff": {
+    "page": {
+      "title": "Settings"
+    },
+    "placeholder": "Hello World"
   }
 }
