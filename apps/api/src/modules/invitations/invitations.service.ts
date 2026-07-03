@@ -38,7 +38,7 @@ import {
   buildStaffInvitationPayload,
   type StaffInvitationPayload,
 } from './utils/staff-invitation.utils'
-import { toStaffInvitationResponse } from './invitation.formatter'
+import { toStaffInvitationResponse } from './utils/invitation.formatter'
 
 @Injectable()
 export class InvitationsService {

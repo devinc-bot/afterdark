@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common'
 import type { Response } from 'express'
 import { MulterError } from 'multer'
-import { FILE_MESSAGE } from '../../files/files.constants'
+import { FILE_ERROR_CODE } from '@afterdark/i18n/constants'
 
 const MULTER_ERROR_CODE = {
   limitPartCount: 'LIMIT_PART_COUNT',
@@ -25,7 +25,7 @@ export class MulterExceptionFilter implements ExceptionFilter {
     const response = host.switchToHttp().getResponse<Response>()
 
     if (exception.code === MULTER_ERROR_CODE.limitFileSize) {
-      const error = new PayloadTooLargeException(FILE_MESSAGE.FILE_TOO_LARGE)
+      const error = new PayloadTooLargeException(FILE_ERROR_CODE.FILE_TOO_LARGE)
       response.status(error.getStatus()).json({
         statusCode: error.getStatus(),
         message: error.message,
@@ -33,7 +33,7 @@ export class MulterExceptionFilter implements ExceptionFilter {
       return
     }
 
-    const error = new BadRequestException(FILE_MESSAGE.INVALID_IMAGE_TYPE)
+    const error = new BadRequestException(FILE_ERROR_CODE.INVALID_IMAGE_TYPE)
     response.status(error.getStatus()).json({
       statusCode: error.getStatus(),
       message: error.message,

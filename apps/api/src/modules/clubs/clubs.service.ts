@@ -26,7 +26,7 @@ import {
   toClubResponse,
   toClubUpsertInput,
   validateImageLimit,
-} from './utils/clubs.mapper'
+} from './utils/clubs.formatter'
 
 type UploadedImage = { key: string; url: string }
 
