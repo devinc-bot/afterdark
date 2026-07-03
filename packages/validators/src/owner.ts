@@ -6,7 +6,7 @@ const optionalDigitsField = (invalidKey: string, pattern: RegExp) =>
     .trim()
     .refine((value) => value === '' || pattern.test(value), invalidKey)
 
-export const updateCurrentOwnerSchema = z.object({
+export const baseProfileSchema = z.object({
   name: z.string().trim().min(2).max(255),
   lastName: z.string().trim().min(2).max(255),
   phone: z
@@ -14,6 +14,9 @@ export const updateCurrentOwnerSchema = z.object({
     .trim()
     .min(8, 'validation:field.phone.invalid')
     .max(30, 'validation:field.phone.tooLong'),
+})
+
+export const updateCurrentOwnerSchema = baseProfileSchema.extend({
   birthday: z
     .string()
     .trim()
