@@ -16,6 +16,22 @@ export type StaffProfileRow = {
   email: string
 }
 
+export type CurrentStaffRow = {
+  documentId: string
+  name: string
+  lastName: string
+  avatar: string | null
+  phone: string
+  status: StaffStatus
+  email: string
+}
+
+export type StaffProfileUpdateInput = {
+  name: string
+  lastName: string
+  phone: string
+}
+
 export type StaffProfileSeed = {
   name: string
   lastName: string
@@ -91,6 +107,43 @@ export async function findStaffProfileByDocumentId(
     .limit(1)
 
   return row ?? null
+}
+
+export async function findCurrentStaffByDocumentId(
+  documentId: string
+): Promise<CurrentStaffRow | null> {
+  const [row] = await db
+    .select({
+      documentId: staff.documentId,
+      name: staff.name,
+      lastName: staff.lastName,
+      avatar: staff.avatar,
+      phone: staff.phone,
+      status: staff.status,
+      email: accounts.email,
+    })
+    .from(staff)
+    .innerJoin(staffAccountsLnk, eq(staffAccountsLnk.staffId, staff.id))
+    .innerJoin(accounts, eq(accounts.id, staffAccountsLnk.accountId))
+    .where(eq(staff.documentId, documentId))
+    .limit(1)
+
+  return row ?? null
+}
+
+export async function updateStaffProfileByDocumentId(
+  documentId: string,
+  input: StaffProfileUpdateInput
+): Promise<void> {
+  await db
+    .update(staff)
+    .set({
+      name: input.name,
+      lastName: input.lastName,
+      phone: input.phone,
+      updatedAt: new Date(),
+    })
+    .where(eq(staff.documentId, documentId))
 }
 
 async function findStaffOwnershipByDocumentId(
