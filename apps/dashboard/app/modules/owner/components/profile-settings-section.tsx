@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next'
-import { Button, Field, Input, Label } from '@afterdark/ui'
-import { SettingsSection } from '~/modules/owner/components/settings-section'
+import { Avatar, AvatarFallback, AvatarImage, Button, Field, Input, Label } from '@afterdark/ui'
+import { SettingsSection } from '~/modules/settings/components/settings-section'
 import { useSettingsForm } from '~/modules/owner/hooks/settings-form-context'
 
 export function ProfileSettingsSection() {
@@ -16,21 +16,12 @@ export function ProfileSettingsSection() {
     <SettingsSection title={t('owner.sections.profile')}>
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-[auto_1fr] sm:gap-8">
         <div className="flex flex-col items-start gap-3">
-          {avatarSrc ? (
-            <img
-              src={avatarSrc}
-              alt={avatarLabel}
-              className="size-16 rounded-full object-cover ring-1 ring-hairline"
-            />
-          ) : (
-            <div
-              role="img"
-              aria-label={avatarLabel}
-              className="flex size-16 items-center justify-center rounded-full bg-surface-container-low font-heading text-lg font-medium text-ink-muted ring-1 ring-hairline"
-            >
+          <Avatar className="size-16 ring-1 ring-hairline">
+            <AvatarImage src={avatarSrc ?? undefined} alt={avatarLabel} className="object-cover" />
+            <AvatarFallback className="bg-surface-container-low font-heading text-lg font-medium text-ink-muted">
               {avatarLabel.charAt(0).toUpperCase()}
-            </div>
-          )}
+            </AvatarFallback>
+          </Avatar>
           <Button
             type="button"
             variant="ghost"

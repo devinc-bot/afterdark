@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next'
 import type { TicketResponse } from '@afterdark/types'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@afterdark/ui'
 import { TICKET_FORM_MODE, TicketForm } from '~/modules/tickets/components/ticket-form'
-import { ticketResponseToFormValues } from '~/modules/tickets/utils/ticket-form.mapper'
+import { ticketResponseToFormValues } from '~/modules/tickets/utils/ticket-form.formatter'
 
 type TicketEditDialogProps = {
   ticket: TicketResponse | null

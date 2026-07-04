@@ -1,17 +1,22 @@
 import { useTranslation } from 'react-i18next'
 import { Button } from '@afterdark/ui'
-import { SETTINGS_FORM_ID, SETTINGS_SAVE_STATUS } from '~/modules/owner/constants/settings-form'
-import { useSettingsForm } from '~/modules/owner/hooks/settings-form-context'
+import { SETTINGS_FORM_ID } from '~/modules/settings/constants/settings-form'
 
-export function SettingsFormActions() {
+export function SettingsFormActions({
+  isDirty,
+  isSaving,
+  onDiscard,
+}: {
+  isDirty: boolean
+  isSaving: boolean
+  onDiscard: () => void
+}) {
   const { t } = useTranslation('settings')
-  const { isDirty, saveStatus, discard } = useSettingsForm()
-  const isSaving = saveStatus === SETTINGS_SAVE_STATUS.SAVING
 
   return (
     <div className="flex flex-col-reverse gap-3 border-t border-hairline/60 pt-6 sm:flex-row sm:items-center sm:justify-between">
       <p className="text-sm text-ink-muted">
-        {isDirty ? t('owner.actions.dirty') : t('owner.actions.clean')}
+        {isDirty ? t('shared.actions.dirty') : t('shared.actions.clean')}
       </p>
 
       <div className="flex flex-col gap-2 sm:flex-row sm:justify-end">
@@ -20,9 +25,9 @@ export function SettingsFormActions() {
           variant="ghost"
           className="w-full sm:w-auto"
           disabled={!isDirty || isSaving}
-          onClick={discard}
+          onClick={onDiscard}
         >
-          {t('owner.actions.discard')}
+          {t('shared.actions.discard')}
         </Button>
         <Button
           type="submit"
@@ -32,7 +37,7 @@ export function SettingsFormActions() {
           loading={isSaving}
           disabled={!isDirty || isSaving}
         >
-          {t('owner.actions.save')}
+          {t('shared.actions.save')}
         </Button>
       </div>
     </div>

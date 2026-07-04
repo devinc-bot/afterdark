@@ -14,7 +14,7 @@ import {
 import { TICKET_TAB, type TicketTab } from '~/modules/tickets/constants/tickets-tabs.constants'
 import { useDeleteTicket } from '~/modules/tickets/mutation/use-ticket-mutations'
 import { useTickets } from '~/modules/tickets/queries/use-ticket-queries'
-import { ticketResponseToRecordItem } from '~/modules/tickets/utils/ticket-form.mapper'
+import { ticketResponseToRecordItem } from '~/modules/tickets/utils/ticket-form.formatter'
 import { PageLayout } from '~/modules/common/components/page-layout'
 
 const TICKETS_PAGE_SIZE = 10

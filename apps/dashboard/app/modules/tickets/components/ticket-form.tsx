@@ -21,7 +21,7 @@ import {
   toast,
 } from '@afterdark/ui'
 import { useCreateTicket, useUpdateTicket } from '~/modules/tickets/mutation/use-ticket-mutations'
-import { EMPTY_TICKET_FORM_VALUES } from '~/modules/tickets/utils/ticket-form.mapper'
+import { EMPTY_TICKET_FORM_VALUES } from '~/modules/tickets/utils/ticket-form.formatter'
 
 export const TICKET_FORM_MODE = {
   CREATE: 'create',

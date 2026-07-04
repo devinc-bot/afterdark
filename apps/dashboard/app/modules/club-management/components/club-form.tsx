@@ -20,7 +20,7 @@ import {
   type useCreateClub,
   type useUpdateClub,
 } from '~/modules/club-management/mutation/use-club-management-mutations'
-import { snapshotClubFormValues } from '~/modules/club-management/utils/club-form.mapper'
+import { snapshotClubFormValues } from '~/modules/club-management/utils/club-form.formatter'
 
 export const CLUB_FORM_MODE = {
   CREATE: 'create',
