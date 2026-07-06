@@ -60,6 +60,7 @@ export interface CurrentOwnerResponse extends BaseProfileResponse {
   nationalId: string | null
   taxId: string | null
   status: OwnerStatus
+  address: CurrentUserAddress | null
 }
 
 export interface CurrentStaffResponse extends BaseProfileResponse {
