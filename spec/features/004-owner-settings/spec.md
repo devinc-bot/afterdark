@@ -2,11 +2,11 @@
 
 > Completar con la entrevista guiada — [INTERVIEW.md](../../INTERVIEW.md). Estado por fase en `progress.md`.
 
-| Campo      | Valor                |
-| ---------- | -------------------- |
-| **ID**     | `004-owner-settings` |
+| Campo      | Valor                                                                    |
+| ---------- | ------------------------------------------------------------------------ |
+| **ID**     | `004-owner-settings`                                                     |
 | **Status** | `approved` (ampliación dirección del owner, 2026-07-04; resto ya `done`) |
-| **Apps**   | `api` · `dashboard`  |
+| **Apps**   | `api` · `dashboard`                                                      |
 
 ---
 
@@ -122,11 +122,11 @@ Sin cambios de fondo: mismos casos que hoy tienen `/owners/details` y `/owners/m
 
 **Ampliación (2026-07-04) — dirección del owner:**
 
-| Tabla / campo                            | Cambio                                                                                                                                                                                                                                                                                                             |
-| ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `packages/db/src/schema/addresses.ts`     | Sin cambios — ya existe (`address`, `streetNumber`, `state`, `city`, todos `notNull`).                                                                                                                                                                                                                             |
-| `user_addresses_lnk` → `owner_addresses_lnk` | **Repurpose, no tabla nueva en paralelo.** La tabla `user_addresses_lnk` existía sin ningún uso en el código (grep sin resultados en `apps/api` ni `apps/dashboard`) y no tiene relación real `owners`↔`users` que la justifique (owners se vincula a `accounts`, no a `users`). Por decisión del usuario: se renombra el archivo/tabla/columna a `owner_addresses_lnk` (`ownerId` FK a `owners.id`, `addressId` FK a `addresses.id`, unique en ambos lados — mismo patrón 1:1 que `club_addresses_lnk`), y se elimina la definición vieja en vez de mantener las dos. Requiere migración (`pnpm db:generate`).                                          |
-| `packages/db/src/repositories/owners.repository.ts` | Nuevas funciones: `findOwnerWithAddressByDocumentId`, `upsertOwnerAddress` (transacción: insert/update en `addresses` + upsert en `owner_addresses_lnk`, mismo patrón que `updateClubWithAddress` en `clubs.repository.ts`).                                                                                        |
+| Tabla / campo                                       | Cambio                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| --------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `packages/db/src/schema/addresses.ts`               | Sin cambios — ya existe (`address`, `streetNumber`, `state`, `city`, todos `notNull`).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| `user_addresses_lnk` → `owner_addresses_lnk`        | **Repurpose, no tabla nueva en paralelo.** La tabla `user_addresses_lnk` existía sin ningún uso en el código (grep sin resultados en `apps/api` ni `apps/dashboard`) y no tiene relación real `owners`↔`users` que la justifique (owners se vincula a `accounts`, no a `users`). Por decisión del usuario: se renombra el archivo/tabla/columna a `owner_addresses_lnk` (`ownerId` FK a `owners.id`, `addressId` FK a `addresses.id`, unique en ambos lados — mismo patrón 1:1 que `club_addresses_lnk`), y se elimina la definición vieja en vez de mantener las dos. Requiere migración (`pnpm db:generate`). |
+| `packages/db/src/repositories/owners.repository.ts` | Nuevas funciones: `findOwnerWithAddressByDocumentId`, `upsertOwnerAddress` (transacción: insert/update en `addresses` + upsert en `owner_addresses_lnk`, mismo patrón que `updateClubWithAddress` en `clubs.repository.ts`).                                                                                                                                                                                                                                                                                                                                                                                    |
 
 ### UI (si aplica)
 

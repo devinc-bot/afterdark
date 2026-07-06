@@ -619,10 +619,10 @@ En el tab _Personal_ de `/staff`, el dueño elimina o desactiva/activa personal 
 
 ### API
 
-| Método   | Ruta                          | Auth                                   |
-| -------- | ------------------------------ | --------------------------------------- |
-| `DELETE` | `/api/staff/:documentId`       | JWT + rol `owner` (`OwnerRoleGuard`)    |
-| `PATCH`  | `/api/staff/:documentId/status` | JWT + rol `owner` (`OwnerRoleGuard`)    |
+| Método   | Ruta                            | Auth                                 |
+| -------- | ------------------------------- | ------------------------------------ |
+| `DELETE` | `/api/staff/:documentId`        | JWT + rol `owner` (`OwnerRoleGuard`) |
+| `PATCH`  | `/api/staff/:documentId/status` | JWT + rol `owner` (`OwnerRoleGuard`) |
 
 **`PATCH` body:**
 
@@ -636,42 +636,42 @@ En el tab _Personal_ de `/staff`, el dueño elimina o desactiva/activa personal 
 
 **Errores (mensaje al usuario en español)**
 
-| HTTP | Cuándo                                    | Mensaje                                                |
-| ---- | ------------------------------------------ | -------------------------------------------------------- |
-| 401  | Sin sesión                                 | Redirigir a login                                        |
-| 403  | No es dueño                                | Mensaje de API / fallback dashboard                      |
-| 404  | `documentId` no existe o no es del dueño   | `Personal no encontrado.` (reusa `staff.NOT_FOUND`)      |
-| 400  | `status` inválido (solo PATCH)             | Mensaje de validación Zod (`invalid_enum_value`)          |
-| 500  | Error al eliminar                          | `No pudimos eliminar el usuario. Intentá de nuevo.`      |
-| 500  | Error al actualizar estado                 | `No pudimos actualizar el estado. Intentá de nuevo.`     |
+| HTTP | Cuándo                                   | Mensaje                                              |
+| ---- | ---------------------------------------- | ---------------------------------------------------- |
+| 401  | Sin sesión                               | Redirigir a login                                    |
+| 403  | No es dueño                              | Mensaje de API / fallback dashboard                  |
+| 404  | `documentId` no existe o no es del dueño | `Personal no encontrado.` (reusa `staff.NOT_FOUND`)  |
+| 400  | `status` inválido (solo PATCH)           | Mensaje de validación Zod (`invalid_enum_value`)     |
+| 500  | Error al eliminar                        | `No pudimos eliminar el usuario. Intentá de nuevo.`  |
+| 500  | Error al actualizar estado               | `No pudimos actualizar el estado. Intentá de nuevo.` |
 
 ### Datos
 
-| Tabla / campo    | Cambio                                                                                                                                     |
-| ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| `staff.status`   | `STAFF_STATUS` sin `PENDING` en `@afterdark/types` y en el `enum` de `packages/db/src/schema/staff.ts`. Sin migración SQL (solo tipo TS). |
-| Delete en cascada | Transacción: `staff_club_lnk` (por `staffId`) → `staff_account_lnk` (por `staffId`) → `staff` → `accounts` (por `accountId` resuelto).   |
+| Tabla / campo     | Cambio                                                                                                                                    |
+| ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| `staff.status`    | `STAFF_STATUS` sin `PENDING` en `@afterdark/types` y en el `enum` de `packages/db/src/schema/staff.ts`. Sin migración SQL (solo tipo TS). |
+| Delete en cascada | Transacción: `staff_club_lnk` (por `staffId`) → `staff_account_lnk` (por `staffId`) → `staff` → `accounts` (por `accountId` resuelto).    |
 
 ### UI (`dashboard`)
 
-| Cambio                                                            | Archivo                                            |
-| ------------------------------------------------------------------ | ---------------------------------------------------- |
-| Quitar columnas "Última actividad" y "Estado"                     | `staff-user-records.tsx`                           |
+| Cambio                                                             | Archivo                                             |
+| ------------------------------------------------------------------ | --------------------------------------------------- |
+| Quitar columnas "Última actividad" y "Estado"                      | `staff-user-records.tsx`                            |
 | Quitar item "Editar"; agregar toggle activar/desactivar + eliminar | `staff-user-records.tsx` (`StaffUserRecordActions`) |
-| Nuevo diálogo de confirmación de borrado                          | `staff-user-delete-dialog.tsx` (nuevo)              |
-| Mutations delete/status + invalidación de query                  | `queries/use-staff-personnel.ts` o nuevo archivo    |
+| Nuevo diálogo de confirmación de borrado                           | `staff-user-delete-dialog.tsx` (nuevo)              |
+| Mutations delete/status + invalidación de query                    | `queries/use-staff-personnel.ts` o nuevo archivo    |
 | `StaffPersonnelTab` deja de fijar `statusControlsDisabled`         | `staff-personnel-tab.tsx`                           |
 
 **Copy (i18n, `staff/es.json` + `staff/en.json`)**
 
-| Clave                     | Uso                                              |
-| -------------------------- | --------------------------------------------------- |
-| `table.deleteUser`        | Item de menú "Eliminar usuario"                    |
-| `table.deactivateUser`    | Item de menú "Desactivar usuario" (si activo)      |
-| `table.activateUser`      | Item de menú "Activar usuario" (si inactivo)       |
-| `delete.title`             | Título del diálogo de confirmación                |
+| Clave                                                   | Uso                                                                  |
+| ------------------------------------------------------- | -------------------------------------------------------------------- |
+| `table.deleteUser`                                      | Item de menú "Eliminar usuario"                                      |
+| `table.deactivateUser`                                  | Item de menú "Desactivar usuario" (si activo)                        |
+| `table.activateUser`                                    | Item de menú "Activar usuario" (si inactivo)                         |
+| `delete.title`                                          | Título del diálogo de confirmación                                   |
 | `delete.descriptionPrefix` / `delete.descriptionSuffix` | Descripción con nombre interpolado (igual patrón que `deactivate.*`) |
-| `delete.cancel` / `delete.confirm` | Botones del diálogo                         |
+| `delete.cancel` / `delete.confirm`                      | Botones del diálogo                                                  |
 
 ## Reglas de negocio — Entrega 6
 

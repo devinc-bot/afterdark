@@ -25,30 +25,30 @@ La API (`apps/api`) importa **repositorios**, tipos y el cliente desde `@afterda
 
 Cada tabla incluye las columnas base (`id`, `document_id`, `created_at`, `updated_at`) salvo que se indique lo contrario.
 
-| Tabla SQL            | Export TS          | Archivo schema         | Tipo    |
-| -------------------- | ------------------ | ---------------------- | ------- |
-| `users`              | `users`            | `user.ts`              | Entidad |
-| `owners`             | `owners`           | `owner.ts`             | Entidad |
-| `staff`              | `staff`            | `staff.ts`             | Entidad |
-| `accounts`           | `accounts`         | `account.ts`           | Entidad |
-| `roles`              | `roles`            | `role.ts`              | Entidad |
-| `addresses`          | `addresses`        | `address.ts`           | Entidad |
-| `assets`             | `assets`           | `asset.ts`             | Entidad |
-| `clubs`              | `clubs`            | `club.ts`              | Entidad |
-| `services`           | `services`         | `service.ts`           | Entidad |
-| `tickets`            | `tickets`          | `ticket.ts`            | Entidad |
-| `payments`           | `payments`         | `payment.ts`           | Entidad |
-| `chat`               | `chats`            | `chat.ts`              | Entidad |
-| `messages`           | `messages`         | `messages.ts`          | Entidad |
-| `staff_invitations`  | `staffInvitations` | `staff-invitation.ts`  | Entidad |
-| `account_role_lnk`   | `accountRolesLnk`  | `account-role-lnk.ts`  | Enlace  |
-| `user_accounts_lnk`  | `userAccountsLnk`  | `user-account-lnk.ts`  | Enlace  |
-| `owner_account_lnk`  | `ownerAccountsLnk` | `owner-account-lnk.ts` | Enlace  |
-| `staff_account_lnk`  | `staffAccountsLnk` | `staff-account-lnk.ts` | Enlace  |
+| Tabla SQL             | Export TS           | Archivo schema         | Tipo    |
+| --------------------- | ------------------- | ---------------------- | ------- |
+| `users`               | `users`             | `user.ts`              | Entidad |
+| `owners`              | `owners`            | `owner.ts`             | Entidad |
+| `staff`               | `staff`             | `staff.ts`             | Entidad |
+| `accounts`            | `accounts`          | `account.ts`           | Entidad |
+| `roles`               | `roles`             | `role.ts`              | Entidad |
+| `addresses`           | `addresses`         | `address.ts`           | Entidad |
+| `assets`              | `assets`            | `asset.ts`             | Entidad |
+| `clubs`               | `clubs`             | `club.ts`              | Entidad |
+| `services`            | `services`          | `service.ts`           | Entidad |
+| `tickets`             | `tickets`           | `ticket.ts`            | Entidad |
+| `payments`            | `payments`          | `payment.ts`           | Entidad |
+| `chat`                | `chats`             | `chat.ts`              | Entidad |
+| `messages`            | `messages`          | `messages.ts`          | Entidad |
+| `staff_invitations`   | `staffInvitations`  | `staff-invitation.ts`  | Entidad |
+| `account_role_lnk`    | `accountRolesLnk`   | `account-role-lnk.ts`  | Enlace  |
+| `user_accounts_lnk`   | `userAccountsLnk`   | `user-account-lnk.ts`  | Enlace  |
+| `owner_account_lnk`   | `ownerAccountsLnk`  | `owner-account-lnk.ts` | Enlace  |
+| `staff_account_lnk`   | `staffAccountsLnk`  | `staff-account-lnk.ts` | Enlace  |
 | `owner_addresses_lnk` | `ownerAddressesLnk` | `owner-address-lnk.ts` | Enlace  |
-| `user_assets_lnk`    | `userAssetsLnk`    | `user-asset-lnk.ts`    | Enlace  |
-| `club_addresses_lnk` | `clubAddressesLnk` | `club-address-lnk.ts`  | Enlace  |
-| `club_assets_lnk`    | `clubAssetsLnk`    | `club-asset-lnk.ts`    | Enlace  |
+| `user_assets_lnk`     | `userAssetsLnk`     | `user-asset-lnk.ts`    | Enlace  |
+| `club_addresses_lnk`  | `clubAddressesLnk`  | `club-address-lnk.ts`  | Enlace  |
+| `club_assets_lnk`     | `clubAssetsLnk`     | `club-asset-lnk.ts`    | Enlace  |
 
 Tipos inferidos por tabla: `{Nombre}Select` y `{Nombre}Insert` (ej. `UserSelect`, `StaffInvitationInsert`).
 
@@ -91,16 +91,16 @@ Nota: `staff_invitations.role` solo admite `user`, `owner` y `staff` (no `admin`
 
 ### Tablas de enlace (`*_lnk`)
 
-| Tabla                | Cardinalidad | Descripción         |
-| -------------------- | ------------ | ------------------- |
-| `user_accounts_lnk`  | N:1 por lado | Usuario ↔ cuenta    |
-| `owner_account_lnk`  | N:1 por lado | Owner ↔ cuenta      |
-| `staff_account_lnk`  | N:1 por lado | Staff ↔ cuenta      |
-| `account_role_lnk`   | 1:1          | Cuenta ↔ rol        |
-| `owner_addresses_lnk` | 1:1          | Owner ↔ domicilio   |
-| `user_assets_lnk`    | N:M          | Usuario ↔ asset     |
-| `club_addresses_lnk` | 1:1          | Club ↔ domicilio    |
-| `club_assets_lnk`    | N:M          | Club ↔ asset        |
+| Tabla                 | Cardinalidad | Descripción       |
+| --------------------- | ------------ | ----------------- |
+| `user_accounts_lnk`   | N:1 por lado | Usuario ↔ cuenta  |
+| `owner_account_lnk`   | N:1 por lado | Owner ↔ cuenta    |
+| `staff_account_lnk`   | N:1 por lado | Staff ↔ cuenta    |
+| `account_role_lnk`    | 1:1          | Cuenta ↔ rol      |
+| `owner_addresses_lnk` | 1:1          | Owner ↔ domicilio |
+| `user_assets_lnk`     | N:M          | Usuario ↔ asset   |
+| `club_addresses_lnk`  | 1:1          | Club ↔ domicilio  |
+| `club_assets_lnk`     | N:M          | Club ↔ asset      |
 
 ---
 
@@ -420,13 +420,13 @@ Export Drizzle: `chats`. Solo columnas base; sin campos adicionales.
 
 ## Índices únicos
 
-| Tabla                | Columna(s)                                   |
-| -------------------- | -------------------------------------------- |
-| Todas                | `document_id` (`{tabla}_document_id_unique`) |
-| `accounts`           | `email`                                      |
-| `staff_invitations`  | `token`                                      |
+| Tabla                 | Columna(s)                                   |
+| --------------------- | -------------------------------------------- |
+| Todas                 | `document_id` (`{tabla}_document_id_unique`) |
+| `accounts`            | `email`                                      |
+| `staff_invitations`   | `token`                                      |
 | `owner_addresses_lnk` | `owner_id`, `address_id`                     |
-| `club_addresses_lnk` | `club_id`, `address_id`                      |
+| `club_addresses_lnk`  | `club_id`, `address_id`                      |
 
 ---
 

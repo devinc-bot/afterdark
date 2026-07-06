@@ -197,14 +197,14 @@ Estados: `pending` · `in_progress` · `done`
 
 ### Entrega 6 — Eliminar / desactivar staff desde acciones
 
-| Fase | Nombre                   | Estado        |
-| ---- | ------------------------ | ------------- |
-| 1    | Identidad                | `done`        |
-| 2    | Comportamiento y alcance | `done`        |
-| 3    | User stories             | `done`        |
-| 4    | Contratos                | `done`        |
-| 5    | Reglas y cierre          | `done`        |
-| 6    | Plan técnico             | `done`        |
+| Fase | Nombre                   | Estado |
+| ---- | ------------------------ | ------ |
+| 1    | Identidad                | `done` |
+| 2    | Comportamiento y alcance | `done` |
+| 3    | User stories             | `done` |
+| 4    | Contratos                | `done` |
+| 5    | Reglas y cierre          | `done` |
+| 6    | Plan técnico             | `done` |
 
 ### Entrega 6 — Fase 1 — Identidad
 
@@ -234,13 +234,13 @@ Estados: `pending` · `in_progress` · `done`
 - **`PATCH /api/staff/:documentId/status`** — mismas guardias. Body `{ status: 'active' | 'inactive' }` (Zod enum, ya sin `pending`). Response `200 { message: 'Estado actualizado.' }`.
 - **Errores (ambos endpoints, mensaje en español):**
 
-  | HTTP | Cuándo                                  | Mensaje                                               |
-  | ---- | ---------------------------------------- | ------------------------------------------------------ |
-  | 401  | Sin sesión                               | Redirigir a login                                     |
-  | 403  | No es dueño                              | Mensaje de API / fallback dashboard                   |
-  | 404  | `documentId` no existe o no es del dueño | `Usuario no encontrado.`                              |
-  | 400  | `status` fuera del enum (solo PATCH)     | `Estado inválido.`                                    |
-  | 500  | Error al eliminar                        | `No pudimos eliminar el usuario. Intentá de nuevo.`   |
+  | HTTP | Cuándo                                   | Mensaje                                              |
+  | ---- | ---------------------------------------- | ---------------------------------------------------- |
+  | 401  | Sin sesión                               | Redirigir a login                                    |
+  | 403  | No es dueño                              | Mensaje de API / fallback dashboard                  |
+  | 404  | `documentId` no existe o no es del dueño | `Usuario no encontrado.`                             |
+  | 400  | `status` fuera del enum (solo PATCH)     | `Estado inválido.`                                   |
+  | 500  | Error al eliminar                        | `No pudimos eliminar el usuario. Intentá de nuevo.`  |
   | 500  | Error al actualizar estado               | `No pudimos actualizar el estado. Intentá de nuevo.` |
 
 - **DB (`packages/db`):** nuevas funciones en `staff.repository.ts` — `deleteStaffByDocumentId(documentId)` (transacción con los 4 deletes) y `updateStaffStatusByDocumentId(documentId, status)`. Ambas primero resuelven `staff.id` + verifican pertenencia al owner (reuso de join similar a `findPersonnelByOwnerDocumentId`).
