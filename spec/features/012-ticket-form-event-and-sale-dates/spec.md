@@ -2,11 +2,11 @@
 
 > Requisitos provistos por el dueño del producto. Estado por fase en `progress.md`.
 
-| Campo          | Valor                                                        |
-| -------------- | ------------------------------------------------------------ |
-| **ID**         | `012-ticket-form-event-and-sale-dates`                       |
-| **Status**     | `approved`                                                   |
-| **Apps**       | `api`, `dashboard`                                           |
+| Campo          | Valor                                                         |
+| -------------- | ------------------------------------------------------------- |
+| **ID**         | `012-ticket-form-event-and-sale-dates`                        |
+| **Status**     | `approved`                                                    |
+| **Apps**       | `api`, `dashboard`                                            |
 | **Depende de** | `011-events-management` (listado de eventos del dueño en API) |
 
 ---
@@ -107,18 +107,18 @@ Tras `011-events-management`, cada ticket debe pertenecer a un evento concreto. 
 
 Sin rutas nuevas. Ajuste de contrato en body existente:
 
-| Método  | Ruta                       | Cambio                                      |
-| ------- | -------------------------- | ------------------------------------------- |
-| `POST`  | `/api/tickets/create`      | `eventId` **requerido** (UUID)              |
-| `PATCH` | `/api/tickets/:documentId` | `eventId` **requerido** (UUID)              |
+| Método  | Ruta                       | Cambio                         |
+| ------- | -------------------------- | ------------------------------ |
+| `POST`  | `/api/tickets/create`      | `eventId` **requerido** (UUID) |
+| `PATCH` | `/api/tickets/:documentId` | `eventId` **requerido** (UUID) |
 
 **Body** (`createTicketSchema` / `updateTicketSchema`):
 
-| Campo          | Tipo     | Requerido | Notas                                                |
-| -------------- | -------- | --------- | ---------------------------------------------------- |
-| `eventId`      | UUID     | **Sí**    | Debe pertenecer al dueño (`findEventOwnedByOwnerDocumentId`) |
-| `saleStartsAt` | datetime | No        | ISO / coerce date; omitir o `null` si vacío          |
-| `saleEndsAt`   | datetime | No        | Idem                                                 |
+| Campo          | Tipo     | Requerido | Notas                                                         |
+| -------------- | -------- | --------- | ------------------------------------------------------------- |
+| `eventId`      | UUID     | **Sí**    | Debe pertenecer al dueño (`findEventOwnedByOwnerDocumentId`)  |
+| `saleStartsAt` | datetime | No        | ISO / coerce date; omitir o `null` si vacío                   |
+| `saleEndsAt`   | datetime | No        | Idem                                                          |
 | …              | …        | …         | Sin cambios: name, type, price, quantity, description, status |
 
 **Refine fechas de venta** (solo si **ambas** presentes):
@@ -130,30 +130,30 @@ saleEndsAt > saleStartsAt
 
 **Errores**
 
-| HTTP | Cuándo                         | Mensaje (español)                                      |
-| ---- | ------------------------------ | ------------------------------------------------------ |
-| 400  | Sin `eventId` o UUID inválido  | Validación Zod / _Seleccioná un evento._               |
-| 400  | Rango de venta inválido        | _La fecha de fin de venta debe ser posterior al inicio de venta._ |
-| 404  | `eventId` no del dueño         | _Evento no encontrado._ (`ticket.EVENT_NOT_FOUND`)      |
+| HTTP | Cuándo                        | Mensaje (español)                                                 |
+| ---- | ----------------------------- | ----------------------------------------------------------------- |
+| 400  | Sin `eventId` o UUID inválido | Validación Zod / _Seleccioná un evento._                          |
+| 400  | Rango de venta inválido       | _La fecha de fin de venta debe ser posterior al inicio de venta._ |
+| 404  | `eventId` no del dueño        | _Evento no encontrado._ (`ticket.EVENT_NOT_FOUND`)                |
 
 ### Datos
 
-| Tabla / campo              | Cambio en esta feature                          |
-| -------------------------- | ----------------------------------------------- |
-| `tickets.event_id`         | Sin migración; validación obligatoria en API/UI |
-| `tickets.sale_starts_at`   | Sin cambio de esquema; ya opcional              |
-| `tickets.sale_ends_at`     | Sin cambio de esquema; ya opcional              |
+| Tabla / campo            | Cambio en esta feature                          |
+| ------------------------ | ----------------------------------------------- |
+| `tickets.event_id`       | Sin migración; validación obligatoria en API/UI |
+| `tickets.sale_starts_at` | Sin cambio de esquema; ya opcional              |
+| `tickets.sale_ends_at`   | Sin cambio de esquema; ya opcional              |
 
 ### UI (`dashboard`)
 
 **Archivos principales**
 
-| Archivo                         | Cambio                                              |
-| ------------------------------- | --------------------------------------------------- |
-| `ticket-form.tsx`               | Select evento; labels fechas de venta               |
-| `ticket-form.mapper.ts`         | `eventId` requerido en valores por defecto          |
-| `use-ticket-queries.ts` o nuevo | Query eventos para select                           |
-| `packages/validators/ticket.ts`   | `eventId` required; mensajes venta                  |
+| Archivo                         | Cambio                                     |
+| ------------------------------- | ------------------------------------------ |
+| `ticket-form.tsx`               | Select evento; labels fechas de venta      |
+| `ticket-form.mapper.ts`         | `eventId` requerido en valores por defecto |
+| `use-ticket-queries.ts` o nuevo | Query eventos para select                  |
+| `packages/validators/ticket.ts` | `eventId` required; mensajes venta         |
 
 **Orden sugerido de campos en el diálogo**
 
@@ -182,18 +182,18 @@ saleEndsAt > saleStartsAt
 
 **Copy (español)**
 
-| Contexto              | Texto                                                                 |
-| --------------------- | --------------------------------------------------------------------- |
-| Campo evento          | `Evento`                                                              |
-| Placeholder evento    | `Seleccioná un evento`                                                |
-| Cargando eventos      | `Cargando eventos…`                                                   |
-| Sin eventos           | `No tenés eventos registrados`                                        |
-| Error carga eventos   | `No pudimos cargar tus eventos.`                                      |
-| Inicio venta          | `Fecha de inicio de venta`                                            |
-| Fin venta             | `Fecha de fin de venta`                                               |
-| Descripción crear     | `Definí el tipo de entrada, precio y stock para un evento.`           |
-| Error evento requerido| `Seleccioná un evento.`                                               |
-| Error rango venta     | `La fecha de fin de venta debe ser posterior al inicio de venta.`     |
+| Contexto               | Texto                                                             |
+| ---------------------- | ----------------------------------------------------------------- |
+| Campo evento           | `Evento`                                                          |
+| Placeholder evento     | `Seleccioná un evento`                                            |
+| Cargando eventos       | `Cargando eventos…`                                               |
+| Sin eventos            | `No tenés eventos registrados`                                    |
+| Error carga eventos    | `No pudimos cargar tus eventos.`                                  |
+| Inicio venta           | `Fecha de inicio de venta`                                        |
+| Fin venta              | `Fecha de fin de venta`                                           |
+| Descripción crear      | `Definí el tipo de entrada, precio y stock para un evento.`       |
+| Error evento requerido | `Seleccioná un evento.`                                           |
+| Error rango venta      | `La fecha de fin de venta debe ser posterior al inicio de venta.` |
 
 **Validación (`packages/validators/src/ticket.ts`)**
 

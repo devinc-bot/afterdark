@@ -64,18 +64,18 @@ No aplica — sin tablas/columnas nuevas. El idioma no se guarda en `owners` ví
 
 ### UI
 
-| Ruta        | Pantalla                                             |
-| ----------- | ----------------------------------------------------- |
-| `/settings` | Configuración → sección Preferencias (ya existe)      |
+| Ruta        | Pantalla                                         |
+| ----------- | ------------------------------------------------ |
+| `/settings` | Configuración → sección Preferencias (ya existe) |
 
 **Cambios de implementación (no nueva UI, conecta lo existente):**
 
-| Archivo | Cambio |
-| ------- | ------ |
-| `apps/dashboard/.../constants/settings.mock.ts` | `LANGUAGE_OPTIONS`: sacar entrada `de` (Deutsch); dejar solo `es`/`en`. |
-| `apps/dashboard/.../hooks/settings-form-context.tsx` | Dentro de `save()`, tras `updateCurrentOwner`/`saveStoredSettings` exitosos: si `validation.data.preferences.language` cambió respecto al idioma real actual (`useLanguage().language`), llamar `setLanguage()` de `@afterdark/i18n/client`. |
-| `apps/dashboard/.../utils/settings-storage.utils.ts` | `createSettingsFormValues`: valor inicial de `preferences.language` = idioma real actual (`getCurrentLanguage()`), no el guardado en `localStorage` de settings. |
-| `apps/dashboard/.../components/preferences-settings-section.tsx` | Sin cambios de estructura; sigue leyendo `LANGUAGE_OPTIONS` (ahora sin `de`). |
+| Archivo                                                          | Cambio                                                                                                                                                                                                                                       |
+| ---------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `apps/dashboard/.../constants/settings.mock.ts`                  | `LANGUAGE_OPTIONS`: sacar entrada `de` (Deutsch); dejar solo `es`/`en`.                                                                                                                                                                      |
+| `apps/dashboard/.../hooks/settings-form-context.tsx`             | Dentro de `save()`, tras `updateCurrentOwner`/`saveStoredSettings` exitosos: si `validation.data.preferences.language` cambió respecto al idioma real actual (`useLanguage().language`), llamar `setLanguage()` de `@afterdark/i18n/client`. |
+| `apps/dashboard/.../utils/settings-storage.utils.ts`             | `createSettingsFormValues`: valor inicial de `preferences.language` = idioma real actual (`getCurrentLanguage()`), no el guardado en `localStorage` de settings.                                                                             |
+| `apps/dashboard/.../components/preferences-settings-section.tsx` | Sin cambios de estructura; sigue leyendo `LANGUAGE_OPTIONS` (ahora sin `de`).                                                                                                                                                                |
 
 **Copy (español)** — sin copy nueva; se reusa `SETTINGS_COPY.preferences.language` / `.languagePlaceholder` ya existentes.
 
