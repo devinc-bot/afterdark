@@ -11,7 +11,7 @@ const tabsListVariants = cva(
     variants: {
       variant: {
         default: 'h-10 rounded-lg bg-muted p-1',
-        line: 'h-auto w-full justify-stretch rounded-none border-b border-outline-variant bg-transparent p-0',
+        line: 'h-auto w-fit justify-start gap-4 rounded-none border-b border-outline-variant bg-transparent p-0',
       },
     },
     defaultVariants: {
@@ -21,7 +21,7 @@ const tabsListVariants = cva(
 )
 
 const tabsTriggerVariants = cva(
-  'inline-flex flex-1 items-center justify-center whitespace-nowrap font-medium transition-colors focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50',
+  'inline-flex items-center justify-center whitespace-nowrap font-medium transition-colors focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50',
   {
     variants: {
       variant: {

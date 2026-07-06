@@ -10,6 +10,7 @@
     "createMetaTitle": "Añadir nuevo club · afterdark Admin",
     "createTitle": "Añadir nuevo club",
     "createDescription": "Completá los datos para registrar un club en la plataforma.",
+    "requiredFieldsHint": "Los campos marcados con * son obligatorios.",
     "editMetaTitle": "Editar club · afterdark Admin",
     "editTitle": "Editar club",
     "editDescription": "Actualizá la información del club. Los cambios se reflejan de inmediato.",

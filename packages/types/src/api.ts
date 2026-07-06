@@ -1,6 +1,7 @@
 import type {
   AssetType,
   ClubStatus,
+  EventStatus,
   OwnerStatus,
   StaffInvitationStatus,
   StaffStatus,
@@ -96,6 +97,19 @@ export interface ClubResponse {
   state: string
   city: string
   images: ClubImageResponse[]
+  createdAt: Date
+  updatedAt: Date
+}
+
+export interface EventResponse {
+  documentId: string
+  clubId: string
+  clubName: string
+  name: string
+  description: string
+  startsAt: Date
+  endsAt: Date
+  status: EventStatus
   createdAt: Date
   updatedAt: Date
 }

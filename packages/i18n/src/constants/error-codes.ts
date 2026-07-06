@@ -74,6 +74,16 @@ export const GUARD_ERROR_CODE = {
   OWNER_ONLY: 'guard.OWNER_ONLY',
 } as const
 
+export const EVENT_ERROR_CODE = {
+  NOT_FOUND: 'event.NOT_FOUND',
+  CLUB_NOT_FOUND: 'event.CLUB_NOT_FOUND',
+  CREATE_FAILED: 'event.CREATE_FAILED',
+  UPDATE_FAILED: 'event.UPDATE_FAILED',
+  DELETE_FAILED: 'event.DELETE_FAILED',
+  LIST_FAILED: 'event.LIST_FAILED',
+  HAS_TICKETS: 'event.HAS_TICKETS',
+} as const
+
 export type AuthErrorCode = (typeof AUTH_ERROR_CODE)[keyof typeof AUTH_ERROR_CODE]
 export type InvitationErrorCode = (typeof INVITATION_ERROR_CODE)[keyof typeof INVITATION_ERROR_CODE]
 export type ClubErrorCode = (typeof CLUB_ERROR_CODE)[keyof typeof CLUB_ERROR_CODE]
@@ -82,6 +92,7 @@ export type OwnerErrorCode = (typeof OWNER_ERROR_CODE)[keyof typeof OWNER_ERROR_
 export type TicketErrorCode = (typeof TICKET_ERROR_CODE)[keyof typeof TICKET_ERROR_CODE]
 export type FileErrorCode = (typeof FILE_ERROR_CODE)[keyof typeof FILE_ERROR_CODE]
 export type GuardErrorCode = (typeof GUARD_ERROR_CODE)[keyof typeof GUARD_ERROR_CODE]
+export type EventErrorCode = (typeof EVENT_ERROR_CODE)[keyof typeof EVENT_ERROR_CODE]
 
 export type ErrorCode =
   | AuthErrorCode
@@ -92,3 +103,4 @@ export type ErrorCode =
   | TicketErrorCode
   | FileErrorCode
   | GuardErrorCode
+  | EventErrorCode

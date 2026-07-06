@@ -1,0 +1,71 @@
+{
+  "page": {
+    "title": "Gestión de eventos",
+    "description": "Creá y consultá los eventos de tus clubes.",
+    "metaTitle": "Gestión de eventos · afterdark Admin"
+  },
+  "form": {
+    "trigger": "Crear evento",
+    "createTitle": "Crear evento",
+    "createDescription": "Completá los datos del evento.",
+    "requiredFieldsHint": "Los campos marcados con * son obligatorios.",
+    "club": "Club",
+    "clubPlaceholder": "Seleccioná un club",
+    "clubLoading": "Cargando clubes…",
+    "clubEmpty": "No tenés clubes registrados",
+    "clubsLoadError": "No pudimos cargar tus clubes.",
+    "name": "Nombre del evento",
+    "namePlaceholder": "Ej. Noche electrónica",
+    "description": "Descripción",
+    "descriptionPlaceholder": "Contá qué incluye el evento",
+    "startsAt": "Fecha y hora de inicio",
+    "endsAt": "Fecha y hora de finalización",
+    "status": "Estado",
+    "statusPlaceholder": "Seleccioná un estado",
+    "statusDraft": "Borrador",
+    "statusPublished": "Publicado",
+    "statusFinished": "Finalizado",
+    "cancel": "Cancelar",
+    "submitCreate": "Crear evento",
+    "submittingCreate": "Creando…",
+    "editTitle": "Editar evento",
+    "editDescription": "Actualizá la información del evento. Los cambios se reflejan de inmediato.",
+    "submitEdit": "Actualizar evento",
+    "submittingEdit": "Actualizando…",
+    "successCreate": "Evento creado correctamente",
+    "successEdit": "Evento actualizado correctamente",
+    "errorCreate": "No pudimos crear el evento. Intentá de nuevo.",
+    "errorEdit": "No pudimos actualizar el evento. Intentá de nuevo."
+  },
+  "table": {
+    "title": "Eventos registrados",
+    "registryCount": "{count, plural, one {1 evento registrado} other {# eventos registrados}}",
+    "club": "Club",
+    "event": "Evento",
+    "startsAt": "Inicio",
+    "endsAt": "Fin",
+    "status": "Estado",
+    "actions": "Acciones",
+    "actionEdit": "Editar",
+    "actionDelete": "Borrar",
+    "rowActionsLabel": "Acciones para {event} en {club}",
+    "emptyTitle": "No hay eventos registrados",
+    "emptyDescription": "Creá tu primer evento para empezar."
+  },
+  "pagination": {
+    "previous": "Anterior",
+    "next": "Siguiente"
+  },
+  "list": {
+    "error": "No pudimos cargar los eventos. Intentá de nuevo en unos minutos."
+  },
+  "delete": {
+    "title": "Eliminar evento",
+    "description": "¿Estás seguro de que querés eliminar",
+    "descriptionSuffix": "Esta acción no se puede revertir.",
+    "cancel": "Cancelar",
+    "confirm": "Eliminar",
+    "success": "Evento eliminado correctamente",
+    "error": "No pudimos eliminar el evento. Intentá de nuevo."
+  }
+}

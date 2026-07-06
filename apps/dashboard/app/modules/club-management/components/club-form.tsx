@@ -58,6 +58,14 @@ function sanitizeNonNegativeDigits(value: string): string {
   return value.replace(/\D/g, '')
 }
 
+function requiredFieldLabel(label: string): string {
+  return `${label} *`
+}
+
+function optionalFieldLabel(label: string, optionalText: string): string {
+  return `${label} (${optionalText})`
+}
+
 type ClubFormFieldProps = {
   id: string
   label: string
@@ -152,6 +160,7 @@ export function ClubForm({
   onSuccess,
 }: ClubFormProps) {
   const { t } = useTranslation('clubs')
+  const { t: tCommon } = useTranslation('common')
   const isCreate = mode === CLUB_FORM_MODE.CREATE
   const initialSnapshotRef = useRef(
     snapshotClubFormValues({ ...EMPTY_CLUB_FORM_VALUES, ...defaultValues })
@@ -247,6 +256,8 @@ export function ClubForm({
         )}
       </form.Subscribe>
 
+      <p className="mb-8 text-xs text-ink-muted">{t('formPage.requiredFieldsHint')}</p>
+
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:items-start">
         <div className="flex flex-col gap-8">
           <FormSection
@@ -257,7 +268,7 @@ export function ClubForm({
               {(field) => (
                 <ClubFormField
                   id={field.name}
-                  label={t('form.fields.name')}
+                  label={requiredFieldLabel(t('form.fields.name'))}
                   placeholder={t('form.fields.namePlaceholder')}
                   value={field.state.value}
                   error={fieldErrorMessage(field.state.meta.errors)}
@@ -271,7 +282,7 @@ export function ClubForm({
               {(field) => (
                 <ClubFormField
                   id={field.name}
-                  label={t('form.fields.capacity')}
+                  label={requiredFieldLabel(t('form.fields.capacity'))}
                   placeholder={t('form.fields.capacityPlaceholder')}
                   inputMode="numeric"
                   sanitize={sanitizeNonNegativeDigits}
@@ -290,7 +301,7 @@ export function ClubForm({
                 return (
                   <div className="flex flex-col gap-2">
                     <Label htmlFor={field.name} className={fieldLabelClassName}>
-                      {t('form.fields.status')}
+                      {requiredFieldLabel(t('form.fields.status'))}
                     </Label>
                     <Select
                       value={field.state.value}
@@ -341,7 +352,7 @@ export function ClubForm({
                 return (
                   <div className="flex flex-col gap-2">
                     <Label htmlFor={field.name} className={fieldLabelClassName}>
-                      {t('form.fields.additionalInfo')}
+                      {requiredFieldLabel(t('form.fields.additionalInfo'))}
                     </Label>
                     <Textarea
                       id={field.name}
@@ -367,7 +378,7 @@ export function ClubForm({
               {(field) => (
                 <ClubFormField
                   id={field.name}
-                  label={t('form.fields.address')}
+                  label={requiredFieldLabel(t('form.fields.address'))}
                   placeholder={t('form.fields.addressPlaceholder')}
                   value={field.state.value}
                   error={fieldErrorMessage(field.state.meta.errors)}
@@ -385,7 +396,7 @@ export function ClubForm({
                 {(field) => (
                   <ClubFormField
                     id={field.name}
-                    label={t('form.fields.streetNumber')}
+                    label={requiredFieldLabel(t('form.fields.streetNumber'))}
                     placeholder={t('form.fields.streetNumberPlaceholder')}
                     inputMode="numeric"
                     sanitize={sanitizeNonNegativeDigits}
@@ -401,7 +412,7 @@ export function ClubForm({
                 {(field) => (
                   <ClubFormField
                     id={field.name}
-                    label={t('form.fields.city')}
+                    label={requiredFieldLabel(t('form.fields.city'))}
                     placeholder={t('form.fields.cityPlaceholder')}
                     value={field.state.value}
                     error={fieldErrorMessage(field.state.meta.errors)}
@@ -416,7 +427,7 @@ export function ClubForm({
               {(field) => (
                 <ClubFormField
                   id={field.name}
-                  label={t('form.fields.state')}
+                  label={requiredFieldLabel(t('form.fields.state'))}
                   placeholder={t('form.fields.statePlaceholder')}
                   value={field.state.value}
                   error={fieldErrorMessage(field.state.meta.errors)}
@@ -429,7 +440,7 @@ export function ClubForm({
         </div>
 
         <FormSection
-          title={t('sections.imagesTitle')}
+          title={optionalFieldLabel(t('sections.imagesTitle'), tCommon('optional'))}
           description={t('sections.imagesDescription')}
         >
           <form.Field name="existingImages">

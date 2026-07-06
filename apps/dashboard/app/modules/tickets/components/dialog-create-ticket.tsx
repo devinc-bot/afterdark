@@ -27,7 +27,7 @@ export function TicketCreateDialog() {
     <>
       <Button
         type="button"
-        className="w-full sm:w-auto sm:shrink-0"
+        className="w-full shrink-0 sm:w-auto"
         iconLeft={<TicketPlus aria-hidden="true" />}
         onClick={() => setOpen(true)}
       >
@@ -35,7 +35,10 @@ export function TicketCreateDialog() {
       </Button>
 
       <Dialog open={open} onOpenChange={handleOpenChange}>
-        <DialogContent className="flex max-h-[min(90dvh,48rem)] flex-col gap-0 overflow-hidden p-0">
+        <DialogContent
+          persistent
+          className="flex max-h-[min(90dvh,48rem)] flex-col gap-0 overflow-hidden p-0"
+        >
           <DialogHeader className="shrink-0 border-b border-hairline bg-surface-container-high px-8 pb-6 pt-8">
             <DialogTitle>{t('form.createTitle')}</DialogTitle>
             <DialogDescription>{t('form.createDescription')}</DialogDescription>
