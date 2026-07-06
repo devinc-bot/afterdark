@@ -78,6 +78,48 @@ Plan queda escrito, implementación en curso.
 
 ---
 
+---
+
+## Ampliación (2026-07-04) — Dirección del owner
+
+Feature `done` reabierta para un cambio acotado: agregar dirección editable en `/settings` del owner.
+
+| Fase | Nombre          | Estado        |
+| ---- | --------------- | ------------- |
+| 2    | Alcance         | `done`        |
+| 3    | User stories    | `done`        |
+| 4    | Contratos       | `done`        |
+| 5    | Reglas y cierre | `done`        |
+
+**Fase 1 (identidad):** usuario eligió extender 004 directamente en vez de crear feature nueva (013) — sin reabrir fila de `roadmap.md`.
+
+**Fase 2 (alcance) — respuestas `AskUserQuestion`:**
+
+- Campos: `address`, `streetNumber`, `state`, `city` (igual que `ClubResponse`).
+- Obligatoriedad: opcional, todo-o-nada (si se completa uno, los 4 son requeridos).
+- Bloque separado `address` en el form, no aplanado dentro de `profile`.
+
+**Fase 4 (contratos, parcial) — decisión de modelo de datos:** en vez de crear `owner_addresses_lnk` en paralelo a la `user_addresses_lnk` sin uso (propuesta inicial del asistente), el usuario pidió **repurpose**: renombrar `user_addresses_lnk` → `owner_addresses_lnk` (FK `ownerId` en vez de `userId`) y eliminar la definición vieja, en vez de mantener dos tablas de link. Ver `spec.md` → Contratos → Datos para el detalle. Falta cerrar: nombre exacto de columnas de migración, y si el `superRefine` va en `owner.ts` o se comparte utilitario con `user.ts` (asistente propone no compartir, a confirmar).
+
+**Fase 3 (user stories) — respuestas `AskUserQuestion`:** US-3 confirmada (ver `spec.md`), staff queda fuera de esta ampliación.
+
+**Fase 4 (contratos, cierre) — respuestas `AskUserQuestion`:** validador propio en `owner.ts`, sin helper compartido con `user.ts`.
+
+**Fase 5 (reglas y cierre) — respuestas `AskUserQuestion`:**
+
+- Edge case borrado: una vez cargada la dirección, los 4 campos quedan obligatorios (no se puede volver a vacío desde este form).
+- Status: **`approved`** — spec lista para pasar a `plan.md`/`tasks.md` (Fase 6) o implementación directa.
+
+### Fase 6 (plan técnico) + implementación
+
+Usuario pidió "seguí con lo que tengas" — se pasó directo a `plan.md`/`tasks.md` e implementación en el mismo hilo.
+
+**Ajuste de diseño encontrado durante la implementación:** al mirar `packages/validators/src/settings.ts`, `settingsFormSchema.profile` ya es literalmente `updateCurrentOwnerSchema` (sin wrapper adicional) y el submit del form (`settings-form-context.tsx`) manda `validation.data.profile` tal cual al `PATCH /settings`. Como `updateCurrentOwnerSchema` ahora incluye `address` como campo propio, el shape ya venía anidado (`profile.address`), no como hermano top-level de `profile` (lo que se había planteado como opción en Fase 4). Se implementó así — `address` como bloque separado *dentro* de `profile` (con su propio setter `setNestedProfileField`, su propia sección de UI, su propio id de foco) — porque es el camino de menor fricción que ya coincide con el contrato real, sin tener que bifurcar el payload en el submit. Zod collapsa el error del `superRefine` (todo-o-nada) a un único campo `errors.profile.address` (el `mapSettingsFormErrors` existente ya lo maneja sin cambios, por cómo desestructura `issue.path`).
+
+**Bloqueador encontrado (no relacionado a esta feature):** `packages/db/src/migrations/meta/0010_snapshot.json` no existe en el repo (confirmado con `git log` — nunca se commiteó), lo que rompe `drizzle-kit generate` para cualquier migración nueva, no solo `owner_addresses_lnk`. Se le preguntó al usuario cómo seguir (reconstruir el snapshot faltante vs. dejarlo para después); **el usuario eligió arreglarlo aparte** — el código de schema/repositorio quedó escrito y tipado, pero la migración SQL no se generó ni se corrió en esta sesión. La verificación manual en browser queda pendiente hasta que la migración exista.
+
+**Verificado en esta sesión:** `tsc --noEmit` en `types`, `validators`, `db`, `i18n`, `api`, `dashboard` (todos en verde); `pnpm lint` (0 errores); `pnpm check:i18n` (paridad es/en OK). Pendiente: migración + verificación manual en browser (ver `tasks.md`).
+
 ## Supuestos del asistente
 
 - Fila existente **#004 owner-settings** en `roadmap.md` (no feature nueva).
