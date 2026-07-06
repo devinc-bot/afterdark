@@ -47,7 +47,8 @@
       "min": "Security word must be at least {min} characters."
     },
     "address": {
-      "allOrNone": "Fill in all address fields or leave them all empty."
+      "allOrNone": "Fill in all address fields or leave them all empty.",
+      "cannotClear": "Your address is already saved and can't be left empty."
     },
     "invitation": {
       "email": "Enter a valid email.",

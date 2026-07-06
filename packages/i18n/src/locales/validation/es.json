@@ -47,7 +47,8 @@
       "min": "La palabra de seguridad debe tener al menos {min} caracteres."
     },
     "address": {
-      "allOrNone": "Completá todos los campos de domicilio o dejalos vacíos."
+      "allOrNone": "Completá todos los campos de domicilio o dejalos vacíos.",
+      "cannotClear": "Ya cargaste tu domicilio, no podés dejarlo vacío."
     },
     "invitation": {
       "email": "Ingresá un email válido.",
