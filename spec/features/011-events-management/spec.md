@@ -2,11 +2,11 @@
 
 > Requisitos provistos por el dueño del producto. Estado por fase en `progress.md`.
 
-| Campo          | Valor                                              |
-| -------------- | -------------------------------------------------- |
-| **ID**         | `011-events-management`                            |
-| **Status**     | `approved`                                         |
-| **Apps**       | `api`, `dashboard`                                 |
+| Campo          | Valor                                                |
+| -------------- | ---------------------------------------------------- |
+| **ID**         | `011-events-management`                              |
+| **Status**     | `approved`                                           |
+| **Apps**       | `api`, `dashboard`                                   |
 | **Depende de** | `002-club-management` (selector de club y ownership) |
 
 ---
@@ -114,16 +114,16 @@ Los tickets ahora referencian `eventId` en lugar de fechas propias del club. Sin
 
 ### API
 
-| Método | Ruta                      | Auth        | Descripción                          |
-| ------ | ------------------------- | ----------- | ------------------------------------ |
-| `GET`  | `/api/events/my-events`   | Owner JWT   | Listado paginado del dueño           |
-| `POST` | `/api/events`             | Owner JWT   | Crear evento en un club del dueño    |
+| Método | Ruta                    | Auth      | Descripción                       |
+| ------ | ----------------------- | --------- | --------------------------------- |
+| `GET`  | `/api/events/my-events` | Owner JWT | Listado paginado del dueño        |
+| `POST` | `/api/events`           | Owner JWT | Crear evento en un club del dueño |
 
 **Query `GET /api/events/my-events`** — `listEventsQuerySchema`:
 
-| Campo   | Tipo   | Default | Notas                    |
-| ------- | ------ | ------- | ------------------------ |
-| `page`  | number | `1`     | Desde `paginationSchema` |
+| Campo   | Tipo   | Default | Notas                      |
+| ------- | ------ | ------- | -------------------------- |
+| `page`  | number | `1`     | Desde `paginationSchema`   |
 | `limit` | number | `10`    | Máx. coherente con tickets |
 
 **Response** — `PaginatedResponse<EventResponse>`:
@@ -131,13 +131,13 @@ Los tickets ahora referencian `eventId` en lugar de fechas propias del club. Sin
 ```ts
 interface EventResponse {
   documentId: string
-  clubId: string          // documentId del club
+  clubId: string // documentId del club
   clubName: string
   name: string
   description: string
-  startsAt: string        // ISO 8601
-  endsAt: string          // ISO 8601
-  status: EventStatus     // 'draft' | 'published' | 'finished'
+  startsAt: string // ISO 8601
+  endsAt: string // ISO 8601
+  status: EventStatus // 'draft' | 'published' | 'finished'
   createdAt: string
   updatedAt: string
 }
@@ -145,14 +145,14 @@ interface EventResponse {
 
 **Request `POST /api/events`** — `createEventSchema` (JSON):
 
-| Campo         | Tipo         | Requerido | Default / notas                                      |
-| ------------- | ------------ | --------- | ---------------------------------------------------- |
-| `clubId`      | UUID         | Sí        | `documentId` del club                                |
-| `name`        | string       | Sí        | Trim, min 1                                          |
-| `description` | string       | Sí        | Trim, min 1                                          |
-| `startsAt`    | string       | Sí        | ISO datetime (mismo criterio que tickets)          |
-| `endsAt`      | string       | Sí        | ISO datetime                                         |
-| `status`      | `EventStatus`| No        | Default `EVENT_STATUS.PUBLISHED` en schema Zod       |
+| Campo         | Tipo          | Requerido | Default / notas                                |
+| ------------- | ------------- | --------- | ---------------------------------------------- |
+| `clubId`      | UUID          | Sí        | `documentId` del club                          |
+| `name`        | string        | Sí        | Trim, min 1                                    |
+| `description` | string        | Sí        | Trim, min 1                                    |
+| `startsAt`    | string        | Sí        | ISO datetime (mismo criterio que tickets)      |
+| `endsAt`      | string        | Sí        | ISO datetime                                   |
+| `status`      | `EventStatus` | No        | Default `EVENT_STATUS.PUBLISHED` en schema Zod |
 
 **Validación Zod** (`packages/validators/src/event.ts`):
 
@@ -174,26 +174,26 @@ export const createEventSchema = z
     endsAt: z.string().min(1, { message: 'VALIDATION_EVENT_ENDS_AT_REQUIRED' }),
     status: eventStatusSchema.default(EVENT_STATUS.PUBLISHED),
   })
-  .refine(
-    (data) => new Date(data.startsAt).getTime() < new Date(data.endsAt).getTime(),
-    { message: 'VALIDATION_EVENT_START_BEFORE_END', path: ['endsAt'] }
-  )
+  .refine((data) => new Date(data.startsAt).getTime() < new Date(data.endsAt).getTime(), {
+    message: 'VALIDATION_EVENT_START_BEFORE_END',
+    path: ['endsAt'],
+  })
 ```
 
 **Errores (mensaje al usuario en español)**
 
-| HTTP | Código / cuándo                         | Mensaje                                                        |
-| ---- | --------------------------------------- | -------------------------------------------------------------- |
-| 400  | Validación Zod / fechas incoherentes    | Mensajes i18n por campo o _Revisá los datos del evento._         |
-| 401  | Sin sesión                              | Redirigir a login                                              |
-| 404  | Club no encontrado o no pertenece al dueño | _No encontramos el club solicitado._                         |
-| 500  | Error interno                           | _No pudimos guardar el evento. Intentá de nuevo en unos minutos._ |
+| HTTP | Código / cuándo                            | Mensaje                                                           |
+| ---- | ------------------------------------------ | ----------------------------------------------------------------- |
+| 400  | Validación Zod / fechas incoherentes       | Mensajes i18n por campo o _Revisá los datos del evento._          |
+| 401  | Sin sesión                                 | Redirigir a login                                                 |
+| 404  | Club no encontrado o no pertenece al dueño | _No encontramos el club solicitado._                              |
+| 500  | Error interno                              | _No pudimos guardar el evento. Intentá de nuevo en unos minutos._ |
 
 ### Datos
 
-| Tabla / campo | Cambio en esta feature                                      |
-| ------------- | ----------------------------------------------------------- |
-| `events`      | Sin migración nueva — tabla ya definida en schema           |
+| Tabla / campo | Cambio en esta feature                                     |
+| ------------- | ---------------------------------------------------------- |
+| `events`      | Sin migración nueva — tabla ya definida en schema          |
 | `status`      | Enum DB: `draft`, `published`, `finished` (ver `event.ts`) |
 
 Referencia de enum en schema:
@@ -210,9 +210,9 @@ Referencia de enum en schema:
 
 ### UI (`dashboard`)
 
-| Ruta            | Pantalla                                      |
-| --------------- | --------------------------------------------- |
-| `/_app/events`  | Listado paginado + botón abrir diálogo crear |
+| Ruta           | Pantalla                                     |
+| -------------- | -------------------------------------------- |
+| `/_app/events` | Listado paginado + botón abrir diálogo crear |
 
 **Diálogo crear** — patrón `TicketCreateDialog`:
 
@@ -235,33 +235,33 @@ Referencia de enum en schema:
 
 **Campos del formulario**
 
-| Campo UI              | `name` en form | Componente              | Notas                                      |
-| --------------------- | -------------- | ----------------------- | ------------------------------------------ |
-| Club                  | `clubId`       | `SelectField`           | Opciones desde `GET /api/clubs/my-clubs`   |
-| Nombre del evento     | `name`         | `Input`                 | `maxLength` razonable (p. ej. 120)         |
-| Descripción           | `description`  | `Textarea`              |                                            |
-| Fecha y hora de inicio| `startsAt`     | `DateTimeInput` (`@afterdark/ui`) | Valor `datetime-local` → ISO en submit |
-| Fecha y hora de fin   | `endsAt`       | `DateTimeInput`         |                                            |
-| Estado del evento     | `status`       | `SelectField`           | Valores del enum `EVENT_STATUS`            |
+| Campo UI               | `name` en form | Componente                        | Notas                                    |
+| ---------------------- | -------------- | --------------------------------- | ---------------------------------------- |
+| Club                   | `clubId`       | `SelectField`                     | Opciones desde `GET /api/clubs/my-clubs` |
+| Nombre del evento      | `name`         | `Input`                           | `maxLength` razonable (p. ej. 120)       |
+| Descripción            | `description`  | `Textarea`                        |                                          |
+| Fecha y hora de inicio | `startsAt`     | `DateTimeInput` (`@afterdark/ui`) | Valor `datetime-local` → ISO en submit   |
+| Fecha y hora de fin    | `endsAt`       | `DateTimeInput`                   |                                          |
+| Estado del evento      | `status`       | `SelectField`                     | Valores del enum `EVENT_STATUS`          |
 
 **Opciones de estado (copy español)**
 
-| Valor `EventStatus` | Label UI    |
-| ------------------- | ----------- |
-| `draft`             | Borrador    |
-| `published`         | Publicado   |
-| `finished`          | Finalizado  |
+| Valor `EventStatus` | Label UI   |
+| ------------------- | ---------- |
+| `draft`             | Borrador   |
+| `published`         | Publicado  |
+| `finished`          | Finalizado |
 
 **Tabla de listado** — replicar estructura de `TicketRecords`:
 
-| Columna   | Contenido                                              |
-| --------- | ------------------------------------------------------ |
-| Club      | Celda identidad (`ClubIdentityCell`: iniciales + nombre) |
-| Evento    | `name` (texto semibold)                                |
-| Inicio    | Fecha/hora formateada `es-AR`                          |
-| Fin       | Fecha/hora formateada `es-AR`                          |
-| Estado    | `Badge` con tono según status                          |
-| Acciones  | Vacío en v1 o solo menú deshabilitado “Próximamente”   |
+| Columna  | Contenido                                                |
+| -------- | -------------------------------------------------------- |
+| Club     | Celda identidad (`ClubIdentityCell`: iniciales + nombre) |
+| Evento   | `name` (texto semibold)                                  |
+| Inicio   | Fecha/hora formateada `es-AR`                            |
+| Fin      | Fecha/hora formateada `es-AR`                            |
+| Estado   | `Badge` con tono según status                            |
+| Acciones | Vacío en v1 o solo menú deshabilitado “Próximamente”     |
 
 **Paginación**
 
@@ -272,32 +272,32 @@ Referencia de enum en schema:
 
 **Copy (español)**
 
-| Contexto                 | Texto                                                                 |
-| ------------------------ | --------------------------------------------------------------------- |
-| Título página            | `Gestión de eventos`                                                  |
-| Descripción página       | `Creá y consultá los eventos de tus clubes.`                          |
-| CTA crear                | `Crear evento`                                                        |
-| Título diálogo           | `Crear evento`                                                        |
-| Descripción diálogo      | `Completá los datos del evento.`                                      |
-| CTA enviar               | `Crear evento` / pendiente `Creando…`                                 |
-| Cancelar                 | `Cancelar`                                                            |
-| Toast éxito              | `Evento creado correctamente`                                         |
-| Vacío                    | `No hay eventos registrados` / `Creá tu primer evento para empezar.`  |
-| Error listado            | `No pudimos cargar los eventos. Intentá de nuevo en unos minutos.`    |
-| Paginación anterior      | `Anterior`                                                            |
-| Paginación siguiente     | `Siguiente`                                                           |
+| Contexto             | Texto                                                                |
+| -------------------- | -------------------------------------------------------------------- |
+| Título página        | `Gestión de eventos`                                                 |
+| Descripción página   | `Creá y consultá los eventos de tus clubes.`                         |
+| CTA crear            | `Crear evento`                                                       |
+| Título diálogo       | `Crear evento`                                                       |
+| Descripción diálogo  | `Completá los datos del evento.`                                     |
+| CTA enviar           | `Crear evento` / pendiente `Creando…`                                |
+| Cancelar             | `Cancelar`                                                           |
+| Toast éxito          | `Evento creado correctamente`                                        |
+| Vacío                | `No hay eventos registrados` / `Creá tu primer evento para empezar.` |
+| Error listado        | `No pudimos cargar los eventos. Intentá de nuevo en unos minutos.`   |
+| Paginación anterior  | `Anterior`                                                           |
+| Paginación siguiente | `Siguiente`                                                          |
 
 **Componentes (dashboard)**
 
-| Componente                 | Responsabilidad                                      |
-| -------------------------- | ---------------------------------------------------- |
-| `events-management-view.tsx` | Orquestación: query, página, diálogo, layout       |
-| `dialog-create-event.tsx`  | Botón + `Dialog` (como `TicketCreateDialog`)         |
-| `event-form.tsx`           | `@tanstack/react-form` + validación Zod              |
-| `event-record.tsx`         | Tabla, filas, paginación, estado vacío               |
-| `events.service.ts`        | Llamadas HTTP                                        |
-| `use-event-queries.ts`     | `useEvents({ page, limit })`                         |
-| `use-event-mutations.ts`   | `useCreateEvent`                                     |
+| Componente                   | Responsabilidad                              |
+| ---------------------------- | -------------------------------------------- |
+| `events-management-view.tsx` | Orquestación: query, página, diálogo, layout |
+| `dialog-create-event.tsx`    | Botón + `Dialog` (como `TicketCreateDialog`) |
+| `event-form.tsx`             | `@tanstack/react-form` + validación Zod      |
+| `event-record.tsx`           | Tabla, filas, paginación, estado vacío       |
+| `events.service.ts`          | Llamadas HTTP                                |
+| `use-event-queries.ts`       | `useEvents({ page, limit })`                 |
+| `use-event-mutations.ts`     | `useCreateEvent`                             |
 
 ---
 

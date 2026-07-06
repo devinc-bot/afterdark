@@ -14,16 +14,16 @@
 
 ### Validators
 
-| Archivo                          | Cambio |
-| --------------------------------- | ------ |
+| Archivo                               | Cambio                                                                               |
+| ------------------------------------- | ------------------------------------------------------------------------------------ |
 | `packages/validators/src/settings.ts` | `SETTINGS_LANGUAGE` y `settingsLanguageSchema`: sacar `DE` / `'de'`. Solo `es`/`en`. |
 
 ### Client (dashboard)
 
-| Archivo | Cambio |
-| ------- | ------ |
-| `apps/dashboard/app/modules/owner/constants/settings.mock.ts` | `LANGUAGE_OPTIONS`: sacar entrada "Deutsch". |
-| `apps/dashboard/app/modules/owner/utils/settings-storage.utils.ts` | `createSettingsFormValues(user, currentLanguage)`: nuevo parámetro; `preferences.language` sale del idioma real, no del mock guardado en `localStorage`. |
+| Archivo                                                            | Cambio                                                                                                                                                                                                                                                                                                             |
+| ------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `apps/dashboard/app/modules/owner/constants/settings.mock.ts`      | `LANGUAGE_OPTIONS`: sacar entrada "Deutsch".                                                                                                                                                                                                                                                                       |
+| `apps/dashboard/app/modules/owner/utils/settings-storage.utils.ts` | `createSettingsFormValues(user, currentLanguage)`: nuevo parámetro; `preferences.language` sale del idioma real, no del mock guardado en `localStorage`.                                                                                                                                                           |
 | `apps/dashboard/app/modules/owner/hooks/settings-form-context.tsx` | Usa `useLanguage()` de `@afterdark/i18n/client`. Pasa `currentLanguage` a `createSettingsFormValues` en mount/owner-change. En `save()`: si `preferences.language` elegido difiere del real, llama `applyLanguage()` recién tras el `updateCurrentOwner` exitoso; arma `nextValues` con el idioma recién aplicado. |
 
 ## Diseño técnico
@@ -34,20 +34,20 @@
 
 ## Riesgos / edge cases
 
-| Caso | Comportamiento esperado |
-| ---- | ------------------------ |
-| `updateCurrentOwner` falla | Idioma real no cambia; queda en `ERROR` con mensaje de fallback, igual que otros campos. |
-| Usuario elige idioma y hace "Descartar cambios" sin guardar | Select vuelve al idioma vigente (`savedValues`); `setLanguage()` real nunca se llamó. |
-| Usuario guarda sin tocar el idioma | `nextLanguage === currentLanguage` → no se llama `applyLanguage()` (evita `changeLanguage` innecesario). |
+| Caso                                                        | Comportamiento esperado                                                                                  |
+| ----------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| `updateCurrentOwner` falla                                  | Idioma real no cambia; queda en `ERROR` con mensaje de fallback, igual que otros campos.                 |
+| Usuario elige idioma y hace "Descartar cambios" sin guardar | Select vuelve al idioma vigente (`savedValues`); `setLanguage()` real nunca se llamó.                    |
+| Usuario guarda sin tocar el idioma                          | `nextLanguage === currentLanguage` → no se llama `applyLanguage()` (evita `changeLanguage` innecesario). |
 
 ## Verificación manual
 
-| Paso | Resultado esperado |
-| ---- | -------------------- |
-| 1. `pnpm --filter @afterdark/validators --filter dashboard type-check` | Sin errores. |
-| 2. `pnpm lint` | Sin errores (1 warning esperado de `exhaustive-deps`, comentado en código). |
-| 3. `pnpm --filter dashboard dev` → smoke request a `/settings` | Responde 200, sin trazas de error en el HTML. |
-| 4. (Pendiente, requiere sesión de dueño) Login → Configuración → Preferencias → cambiar a English → Guardar cambios | UI cambia a inglés sin recargar; al recargar sigue en inglés. |
-| 5. (Pendiente) Elegir idioma, no guardar, clic en "Descartar cambios" | Select vuelve al idioma anterior; UI nunca cambió de idioma. |
+| Paso                                                                                                                | Resultado esperado                                                          |
+| ------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| 1. `pnpm --filter @afterdark/validators --filter dashboard type-check`                                              | Sin errores.                                                                |
+| 2. `pnpm lint`                                                                                                      | Sin errores (1 warning esperado de `exhaustive-deps`, comentado en código). |
+| 3. `pnpm --filter dashboard dev` → smoke request a `/settings`                                                      | Responde 200, sin trazas de error en el HTML.                               |
+| 4. (Pendiente, requiere sesión de dueño) Login → Configuración → Preferencias → cambiar a English → Guardar cambios | UI cambia a inglés sin recargar; al recargar sigue en inglés.               |
+| 5. (Pendiente) Elegir idioma, no guardar, clic en "Descartar cambios"                                               | Select vuelve al idioma anterior; UI nunca cambió de idioma.                |
 
 Pasos 4 y 5 no se probaron en este turno (requieren login como dueño); quedan para QA manual del usuario.

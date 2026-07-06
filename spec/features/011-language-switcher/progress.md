@@ -2,14 +2,14 @@
 
 > Estado de la entrevista guiada ([INTERVIEW.md](../../INTERVIEW.md)). Actualizar al cerrar cada fase.
 
-| Fase | Nombre                   | Estado    |
-| ---- | ------------------------ | --------- |
-| 1    | Identidad                | `done`    |
-| 2    | Comportamiento y alcance | `done`    |
-| 3    | User stories             | `done`    |
-| 4    | Contratos                | `done`    |
+| Fase | Nombre                   | Estado        |
+| ---- | ------------------------ | ------------- |
+| 1    | Identidad                | `done`        |
+| 2    | Comportamiento y alcance | `done`        |
+| 3    | User stories             | `done`        |
+| 4    | Contratos                | `done`        |
 | 5    | Reglas y cierre          | `in_progress` |
-| 6    | Plan técnico             | `done`    |
+| 6    | Plan técnico             | `done`        |
 
 Estados: `pending` · `in_progress` · `done`
 
