@@ -23,11 +23,12 @@ import {
   type SettingsFieldErrors,
 } from '~/modules/settings/utils/settings-form.utils'
 
-type ProfileValues<TProfile extends Record<string, string>> = { profile: TProfile }
+type ProfileFieldValue = string | Record<string, string>
+type ProfileValues<TProfile extends Record<string, ProfileFieldValue>> = { profile: TProfile }
 
 export type SettingsFormProviderConfig<
   TUser extends BaseProfileResponse,
-  TProfile extends Record<string, string>,
+  TProfile extends Record<string, ProfileFieldValue>,
 > = {
   formSchema: ZodType<ProfileValues<TProfile>>
   toFormValues: (user: TUser) => ProfileValues<TProfile>
@@ -36,7 +37,7 @@ export type SettingsFormProviderConfig<
 
 export function createSettingsFormProvider<
   TUser extends BaseProfileResponse,
-  TProfile extends Record<string, string>,
+  TProfile extends Record<string, ProfileFieldValue>,
 >(config: SettingsFormProviderConfig<TUser, TProfile>) {
   type TValues = ProfileValues<TProfile>
   type TField = keyof TProfile & string
@@ -49,6 +50,7 @@ export function createSettingsFormProvider<
     saveStatus: SettingsSaveStatus
     saveMessage: string | null
     setProfileField: (field: TField, value: string) => void
+    setNestedProfileField: (section: TField, field: string, value: string) => void
     save: () => Promise<void>
     discard: () => void
   }
@@ -88,6 +90,20 @@ export function createSettingsFormProvider<
         updateValues((current) => ({
           ...current,
           profile: { ...current.profile, [field]: value },
+        }))
+        clearFeedback()
+      },
+      [updateValues, clearFeedback]
+    )
+
+    const setNestedProfileField = useCallback(
+      (section: TField, field: string, value: string) => {
+        updateValues((current) => ({
+          ...current,
+          profile: {
+            ...current.profile,
+            [section]: { ...(current.profile[section] as Record<string, string>), [field]: value },
+          },
         }))
         clearFeedback()
       },
@@ -150,6 +166,7 @@ export function createSettingsFormProvider<
           saveStatus,
           saveMessage,
           setProfileField,
+          setNestedProfileField,
           save,
           discard: handleDiscard,
         }}

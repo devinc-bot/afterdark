@@ -10,6 +10,7 @@ const OWNER_PROFILE_FIELD_ORDER = [
   'birthday',
   'nationalId',
   'taxId',
+  'address',
 ] as const
 
 export const { Provider: SettingsFormProvider, useSettingsForm } = createSettingsFormProvider<

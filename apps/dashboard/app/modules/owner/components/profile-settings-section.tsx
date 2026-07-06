@@ -5,7 +5,7 @@ import { useSettingsForm } from '~/modules/owner/hooks/settings-form-context'
 
 export function ProfileSettingsSection() {
   const { t } = useTranslation('settings')
-  const { user, values, errors, setProfileField } = useSettingsForm()
+  const { user, values, errors, setProfileField, setNestedProfileField } = useSettingsForm()
   const avatarSrc = user.avatar
   const avatarLabel =
     `${values.profile.name} ${values.profile.lastName}`.trim() ||
@@ -145,6 +145,70 @@ export function ProfileSettingsSection() {
               value={values.profile.taxId}
               onChange={(event) => setProfileField('taxId', event.target.value)}
               aria-invalid={errors.profile?.taxId ? true : undefined}
+            />
+          </Field>
+
+          <div className="col-span-6 border-t border-hairline/60 mt-2 mb-2" />
+          <Label variant="field" className="col-span-6">
+            {t('owner.profile.addressSection')}
+          </Label>
+
+          <Field
+            label={t('owner.profile.address')}
+            htmlFor="settings-address"
+            error={errors.profile?.address ?? null}
+            className="col-span-4"
+          >
+            <Input
+              id="settings-address"
+              name="address"
+              type="text"
+              autoComplete="address-line1"
+              maxLength={255}
+              value={values.profile.address.address}
+              onChange={(event) => setNestedProfileField('address', 'address', event.target.value)}
+              aria-invalid={errors.profile?.address ? true : undefined}
+            />
+          </Field>
+
+          <Field
+            label={t('owner.profile.streetNumber')}
+            htmlFor="settings-street-number"
+            className="col-span-2"
+          >
+            <Input
+              id="settings-street-number"
+              name="streetNumber"
+              type="text"
+              maxLength={20}
+              value={values.profile.address.streetNumber}
+              onChange={(event) =>
+                setNestedProfileField('address', 'streetNumber', event.target.value)
+              }
+            />
+          </Field>
+
+          <Field label={t('owner.profile.state')} htmlFor="settings-state" className="col-span-3">
+            <Input
+              id="settings-state"
+              name="state"
+              type="text"
+              autoComplete="address-level1"
+              maxLength={100}
+              value={values.profile.address.state}
+              onChange={(event) => setNestedProfileField('address', 'state', event.target.value)}
+            />
+          </Field>
+
+          <Field label={t('owner.profile.city')} htmlFor="settings-city" className="col-span-3">
+            <Input
+              id="settings-city"
+              name="city"
+              type="text"
+              autoComplete="address-level2"
+              maxLength={100}
+              value={values.profile.address.city}
+              onChange={(event) => setNestedProfileField('address', 'city', event.target.value)}
             />
           </Field>
 

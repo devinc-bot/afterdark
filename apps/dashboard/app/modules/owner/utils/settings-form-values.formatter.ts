@@ -10,6 +10,12 @@ export function toOwnerFormValues(owner: CurrentOwnerResponse): SettingsFormValu
       birthday: owner.birthday ?? '',
       nationalId: owner.nationalId ?? '',
       taxId: owner.taxId ?? '',
+      address: {
+        address: owner.address?.address ?? '',
+        streetNumber: owner.address?.streetNumber ?? '',
+        state: owner.address?.state ?? '',
+        city: owner.address?.city ?? '',
+      },
     },
   }
 }
