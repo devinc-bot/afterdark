@@ -1,27 +1,27 @@
 import type { I18nResources } from '../types/index.ts'
 
-import esCommon from '../locales/common/es.json'
-import enCommon from '../locales/common/en.json'
-import esAuth from '../locales/auth/es.json'
-import enAuth from '../locales/auth/en.json'
-import esValidation from '../locales/validation/es.json'
-import enValidation from '../locales/validation/en.json'
-import esErrors from '../locales/errors/es.json'
-import enErrors from '../locales/errors/en.json'
-import esEmails from '../locales/emails/es.json'
-import enEmails from '../locales/emails/en.json'
-import esDashboard from '../locales/dashboard/es.json'
-import enDashboard from '../locales/dashboard/en.json'
-import esStaff from '../locales/staff/es.json'
-import enStaff from '../locales/staff/en.json'
-import esClubs from '../locales/clubs/es.json'
-import enClubs from '../locales/clubs/en.json'
-import esSettings from '../locales/settings/es.json'
-import enSettings from '../locales/settings/en.json'
-import esTickets from '../locales/tickets/es.json'
-import enTickets from '../locales/tickets/en.json'
-import esEvents from '../locales/events/es.json'
-import enEvents from '../locales/events/en.json'
+import esCommon from '../locales/common/es.json' with { type: 'json' }
+import enCommon from '../locales/common/en.json' with { type: 'json' }
+import esAuth from '../locales/auth/es.json' with { type: 'json' }
+import enAuth from '../locales/auth/en.json' with { type: 'json' }
+import esValidation from '../locales/validation/es.json' with { type: 'json' }
+import enValidation from '../locales/validation/en.json' with { type: 'json' }
+import esErrors from '../locales/errors/es.json' with { type: 'json' }
+import enErrors from '../locales/errors/en.json' with { type: 'json' }
+import esEmails from '../locales/emails/es.json' with { type: 'json' }
+import enEmails from '../locales/emails/en.json' with { type: 'json' }
+import esDashboard from '../locales/dashboard/es.json' with { type: 'json' }
+import enDashboard from '../locales/dashboard/en.json' with { type: 'json' }
+import esStaff from '../locales/staff/es.json' with { type: 'json' }
+import enStaff from '../locales/staff/en.json' with { type: 'json' }
+import esClubs from '../locales/clubs/es.json' with { type: 'json' }
+import enClubs from '../locales/clubs/en.json' with { type: 'json' }
+import esSettings from '../locales/settings/es.json' with { type: 'json' }
+import enSettings from '../locales/settings/en.json' with { type: 'json' }
+import esTickets from '../locales/tickets/es.json' with { type: 'json' }
+import enTickets from '../locales/tickets/en.json' with { type: 'json' }
+import esEvents from '../locales/events/es.json' with { type: 'json' }
+import enEvents from '../locales/events/en.json' with { type: 'json' }
 
 export type ServerResources = {
   es: I18nResources
