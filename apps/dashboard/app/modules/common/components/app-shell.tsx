@@ -19,7 +19,7 @@ import {
 } from '@afterdark/ui'
 import { Link, useNavigate, useRouterState } from '@tanstack/react-router'
 import { useCallback, useMemo, useRef, useState, type ReactNode } from 'react'
-import { LayoutGrid, LogOut, Martini, Ticket, Users } from 'lucide-react'
+import { LayoutGrid, LogOut, Martini, Ticket, Users, CalendarDays } from 'lucide-react'
 import { clearAuthSession } from '~/modules/auth/utils/auth-storage.utils'
 import { AppShellLanguageSwitcher } from '~/modules/common/components/app-shell-language-switcher'
 import { AppShellSidebarFooter } from '~/modules/common/components/app-shell-sidebar-footer'
@@ -52,6 +52,11 @@ function buildPrimaryNav(t: TFunction<'dashboard'>): AppShellNavItem[] {
       label: t('nav.tickets'),
       href: DASHBOARD_ROUTES.tickets(),
       icon: <Ticket aria-hidden="true" />,
+    },
+    {
+      label: t('nav.events'),
+      href: DASHBOARD_ROUTES.events(),
+      icon: <CalendarDays aria-hidden="true" />,
     },
     {
       label: t('nav.users'),

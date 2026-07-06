@@ -69,5 +69,14 @@
     "DELETE_FAILED": "Could not delete ticket.",
     "LIST_FAILED": "Could not load tickets.",
     "HAS_PAYMENTS": "Cannot delete a ticket with recorded sales."
+  },
+  "event": {
+    "NOT_FOUND": "Event not found.",
+    "CLUB_NOT_FOUND": "We could not find the requested club.",
+    "CREATE_FAILED": "We could not save the event. Try again in a few minutes.",
+    "UPDATE_FAILED": "We could not update the event. Try again in a few minutes.",
+    "DELETE_FAILED": "We could not delete the event. Try again in a few minutes.",
+    "LIST_FAILED": "We could not load events. Try again in a few minutes.",
+    "HAS_TICKETS": "Cannot delete an event with associated tickets."
   }
 }

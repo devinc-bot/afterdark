@@ -14,7 +14,9 @@
 | 008 | `checkout-payments`     | Compra y pagos                       | `draft`       | `api`, `web`              | Tabla `payments` y módulo `orders` (stub). Checkout de entradas y estados de pago.                                                                                                  |
 | 009 | `operational-chat`      | Chat operativo                       | `paused`      | `api`, `dashboard`, `web` | Esquema `chat` / `messages`. Pausado hasta cerrar catálogo y checkout.                                                                                                              |
 | 010 | `club-create-edit-page` | Formulario club en pantalla completa | `approved`    | `dashboard`               | Rutas `/club-management/new` y `/:documentId/edit`. Spec lista para implementar.                                                                                                    |
-| 011 | `language-switcher`     | Selector de idioma                   | `in-progress` | `dashboard`               | Select mock "Idioma del panel" conectado a `setLanguage()` real de `@afterdark/i18n`. Type-check/lint OK; falta QA manual en browser (login como dueño). `web` queda afuera (sin header aún). |
+| 011 | `events-management`     | Gestión de eventos (dashboard)       | `in-progress` | `api`, `dashboard`        | CRUD eventos en `/events`. Depende de `002`.                                                                           |
+| 012 | `ticket-form-event-and-sale-dates` | Ticket: evento + ventana de venta | `approved`    | `api`, `dashboard`        | Select evento requerido; fechas de venta opcionales en modal ticket. Depende de `011`.                                  |
+| 013 | `language-switcher`     | Selector de idioma                   | `in-progress` | `dashboard`               | Select mock "Idioma del panel" conectado a `setLanguage()` real de `@afterdark/i18n`. Type-check/lint OK; falta QA manual en browser (login como dueño). `web` queda afuera (sin header aún). |
 
 ## Status
 
@@ -39,7 +41,9 @@
 008-checkout-payments   →  requiere 001, 006, 007
 009-operational-chat    →  requiere 001, 002 (opcional: 008)
 010-club-create-edit-page →  requiere 002
-011-language-switcher    →  requiere 004 (settings del dueño)
+011-events-management     →  requiere 002
+012-ticket-form-event-and-sale-dates → requiere 011
+013-language-switcher    →  requiere 004 (settings del dueño)
 ```
 
 ## Decisiones de prioridad

@@ -1,0 +1,71 @@
+{
+  "page": {
+    "title": "Event management",
+    "description": "Create and review events for your clubs.",
+    "metaTitle": "Event management · afterdark Admin"
+  },
+  "form": {
+    "trigger": "Create event",
+    "createTitle": "Create event",
+    "createDescription": "Fill in the event details.",
+    "requiredFieldsHint": "Fields marked with * are required.",
+    "club": "Club",
+    "clubPlaceholder": "Select a club",
+    "clubLoading": "Loading clubs…",
+    "clubEmpty": "You have no registered clubs",
+    "clubsLoadError": "We could not load your clubs.",
+    "name": "Event name",
+    "namePlaceholder": "E.g. Electronic night",
+    "description": "Description",
+    "descriptionPlaceholder": "Describe what the event includes",
+    "startsAt": "Start date and time",
+    "endsAt": "End date and time",
+    "status": "Status",
+    "statusPlaceholder": "Select a status",
+    "statusDraft": "Draft",
+    "statusPublished": "Published",
+    "statusFinished": "Finished",
+    "cancel": "Cancel",
+    "submitCreate": "Create event",
+    "submittingCreate": "Creating…",
+    "editTitle": "Edit event",
+    "editDescription": "Update the event details. Changes take effect immediately.",
+    "submitEdit": "Update event",
+    "submittingEdit": "Updating…",
+    "successCreate": "Event created successfully",
+    "successEdit": "Event updated successfully",
+    "errorCreate": "We could not create the event. Try again.",
+    "errorEdit": "We could not update the event. Try again."
+  },
+  "table": {
+    "title": "Registered events",
+    "registryCount": "{count, plural, one {1 event registered} other {# events registered}}",
+    "club": "Club",
+    "event": "Event",
+    "startsAt": "Start",
+    "endsAt": "End",
+    "status": "Status",
+    "actions": "Actions",
+    "actionEdit": "Edit",
+    "actionDelete": "Delete",
+    "rowActionsLabel": "Actions for {event} at {club}",
+    "emptyTitle": "No registered events",
+    "emptyDescription": "Create your first event to get started."
+  },
+  "pagination": {
+    "previous": "Previous",
+    "next": "Next"
+  },
+  "list": {
+    "error": "We could not load events. Try again in a few minutes."
+  },
+  "delete": {
+    "title": "Delete event",
+    "description": "Are you sure you want to delete",
+    "descriptionSuffix": "This action cannot be undone.",
+    "cancel": "Cancel",
+    "confirm": "Delete",
+    "success": "Event deleted successfully",
+    "error": "We could not delete the event. Try again."
+  }
+}

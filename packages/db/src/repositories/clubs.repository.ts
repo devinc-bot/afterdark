@@ -1,4 +1,4 @@
-import { desc, eq } from 'drizzle-orm'
+import { and, desc, eq } from 'drizzle-orm'
 import { db, type Transaction } from '../client.ts'
 import { addresses } from '../schema/address.ts'
 import { clubAddressesLnk } from '../schema/club-address-lnk.ts'
@@ -68,6 +68,20 @@ export async function findClubByDocumentId(documentId: string): Promise<ClubSele
   const [club] = await db.select().from(clubs).where(eq(clubs.documentId, documentId)).limit(1)
 
   return club ?? null
+}
+
+export async function findClubOwnedByOwnerDocumentId(
+  clubDocumentId: string,
+  ownerDocumentId: string
+): Promise<ClubSelect | null> {
+  const [row] = await db
+    .select({ club: clubs })
+    .from(clubs)
+    .innerJoin(owners, eq(owners.id, clubs.ownerId))
+    .where(and(eq(clubs.documentId, clubDocumentId), eq(owners.documentId, ownerDocumentId)))
+    .limit(1)
+
+  return row?.club ?? null
 }
 
 export async function createClubWithAddress(

@@ -69,5 +69,14 @@
     "DELETE_FAILED": "No se pudo eliminar el ticket.",
     "LIST_FAILED": "No se pudo cargar los tickets.",
     "HAS_PAYMENTS": "No se puede eliminar un ticket con ventas registradas."
+  },
+  "event": {
+    "NOT_FOUND": "Evento no encontrado.",
+    "CLUB_NOT_FOUND": "No encontramos el club solicitado.",
+    "CREATE_FAILED": "No pudimos guardar el evento. Intentá de nuevo en unos minutos.",
+    "UPDATE_FAILED": "No pudimos actualizar el evento. Intentá de nuevo en unos minutos.",
+    "DELETE_FAILED": "No pudimos eliminar el evento. Intentá de nuevo en unos minutos.",
+    "LIST_FAILED": "No pudimos cargar los eventos. Intentá de nuevo en unos minutos.",
+    "HAS_TICKETS": "No se puede eliminar un evento con entradas asociadas."
   }
 }
