@@ -84,3 +84,55 @@ No hay cambios en `@afterdark/validators` ni en `packages/db` — se reutiliza `
 | 3. `GET /settings` con JWT de owner (curl/Postman) | Devuelve `CurrentOwnerResponse` completo, igual que antes `GET /owners/details`.                                               |
 | 4. `GET /settings` con JWT de staff                | Devuelve `{ role: 'staff' }`.                                                                                                  |
 | 5. `GET /session/me` con cualquier rol             | Incluye `role` en la respuesta.                                                                                                |
+
+---
+
+## Ampliación (2026-07-04) — Dirección del owner
+
+### Orden de capas
+
+```text
+1. packages/db           (repurpose user_addresses_lnk -> owner_addresses_lnk, migración)
+2. @afterdark/types       (CurrentOwnerResponse.address)
+3. @afterdark/validators  (ownerAddressSchema en owner.ts)
+4. @afterdark/i18n        (nueva clave de error "cannotClear"; copy de address ya existía en settings/*.json)
+5. apps/api               (owners.repository + OwnerService)
+6. apps/dashboard         (settings-form-context genérico + UI del owner)
+```
+
+### Archivos a crear / modificar
+
+- `packages/db/src/schema/user-address-lnk.ts` — eliminar. Reemplazado por `owner-address-lnk.ts`.
+- `packages/db/src/schema/owner-address-lnk.ts` (nuevo) — copia el patrón de `club-address-lnk.ts`: `ownerAddressesLnk` con `ownerId` (FK `owners.id`, unique) y `addressId` (FK `addresses.id`, unique).
+- `packages/db/src/schema/index.ts` — quitar export de `user-address-lnk.ts`, agregar `owner-address-lnk.ts`.
+- `packages/db/src/migrations/*` (generado) — `pnpm --filter @afterdark/db db:generate`: drop `user_addresses_lnk`, create `owner_addresses_lnk`.
+- `packages/db/src/repositories/owners.repository.ts` — `findCurrentOwnerByDocumentId` suma `address` (LEFT JOIN `owner_addresses_lnk` + `addresses`, puede ser `null`); nueva `upsertOwnerAddress(ownerId, addressInput | null)` (transacción, mismo patrón select-lnk-then-update/insert que `updateClubWithAddress`).
+- `packages/validators/src/owner.ts` — nuevo `ownerAddressSchema` (`{ address, streetNumber, state, city }` + `superRefine` todo-o-nada, mensaje `validation:field.address.allOrNone`). `updateCurrentOwnerSchema` suma `address: ownerAddressSchema`.
+- `packages/types/src/api.ts` — `CurrentOwnerResponse` suma `address: CurrentUserAddress | null`.
+- `packages/i18n/src/locales/validation/{es,en}.json` — nueva clave `field.address.cannotClear`.
+- `apps/api/src/modules/owner/owner.service.ts` — `getCurrentOwner` incluye `address`. `updateCurrentOwner`: si `input.address` viene todo vacío y el owner ya tenía dirección guardada → `BadRequestException(ts.translateError('field.address.cannotClear'))`; si no, delega en `upsertOwnerAddress`.
+- `apps/dashboard/app/modules/settings/hooks/settings-form-context.tsx` — ampliar `SettingsFormValues`/provider genérico para que `TValues` cargue también `address` (sigue siendo un objeto genérico para `useSettingsFormValues`, no cambia el mecanismo).
+- `apps/dashboard/app/modules/owner/utils/settings-form-values.formatter.ts` — `toOwnerFormValues` mapea `owner.address` (o vacíos si `null`) al nuevo bloque.
+- `apps/dashboard/app/modules/owner/components/profile-settings-section.tsx` — nueva sección "Domicilio" con los 4 inputs, reusando copy i18n `settings.owner.profile.addressSection/address/streetNumber/state/city` (ya existente).
+
+### Diseño técnico
+
+- `useSettingsFormValues`/`createSettingsFormProvider` ya son genéricos sobre `TValues` (no hardcodean `profile`) — ampliar a `{ profile, address }` es cambio de forma, no de mecanismo.
+- La regla "no se puede vaciar una dirección ya cargada" vive en `OwnerService` (comparando contra la fila actual), no en el `superRefine` de Zod — el schema es sin estado, no sabe si "ya existía".
+- Copy i18n de `settings.owner.profile.address*` y la key `validation:field.address.allOrNone` ya existían en el repo sin conectar — se reusan tal cual.
+
+### Riesgos / edge cases
+
+- Owner nunca cargó dirección, envía los 4 vacíos → válido, no-op, `address: null`.
+- Completa 1 de 4 (carga nueva) → 400 `allOrNone`.
+- Ya tiene dirección, envía los 4 vacíos → 400 `cannotClear`, no se toca la fila.
+- Ya tiene dirección, edita 1 campo dejando los otros con valor → válido, update de la fila existente.
+- Migración de `user_addresses_lnk`: sin datos reales (tabla sin uso desde código) → drop directo, sin script de migración de datos.
+
+### Verificación manual (ampliación)
+
+1. Login owner sin dirección, ir a `/settings` → bloque "Domicilio" vacío.
+2. Completar 1 solo campo y guardar → error de validación, no persiste.
+3. Completar los 4 y guardar → persiste, sobrevive reload.
+4. Vaciar los 4 (ya cargados) y guardar → error `cannotClear`, valores previos se mantienen.
+5. `GET /settings` (curl) owner sin/con dirección → `address: null` / objeto completo respectivamente.

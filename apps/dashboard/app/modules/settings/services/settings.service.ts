@@ -1,5 +1,4 @@
 import type { SettingsResponse } from '@afterdark/types'
-import type { UpdateCurrentOwnerInput } from '@afterdark/validators'
 import { i18n } from '@afterdark/i18n/client'
 import { api } from '~/config/api'
 import { API_ROUTES } from '~/config/constants/api'
@@ -17,7 +16,9 @@ export async function fetchSettings(): Promise<SettingsResponse> {
   }
 }
 
-export async function updateSettings(input: UpdateCurrentOwnerInput): Promise<SettingsResponse> {
+export async function updateSettings<T extends Record<string, unknown>>(
+  input: T
+): Promise<SettingsResponse> {
   try {
     return await api.patch<SettingsResponse>(API_ROUTES.settings.prefix, input)
   } catch (error) {

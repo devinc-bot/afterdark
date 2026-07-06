@@ -1,6 +1,7 @@
 import type {
   AssetType,
   ClubStatus,
+  EventStatus,
   OwnerStatus,
   StaffInvitationStatus,
   StaffStatus,
@@ -43,25 +44,32 @@ export interface SessionResponse {
   avatar: string | null
 }
 
-export interface CurrentOwnerResponse {
+export interface BaseProfileResponse {
   sub: string
   name: string
   lastName: string
   email: string
   avatar: string | null
+  role: UserRole
+}
+
+export interface CurrentOwnerResponse extends BaseProfileResponse {
+  role: typeof USER_ROLE.OWNER
   phone: string
   birthday: string | null
   nationalId: string | null
   taxId: string | null
   status: OwnerStatus
-  role: typeof USER_ROLE.OWNER
+  address: CurrentUserAddress | null
 }
 
-export interface StaffSettingsResponse {
+export interface CurrentStaffResponse extends BaseProfileResponse {
   role: typeof USER_ROLE.STAFF
+  phone: string
+  status: StaffStatus
 }
 
-export type SettingsResponse = CurrentOwnerResponse | StaffSettingsResponse
+export type SettingsResponse = CurrentOwnerResponse | CurrentStaffResponse
 
 /** @deprecated Use SessionResponse */
 export type CurrentUserResponse = SessionResponse
@@ -90,6 +98,19 @@ export interface ClubResponse {
   state: string
   city: string
   images: ClubImageResponse[]
+  createdAt: Date
+  updatedAt: Date
+}
+
+export interface EventResponse {
+  documentId: string
+  clubId: string
+  clubName: string
+  name: string
+  description: string
+  startsAt: Date
+  endsAt: Date
+  status: EventStatus
   createdAt: Date
   updatedAt: Date
 }

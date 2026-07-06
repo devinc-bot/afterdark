@@ -56,6 +56,8 @@ export interface DialogContentProps
     React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>,
     VariantProps<typeof dialogContentVariants> {
   showCloseButton?: boolean
+  /** When true, only the close button (and DialogClose) dismiss the dialog — not outside click or Escape. */
+  persistent?: boolean
 }
 
 const DialogOverlay = React.forwardRef<
@@ -74,31 +76,68 @@ DialogOverlay.displayName = DialogPrimitive.Overlay.displayName
 const DialogContent = React.forwardRef<
   React.ComponentRef<typeof DialogPrimitive.Content>,
   DialogContentProps
->(({ className, children, size, variant, showCloseButton = true, ...props }, ref) => (
-  <DialogPortal>
-    <DialogOverlay variant={variant} />
-    <DialogPrimitive.Content
-      ref={ref}
-      className={cn(dialogContentVariants({ size, variant }), className)}
-      {...props}
-    >
-      {children}
-      {showCloseButton ? (
-        <DialogPrimitive.Close asChild>
-          <Button
-            type="button"
-            variant="ghost"
-            size="icon"
-            className="absolute top-3 right-3 text-ink-muted hover:text-ink"
-            aria-label="Cerrar"
-          >
-            <X aria-hidden="true" />
-          </Button>
-        </DialogPrimitive.Close>
-      ) : null}
-    </DialogPrimitive.Content>
-  </DialogPortal>
-))
+>(
+  (
+    {
+      className,
+      children,
+      size,
+      variant,
+      showCloseButton = true,
+      persistent = false,
+      onPointerDownOutside,
+      onInteractOutside,
+      onEscapeKeyDown,
+      ...props
+    },
+    ref
+  ) => (
+    <DialogPortal>
+      <DialogOverlay variant={variant} />
+      <DialogPrimitive.Content
+        ref={ref}
+        className={cn(dialogContentVariants({ size, variant }), className)}
+        onPointerDownOutside={(event) => {
+          if (persistent) {
+            event.preventDefault()
+            return
+          }
+          onPointerDownOutside?.(event)
+        }}
+        onInteractOutside={(event) => {
+          if (persistent) {
+            event.preventDefault()
+            return
+          }
+          onInteractOutside?.(event)
+        }}
+        onEscapeKeyDown={(event) => {
+          if (persistent) {
+            event.preventDefault()
+            return
+          }
+          onEscapeKeyDown?.(event)
+        }}
+        {...props}
+      >
+        {children}
+        {showCloseButton ? (
+          <DialogPrimitive.Close asChild>
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              className="absolute top-3 right-3 text-ink-muted hover:text-ink"
+              aria-label="Cerrar"
+            >
+              <X aria-hidden="true" />
+            </Button>
+          </DialogPrimitive.Close>
+        ) : null}
+      </DialogPrimitive.Content>
+    </DialogPortal>
+  )
+)
 DialogContent.displayName = DialogPrimitive.Content.displayName
 
 function DialogHeader({ className, ...props }: React.ComponentProps<'div'>) {

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, type ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
   Badge,
@@ -332,12 +332,14 @@ export function TicketRecords({
   onEdit,
   onDelete,
   pagination,
+  headerAction,
 }: {
   records: TicketRecordItem[]
   inventoryTab: TicketTab
   onEdit?: (record: TicketRecordItem) => void
   onDelete?: (record: TicketRecordItem) => void
   pagination?: TicketRecordsPagination
+  headerAction?: ReactNode
 }) {
   const { t } = useTranslation('tickets')
   const [viewDialogOpen, setViewDialogOpen] = useState(false)
@@ -370,7 +372,7 @@ export function TicketRecords({
   return (
     <>
       <section aria-labelledby="ticket-inventory-heading">
-        <header className="py-4">
+        <header className="flex flex-col gap-4 py-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="min-w-0">
             <h2
               id="ticket-inventory-heading"
@@ -382,6 +384,7 @@ export function TicketRecords({
               <p className="mt-1 text-sm text-ink-muted">{registrySubtitle}</p>
             ) : null}
           </div>
+          {headerAction}
         </header>
 
         {records.length === 0 ? (

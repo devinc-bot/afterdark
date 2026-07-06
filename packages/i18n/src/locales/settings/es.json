@@ -11,6 +11,21 @@
     "loadFallback": "No pudimos cargar la configuración. Intentá de nuevo en unos minutos.",
     "loading": "Cargando configuración…"
   },
+  "shared": {
+    "actions": {
+      "save": "Guardar cambios",
+      "discard": "Descartar cambios",
+      "dirty": "Tenés cambios sin guardar.",
+      "clean": "No hay cambios pendientes.",
+      "confirmLeave": "Tenés cambios sin guardar. ¿Salir de todas formas?"
+    },
+    "messages": {
+      "validationSummary": "Revisá los campos con error antes de guardar.",
+      "saving": "Guardando cambios…",
+      "saveSuccess": "Listo. Actualizamos tu perfil.",
+      "saveFallback": "No pudimos guardar los cambios. Revisá tu conexión e intentá de nuevo."
+    }
+  },
   "owner": {
     "page": {
       "title": "Configuración",
@@ -39,25 +54,23 @@
       "changePassword": "Cambiar contraseña",
       "passwordHint": "El cambio de contraseña estará disponible pronto.",
       "avatarFallback": "Usuario"
-    },
-    "actions": {
-      "save": "Guardar cambios",
-      "discard": "Descartar cambios",
-      "dirty": "Tenés cambios sin guardar.",
-      "clean": "No hay cambios pendientes.",
-      "confirmLeave": "Tenés cambios sin guardar. ¿Salir de todas formas?"
-    },
-    "messages": {
-      "validationSummary": "Revisá los campos con error antes de guardar.",
-      "saving": "Guardando cambios…",
-      "saveSuccess": "Listo. Actualizamos tu perfil.",
-      "saveFallback": "No pudimos guardar los cambios. Revisá tu conexión e intentá de nuevo."
     }
   },
   "staff": {
     "page": {
-      "title": "Configuración"
+      "title": "Configuración",
+      "description": "Administrá tu perfil."
     },
-    "placeholder": "Hello World"
+    "sections": {
+      "profile": "Perfil"
+    },
+    "profile": {
+      "name": "Nombre",
+      "lastName": "Apellido",
+      "phone": "Teléfono",
+      "email": "Correo electrónico",
+      "emailHint": "Para cambiar el correo, escribinos a soporte.",
+      "avatarFallback": "Usuario"
+    }
   }
 }

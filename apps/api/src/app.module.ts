@@ -13,6 +13,7 @@ import { SessionModule } from './modules/session'
 import { SettingsModule } from './modules/settings'
 import { StaffModule } from './modules/staff'
 import { TicketsModule } from './modules/tickets'
+import { EventsModule } from './modules/events'
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { TicketsModule } from './modules/tickets'
     SettingsModule,
     StaffModule,
     TicketsModule,
+    EventsModule,
   ],
   controllers: [AppController],
 })

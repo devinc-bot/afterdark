@@ -21,7 +21,7 @@ import type {
   UpdateTicketInput,
 } from '@afterdark/validators'
 import { TranslationService } from '@afterdark/i18n/server'
-import { toTicketResponse, toTicketUpsertInput } from './utils/tickets.mapper'
+import { toTicketResponse, toTicketUpsertInput } from './utils/tickets.formatter'
 
 @Injectable()
 export class TicketsService {

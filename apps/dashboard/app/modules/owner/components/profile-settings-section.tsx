@@ -1,11 +1,11 @@
 import { useTranslation } from 'react-i18next'
-import { Button, Field, Input, Label } from '@afterdark/ui'
-import { SettingsSection } from '~/modules/owner/components/settings-section'
+import { Avatar, AvatarFallback, AvatarImage, Button, Field, Input, Label } from '@afterdark/ui'
+import { SettingsSection } from '~/modules/settings/components/settings-section'
 import { useSettingsForm } from '~/modules/owner/hooks/settings-form-context'
 
 export function ProfileSettingsSection() {
   const { t } = useTranslation('settings')
-  const { user, values, errors, setProfileField } = useSettingsForm()
+  const { user, values, errors, setProfileField, setNestedProfileField } = useSettingsForm()
   const avatarSrc = user.avatar
   const avatarLabel =
     `${values.profile.name} ${values.profile.lastName}`.trim() ||
@@ -16,21 +16,12 @@ export function ProfileSettingsSection() {
     <SettingsSection title={t('owner.sections.profile')}>
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-[auto_1fr] sm:gap-8">
         <div className="flex flex-col items-start gap-3">
-          {avatarSrc ? (
-            <img
-              src={avatarSrc}
-              alt={avatarLabel}
-              className="size-16 rounded-full object-cover ring-1 ring-hairline"
-            />
-          ) : (
-            <div
-              role="img"
-              aria-label={avatarLabel}
-              className="flex size-16 items-center justify-center rounded-full bg-surface-container-low font-heading text-lg font-medium text-ink-muted ring-1 ring-hairline"
-            >
+          <Avatar className="size-16 ring-1 ring-hairline">
+            <AvatarImage src={avatarSrc ?? undefined} alt={avatarLabel} className="object-cover" />
+            <AvatarFallback className="bg-surface-container-low font-heading text-lg font-medium text-ink-muted">
               {avatarLabel.charAt(0).toUpperCase()}
-            </div>
-          )}
+            </AvatarFallback>
+          </Avatar>
           <Button
             type="button"
             variant="ghost"
@@ -154,6 +145,70 @@ export function ProfileSettingsSection() {
               value={values.profile.taxId}
               onChange={(event) => setProfileField('taxId', event.target.value)}
               aria-invalid={errors.profile?.taxId ? true : undefined}
+            />
+          </Field>
+
+          <div className="col-span-6 border-t border-hairline/60 mt-2 mb-2" />
+          <Label variant="field" className="col-span-6">
+            {t('owner.profile.addressSection')}
+          </Label>
+
+          <Field
+            label={t('owner.profile.address')}
+            htmlFor="settings-address"
+            error={errors.profile?.address ?? null}
+            className="col-span-4"
+          >
+            <Input
+              id="settings-address"
+              name="address"
+              type="text"
+              autoComplete="address-line1"
+              maxLength={255}
+              value={values.profile.address.address}
+              onChange={(event) => setNestedProfileField('address', 'address', event.target.value)}
+              aria-invalid={errors.profile?.address ? true : undefined}
+            />
+          </Field>
+
+          <Field
+            label={t('owner.profile.streetNumber')}
+            htmlFor="settings-street-number"
+            className="col-span-2"
+          >
+            <Input
+              id="settings-street-number"
+              name="streetNumber"
+              type="text"
+              maxLength={20}
+              value={values.profile.address.streetNumber}
+              onChange={(event) =>
+                setNestedProfileField('address', 'streetNumber', event.target.value)
+              }
+            />
+          </Field>
+
+          <Field label={t('owner.profile.state')} htmlFor="settings-state" className="col-span-3">
+            <Input
+              id="settings-state"
+              name="state"
+              type="text"
+              autoComplete="address-level1"
+              maxLength={100}
+              value={values.profile.address.state}
+              onChange={(event) => setNestedProfileField('address', 'state', event.target.value)}
+            />
+          </Field>
+
+          <Field label={t('owner.profile.city')} htmlFor="settings-city" className="col-span-3">
+            <Input
+              id="settings-city"
+              name="city"
+              type="text"
+              autoComplete="address-level2"
+              maxLength={100}
+              value={values.profile.address.city}
+              onChange={(event) => setNestedProfileField('address', 'city', event.target.value)}
             />
           </Field>
 

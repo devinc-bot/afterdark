@@ -1,8 +1,9 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common'
+import { BadRequestException, Inject, Injectable, NotFoundException } from '@nestjs/common'
 import {
   findCurrentOwnerByDocumentId,
   findOwnerIdByDocumentId,
   updateOwnerByDocumentId,
+  upsertOwnerAddress,
 } from '@afterdark/db'
 import { USER_ROLE, type CurrentOwnerResponse } from '@afterdark/types'
 import type { UpdateCurrentOwnerInput } from '@afterdark/validators'
@@ -31,6 +32,7 @@ export class OwnerService {
       taxId: row.taxId,
       status: row.status,
       role: USER_ROLE.OWNER,
+      address: row.address,
     }
   }
 
@@ -38,10 +40,16 @@ export class OwnerService {
     documentId: string,
     input: UpdateCurrentOwnerInput
   ): Promise<CurrentOwnerResponse> {
-    const ownerId = await findOwnerIdByDocumentId(documentId)
+    const current = await findCurrentOwnerByDocumentId(documentId)
 
-    if (!ownerId) {
+    if (!current) {
       throw new NotFoundException(this.ts.translateError('owner.NOT_FOUND'))
+    }
+
+    const hasAddressInput = Object.values(input.address).some((value) => value.length > 0)
+
+    if (!hasAddressInput && current.address) {
+      throw new BadRequestException(this.ts.translateNs('validation', 'field.address.cannotClear'))
     }
 
     await updateOwnerByDocumentId(documentId, {
@@ -52,6 +60,16 @@ export class OwnerService {
       nationalId: input.nationalId || null,
       taxId: input.taxId || null,
     })
+
+    if (hasAddressInput) {
+      const ownerId = await findOwnerIdByDocumentId(documentId)
+
+      if (!ownerId) {
+        throw new NotFoundException(this.ts.translateError('owner.NOT_FOUND'))
+      }
+
+      await upsertOwnerAddress(ownerId, input.address)
+    }
 
     return this.getCurrentOwner(documentId)
   }

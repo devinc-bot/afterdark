@@ -47,7 +47,8 @@
       "min": "Security word must be at least {min} characters."
     },
     "address": {
-      "allOrNone": "Fill in all address fields or leave them all empty."
+      "allOrNone": "Fill in all address fields or leave them all empty.",
+      "cannotClear": "Your address is already saved and can't be left empty."
     },
     "invitation": {
       "email": "Enter a valid email.",
@@ -73,10 +74,17 @@
       "price": "Enter a valid price greater than zero.",
       "quantity": "Enter a valid quantity greater than zero.",
       "description": "Description is required.",
+      "event": "Select an event.",
+      "saleDatesPair": "Enter both sale start and end dates, or leave both empty.",
+      "saleEndAfterStart": "Sale end date must be after the sale start date."
+    },
+    "event": {
+      "name": "Event name is required.",
+      "description": "Description is required.",
       "startDate": "Start date and time are required.",
       "endDate": "End date and time are required.",
       "club": "Select a club.",
-      "endDateAfterStart": "End date must be after the event start date."
+      "endDateAfterStart": "Start date and time must be before the end date and time."
     },
     "organization": {
       "brandName": {

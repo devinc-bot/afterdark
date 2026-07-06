@@ -1,7 +1,7 @@
 import type { ClubSelect, StaffInvitationSelect } from '@afterdark/db'
 import type { CreateStaffInvitationResponse } from '@afterdark/types'
-import { ENV } from '../common/config/env'
-import { buildStaffInvitationUrl } from './utils/staff-invitation.utils'
+import { ENV } from '../../common/config/env'
+import { buildStaffInvitationUrl } from './staff-invitation.utils'
 
 export function toStaffInvitationResponse(
   invitation: StaffInvitationSelect,

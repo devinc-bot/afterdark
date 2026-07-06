@@ -27,7 +27,7 @@ export function SettingsView() {
   }
 
   if (data.role === USER_ROLE.STAFF) {
-    return <StaffSettingsView />
+    return <StaffSettingsView staff={data} />
   }
 
   return null

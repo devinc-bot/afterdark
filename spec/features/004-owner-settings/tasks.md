@@ -59,3 +59,50 @@
 ## Cierre
 
 - [x] Status → `done` en `spec.md` y `roadmap.md`
+
+---
+
+## Ampliación (2026-07-04) — Dirección del owner
+
+### Spec & plan
+
+- [x] Entrevista de la ampliación completa (`progress.md`, fases 2–5 en `done`)
+- [x] `spec.md` actualizado, status `approved`
+- [x] `plan.md` con sección de ampliación
+- [x] `roadmap.md` actualizado (fila 004)
+
+### DB
+
+- [x] `packages/db/src/schema/owner-address-lnk.ts` (nuevo, mirror de `club-address-lnk.ts`)
+- [x] Eliminar `packages/db/src/schema/user-address-lnk.ts`
+- [x] `packages/db/src/schema/index.ts`: swap export
+- [x] `packages/db/DATABASE.md`: catálogo de tablas, diagrama, índices únicos actualizados
+- [ ] `pnpm --filter @afterdark/db db:generate` (migración) — **bloqueado**: falta `src/migrations/meta/0010_snapshot.json` en el repo (pre-existente, no relacionado a esta feature; confirmado con `git log` que nunca se commiteó). `drizzle-kit generate` no corre para ninguna migración nueva hasta que se resuelva. Usuario decidió arreglarlo aparte, fuera de esta sesión.
+- [x] `owners.repository.ts`: `findCurrentOwnerByDocumentId` suma `address`; nueva `upsertOwnerAddress`
+
+### Shared packages
+
+- [x] `packages/validators/src/owner.ts`: `ownerAddressSchema` + `updateCurrentOwnerSchema.address`
+- [x] `packages/types/src/api.ts`: `CurrentOwnerResponse.address`
+- [x] `packages/i18n`: clave `field.address.cannotClear` (es + en) — `settings.owner.profile.address*` (copy de labels) ya existía sin usar
+
+### API
+
+- [x] `owner.service.ts`: `getCurrentOwner` incluye `address`; `updateCurrentOwner` valida "no vaciar" y delega en `upsertOwnerAddress`
+
+### Client (dashboard)
+
+- [x] `settings-form-context.tsx` (genérico): soporta bloque `address` anidado en `profile.address` vía `setNestedProfileField` (en vez de un bloque hermano top-level, ver nota en `plan.md`/log)
+- [x] `settings-form-values.formatter.ts` (owner): `toOwnerFormValues` incluye `address`
+- [x] `profile-settings-section.tsx` (owner): sección "Domicilio" con 4 inputs
+
+### Calidad
+
+- [x] `pnpm type-check` (api, dashboard, db, validators, types, i18n) — todos en verde
+- [x] `pnpm lint` (oxlint, 0 errores)
+- [x] `pnpm check:i18n` (paridad es/en OK)
+- [ ] Verificación manual en browser — **bloqueada** por la migración pendiente (la DB local no tiene `owner_addresses_lnk` todavía)
+
+### Cierre
+
+- [ ] Status ampliación → reflejar en `spec.md`/`roadmap.md` una vez corrida la migración y verificado en browser

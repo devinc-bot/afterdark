@@ -4,7 +4,7 @@ import type { ClubResponse } from '@afterdark/types'
 import { Button } from '@afterdark/ui'
 import { CLUB_FORM_MODE } from '~/modules/club-management/components/club-form'
 import { ClubFormPage } from '~/modules/club-management/components/club-form-page'
-import { clubResponseToFormValues } from '~/modules/club-management/utils/club-form.mapper'
+import { clubResponseToFormValues } from '~/modules/club-management/utils/club-form.formatter'
 import { DASHBOARD_ROUTES } from '~/modules/common/constants/routes'
 import { PageLayout } from '~/modules/common/components/page-layout'
 

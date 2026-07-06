@@ -9,6 +9,7 @@ export const API_CLUBS_PREFIX = '/api/clubs' as const
 export const API_STAFF_PREFIX = '/api/staff' as const
 export const API_INVITATIONS_PREFIX = '/api/invitations' as const
 export const API_TICKETS_PREFIX = '/api/tickets' as const
+export const API_EVENTS_PREFIX = '/api/events' as const
 
 export const API_ROUTES = {
   auth: {
@@ -62,6 +63,15 @@ export const API_ROUTES = {
     path: {
       list: () => '/my-tickets' as const,
       create: () => '/create' as const,
+      update: (documentId: string) => `/${documentId}` as const,
+      delete: (documentId: string) => `/${documentId}` as const,
+    },
+  },
+  events: {
+    prefix: API_EVENTS_PREFIX,
+    path: {
+      list: () => '/my-events' as const,
+      create: () => '' as const,
       update: (documentId: string) => `/${documentId}` as const,
       delete: (documentId: string) => `/${documentId}` as const,
     },

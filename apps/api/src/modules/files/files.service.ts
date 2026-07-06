@@ -2,6 +2,7 @@ import { randomUUID } from 'node:crypto'
 import { extname } from 'node:path'
 import {
   BadRequestException,
+  Inject,
   Injectable,
   InternalServerErrorException,
   OnModuleInit,
@@ -11,8 +12,9 @@ import {
   isAllowedImageMimeType,
   type AllowedImageMimeType,
 } from '@afterdark/validators'
+import { FILE_ERROR_CODE } from '@afterdark/i18n/constants'
+import { TranslationService } from '@afterdark/i18n/server'
 import { ENV } from '../common/config/env'
-import { FILE_MESSAGE } from './files.constants'
 
 type FilesClient = import('files-sdk').Files
 
@@ -23,6 +25,8 @@ function resolveImageExtension(mimeType: AllowedImageMimeType, originalName: str
 @Injectable()
 export class FilesService implements OnModuleInit {
   private client!: FilesClient
+
+  constructor(@Inject(TranslationService) private readonly ts: TranslationService) {}
 
   async onModuleInit() {
     const [{ Files }, { r2 }] = await Promise.all([import('files-sdk'), import('files-sdk/r2')])
@@ -41,7 +45,7 @@ export class FilesService implements OnModuleInit {
 
   buildImageKey(file: Express.Multer.File): string {
     if (!isAllowedImageMimeType(file.mimetype)) {
-      throw new BadRequestException(FILE_MESSAGE.INVALID_IMAGE_TYPE)
+      throw new BadRequestException(this.ts.translateError(FILE_ERROR_CODE.INVALID_IMAGE_TYPE))
     }
 
     const extension = resolveImageExtension(file.mimetype, file.originalname)
@@ -50,7 +54,7 @@ export class FilesService implements OnModuleInit {
 
   async uploadImage(file: Express.Multer.File): Promise<{ key: string; url: string }> {
     if (file.size > ENV.UPLOAD_MAX_BYTES) {
-      throw new BadRequestException(FILE_MESSAGE.FILE_TOO_LARGE)
+      throw new BadRequestException(this.ts.translateError(FILE_ERROR_CODE.FILE_TOO_LARGE))
     }
     const key = this.buildImageKey(file)
 
@@ -67,7 +71,7 @@ export class FilesService implements OnModuleInit {
         throw error
       }
 
-      throw new InternalServerErrorException(FILE_MESSAGE.UPLOAD_FAILED)
+      throw new InternalServerErrorException(this.ts.translateError(FILE_ERROR_CODE.UPLOAD_FAILED))
     }
   }
 
@@ -79,7 +83,7 @@ export class FilesService implements OnModuleInit {
     try {
       await Promise.all(keys.map((key) => this.client.delete(key)))
     } catch {
-      throw new InternalServerErrorException(FILE_MESSAGE.DELETE_FAILED)
+      throw new InternalServerErrorException(this.ts.translateError(FILE_ERROR_CODE.DELETE_FAILED))
     }
   }
 }

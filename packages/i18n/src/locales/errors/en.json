@@ -53,7 +53,8 @@
     "LIST_FAILED": "Could not load staff.",
     "UPDATE_FAILED": "We couldn't update the status. Try again.",
     "DELETE_FAILED": "We couldn't delete the user. Try again.",
-    "INVALID_STATUS": "Invalid status."
+    "INVALID_STATUS": "Invalid status.",
+    "INACTIVE": "Your staff account is inactive, you can't edit your profile."
   },
   "owner": {
     "NOT_FOUND": "Owner not found.",
@@ -69,5 +70,24 @@
     "DELETE_FAILED": "Could not delete ticket.",
     "LIST_FAILED": "Could not load tickets.",
     "HAS_PAYMENTS": "Cannot delete a ticket with recorded sales."
+  },
+  "file": {
+    "FILE_REQUIRED": "You need to send an image file.",
+    "INVALID_IMAGE_TYPE": "The file must be a JPG, PNG or WEBP image.",
+    "FILE_TOO_LARGE": "The image exceeds the maximum allowed size.",
+    "UPLOAD_FAILED": "We couldn't save the image. Try again in a few minutes.",
+    "DELETE_FAILED": "We couldn't delete the image. Try again in a few minutes."
+  },
+  "guard": {
+    "OWNER_ONLY": "Only owners can access this resource."
+  },
+  "event": {
+    "NOT_FOUND": "Event not found.",
+    "CLUB_NOT_FOUND": "We could not find the requested club.",
+    "CREATE_FAILED": "We could not save the event. Try again in a few minutes.",
+    "UPDATE_FAILED": "We could not update the event. Try again in a few minutes.",
+    "DELETE_FAILED": "We could not delete the event. Try again in a few minutes.",
+    "LIST_FAILED": "We could not load events. Try again in a few minutes.",
+    "HAS_TICKETS": "Cannot delete an event with associated tickets."
   }
 }

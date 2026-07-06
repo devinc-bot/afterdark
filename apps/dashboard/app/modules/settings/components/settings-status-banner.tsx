@@ -3,8 +3,7 @@ import {
   SETTINGS_STATUS_BANNER_ARIA_LIVE,
   SETTINGS_STATUS_BANNER_ROLE,
   type SettingsSaveStatus,
-} from '~/modules/owner/constants/settings-form'
-import { useSettingsForm } from '~/modules/owner/hooks/settings-form-context'
+} from '~/modules/settings/constants/settings-form'
 
 function getStatusBannerTone(saveStatus: SettingsSaveStatus): string {
   if (saveStatus === SETTINGS_SAVE_STATUS.SUCCESS) {
@@ -30,9 +29,13 @@ function getStatusBannerAccessibility(saveStatus: SettingsSaveStatus) {
   }
 }
 
-export function SettingsStatusBanner() {
-  const { saveStatus, saveMessage } = useSettingsForm()
-
+export function SettingsStatusBanner({
+  saveStatus,
+  saveMessage,
+}: {
+  saveStatus: SettingsSaveStatus
+  saveMessage: string | null
+}) {
   if (!saveMessage) {
     return null
   }

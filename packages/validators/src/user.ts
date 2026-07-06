@@ -1,5 +1,6 @@
 import { z } from 'zod'
 import { STAFF_STATUS, USER_ROLE } from '@afterdark/types'
+import { baseProfileSchema } from './owner.ts'
 
 const optionalDigitsField = (invalidKey: string, pattern: RegExp) =>
   z
@@ -117,6 +118,8 @@ export const updateStaffStatusSchema = z.object({
   status: z.enum([STAFF_STATUS.ACTIVE, STAFF_STATUS.INACTIVE]),
 })
 
+export const updateCurrentStaffSchema = baseProfileSchema
+
 export const updateUserSchema = createUserSchema.partial().omit({ password: true })
 
 export type CreateUserInput = z.infer<typeof createUserSchema>
@@ -128,6 +131,7 @@ export type VerifyStaffInvitationSecurityWordInput = z.infer<
 export type AcceptStaffInvitationInput = z.infer<typeof acceptStaffInvitationSchema>
 export type AcceptStaffInvitationApiInput = z.infer<typeof acceptStaffInvitationApiSchema>
 export type UpdateStaffStatusInput = z.infer<typeof updateStaffStatusSchema>
+export type UpdateCurrentStaffInput = z.infer<typeof updateCurrentStaffSchema>
 export type UpdateUserInput = z.infer<typeof updateUserSchema>
 export type UpdateCurrentUserInput = z.infer<typeof updateCurrentUserSchema>
 export type UserAddressInput = z.infer<typeof userAddressSchema>
