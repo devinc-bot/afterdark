@@ -2,9 +2,18 @@ import { eq } from 'drizzle-orm'
 import { db, type Transaction } from '../client.ts'
 import { accounts } from '../schema/account.ts'
 import { accountRolesLnk } from '../schema/account-role-lnk.ts'
+import { addresses } from '../schema/address.ts'
 import { ownerAccountsLnk } from '../schema/owner-account-lnk.ts'
+import { ownerAddressesLnk } from '../schema/owner-address-lnk.ts'
 import { owners, type OwnerSelect } from '../schema/owner.ts'
 import { roles } from '../schema/role.ts'
+
+export type OwnerAddressRow = {
+  address: string
+  streetNumber: string
+  state: string
+  city: string
+}
 
 export type OwnerProfileRow = {
   documentId: string
@@ -31,6 +40,7 @@ export type CurrentOwnerRow = {
   taxId: string | null
   status: OwnerSelect['status']
   email: string
+  address: OwnerAddressRow | null
 }
 
 export type OwnerUpdateInput = {
@@ -104,14 +114,73 @@ export async function findCurrentOwnerByDocumentId(
       taxId: owners.taxId,
       status: owners.status,
       email: accounts.email,
+      address: addresses.address,
+      streetNumber: addresses.streetNumber,
+      state: addresses.state,
+      city: addresses.city,
     })
     .from(owners)
     .innerJoin(ownerAccountsLnk, eq(ownerAccountsLnk.ownerId, owners.id))
     .innerJoin(accounts, eq(accounts.id, ownerAccountsLnk.accountId))
+    .leftJoin(ownerAddressesLnk, eq(ownerAddressesLnk.ownerId, owners.id))
+    .leftJoin(addresses, eq(addresses.id, ownerAddressesLnk.addressId))
     .where(eq(owners.documentId, documentId))
     .limit(1)
 
-  return row ?? null
+  if (!row) {
+    return null
+  }
+
+  const { address, streetNumber, state, city, ...owner } = row
+
+  return {
+    ...owner,
+    address: address ? { address, streetNumber: streetNumber!, state: state!, city: city! } : null,
+  }
+}
+
+export async function upsertOwnerAddress(ownerId: number, input: OwnerAddressRow): Promise<void> {
+  await db.transaction(async (tx: Transaction) => {
+    const [link] = await tx
+      .select({ addressId: ownerAddressesLnk.addressId })
+      .from(ownerAddressesLnk)
+      .where(eq(ownerAddressesLnk.ownerId, ownerId))
+      .limit(1)
+
+    if (link) {
+      await tx
+        .update(addresses)
+        .set({
+          address: input.address,
+          streetNumber: input.streetNumber,
+          state: input.state,
+          city: input.city,
+          updatedAt: new Date(),
+        })
+        .where(eq(addresses.id, link.addressId))
+
+      return
+    }
+
+    const [address] = await tx
+      .insert(addresses)
+      .values({
+        address: input.address,
+        streetNumber: input.streetNumber,
+        state: input.state,
+        city: input.city,
+      })
+      .returning()
+
+    if (!address) {
+      throw new Error('Address insert returned no row')
+    }
+
+    await tx.insert(ownerAddressesLnk).values({
+      ownerId,
+      addressId: address.id,
+    })
+  })
 }
 
 export async function updateOwnerByDocumentId(
