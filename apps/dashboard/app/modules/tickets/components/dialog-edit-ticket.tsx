@@ -19,7 +19,10 @@ export function TicketEditDialog({ ticket, open, onOpenChange }: TicketEditDialo
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="flex max-h-[min(90dvh,48rem)] flex-col gap-0 overflow-hidden p-0">
+      <DialogContent
+        persistent
+        className="flex max-h-[min(90dvh,48rem)] flex-col gap-0 overflow-hidden p-0"
+      >
         <DialogHeader className="shrink-0 border-b border-hairline bg-surface-container-high px-8 pb-6 pt-8">
           <DialogTitle>{t('form.editTitle')}</DialogTitle>
           <DialogDescription>{t('form.editDescription')}</DialogDescription>

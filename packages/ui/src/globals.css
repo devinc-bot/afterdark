@@ -367,4 +367,9 @@
     background-color: var(--color-primary);
     color: var(--color-on-primary);
   }
+
+  /* Toasts must render above dialogs (both default to z-index 50). */
+  [data-sileo-viewport] {
+    z-index: 100;
+  }
 }

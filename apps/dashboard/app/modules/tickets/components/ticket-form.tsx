@@ -1,5 +1,6 @@
 import { useForm } from '@tanstack/react-form'
 import { useTranslation } from 'react-i18next'
+import type { TFunction } from 'i18next'
 import { TICKET_STATUS, TICKET_TYPE, type TicketStatus, type TicketType } from '@afterdark/types'
 import {
   parseTicketFormToCreateInput,
@@ -21,6 +22,7 @@ import {
   toast,
 } from '@afterdark/ui'
 import { useCreateTicket, useUpdateTicket } from '~/modules/tickets/mutation/use-ticket-mutations'
+import { useOwnerEventsForSelect } from '~/modules/tickets/queries/use-owner-events'
 import { EMPTY_TICKET_FORM_VALUES } from '~/modules/tickets/utils/ticket-form.mapper'
 
 export const TICKET_FORM_MODE = {
@@ -32,12 +34,61 @@ export type TicketFormMode = (typeof TICKET_FORM_MODE)[keyof typeof TICKET_FORM_
 
 export const TICKET_FORM_ID = 'ticket-form'
 
+type EventSelectFieldDisplayInput = {
+  isLoading: boolean
+  isError: boolean
+  eventCount: number
+  fieldError: string | null
+  t: TFunction<'tickets'>
+}
+
+type EventSelectFieldDisplay = {
+  placeholder: string
+  error: string | undefined
+}
+
+function getEventSelectFieldDisplay({
+  isLoading,
+  isError,
+  eventCount,
+  fieldError,
+  t,
+}: EventSelectFieldDisplayInput): EventSelectFieldDisplay {
+  if (isLoading) {
+    return { placeholder: t('form.eventLoading'), error: fieldError ?? undefined }
+  }
+
+  if (isError) {
+    return {
+      placeholder: t('form.eventPlaceholder'),
+      error: t('form.eventsLoadError'),
+    }
+  }
+
+  if (eventCount === 0) {
+    return { placeholder: t('form.eventEmpty'), error: fieldError ?? undefined }
+  }
+
+  return {
+    placeholder: t('form.eventPlaceholder'),
+    error: fieldError ?? undefined,
+  }
+}
+
 function sanitizeNonNegativeDigits(value: string): string {
   return value.replace(/\D/g, '')
 }
 
 function sanitizePrice(value: string): string {
   return value.replace(/[^\d.,]/g, '')
+}
+
+function requiredFieldLabel(label: string): string {
+  return `${label} *`
+}
+
+function optionalFieldLabel(label: string, optionalText: string): string {
+  return `${label} (${optionalText})`
 }
 
 type TicketFormProps = {
@@ -49,9 +100,16 @@ type TicketFormProps = {
 
 export function TicketForm({ mode, documentId, defaultValues, onSuccess }: TicketFormProps) {
   const { t } = useTranslation('tickets')
+  const { t: tCommon } = useTranslation('common')
   const resolveFieldError = useResolveFieldError()
   const createTicketMutation = useCreateTicket()
   const updateTicketMutation = useUpdateTicket()
+  const {
+    data: eventsData,
+    isLoading: isEventsLoading,
+    isError: isEventsError,
+  } = useOwnerEventsForSelect()
+  const events = eventsData?.data ?? []
 
   const isEdit = mode === TICKET_FORM_MODE.EDIT
   const initialValues = defaultValues ?? EMPTY_TICKET_FORM_VALUES
@@ -108,12 +166,49 @@ export function TicketForm({ mode, documentId, defaultValues, onSuccess }: Ticke
             void form.handleSubmit()
           }}
         >
+          <p className="text-xs text-ink-muted">{t('form.requiredFieldsHint')}</p>
+
+          <form.Field name="eventId" validators={{ onSubmit: ticketFormSchema.shape.eventId }}>
+            {(field) => {
+              const error = resolveFieldError(field.state.meta.errors)
+              const { placeholder: eventPlaceholder, error: eventFieldError } =
+                getEventSelectFieldDisplay({
+                  isLoading: isEventsLoading,
+                  isError: isEventsError,
+                  eventCount: events.length,
+                  fieldError: error,
+                  t,
+                })
+
+              return (
+                <SelectField
+                  label={requiredFieldLabel(t('form.event'))}
+                  value={field.state.value || undefined}
+                  onValueChange={(value) => field.handleChange(value)}
+                  placeholder={eventPlaceholder}
+                  error={eventFieldError}
+                  disabled={isEventsLoading || events.length === 0}
+                >
+                  {events.map((event) => (
+                    <SelectItem key={event.documentId} value={event.documentId}>
+                      {`${event.name} — ${event.clubName}`}
+                    </SelectItem>
+                  ))}
+                </SelectField>
+              )
+            }}
+          </form.Field>
+
           <form.Field name="name" validators={{ onSubmit: ticketFormSchema.shape.name }}>
             {(field) => {
               const error = resolveFieldError(field.state.meta.errors)
 
               return (
-                <Field label={t('form.name')} htmlFor={field.name} error={error}>
+                <Field
+                  label={requiredFieldLabel(t('form.name'))}
+                  htmlFor={field.name}
+                  error={error}
+                >
                   <Input
                     id={field.name}
                     name={field.name}
@@ -180,7 +275,11 @@ export function TicketForm({ mode, documentId, defaultValues, onSuccess }: Ticke
                 const error = resolveFieldError(field.state.meta.errors)
 
                 return (
-                  <Field label={t('form.price')} htmlFor={field.name} error={error}>
+                  <Field
+                    label={requiredFieldLabel(t('form.price'))}
+                    htmlFor={field.name}
+                    error={error}
+                  >
                     <Input
                       id={field.name}
                       name={field.name}
@@ -201,7 +300,11 @@ export function TicketForm({ mode, documentId, defaultValues, onSuccess }: Ticke
                 const error = resolveFieldError(field.state.meta.errors)
 
                 return (
-                  <Field label={t('form.quantity')} htmlFor={field.name} error={error}>
+                  <Field
+                    label={requiredFieldLabel(t('form.quantity'))}
+                    htmlFor={field.name}
+                    error={error}
+                  >
                     <Input
                       id={field.name}
                       name={field.name}
@@ -220,51 +323,92 @@ export function TicketForm({ mode, documentId, defaultValues, onSuccess }: Ticke
             </form.Field>
           </div>
 
-          <div className="grid gap-5 sm:grid-cols-2">
-            <form.Field
-              name="saleStartsAt"
-              validators={{ onSubmit: ticketFormSchema.shape.saleStartsAt }}
-            >
-              {(field) => {
-                const error = resolveFieldError(field.state.meta.errors)
+          <form.Subscribe
+            selector={(state) => ({
+              saleStartsAt: state.values.saleStartsAt,
+              saleEndsAt: state.values.saleEndsAt,
+            })}
+          >
+            {({ saleStartsAt, saleEndsAt }) => {
+              const hasSaleDates = Boolean(saleStartsAt?.trim()) || Boolean(saleEndsAt?.trim())
 
-                return (
-                  <Field label={t('form.startDate')} htmlFor={field.name} error={error}>
-                    <DateTimeInput
-                      id={field.name}
-                      name={field.name}
-                      value={field.state.value ?? ''}
-                      onBlur={field.handleBlur}
-                      onChange={(event) => field.handleChange(event.target.value)}
-                      aria-invalid={error ? true : undefined}
-                    />
-                  </Field>
-                )
-              }}
-            </form.Field>
+              return (
+                <div className="flex flex-col gap-3">
+                  <div className="flex items-center justify-between gap-3">
+                    <p className="text-xs text-ink-muted">{t('form.saleDatesHint')}</p>
+                    {hasSaleDates ? (
+                      <Button
+                        type="button"
+                        variant="link"
+                        size="sm"
+                        className="h-auto shrink-0 px-0 py-0 text-xs font-medium text-ink-muted hover:text-ink"
+                        onClick={() => {
+                          form.setFieldValue('saleStartsAt', '')
+                          form.setFieldValue('saleEndsAt', '')
+                        }}
+                      >
+                        {t('form.clearDates')}
+                      </Button>
+                    ) : null}
+                  </div>
 
-            <form.Field
-              name="saleEndsAt"
-              validators={{ onSubmit: ticketFormSchema.shape.saleEndsAt }}
-            >
-              {(field) => {
-                const error = resolveFieldError(field.state.meta.errors)
+                  <div className="grid gap-5 sm:grid-cols-2">
+                    <form.Field
+                      name="saleStartsAt"
+                      validators={{ onSubmit: ticketFormSchema.shape.saleStartsAt }}
+                    >
+                      {(field) => {
+                        const error = resolveFieldError(field.state.meta.errors)
 
-                return (
-                  <Field label={t('form.endDate')} htmlFor={field.name} error={error}>
-                    <DateTimeInput
-                      id={field.name}
-                      name={field.name}
-                      value={field.state.value ?? ''}
-                      onBlur={field.handleBlur}
-                      onChange={(event) => field.handleChange(event.target.value)}
-                      aria-invalid={error ? true : undefined}
-                    />
-                  </Field>
-                )
-              }}
-            </form.Field>
-          </div>
+                        return (
+                          <Field
+                            label={optionalFieldLabel(t('form.saleStartsAt'), tCommon('optional'))}
+                            htmlFor={field.name}
+                            error={error}
+                          >
+                            <DateTimeInput
+                              id={field.name}
+                              name={field.name}
+                              value={field.state.value ?? ''}
+                              onBlur={field.handleBlur}
+                              onChange={(event) => field.handleChange(event.target.value)}
+                              aria-invalid={error ? true : undefined}
+                            />
+                          </Field>
+                        )
+                      }}
+                    </form.Field>
+
+                    <form.Field
+                      name="saleEndsAt"
+                      validators={{ onSubmit: ticketFormSchema.shape.saleEndsAt }}
+                    >
+                      {(field) => {
+                        const error = resolveFieldError(field.state.meta.errors)
+
+                        return (
+                          <Field
+                            label={optionalFieldLabel(t('form.saleEndsAt'), tCommon('optional'))}
+                            htmlFor={field.name}
+                            error={error}
+                          >
+                            <DateTimeInput
+                              id={field.name}
+                              name={field.name}
+                              value={field.state.value ?? ''}
+                              onBlur={field.handleBlur}
+                              onChange={(event) => field.handleChange(event.target.value)}
+                              aria-invalid={error ? true : undefined}
+                            />
+                          </Field>
+                        )
+                      }}
+                    </form.Field>
+                  </div>
+                </div>
+              )
+            }}
+          </form.Subscribe>
 
           <form.Field
             name="description"
@@ -274,7 +418,11 @@ export function TicketForm({ mode, documentId, defaultValues, onSuccess }: Ticke
               const error = resolveFieldError(field.state.meta.errors)
 
               return (
-                <Field label={t('form.details')} htmlFor={field.name} error={error}>
+                <Field
+                  label={requiredFieldLabel(t('form.details'))}
+                  htmlFor={field.name}
+                  error={error}
+                >
                   <Textarea
                     id={field.name}
                     name={field.name}

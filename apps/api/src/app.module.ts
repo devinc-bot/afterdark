@@ -13,6 +13,7 @@ import { OwnerModule } from './modules/owner'
 import { SessionModule } from './modules/session'
 import { StaffModule } from './modules/staff'
 import { TicketsModule } from './modules/tickets'
+import { EventsModule } from './modules/events'
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { TicketsModule } from './modules/tickets'
     SessionModule,
     StaffModule,
     TicketsModule,
+    EventsModule,
   ],
   controllers: [AppController],
 })

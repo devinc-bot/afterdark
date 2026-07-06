@@ -5,7 +5,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger, toast } from '@afterdark/ui'
 import { TicketCreateDialog } from '~/modules/tickets/components/dialog-create-ticket'
 import { TicketEditDialog } from '~/modules/tickets/components/dialog-edit-ticket'
 import { TicketRemoveDialog } from '~/modules/tickets/components/dialog-remove-ticket'
-import { KpiInformationTickets } from '~/modules/tickets/components/kpi-information-tickets'
 import {
   type TicketRecordItem,
   type TicketRecordsPagination,
@@ -100,25 +99,24 @@ export function TicketsManagementView() {
     onEdit: handleEditRecord,
     onDelete: openRemoveDialog,
     pagination,
+    headerAction: <TicketCreateDialog />,
   }
 
   return (
     <PageLayout title={t('page.title')} description={t('page.description')}>
-      <KpiInformationTickets />
-
-      <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as TicketTab)}>
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <TabsList variant="line" className="flex w-full gap-4 sm:w-auto">
-            <TabsTrigger variant="line" value={TICKET_TAB.ACTIVE}>
-              {t('tabs.active')}
-            </TabsTrigger>
-            <TabsTrigger variant="line" value={TICKET_TAB.INACTIVE}>
-              {t('tabs.inactive')}
-            </TabsTrigger>
-          </TabsList>
-
-          <TicketCreateDialog />
-        </div>
+      <Tabs
+        value={activeTab}
+        onValueChange={(value) => setActiveTab(value as TicketTab)}
+        className="flex flex-col gap-4"
+      >
+        <TabsList variant="line">
+          <TabsTrigger variant="line" value={TICKET_TAB.ACTIVE}>
+            {t('tabs.active')}
+          </TabsTrigger>
+          <TabsTrigger variant="line" value={TICKET_TAB.INACTIVE}>
+            {t('tabs.inactive')}
+          </TabsTrigger>
+        </TabsList>
 
         <TabsContent value={TICKET_TAB.ACTIVE} className="mt-0">
           <TicketRecords inventoryTab={TICKET_TAB.ACTIVE} {...ticketRecordsProps} />

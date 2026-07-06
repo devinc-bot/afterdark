@@ -20,6 +20,8 @@ import esSettings from '../locales/settings/es.json'
 import enSettings from '../locales/settings/en.json'
 import esTickets from '../locales/tickets/es.json'
 import enTickets from '../locales/tickets/en.json'
+import esEvents from '../locales/events/es.json'
+import enEvents from '../locales/events/en.json'
 
 export type ServerResources = {
   es: I18nResources
@@ -38,6 +40,7 @@ export const SERVER_RESOURCES: ServerResources = {
     clubs: esClubs,
     settings: esSettings,
     tickets: esTickets,
+    events: esEvents,
   },
   en: {
     common: enCommon,
@@ -50,6 +53,7 @@ export const SERVER_RESOURCES: ServerResources = {
     clubs: enClubs,
     settings: enSettings,
     tickets: enTickets,
+    events: enEvents,
   },
 }
 

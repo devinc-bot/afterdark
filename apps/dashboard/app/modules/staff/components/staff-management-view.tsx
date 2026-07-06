@@ -23,7 +23,7 @@ export function StaffManagementView() {
     <PageLayout title={t('page.title')} description={t('page.description')}>
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <TabsList variant="line" className="flex w-full gap-4 sm:w-auto">
+          <TabsList variant="line">
             <TabsTrigger variant="line" value={STAFF_TAB.STAFF}>
               {t('tabs.staff')}
             </TabsTrigger>

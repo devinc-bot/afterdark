@@ -14,6 +14,8 @@
 | 008 | `checkout-payments`     | Compra y pagos                       | `draft`       | `api`, `web`              | Tabla `payments` y módulo `orders` (stub). Checkout de entradas y estados de pago.                                                                                                  |
 | 009 | `operational-chat`      | Chat operativo                       | `paused`      | `api`, `dashboard`, `web` | Esquema `chat` / `messages`. Pausado hasta cerrar catálogo y checkout.                                                                                                              |
 | 010 | `club-create-edit-page` | Formulario club en pantalla completa | `approved`    | `dashboard`               | Rutas `/club-management/new` y `/:documentId/edit`. Spec lista para implementar.                                                                                                    |
+| 011 | `events-management`     | Gestión de eventos (dashboard)       | `in-progress` | `api`, `dashboard`        | CRUD eventos en `/events`. Depende de `002`.                                                                           |
+| 012 | `ticket-form-event-and-sale-dates` | Ticket: evento + ventana de venta | `approved`    | `api`, `dashboard`        | Select evento requerido; fechas de venta opcionales en modal ticket. Depende de `011`.                                  |
 
 ## Status
 
@@ -38,6 +40,8 @@
 008-checkout-payments   →  requiere 001, 006, 007
 009-operational-chat    →  requiere 001, 002 (opcional: 008)
 010-club-create-edit-page →  requiere 002
+011-events-management     →  requiere 002
+012-ticket-form-event-and-sale-dates → requiere 011
 ```
 
 ## Decisiones de prioridad
