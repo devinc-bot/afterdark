@@ -50,7 +50,10 @@
   },
   "staff": {
     "NOT_FOUND": "Staff member not found.",
-    "LIST_FAILED": "Could not load staff."
+    "LIST_FAILED": "Could not load staff.",
+    "UPDATE_FAILED": "We couldn't update the status. Try again.",
+    "DELETE_FAILED": "We couldn't delete the user. Try again.",
+    "INVALID_STATUS": "Invalid status."
   },
   "owner": {
     "NOT_FOUND": "Owner not found.",

@@ -21,6 +21,7 @@ import { Link, useNavigate, useRouterState } from '@tanstack/react-router'
 import { useCallback, useMemo, useRef, useState, type ReactNode } from 'react'
 import { LayoutGrid, LogOut, Martini, Ticket, Users, CalendarDays } from 'lucide-react'
 import { clearAuthSession } from '~/modules/auth/utils/auth-storage.utils'
+import { AppShellLanguageSwitcher } from '~/modules/common/components/app-shell-language-switcher'
 import { AppShellSidebarFooter } from '~/modules/common/components/app-shell-sidebar-footer'
 import { AppShellSignOutDialog } from '~/modules/common/components/app-shell-sign-out-dialog'
 import { useSession } from '~/modules/common/hooks/use-session'
@@ -250,6 +251,7 @@ function AppShellLayout({ children }: { children: React.ReactNode }) {
         </SidebarContent>
 
         <SidebarFooter className="gap-4 px-0">
+          <AppShellLanguageSwitcher />
           <AppShellSidebarFooter
             user={user}
             isLoading={isLoading}

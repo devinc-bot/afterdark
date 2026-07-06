@@ -47,6 +47,8 @@ export const API_ROUTES = {
     prefix: API_STAFF_PREFIX,
     path: {
       listMyPersonnel: () => '/my-personnel' as const,
+      delete: (documentId: string) => `/${documentId}` as const,
+      updateStatus: (documentId: string) => `/${documentId}/status` as const,
     },
   },
   invitations: {

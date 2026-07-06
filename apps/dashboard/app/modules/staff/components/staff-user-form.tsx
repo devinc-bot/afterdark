@@ -11,13 +11,13 @@ import {
   DialogClose,
   DialogFooter,
   Field,
-  fieldErrorMessage,
   Input,
   SelectField,
   SelectItem,
   toast,
 } from '@afterdark/ui'
 import type { TFunction } from 'i18next'
+import { useResolveFieldError } from '@afterdark/i18n/client'
 import { useClubs } from '~/modules/club-management/queries/use-club-management-queries'
 import { postStaffInvitation } from '~/modules/staff/services/staff-invitations.service'
 
@@ -84,6 +84,7 @@ type StaffUserFormProps = {
 
 export function StaffUserForm({ onInviteSuccess }: StaffUserFormProps) {
   const { t } = useTranslation('staff')
+  const resolveFieldError = useResolveFieldError()
   const { data: clubs = [], isLoading: isClubsLoading, isError: isClubsError } = useClubs()
 
   const form = useForm({
@@ -126,7 +127,7 @@ export function StaffUserForm({ onInviteSuccess }: StaffUserFormProps) {
             validators={{ onSubmit: createStaffInvitationSchema.shape.email }}
           >
             {(field) => {
-              const error = fieldErrorMessage(field.state.meta.errors)
+              const error = resolveFieldError(field.state.meta.errors)
 
               return (
                 <Field label={t('form.email')} htmlFor={field.name} error={error}>
@@ -151,7 +152,7 @@ export function StaffUserForm({ onInviteSuccess }: StaffUserFormProps) {
             validators={{ onSubmit: createStaffInvitationSchema.shape.clubId }}
           >
             {(field) => {
-              const error = fieldErrorMessage(field.state.meta.errors)
+              const error = resolveFieldError(field.state.meta.errors)
               const { placeholder: clubPlaceholder, error: clubFieldError } =
                 getClubSelectFieldDisplay({
                   isLoading: isClubsLoading,
@@ -185,7 +186,7 @@ export function StaffUserForm({ onInviteSuccess }: StaffUserFormProps) {
             validators={{ onSubmit: createStaffInvitationSchema.shape.expiresInMs }}
           >
             {(field) => {
-              const error = fieldErrorMessage(field.state.meta.errors)
+              const error = resolveFieldError(field.state.meta.errors)
 
               return (
                 <SelectField
@@ -215,7 +216,7 @@ export function StaffUserForm({ onInviteSuccess }: StaffUserFormProps) {
             validators={{ onSubmit: createStaffInvitationSchema.shape.securityWord }}
           >
             {(field) => {
-              const error = fieldErrorMessage(field.state.meta.errors)
+              const error = resolveFieldError(field.state.meta.errors)
 
               return (
                 <div className="flex flex-col gap-2">

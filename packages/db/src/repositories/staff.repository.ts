@@ -1,4 +1,4 @@
-import { desc, eq } from 'drizzle-orm'
+import { and, desc, eq } from 'drizzle-orm'
 import { type StaffStatus, type UserRole, USER_ROLE } from '@afterdark/types'
 import { db, type Transaction } from '../client.ts'
 import { accounts } from '../schema/account.ts'
@@ -91,6 +91,54 @@ export async function findStaffProfileByDocumentId(
     .limit(1)
 
   return row ?? null
+}
+
+async function findStaffOwnershipByDocumentId(
+  staffDocumentId: string,
+  ownerDocumentId: string
+): Promise<{ staffId: number; accountId: number } | null> {
+  const [row] = await db
+    .select({ staffId: staff.id, accountId: accounts.id })
+    .from(staff)
+    .innerJoin(staffClubsLnk, eq(staffClubsLnk.staffId, staff.id))
+    .innerJoin(clubs, eq(clubs.id, staffClubsLnk.clubId))
+    .innerJoin(owners, eq(owners.id, clubs.ownerId))
+    .innerJoin(staffAccountsLnk, eq(staffAccountsLnk.staffId, staff.id))
+    .innerJoin(accounts, eq(accounts.id, staffAccountsLnk.accountId))
+    .where(and(eq(staff.documentId, staffDocumentId), eq(owners.documentId, ownerDocumentId)))
+    .limit(1)
+
+  return row ?? null
+}
+
+export async function deleteStaffByDocumentId(
+  staffDocumentId: string,
+  ownerDocumentId: string
+): Promise<boolean> {
+  const ownership = await findStaffOwnershipByDocumentId(staffDocumentId, ownerDocumentId)
+  if (!ownership) return false
+
+  await db.transaction(async (tx: Transaction) => {
+    await tx.delete(staffClubsLnk).where(eq(staffClubsLnk.staffId, ownership.staffId))
+    await tx.delete(staffAccountsLnk).where(eq(staffAccountsLnk.staffId, ownership.staffId))
+    await tx.delete(staff).where(eq(staff.id, ownership.staffId))
+    await tx.delete(accounts).where(eq(accounts.id, ownership.accountId))
+  })
+
+  return true
+}
+
+export async function updateStaffStatusByDocumentId(
+  staffDocumentId: string,
+  ownerDocumentId: string,
+  status: StaffStatus
+): Promise<boolean> {
+  const ownership = await findStaffOwnershipByDocumentId(staffDocumentId, ownerDocumentId)
+  if (!ownership) return false
+
+  await db.update(staff).set({ status }).where(eq(staff.id, ownership.staffId))
+
+  return true
 }
 
 export async function createStaffWithAccountLink(

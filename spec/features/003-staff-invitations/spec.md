@@ -538,7 +538,152 @@ El tab _Invitaciones_ hoy acumula solo invitaciones creadas en la sesión actual
 
 ---
 
+## Entrega 6 — Eliminar / desactivar staff desde acciones
+
+### Qué hace
+
+En el tab _Personal_ de `/staff`, el dueño elimina o desactiva/activa personal directamente desde el menú de acciones de cada fila, con persistencia real en la API (ya no es solo UI local). Se quitan las columnas "Última actividad" y "Estado" y la opción "Editar" del menú.
+
+### Por qué
+
+`StaffUserRecords` hoy no tiene forma de gestionar el ciclo de vida del staff: el switch de estado está deshabilitado (Entrega 1) y "Editar" nunca se implementó. El dueño necesita poder revocar acceso (desactivar) o eliminar completamente a alguien que ya no trabaja en el club.
+
+### Incluye
+
+- Quitar columnas "Última actividad" y "Estado" de la tabla (`StaffUserRecords`). Quedan: Nombre, Sede, Rol, Acciones.
+- Menú de acciones: quitar "Editar" (disabled). Agregar:
+  - Toggle "Desactivar usuario" / "Activar usuario" según `record.status` — desactivar abre `StaffUserDeactivateDialog` (existente); activar es directo.
+  - "Eliminar usuario" — abre nuevo `StaffUserDeleteDialog`; hard delete irreversible.
+- `STAFF_STATUS` en `@afterdark/types`: quitar `PENDING` (sin uso). Queda `{ ACTIVE, INACTIVE }`.
+- `packages/db/src/schema/staff.ts`: actualizar el array `enum` del campo `status` (sin migración — SQLite no genera `CHECK` para `text enum` en Drizzle).
+- Nuevos endpoints `apps/api` (módulo `staff`): `DELETE /staff/:documentId`, `PATCH /staff/:documentId/status`.
+- Nuevas funciones `packages/db`: `deleteStaffByDocumentId`, `updateStaffStatusByDocumentId` (ambas verifican pertenencia al dueño autenticado).
+- Dashboard: mutations `useDeleteStaffUser` / `useUpdateStaffUserStatus`, invalidan `QUERY_KEYS.staffPersonnel()` on success. `StaffPersonnelTab` deja de forzar `statusControlsDisabled`.
+- Claves i18n nuevas en `staff/es.json` / `staff/en.json`: `delete.*`, `table.deleteUser`, `table.deactivateUser`, `table.activateUser`.
+
+### No incluye
+
+- Editar datos del staff (nombre, teléfono, club, rol) — sigue fuera de alcance.
+- Reactivar un usuario eliminado (hard delete es definitivo; solo re-invitar desde cero).
+- Cambios de status/delete por club individual (aplica al registro `staff` completo, todos sus clubes a la vez).
+- Notificar por email al staff eliminado/desactivado.
+- Auditoría o log de quién eliminó/desactivó.
+
+## User stories — Entrega 6
+
+### US-10: Desactivar staff
+
+**Como** dueño de clubes
+**Quiero** desactivar el acceso de un miembro del staff desde el menú de acciones
+**Para** revocar su acceso sin borrar su historial
+
+**Criterios de aceptación**
+
+- [ ] **Dado** un staff activo, **Cuando** abro el menú de acciones y elijo "Desactivar usuario", **Entonces** veo `StaffUserDeactivateDialog` pidiendo confirmación.
+- [ ] **Dado** que confirmo la desactivación, **Cuando** la mutation resuelve OK, **Entonces** el registro pasa a `inactive` y la tabla se refresca (invalidación de query).
+- [ ] **Dado** un staff con varios clubes (varias filas), **Cuando** lo desactivo desde una fila, **Entonces** todas sus filas reflejan `inactive`.
+
+### US-11: Activar staff
+
+**Como** dueño de clubes
+**Quiero** reactivar a un staff inactivo desde el menú de acciones
+**Para** restaurar su acceso sin tener que re-invitarlo
+
+**Criterios de aceptación**
+
+- [ ] **Dado** un staff inactivo, **Cuando** elijo "Activar usuario" en el menú, **Entonces** se activa directo (sin diálogo) y la tabla se refresca.
+
+### US-12: Eliminar staff
+
+**Como** dueño de clubes
+**Quiero** eliminar completamente a un miembro del staff
+**Para** remover a alguien que ya no trabaja en el club, incluyendo su acceso de login
+
+**Criterios de aceptación**
+
+- [ ] **Dado** un staff cualquiera, **Cuando** elijo "Eliminar usuario", **Entonces** veo `StaffUserDeleteDialog` con aviso de que la acción es irreversible.
+- [ ] **Dado** que confirmo la eliminación, **Cuando** la mutation resuelve OK, **Entonces** se borran `staff`, `staff_account_lnk`, `staff_club_lnk` y `accounts`; la persona no puede volver a loguearse.
+- [ ] **Dado** que elimino a un staff con varias filas (varios clubes), **Cuando** confirmo, **Entonces** desaparecen todas sus filas de la tabla.
+
+### US-13: Menú sin "Editar"
+
+**Como** dueño de clubes
+**Quiero** no ver una opción "Editar" que nunca funcionó
+**Para** no confundirme con acciones no disponibles
+
+**Criterios de aceptación**
+
+- [ ] **Dado** el menú de acciones de cualquier fila, **Cuando** lo abro, **Entonces** no veo la opción "Editar"; veo el toggle de estado y "Eliminar usuario".
+
+## Contratos — Entrega 6
+
+### API
+
+| Método   | Ruta                          | Auth                                   |
+| -------- | ------------------------------ | --------------------------------------- |
+| `DELETE` | `/api/staff/:documentId`       | JWT + rol `owner` (`OwnerRoleGuard`)    |
+| `PATCH`  | `/api/staff/:documentId/status` | JWT + rol `owner` (`OwnerRoleGuard`)    |
+
+**`PATCH` body:**
+
+```ts
+{
+  status: 'active' | 'inactive'
+}
+```
+
+**Response (ambos):** `204 No Content` (mismo patrón que `DELETE /clubs/:documentId` y `DELETE /invitations/staff/:documentId`; el dashboard invalida la query tras el éxito, no depende del body).
+
+**Errores (mensaje al usuario en español)**
+
+| HTTP | Cuándo                                    | Mensaje                                                |
+| ---- | ------------------------------------------ | -------------------------------------------------------- |
+| 401  | Sin sesión                                 | Redirigir a login                                        |
+| 403  | No es dueño                                | Mensaje de API / fallback dashboard                      |
+| 404  | `documentId` no existe o no es del dueño   | `Personal no encontrado.` (reusa `staff.NOT_FOUND`)      |
+| 400  | `status` inválido (solo PATCH)             | Mensaje de validación Zod (`invalid_enum_value`)          |
+| 500  | Error al eliminar                          | `No pudimos eliminar el usuario. Intentá de nuevo.`      |
+| 500  | Error al actualizar estado                 | `No pudimos actualizar el estado. Intentá de nuevo.`     |
+
+### Datos
+
+| Tabla / campo    | Cambio                                                                                                                                     |
+| ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| `staff.status`   | `STAFF_STATUS` sin `PENDING` en `@afterdark/types` y en el `enum` de `packages/db/src/schema/staff.ts`. Sin migración SQL (solo tipo TS). |
+| Delete en cascada | Transacción: `staff_club_lnk` (por `staffId`) → `staff_account_lnk` (por `staffId`) → `staff` → `accounts` (por `accountId` resuelto).   |
+
+### UI (`dashboard`)
+
+| Cambio                                                            | Archivo                                            |
+| ------------------------------------------------------------------ | ---------------------------------------------------- |
+| Quitar columnas "Última actividad" y "Estado"                     | `staff-user-records.tsx`                           |
+| Quitar item "Editar"; agregar toggle activar/desactivar + eliminar | `staff-user-records.tsx` (`StaffUserRecordActions`) |
+| Nuevo diálogo de confirmación de borrado                          | `staff-user-delete-dialog.tsx` (nuevo)              |
+| Mutations delete/status + invalidación de query                  | `queries/use-staff-personnel.ts` o nuevo archivo    |
+| `StaffPersonnelTab` deja de fijar `statusControlsDisabled`         | `staff-personnel-tab.tsx`                           |
+
+**Copy (i18n, `staff/es.json` + `staff/en.json`)**
+
+| Clave                     | Uso                                              |
+| -------------------------- | --------------------------------------------------- |
+| `table.deleteUser`        | Item de menú "Eliminar usuario"                    |
+| `table.deactivateUser`    | Item de menú "Desactivar usuario" (si activo)      |
+| `table.activateUser`      | Item de menú "Activar usuario" (si inactivo)       |
+| `delete.title`             | Título del diálogo de confirmación                |
+| `delete.descriptionPrefix` / `delete.descriptionSuffix` | Descripción con nombre interpolado (igual patrón que `deactivate.*`) |
+| `delete.cancel` / `delete.confirm` | Botones del diálogo                         |
+
+## Reglas de negocio — Entrega 6
+
+- Desactivar/activar/eliminar operan sobre el registro `staff` completo (no por club): si una persona tiene varias filas (una por club), la acción afecta a todas simultáneamente.
+- "Activar usuario" no pide confirmación (mismo comportamiento que el switch actual). "Desactivar usuario" y "Eliminar usuario" sí piden confirmación vía diálogo.
+- Eliminar es hard delete transaccional: `staff` + `staff_account_lnk` + `staff_club_lnk` + `accounts`. Es irreversible; no hay forma de restaurar salvo re-invitar desde cero.
+- Ambos endpoints verifican que el `documentId` de staff pertenece a un club del dueño autenticado antes de aplicar el cambio (404 si no).
+- `STAFF_STATUS.PENDING` se quita del enum: no tenía uso en ningún flujo (default de `staff.status` siempre fue `ACTIVE`).
+- Sin migración SQL: SQLite + Drizzle no generan `CHECK` para columnas `text` con `enum` (confirmado en migraciones existentes) — el cambio es solo a nivel de tipos TS.
+
 ## Preguntas abiertas
 
 - ¿Agregar `AvatarImage` cuando `avatar` es URL absoluta de R2 o solo paths relativos? (entrega 1)
 - ¿Conectar `POST /invitations/staff` en el formulario si aún usa generación local? → incluido en implementación entrega 2.
+- (Entrega 6) Copy exacto ES/EN de las claves nuevas (`delete.*`, `table.deleteUser`, `table.deactivateUser`, `table.activateUser`) se redacta durante la implementación siguiendo el tono de `deactivate.*`.
