@@ -1,5 +1,5 @@
 import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core'
-import { USER_ASSET_LINK_TYPE } from '@afterdark/types'
+import { USER_ASSET_LINK_TYPE } from '@afterdark/types/enums'
 import { createBaseColumns } from './base.ts'
 import { assets } from './asset.ts'
 import { users } from './user.ts'

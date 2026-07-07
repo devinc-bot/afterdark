@@ -1,4 +1,4 @@
-import type { CurrentStaffRow, OwnerStaffPersonnelRow } from '@afterdark/db'
+import type { CurrentStaffRow, OwnerStaffPersonnelRow } from '@afterdark/types'
 import { USER_ROLE, type CurrentStaffResponse, type StaffPersonnelItem } from '@afterdark/types'
 
 export function toStaffPersonnelItem(row: OwnerStaffPersonnelRow): StaffPersonnelItem {

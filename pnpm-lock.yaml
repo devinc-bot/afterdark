@@ -332,7 +332,11 @@ importers:
         specifier: 6.0.3
         version: 6.0.3
 
-  packages/types: {}
+  packages/types:
+    dependencies:
+      '@afterdark/db':
+        specifier: workspace:*
+        version: link:../db
 
   packages/ui:
     dependencies:

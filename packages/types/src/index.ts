@@ -1,2 +1,3 @@
 export * from './enums/index.ts'
 export * from './dto/index.ts'
+export * from './repository/index.ts'
