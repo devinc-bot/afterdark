@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-export const uuidSchema = z.string().uuid()
+export const uuidSchema = z.uuid()
 
 /** Accepts empty string / null and coerces valid date strings; yields `undefined` when absent. */
 export const optionalCoercedDateSchema = z.preprocess((value) => {

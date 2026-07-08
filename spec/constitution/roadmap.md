@@ -18,6 +18,7 @@
 | 012 | `ticket-form-event-and-sale-dates` | Ticket: evento + ventana de venta    | `approved`    | `api`, `dashboard`        | Select evento requerido; fechas de venta opcionales en modal ticket. Depende de `011`.                                                                                                                                                                                                                                                                                                                                                       |
 | 013 | `language-switcher`                | Selector de idioma                   | `in-progress` | `dashboard`               | Select mock "Idioma del panel" conectado a `setLanguage()` real de `@afterdark/i18n`. Type-check/lint OK; falta QA manual en browser (login como dueño). `web` queda afuera (sin header aún).                                                                                                                                                                                                                                                |
 | 014 | `staff-settings`                   | Configuración del staff              | `done`        | `api`, `dashboard`        | Reemplaza el placeholder "Hello World" de `StaffSettingsView` (004) por edición real de perfil (nombre, apellido, teléfono; avatar/email solo lectura). `BaseProfileResponse`/`baseProfileSchema` compartidos entre owner y staff; `createSettingsFormProvider<TUser,TProfile>()` genérico en `modules/settings/`. Verificado en browser (Playwright) contra API real. Ver `spec/features/012-staff-settings/`.                              |
+| 016 | `architecture`                     | Arquitectura de tipos (DTOs)         | `in-progress` | `types`                   | Refactor de `@afterdark/types`: carpeta `dto/` por dominio; `domain.ts` solo enums. Implementado; pendiente marcar `done`. Ver `spec/features/016-architecture/`.                                                                                                                                                                                                                                                                            |
 
 ## Status
 
@@ -46,6 +47,7 @@
 012-ticket-form-event-and-sale-dates →  requiere 011
 013-language-switcher                →  requiere 004 (settings del dueño)
 014-staff-settings                   →  requiere 004 (módulo settings), 003 (modelo de datos staff)
+016-architecture                     →  (sin deps; refactor transversal)
 ```
 
 ## Decisiones de prioridad
