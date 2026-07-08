@@ -1,5 +1,5 @@
 import { sqliteTable, text } from 'drizzle-orm/sqlite-core'
-import { ASSET_TYPE } from '@afterdark/types'
+import { ASSET_TYPE } from '@afterdark/types/enums'
 import { createBaseColumns } from './base.ts'
 
 export const assets = sqliteTable('assets', {

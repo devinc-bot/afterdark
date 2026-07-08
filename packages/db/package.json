@@ -7,7 +7,8 @@
   "types": "./src/index.ts",
   "exports": {
     ".": "./src/index.ts",
-    "./config/env.server": "./src/config/env.server.ts"
+    "./config/env.server": "./src/config/env.server.ts",
+    "./schema": "./src/schema/index.ts"
   },
   "scripts": {
     "type-check": "tsc --noEmit",

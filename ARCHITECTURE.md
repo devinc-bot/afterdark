@@ -146,11 +146,26 @@ afterdark/
     │       ├── user.ts         # createUserSchema, updateUserSchema
     │       └── property.ts     # createPropertySchema, updatePropertySchema, filterPropertySchema
     │
-    └── types/                  # Shared TypeScript interfaces
+    └── types/                  # Shared contracts (enums + DTOs)
         └── src/
-            ├── domain.ts       # User, Property and their enums
-            ├── api.ts          # ApiResponse, ApiError
-            └── pagination.ts   # PaginationParams, PaginatedResponse
+            ├── enums/          # Domain enums and const objects (by domain)
+            │   ├── user.ts     # USER_ROLE, USER_STATUS, OWNER_STATUS, …
+            │   ├── staff.ts    # STAFF_STATUS, STAFF_INVITATION_STATUS
+            │   ├── club.ts     # CLUB_STATUS, ASSET_TYPE
+            │   ├── event.ts    # EVENT_STATUS
+            │   ├── ticket.ts   # TICKET_STATUS, TICKET_TYPE
+            │   ├── payment.ts  # PAYMENT_STATUS
+            │   └── index.ts
+            ├── dto/            # API / transfer shapes (by domain)
+            │   ├── auth.ts     # LoginResponse, JwtPayload, …
+            │   ├── user.ts     # SessionResponse, profiles, SettingsResponse
+            │   ├── club.ts     # ClubResponse, UploadedAssetResponse
+            │   ├── event.ts    # EventResponse
+            │   ├── ticket.ts   # TicketResponse
+            │   ├── staff.ts    # StaffPersonnelItem, invitations
+            │   ├── common.ts   # ApiResponse, ApiError, pagination
+            │   └── index.ts
+            └── index.ts        # public barrel — re-exports enums + dto
 ```
 
 ---
@@ -388,7 +403,22 @@ Single source of truth for Zod schemas. Never redefine locally what already exis
 
 ### `@afterdark/types`
 
-Single source of truth for domain TypeScript interfaces.
+Single source of truth for **shared enums** and **data transfer objects** (request/response shapes used by API and apps).
+
+**Layout**
+
+| Folder | Contents | Example |
+| ------ | -------- | ------- |
+| `src/enums/` | `const` objects + derived union types (`UserRole`, `ClubStatus`, …) | `USER_ROLE`, `STAFF_STATUS` |
+| `src/dto/` | `interface` / type aliases for API contracts | `ClubResponse`, `SettingsResponse` |
+| `src/index.ts` | Public barrel — always import from `@afterdark/types` | `import { CLUB_STATUS, ClubResponse } from '@afterdark/types'` |
+
+**Rules**
+
+- Add a new enum in `src/enums/<domain>.ts` and export it from `src/enums/index.ts`.
+- Add a new DTO in `src/dto/<domain>.ts`; DTO files may import enums from `../enums/<domain>.ts` only (one-way: `dto` → `enums`).
+- Do not import from internal paths (`@afterdark/types/dto/...`) in apps or API — use the package barrel.
+- Drizzle `text(..., { enum: [...] })` columns should use the same string values as `packages/types/src/enums/` (see `packages/db/DATABASE.md`).
 
 ---
 
@@ -421,8 +451,9 @@ Validation (Zod) runs at startup:
 4. `packages/db/src/repositories/<name>.repository.ts` — queries and writes for the new table
 5. Export from `packages/db/src/repositories/index.ts`
 6. `packages/validators/src/<name>.ts` — Zod schemas
-7. `packages/types/src/domain.ts` — TypeScript interfaces
-8. `apps/api/src/modules/<name>/` — NestJS module; service calls repositories, maps errors to HTTP
+7. `packages/types/src/enums/<name>.ts` — domain enums (`*_STATUS`, `*_TYPE`, …)
+8. `packages/types/src/dto/<name>.ts` — response/input interfaces for the API
+9. `apps/api/src/modules/<name>/` — NestJS module; service calls repositories, maps rows to DTOs via formatters
 
 ### New API endpoint (existing entity)
 
