@@ -15,12 +15,9 @@ import {
 import { FILE_ERROR_CODE } from '@afterdark/i18n/constants'
 import { TranslationService } from '@afterdark/i18n/server'
 import { ENV } from '../common/config/env'
+import { optimizeImage } from './utils/image-optimizer'
 
 type FilesClient = import('files-sdk').Files
-
-function resolveImageExtension(mimeType: AllowedImageMimeType, originalName: string): string {
-  return IMAGE_EXTENSION_BY_MIME_TYPE[mimeType] ?? (extname(originalName).toLowerCase() || '.img')
-}
 
 @Injectable()
 export class FilesService implements OnModuleInit {
@@ -43,24 +40,41 @@ export class FilesService implements OnModuleInit {
     })
   }
 
-  buildImageKey(file: Express.Multer.File): string {
-    if (!isAllowedImageMimeType(file.mimetype)) {
+  buildImageKey(mimeType: AllowedImageMimeType, originalName: string): string {
+    const extension = IMAGE_EXTENSION_BY_MIME_TYPE[mimeType] ?? extname(originalName).toLowerCase()
+
+    if (!extension) {
       throw new BadRequestException(this.ts.translateError(FILE_ERROR_CODE.INVALID_IMAGE_TYPE))
     }
 
-    const extension = resolveImageExtension(file.mimetype, file.originalname)
     return `${randomUUID()}${extension}`
   }
 
   async uploadImage(file: Express.Multer.File): Promise<{ key: string; url: string }> {
+    if (!isAllowedImageMimeType(file.mimetype)) {
+      throw new BadRequestException(this.ts.translateError(FILE_ERROR_CODE.INVALID_IMAGE_TYPE))
+    }
+
     if (file.size > ENV.UPLOAD_MAX_BYTES) {
       throw new BadRequestException(this.ts.translateError(FILE_ERROR_CODE.FILE_TOO_LARGE))
     }
-    const key = this.buildImageKey(file)
+
+    let optimized
 
     try {
-      await this.client.upload(key, file.buffer, {
-        contentType: file.mimetype,
+      optimized = await optimizeImage(file.buffer, file.mimetype, {
+        maxDimension: ENV.IMAGE_MAX_DIMENSION,
+        quality: ENV.IMAGE_QUALITY,
+      })
+    } catch {
+      throw new BadRequestException(this.ts.translateError(FILE_ERROR_CODE.INVALID_IMAGE_TYPE))
+    }
+
+    const key = this.buildImageKey(optimized.mimeType, file.originalname)
+
+    try {
+      await this.client.upload(key, optimized.buffer, {
+        contentType: optimized.mimeType,
         cacheControl: 'public, max-age=31536000, immutable',
       })
 
