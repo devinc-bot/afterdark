@@ -27,10 +27,17 @@ export const IMAGE_UPLOAD_MAX_BYTES = 5 * 1024 * 1024
 
 export const IMAGE_UPLOAD_MAX_MEGABYTES = IMAGE_UPLOAD_MAX_BYTES / (1024 * 1024)
 
+export const IMAGE_OPTIMIZATION = {
+  MAX_DIMENSION: 1280,
+  QUALITY: 70,
+} as const
+
 export const CLUB_IMAGE_MAX_COUNT = 5
 
 export const uploadEnvSchema = z.object({
   UPLOAD_MAX_BYTES: z.coerce.number().int().positive().default(IMAGE_UPLOAD_MAX_BYTES),
+  IMAGE_MAX_DIMENSION: z.coerce.number().int().positive().default(IMAGE_OPTIMIZATION.MAX_DIMENSION),
+  IMAGE_QUALITY: z.coerce.number().int().min(1).max(100).default(IMAGE_OPTIMIZATION.QUALITY),
   R2_ACCOUNT_ID: z.string().min(1),
   R2_ACCESS_KEY_ID: z.string().min(1),
   R2_SECRET_ACCESS_KEY: z.string().min(1),
