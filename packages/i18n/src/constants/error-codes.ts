@@ -72,6 +72,7 @@ export const FILE_ERROR_CODE = {
 
 export const GUARD_ERROR_CODE = {
   OWNER_ONLY: 'guard.OWNER_ONLY',
+  INSUFFICIENT_ROLE: 'guard.INSUFFICIENT_ROLE',
 } as const
 
 export const EVENT_ERROR_CODE = {

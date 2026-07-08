@@ -15,6 +15,7 @@ import {
 } from '@nestjs/common'
 import { FilesInterceptor } from '@nestjs/platform-express'
 import type { JwtPayload } from '@afterdark/types'
+import { USER_ROLE } from '@afterdark/types'
 import {
   createClubSchema,
   updateClubMultipartSchema,
@@ -23,8 +24,9 @@ import {
   type UpdateClubMultipartInput,
 } from '@afterdark/validators'
 import { CurrentUser } from '../common/decorators/current-user.decorator'
+import { Roles } from '../common/decorators/roles.decorator'
 import { JwtAuthGuard } from '../common/guards/jwt-auth.guard'
-import { OwnerRoleGuard } from '../common/guards/owner-role.guard'
+import { RolesGuard } from '../common/guards/roles.guard'
 import { ZodValidationPipe } from '../common/pipes/zod-validation.pipe'
 import { imageUploadOptions } from '../files/image-upload.options'
 import { ClubsService } from './clubs.service'
@@ -36,7 +38,8 @@ export class ClubsController {
   constructor(@Inject(ClubsService) private readonly clubsService: ClubsService) {}
 
   @Get('my-clubs')
-  @UseGuards(JwtAuthGuard, OwnerRoleGuard)
+  @Roles([USER_ROLE.OWNER])
+  @UseGuards(JwtAuthGuard, RolesGuard)
   listMyClubs(@CurrentUser() user: JwtPayload) {
     return this.clubsService.listMyClubs(user.sub)
   }
