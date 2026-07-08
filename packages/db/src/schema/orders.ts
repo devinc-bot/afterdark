@@ -1,21 +1,17 @@
 import { integer, real, sqliteTable, text } from 'drizzle-orm/sqlite-core'
-import { PAYMENT_STATUS } from '@afterdark/types/enums'
+import { PAYMENT_PROVIDER, PAYMENT_STATUS } from '@afterdark/types/enums'
 import { createBaseColumns } from './base.ts'
-import { clubs } from './club.ts'
 import { tickets } from './ticket.ts'
 import { users } from './user.ts'
 
-export const payments = sqliteTable('payments', {
-  ...createBaseColumns('payments'),
+export const orders = sqliteTable('orders', {
+  ...createBaseColumns('orders'),
   ticketId: integer('ticket_id')
     .notNull()
     .references(() => tickets.id),
   userId: integer('user_id')
     .notNull()
     .references(() => users.id),
-  clubId: integer('club_id')
-    .notNull()
-    .references(() => clubs.id),
   status: text('status', {
     enum: [
       PAYMENT_STATUS.COMPLETED,
@@ -25,7 +21,12 @@ export const payments = sqliteTable('payments', {
     ],
   }),
   amount: real('amount').notNull(),
+  quantity: integer('quantity').notNull().default(1),
+  provider: text('provider', { enum: [PAYMENT_PROVIDER.MERCADO_PAGO] })
+    .notNull()
+    .default(PAYMENT_PROVIDER.MERCADO_PAGO),
+  metadata: text('metadata', { mode: 'json' }).$type<Record<string, unknown>>(),
 })
 
-export type PaymentSelect = typeof payments.$inferSelect
-export type PaymentInsert = typeof payments.$inferInsert
+export type OrderSelect = typeof orders.$inferSelect
+export type OrderInsert = typeof orders.$inferInsert

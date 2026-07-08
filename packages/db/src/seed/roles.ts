@@ -10,10 +10,12 @@ const defaultRoles = [
   { name: USER_ROLE.USER, description: 'Regular user' },
 ] as const
 
-for (const role of defaultRoles) {
-  const [existing] = await db.select().from(roles).where(eq(roles.name, role.name)).limit(1)
+export async function seedRoles(): Promise<void> {
+  for (const role of defaultRoles) {
+    const [existing] = await db.select().from(roles).where(eq(roles.name, role.name)).limit(1)
 
-  if (!existing) {
-    await db.insert(roles).values(role)
+    if (!existing) {
+      await db.insert(roles).values(role)
+    }
   }
 }

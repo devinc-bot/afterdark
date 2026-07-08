@@ -6,3 +6,9 @@ export const PAYMENT_STATUS = {
 } as const
 
 export type PaymentStatus = (typeof PAYMENT_STATUS)[keyof typeof PAYMENT_STATUS]
+
+export const PAYMENT_PROVIDER = {
+  MERCADO_PAGO: 'mercado_pago',
+} as const
+
+export type PaymentProvider = (typeof PAYMENT_PROVIDER)[keyof typeof PAYMENT_PROVIDER]
