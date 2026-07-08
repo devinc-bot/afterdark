@@ -15,7 +15,7 @@ Documentación del esquema y la capa de acceso a datos del monorepo **afterdark*
 | Schemas      | `packages/db/src/schema/`                                               |
 | Repositorios | `packages/db/src/repositories/`                                         |
 | Migraciones  | `packages/db/src/migrations/`                                           |
-| Tablas       | 22                                                                      |
+| Tablas       | 23                                                                      |
 
 La API (`apps/api`) importa **repositorios**, tipos y el cliente desde `@afterdark/db`. Las consultas Drizzle viven en `repositories/`; los servicios NestJS solo orquestan reglas de negocio y excepciones HTTP. No hay TypeORM ni entidades con decoradores.
 
@@ -37,7 +37,8 @@ Cada tabla incluye las columnas base (`id`, `document_id`, `created_at`, `update
 | `clubs`               | `clubs`             | `club.ts`              | Entidad |
 | `services`            | `services`          | `service.ts`           | Entidad |
 | `tickets`             | `tickets`           | `ticket.ts`            | Entidad |
-| `payments`            | `payments`          | `payment.ts`           | Entidad |
+| `orders`              | `orders`            | `orders.ts`            | Entidad |
+| `tickets_sold`        | `ticketsSold`       | `tickets_sold.ts`      | Entidad |
 | `chat`                | `chats`             | `chat.ts`              | Entidad |
 | `messages`            | `messages`          | `messages.ts`          | Entidad |
 | `staff_invitations`   | `staffInvitations`  | `staff-invitation.ts`  | Entidad |
@@ -84,6 +85,7 @@ Los valores de columnas `text` con enum provienen de `packages/types/src/domain.
 | `TICKET_STATUS`           | `active`, `inactive`                            |
 | `TICKET_TYPE`             | `general`, `vip`                                |
 | `PAYMENT_STATUS`          | `completed`, `pending`, `rejected`, `cancelled` |
+| `PAYMENT_PROVIDER`        | `mercado_pago`                                  |
 | `ASSET_TYPE`              | `img`, `video`                                  |
 | `USER_ASSET_LINK_TYPE`    | `post`, `history`                               |
 
@@ -130,9 +132,9 @@ erDiagram
   clubs ||--o{ tickets : sells
   clubs ||--o{ staff_invitations : receives
   users ||--o{ staff_invitations : invites
-  users ||--o{ payments : makes
-  tickets ||--o{ payments : for
-  clubs ||--o{ payments : at
+  users ||--o{ orders : makes
+  tickets ||--o{ orders : for
+  orders ||--o{ tickets_sold : generates
 
   users ||--o{ messages : sends
   users ||--o{ messages : receives
@@ -341,27 +343,36 @@ Regla de negocio (API): solo un usuario con rol `owner` puede crear invitaciones
 
 #### `tickets` — `ticket.ts`
 
-| Columna (TS)  | SQL           | Tipo      | Null | Default         |
-| ------------- | ------------- | --------- | ---- | --------------- |
-| `name`        | `name`        | text      | NO   | —               |
-| `price`       | `price`       | real      | NO   | —               |
-| `quantity`    | `quantity`    | integer   | NO   | —               |
-| `status`      | `status`      | text      | NO   | `active`        |
-| `startDate`   | `start_date`  | timestamp | NO   | —               |
-| `endDate`     | `end_date`    | timestamp | NO   | —               |
-| `description` | `description` | text      | NO   | —               |
-| `clubId`      | `club_id`     | integer   | NO   | FK → `clubs.id` |
-| `type`        | `type`        | text      | NO   | `general`       |
+| Columna (TS)   | SQL              | Tipo      | Null | Default         |
+| -------------- | ---------------- | --------- | ---- | --------------- |
+| `name`         | `name`           | text      | NO   | —               |
+| `price`        | `price`          | real      | NO   | —               |
+| `quantity`     | `quantity`       | integer   | NO   | —               |
+| `status`       | `status`         | text      | NO   | `active`        |
+| `description`  | `description`    | text      | NO   | —               |
+| `saleStartsAt` | `sale_starts_at` | timestamp | SÍ   | —               |
+| `saleEndsAt`   | `sale_ends_at`   | timestamp | SÍ   | —               |
+| `eventId`      | `event_id`       | integer   | SÍ   | FK → `events.id` |
+| `type`         | `type`           | text      | NO   | `general`       |
 
-#### `payments` — `payment.ts`
+#### `orders` — `orders.ts`
 
-| Columna (TS) | SQL         | Tipo    | Null   | FK →                                         |
-| ------------ | ----------- | ------- | ------ | -------------------------------------------- |
+| Columna (TS) | SQL        | Tipo    | Null   | FK / default                                 |
+| ------------ | ---------- | ------- | ------ | -------------------------------------------- |
 | `ticketId`   | `ticket_id` | integer | NO     | `tickets.id`                                 |
 | `userId`     | `user_id`   | integer | NO     | `users.id`                                   |
-| `clubId`     | `club_id`   | integer | NO     | `clubs.id`                                   |
 | `status`     | `status`    | text    | **SÍ** | Enum `PAYMENT_STATUS`; sin default en schema |
 | `amount`     | `amount`    | real    | NO     | —                                            |
+| `quantity`   | `quantity`  | integer | NO     | Default `1`                                  |
+| `provider`   | `provider`  | text    | NO     | Enum `PAYMENT_PROVIDER`; default `mercado_pago` |
+| `metadata`   | `metadata`  | json    | SÍ     | Respuesta / datos del proveedor de pago      |
+
+#### `tickets_sold` — `tickets_sold.ts`
+
+| Columna (TS) | SQL         | Tipo    | Null | FK / notas              |
+| ------------ | ----------- | ------- | ---- | ----------------------- |
+| `orderId`    | `order_id`  | integer | NO   | FK → `orders.id`        |
+| `qrCode`     | `qr_code`   | text    | NO   | UNIQUE; código QR emitido |
 
 ---
 
@@ -427,6 +438,7 @@ Export Drizzle: `chats`. Solo columnas base; sin campos adicionales.
 | `staff_invitations`   | `token`                                      |
 | `owner_addresses_lnk` | `owner_id`, `address_id`                     |
 | `club_addresses_lnk`  | `club_id`, `address_id`                      |
+| `tickets_sold`          | `qr_code`                                    |
 
 ---
 
@@ -446,6 +458,8 @@ Historial en `src/migrations/meta/_journal.json`:
 | 0007 | `0007_shallow_famine.sql`       | `owners` + `owner_account_lnk`                             |
 | 0008 | `0008_aspiring_brood.sql`       | `users`: −`tax_id`                                         |
 | 0009 | `0009_acoustic_maverick.sql`    | `staff` + `staff_account_lnk`                              |
+| 0015 | `0015_friendly_kabuki.sql`      | `payments` → `orders`; +`quantity`, `provider`, `metadata`; −`club_id` |
+| 0016 | `0016_bent_stranger.sql`        | Tabla `tickets_sold` (`order_id`, `qr_code`)               |
 
 ### Comandos (desde `packages/db`)
 
