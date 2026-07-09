@@ -120,6 +120,13 @@
       "when": 1783545743666,
       "tag": "0016_bent_stranger",
       "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "6",
+      "when": 1783635457031,
+      "tag": "0017_kind_blue_shield",
+      "breakpoints": true
     }
   ]
 }

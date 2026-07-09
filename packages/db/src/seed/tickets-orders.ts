@@ -12,6 +12,7 @@ import { events } from '../schema/event.ts'
 import { orders } from '../schema/orders.ts'
 import { owners } from '../schema/owner.ts'
 import { tickets } from '../schema/ticket.ts'
+import { ticketsSold } from '../schema/tickets_sold.ts'
 import { users } from '../schema/user.ts'
 
 const DAY_MS = 24 * 60 * 60 * 1000
@@ -107,15 +108,36 @@ async function upsertTicket(
   return row
 }
 
-async function upsertOrder(documentId: string, values: typeof orders.$inferInsert): Promise<void> {
+async function upsertOrder(
+  documentId: string,
+  values: typeof orders.$inferInsert
+): Promise<number> {
   const [existing] = await db
     .select({ id: orders.id })
     .from(orders)
     .where(eq(orders.documentId, documentId))
     .limit(1)
+  if (existing) return existing.id
+
+  const [row] = await db
+    .insert(orders)
+    .values({ ...values, documentId })
+    .returning({ id: orders.id })
+  return row.id
+}
+
+async function upsertTicketSold(
+  documentId: string,
+  values: typeof ticketsSold.$inferInsert
+): Promise<void> {
+  const [existing] = await db
+    .select({ id: ticketsSold.id })
+    .from(ticketsSold)
+    .where(eq(ticketsSold.documentId, documentId))
+    .limit(1)
   if (existing) return
 
-  await db.insert(orders).values({ ...values, documentId })
+  await db.insert(ticketsSold).values({ ...values, documentId })
 }
 
 export async function seedTicketsOrders(): Promise<void> {
@@ -206,15 +228,39 @@ export async function seedTicketsOrders(): Promise<void> {
   for (let i = 1; i <= SEED_COUNT; i++) {
     const ticket = ticketRefs[i - 1]
     const quantity = (i % 4) + 1
+    const status = ORDER_STATUSES[i % ORDER_STATUSES.length]
+    const paidAt = status === PAYMENT_STATUS.COMPLETED ? new Date(now - i * 60 * 60 * 1000) : null
 
-    await upsertOrder(`seed-order-${i}`, {
+    const orderId = await upsertOrder(`seed-order-${i}`, {
       documentId: `seed-order-${i}`,
       ticketId: ticket.id,
       userId: userIds[(i - 1) % userIds.length],
-      status: ORDER_STATUSES[i % ORDER_STATUSES.length],
+      status,
       amount: ticket.price * quantity,
       quantity,
       provider: PAYMENT_PROVIDER.MERCADO_PAGO,
+      paidAt,
+      metadata:
+        status === PAYMENT_STATUS.COMPLETED
+          ? {
+              providerPaymentId: `mp-seed-${i}`,
+              preferenceId: `pref-seed-${i}`,
+            }
+          : null,
     })
+
+    if (status !== PAYMENT_STATUS.COMPLETED) continue
+
+    for (let unit = 1; unit <= quantity; unit++) {
+      const checkedIn = i % 2 === 0 && unit === 1
+
+      await upsertTicketSold(`seed-ticket-sold-${i}-${unit}`, {
+        documentId: `seed-ticket-sold-${i}-${unit}`,
+        orderId,
+        qrCode: `seed-qr-${i}-${unit}`,
+        checkedIn,
+        usedAt: checkedIn ? new Date(now - unit * 30 * 60 * 1000) : null,
+      })
+    }
   }
 }
