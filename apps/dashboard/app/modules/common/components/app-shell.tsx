@@ -20,12 +20,14 @@ import {
 import { Link, useNavigate, useRouterState } from '@tanstack/react-router'
 import { useCallback, useMemo, useRef, useState, type ReactNode } from 'react'
 import { LayoutGrid, LogOut, Martini, Ticket, Users, CalendarDays } from 'lucide-react'
+import { USER_ROLE, type UserRole } from '@afterdark/types'
 import { clearAuthSession } from '~/modules/auth/utils/auth-storage.utils'
 import { AppShellLanguageSwitcher } from '~/modules/common/components/app-shell-language-switcher'
 import { AppShellSidebarFooter } from '~/modules/common/components/app-shell-sidebar-footer'
 import { AppShellSignOutDialog } from '~/modules/common/components/app-shell-sign-out-dialog'
 import { useSession } from '~/modules/common/hooks/use-session'
 import { DASHBOARD_ROUTES } from '~/modules/common/constants/routes'
+import { isRouteAllowedForRole } from '../constants/role-routes'
 
 type AppShellNavItem = {
   label: string
@@ -36,8 +38,8 @@ type AppShellNavItem = {
   title?: string
 }
 
-function buildPrimaryNav(t: TFunction<'dashboard'>): AppShellNavItem[] {
-  return [
+function buildPrimaryNav(t: TFunction<'dashboard'>, role?: UserRole): AppShellNavItem[] {
+  const items: AppShellNavItem[] = [
     {
       label: t('nav.panel'),
       href: DASHBOARD_ROUTES.home(),
@@ -64,6 +66,16 @@ function buildPrimaryNav(t: TFunction<'dashboard'>): AppShellNavItem[] {
       href: DASHBOARD_ROUTES.staff(),
     },
   ]
+
+  if (role === USER_ROLE.STAFF) {
+    return items.filter((item) => item.href !== undefined && isRouteAllowedForRole(role, item.href))
+  }
+
+  if (role === USER_ROLE.OWNER) {
+    return items.filter((item) => item.href !== undefined && isRouteAllowedForRole(role, item.href))
+  }
+
+  return []
 }
 
 function buildSecondaryNav(t: TFunction<'dashboard'>, onSignOut: () => void): AppShellNavItem[] {
@@ -188,7 +200,7 @@ function AppShellLayout({ children }: { children: React.ReactNode }) {
   const { user, isLoading, error, refresh, clearSession } = useSession()
   const settingsHref = DASHBOARD_ROUTES.settings()
 
-  const primaryNav = useMemo(() => buildPrimaryNav(t), [t])
+  const primaryNav = useMemo(() => buildPrimaryNav(t, user?.role), [t, user?.role])
 
   const handleSignOut = useCallback(async () => {
     if (signOutInFlight.current) return

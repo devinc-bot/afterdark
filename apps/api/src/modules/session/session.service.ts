@@ -25,6 +25,7 @@ export class SessionService {
       lastName: row.lastName,
       email: row.email,
       avatar: row.avatar,
+      role: payload.role,
     }
   }
 

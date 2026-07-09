@@ -1,3 +1,5 @@
+import type { UserRole } from '../enums/user.ts'
+
 export interface LoginResponse {
   accessToken: string
 }
@@ -9,5 +11,5 @@ export interface RegisterResponse {
 export interface JwtPayload {
   sub: string
   email: string
-  role: string
+  role: UserRole
 }

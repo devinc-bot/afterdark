@@ -1,15 +1,23 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { useTranslation } from 'react-i18next'
-import { PageLayout } from '~/modules/common/components/page-layout'
-import { usePageTitle } from '~/modules/common/hooks/use-page-title'
+import { USER_ROLE } from '@afterdark/types'
+import { useSession } from '~/modules/common/hooks/use-session'
+import { OwnerPanelView } from '~/modules/owner'
+import { StaffPanelView } from '~/modules/staff-panel'
 
 export const Route = createFileRoute('/_app/dashboard')({
   component: DashboardPage,
 })
 
 function DashboardPage() {
-  const { t } = useTranslation('dashboard')
-  usePageTitle('dashboard', 'pages.panel.metaTitle')
+  const { user } = useSession()
 
-  return <PageLayout title={t('pages.panel.title')} description={t('pages.panel.description')} />
+  if (user?.role === USER_ROLE.STAFF) {
+    return <StaffPanelView />
+  }
+
+  if (user?.role === USER_ROLE.OWNER) {
+    return <OwnerPanelView />
+  }
+
+  return null
 }
