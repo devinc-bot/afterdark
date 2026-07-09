@@ -51,7 +51,23 @@
     "panel": {
       "metaTitle": "Dashboard · afterdark Admin",
       "title": "Dashboard",
-      "description": "Daily operations summary: clubs, tickets and recent activity."
+      "description": "Daily operations summary: clubs, tickets and recent activity.",
+      "staff": {
+        "metaTitle": "Dashboard · afterdark Admin",
+        "description": "Review attendees and scan tickets at the door.",
+        "scan": "Scan",
+        "table": {
+          "name": "Name",
+          "event": "Event",
+          "entryStatusLabel": "Entry status",
+          "empty": "No attendees to display.",
+          "entryStatus": {
+            "valid": "Valid",
+            "used": "Used",
+            "expired": "Expired"
+          }
+        }
+      }
     }
   }
 }

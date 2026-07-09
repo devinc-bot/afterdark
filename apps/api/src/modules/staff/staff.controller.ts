@@ -11,14 +11,16 @@ import {
   UseGuards,
 } from '@nestjs/common'
 import type { JwtPayload, StaffPersonnelItem } from '@afterdark/types'
+import { USER_ROLE } from '@afterdark/types'
 import {
   updateStaffStatusSchema,
   uuidSchema,
   type UpdateStaffStatusInput,
 } from '@afterdark/validators'
 import { CurrentUser } from '../common/decorators/current-user.decorator'
+import { Roles } from '../common/decorators/roles.decorator'
 import { JwtAuthGuard } from '../common/guards/jwt-auth.guard'
-import { OwnerRoleGuard } from '../common/guards/owner-role.guard'
+import { RolesGuard } from '../common/guards/roles.guard'
 import { ZodValidationPipe } from '../common/pipes/zod-validation.pipe'
 import { StaffService } from './staff.service'
 
@@ -27,14 +29,16 @@ export class StaffController {
   constructor(@Inject(StaffService) private readonly staffService: StaffService) {}
 
   @Get('my-personnel')
-  @UseGuards(JwtAuthGuard, OwnerRoleGuard)
+  @Roles([USER_ROLE.OWNER])
+  @UseGuards(JwtAuthGuard, RolesGuard)
   listMyPersonnel(@CurrentUser() user: JwtPayload): Promise<StaffPersonnelItem[]> {
     return this.staffService.listPersonnelForOwner(user.sub)
   }
 
   @Patch(':documentId/status')
   @HttpCode(HttpStatus.NO_CONTENT)
-  @UseGuards(JwtAuthGuard, OwnerRoleGuard)
+  @Roles([USER_ROLE.OWNER])
+  @UseGuards(JwtAuthGuard, RolesGuard)
   updateStatus(
     @CurrentUser() user: JwtPayload,
     @Param('documentId', new ZodValidationPipe(uuidSchema)) documentId: string,
@@ -45,7 +49,8 @@ export class StaffController {
 
   @Delete(':documentId')
   @HttpCode(HttpStatus.NO_CONTENT)
-  @UseGuards(JwtAuthGuard, OwnerRoleGuard)
+  @Roles([USER_ROLE.OWNER])
+  @UseGuards(JwtAuthGuard, RolesGuard)
   delete(
     @CurrentUser() user: JwtPayload,
     @Param('documentId', new ZodValidationPipe(uuidSchema)) documentId: string

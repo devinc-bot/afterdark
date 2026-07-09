@@ -79,7 +79,8 @@
     "DELETE_FAILED": "We couldn't delete the image. Try again in a few minutes."
   },
   "guard": {
-    "OWNER_ONLY": "Only owners can access this resource."
+    "OWNER_ONLY": "Only owners can access this resource.",
+    "INSUFFICIENT_ROLE": "You don't have permission to access this resource."
   },
   "event": {
     "NOT_FOUND": "Event not found.",

@@ -18,7 +18,9 @@
 | 012 | `ticket-form-event-and-sale-dates` | Ticket: evento + ventana de venta    | `approved`    | `api`, `dashboard`        | Select evento requerido; fechas de venta opcionales en modal ticket. Depende de `011`.                                                                                                                                                                                                                                                                                                                                                       |
 | 013 | `language-switcher`                | Selector de idioma                   | `in-progress` | `dashboard`               | Select mock "Idioma del panel" conectado a `setLanguage()` real de `@afterdark/i18n`. Type-check/lint OK; falta QA manual en browser (login como dueño). `web` queda afuera (sin header aún).                                                                                                                                                                                                                                                |
 | 014 | `staff-settings`                   | Configuración del staff              | `done`        | `api`, `dashboard`        | Reemplaza el placeholder "Hello World" de `StaffSettingsView` (004) por edición real de perfil (nombre, apellido, teléfono; avatar/email solo lectura). `BaseProfileResponse`/`baseProfileSchema` compartidos entre owner y staff; `createSettingsFormProvider<TUser,TProfile>()` genérico en `modules/settings/`. Verificado en browser (Playwright) contra API real. Ver `spec/features/012-staff-settings/`.                              |
+| 015 | `files-module`                     | Módulo de archivos (infra)           | `draft`       | `api`                     | `FilesService` + R2 (`files-sdk`): upload/delete de imágenes, validación MIME/tamaño, i18n. Sin HTTP propio ni UI; consumido por dominio (p. ej. `clubs`). Galería/assets → `005-club-assets`. Ver `spec/features/015-files-module/`.                                                                                                                                                                                                        |
 | 016 | `architecture`                     | Arquitectura de tipos (DTOs)         | `in-progress` | `types`                   | Refactor de `@afterdark/types`: carpeta `dto/` por dominio; `domain.ts` solo enums. Implementado; pendiente marcar `done`. Ver `spec/features/016-architecture/`.                                                                                                                                                                                                                                                                            |
+| 017 | `staff-panel`                      | Panel del staff (rol staff)          | `approved`    | `dashboard`, `api`        | Navegación por rol: el staff ve solo "Panel" con una tabla de usuarios (datos mock) y un botón "Escanear" (sin acción por ahora). El dueño mantiene las opciones actuales. Requiere exponer `role` en `SessionResponse` (`GET /session/me`). Ver `spec/features/017-staff-panel/`.                                                                                                                                                             |
 
 ## Status
 
@@ -47,7 +49,9 @@
 012-ticket-form-event-and-sale-dates →  requiere 011
 013-language-switcher                →  requiere 004 (settings del dueño)
 014-staff-settings                   →  requiere 004 (módulo settings), 003 (modelo de datos staff)
+015-files-module                     →  (sin deps; infra transversal)
 016-architecture                     →  (sin deps; refactor transversal)
+017-staff-panel                      →  requiere 001 (role en SessionResponse/JWT)
 ```
 
 ## Decisiones de prioridad

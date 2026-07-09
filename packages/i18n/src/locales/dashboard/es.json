@@ -51,7 +51,23 @@
     "panel": {
       "metaTitle": "Panel · afterdark Admin",
       "title": "Panel",
-      "description": "Resumen de operaciones del día: clubes, entradas y actividad reciente."
+      "description": "Resumen de operaciones del día: clubes, entradas y actividad reciente.",
+      "staff": {
+        "metaTitle": "Panel · afterdark Admin",
+        "description": "Consultá asistentes y escaneá entradas en la puerta.",
+        "scan": "Escanear",
+        "table": {
+          "name": "Nombre",
+          "event": "Evento",
+          "entryStatusLabel": "Estado de entrada",
+          "empty": "No hay asistentes para mostrar.",
+          "entryStatus": {
+            "valid": "Válida",
+            "used": "Usada",
+            "expired": "Expirada"
+          }
+        }
+      }
     }
   }
 }

@@ -1,7 +1,7 @@
 import type { BaseProfileResponse, SessionResponse } from '@afterdark/types'
 
 export function toSessionUser(
-  user: Pick<BaseProfileResponse, 'sub' | 'name' | 'lastName' | 'email' | 'avatar'>
+  user: Pick<BaseProfileResponse, 'sub' | 'name' | 'lastName' | 'email' | 'avatar' | 'role'>
 ): SessionResponse {
   return {
     sub: user.sub,
@@ -9,5 +9,6 @@ export function toSessionUser(
     lastName: user.lastName,
     email: user.email,
     avatar: user.avatar,
+    role: user.role,
   }
 }
