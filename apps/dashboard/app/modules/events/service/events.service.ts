@@ -4,20 +4,9 @@ import type {
   ListEventsQueryInput,
   UpdateEventInput,
 } from '@afterdark/validators'
-import { api } from '~/config/api'
-import { API_ROUTES } from '~/config/constants/api'
-import { toApiServiceError } from '~/modules/common/utils/api-service-error.utils'
-
-const EVENTS_LIST_ERROR = 'No pudimos cargar los eventos. Intentá de nuevo en unos minutos.'
-const CREATE_EVENT_FALLBACK_ERROR = 'No pudimos crear el evento. Intentá de nuevo en unos minutos.'
-const UPDATE_EVENT_FALLBACK_ERROR =
-  'No pudimos actualizar el evento. Intentá de nuevo en unos minutos.'
-const DELETE_EVENT_FALLBACK_ERROR =
-  'No pudimos eliminar el evento. Intentá de nuevo en unos minutos.'
-
-function eventsApiPath(path: string) {
-  return `${API_ROUTES.events.prefix}${path}`
-}
+import { i18n } from '@afterdark/i18n/client'
+import { api, API_ROUTES } from '~/config/api'
+import { buildApiPath, toApiServiceError } from '@afterdark/common'
 
 export async function fetchEvents(
   params: ListEventsQueryInput
@@ -29,18 +18,21 @@ export async function fetchEvents(
 
   try {
     return await api.get<PaginatedResponse<EventResponse>>(
-      `${eventsApiPath(API_ROUTES.events.path.list())}?${searchParams.toString()}`
+      `${buildApiPath(API_ROUTES.events, API_ROUTES.events.path.list())}?${searchParams.toString()}`
     )
   } catch (error) {
-    throw toApiServiceError(error, EVENTS_LIST_ERROR)
+    throw toApiServiceError(error, i18n.t('events:list.error'))
   }
 }
 
 export async function createEvent(input: CreateEventInput): Promise<EventResponse> {
   try {
-    return await api.post<EventResponse>(eventsApiPath(API_ROUTES.events.path.create()), input)
+    return await api.post<EventResponse>(
+      buildApiPath(API_ROUTES.events, API_ROUTES.events.path.create()),
+      input
+    )
   } catch (error) {
-    throw toApiServiceError(error, CREATE_EVENT_FALLBACK_ERROR)
+    throw toApiServiceError(error, i18n.t('events:form.errorCreateFallback'))
   }
 }
 
@@ -50,18 +42,18 @@ export async function updateEvent(
 ): Promise<EventResponse> {
   try {
     return await api.patch<EventResponse>(
-      eventsApiPath(API_ROUTES.events.path.update(documentId)),
+      buildApiPath(API_ROUTES.events, API_ROUTES.events.path.update(documentId)),
       input
     )
   } catch (error) {
-    throw toApiServiceError(error, UPDATE_EVENT_FALLBACK_ERROR)
+    throw toApiServiceError(error, i18n.t('events:form.errorEditFallback'))
   }
 }
 
 export async function deleteEvent(documentId: string): Promise<void> {
   try {
-    await api.delete(eventsApiPath(API_ROUTES.events.path.delete(documentId)))
+    await api.delete(buildApiPath(API_ROUTES.events, API_ROUTES.events.path.delete(documentId)))
   } catch (error) {
-    throw toApiServiceError(error, DELETE_EVENT_FALLBACK_ERROR)
+    throw toApiServiceError(error, i18n.t('events:delete.errorFallback'))
   }
 }

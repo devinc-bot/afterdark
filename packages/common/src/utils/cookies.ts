@@ -12,6 +12,10 @@ function isBrowser(): boolean {
   return typeof document !== 'undefined'
 }
 
+function shouldUseSecureCookie(): boolean {
+  return isBrowser() && globalThis.location.protocol === 'https:'
+}
+
 function getCookieStore(): CookieStore | undefined {
   return globalThis.cookieStore
 }
@@ -23,14 +27,14 @@ function buildCookieInit({ name, value, maxAgeMs }: SetCookieOptions) {
     path: '/',
     expires: Date.now() + maxAgeMs,
     sameSite: 'lax' as const,
-    ...(import.meta.env.PROD ? { secure: true } : {}),
+    ...(shouldUseSecureCookie() ? { secure: true } : {}),
   }
 }
 
 function setCookieLegacy(options: SetCookieOptions): void {
   const { name, value, maxAgeMs } = options
   const maxAgeSeconds = Math.floor(maxAgeMs / 1000)
-  const secure = import.meta.env.PROD ? '; Secure' : ''
+  const secure = shouldUseSecureCookie() ? '; Secure' : ''
 
   document.cookie = `${name}=${encodeURIComponent(value)}; path=/; max-age=${maxAgeSeconds}; SameSite=Lax${secure}`
 }

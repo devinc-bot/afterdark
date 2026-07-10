@@ -1,4 +1,4 @@
-import { QueryFactoryError } from '~/modules/common/utils/query-factory'
+import { QueryFactoryError } from '../lib/index.ts'
 
 export function toApiServiceError(error: unknown, fallbackMessage: string): Error {
   if (error instanceof QueryFactoryError) {

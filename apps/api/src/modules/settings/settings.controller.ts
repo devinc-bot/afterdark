@@ -11,21 +11,22 @@ import { CurrentUser } from '../common/decorators/current-user.decorator'
 import { JwtAuthGuard } from '../common/guards/jwt-auth.guard'
 import { ZodValidationPipe } from '../common/pipes/zod-validation.pipe'
 import { SettingsService } from './settings.service'
+import { API_ROUTES } from '@afterdark/common'
 
-@Controller('settings')
+@Controller(API_ROUTES.settings.prefix)
 export class SettingsController {
   constructor(
     @Inject(SettingsService) private readonly settingsService: SettingsService,
     @Inject(TranslationService) private readonly ts: TranslationService
   ) {}
 
-  @Get()
+  @Get(API_ROUTES.settings.path.root())
   @UseGuards(JwtAuthGuard)
   getSettings(@CurrentUser() user: JwtPayload): Promise<SettingsResponse> {
     return this.settingsService.getSettings(user)
   }
 
-  @Patch()
+  @Patch(API_ROUTES.settings.path.root())
   @UseGuards(JwtAuthGuard)
   updateSettings(
     @CurrentUser() user: JwtPayload,

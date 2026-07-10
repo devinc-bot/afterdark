@@ -4,7 +4,7 @@ import {
   ClubEditView,
 } from '~/modules/club-management/components/club-edit-view'
 import { clubsQueryOptions } from '~/modules/club-management/queries/use-club-management-queries'
-import { usePageTitle } from '~/modules/common/hooks/use-page-title'
+import { usePageTitle } from '@afterdark/ui'
 
 export const Route = createFileRoute('/_app/club-management/$documentId/edit')({
   loader: async ({ context: { queryClient }, params }) => {

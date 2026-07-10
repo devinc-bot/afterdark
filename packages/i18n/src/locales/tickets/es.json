@@ -8,6 +8,9 @@
     "active": "Activos",
     "inactive": "Inactivos"
   },
+  "list": {
+    "error": "No pudimos cargar los tickets. Intentá de nuevo en unos minutos."
+  },
   "form": {
     "createTitle": "Crear ticket",
     "createDescription": "Definí el tipo de entrada, precio y stock para un evento.",
@@ -48,7 +51,9 @@
     "successCreate": "Ticket creado correctamente",
     "successEdit": "Ticket actualizado correctamente",
     "errorCreate": "No pudimos crear el ticket. Intentá de nuevo.",
-    "errorEdit": "No pudimos actualizar el ticket. Intentá de nuevo."
+    "errorEdit": "No pudimos actualizar el ticket. Intentá de nuevo.",
+    "errorCreateFallback": "No pudimos crear el ticket. Intentá de nuevo en unos minutos.",
+    "errorEditFallback": "No pudimos actualizar el ticket. Intentá de nuevo en unos minutos."
   },
   "table": {
     "title": "Detalle del inventario de tickets",
@@ -84,6 +89,7 @@
     "cancel": "Cancelar",
     "confirm": "Eliminar",
     "success": "Ticket eliminado correctamente",
-    "error": "No pudimos eliminar el ticket. Intentá de nuevo."
+    "error": "No pudimos eliminar el ticket. Intentá de nuevo.",
+    "errorFallback": "No pudimos eliminar el ticket. Intentá de nuevo en unos minutos."
   }
 }

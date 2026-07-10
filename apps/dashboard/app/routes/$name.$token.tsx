@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import { createFileRoute } from '@tanstack/react-router'
-import { usePageTitle } from '~/modules/common/hooks/use-page-title'
+import { usePageTitle } from '@afterdark/ui'
 import { Skeleton } from '@afterdark/ui'
 import { StaffInvitationAcceptView } from '~/modules/staff/components/staff-invitation-accept-view'
 import { StaffInvitationErrorView } from '~/modules/staff/components/staff-invitation-error-view'

@@ -10,6 +10,7 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
+    "@afterdark/common": "workspace:*",
     "@afterdark/db": "workspace:*",
     "@afterdark/i18n": "workspace:*",
     "@afterdark/types": "workspace:*",
@@ -22,8 +23,10 @@
     "lucide-react": "1.17.0",
     "react": "19.2.6",
     "react-dom": "19.2.6",
+    "react-i18next": "15.5.3",
     "vite": "7.3.5",
-    "zod": "4.4.3"
+    "zod": "4.4.3",
+    "zustand": "5.0.8"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "4.3.0",

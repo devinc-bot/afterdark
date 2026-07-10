@@ -1,15 +1,16 @@
-import { clientEnv } from '~/config/env'
+import { API_PREFIX } from '../constants/api.ts'
 
-export const API_BASE_URL = clientEnv.VITE_API_URL
+export const API_AUTH_PREFIX = '/auth' as const
+export const API_SETTINGS_PREFIX = '/settings' as const
+export const API_SESSION_PREFIX = '/session' as const
+export const API_CLUBS_PREFIX = '/clubs' as const
+export const API_STAFF_PREFIX = '/staff' as const
+export const API_INVITATIONS_PREFIX = '/invitations' as const
+export const API_TICKETS_PREFIX = '/tickets' as const
+export const API_EVENTS_PREFIX = '/events' as const
+export const API_HEALTH_PREFIX = '/health' as const
 
-export const API_AUTH_PREFIX = '/api/auth' as const
-export const API_SETTINGS_PREFIX = '/api/settings' as const
-export const API_SESSION_PREFIX = '/api/session' as const
-export const API_CLUBS_PREFIX = '/api/clubs' as const
-export const API_STAFF_PREFIX = '/api/staff' as const
-export const API_INVITATIONS_PREFIX = '/api/invitations' as const
-export const API_TICKETS_PREFIX = '/api/tickets' as const
-export const API_EVENTS_PREFIX = '/api/events' as const
+const routeSegment = (value: string) => (value.startsWith(':') ? value : encodeURIComponent(value))
 
 export const API_ROUTES = {
   auth: {
@@ -21,13 +22,16 @@ export const API_ROUTES = {
       refreshToken: () => '/refresh' as const,
     },
   },
-  settings: {
-    prefix: API_SETTINGS_PREFIX,
-  },
   session: {
     prefix: API_SESSION_PREFIX,
     path: {
       me: () => '/me' as const,
+    },
+  },
+  settings: {
+    prefix: API_SETTINGS_PREFIX,
+    path: {
+      root: () => '/' as const,
     },
   },
   clubs: {
@@ -52,9 +56,9 @@ export const API_ROUTES = {
     path: {
       staff: () => '/staff' as const,
       staffByLink: (slug: string, token: string) =>
-        `/staff/${encodeURIComponent(slug)}/${encodeURIComponent(token)}` as const,
+        `/staff/${routeSegment(slug)}/${routeSegment(token)}` as const,
       acceptStaff: (slug: string, token: string) =>
-        `/staff/${encodeURIComponent(slug)}/${encodeURIComponent(token)}/accept` as const,
+        `/staff/${routeSegment(slug)}/${routeSegment(token)}/accept` as const,
       deleteStaff: (documentId: string) => `/staff/${documentId}` as const,
     },
   },
@@ -71,11 +75,19 @@ export const API_ROUTES = {
     prefix: API_EVENTS_PREFIX,
     path: {
       list: () => '/my-events' as const,
-      create: () => '' as const,
+      create: () => '/' as const,
       update: (documentId: string) => `/${documentId}` as const,
       delete: (documentId: string) => `/${documentId}` as const,
     },
   },
-  login: () => `${API_BASE_URL}${API_AUTH_PREFIX}/login` as const,
-  registerOwner: () => `${API_BASE_URL}${API_AUTH_PREFIX}/register/owner` as const,
+  health: {
+    prefix: API_HEALTH_PREFIX,
+    path: {
+      root: () => '/' as const,
+    },
+  },
 } as const
+
+export function buildApiPath(route: (typeof API_ROUTES)[keyof typeof API_ROUTES], path: string) {
+  return `${API_PREFIX}${route.prefix}${path}`
+}

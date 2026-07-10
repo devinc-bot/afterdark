@@ -3,6 +3,7 @@ import { NestFactory } from '@nestjs/core'
 import { AppModule } from './app.module'
 import { ENV } from './modules/common/config/env'
 import { HttpExceptionFilter } from './modules/common/filters/http-exception.filter'
+import { API_PREFIX } from '@afterdark/common'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
@@ -14,7 +15,7 @@ async function bootstrap() {
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   })
   app.useGlobalFilters(new HttpExceptionFilter())
-  app.setGlobalPrefix('api')
+  app.setGlobalPrefix(API_PREFIX)
   await app.listen(ENV.PORT)
 }
 

@@ -3,6 +3,7 @@ import { Link, useNavigate } from '@tanstack/react-router'
 import { type ClubResponse } from '@afterdark/types'
 import { Button, toast } from '@afterdark/ui'
 import { Plus } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { ClubRemoveDialog } from '~/modules/club-management/components/dialog-remove'
 import {
   RegisteredClubRecords,
@@ -28,12 +29,8 @@ function clubResponseToRegisteredClub(club: ClubResponse): RegisteredClub {
   }
 }
 
-function formatClubCount(count: number): string {
-  if (count === 1) return '1 club registrado'
-  return `${count} clubes registrados`
-}
-
 export function RegisteredClubs() {
+  const { t } = useTranslation('clubs')
   const navigate = useNavigate()
   const { data, isLoading, isError, error } = useClubs()
   const deleteClubMutation = useDeleteClub()
@@ -57,15 +54,11 @@ export function RegisteredClubs() {
   const handleRemoveConfirm = async (club: RegisteredClub) => {
     try {
       await deleteClubMutation.mutateAsync(club.id)
-      toast.success('Club eliminado correctamente')
+      toast.success(t('registry.deleteSuccess'))
       setRemoveDialogOpen(false)
       setClubToRemove(null)
     } catch (removeError) {
-      toast.error(
-        removeError instanceof Error
-          ? removeError.message
-          : 'No pudimos eliminar el club. Intentá de nuevo.'
-      )
+      toast.error(removeError instanceof Error ? removeError.message : t('registry.deleteError'))
     }
   }
 
@@ -85,10 +78,12 @@ export function RegisteredClubs() {
               id="registered-clubs-heading"
               className="font-heading text-lg font-semibold text-ink sm:text-xl"
             >
-              Clubes registrados
+              {t('registry.title')}
             </h2>
             <p className="mt-1 text-sm text-ink-muted">
-              {isLoading ? 'Cargando clubes…' : formatClubCount(clubs.length)}
+              {isLoading
+                ? t('registry.loading')
+                : t('registry.registryCount', { count: clubs.length })}
             </p>
           </div>
 
@@ -98,28 +93,30 @@ export function RegisteredClubs() {
             className="w-full shrink-0 sm:w-auto"
             iconLeft={<Plus aria-hidden="true" />}
           >
-            <Link to={DASHBOARD_ROUTES.clubManagementNew()}>Agregar club</Link>
+            <Link to={DASHBOARD_ROUTES.clubManagementNew()}>{t('registry.addClub')}</Link>
           </Button>
         </header>
 
         {isLoading ? (
           <div className="rounded-xl border border-hairline bg-surface-container-low px-6 py-12 text-center">
-            <p className="text-sm text-ink-muted">Cargando clubes…</p>
+            <p className="text-sm text-ink-muted">{t('registry.loading')}</p>
           </div>
         ) : isError ? (
           <div className="rounded-xl border border-dashed border-error/40 bg-error-container/20 px-6 py-12 text-center">
             <p className="font-heading text-base font-semibold text-ink">
-              No pudimos cargar los clubes
+              {t('registry.loadErrorTitle')}
             </p>
             <p className="mx-auto mt-2 max-w-sm text-sm text-ink-muted">
-              {error instanceof Error ? error.message : 'Intentá de nuevo en unos minutos.'}
+              {error instanceof Error ? error.message : t('registry.loadErrorFallback')}
             </p>
           </div>
         ) : clubs.length === 0 ? (
           <div className="rounded-xl border border-dashed border-hairline bg-surface-container-low px-6 py-12 text-center">
-            <p className="font-heading text-base font-semibold text-ink">Todavía no hay clubes</p>
+            <p className="font-heading text-base font-semibold text-ink">
+              {t('registry.emptyTitle')}
+            </p>
             <p className="mx-auto mt-2 max-w-sm text-sm text-ink-muted">
-              Registrá el primer club para empezar a gestionar su información y disponibilidad.
+              {t('registry.emptyDescription')}
             </p>
           </div>
         ) : (

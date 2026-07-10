@@ -1,9 +1,9 @@
 import type { ApiError } from '@afterdark/types'
-import { API_ROUTES } from '~/config/constants/api'
-import { getAccessTokenSync } from '~/modules/auth/utils/auth-storage.utils'
-import { refreshAccessToken } from '~/modules/auth/utils/refresh-access-token.utils'
 
-type RequestConfig = RequestInit & { _retry?: boolean }
+export type QueryFactoryOptions = {
+  getAccessToken?: () => string | null
+  defaultRequestInit?: RequestInit
+}
 
 export class QueryFactoryError extends Error {
   constructor(
@@ -18,9 +18,13 @@ export class QueryFactoryError extends Error {
 export class QueryFactory {
   baseUrl: URL
   private defaultInit: RequestInit
+  private getAccessToken?: () => string | null
 
-  constructor(baseUrl: string, defaultRequestInit?: RequestInit) {
+  constructor(baseUrl: string, options?: QueryFactoryOptions) {
     this.baseUrl = new URL(baseUrl)
+    this.getAccessToken = options?.getAccessToken
+
+    const defaultRequestInit = options?.defaultRequestInit
     this.defaultInit = {
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
@@ -104,8 +108,8 @@ export class QueryFactory {
     return new URL(path, this.baseUrl).href
   }
 
-  private mergeInit(requestInit?: RequestInit): RequestConfig {
-    const init: RequestConfig = {
+  private mergeInit(requestInit?: RequestInit): RequestInit {
+    const init: RequestInit = {
       ...this.defaultInit,
       ...requestInit,
       headers: mergeHeaders(this.defaultInit.headers, requestInit?.headers),
@@ -120,26 +124,15 @@ export class QueryFactory {
     return init
   }
 
-  private async buildHeaders(init: RequestConfig): Promise<Headers> {
+  private async buildHeaders(init: RequestInit): Promise<Headers> {
     const headers = new Headers(init.headers)
-    const token = getAccessTokenSync()
+    const token = this.getAccessToken?.()
 
     if (token) {
       headers.set('Authorization', `Bearer ${token}`)
     }
 
     return headers
-  }
-
-  private shouldSkipAuthRetry(pathname: string): boolean {
-    const authPrefix = API_ROUTES.auth.prefix
-
-    return (
-      pathname.includes(`${authPrefix}${API_ROUTES.auth.path.login()}`) ||
-      pathname.includes(`${authPrefix}${API_ROUTES.auth.path.refreshToken()}`) ||
-      pathname.includes(`${authPrefix}${API_ROUTES.auth.path.registerUser()}`) ||
-      pathname.includes(`${authPrefix}${API_ROUTES.auth.path.registerOwner()}`)
-    )
   }
 
   private async parseBody<T>(response: Response): Promise<T> {
@@ -158,25 +151,9 @@ export class QueryFactory {
     }
   }
 
-  private async execute<T>(url: string, init: RequestConfig): Promise<T> {
+  private async execute<T>(url: string, init: RequestInit): Promise<T> {
     const headers = await this.buildHeaders(init)
     const response = await fetch(url, { ...init, headers })
-
-    if (response.status === 401 && !init._retry) {
-      const pathname = new URL(url).pathname
-
-      if (!this.shouldSkipAuthRetry(pathname)) {
-        const retryInit: RequestConfig = { ...init, _retry: true }
-
-        try {
-          await refreshAccessToken()
-          return this.execute<T>(url, retryInit)
-        } catch {
-          const body = await this.parseErrorBody(response)
-          throw new QueryFactoryError(response.status, body)
-        }
-      }
-    }
 
     if (!response.ok) {
       const body = await this.parseErrorBody(response)

@@ -1,3 +1,4 @@
+import { Card } from '@afterdark/ui'
 import type { ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -15,7 +16,7 @@ export function AuthShell({ children }: AuthShellProps) {
         className="pointer-events-none fixed inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(236,177,255,0.06)_0%,transparent_45%),radial-gradient(circle_at_80%_80%,rgba(125,74,144,0.05)_0%,transparent_40%)]"
       />
 
-      <main className="relative z-10 w-full max-w-[440px]">
+      <Card className="relative z-10 w-full max-w-md py-8" as="main" variant="gradient">
         <header className="mb-8 flex flex-col items-center text-center">
           <div
             aria-hidden
@@ -32,7 +33,7 @@ export function AuthShell({ children }: AuthShellProps) {
         {children}
 
         <p className="mt-8 text-center text-xs text-on-surface-variant">Suite de gestión v2.4.0</p>
-      </main>
+      </Card>
     </div>
   )
 }

@@ -1,29 +1,35 @@
 import { createServerFn } from '@tanstack/react-start'
-import { loginSchema } from '@afterdark/validators'
-import { API_ROUTES } from '~/config/constants/api'
-import type { LoginResponse } from '@afterdark/types'
+import { loginSchema, registerUserSchema } from '@afterdark/validators'
+import { translateSync } from '@afterdark/i18n'
+import { throwApiServiceError, buildApiPath } from '@afterdark/common'
+import { api } from '~/config/api'
+import { API_ROUTES } from '~/config/api'
+import type { LoginResponse, RegisterResponse } from '@afterdark/types'
 
-const LOGIN_FALLBACK_ERROR = 'No pudimos iniciar sesión. Intentá de nuevo en unos minutos.'
+async function postAuth<T>(path: string, data: unknown, fallback: string): Promise<T> {
+  try {
+    return await api.post<T>(path, data)
+  } catch (error) {
+    throwApiServiceError(error, fallback)
+  }
+}
 
 export const loginFn = createServerFn({ method: 'POST' })
   .inputValidator(loginSchema)
   .handler(async ({ data }): Promise<LoginResponse> => {
-    let response: Response
+    return postAuth<LoginResponse>(
+      buildApiPath(API_ROUTES.auth, API_ROUTES.auth.path.login()),
+      data,
+      translateSync('auth:login.error.fallback')
+    )
+  })
 
-    try {
-      response = await fetch(API_ROUTES.login(), {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-      })
-    } catch {
-      throw new Error(LOGIN_FALLBACK_ERROR)
-    }
-
-    if (!response.ok) {
-      const body = (await response.json().catch(() => null)) as { message?: string } | null
-      throw new Error(typeof body?.message === 'string' ? body.message : LOGIN_FALLBACK_ERROR)
-    }
-
-    return (await response.json()) as LoginResponse
+export const registerUserFn = createServerFn({ method: 'POST' })
+  .inputValidator(registerUserSchema)
+  .handler(async ({ data }): Promise<RegisterResponse> => {
+    return postAuth<RegisterResponse>(
+      buildApiPath(API_ROUTES.auth, API_ROUTES.auth.path.registerUser()),
+      data,
+      translateSync('auth:register.error.fallback')
+    )
   })

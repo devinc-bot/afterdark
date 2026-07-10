@@ -1,7 +1,10 @@
 {
   "login": {
     "metaTitle": "Iniciar sesión · afterdark Admin",
+    "metaTitleWeb": "Iniciar sesión · afterdark",
     "title": "Iniciar sesión",
+    "subtitle": "Accedé a tu cuenta para gestionar tus entradas.",
+    "createAccount": "Crear cuenta",
     "email": "Correo",
     "emailPlaceholder": "admin@afterdark.io",
     "password": "Contraseña",
@@ -12,7 +15,8 @@
     "noAccount": "¿No tenés cuenta?",
     "error": {
       "invalidCredentials": "Credenciales inválidas. Revisá tu correo y contraseña.",
-      "generic": "No se pudo iniciar sesión. Intentá de nuevo."
+      "generic": "No se pudo iniciar sesión. Intentá de nuevo.",
+      "fallback": "No pudimos iniciar sesión. Intentá de nuevo en unos minutos."
     }
   },
   "forgotPassword": {
@@ -20,13 +24,19 @@
   },
   "register": {
     "metaTitle": "Crear cuenta · afterdark Admin",
+    "metaTitleWeb": "Crear cuenta · afterdark",
     "title": "Crear cuenta",
+    "subtitle": "Unite a afterdark y empezá a descubrir la noche.",
+    "success": "Cuenta creada. Ya podés iniciar sesión.",
+    "signIn": "Iniciar sesión",
     "name": "Nombre",
     "namePlaceholder": "María",
     "lastName": "Apellido",
     "lastNamePlaceholder": "González",
     "email": "Correo corporativo",
     "emailPlaceholder": "local@afterdark.io",
+    "emailWeb": "Correo",
+    "emailPlaceholderWeb": "maria@correo.com",
     "password": "Contraseña",
     "passwordPlaceholder": "Mínimo 8 caracteres",
     "confirmPassword": "Confirmar contraseña",
@@ -36,7 +46,8 @@
     "alreadyHaveAccount": "¿Ya tenés cuenta?",
     "error": {
       "emailTaken": "Este correo ya está registrado.",
-      "generic": "No se pudo crear la cuenta. Intentá de nuevo."
+      "generic": "No se pudo crear la cuenta. Intentá de nuevo.",
+      "fallback": "No pudimos crear tu cuenta. Intentá de nuevo en unos minutos."
     }
   },
   "logout": "Cerrar sesión",

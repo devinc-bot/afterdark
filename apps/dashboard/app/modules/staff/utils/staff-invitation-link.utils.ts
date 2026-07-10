@@ -1,4 +1,4 @@
-import { QueryFactoryError } from '~/modules/common/utils/query-factory'
+import { QueryFactoryError } from '@afterdark/common'
 import {
   STAFF_INVITATION_VALIDATION_REASON,
   type StaffInvitationValidationReason,

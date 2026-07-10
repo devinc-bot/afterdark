@@ -21,6 +21,7 @@
 | 015 | `files-module`                     | Módulo de archivos (infra)           | `draft`       | `api`                     | `FilesService` + R2 (`files-sdk`): upload/delete de imágenes, validación MIME/tamaño, i18n. Sin HTTP propio ni UI; consumido por dominio (p. ej. `clubs`). Galería/assets → `005-club-assets`. Ver `spec/features/015-files-module/`.                                                                                                                                                                                                        |
 | 016 | `architecture`                     | Arquitectura de tipos (DTOs)         | `in-progress` | `types`                   | Refactor de `@afterdark/types`: carpeta `dto/` por dominio; `domain.ts` solo enums. Implementado; pendiente marcar `done`. Ver `spec/features/016-architecture/`.                                                                                                                                                                                                                                                                            |
 | 017 | `staff-panel`                      | Panel del staff (rol staff)          | `approved`    | `dashboard`, `api`        | Navegación por rol: el staff ve solo "Panel" con una tabla de usuarios (datos mock) y un botón "Escanear" (sin acción por ahora). El dueño mantiene las opciones actuales. Requiere exponer `role` en `SessionResponse` (`GET /session/me`). Ver `spec/features/017-staff-panel/`.                                                                                                                                                             |
+| 018 | `web-user-registration`            | Registro de cliente (web)            | `approved`    | `web`                     | Formulario en `/register` para rol `user` (cliente). API `POST /auth/register/user` ya existe; `web` hoy muestra placeholder. Ver `spec/features/018-web-user-registration/`.                                                                                                                                                                                                                                                               |
 
 ## Status
 
@@ -52,6 +53,7 @@
 015-files-module                     →  (sin deps; infra transversal)
 016-architecture                     →  (sin deps; refactor transversal)
 017-staff-panel                      →  requiere 001 (role en SessionResponse/JWT)
+018-web-user-registration            →  requiere 001 (auth API + sesión en web)
 ```
 
 ## Decisiones de prioridad
