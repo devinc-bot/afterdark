@@ -1,9 +1,9 @@
 import type { SessionResponse } from '@afterdark/types'
 import { create } from 'zustand'
+import { i18n } from '@afterdark/i18n/client'
+import { getCookieSync, SESSION_STATUS, type SessionStatus } from '@afterdark/common'
 import { COOKIE_KEYS } from '~/modules/common/constants/cookies'
-import { SESSION_STATUS, type SessionStatus } from '~/modules/common/constants/session-status'
 import { fetchSession } from '~/modules/common/services/session.service'
-import { getCookieSync } from '~/modules/common/utils/cookies.utils'
 
 type SessionState = {
   user: SessionResponse | null
@@ -12,8 +12,6 @@ type SessionState = {
   loadSession: () => Promise<void>
   clearSession: () => void
 }
-
-const SESSION_FALLBACK_ERROR = 'No pudimos cargar tu perfil. Intentá de nuevo en unos minutos.'
 
 export const useSessionStore = create<SessionState>((set) => ({
   user: null,
@@ -34,7 +32,7 @@ export const useSessionStore = create<SessionState>((set) => ({
       const user = await fetchSession()
       set({ user, status: SESSION_STATUS.AUTHENTICATED, error: null })
     } catch (error) {
-      const message = error instanceof Error ? error.message : SESSION_FALLBACK_ERROR
+      const message = error instanceof Error ? error.message : i18n.t('auth:session.loadFallback')
 
       set({ user: null, status: SESSION_STATUS.ERROR, error: message })
     }

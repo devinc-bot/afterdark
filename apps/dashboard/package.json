@@ -10,6 +10,7 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
+    "@afterdark/common": "workspace:*",
     "@afterdark/db": "workspace:*",
     "@afterdark/i18n": "workspace:*",
     "@afterdark/types": "workspace:*",

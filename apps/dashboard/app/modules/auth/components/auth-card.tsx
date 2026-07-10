@@ -35,7 +35,7 @@ export function AuthCard() {
           })
         }}
       >
-        <TabsList variant="line" className="mb-6 grid grid-cols-2">
+        <TabsList variant="line" className="mb-6 grid grid-cols-2 w-full">
           <TabsTrigger variant="line" value={AUTH_TAB.LOGIN}>
             Entrar
           </TabsTrigger>

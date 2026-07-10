@@ -1,16 +1,9 @@
 import { createServerFn } from '@tanstack/react-start'
 import { loginSchema, registerOwnerSchema } from '@afterdark/validators'
-import { api } from '~/config/api'
-import { API_ROUTES } from '~/config/constants/api'
-import { throwApiServiceError } from '~/modules/common/utils/api-service-error.utils'
+import { translateSync } from '@afterdark/i18n'
+import { API_ROUTES, api } from '~/config/api'
+import { throwApiServiceError, buildApiPath } from '@afterdark/common'
 import type { LoginResponse, RegisterResponse } from '@afterdark/types'
-
-const LOGIN_FALLBACK_ERROR = 'No pudimos iniciar sesión. Intentá de nuevo en unos minutos.'
-const REGISTER_FALLBACK_ERROR = 'No pudimos crear tu cuenta. Intentá de nuevo en unos minutos.'
-
-function authApiPath(path: string) {
-  return `${API_ROUTES.auth.prefix}${path}`
-}
 
 async function postAuth<T>(path: string, data: unknown, fallback: string): Promise<T> {
   try {
@@ -24,9 +17,9 @@ export const loginFn = createServerFn({ method: 'POST' })
   .inputValidator(loginSchema)
   .handler(async ({ data }): Promise<LoginResponse> => {
     return postAuth<LoginResponse>(
-      authApiPath(API_ROUTES.auth.path.login()),
+      buildApiPath(API_ROUTES.auth, API_ROUTES.auth.path.login()),
       data,
-      LOGIN_FALLBACK_ERROR
+      translateSync('auth:login.error.fallback')
     )
   })
 
@@ -34,8 +27,8 @@ export const registerOwnerFn = createServerFn({ method: 'POST' })
   .inputValidator(registerOwnerSchema)
   .handler(async ({ data }): Promise<RegisterResponse> => {
     return postAuth<RegisterResponse>(
-      authApiPath(API_ROUTES.auth.path.registerOwner()),
+      buildApiPath(API_ROUTES.auth, API_ROUTES.auth.path.registerOwner()),
       data,
-      REGISTER_FALLBACK_ERROR
+      translateSync('auth:register.error.fallback')
     )
   })
