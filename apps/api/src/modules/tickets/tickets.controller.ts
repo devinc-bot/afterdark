@@ -29,12 +29,13 @@ import { JwtAuthGuard } from '../common/guards/jwt-auth.guard'
 import { RolesGuard } from '../common/guards/roles.guard'
 import { ZodValidationPipe } from '../common/pipes/zod-validation.pipe'
 import { TicketsService } from './tickets.service'
+import { API_ROUTES } from '@afterdark/common'
 
-@Controller('tickets')
+@Controller(API_ROUTES.tickets.prefix)
 export class TicketsController {
   constructor(@Inject(TicketsService) private readonly ticketsService: TicketsService) {}
 
-  @Get('my-tickets')
+  @Get(API_ROUTES.tickets.path.list())
   @Roles([USER_ROLE.OWNER])
   @UseGuards(JwtAuthGuard, RolesGuard)
   listMyTickets(
@@ -44,7 +45,7 @@ export class TicketsController {
     return this.ticketsService.listMyTickets(user.sub, query)
   }
 
-  @Post('create')
+  @Post(API_ROUTES.tickets.path.create())
   @HttpCode(HttpStatus.CREATED)
   @Roles([USER_ROLE.OWNER])
   @UseGuards(JwtAuthGuard, RolesGuard)
@@ -55,7 +56,7 @@ export class TicketsController {
     return this.ticketsService.createTicket(user.sub, body)
   }
 
-  @Patch(':documentId')
+  @Patch(API_ROUTES.tickets.path.update(':documentId'))
   @Roles([USER_ROLE.OWNER])
   @UseGuards(JwtAuthGuard, RolesGuard)
   update(
@@ -66,7 +67,7 @@ export class TicketsController {
     return this.ticketsService.updateTicket(user.sub, documentId, body)
   }
 
-  @Delete(':documentId')
+  @Delete(API_ROUTES.tickets.path.delete(':documentId'))
   @HttpCode(HttpStatus.NO_CONTENT)
   @Roles([USER_ROLE.OWNER])
   @UseGuards(JwtAuthGuard, RolesGuard)

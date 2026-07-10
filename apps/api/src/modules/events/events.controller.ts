@@ -29,12 +29,13 @@ import { JwtAuthGuard } from '../common/guards/jwt-auth.guard'
 import { RolesGuard } from '../common/guards/roles.guard'
 import { ZodValidationPipe } from '../common/pipes/zod-validation.pipe'
 import { EventsService } from './events.service'
+import { API_ROUTES } from '@afterdark/common'
 
-@Controller('events')
+@Controller(API_ROUTES.events.prefix)
 export class EventsController {
   constructor(@Inject(EventsService) private readonly eventsService: EventsService) {}
 
-  @Get('my-events')
+  @Get(API_ROUTES.events.path.list())
   @Roles([USER_ROLE.OWNER])
   @UseGuards(JwtAuthGuard, RolesGuard)
   listMyEvents(
@@ -44,7 +45,7 @@ export class EventsController {
     return this.eventsService.listMyEvents(user.sub, query)
   }
 
-  @Post()
+  @Post(API_ROUTES.events.path.create())
   @HttpCode(HttpStatus.CREATED)
   @Roles([USER_ROLE.OWNER])
   @UseGuards(JwtAuthGuard, RolesGuard)
@@ -55,7 +56,7 @@ export class EventsController {
     return this.eventsService.createEvent(user.sub, body)
   }
 
-  @Patch(':documentId')
+  @Patch(API_ROUTES.events.path.update(':documentId'))
   @Roles([USER_ROLE.OWNER])
   @UseGuards(JwtAuthGuard, RolesGuard)
   update(
@@ -66,7 +67,7 @@ export class EventsController {
     return this.eventsService.updateEvent(user.sub, documentId, body)
   }
 
-  @Delete(':documentId')
+  @Delete(API_ROUTES.events.path.delete(':documentId'))
   @HttpCode(HttpStatus.NO_CONTENT)
   @Roles([USER_ROLE.OWNER])
   @UseGuards(JwtAuthGuard, RolesGuard)

@@ -23,19 +23,20 @@ import { JwtAuthGuard } from '../common/guards/jwt-auth.guard'
 import { RolesGuard } from '../common/guards/roles.guard'
 import { ZodValidationPipe } from '../common/pipes/zod-validation.pipe'
 import { StaffService } from './staff.service'
+import { API_ROUTES } from '@afterdark/common'
 
-@Controller('staff')
+@Controller(API_ROUTES.staff.prefix)
 export class StaffController {
   constructor(@Inject(StaffService) private readonly staffService: StaffService) {}
 
-  @Get('my-personnel')
+  @Get(API_ROUTES.staff.path.listMyPersonnel())
   @Roles([USER_ROLE.OWNER])
   @UseGuards(JwtAuthGuard, RolesGuard)
   listMyPersonnel(@CurrentUser() user: JwtPayload): Promise<StaffPersonnelItem[]> {
     return this.staffService.listPersonnelForOwner(user.sub)
   }
 
-  @Patch(':documentId/status')
+  @Patch(API_ROUTES.staff.path.updateStatus(':documentId'))
   @HttpCode(HttpStatus.NO_CONTENT)
   @Roles([USER_ROLE.OWNER])
   @UseGuards(JwtAuthGuard, RolesGuard)
@@ -47,7 +48,7 @@ export class StaffController {
     return this.staffService.updateStaffStatus(user.sub, documentId, body.status)
   }
 
-  @Delete(':documentId')
+  @Delete(API_ROUTES.staff.path.delete(':documentId'))
   @HttpCode(HttpStatus.NO_CONTENT)
   @Roles([USER_ROLE.OWNER])
   @UseGuards(JwtAuthGuard, RolesGuard)

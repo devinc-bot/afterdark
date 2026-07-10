@@ -30,21 +30,21 @@ import { RolesGuard } from '../common/guards/roles.guard'
 import { ZodValidationPipe } from '../common/pipes/zod-validation.pipe'
 import { imageUploadOptions } from '../files/image-upload.options'
 import { ClubsService } from './clubs.service'
-
 import { CLUB_IMAGE_MAX_COUNT } from '@afterdark/validators'
+import { API_ROUTES } from '@afterdark/common'
 
-@Controller('clubs')
+@Controller(API_ROUTES.clubs.prefix)
 export class ClubsController {
   constructor(@Inject(ClubsService) private readonly clubsService: ClubsService) {}
 
-  @Get('my-clubs')
+  @Get(API_ROUTES.clubs.path.list())
   @Roles([USER_ROLE.OWNER])
   @UseGuards(JwtAuthGuard, RolesGuard)
   listMyClubs(@CurrentUser() user: JwtPayload) {
     return this.clubsService.listMyClubs(user.sub)
   }
 
-  @Post('create')
+  @Post(API_ROUTES.clubs.path.create())
   @HttpCode(HttpStatus.CREATED)
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(FilesInterceptor('images', CLUB_IMAGE_MAX_COUNT, imageUploadOptions))
@@ -56,7 +56,7 @@ export class ClubsController {
     return this.clubsService.createClub(user.sub, body, files ?? [])
   }
 
-  @Patch(':documentId')
+  @Patch(API_ROUTES.clubs.path.update(':documentId'))
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(FilesInterceptor('images', CLUB_IMAGE_MAX_COUNT, imageUploadOptions))
   update(
@@ -68,7 +68,7 @@ export class ClubsController {
     return this.clubsService.updateClub(documentId, clubInput, files ?? [], keepImageIds)
   }
 
-  @Delete(':documentId')
+  @Delete(API_ROUTES.clubs.path.delete(':documentId'))
   @HttpCode(HttpStatus.NO_CONTENT)
   @UseGuards(JwtAuthGuard)
   delete(@Param('documentId', new ZodValidationPipe(uuidSchema)) documentId: string) {
