@@ -1,0 +1,194 @@
+import type { ApiError } from '@afterdark/types'
+
+export type QueryFactoryOptions = {
+  getAccessToken?: () => string | null
+  defaultRequestInit?: RequestInit
+}
+
+export class QueryFactoryError extends Error {
+  constructor(
+    readonly status: number,
+    readonly body: ApiError | null
+  ) {
+    super(body?.message ?? `Request failed with status ${status}`)
+    this.name = 'QueryFactoryError'
+  }
+}
+
+export class QueryFactory {
+  baseUrl: URL
+  private defaultInit: RequestInit
+  private getAccessToken?: () => string | null
+
+  constructor(baseUrl: string, options?: QueryFactoryOptions) {
+    this.baseUrl = new URL(baseUrl)
+    this.getAccessToken = options?.getAccessToken
+
+    const defaultRequestInit = options?.defaultRequestInit
+    this.defaultInit = {
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      ...defaultRequestInit,
+      ...(defaultRequestInit?.headers
+        ? {
+            headers: {
+              'Content-Type': 'application/json',
+              ...toHeaderRecord(defaultRequestInit.headers),
+            },
+          }
+        : {}),
+    }
+  }
+
+  addParams(params: Record<string, string> | URLSearchParams) {
+    const url = new URL(this.baseUrl)
+    const urlParams = new URLSearchParams(url.searchParams)
+
+    if (params instanceof URLSearchParams) {
+      params.forEach((value, key) => urlParams.append(key, value))
+    } else {
+      Object.entries(params).forEach(([key, value]) => urlParams.append(key, value))
+    }
+
+    url.search = urlParams.toString()
+    this.baseUrl = url
+
+    return this
+  }
+
+  get<T>(path: string, requestInit?: RequestInit) {
+    return this.request<T>(path, { ...requestInit, method: 'GET' })
+  }
+
+  post<T>(path: string, data: unknown, requestInit?: RequestInit) {
+    if (data instanceof FormData) {
+      return this.request<T>(path, {
+        ...requestInit,
+        method: 'POST',
+        body: data,
+      })
+    }
+
+    return this.request<T>(path, {
+      ...requestInit,
+      method: 'POST',
+      body: JSON.stringify(data),
+    })
+  }
+
+  put<T>(path: string, data: unknown, requestInit?: RequestInit) {
+    return this.request<T>(path, {
+      ...requestInit,
+      method: 'PUT',
+      body: JSON.stringify(data),
+    })
+  }
+
+  delete<T>(path: string, requestInit?: RequestInit) {
+    return this.request<T>(path, { ...requestInit, method: 'DELETE' })
+  }
+
+  patch<T>(path: string, data: unknown, requestInit?: RequestInit) {
+    if (data instanceof FormData) {
+      return this.request<T>(path, {
+        ...requestInit,
+        method: 'PATCH',
+        body: data,
+      })
+    }
+
+    return this.request<T>(path, {
+      ...requestInit,
+      method: 'PATCH',
+      body: JSON.stringify(data),
+    })
+  }
+
+  private resolveUrl(path: string): string {
+    return new URL(path, this.baseUrl).href
+  }
+
+  private mergeInit(requestInit?: RequestInit): RequestInit {
+    const init: RequestInit = {
+      ...this.defaultInit,
+      ...requestInit,
+      headers: mergeHeaders(this.defaultInit.headers, requestInit?.headers),
+    }
+
+    if (init.body instanceof FormData) {
+      const headers = new Headers(init.headers)
+      headers.delete('Content-Type')
+      init.headers = headers
+    }
+
+    return init
+  }
+
+  private async buildHeaders(init: RequestInit): Promise<Headers> {
+    const headers = new Headers(init.headers)
+    const token = this.getAccessToken?.()
+
+    if (token) {
+      headers.set('Authorization', `Bearer ${token}`)
+    }
+
+    return headers
+  }
+
+  private async parseBody<T>(response: Response): Promise<T> {
+    if (response.status === 204) {
+      return undefined as T
+    }
+
+    return (await response.json()) as T
+  }
+
+  private async parseErrorBody(response: Response): Promise<ApiError | null> {
+    try {
+      return (await response.json()) as ApiError
+    } catch {
+      return null
+    }
+  }
+
+  private async execute<T>(url: string, init: RequestInit): Promise<T> {
+    const headers = await this.buildHeaders(init)
+    const response = await fetch(url, { ...init, headers })
+
+    if (!response.ok) {
+      const body = await this.parseErrorBody(response)
+      throw new QueryFactoryError(response.status, body)
+    }
+
+    return this.parseBody<T>(response)
+  }
+
+  private request<T>(path: string, requestInit?: RequestInit): Promise<T> {
+    const url = this.resolveUrl(path)
+    const init = this.mergeInit(requestInit)
+
+    return this.execute<T>(url, init)
+  }
+}
+
+function toHeaderRecord(headers: HeadersInit): Record<string, string> {
+  if (headers instanceof Headers) {
+    return Object.fromEntries(headers.entries())
+  }
+
+  if (Array.isArray(headers)) {
+    return Object.fromEntries(headers)
+  }
+
+  return headers
+}
+
+function mergeHeaders(base?: HeadersInit, next?: HeadersInit): Headers {
+  const headers = new Headers(base)
+
+  if (next) {
+    new Headers(next).forEach((value, key) => headers.set(key, value))
+  }
+
+  return headers
+}
