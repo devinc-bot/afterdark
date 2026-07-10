@@ -26,6 +26,9 @@ importers:
 
   apps/api:
     dependencies:
+      '@afterdark/common':
+        specifier: workspace:*
+        version: link:../../packages/common
       '@afterdark/db':
         specifier: workspace:*
         version: link:../../packages/db
@@ -114,6 +117,9 @@ importers:
 
   apps/dashboard:
     dependencies:
+      '@afterdark/common':
+        specifier: workspace:*
+        version: link:../../packages/common
       '@afterdark/db':
         specifier: workspace:*
         version: link:../../packages/db
@@ -199,6 +205,9 @@ importers:
 
   apps/web:
     dependencies:
+      '@afterdark/common':
+        specifier: workspace:*
+        version: link:../../packages/common
       '@afterdark/db':
         specifier: workspace:*
         version: link:../../packages/db
@@ -235,12 +244,18 @@ importers:
       react-dom:
         specifier: 19.2.6
         version: 19.2.6(react@19.2.6)
+      react-i18next:
+        specifier: 15.5.3
+        version: 15.5.3(i18next@23.16.8)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(typescript@6.0.3)
       vite:
         specifier: 7.3.5
         version: 7.3.5(@types/node@22.15.0)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.48.0)(tsx@4.19.4)(yaml@2.9.0)
       zod:
         specifier: 4.4.3
         version: 4.4.3
+      zustand:
+        specifier: 5.0.8
+        version: 5.0.8(@types/react@19.1.6)(react@19.2.6)(use-sync-external-store@1.6.0(react@19.2.6))
     devDependencies:
       '@tailwindcss/postcss':
         specifier: 4.3.0
@@ -266,6 +281,19 @@ importers:
       vite-tsconfig-paths:
         specifier: 5.1.4
         version: 5.1.4(typescript@6.0.3)(vite@7.3.5(@types/node@22.15.0)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.48.0)(tsx@4.19.4)(yaml@2.9.0))
+
+  packages/common:
+    dependencies:
+      '@afterdark/types':
+        specifier: workspace:*
+        version: link:../types
+      '@afterdark/validators':
+        specifier: workspace:*
+        version: link:../validators
+    devDependencies:
+      typescript:
+        specifier: 6.0.3
+        version: 6.0.3
 
   packages/db:
     dependencies:
@@ -410,6 +438,9 @@ importers:
         specifier: 3.3.1
         version: 3.3.1
     devDependencies:
+      '@afterdark/i18n':
+        specifier: workspace:*
+        version: link:../i18n
       '@storybook/react-vite':
         specifier: 10.4.2
         version: 10.4.2(@types/react-dom@19.1.5(@types/react@19.1.6))(@types/react@19.1.6)(esbuild@0.27.7)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(rollup@4.61.1)(storybook@10.4.2(@testing-library/dom@10.4.1)(@types/react@19.1.6)(prettier@3.8.3)(react-dom@19.2.6(react@19.2.6))(react@19.2.6))(typescript@6.0.3)(vite@7.3.5(@types/node@22.15.0)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.48.0)(tsx@4.19.4)(yaml@2.9.0))(webpack@5.97.1(esbuild@0.27.7)(lightningcss@1.32.0))
@@ -428,6 +459,9 @@ importers:
       react-dom:
         specifier: 19.2.6
         version: 19.2.6(react@19.2.6)
+      react-i18next:
+        specifier: 15.5.3
+        version: 15.5.3(i18next@23.16.8)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(typescript@6.0.3)
       storybook:
         specifier: 10.4.2
         version: 10.4.2(@testing-library/dom@10.4.1)(@types/react@19.1.6)(prettier@3.8.3)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
