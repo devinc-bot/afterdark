@@ -35,7 +35,9 @@
     "successCreate": "Event created successfully",
     "successEdit": "Event updated successfully",
     "errorCreate": "We could not create the event. Try again.",
-    "errorEdit": "We could not update the event. Try again."
+    "errorEdit": "We could not update the event. Try again.",
+    "errorCreateFallback": "We could not create the event. Try again in a few minutes.",
+    "errorEditFallback": "We could not update the event. Try again in a few minutes."
   },
   "table": {
     "title": "Registered events",
@@ -66,6 +68,7 @@
     "cancel": "Cancel",
     "confirm": "Delete",
     "success": "Event deleted successfully",
-    "error": "We could not delete the event. Try again."
+    "error": "We could not delete the event. Try again.",
+    "errorFallback": "We could not delete the event. Try again in a few minutes."
   }
 }

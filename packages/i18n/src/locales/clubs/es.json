@@ -4,6 +4,20 @@
     "title": "Clubes",
     "description": "Gestioná los clubes registrados, su estado operativo y la información publicada en la plataforma."
   },
+  "registry": {
+    "title": "Clubes registrados",
+    "loading": "Cargando clubes…",
+    "registryCount": "{count, plural, one {1 club registrado} other {# clubes registrados}}",
+    "addClub": "Agregar club",
+    "loadErrorTitle": "No pudimos cargar los clubes",
+    "loadErrorFallback": "Intentá de nuevo en unos minutos.",
+    "listError": "No pudimos cargar los clubes. Intentá de nuevo en unos minutos.",
+    "emptyTitle": "Todavía no hay clubes",
+    "emptyDescription": "Registrá el primer club para empezar a gestionar su información y disponibilidad.",
+    "deleteSuccess": "Club eliminado correctamente",
+    "deleteError": "No pudimos eliminar el club. Intentá de nuevo.",
+    "deleteFallback": "No pudimos eliminar el club. Intentá de nuevo en unos minutos."
+  },
   "formPage": {
     "back": "Volver a clubes",
     "cancel": "Cancelar",
@@ -22,6 +36,8 @@
     "toastEditSuccess": "Club actualizado correctamente",
     "toastCreateError": "No pudimos registrar el club. Intentá de nuevo.",
     "toastEditError": "No pudimos actualizar el club. Intentá de nuevo.",
+    "toastCreateFallback": "No pudimos registrar el club. Intentá de nuevo en unos minutos.",
+    "toastEditFallback": "No pudimos actualizar el club. Intentá de nuevo en unos minutos.",
     "toastMissingClubId": "No pudimos identificar el club a actualizar."
   },
   "sections": {

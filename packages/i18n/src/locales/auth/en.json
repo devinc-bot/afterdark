@@ -1,7 +1,10 @@
 {
   "login": {
     "metaTitle": "Sign in · afterdark Admin",
+    "metaTitleWeb": "Sign in · afterdark",
     "title": "Sign in",
+    "subtitle": "Sign in to manage your tickets.",
+    "createAccount": "Create account",
     "email": "Email",
     "emailPlaceholder": "admin@afterdark.io",
     "password": "Password",
@@ -12,7 +15,8 @@
     "noAccount": "Don't have an account?",
     "error": {
       "invalidCredentials": "Invalid credentials. Check your email and password.",
-      "generic": "Could not sign in. Please try again."
+      "generic": "Could not sign in. Please try again.",
+      "fallback": "We couldn't sign you in. Try again in a few minutes."
     }
   },
   "forgotPassword": {
@@ -20,7 +24,10 @@
   },
   "register": {
     "metaTitle": "Create account · afterdark Admin",
+    "metaTitleWeb": "Create account · afterdark",
     "title": "Create account",
+    "success": "Account created. You can now sign in.",
+    "signIn": "Sign in",
     "name": "First name",
     "namePlaceholder": "Maria",
     "lastName": "Last name",
@@ -36,7 +43,8 @@
     "alreadyHaveAccount": "Already have an account?",
     "error": {
       "emailTaken": "This email is already registered.",
-      "generic": "Could not create account. Please try again."
+      "generic": "Could not create account. Please try again.",
+      "fallback": "We couldn't create your account. Try again in a few minutes."
     }
   },
   "logout": "Sign out",
