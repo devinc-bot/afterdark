@@ -3,7 +3,7 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '../../lib/utils'
 
 const cardVariants = cva(
-  'rounded-xl text-ink transition-shadow hover:shadow-[0_4px_16px_rgba(0,0,0,0.04)]',
+  'rounded-control text-ink transition-shadow hover:shadow-[0_4px_16px_rgba(0,0,0,0.04)]',
   {
     variants: {
       variant: {

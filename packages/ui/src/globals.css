@@ -74,6 +74,8 @@
   --radius-md: 6px;
   --radius-lg: 8px;
   --radius-xl: 12px;
+  /* Control surfaces (button, input, card, dialog, …). Change here to update all. */
+  --radius-control: var(--radius-xl);
   --radius-pill: 9999px;
   --radius-full: 9999px;
 
@@ -291,6 +293,10 @@
 }
 
 @layer utilities {
+  .rounded-control {
+    border-radius: var(--radius-control);
+  }
+
   .nebula-bg {
     background:
       radial-gradient(circle at 20% 30%, rgba(236, 177, 255, 0.15) 0%, transparent 40%),
