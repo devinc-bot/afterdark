@@ -1,4 +1,8 @@
 {
+  "tabs": {
+    "login": "Entrar",
+    "register": "Registrarse"
+  },
   "login": {
     "metaTitle": "Iniciar sesión · afterdark Admin",
     "metaTitleWeb": "Iniciar sesión · afterdark",
@@ -20,8 +24,12 @@
     }
   },
   "forgotPassword": {
-    "metaTitle": "Recuperar contraseña · afterdark Admin"
+    "metaTitle": "Recuperar contraseña · afterdark Admin",
+    "title": "Recuperar contraseña",
+    "description": "Todavía no podés restablecer la contraseña desde acá. Escribile al administrador de tu venue para recuperar el acceso.",
+    "backToLogin": "Volver a iniciar sesión"
   },
+
   "register": {
     "metaTitle": "Crear cuenta · afterdark Admin",
     "metaTitleWeb": "Crear cuenta · afterdark",

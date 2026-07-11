@@ -33,7 +33,9 @@
     "loadingProfile": "Cargando perfil"
   },
   "shell": {
-    "tagline": "Panel de administración para locales y eventos"
+    "tagline": "Panel de administración para locales y eventos",
+    "footer": "© afterdark",
+    "loading": "Cargando…"
   },
   "notFound": {
     "title": "Página no encontrada",

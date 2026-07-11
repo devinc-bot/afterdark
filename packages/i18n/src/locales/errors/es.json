@@ -78,6 +78,11 @@
     "UPLOAD_FAILED": "No pudimos guardar la imagen. Intentá de nuevo en unos minutos.",
     "DELETE_FAILED": "No pudimos eliminar la imagen. Intentá de nuevo en unos minutos."
   },
+  "mail": {
+    "NOT_CONFIGURED": "El servicio de correo no está configurado.",
+    "SEND_FAILED": "No pudimos enviar el correo. Intentá de nuevo en unos minutos.",
+    "RENDER_FAILED": "No pudimos generar el correo. Intentá de nuevo en unos minutos."
+  },
   "guard": {
     "OWNER_ONLY": "Solo los propietarios pueden acceder a este recurso.",
     "INSUFFICIENT_ROLE": "No tenés permiso para acceder a este recurso."
