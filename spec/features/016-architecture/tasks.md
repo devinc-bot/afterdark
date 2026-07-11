@@ -30,4 +30,4 @@
 
 ## Cierre
 
-- [ ] Status → `done` en `spec.md` y `roadmap.md`
+- [x] Status → `done` en `spec.md` y `roadmap.md`

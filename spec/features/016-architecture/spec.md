@@ -5,7 +5,7 @@
 | Campo      | Valor              |
 | ---------- | ------------------ |
 | **ID**     | `016-architecture` |
-| **Status** | `approved`         |
+| **Status** | `done`             |
 | **Apps**   | `packages/types`   |
 
 ---
