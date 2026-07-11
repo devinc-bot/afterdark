@@ -1,11 +1,6 @@
-import { BadRequestException } from '@nestjs/common'
 import type { AddressSelect, AssetSelect, ClubSelect } from '@afterdark/db'
 import type { ClubImageResponse, ClubResponse } from '@afterdark/types'
-import {
-  CLUB_IMAGE_MAX_COUNT,
-  type CreateClubInput,
-  type UpdateClubInput,
-} from '@afterdark/validators'
+import type { CreateClubInput, UpdateClubInput } from '@afterdark/validators'
 
 export function toClubImageResponse(asset: AssetSelect): ClubImageResponse {
   return {
@@ -63,28 +58,4 @@ export function groupClubImagesByClubId(
   }
 
   return map
-}
-
-export function assertValidKeepImageIds(
-  currentImageDocumentIds: Iterable<string>,
-  keepImageIds: string[],
-  errorMessage: string
-): void {
-  const currentIds = new Set(currentImageDocumentIds)
-
-  for (const documentId of keepImageIds) {
-    if (!currentIds.has(documentId)) {
-      throw new BadRequestException(errorMessage)
-    }
-  }
-}
-
-export function validateImageLimit(
-  keepImageIds: string[],
-  files: Express.Multer.File[],
-  errorMessage: string
-): void {
-  if (keepImageIds.length + files.length > CLUB_IMAGE_MAX_COUNT) {
-    throw new BadRequestException(errorMessage)
-  }
 }
