@@ -25,7 +25,7 @@ const DateTimeInput = React.forwardRef<HTMLInputElement, DateTimeInputProps>(
         <Input
           type="datetime-local"
           ref={ref}
-          className={cn('pr-12 [color-scheme:dark]', calendarPickerIndicatorClassName, className)}
+          className={cn('pr-12 scheme-dark', calendarPickerIndicatorClassName, className)}
           {...props}
         />
         <Calendar

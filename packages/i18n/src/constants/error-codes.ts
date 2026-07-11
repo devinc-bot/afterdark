@@ -70,6 +70,12 @@ export const FILE_ERROR_CODE = {
   DELETE_FAILED: 'file.DELETE_FAILED',
 } as const
 
+export const MAIL_ERROR_CODE = {
+  NOT_CONFIGURED: 'mail.NOT_CONFIGURED',
+  SEND_FAILED: 'mail.SEND_FAILED',
+  RENDER_FAILED: 'mail.RENDER_FAILED',
+} as const
+
 export const GUARD_ERROR_CODE = {
   OWNER_ONLY: 'guard.OWNER_ONLY',
   INSUFFICIENT_ROLE: 'guard.INSUFFICIENT_ROLE',
@@ -92,6 +98,7 @@ export type StaffErrorCode = (typeof STAFF_ERROR_CODE)[keyof typeof STAFF_ERROR_
 export type OwnerErrorCode = (typeof OWNER_ERROR_CODE)[keyof typeof OWNER_ERROR_CODE]
 export type TicketErrorCode = (typeof TICKET_ERROR_CODE)[keyof typeof TICKET_ERROR_CODE]
 export type FileErrorCode = (typeof FILE_ERROR_CODE)[keyof typeof FILE_ERROR_CODE]
+export type MailErrorCode = (typeof MAIL_ERROR_CODE)[keyof typeof MAIL_ERROR_CODE]
 export type GuardErrorCode = (typeof GUARD_ERROR_CODE)[keyof typeof GUARD_ERROR_CODE]
 export type EventErrorCode = (typeof EVENT_ERROR_CODE)[keyof typeof EVENT_ERROR_CODE]
 
@@ -103,5 +110,6 @@ export type ErrorCode =
   | OwnerErrorCode
   | TicketErrorCode
   | FileErrorCode
+  | MailErrorCode
   | GuardErrorCode
   | EventErrorCode

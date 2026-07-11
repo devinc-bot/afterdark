@@ -1,4 +1,8 @@
 {
+  "tabs": {
+    "login": "Sign in",
+    "register": "Register"
+  },
   "login": {
     "metaTitle": "Sign in · afterdark Admin",
     "metaTitleWeb": "Sign in · afterdark",
@@ -20,8 +24,12 @@
     }
   },
   "forgotPassword": {
-    "metaTitle": "Recover password · afterdark Admin"
+    "metaTitle": "Recover password · afterdark Admin",
+    "title": "Recover password",
+    "description": "You can't reset your password from here yet. Contact your venue administrator to regain access.",
+    "backToLogin": "Back to sign in"
   },
+
   "register": {
     "metaTitle": "Create account · afterdark Admin",
     "metaTitleWeb": "Create account · afterdark",

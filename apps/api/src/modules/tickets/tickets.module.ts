@@ -2,13 +2,22 @@ import { Module } from '@nestjs/common'
 import { AuthModule } from '../auth/auth.module'
 import { JwtAuthGuard } from '../common/guards/jwt-auth.guard'
 import { RolesGuard } from '../common/guards/roles.guard'
-import { TicketsController } from './tickets.controller'
-import { TicketsService } from './tickets.service'
+import { CreateTicketUseCase } from './application/create-ticket.use-case'
+import { DeleteTicketUseCase } from './application/delete-ticket.use-case'
+import { ListMyTicketsUseCase } from './application/list-my-tickets.use-case'
+import { UpdateTicketUseCase } from './application/update-ticket.use-case'
+import { TicketsController } from './presentation/tickets.controller'
 
 @Module({
   imports: [AuthModule],
   controllers: [TicketsController],
-  providers: [TicketsService, JwtAuthGuard, RolesGuard],
-  exports: [TicketsService],
+  providers: [
+    ListMyTicketsUseCase,
+    CreateTicketUseCase,
+    UpdateTicketUseCase,
+    DeleteTicketUseCase,
+    JwtAuthGuard,
+    RolesGuard,
+  ],
 })
 export class TicketsModule {}
