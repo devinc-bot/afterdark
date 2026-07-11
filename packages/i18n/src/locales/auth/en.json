@@ -25,10 +25,12 @@
   },
   "forgotPassword": {
     "metaTitle": "Recover password · afterdark Admin",
+    "metaTitleWeb": "Recover password · afterdark",
     "title": "Recover password",
     "description": "Enter your email and we'll send you a link to reset your password.",
     "email": "Email",
     "emailPlaceholder": "admin@afterdark.io",
+    "emailPlaceholderWeb": "maria@email.com",
     "submit": "Send link",
     "submitting": "Sending…",
     "success": "If the email is registered, you'll receive a link shortly.",
@@ -40,6 +42,7 @@
   },
   "resetPassword": {
     "metaTitle": "New password · afterdark Admin",
+    "metaTitleWeb": "New password · afterdark",
     "title": "New password",
     "description": "Choose a new password for your account.",
     "password": "Password",

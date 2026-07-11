@@ -49,13 +49,17 @@ Estados: `pending` · `in_progress` · `done`
 ### Fase 6 — Plan técnico
 
 - Usuario: “implementa” → plan aceptado; implementación en curso.
-- Decisión: token en claro (paridad con `staff_invitations.token`).
+- Decisión: token JWT (paridad con invitaciones).
+
+### Ampliación web (post-aprobación)
+
+- Usuario: “continúa” → sumar `web`; roles `user`+owner+staff; link por rol (`WEB_URL` / `DASHBOARD_URL`).
 -
 
 ## Supuestos del asistente
 
-- `web` queda fuera; solo dashboard + API en esta feature.
 - Se reutiliza el template `passwordReset` de `019-email-service`.
-- Roles afectados: dueño y staff (cuentas del dashboard); no clientes `user` en esta entrega.
+- Roles: `user`, `owner`, `staff`.
 - Token en query string (`/reset-password?token=`), no en path.
+- Link del mail según rol (no según app de origen).
 -

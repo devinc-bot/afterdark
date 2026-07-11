@@ -8,7 +8,7 @@ import {
 } from '@afterdark/db'
 import { AUTH_ERROR_CODE } from '@afterdark/i18n'
 import { TranslationService } from '@afterdark/i18n/server'
-import { USER_ROLE } from '@afterdark/types'
+import { USER_ROLE, type UserRole } from '@afterdark/types'
 import type { ForgotPasswordInput } from '@afterdark/validators'
 import { SendPasswordResetUseCase } from '../../mail'
 import { ENV } from '../../common/config/env'
@@ -17,9 +17,19 @@ import {
   PASSWORD_RESET_TOKEN_TTL_MINUTES,
 } from '../auth.constants'
 import { buildPasswordResetPayload } from '../utils/password-reset.utils'
+import { CLIENT_ROUTES } from '@afterdark/common'
+
+const PASSWORD_RESET_ROLES = new Set<UserRole>([USER_ROLE.USER, USER_ROLE.OWNER, USER_ROLE.STAFF])
 
 function startOfUtcDay(now = new Date()): Date {
   return new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()))
+}
+
+function passwordResetAppOrigin(roleName: UserRole): string {
+  if (roleName === USER_ROLE.USER) {
+    return ENV.WEB_URL
+  }
+  return ENV.DASHBOARD_URL
 }
 
 @Injectable()
@@ -40,8 +50,8 @@ export class ForgotPasswordUseCase {
       return
     }
 
-    const roleName = row.role.name
-    if (roleName !== USER_ROLE.OWNER && roleName !== USER_ROLE.STAFF) {
+    const roleName = row.role.name as UserRole
+    if (!PASSWORD_RESET_ROLES.has(roleName)) {
       return
     }
 
@@ -73,7 +83,7 @@ export class ForgotPasswordUseCase {
       expiresAt,
     })
 
-    const url = new URL('/reset-password', ENV.DASHBOARD_URL)
+    const url = new URL(CLIENT_ROUTES.resetPassword(), passwordResetAppOrigin(roleName))
     url.searchParams.set('token', token)
 
     try {

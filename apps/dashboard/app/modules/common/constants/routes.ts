@@ -1,3 +1,7 @@
+import { CLIENT_ROUTES } from '@afterdark/common'
+
+const { resetPassword } = CLIENT_ROUTES
+
 export const DASHBOARD_ROUTES = {
   home: () => '/dashboard' as const,
   clubManagement: () => '/club-management' as const,
@@ -10,7 +14,7 @@ export const DASHBOARD_ROUTES = {
   login: () => '/login' as const,
   register: () => '/register' as const,
   forgotPassword: () => '/forgot-password' as const,
-  resetPassword: () => '/reset-password' as const,
+  resetPassword,
 } as const
 
 export const AUTH_ROUTE_PATHS = new Set<string>([

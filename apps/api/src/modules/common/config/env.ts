@@ -12,6 +12,7 @@ const envSchema = databaseEnvSchema
     PORT: z.coerce.number().default(3000),
     JWT_SECRET: z.string().default('afterdark-dev-secret'),
     DASHBOARD_URL: z.url().default('http://localhost:3002'),
+    WEB_URL: z.url().default('http://localhost:3001'),
     CORS_ALLOWED_ORIGINS: z
       .string()
       .default('http://localhost:3001,http://localhost:3002')

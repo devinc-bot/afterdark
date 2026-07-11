@@ -149,7 +149,7 @@ apps/api/src/modules/mail/
 
 ## Env
 
-Root `.env`. Main vars: `VITE_API_URL`, `TURSO_*`, `NODE_ENV`, `PORT`, `JWT_SECRET`, `DASHBOARD_URL`, `CORS_ALLOWED_ORIGINS`, `RESEND_API_KEY`, `MAIL_FROM`, `MAIL_SMOKE_TO`.
+Root `.env`. Main vars: `VITE_API_URL`, `TURSO_*`, `NODE_ENV`, `PORT`, `JWT_SECRET`, `DASHBOARD_URL`, `WEB_URL`, `CORS_ALLOWED_ORIGINS`, `RESEND_API_KEY`, `MAIL_FROM`, `MAIL_SMOKE_TO`.
 
 Zod schemas for env live in `packages/validators/src/env/`. Apps compose them at boot (`apps/api/.../config/env.ts`, `packages/db`, web/dashboard client env). Mail keys may be empty at boot; `MailConfigService` / send use cases fail with `mail.NOT_CONFIGURED` when sending without config. `API_PREFIX` is a **code constant**, not env.
 

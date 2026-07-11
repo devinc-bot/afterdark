@@ -1,4 +1,4 @@
-# Reset de contraseña (dashboard)
+# Reset de contraseña
 
 > Completar con la entrevista guiada — [INTERVIEW.md](../../INTERVIEW.md). Estado por fase en `progress.md`.
 
@@ -6,31 +6,31 @@
 | ---------- | -------------------- |
 | **ID**     | `021-password-reset` |
 | **Status** | `approved`           |
-| **Apps**   | `api` · `dashboard`  |
+| **Apps**   | `api` · `dashboard` · `web` |
 
 ---
 
 ## Qué hace
 
-Un dueño o staff del dashboard puede pedir un link de recuperación por email y, al abrirlo, definir una contraseña nueva para volver a iniciar sesión.
+Un dueño, staff o cliente puede pedir un link de recuperación por email y, al abrirlo, definir una contraseña nueva para volver a iniciar sesión (dashboard o web según el rol).
 
 ## Por qué
 
-Hoy `/forgot-password` es un placeholder: si olvidan la contraseña, no hay forma de recuperar el acceso al panel. Cerrar ese hueco alinea con cuentas confiables y operación del club ([mission.md](../../constitution/mission.md)). Reutiliza la infra de mail ya aprobada (`019-email-service`).
+Hoy `/forgot-password` es un placeholder: si olvidan la contraseña, no hay forma de recuperar el acceso al panel. Cerrar ese hueco alinea con cuentas confiables y operación del club ([mission.md](../../constitution/mission.md)). Reutiliza la infra de mail ya aprobada (`019-email-service`). Los clientes en `web` necesitan el mismo flujo.
 
 ## Alcance
 
 ### Incluye
 
-- Formulario “olvidé mi contraseña” (email) en `dashboard` (reemplaza el placeholder).
+- Formulario “olvidé mi contraseña” (email) en `dashboard` y `web`.
 - Envío de email con link de reset (template `passwordReset` de `019`).
-- Pantalla para definir nueva contraseña mediante token del link.
+- Pantalla para definir nueva contraseña mediante token del link (ambas apps).
 - Endpoints API: solicitar reset + confirmar nueva contraseña.
-- Persistencia de token de reset (tabla nueva o patrón similar a invitaciones).
+- Persistencia de token de reset (`password_reset_tokens`).
+- Link del mail según rol: `user` → `WEB_URL`, `owner`/`staff` → `DASHBOARD_URL`.
 
 ### No incluye
 
-- Reset de contraseña en `web` (clientes).
 - Cambio de contraseña estando autenticado (settings / perfil).
 - Magic link o OTP sin contraseña nueva.
 - SMS u otros canales fuera de email.
@@ -42,18 +42,18 @@ Hoy `/forgot-password` es un placeholder: si olvidan la contraseña, no hay form
 
 ### US-1: Solicitar link de recuperación
 
-**Como** dueño o staff del dashboard  
+**Como** dueño, staff o cliente  
 **Quiero** pedir un link de recuperación con mi email  
 **Para** recuperar el acceso sin ayuda externa
 
 **Criterios de aceptación**
 
-- [ ] **Dado** un email de cuenta existente (owner/staff) **Cuando** envío el formulario de forgot-password **Entonces** veo una confirmación genérica y recibo un email con el link de reset.
-- [ ] **Dado** un email que no existe (o no es cuenta de dashboard) **Cuando** envío el formulario **Entonces** veo la misma confirmación genérica (sin revelar si el email existe).
+- [ ] **Dado** un email de cuenta existente (user/owner/staff) **Cuando** envío el formulario de forgot-password **Entonces** veo una confirmación genérica y recibo un email con el link de reset (web o dashboard según rol).
+- [ ] **Dado** un email que no existe (o rol no elegible) **Cuando** envío el formulario **Entonces** veo la misma confirmación genérica (sin revelar si el email existe).
 
 ### US-2: Definir contraseña nueva
 
-**Como** dueño o staff con un link válido  
+**Como** dueño, staff o cliente con un link válido  
 **Quiero** elegir una contraseña nueva  
 **Para** poder iniciar sesión de nuevo
 
@@ -109,9 +109,9 @@ Hoy `/forgot-password` es un placeholder: si olvidan la contraseña, no hay form
 | `accounts.password` | Se actualiza el hash al confirmar reset (sin columna nueva) |
 
 - Un nuevo forgot para la misma cuenta invalida (o marca usados) los tokens previos pendientes.
-- El link del email apunta a la URL del dashboard: `/reset-password?token=…`.
+- El link del email apunta a `/reset-password?token=…` en `WEB_URL` (rol `user`) o `DASHBOARD_URL` (owner/staff).
 
-### UI (`dashboard`)
+### UI (`dashboard` · `web`)
 
 | Ruta | Pantalla |
 | ---- | -------- |
@@ -136,15 +136,16 @@ Hoy `/forgot-password` es un placeholder: si olvidan la contraseña, no hay form
 
 ## Reglas de negocio
 
-1. Solo cuentas con rol **owner** o **staff** reciben email de reset. Email inexistente o solo rol `user`: misma respuesta `204`, sin mail.
+1. Cuentas con rol **user**, **owner** o **staff** reciben email de reset. Email inexistente u otro rol: misma respuesta `204`, sin mail.
 2. TTL del token: **60 minutos** desde la creación.
 3. Un forgot nuevo para la misma cuenta invalida (marca usados / descarta) los tokens previos pendientes.
 4. Token de **uso único**: al reset exitoso se setea `usedAt`; no se puede reutilizar.
-5. Anti-enumeración: `POST /auth/forgot-password` responde `204` si el body es válido y no hay rate limit (email inexistente o no owner/staff: sin mail).
+5. Anti-enumeración: `POST /auth/forgot-password` responde `204` si el body es válido y no hay rate limit (email inexistente o rol no elegible: sin mail).
 6. No se invalidan JWT/refresh existentes en esta entrega (no hay store de revocación hoy).
 7. Máximo **10** solicitudes de forgot-password por cuenta y día UTC; al superar el límite → `429` con mensaje de demasiados intentos.
 8. Password nueva: mínimo 8 caracteres; debe coincidir con `confirmPassword`.
 9. Cron diario (medianoche UTC) elimina filas de `password_reset_tokens` con `expiresAt` pasado.
+10. URL del link: rol `user` → `WEB_URL`; `owner`/`staff` → `DASHBOARD_URL`.
 
 ## Preguntas abiertas
 
