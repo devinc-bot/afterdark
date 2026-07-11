@@ -25,6 +25,7 @@
 | 018 | `web-user-registration`            | Registro de cliente (web)            | `approved`    | `web`                     | Formulario en `/register` para rol `user` (cliente). API `POST /auth/register/user` ya existe; `web` hoy muestra placeholder. Ver `spec/features/018-web-user-registration/`.                                                                                                                                                                                                                                                               |
 | 019 | `email-service`                    | Servicio de envío de emails          | `approved`    | `api`                     | Infra de mail modular (puerto + adaptador Resend). Templates con React Email (`staffInvitation`, `passwordReset`, `welcome`). Sin UI ni HTTP público; cableado de dominio fuera de alcance. Ver `spec/features/019-email-service/`.                                                                                                                                                                                                         |
 | 020 | `ui-design-tokens`                 | Tokens de design system (UI)         | `approved`    | `ui`, `web`, `dashboard`  | Clases/tokens CSS centralizados para estilos de componentes (1ª entrega: border-radius = `rounded-control`). Extensible a otros estilos. Ver `spec/features/020-ui-design-tokens/`.                                                                                                                                                                                          |
+| 021 | `password-reset`                   | Reset de contraseña (dashboard)      | `in-progress` | `api`, `dashboard`        | Forgot + reset por email (link). Reutiliza template `passwordReset` de `019`. `web` fuera de alcance. Ver `spec/features/021-password-reset/`.                                                                                                                                                                                                                              |
 
 ## Status
 
@@ -60,6 +61,7 @@
 018-web-user-registration            →  requiere 001 (auth API + sesión en web)
 019-email-service                    →  (sin deps; infra transversal)
 020-ui-design-tokens                 →  (sin deps; design system / CSS)
+021-password-reset                   →  requiere 001 (auth), 019 (email-service)
 ```
 
 ## Decisiones de prioridad

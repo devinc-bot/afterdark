@@ -42,6 +42,7 @@ Cada tabla incluye las columnas base (`id`, `document_id`, `created_at`, `update
 | `chat`                | `chats`             | `chat.ts`              | Entidad |
 | `messages`            | `messages`          | `messages.ts`          | Entidad |
 | `staff_invitations`   | `staffInvitations`  | `staff-invitation.ts`  | Entidad |
+| `password_reset_tokens` | `passwordResetTokens` | `password-reset-token.ts` | Entidad |
 | `account_role_lnk`    | `accountRolesLnk`   | `account-role-lnk.ts`  | Enlace  |
 | `user_accounts_lnk`   | `userAccountsLnk`   | `user-account-lnk.ts`  | Enlace  |
 | `owner_account_lnk`   | `ownerAccountsLnk`  | `owner-account-lnk.ts` | Enlace  |
@@ -130,6 +131,7 @@ erDiagram
   assets ||--o{ club_assets_lnk : has
 
   clubs ||--o{ tickets : sells
+  accounts ||--o{ password_reset_tokens : has
   clubs ||--o{ staff_invitations : receives
   users ||--o{ staff_invitations : invites
   users ||--o{ orders : makes
@@ -177,6 +179,15 @@ erDiagram
     integer invited_by_user_id FK
     text token UK
     text status
+  }
+
+  password_reset_tokens {
+    integer id PK
+    text document_id UK
+    integer account_id FK
+    text token UK
+    integer expires_at
+    integer used_at
   }
 ```
 
@@ -337,6 +348,17 @@ Regla de negocio (API): solo un usuario con rol `owner` puede crear invitaciones
 
 **Endpoint:** `POST /api/invitations/staff`
 
+#### `password_reset_tokens` — `password-reset-token.ts`
+
+| Columna (TS) | SQL          | Tipo      | Null | Default              |
+| ------------ | ------------ | --------- | ---- | -------------------- |
+| `accountId`  | `account_id` | integer   | NO   | FK → `accounts.id`   |
+| `token`      | `token`      | text      | NO   | UNIQUE               |
+| `expiresAt`  | `expires_at` | timestamp | NO   | —                    |
+| `usedAt`     | `used_at`    | timestamp | SÍ   | —                    |
+
+**Endpoints:** `POST /api/auth/forgot-password`, `POST /api/auth/reset-password`
+
 ---
 
 ### Tickets y pagos
@@ -436,6 +458,7 @@ Export Drizzle: `chats`. Solo columnas base; sin campos adicionales.
 | Todas                 | `document_id` (`{tabla}_document_id_unique`) |
 | `accounts`            | `email`                                      |
 | `staff_invitations`   | `token`                                      |
+| `password_reset_tokens` | `token`                                    |
 | `owner_addresses_lnk` | `owner_id`, `address_id`                     |
 | `club_addresses_lnk`  | `club_id`, `address_id`                      |
 | `tickets_sold`          | `qr_code`                                    |
@@ -460,6 +483,7 @@ Historial en `src/migrations/meta/_journal.json`:
 | 0009 | `0009_acoustic_maverick.sql`    | `staff` + `staff_account_lnk`                              |
 | 0015 | `0015_friendly_kabuki.sql`      | `payments` → `orders`; +`quantity`, `provider`, `metadata`; −`club_id` |
 | 0016 | `0016_bent_stranger.sql`        | Tabla `tickets_sold` (`order_id`, `qr_code`)               |
+| 0017 | `0017_grey_pixie.sql`           | Tabla `password_reset_tokens`                              |
 
 ### Comandos (desde `packages/db`)
 

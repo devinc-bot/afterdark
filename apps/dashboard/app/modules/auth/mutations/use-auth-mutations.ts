@@ -1,9 +1,19 @@
 import { useMutation } from '@tanstack/react-query'
 import { useNavigate } from '@tanstack/react-router'
-import type { LoginInput, RegisterOwnerInput } from '@afterdark/validators'
+import type {
+  ForgotPasswordInput,
+  LoginInput,
+  RegisterOwnerInput,
+  ResetPasswordInput,
+} from '@afterdark/validators'
 import { useSessionStore } from '~/modules/common/stores/session.store'
 import { DASHBOARD_ROUTES } from '../../common/constants/routes'
-import { loginFn, registerOwnerFn } from '../services/auth.service'
+import {
+  forgotPasswordFn,
+  loginFn,
+  registerOwnerFn,
+  resetPasswordFn,
+} from '../services/auth.service'
 import { saveAuthSession } from '../utils/auth-storage.utils'
 
 export function useLogin() {
@@ -27,5 +37,17 @@ export function useRegister() {
     onSuccess: async () => {
       await navigate({ to: DASHBOARD_ROUTES.login() })
     },
+  })
+}
+
+export function useForgotPassword() {
+  return useMutation({
+    mutationFn: (input: ForgotPasswordInput) => forgotPasswordFn({ data: input }),
+  })
+}
+
+export function useResetPassword() {
+  return useMutation({
+    mutationFn: (input: ResetPasswordInput) => resetPasswordFn({ data: input }),
   })
 }

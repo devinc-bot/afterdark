@@ -17,6 +17,8 @@
     "TOKEN_INVALID": "El token es inválido.",
     "SESSION_NOT_FOUND": "Sesión no encontrada.",
     "REFRESH_TOKEN_INVALID": "Token de refresco inválido.",
+    "PASSWORD_RESET_TOKEN_INVALID": "El enlace no es válido o ya expiró.",
+    "PASSWORD_RESET_RATE_LIMITED": "Demasiados intentos. Probá de nuevo más tarde.",
     "ROLE_NOT_CONFIGURED": "No pudimos completar el registro. Contactá al administrador.",
     "REGISTER_SUCCESS": "Cuenta creada correctamente. Ya podés iniciar sesión."
   },

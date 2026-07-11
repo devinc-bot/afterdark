@@ -26,8 +26,35 @@
   "forgotPassword": {
     "metaTitle": "Recuperar contraseña · afterdark Admin",
     "title": "Recuperar contraseña",
-    "description": "Todavía no podés restablecer la contraseña desde acá. Escribile al administrador de tu venue para recuperar el acceso.",
-    "backToLogin": "Volver a iniciar sesión"
+    "description": "Ingresá tu email y te enviamos un enlace para restablecer la contraseña.",
+    "email": "Correo",
+    "emailPlaceholder": "admin@afterdark.io",
+    "submit": "Enviar enlace",
+    "submitting": "Enviando…",
+    "success": "Si el email está registrado, vas a recibir un enlace en breve.",
+    "backToLogin": "Volver a iniciar sesión",
+    "error": {
+      "generic": "No pudimos enviar el enlace. Intentá de nuevo.",
+      "fallback": "No pudimos enviar el enlace. Intentá de nuevo en unos minutos."
+    }
+  },
+  "resetPassword": {
+    "metaTitle": "Nueva contraseña · afterdark Admin",
+    "title": "Nueva contraseña",
+    "description": "Elegí una contraseña nueva para tu cuenta.",
+    "password": "Contraseña",
+    "passwordPlaceholder": "Mínimo 8 caracteres",
+    "confirmPassword": "Confirmar contraseña",
+    "confirmPasswordPlaceholder": "Repetí la contraseña",
+    "submit": "Guardar contraseña",
+    "submitting": "Guardando…",
+    "success": "Contraseña actualizada. Ya podés iniciar sesión.",
+    "invalidToken": "El enlace no es válido o ya expiró.",
+    "backToLogin": "Volver a iniciar sesión",
+    "error": {
+      "generic": "No pudimos actualizar la contraseña. Intentá de nuevo.",
+      "fallback": "No pudimos actualizar la contraseña. Intentá de nuevo en unos minutos."
+    }
   },
 
   "register": {
