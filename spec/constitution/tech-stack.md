@@ -33,6 +33,13 @@
 - `files-sdk` + Cloudflare R2 (`apps/api/src/modules/files/`).
 - Variables: ver `packages/validators/src/upload.ts` y `apps/api/.env`.
 
+## Correo (transaccional)
+
+- Puerto `MailSender` + adaptador Resend (`apps/api/src/modules/mail/`).
+- Templates: React Email (`react-email`); copy en namespace i18n `emails`.
+- Variables: `RESEND_API_KEY`, `MAIL_FROM`, `MAIL_SMOKE_TO` (opcional; ver `packages/validators/src/mail.ts`).
+- Humo: `pnpm --filter @afterdark/api mail:smoke` (solo development).
+
 ## Comandos habituales
 
 ```bash
