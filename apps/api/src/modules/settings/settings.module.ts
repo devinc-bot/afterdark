@@ -3,12 +3,13 @@ import { AuthModule } from '../auth/auth.module'
 import { JwtAuthGuard } from '../common/guards/jwt-auth.guard'
 import { OwnerModule } from '../owner/owner.module'
 import { StaffModule } from '../staff/staff.module'
-import { SettingsController } from './settings.controller'
-import { SettingsService } from './settings.service'
+import { GetSettingsUseCase } from './application/get-settings.use-case'
+import { UpdateSettingsUseCase } from './application/update-settings.use-case'
+import { SettingsController } from './presentation/settings.controller'
 
 @Module({
   imports: [AuthModule, OwnerModule, StaffModule],
   controllers: [SettingsController],
-  providers: [SettingsService, JwtAuthGuard],
+  providers: [GetSettingsUseCase, UpdateSettingsUseCase, JwtAuthGuard],
 })
 export class SettingsModule {}

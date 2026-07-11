@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common'
-import { OwnerService } from './owner.service'
+import { GetCurrentOwnerUseCase } from './application/get-current-owner.use-case'
+import { UpdateCurrentOwnerUseCase } from './application/update-current-owner.use-case'
 
 @Module({
-  providers: [OwnerService],
-  exports: [OwnerService],
+  providers: [GetCurrentOwnerUseCase, UpdateCurrentOwnerUseCase],
+  exports: [GetCurrentOwnerUseCase, UpdateCurrentOwnerUseCase],
 })
 export class OwnerModule {}

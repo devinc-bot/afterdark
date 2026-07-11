@@ -7,7 +7,7 @@ import {
 } from '@afterdark/db'
 import type { ClubImageResponse } from '@afterdark/types'
 import { TranslationService } from '@afterdark/i18n/server'
-import { FilesService } from '../../../files/files.service'
+import { FilesService } from '../../../files/application/services/files.service'
 import { toClubImageResponse } from '../../mappers/club.mapper'
 import type { UploadedClubImage } from '../../types'
 

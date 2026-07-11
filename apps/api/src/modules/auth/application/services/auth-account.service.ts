@@ -1,0 +1,60 @@
+import { ConflictException, Inject, Injectable, InternalServerErrorException } from '@nestjs/common'
+import { JwtService } from '@nestjs/jwt'
+import { hashValue } from '../../../common'
+import {
+  accountExistsByEmail,
+  findAuthAccountByEmail,
+  findRoleByName,
+  registerAccount,
+} from '@afterdark/db'
+import { type LoginResponse, type RegisterResponse, type UserRole } from '@afterdark/types'
+import type { RegisterUserInput } from '@afterdark/validators'
+import { TranslationService } from '@afterdark/i18n/server'
+
+type AuthAccountRow = NonNullable<Awaited<ReturnType<typeof findAuthAccountByEmail>>>
+
+@Injectable()
+export class AuthAccountService {
+  constructor(
+    @Inject(JwtService) private readonly jwtService: JwtService,
+    @Inject(TranslationService) private readonly ts: TranslationService
+  ) {}
+
+  async register(input: RegisterUserInput, roleName: UserRole): Promise<RegisterResponse> {
+    if (await accountExistsByEmail(input.email)) {
+      throw new ConflictException(this.ts.translateError('auth.EMAIL_ALREADY_REGISTERED'))
+    }
+
+    const role = await findRoleByName(roleName)
+
+    if (!role) {
+      throw new InternalServerErrorException(this.ts.translateError('auth.ROLE_NOT_CONFIGURED'))
+    }
+
+    const hashedPassword = await hashValue(input.password)
+
+    await registerAccount({
+      email: input.email,
+      hashedPassword,
+      roleId: role.id,
+      roleName,
+      profile: {
+        name: input.name,
+        lastName: input.lastName,
+        phone: '',
+      },
+    })
+
+    return { message: this.ts.translateError('auth.REGISTER_SUCCESS') }
+  }
+
+  async createAccessToken(row: AuthAccountRow): Promise<LoginResponse> {
+    const accessToken = await this.jwtService.signAsync({
+      sub: row.sub,
+      email: row.account.email,
+      role: row.role.name,
+    })
+
+    return { accessToken }
+  }
+}

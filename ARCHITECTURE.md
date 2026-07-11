@@ -57,14 +57,13 @@ Session: Zustand store + `GET /session/me`. Guards: `RequireGuest`, `RequireSess
 ### Structure
 
 - `src/modules/*` domain modules — each exposes `*.module.ts` and re-exports via `index.ts`
-- **Vertical slice (preferred for new/refactored modules):** `presentation/` (controller, if HTTP), `application/` (use cases + module services), optional `mappers/` / `validators/` / `adapters/` / `types/`. Examples: `clubs/`, `mail/`.
-- **Legacy layout:** `*.controller.ts` + `*.service.ts` at module root (e.g. `tickets`, `settings`) until migrated.
-- `src/common/*` infra helpers (`config`, `filters`, `pipes`, `lib`) wired through `common.module.ts`
+- **Vertical slice (standard for all domain modules):** `presentation/` (controller, if HTTP), `application/` (use cases + module services), optional `mappers/` / `validators/` / `adapters/` / `types/` / `utils/`.
+- `src/common/*` infra helpers (`config`, `filters`, `pipes`, `lib`) wired through `common.module.ts` — not a domain module
 - `src/app.module.ts` root module; `src/main.ts` bootstrap
 
 ### Module layout (vertical slice)
 
-**HTTP module** (`clubs/`):
+**HTTP module** (e.g. `clubs/`, `events/`, `tickets/`, `staff/`, `invitations/`, `settings/`, `auth/`, `session/`):
 
 ```text
 apps/api/src/modules/clubs/
@@ -78,7 +77,7 @@ apps/api/src/modules/clubs/
 └── clubs.module.ts
 ```
 
-**Internal module** (`mail/` — no HTTP; other modules inject use cases):
+**Internal module** (e.g. `mail/`, `owner/`, `files/` — no HTTP; other modules inject use cases / services):
 
 ```text
 apps/api/src/modules/mail/
@@ -93,6 +92,8 @@ apps/api/src/modules/mail/
 ├── scripts/smoke-mail.ts              # pnpm --filter api mail:smoke
 └── mail.module.ts
 ```
+
+`files/` keeps `application/services/files.service.ts` as shared infra (consumed by clubs); stubs like `health/`, `categories/`, `orders/` only need `presentation/` until they grow use cases.
 
 - Controllers (when present) delegate to use cases; they do not call `@afterdark/db` directly.
 - Use cases orchestrate repositories, module services (`FilesService`, mail adapters, etc.), and map errors via `TranslationService`.
@@ -110,7 +111,7 @@ apps/api/src/modules/mail/
 
 - Use contracts from `@afterdark/types` and `@afterdark/validators`, never duplicate request/response shapes locally.
 - Keep validation at controller boundary with Zod schemas.
-- Keep business logic in use cases (or `*.service.ts` for legacy modules), not controllers.
+- Keep business logic in use cases (and `application/services/` for shared module helpers), not controllers.
 - Keep **database access** in `@afterdark/db` repositories, not API layer.
 - Avoid logging secrets/tokens/plain passwords.
 
