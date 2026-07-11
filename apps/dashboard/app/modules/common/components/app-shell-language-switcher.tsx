@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import {
+  cn,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuRadioGroup,
@@ -11,11 +12,13 @@ import {
 } from '@afterdark/ui'
 import { useLanguage } from '@afterdark/i18n/client'
 import { LANGUAGE_NAMES, SUPPORTED_LANGUAGES, type Language } from '@afterdark/i18n/config'
-import { Languages } from 'lucide-react'
+import { ChevronUp, Languages } from 'lucide-react'
+import { AppShellNavIcon, navMenuButtonClassName } from '~/modules/common/components/app-shell-nav'
 
 export function AppShellLanguageSwitcher() {
   const { t } = useTranslation('dashboard')
   const { language, setLanguage } = useLanguage()
+  const languageName = LANGUAGE_NAMES[language]
 
   return (
     <SidebarMenu>
@@ -24,16 +27,33 @@ export function AppShellLanguageSwitcher() {
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton
               size="lg"
-              className="gap-3 rounded-none"
-              aria-label={t('nav.language')}
+              className={cn(
+                navMenuButtonClassName,
+                'group/lang-trigger data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground'
+              )}
+              aria-label={`${t('nav.language')}: ${languageName}`}
             >
-              <span className="flex size-9 shrink-0 items-center justify-center [&_svg]:size-7">
-                <Languages aria-hidden="true" />
+              <AppShellNavIcon icon={<Languages aria-hidden="true" />} />
+              <span className="min-w-0 flex-1 truncate transition-opacity duration-(--duration-instant) motion-reduce:transition-none">
+                {languageName}
               </span>
-              <span>{LANGUAGE_NAMES[language]}</span>
+              <ChevronUp
+                aria-hidden="true"
+                className={cn(
+                  'ml-auto size-4 shrink-0 opacity-60',
+                  'transition-transform duration-(--duration-fast) ease-emphasized',
+                  'group-data-[state=open]/lang-trigger:rotate-180',
+                  'motion-reduce:transition-none'
+                )}
+              />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="start" side="top" className="w-full">
+          <DropdownMenuContent
+            align="start"
+            side="top"
+            sideOffset={4}
+            className="min-w-(--radix-dropdown-menu-trigger-width)"
+          >
             <DropdownMenuRadioGroup
               value={language}
               onValueChange={(value) => void setLanguage(value as Language)}
@@ -42,7 +62,7 @@ export function AppShellLanguageSwitcher() {
                 <DropdownMenuRadioItem
                   key={lang}
                   value={lang}
-                  className="cursor-pointer hover:bg-surface-container-high data-[state=checked]:bg-surface-container data-[state=checked]:font-semibold data-[state=checked]:text-ink"
+                  className="data-[state=checked]:font-medium"
                 >
                   {LANGUAGE_NAMES[lang]}
                 </DropdownMenuRadioItem>

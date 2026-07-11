@@ -11,7 +11,13 @@ const DialogPortal = DialogPrimitive.Portal
 const DialogClose = DialogPrimitive.Close
 
 const dialogOverlayVariants = cva(
-  'fixed inset-0 z-50 bg-surface-strong backdrop-blur-sm data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
+  [
+    'fixed inset-0 z-50 bg-surface-strong backdrop-blur-sm',
+    'data-[state=open]:animate-in data-[state=closed]:animate-out',
+    'data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
+    'data-[state=open]:duration-(--duration-fast) data-[state=closed]:duration-(--duration-instant)',
+    'motion-reduce:animate-none motion-reduce:duration-0',
+  ],
   {
     variants: {
       variant: {
@@ -28,7 +34,12 @@ const dialogOverlayVariants = cva(
 const dialogContentVariants = cva(
   [
     'fixed top-1/2 left-1/2 z-50 grid w-full max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 gap-4 rounded-control border p-6 font-sans text-base text-ink shadow-glass outline-none',
-    'data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95',
+    'data-[state=open]:animate-in data-[state=closed]:animate-out',
+    'data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
+    'data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95',
+    'data-[state=open]:duration-(--duration-fast) data-[state=closed]:duration-(--duration-instant)',
+    'ease-[cubic-bezier(0.22,1,0.36,1)]',
+    'motion-reduce:animate-none motion-reduce:duration-0',
   ],
   {
     variants: {
@@ -127,7 +138,7 @@ const DialogContent = React.forwardRef<
               type="button"
               variant="ghost"
               size="icon"
-              className="absolute top-3 right-3 text-ink-muted hover:text-ink"
+              className="absolute top-3 right-3 text-ink-muted transition-colors duration-(--duration-instant) ease-(--ease-emphasized) hover:text-ink motion-reduce:transition-none"
               aria-label="Cerrar"
             >
               <X aria-hidden="true" />
