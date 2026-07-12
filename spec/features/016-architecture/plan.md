@@ -16,20 +16,20 @@
 
 ### Types
 
-| Archivo | Acción |
-| ------- | ------ |
+| Archivo         | Acción                                                                     |
+| --------------- | -------------------------------------------------------------------------- |
 | `dto/common.ts` | Crear — `ApiResponse`, `ApiError`, `PaginationParams`, `PaginatedResponse` |
-| `dto/auth.ts` | Crear — `LoginResponse`, `RegisterResponse`, `JwtPayload` |
-| `dto/user.ts` | Crear — sesión, perfiles, `SettingsResponse`, `User`, `Property` (legacy) |
-| `dto/club.ts` | Crear — `ClubResponse`, `ClubImageResponse`, `UploadedAssetResponse` |
-| `dto/event.ts` | Crear — `EventResponse` |
-| `dto/ticket.ts` | Crear — `TicketResponse` |
-| `dto/staff.ts` | Crear — invitaciones + `StaffPersonnelItem` |
-| `dto/index.ts` | Crear — barrel interno |
-| `domain.ts` | Modificar — solo enums/const; quitar `User`, `Property` |
-| `index.ts` | Modificar — `export * from './dto/index.ts'` |
-| `api.ts` | Eliminar |
-| `pagination.ts` | Eliminar |
+| `dto/auth.ts`   | Crear — `LoginResponse`, `RegisterResponse`, `JwtPayload`                  |
+| `dto/user.ts`   | Crear — sesión, perfiles, `SettingsResponse`, `User`, `Property` (legacy)  |
+| `dto/club.ts`   | Crear — `ClubResponse`, `ClubImageResponse`, `UploadedAssetResponse`       |
+| `dto/event.ts`  | Crear — `EventResponse`                                                    |
+| `dto/ticket.ts` | Crear — `TicketResponse`                                                   |
+| `dto/staff.ts`  | Crear — invitaciones + `StaffPersonnelItem`                                |
+| `dto/index.ts`  | Crear — barrel interno                                                     |
+| `domain.ts`     | Modificar — solo enums/const; quitar `User`, `Property`                    |
+| `index.ts`      | Modificar — `export * from './dto/index.ts'`                               |
+| `api.ts`        | Eliminar                                                                   |
+| `pagination.ts` | Eliminar                                                                   |
 
 ### Consumidores
 
@@ -48,15 +48,15 @@ Sin cambios previstos. Verificar con `pnpm type-check`.
 
 ## Riesgos / edge cases
 
-| Caso | Comportamiento esperado |
-| ---- | ----------------------- |
-| Import directo `./api.ts` | No hay consumidores internos; solo barrel público |
-| `Property` usado en web | Sigue disponible vía `@afterdark/types` hasta retiro del módulo |
+| Caso                      | Comportamiento esperado                                         |
+| ------------------------- | --------------------------------------------------------------- |
+| Import directo `./api.ts` | No hay consumidores internos; solo barrel público               |
+| `Property` usado en web   | Sigue disponible vía `@afterdark/types` hasta retiro del módulo |
 
 ## Verificación manual
 
-| Paso | Resultado esperado |
-| ---- | ------------------ |
-| 1. `pnpm type-check` | 0 errores |
-| 2. `pnpm lint` | 0 errores |
+| Paso                          | Resultado esperado                     |
+| ----------------------------- | -------------------------------------- |
+| 1. `pnpm type-check`          | 0 errores                              |
+| 2. `pnpm lint`                | 0 errores                              |
 | 3. Grep `CurrentUserResponse` | 0 hits en código (solo spec/historial) |

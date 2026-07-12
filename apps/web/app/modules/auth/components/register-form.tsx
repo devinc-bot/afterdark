@@ -7,6 +7,7 @@ import { Button, Field, fieldErrorMessage } from '@afterdark/ui'
 import { WEB_ROUTES } from '../../common/constants/routes'
 import { useRegister } from '../mutations/use-auth-mutations'
 import { AuthInput } from './auth-input'
+import { AuthMethodSeparator, GoogleContinueButton } from './google-continue-button'
 
 export function RegisterForm() {
   const { t } = useTranslation('auth')
@@ -232,6 +233,9 @@ export function RegisterForm() {
             )
           }}
         </form.Subscribe>
+
+        <AuthMethodSeparator />
+        <GoogleContinueButton />
       </div>
 
       <hr className="mt-10 border-hairline" />

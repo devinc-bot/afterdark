@@ -2,10 +2,10 @@
 
 > Completar con la entrevista guiada — [INTERVIEW.md](../../INTERVIEW.md). Estado por fase en `progress.md`.
 
-| Campo      | Valor            |
-| ---------- | ---------------- |
-| **ID**     | `017-staff-panel` |
-| **Status** | `approved` |
+| Campo      | Valor              |
+| ---------- | ------------------ |
+| **ID**     | `017-staff-panel`  |
+| **Status** | `approved`         |
 | **Apps**   | `dashboard`, `api` |
 
 ---
@@ -93,8 +93,8 @@ Enlaza con `mission.md`: staff opera con permisos acotados según el club asigna
 
 ### API
 
-| Método | Ruta              | Auth | Cambio |
-| ------ | ----------------- | ---- | ------ |
+| Método | Ruta              | Auth | Cambio                                        |
+| ------ | ----------------- | ---- | --------------------------------------------- |
 | `GET`  | `/api/session/me` | JWT  | Agregar campo `role: UserRole` a la respuesta |
 
 **Response** — extender `SessionResponse` en `@afterdark/types`:
@@ -114,27 +114,27 @@ El valor de `role` proviene del `JwtPayload` (ya presente en el token); `Session
 
 **Errores (sin cambios)**
 
-| HTTP | Cuándo              | Mensaje (español, vía i18n)     |
-| ---- | ------------------- | ------------------------------- |
-| 401  | Sin JWT / inválido  | Según guard de auth existente   |
-| 404  | Perfil no encontrado| `auth.SESSION_NOT_FOUND`        |
+| HTTP | Cuándo               | Mensaje (español, vía i18n)   |
+| ---- | -------------------- | ----------------------------- |
+| 401  | Sin JWT / inválido   | Según guard de auth existente |
+| 404  | Perfil no encontrado | `auth.SESSION_NOT_FOUND`      |
 
 No hay endpoints nuevos para la tabla de asistentes (datos mock en el cliente).
 
 ### Datos
 
-| Tabla / campo | Cambio |
-| ------------- | ------ |
+| Tabla / campo | Cambio                                |
+| ------------- | ------------------------------------- |
 | —             | Sin cambios de esquema ni migraciones |
 
 ### UI
 
-| Ruta | Rol   | Pantalla |
-| ---- | ----- | -------- |
-| `/dashboard` | `staff` | Panel operativo: botón **Escanear** (arriba izquierda) + tabla de asistentes (mock) |
-| `/dashboard` | `owner` | Sin cambios respecto a la vista actual |
-| `/club-management/*`, `/tickets`, `/events`, `/staff` | `staff` | **404** (página no encontrada) si accede por URL directa |
-| Rutas exclusivas de staff (v1: ninguna URL aparte de `/dashboard`) | `owner` | **404** si en el futuro se agregan rutas solo-staff |
+| Ruta                                                               | Rol     | Pantalla                                                                            |
+| ------------------------------------------------------------------ | ------- | ----------------------------------------------------------------------------------- |
+| `/dashboard`                                                       | `staff` | Panel operativo: botón **Escanear** (arriba izquierda) + tabla de asistentes (mock) |
+| `/dashboard`                                                       | `owner` | Sin cambios respecto a la vista actual                                              |
+| `/club-management/*`, `/tickets`, `/events`, `/staff`              | `staff` | **404** (página no encontrada) si accede por URL directa                            |
+| Rutas exclusivas de staff (v1: ninguna URL aparte de `/dashboard`) | `owner` | **404** si en el futuro se agregan rutas solo-staff                                 |
 
 **Protección de rutas (dashboard)**
 
@@ -144,28 +144,28 @@ No hay endpoints nuevos para la tabla de asistentes (datos mock en el cliente).
 
 **Tabla de asistentes (mock)**
 
-| Columna            | Tipo / valores mock                          |
-| ------------------ | -------------------------------------------- |
-| Nombre             | `string` — nombre completo del asistente       |
-| Evento             | `string` — nombre del evento                 |
-| Estado de entrada  | `Válida` · `Usada` · `Expirada` (etiquetas UI) |
+| Columna           | Tipo / valores mock                            |
+| ----------------- | ---------------------------------------------- |
+| Nombre            | `string` — nombre completo del asistente       |
+| Evento            | `string` — nombre del evento                   |
+| Estado de entrada | `Válida` · `Usada` · `Expirada` (etiquetas UI) |
 
 - Datos estáticos en el módulo dashboard (p. ej. `staff-panel.mock.ts`); sin búsqueda ni paginación.
 - Estado vacío: mensaje «No hay asistentes para mostrar.»
 
 **Copy (español)**
 
-| Contexto              | Texto |
-| --------------------- | ----- |
-| Botón escanear        | Escanear |
-| Columna nombre        | Nombre |
-| Columna evento        | Evento |
-| Columna estado        | Estado de entrada |
-| Estado: válida        | Válida |
-| Estado: usada         | Usada |
-| Estado: expirada      | Expirada |
-| Tabla vacía           | No hay asistentes para mostrar. |
-| Título panel (staff)  | Panel |
+| Contexto                  | Texto                                                |
+| ------------------------- | ---------------------------------------------------- |
+| Botón escanear            | Escanear                                             |
+| Columna nombre            | Nombre                                               |
+| Columna evento            | Evento                                               |
+| Columna estado            | Estado de entrada                                    |
+| Estado: válida            | Válida                                               |
+| Estado: usada             | Usada                                                |
+| Estado: expirada          | Expirada                                             |
+| Tabla vacía               | No hay asistentes para mostrar.                      |
+| Título panel (staff)      | Panel                                                |
 | Descripción panel (staff) | Consultá asistentes y escaneá entradas en la puerta. |
 
 Claves i18n sugeridas bajo `dashboard` → `pages.panel.staff.*` y `pages.panel.staff.table.*`.

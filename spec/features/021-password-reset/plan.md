@@ -18,59 +18,59 @@
 
 ### Validators
 
-| Archivo | Cambio |
-| ------- | ------ |
-| `packages/validators/src/auth.ts` | `forgotPasswordSchema` (`email`); `resetPasswordSchema` (`token`, `password` min 8, `confirmPassword` + refine match) |
-| `packages/validators/src/index.ts` | Re-export si hace falta |
+| Archivo                            | Cambio                                                                                                                |
+| ---------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| `packages/validators/src/auth.ts`  | `forgotPasswordSchema` (`email`); `resetPasswordSchema` (`token`, `password` min 8, `confirmPassword` + refine match) |
+| `packages/validators/src/index.ts` | Re-export si hace falta                                                                                               |
 
 ### Common
 
-| Archivo | Cambio |
-| ------- | ------ |
+| Archivo                                    | Cambio                                                                               |
+| ------------------------------------------ | ------------------------------------------------------------------------------------ |
 | `packages/common/src/config/api-routes.ts` | `forgotPassword: () => '/forgot-password'`, `resetPassword: () => '/reset-password'` |
 
 ### i18n
 
-| Archivo | Cambio |
-| ------- | ------ |
-| `packages/i18n/src/locales/auth/es.json` | Copy forgot + reset (títulos, CTAs, éxito, error token) |
-| `packages/i18n/src/locales/auth/en.json` | Paridad |
-| `packages/i18n` errors (si aplica) | Clave `auth.PASSWORD_RESET_TOKEN_INVALID` → “El enlace no es válido o ya expiró.” |
+| Archivo                                  | Cambio                                                                            |
+| ---------------------------------------- | --------------------------------------------------------------------------------- |
+| `packages/i18n/src/locales/auth/es.json` | Copy forgot + reset (títulos, CTAs, éxito, error token)                           |
+| `packages/i18n/src/locales/auth/en.json` | Paridad                                                                           |
+| `packages/i18n` errors (si aplica)       | Clave `auth.PASSWORD_RESET_TOKEN_INVALID` → “El enlace no es válido o ya expiró.” |
 
 ### Database
 
-| Archivo | Cambio |
-| ------- | ------ |
-| `packages/db/src/schema/password-reset-token.ts` | Tabla `password_reset_tokens`: FK `account_id`, `token` unique, `expires_at`, `used_at` nullable + base columns |
-| `packages/db/src/schema/index.ts` | Export |
-| `packages/db` migration | Generar con drizzle-kit |
-| `packages/db/DATABASE.md` | Documentar tabla |
-| `packages/db/src/repositories/auth/` | `createPasswordResetToken`, `invalidatePendingTokensForAccount`, `findValidPasswordResetToken`, `markPasswordResetTokenUsed`, `updateAccountPassword` (o equivalente) |
-| `packages/db/src/repositories/index.ts` | Export |
+| Archivo                                          | Cambio                                                                                                                                                                |
+| ------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `packages/db/src/schema/password-reset-token.ts` | Tabla `password_reset_tokens`: FK `account_id`, `token` unique, `expires_at`, `used_at` nullable + base columns                                                       |
+| `packages/db/src/schema/index.ts`                | Export                                                                                                                                                                |
+| `packages/db` migration                          | Generar con drizzle-kit                                                                                                                                               |
+| `packages/db/DATABASE.md`                        | Documentar tabla                                                                                                                                                      |
+| `packages/db/src/repositories/auth/`             | `createPasswordResetToken`, `invalidatePendingTokensForAccount`, `findValidPasswordResetToken`, `markPasswordResetTokenUsed`, `updateAccountPassword` (o equivalente) |
+| `packages/db/src/repositories/index.ts`          | Export                                                                                                                                                                |
 
 ### API (`auth`)
 
-| Archivo | Cambio |
-| ------- | ------ |
+| Archivo                                                             | Cambio                                                                                                                            |
+| ------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
 | `apps/api/src/modules/auth/application/forgot-password.use-case.ts` | Buscar account owner/staff → invalidar tokens → crear token → `SendPasswordResetUseCase` (URL dashboard + minutes=60); siempre OK |
-| `apps/api/src/modules/auth/application/reset-password.use-case.ts` | Validar token → hash password → update account → mark used |
-| `apps/api/src/modules/auth/presentation/auth.controller.ts` | `POST` forgot + reset, `204` |
-| `apps/api/src/modules/auth/auth.module.ts` | Providers + import `MailModule` |
-| `apps/api/src/modules/auth/auth.constants.ts` | TTL minutes, mensaje token inválido si no va solo por i18n |
-| Env / config | Base URL del dashboard para armar el link (`DASHBOARD_APP_URL` o existente) |
+| `apps/api/src/modules/auth/application/reset-password.use-case.ts`  | Validar token → hash password → update account → mark used                                                                        |
+| `apps/api/src/modules/auth/presentation/auth.controller.ts`         | `POST` forgot + reset, `204`                                                                                                      |
+| `apps/api/src/modules/auth/auth.module.ts`                          | Providers + import `MailModule`                                                                                                   |
+| `apps/api/src/modules/auth/auth.constants.ts`                       | TTL minutes, mensaje token inválido si no va solo por i18n                                                                        |
+| Env / config                                                        | Base URL del dashboard para armar el link (`DASHBOARD_APP_URL` o existente)                                                       |
 
 ### Client (`dashboard`)
 
-| Archivo | Cambio |
-| ------- | ------ |
-| `app/modules/common/constants/routes.ts` | `resetPassword: () => '/reset-password'` |
-| `app/modules/auth/services/auth.service.ts` | `forgotPasswordFn`, `resetPasswordFn` |
-| `app/modules/auth/mutations/use-auth-mutations.ts` | Hooks forgot / reset |
-| `app/modules/auth/components/forgot-password-form.tsx` | Form email + estado éxito |
-| `app/modules/auth/components/reset-password-form.tsx` | Form password + confirm |
-| `app/modules/auth/components/forgot-password-unavailable.tsx` | Eliminar o dejar de usar |
-| `app/routes/forgot-password.tsx` | Form real + `RequireGuest` |
-| `app/routes/reset-password.tsx` | Nueva ruta; lee `token` de search params |
+| Archivo                                                       | Cambio                                   |
+| ------------------------------------------------------------- | ---------------------------------------- |
+| `app/modules/common/constants/routes.ts`                      | `resetPassword: () => '/reset-password'` |
+| `app/modules/auth/services/auth.service.ts`                   | `forgotPasswordFn`, `resetPasswordFn`    |
+| `app/modules/auth/mutations/use-auth-mutations.ts`            | Hooks forgot / reset                     |
+| `app/modules/auth/components/forgot-password-form.tsx`        | Form email + estado éxito                |
+| `app/modules/auth/components/reset-password-form.tsx`         | Form password + confirm                  |
+| `app/modules/auth/components/forgot-password-unavailable.tsx` | Eliminar o dejar de usar                 |
+| `app/routes/forgot-password.tsx`                              | Form real + `RequireGuest`               |
+| `app/routes/reset-password.tsx`                               | Nueva ruta; lee `token` de search params |
 
 ## Diseño técnico
 
@@ -97,22 +97,22 @@ ResetPasswordForm (?token=)
 
 ## Riesgos / edge cases
 
-| Caso | Comportamiento esperado |
-| ---- | ----------------------- |
-| Email desconocido / solo `user` | `204`, sin mail |
-| Fallo de Resend tras crear token | Log/error interno; idealmente no dejar token huérfano usable sin mail (transacción o compensar); mínimo: log + no filtrar al cliente |
-| Token ausente en query | UI error “enlace no válido” sin llamar API |
-| Doble submit reset | Segundo request → 400 token usado |
-| Usuario ya logueado en forgot/reset | `RequireGuest` redirige al home del panel |
+| Caso                                | Comportamiento esperado                                                                                                              |
+| ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| Email desconocido / solo `user`     | `204`, sin mail                                                                                                                      |
+| Fallo de Resend tras crear token    | Log/error interno; idealmente no dejar token huérfano usable sin mail (transacción o compensar); mínimo: log + no filtrar al cliente |
+| Token ausente en query              | UI error “enlace no válido” sin llamar API                                                                                           |
+| Doble submit reset                  | Segundo request → 400 token usado                                                                                                    |
+| Usuario ya logueado en forgot/reset | `RequireGuest` redirige al home del panel                                                                                            |
 
 ## Verificación manual
 
-| Paso | Resultado esperado |
-| ---- | ------------------ |
-| 1. Login → “Olvidé mi contraseña” | `/forgot-password` con form |
-| 2. Email owner/staff válido | Éxito genérico + mail con link |
-| 3. Email inexistente | Misma UI de éxito, sin mail |
-| 4. Abrir link → nueva password | `204` → mensaje éxito → login OK |
-| 5. Reusar mismo link | Error “enlace no válido o ya expiró” |
-| 6. Token inventado / expirado | Mismo error |
-| 7. Volver al login | Navega a `/login` |
+| Paso                              | Resultado esperado                   |
+| --------------------------------- | ------------------------------------ |
+| 1. Login → “Olvidé mi contraseña” | `/forgot-password` con form          |
+| 2. Email owner/staff válido       | Éxito genérico + mail con link       |
+| 3. Email inexistente              | Misma UI de éxito, sin mail          |
+| 4. Abrir link → nueva password    | `204` → mensaje éxito → login OK     |
+| 5. Reusar mismo link              | Error “enlace no válido o ya expiró” |
+| 6. Token inventado / expirado     | Mismo error                          |
+| 7. Volver al login                | Navega a `/login`                    |

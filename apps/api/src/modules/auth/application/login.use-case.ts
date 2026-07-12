@@ -16,7 +16,7 @@ export class LoginUseCase {
   async execute(input: LoginInput): Promise<LoginResponse> {
     const row = await findAuthAccountByEmail(input.email)
 
-    if (!row) {
+    if (!row?.account.password) {
       throw new UnauthorizedException(this.ts.translateError('auth.INVALID_CREDENTIALS'))
     }
 

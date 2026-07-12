@@ -15,11 +15,11 @@
 
 ### API
 
-| Archivo | Cambio |
-| ------- | ------ |
-| `apps/api/src/modules/files/files.service.ts` | TBD según modificación |
-| `apps/api/src/modules/files/image-upload.options.ts` | TBD |
-| `apps/api/src/modules/files/files.module.ts` | TBD |
+| Archivo                                              | Cambio                 |
+| ---------------------------------------------------- | ---------------------- |
+| `apps/api/src/modules/files/files.service.ts`        | TBD según modificación |
+| `apps/api/src/modules/files/image-upload.options.ts` | TBD                    |
+| `apps/api/src/modules/files/files.module.ts`         | TBD                    |
 
 ### Client
 

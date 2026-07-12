@@ -103,11 +103,11 @@ send(input: {
 
 **Render (React Email)** — aparte del puerto
 
-| Helper / template | Props mínimas (sketch) | i18n |
-| ----------------- | ---------------------- | ---- |
+| Helper / template | Props mínimas (sketch)                                                      | i18n                       |
+| ----------------- | --------------------------------------------------------------------------- | -------------------------- |
 | `staffInvitation` | `inviterName`, `clubName`, `url`, `hours?`, nota de security word si aplica | `emails:staffInvitation.*` |
-| `passwordReset` | `url`, `minutes?` | `emails:passwordReset.*` |
-| `welcome` | `name`, `ctaUrl` | `emails:welcome.*` |
+| `passwordReset`   | `url`, `minutes?`                                                           | `emails:passwordReset.*`   |
+| `welcome`         | `name`, `ctaUrl`                                                            | `emails:welcome.*`         |
 
 Cada helper: `render*(props, locale) → { subject, html, text? }` usando `@react-email/render` + namespace `emails`.
 
@@ -115,19 +115,19 @@ Cada helper: `render*(props, locale) → { subject, html, text? }` usando `@reac
 
 **Errores (mensaje en español)**
 
-| Código | Cuándo | Mensaje |
-| ------ | ------ | ------- |
-| `mail.NOT_CONFIGURED` | Falta `RESEND_API_KEY` o `MAIL_FROM` | El servicio de correo no está configurado. |
-| `mail.SEND_FAILED` | Fallo de Resend / red | No pudimos enviar el correo. Intentá de nuevo en unos minutos. |
-| `mail.RENDER_FAILED` | Fallo al renderizar template | No pudimos generar el correo. Intentá de nuevo en unos minutos. |
+| Código                | Cuándo                               | Mensaje                                                         |
+| --------------------- | ------------------------------------ | --------------------------------------------------------------- |
+| `mail.NOT_CONFIGURED` | Falta `RESEND_API_KEY` o `MAIL_FROM` | El servicio de correo no está configurado.                      |
+| `mail.SEND_FAILED`    | Fallo de Resend / red                | No pudimos enviar el correo. Intentá de nuevo en unos minutos.  |
+| `mail.RENDER_FAILED`  | Fallo al renderizar template         | No pudimos generar el correo. Intentá de nuevo en unos minutos. |
 
 ### Config / env (Zod)
 
-| Variable | Uso |
-| -------- | --- |
-| `RESEND_API_KEY` | Auth Resend |
-| `MAIL_FROM` | Remitente (ej. `Afterdark <noreply@dominio>`) |
-| `MAIL_SMOKE_TO` | Destinatario del humo en dev (opcional) |
+| Variable         | Uso                                           |
+| ---------------- | --------------------------------------------- |
+| `RESEND_API_KEY` | Auth Resend                                   |
+| `MAIL_FROM`      | Remitente (ej. `Afterdark <noreply@dominio>`) |
+| `MAIL_SMOKE_TO`  | Destinatario del humo en dev (opcional)       |
 
 Validación al estilo `uploadEnvSchema` / `ENV` en `apps/api`.
 

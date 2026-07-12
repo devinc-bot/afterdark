@@ -1,12 +1,25 @@
-import { Body, Controller, HttpCode, HttpStatus, Inject, Post } from '@nestjs/common'
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Inject,
+  Post,
+  Query,
+  Res,
+} from '@nestjs/common'
+import type { Response } from 'express'
 import { API_ROUTES } from '@afterdark/common'
 import {
   forgotPasswordSchema,
+  googleOauthStartSchema,
   loginSchema,
   registerOwnerSchema,
   registerUserSchema,
   resetPasswordSchema,
   type ForgotPasswordInput,
+  type GoogleOauthStartInput,
   type LoginInput,
   type RegisterOwnerInput,
   type RegisterUserInput,
@@ -14,10 +27,15 @@ import {
 } from '@afterdark/validators'
 import { ZodValidationPipe } from '../../common/pipes/zod-validation.pipe'
 import { ForgotPasswordUseCase } from '../application/forgot-password.use-case'
+import { GoogleOauthCallbackUseCase } from '../application/google-oauth-callback.use-case'
+import { GoogleOauthStartUseCase } from '../application/google-oauth-start.use-case'
 import { LoginUseCase } from '../application/login.use-case'
 import { RegisterOwnerUseCase } from '../application/register-owner.use-case'
 import { RegisterUserUseCase } from '../application/register-user.use-case'
 import { ResetPasswordUseCase } from '../application/reset-password.use-case'
+import { GOOGLE_OAUTH_ERROR } from '../auth.constants'
+import { buildAppLoginErrorUrl } from '../utils/google-oauth.utils'
+import { AUTH_OAUTH_APP } from '@afterdark/types'
 
 @Controller(API_ROUTES.auth.prefix)
 export class AuthController {
@@ -26,7 +44,11 @@ export class AuthController {
     @Inject(RegisterUserUseCase) private readonly registerUserUseCase: RegisterUserUseCase,
     @Inject(RegisterOwnerUseCase) private readonly registerOwnerUseCase: RegisterOwnerUseCase,
     @Inject(ForgotPasswordUseCase) private readonly forgotPasswordUseCase: ForgotPasswordUseCase,
-    @Inject(ResetPasswordUseCase) private readonly resetPasswordUseCase: ResetPasswordUseCase
+    @Inject(ResetPasswordUseCase) private readonly resetPasswordUseCase: ResetPasswordUseCase,
+    @Inject(GoogleOauthStartUseCase)
+    private readonly googleOauthStartUseCase: GoogleOauthStartUseCase,
+    @Inject(GoogleOauthCallbackUseCase)
+    private readonly googleOauthCallbackUseCase: GoogleOauthCallbackUseCase
   ) {}
 
   @Post(API_ROUTES.auth.path.login())
@@ -57,5 +79,26 @@ export class AuthController {
   @HttpCode(HttpStatus.NO_CONTENT)
   resetPassword(@Body(new ZodValidationPipe(resetPasswordSchema)) body: ResetPasswordInput) {
     return this.resetPasswordUseCase.execute(body)
+  }
+
+  @Get(API_ROUTES.auth.path.google())
+  async googleStart(@Query() query: Record<string, string | undefined>, @Res() res: Response) {
+    const parsed = googleOauthStartSchema.safeParse(query)
+    if (!parsed.success) {
+      return res.redirect(buildAppLoginErrorUrl(AUTH_OAUTH_APP.WEB, GOOGLE_OAUTH_ERROR.FAILED))
+    }
+    const url = await this.googleOauthStartUseCase.execute(parsed.data as GoogleOauthStartInput)
+    return res.redirect(url)
+  }
+
+  @Get(API_ROUTES.auth.path.googleCallback())
+  async googleCallback(
+    @Query('code') code: string | undefined,
+    @Query('state') state: string | undefined,
+    @Query('error') error: string | undefined,
+    @Res() res: Response
+  ) {
+    const url = await this.googleOauthCallbackUseCase.execute({ code, state, error })
+    return res.redirect(url)
   }
 }

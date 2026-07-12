@@ -2,10 +2,10 @@
 
 > Completar con la entrevista guiada — [INTERVIEW.md](../../INTERVIEW.md). Estado por fase en `progress.md`.
 
-| Campo      | Valor                |
-| ---------- | -------------------- |
-| **ID**     | `021-password-reset` |
-| **Status** | `approved`           |
+| Campo      | Valor                       |
+| ---------- | --------------------------- |
+| **ID**     | `021-password-reset`        |
+| **Status** | `approved`                  |
 | **Apps**   | `api` · `dashboard` · `web` |
 
 ---
@@ -78,59 +78,59 @@ Hoy `/forgot-password` es un placeholder: si olvidan la contraseña, no hay form
 
 ### API
 
-| Método | Ruta                     | Auth    |
-| ------ | ------------------------ | ------- |
-| `POST` | `/auth/forgot-password`  | público |
-| `POST` | `/auth/reset-password`   | público |
+| Método | Ruta                    | Auth    |
+| ------ | ----------------------- | ------- |
+| `POST` | `/auth/forgot-password` | público |
+| `POST` | `/auth/reset-password`  | público |
 
 **Request / Response**
 
-| Endpoint | Schema (Zod) | Body | Response |
-| -------- | ------------ | ---- | -------- |
-| Forgot   | `forgotPasswordSchema` | `{ email }` | `204 No Content` (siempre, si el body es válido) |
-| Reset    | `resetPasswordSchema` | `{ token, password, confirmPassword }` | `204 No Content` |
+| Endpoint | Schema (Zod)           | Body                                   | Response                                         |
+| -------- | ---------------------- | -------------------------------------- | ------------------------------------------------ |
+| Forgot   | `forgotPasswordSchema` | `{ email }`                            | `204 No Content` (siempre, si el body es válido) |
+| Reset    | `resetPasswordSchema`  | `{ token, password, confirmPassword }` | `204 No Content`                                 |
 
 - `password` / `confirmPassword`: mínimo 8 caracteres; deben coincidir (mismo patrón que registro).
 - Rutas registradas en `API_ROUTES.auth` (`packages/common`).
 
 **Errores (mensaje al usuario en español)**
 
-| HTTP | Cuándo | Mensaje |
-| ---- | ------ | ------- |
-| 400 | Validación Zod (email, password, match) | Mensajes de `@afterdark/validators` / i18n `validation` |
-| 400 | Token inválido, expirado o ya usado | `El enlace no es válido o ya expiró.` |
-| 429 | ≥10 forgot-password el mismo día UTC (cuenta owner/staff) | `Demasiados intentos. Probá de nuevo más tarde.` |
+| HTTP | Cuándo                                                    | Mensaje                                                 |
+| ---- | --------------------------------------------------------- | ------------------------------------------------------- |
+| 400  | Validación Zod (email, password, match)                   | Mensajes de `@afterdark/validators` / i18n `validation` |
+| 400  | Token inválido, expirado o ya usado                       | `El enlace no es válido o ya expiró.`                   |
+| 429  | ≥10 forgot-password el mismo día UTC (cuenta owner/staff) | `Demasiados intentos. Probá de nuevo más tarde.`        |
 
 ### Datos
 
-| Tabla / campo | Cambio |
-| ------------- | ------ |
+| Tabla / campo                   | Cambio                                                                                  |
+| ------------------------------- | --------------------------------------------------------------------------------------- |
 | `password_reset_tokens` (nueva) | `accountId` → `accounts`, `token` UNIQUE, `expiresAt`, `usedAt` nullable, columnas base |
-| `accounts.password` | Se actualiza el hash al confirmar reset (sin columna nueva) |
+| `accounts.password`             | Se actualiza el hash al confirmar reset (sin columna nueva)                             |
 
 - Un nuevo forgot para la misma cuenta invalida (o marca usados) los tokens previos pendientes.
 - El link del email apunta a `/reset-password?token=…` en `WEB_URL` (rol `user`) o `DASHBOARD_URL` (owner/staff).
 
 ### UI (`dashboard` · `web`)
 
-| Ruta | Pantalla |
-| ---- | -------- |
-| `/forgot-password` | Formulario email → estado de éxito genérico |
-| `/reset-password` | Formulario nueva contraseña + confirmación (token por query `?token=`) |
+| Ruta               | Pantalla                                                               |
+| ------------------ | ---------------------------------------------------------------------- |
+| `/forgot-password` | Formulario email → estado de éxito genérico                            |
+| `/reset-password`  | Formulario nueva contraseña + confirmación (token por query `?token=`) |
 
 **Copy (español)** — namespace i18n `auth`
 
-| Contexto | Texto (propuesta) |
-| -------- | ----------------- |
-| Forgot — título | Recuperar contraseña |
-| Forgot — descripción | Ingresá tu email y te enviamos un enlace. |
-| Forgot — CTA | Enviar enlace |
-| Forgot — éxito | Si el email está registrado, vas a recibir un enlace en breve. |
-| Forgot — volver | Volver al inicio de sesión |
-| Reset — título | Nueva contraseña |
-| Reset — CTA | Guardar contraseña |
-| Reset — error token | El enlace no es válido o ya expiró. |
-| Reset — éxito | Contraseña actualizada. Ya podés iniciar sesión. |
+| Contexto             | Texto (propuesta)                                              |
+| -------------------- | -------------------------------------------------------------- |
+| Forgot — título      | Recuperar contraseña                                           |
+| Forgot — descripción | Ingresá tu email y te enviamos un enlace.                      |
+| Forgot — CTA         | Enviar enlace                                                  |
+| Forgot — éxito       | Si el email está registrado, vas a recibir un enlace en breve. |
+| Forgot — volver      | Volver al inicio de sesión                                     |
+| Reset — título       | Nueva contraseña                                               |
+| Reset — CTA          | Guardar contraseña                                             |
+| Reset — error token  | El enlace no es válido o ya expiró.                            |
+| Reset — éxito        | Contraseña actualizada. Ya podés iniciar sesión.               |
 
 ---
 

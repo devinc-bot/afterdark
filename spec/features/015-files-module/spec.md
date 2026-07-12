@@ -2,11 +2,11 @@
 
 > Entrevista guiada — [INTERVIEW.md](../../INTERVIEW.md). Estado por fase en `progress.md`.
 
-| Campo      | Valor        |
-| ---------- | ------------ |
+| Campo      | Valor              |
+| ---------- | ------------------ |
 | **ID**     | `015-files-module` |
-| **Status** | `draft`      |
-| **Apps**   | `api`        |
+| **Status** | `draft`            |
+| **Apps**   | `api`              |
 
 ---
 
@@ -55,12 +55,12 @@ Sin controller propio. Uso interno desde otros servicios (p. ej. `ClubsService`)
 
 **Errores existentes (i18n `file.*`)**
 
-| Código | Mensaje (es) |
-| ------ | ------------ |
-| `file.INVALID_IMAGE_TYPE` | El archivo debe ser una imagen JPG, PNG o WEBP. |
-| `file.FILE_TOO_LARGE` | La imagen supera el tamaño máximo permitido. |
-| `file.UPLOAD_FAILED` | No pudimos guardar la imagen. Intentá de nuevo en unos minutos. |
-| `file.DELETE_FAILED` | No pudimos eliminar la imagen. Intentá de nuevo en unos minutos. |
+| Código                    | Mensaje (es)                                                     |
+| ------------------------- | ---------------------------------------------------------------- |
+| `file.INVALID_IMAGE_TYPE` | El archivo debe ser una imagen JPG, PNG o WEBP.                  |
+| `file.FILE_TOO_LARGE`     | La imagen supera el tamaño máximo permitido.                     |
+| `file.UPLOAD_FAILED`      | No pudimos guardar la imagen. Intentá de nuevo en unos minutos.  |
+| `file.DELETE_FAILED`      | No pudimos eliminar la imagen. Intentá de nuevo en unos minutos. |
 
 ### Datos
 

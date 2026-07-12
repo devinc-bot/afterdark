@@ -1,16 +1,19 @@
 import { useMemo } from 'react'
 import { useForm } from '@tanstack/react-form'
-import { Link } from '@tanstack/react-router'
+import { Link, useSearch } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
 import { z } from 'zod'
 import { Button, Field, fieldErrorMessage } from '@afterdark/ui'
 import { WEB_ROUTES } from '../../common/constants/routes'
 import { useLogin } from '../mutations/use-auth-mutations'
+import { googleOauthErrorMessageKey } from '../utils/google-oauth.utils'
 import { AuthInput } from './auth-input'
+import { AuthMethodSeparator, GoogleContinueButton } from './google-continue-button'
 
 export function LoginForm() {
   const { t } = useTranslation('auth')
   const login = useLogin()
+  const { error: oauthError } = useSearch({ from: '/login' })
 
   const loginFormSchema = useMemo(
     () =>
@@ -47,6 +50,15 @@ export function LoginForm() {
       <p className="mt-3 text-sm leading-relaxed text-on-surface-variant">{t('login.subtitle')}</p>
 
       <div className="mt-10 space-y-5">
+        {oauthError ? (
+          <p
+            role="alert"
+            className="rounded-lg border border-error/40 bg-error-container/20 px-4 py-3 text-sm text-error"
+          >
+            {t(googleOauthErrorMessageKey(oauthError))}
+          </p>
+        ) : null}
+
         <form.Field
           name="email"
           validators={{
@@ -123,6 +135,9 @@ export function LoginForm() {
             </Button>
           )}
         </form.Subscribe>
+
+        <AuthMethodSeparator />
+        <GoogleContinueButton />
       </div>
 
       <hr className="mt-10 border-hairline" />

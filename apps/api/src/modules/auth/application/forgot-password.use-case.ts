@@ -46,7 +46,7 @@ export class ForgotPasswordUseCase {
   async execute(input: ForgotPasswordInput): Promise<void> {
     const row = await findAuthAccountByEmail(input.email)
 
-    if (!row) {
+    if (!row?.account.password) {
       return
     }
 

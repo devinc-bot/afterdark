@@ -89,6 +89,14 @@
     }
   },
   "logout": "Sign out",
+  "google": {
+    "continue": "Continue with Google",
+    "or": "or",
+    "errors": {
+      "emailExists": "An account with this email already exists.",
+      "generic": "Could not continue with Google. Please try again."
+    }
+  },
   "session": {
     "expired": "Your session expired. Please sign in again.",
     "loadFallback": "We couldn't load your profile. Try again in a few minutes."

@@ -15,6 +15,7 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as AppIndexRouteImport } from './routes/_app/index'
+import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
 import { Route as AppTicketsRouteImport } from './routes/_app/tickets'
 import { Route as AppStaffRouteImport } from './routes/_app/staff'
 import { Route as AppSettingsRouteImport } from './routes/_app/settings'
@@ -53,6 +54,11 @@ const AppIndexRoute = AppIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AppRoute,
+} as any)
+const AuthCallbackRoute = AuthCallbackRouteImport.update({
+  id: '/auth/callback',
+  path: '/auth/callback',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AppTicketsRoute = AppTicketsRouteImport.update({
   id: '/tickets',
@@ -113,6 +119,7 @@ export interface FileRoutesByFullPath {
   '/settings': typeof AppSettingsRoute
   '/staff': typeof AppStaffRoute
   '/tickets': typeof AppTicketsRoute
+  '/auth/callback': typeof AuthCallbackRoute
   '/club-management/new': typeof AppClubManagementNewRoute
   '/club-management/': typeof AppClubManagementIndexRoute
   '/club-management/$documentId/edit': typeof AppClubManagementDocumentIdEditRoute
@@ -128,6 +135,7 @@ export interface FileRoutesByTo {
   '/settings': typeof AppSettingsRoute
   '/staff': typeof AppStaffRoute
   '/tickets': typeof AppTicketsRoute
+  '/auth/callback': typeof AuthCallbackRoute
   '/': typeof AppIndexRoute
   '/club-management/new': typeof AppClubManagementNewRoute
   '/club-management': typeof AppClubManagementIndexRoute
@@ -146,6 +154,7 @@ export interface FileRoutesById {
   '/_app/settings': typeof AppSettingsRoute
   '/_app/staff': typeof AppStaffRoute
   '/_app/tickets': typeof AppTicketsRoute
+  '/auth/callback': typeof AuthCallbackRoute
   '/_app/': typeof AppIndexRoute
   '/_app/club-management/new': typeof AppClubManagementNewRoute
   '/_app/club-management/': typeof AppClubManagementIndexRoute
@@ -165,6 +174,7 @@ export interface FileRouteTypes {
     | '/settings'
     | '/staff'
     | '/tickets'
+    | '/auth/callback'
     | '/club-management/new'
     | '/club-management/'
     | '/club-management/$documentId/edit'
@@ -180,6 +190,7 @@ export interface FileRouteTypes {
     | '/settings'
     | '/staff'
     | '/tickets'
+    | '/auth/callback'
     | '/'
     | '/club-management/new'
     | '/club-management'
@@ -197,6 +208,7 @@ export interface FileRouteTypes {
     | '/_app/settings'
     | '/_app/staff'
     | '/_app/tickets'
+    | '/auth/callback'
     | '/_app/'
     | '/_app/club-management/new'
     | '/_app/club-management/'
@@ -210,6 +222,7 @@ export interface RootRouteChildren {
   RegisterRoute: typeof RegisterRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   NameTokenRoute: typeof NameTokenRoute
+  AuthCallbackRoute: typeof AuthCallbackRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -255,6 +268,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof AppIndexRouteImport
       parentRoute: typeof AppRoute
+    }
+    '/auth/callback': {
+      id: '/auth/callback'
+      path: '/auth/callback'
+      fullPath: '/auth/callback'
+      preLoaderRoute: typeof AuthCallbackRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_app/tickets': {
       id: '/_app/tickets'
@@ -355,6 +375,7 @@ const rootRouteChildren: RootRouteChildren = {
   RegisterRoute: RegisterRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   NameTokenRoute: NameTokenRoute,
+  AuthCallbackRoute: AuthCallbackRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

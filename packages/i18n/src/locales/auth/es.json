@@ -89,6 +89,14 @@
     }
   },
   "logout": "Cerrar sesión",
+  "google": {
+    "continue": "Continuar con Google",
+    "or": "o",
+    "errors": {
+      "emailExists": "Ya existe una cuenta con este correo.",
+      "generic": "No se pudo continuar con Google. Intentá de nuevo."
+    }
+  },
   "session": {
     "expired": "Tu sesión expiró. Volvé a iniciar sesión.",
     "loadFallback": "No pudimos cargar tu perfil. Intentá de nuevo en unos minutos."

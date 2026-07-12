@@ -22,6 +22,8 @@ export const API_ROUTES = {
       refreshToken: () => '/refresh' as const,
       forgotPassword: () => '/forgot-password' as const,
       resetPassword: () => '/reset-password' as const,
+      google: () => '/google' as const,
+      googleCallback: () => '/google/callback' as const,
     },
   },
   session: {

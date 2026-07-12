@@ -20,44 +20,44 @@ Sin DB. Sin client `web`/`dashboard`.
 
 ### Validators
 
-| Archivo | Cambio |
-| ------- | ------ |
-| `packages/validators/src/mail.ts` | `mailEnvSchema`: `RESEND_API_KEY`, `MAIL_FROM`, `MAIL_SMOKE_TO` (opcionales / vacíos permitidos al boot; el servicio valida al enviar) |
-| `packages/validators/src/index.ts` | Re-export |
+| Archivo                            | Cambio                                                                                                                                 |
+| ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| `packages/validators/src/mail.ts`  | `mailEnvSchema`: `RESEND_API_KEY`, `MAIL_FROM`, `MAIL_SMOKE_TO` (opcionales / vacíos permitidos al boot; el servicio valida al enviar) |
+| `packages/validators/src/index.ts` | Re-export                                                                                                                              |
 
 ### i18n
 
-| Archivo | Cambio |
-| ------- | ------ |
+| Archivo                                      | Cambio                                                              |
+| -------------------------------------------- | ------------------------------------------------------------------- |
 | `packages/i18n/src/constants/error-codes.ts` | `MAIL_ERROR_CODE`: `NOT_CONFIGURED`, `SEND_FAILED`, `RENDER_FAILED` |
-| `packages/i18n/src/locales/errors/es.json` | Mensajes `mail.*` (copy de la spec) |
-| `packages/i18n/src/locales/errors/en.json` | Paridad |
+| `packages/i18n/src/locales/errors/es.json`   | Mensajes `mail.*` (copy de la spec)                                 |
+| `packages/i18n/src/locales/errors/en.json`   | Paridad                                                             |
 
 Namespace `emails` (templates) **ya existe** — reutilizar; no duplicar subjects/bodies.
 
 ### Types (opcional)
 
-| Archivo | Cambio |
-| ------- | ------ |
+| Archivo                                      | Cambio                                                                                                  |
+| -------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
 | `packages/types/src/dto/mail.ts` (o similar) | `SendMailInput`, `RenderedMail` si se quiere contrato compartido; si no, tipos locales en el módulo api |
 
 ### API — módulo `mail`
 
-| Archivo | Cambio |
-| ------- | ------ |
-| `apps/api/src/modules/mail/mail.tokens.ts` | Token DI `MAIL_SENDER` |
-| `apps/api/src/modules/mail/mail-sender.port.ts` | Interfaz `MailSender` (`send`) |
-| `apps/api/src/modules/mail/adapters/resend.mail-sender.ts` | Adaptador Resend |
-| `apps/api/src/modules/mail/mail.service.ts` | Facade: config check + `send`; opcional `sendRendered` |
-| `apps/api/src/modules/mail/mail.module.ts` | Provider: bind `MAIL_SENDER` → `ResendMailSender`; export `MailService` |
-| `apps/api/src/modules/mail/templates/*.tsx` | React Email: `staff-invitation`, `password-reset`, `welcome` + layout común |
-| `apps/api/src/modules/mail/render/*.ts` | `renderStaffInvitation`, `renderPasswordReset`, `renderWelcome` → `{ subject, html, text? }` |
-| `apps/api/src/modules/mail/constants/mail-error.ts` | Mapeo a `MAIL_ERROR_CODE` / throw tipado |
-| `apps/api/src/modules/mail/scripts/smoke-mail.ts` (o npm script) | Humo: render welcome + send a `MAIL_SMOKE_TO` |
-| `apps/api/src/modules/common/config/env.ts` | `.extend(mailEnvSchema.shape)` |
-| `apps/api/src/app.module.ts` | `MailModule` |
-| `apps/api/package.json` | deps: `resend`, `react-email`, `react`, `react-dom`; script `mail:smoke` |
-| Root `.env.example` (si existe) | Documentar `RESEND_API_KEY`, `MAIL_FROM`, `MAIL_SMOKE_TO` |
+| Archivo                                                          | Cambio                                                                                       |
+| ---------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| `apps/api/src/modules/mail/mail.tokens.ts`                       | Token DI `MAIL_SENDER`                                                                       |
+| `apps/api/src/modules/mail/mail-sender.port.ts`                  | Interfaz `MailSender` (`send`)                                                               |
+| `apps/api/src/modules/mail/adapters/resend.mail-sender.ts`       | Adaptador Resend                                                                             |
+| `apps/api/src/modules/mail/mail.service.ts`                      | Facade: config check + `send`; opcional `sendRendered`                                       |
+| `apps/api/src/modules/mail/mail.module.ts`                       | Provider: bind `MAIL_SENDER` → `ResendMailSender`; export `MailService`                      |
+| `apps/api/src/modules/mail/templates/*.tsx`                      | React Email: `staff-invitation`, `password-reset`, `welcome` + layout común                  |
+| `apps/api/src/modules/mail/render/*.ts`                          | `renderStaffInvitation`, `renderPasswordReset`, `renderWelcome` → `{ subject, html, text? }` |
+| `apps/api/src/modules/mail/constants/mail-error.ts`              | Mapeo a `MAIL_ERROR_CODE` / throw tipado                                                     |
+| `apps/api/src/modules/mail/scripts/smoke-mail.ts` (o npm script) | Humo: render welcome + send a `MAIL_SMOKE_TO`                                                |
+| `apps/api/src/modules/common/config/env.ts`                      | `.extend(mailEnvSchema.shape)`                                                               |
+| `apps/api/src/app.module.ts`                                     | `MailModule`                                                                                 |
+| `apps/api/package.json`                                          | deps: `resend`, `react-email`, `react`, `react-dom`; script `mail:smoke`                     |
+| Root `.env.example` (si existe)                                  | Documentar `RESEND_API_KEY`, `MAIL_FROM`, `MAIL_SMOKE_TO`                                    |
 
 ### Client
 
@@ -100,20 +100,20 @@ Un `@afterdark/emails` solo si más adelante hace falta preview CLI / consumo fu
 
 ## Riesgos / edge cases
 
-| Caso | Comportamiento esperado |
-| ---- | ----------------------- |
-| API key ausente | `NOT_CONFIGURED`; API sigue viva |
-| Resend 4xx/5xx | `SEND_FAILED`; sin reintento |
-| Template props incompletas | Fallo de render tipado / TypeScript en compile; runtime → `RENDER_FAILED` |
-| `MAIL_SMOKE_TO` en prod | Script de humo no corre (guard de entorno) |
-| Dominio no verificado en Resend | Falla en send → `SEND_FAILED` (ops: verificar dominio fuera del código) |
+| Caso                            | Comportamiento esperado                                                   |
+| ------------------------------- | ------------------------------------------------------------------------- |
+| API key ausente                 | `NOT_CONFIGURED`; API sigue viva                                          |
+| Resend 4xx/5xx                  | `SEND_FAILED`; sin reintento                                              |
+| Template props incompletas      | Fallo de render tipado / TypeScript en compile; runtime → `RENDER_FAILED` |
+| `MAIL_SMOKE_TO` en prod         | Script de humo no corre (guard de entorno)                                |
+| Dominio no verificado en Resend | Falla en send → `SEND_FAILED` (ops: verificar dominio fuera del código)   |
 
 ## Verificación manual
 
-| Paso | Resultado esperado |
-| ---- | ------------------ |
-| 1. Configurar `RESEND_API_KEY`, `MAIL_FROM`, `MAIL_SMOKE_TO` en `.env` | Boot OK |
-| 2. Ejecutar script de humo | Mail de prueba (p. ej. welcome) llega a `MAIL_SMOKE_TO` |
-| 3. Quitar `RESEND_API_KEY` y llamar send / humo | Error `mail.NOT_CONFIGURED` claro |
-| 4. `pnpm type-check` + `pnpm check:i18n` | Verde |
-| 5. Grep: ningún módulo de dominio importa `resend` | Solo el adaptador |
+| Paso                                                                   | Resultado esperado                                      |
+| ---------------------------------------------------------------------- | ------------------------------------------------------- |
+| 1. Configurar `RESEND_API_KEY`, `MAIL_FROM`, `MAIL_SMOKE_TO` en `.env` | Boot OK                                                 |
+| 2. Ejecutar script de humo                                             | Mail de prueba (p. ej. welcome) llega a `MAIL_SMOKE_TO` |
+| 3. Quitar `RESEND_API_KEY` y llamar send / humo                        | Error `mail.NOT_CONFIGURED` claro                       |
+| 4. `pnpm type-check` + `pnpm check:i18n`                               | Verde                                                   |
+| 5. Grep: ningún módulo de dominio importa `resend`                     | Solo el adaptador                                       |
