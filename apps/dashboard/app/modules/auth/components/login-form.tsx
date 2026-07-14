@@ -1,15 +1,18 @@
 import { useTranslation } from 'react-i18next'
 import { useForm } from '@tanstack/react-form'
-import { Link } from '@tanstack/react-router'
+import { Link, useSearch } from '@tanstack/react-router'
+import { googleOauthErrorMessageKey } from '@afterdark/common'
 import { loginSchema } from '@afterdark/validators'
 import { Button, Field, fieldErrorMessage } from '@afterdark/ui'
 import { DASHBOARD_ROUTES } from '../../common/constants/routes'
 import { useLogin } from '../mutations/use-auth-mutations'
 import { AuthInput } from './auth-input'
+import { AuthMethodSeparator, GoogleContinueButton } from './google-continue-button'
 
 export function LoginForm() {
   const { t } = useTranslation('auth')
   const login = useLogin()
+  const { error: oauthError } = useSearch({ from: '/login' })
 
   const form = useForm({
     defaultValues: { email: '', password: '' },
@@ -28,6 +31,15 @@ export function LoginForm() {
         void form.handleSubmit()
       }}
     >
+      {oauthError ? (
+        <p
+          role="alert"
+          className="rounded-lg border border-error/40 bg-error-container/20 px-4 py-3 text-sm text-error"
+        >
+          {t(googleOauthErrorMessageKey(oauthError))}
+        </p>
+      ) : null}
+
       <form.Field
         name="email"
         validators={{ onBlur: loginSchema.shape.email, onSubmit: loginSchema.shape.email }}
@@ -109,6 +121,9 @@ export function LoginForm() {
           )
         }}
       </form.Subscribe>
+
+      <AuthMethodSeparator />
+      <GoogleContinueButton />
     </form>
   )
 }

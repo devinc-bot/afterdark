@@ -2,10 +2,10 @@
 
 > Completar con la entrevista guiada — [INTERVIEW.md](../../INTERVIEW.md). Estado por fase en `progress.md`.
 
-| Campo      | Valor                  |
-| ---------- | ---------------------- |
-| **ID**     | `020-ui-design-tokens` |
-| **Status** | `approved`             |
+| Campo      | Valor                      |
+| ---------- | -------------------------- |
+| **ID**     | `020-ui-design-tokens`     |
+| **Status** | `approved`                 |
 | **Apps**   | `ui` · `web` · `dashboard` |
 
 ---
@@ -76,14 +76,14 @@ N/A
 
 ### UI (si aplica)
 
-| Pieza | Contrato |
-| ----- | -------- |
-| Variable CSS | `--radius-control: var(--radius-xl)` en `@theme` (default 12px) |
-| Clase | `.rounded-control { border-radius: var(--radius-control); }` en `@layer utilities` |
-| Componentes `@afterdark/ui` | Reemplazar `rounded-xl` de controles/superficies por `rounded-control` |
-| Apps `web` / `dashboard` | No migrar `rounded-xl` locales en esta entrega (heredan el CSS; migración de apps = follow-up) |
-| Stories | Actualizar wrappers/demos en `@afterdark/ui` que hardcodean `rounded-xl` en el mismo alcance |
-| Futuros tokens | Prefijo `*-control` (ej. `shadow-control`, `border-control`): variable + clase + uso en componentes |
+| Pieza                       | Contrato                                                                                            |
+| --------------------------- | --------------------------------------------------------------------------------------------------- |
+| Variable CSS                | `--radius-control: var(--radius-xl)` en `@theme` (default 12px)                                     |
+| Clase                       | `.rounded-control { border-radius: var(--radius-control); }` en `@layer utilities`                  |
+| Componentes `@afterdark/ui` | Reemplazar `rounded-xl` de controles/superficies por `rounded-control`                              |
+| Apps `web` / `dashboard`    | No migrar `rounded-xl` locales en esta entrega (heredan el CSS; migración de apps = follow-up)      |
+| Stories                     | Actualizar wrappers/demos en `@afterdark/ui` que hardcodean `rounded-xl` en el mismo alcance        |
+| Futuros tokens              | Prefijo `*-control` (ej. `shadow-control`, `border-control`): variable + clase + uso en componentes |
 
 **Componentes a migrar (1ª entrega, lista orientativa)**
 

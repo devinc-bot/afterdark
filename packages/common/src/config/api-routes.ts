@@ -20,6 +20,10 @@ export const API_ROUTES = {
       registerUser: () => '/register/user' as const,
       registerOwner: () => '/register/owner' as const,
       refreshToken: () => '/refresh' as const,
+      forgotPassword: () => '/forgot-password' as const,
+      resetPassword: () => '/reset-password' as const,
+      google: () => '/google' as const,
+      googleCallback: () => '/google/callback' as const,
     },
   },
   session: {

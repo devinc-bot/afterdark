@@ -2,12 +2,12 @@
 
 > Completar con la entrevista guiada — [INTERVIEW.md](../../INTERVIEW.md). Estado por fase en `progress.md`.
 
-| Campo          | Valor        |
-| -------------- | ------------ |
+| Campo          | Valor                       |
+| -------------- | --------------------------- |
 | **ID**         | `018-web-user-registration` |
-| **Status**     | `approved`   |
-| **Apps**       | `web`        |
-| **Depende de** | `001-auth-sessions` |
+| **Status**     | `approved`                  |
+| **Apps**       | `web`                       |
+| **Depende de** | `001-auth-sessions`         |
 
 ---
 
@@ -107,9 +107,9 @@ Los clientes necesitan una cuenta propia para comprar entradas y gestionar su pe
 
 ### API
 
-| Método | Ruta | Auth |
-| ------ | ---- | ---- |
-| `POST` | `/api/auth/register/user` | Pública |
+| Método | Ruta                      | Auth                                      |
+| ------ | ------------------------- | ----------------------------------------- |
+| `POST` | `/api/auth/register/user` | Pública                                   |
 | `GET`  | `/api/session/me`         | JWT (para `RequireGuest` / sesión en web) |
 
 **Request** — `registerUserSchema` (`@afterdark/validators`): `name`, `lastName`, `email`, `password`.
@@ -118,11 +118,11 @@ Los clientes necesitan una cuenta propia para comprar entradas y gestionar su pe
 
 **Errores (mensaje al usuario en español)**
 
-| HTTP | Cuándo | Mensaje en UI |
-| ---- | ------ | ------------- |
-| 409  | Email duplicado | `auth.register.error.emailTaken` |
-| 400  | Validación API | Mensaje del API o fallback `auth.register.error.generic` |
-| 5xx / red | Fallo servidor | `auth.register.error.generic` |
+| HTTP      | Cuándo          | Mensaje en UI                                            |
+| --------- | --------------- | -------------------------------------------------------- |
+| 409       | Email duplicado | `auth.register.error.emailTaken`                         |
+| 400       | Validación API  | Mensaje del API o fallback `auth.register.error.generic` |
+| 5xx / red | Fallo servidor  | `auth.register.error.generic`                            |
 
 ### Datos
 
@@ -130,18 +130,18 @@ Sin cambios de esquema. Reutiliza `registerAccount` con rol `user`.
 
 ### UI
 
-| Ruta | Pantalla |
-| ---- | -------- |
-| `/register` | `RegisterPage` + `RegisterForm` + `RequireGuest` |
-| `/login` | `LoginPage` + `LoginForm` (i18n) + `RequireGuest` |
+| Ruta        | Pantalla                                          |
+| ----------- | ------------------------------------------------- |
+| `/register` | `RegisterPage` + `RegisterForm` + `RequireGuest`  |
+| `/login`    | `LoginPage` + `LoginForm` (i18n) + `RequireGuest` |
 
 **Copy (español)** — namespace `auth` (claves existentes + nuevas):
 
-| Contexto | Clave | Notas |
-| -------- | ----- | ----- |
+| Contexto                  | Clave                   | Notas                                                        |
+| ------------------------- | ----------------------- | ------------------------------------------------------------ |
 | Toast éxito post-registro | `auth.register.success` | **Nueva** — p. ej. "Cuenta creada. Ya podés iniciar sesión." |
-| Login | `auth.login.*` | Migrar `LoginForm` de hardcode a i18n |
-| Registro | `auth.register.*` | Reutilizar claves actuales del dashboard |
+| Login                     | `auth.login.*`          | Migrar `LoginForm` de hardcode a i18n                        |
+| Registro                  | `auth.register.*`       | Reutilizar claves actuales del dashboard                     |
 
 **Infra UI nueva en `web`**
 
@@ -154,16 +154,16 @@ Sin cambios de esquema. Reutiliza `registerAccount` con rol `user`.
 
 ## Decisiones de entrevista
 
-| Tema | Decisión |
-| ---- | -------- |
-| Documentación | Feature nueva `018-web-user-registration` |
-| Post-registro | Redirigir a `/login` + **toast** i18n (`auth.register.success`) |
-| Confirmación contraseña | Sí, validación client-side (patrón dashboard) |
-| Copy registro | Reutilizar claves `auth.register.*` existentes |
-| i18n login | Migrar login de `web` a i18n `auth` en este alcance |
-| Rutas invitado | `RequireGuest` en `/login` y `/register` vía `GET /session/me` |
-| Sesión en web | Patrón mínimo en `apps/web` (store + hook; sin paquete compartido aún) |
-| Meta title | i18n `auth.*.metaTitle` en `head()` de rutas (copy web-neutral) |
+| Tema                    | Decisión                                                               |
+| ----------------------- | ---------------------------------------------------------------------- |
+| Documentación           | Feature nueva `018-web-user-registration`                              |
+| Post-registro           | Redirigir a `/login` + **toast** i18n (`auth.register.success`)        |
+| Confirmación contraseña | Sí, validación client-side (patrón dashboard)                          |
+| Copy registro           | Reutilizar claves `auth.register.*` existentes                         |
+| i18n login              | Migrar login de `web` a i18n `auth` en este alcance                    |
+| Rutas invitado          | `RequireGuest` en `/login` y `/register` vía `GET /session/me`         |
+| Sesión en web           | Patrón mínimo en `apps/web` (store + hook; sin paquete compartido aún) |
+| Meta title              | i18n `auth.*.metaTitle` en `head()` de rutas (copy web-neutral)        |
 
 ## Reglas de negocio
 

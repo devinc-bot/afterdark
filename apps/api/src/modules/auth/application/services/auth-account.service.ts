@@ -7,7 +7,12 @@ import {
   findRoleByName,
   registerAccount,
 } from '@afterdark/db'
-import { type LoginResponse, type RegisterResponse, type UserRole } from '@afterdark/types'
+import {
+  AUTH_PROVIDER,
+  type LoginResponse,
+  type RegisterResponse,
+  type UserRole,
+} from '@afterdark/types'
 import type { RegisterUserInput } from '@afterdark/validators'
 import { TranslationService } from '@afterdark/i18n/server'
 
@@ -38,6 +43,8 @@ export class AuthAccountService {
       hashedPassword,
       roleId: role.id,
       roleName,
+      provider: AUTH_PROVIDER.LOCAL,
+      providerAccountId: null,
       profile: {
         name: input.name,
         lastName: input.lastName,

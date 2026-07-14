@@ -1,3 +1,4 @@
+import { AUTH_PROVIDER } from '@afterdark/types'
 import { db, type Transaction } from '../../client.ts'
 import { accounts } from '../../schema/account.ts'
 import { accountRolesLnk } from '../../schema/account-role-lnk.ts'
@@ -11,6 +12,8 @@ export async function registerAccount(input: RegisterAccountInput): Promise<void
       .values({
         email: input.email,
         password: input.hashedPassword,
+        provider: input.provider ?? AUTH_PROVIDER.LOCAL,
+        providerAccountId: input.providerAccountId ?? null,
       })
       .returning()
 

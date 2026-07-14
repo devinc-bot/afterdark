@@ -1,6 +1,12 @@
 import { resolve } from 'node:path'
 import { config } from 'dotenv'
-import { databaseEnvSchema, MODE, mailEnvSchema, uploadEnvSchema } from '@afterdark/validators'
+import {
+  databaseEnvSchema,
+  googleOauthEnvSchema,
+  MODE,
+  mailEnvSchema,
+  uploadEnvSchema,
+} from '@afterdark/validators'
 import { z } from 'zod'
 
 config({ path: resolve(__dirname, '../../../../.env') })
@@ -8,10 +14,12 @@ config({ path: resolve(__dirname, '../../../../.env') })
 const envSchema = databaseEnvSchema
   .extend(uploadEnvSchema.shape)
   .extend(mailEnvSchema.shape)
+  .extend(googleOauthEnvSchema.shape)
   .extend({
     PORT: z.coerce.number().default(3000),
     JWT_SECRET: z.string().default('afterdark-dev-secret'),
     DASHBOARD_URL: z.url().default('http://localhost:3002'),
+    WEB_URL: z.url().default('http://localhost:3001'),
     CORS_ALLOWED_ORIGINS: z
       .string()
       .default('http://localhost:3001,http://localhost:3002')

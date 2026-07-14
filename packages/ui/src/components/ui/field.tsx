@@ -35,6 +35,7 @@ export function Field({
   className,
 }: FieldProps) {
   const errorId = error ? `${htmlFor}-error` : undefined
+  const hasError = Boolean(error)
 
   return (
     <div className={cn('flex flex-col gap-2', className)}>
@@ -44,11 +45,17 @@ export function Field({
         </Label>
         {labelAction}
       </div>
-      <div className="relative">
+      <div className="group/field relative">
         {icon ? (
           <span
             aria-hidden
-            className="pointer-events-none absolute left-6 top-1/2 flex size-6 -translate-y-1/2 items-center justify-center text-on-surface-variant [&_svg]:size-7 [&_svg]:shrink-0 [&_svg]:stroke-[1.75]"
+            className={cn(
+              'pointer-events-none absolute left-6 top-1/2 flex size-6 -translate-y-1/2 items-center justify-center',
+              'transition-colors duration-(--duration-fast) ease-emphasized',
+              '[&_svg]:size-7 [&_svg]:shrink-0 [&_svg]:stroke-[1.75]',
+              'motion-reduce:transition-none',
+              hasError ? 'text-error' : 'text-on-surface-variant group-focus-within/field:text-ink'
+            )}
           >
             {icon}
           </span>
@@ -56,7 +63,16 @@ export function Field({
         {withFieldDescribedBy(children, errorId)}
       </div>
       {error ? (
-        <p id={errorId} className="text-xs text-error" role="alert">
+        <p
+          id={errorId}
+          role="alert"
+          className={cn(
+            'text-xs text-error',
+            'animate-in fade-in-0 slide-in-from-top-1 duration-(--duration-fast)',
+            'ease-[cubic-bezier(0.22,1,0.36,1)]',
+            'motion-reduce:animate-none'
+          )}
+        >
           {error}
         </p>
       ) : null}

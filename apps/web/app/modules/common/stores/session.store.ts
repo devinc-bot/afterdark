@@ -1,7 +1,8 @@
 import type { SessionResponse } from '@afterdark/types'
 import { create } from 'zustand'
 import { i18n } from '@afterdark/i18n/client'
-import { getAccessToken } from '~/modules/auth/utils/auth-storage.utils'
+import { getCookieSync } from '@afterdark/common'
+import { COOKIE_KEYS } from '~/modules/common/constants/cookies'
 import { SESSION_STATUS, type SessionStatus } from '~/modules/common/constants/session-status'
 import { fetchSession, SessionFetchError } from '~/modules/common/services/session.service'
 
@@ -19,9 +20,9 @@ export const useSessionStore = create<SessionState>((set) => ({
   error: null,
 
   loadSession: async () => {
-    const accessToken = getAccessToken()
+    const hasToken = getCookieSync({ name: COOKIE_KEYS.accessToken }) !== null
 
-    if (!accessToken) {
+    if (!hasToken) {
       set({ user: null, status: SESSION_STATUS.UNAUTHENTICATED, error: null })
       return
     }

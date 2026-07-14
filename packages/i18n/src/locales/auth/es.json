@@ -25,9 +25,39 @@
   },
   "forgotPassword": {
     "metaTitle": "Recuperar contraseña · afterdark Admin",
+    "metaTitleWeb": "Recuperar contraseña · afterdark",
     "title": "Recuperar contraseña",
-    "description": "Todavía no podés restablecer la contraseña desde acá. Escribile al administrador de tu venue para recuperar el acceso.",
-    "backToLogin": "Volver a iniciar sesión"
+    "description": "Ingresá tu email y te enviamos un enlace para restablecer la contraseña.",
+    "email": "Correo",
+    "emailPlaceholder": "admin@afterdark.io",
+    "emailPlaceholderWeb": "maria@correo.com",
+    "submit": "Enviar enlace",
+    "submitting": "Enviando…",
+    "success": "Si el email está registrado, vas a recibir un enlace en breve.",
+    "backToLogin": "Volver a iniciar sesión",
+    "error": {
+      "generic": "No pudimos enviar el enlace. Intentá de nuevo.",
+      "fallback": "No pudimos enviar el enlace. Intentá de nuevo en unos minutos."
+    }
+  },
+  "resetPassword": {
+    "metaTitle": "Nueva contraseña · afterdark Admin",
+    "metaTitleWeb": "Nueva contraseña · afterdark",
+    "title": "Nueva contraseña",
+    "description": "Elegí una contraseña nueva para tu cuenta.",
+    "password": "Contraseña",
+    "passwordPlaceholder": "Mínimo 8 caracteres",
+    "confirmPassword": "Confirmar contraseña",
+    "confirmPasswordPlaceholder": "Repetí la contraseña",
+    "submit": "Guardar contraseña",
+    "submitting": "Guardando…",
+    "success": "Contraseña actualizada. Ya podés iniciar sesión.",
+    "invalidToken": "El enlace no es válido o ya expiró.",
+    "backToLogin": "Volver a iniciar sesión",
+    "error": {
+      "generic": "No pudimos actualizar la contraseña. Intentá de nuevo.",
+      "fallback": "No pudimos actualizar la contraseña. Intentá de nuevo en unos minutos."
+    }
   },
 
   "register": {
@@ -59,6 +89,14 @@
     }
   },
   "logout": "Cerrar sesión",
+  "google": {
+    "continue": "Continuar con Google",
+    "or": "o",
+    "errors": {
+      "emailExists": "Ya existe una cuenta con este correo.",
+      "generic": "No se pudo continuar con Google. Intentá de nuevo."
+    }
+  },
   "session": {
     "expired": "Tu sesión expiró. Volvé a iniciar sesión.",
     "loadFallback": "No pudimos cargar tu perfil. Intentá de nuevo en unos minutos."

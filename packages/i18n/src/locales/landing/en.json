@@ -1,0 +1,77 @@
+{
+  "metaTitle": "afterdark · nightlife events",
+  "skipToContent": "Skip to content",
+  "nav": {
+    "brand": "afterdark",
+    "ariaLabel": "Primary",
+    "login": "Sign in",
+    "register": "Create account",
+    "how": "How it works",
+    "nights": "Nights",
+    "events": "Events",
+    "tickets": "Tickets",
+    "accountAria": "Account for {name}"
+  },
+  "hero": {
+    "headline": "The night, before it starts.",
+    "support": "Discover events, secure your ticket, and arrive with everything settled.",
+    "ctaPrimary": "Create account",
+    "ctaSecondary": "Sign in",
+    "imageAlt": "Crowd under lights at a nightlife event"
+  },
+  "about": {
+    "headline": "The platform that makes the night clear.",
+    "body": "Afterdark connects clubs and audiences in one experience: real events, unambiguous tickets, and an interface that feels the night without dressing it up as a flyer.",
+    "imageAlt": "Lit stage during a live show"
+  },
+  "how": {
+    "headline": "Three steps. No noise.",
+    "steps": {
+      "1": {
+        "title": "Create your account",
+        "body": "Register once. After that, every night is one tap away."
+      },
+      "2": {
+        "title": "Choose the night",
+        "body": "Browse dates, clubs, and tickets with the information that matters."
+      },
+      "3": {
+        "title": "Ticket ready",
+        "body": "Buy, confirm, and arrive knowing your place is already set."
+      }
+    }
+  },
+  "nights": {
+    "headline": "Upcoming nights",
+    "support": "Editorial sample. Soon: a live schedule from the platform.",
+    "items": {
+      "1": {
+        "date": "Fri 18 Jul",
+        "title": "Pulse",
+        "venue": "Club Nómina",
+        "imageAlt": "Stage with strong lights at a live show"
+      },
+      "2": {
+        "date": "Sat 19 Jul",
+        "title": "Below the line",
+        "venue": "Mármol",
+        "imageAlt": "Crowd at a festival under colored lights"
+      },
+      "3": {
+        "date": "Thu 24 Jul",
+        "title": "Residency",
+        "venue": "Casa Norte",
+        "imageAlt": "Concert with a crowd facing the stage"
+      }
+    }
+  },
+  "closing": {
+    "headline": "This night already has a name.",
+    "support": "Create your account and come back when the full schedule opens.",
+    "cta": "Create account"
+  },
+  "footer": {
+    "tagline": "Nightlife events, with precision.",
+    "rights": "© {year} afterdark"
+  }
+}

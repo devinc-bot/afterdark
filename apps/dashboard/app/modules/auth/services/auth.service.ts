@@ -1,5 +1,10 @@
 import { createServerFn } from '@tanstack/react-start'
-import { loginSchema, registerOwnerSchema } from '@afterdark/validators'
+import {
+  forgotPasswordSchema,
+  loginSchema,
+  registerOwnerSchema,
+  resetPasswordSchema,
+} from '@afterdark/validators'
 import { translateSync } from '@afterdark/i18n'
 import { API_ROUTES, api } from '~/config/api'
 import { throwApiServiceError, buildApiPath } from '@afterdark/common'
@@ -30,5 +35,25 @@ export const registerOwnerFn = createServerFn({ method: 'POST' })
       buildApiPath(API_ROUTES.auth, API_ROUTES.auth.path.registerOwner()),
       data,
       translateSync('auth:register.error.fallback')
+    )
+  })
+
+export const forgotPasswordFn = createServerFn({ method: 'POST' })
+  .inputValidator(forgotPasswordSchema)
+  .handler(async ({ data }): Promise<void> => {
+    return postAuth<void>(
+      buildApiPath(API_ROUTES.auth, API_ROUTES.auth.path.forgotPassword()),
+      data,
+      translateSync('auth:forgotPassword.error.fallback')
+    )
+  })
+
+export const resetPasswordFn = createServerFn({ method: 'POST' })
+  .inputValidator(resetPasswordSchema)
+  .handler(async ({ data }): Promise<void> => {
+    return postAuth<void>(
+      buildApiPath(API_ROUTES.auth, API_ROUTES.auth.path.resetPassword()),
+      data,
+      translateSync('auth:resetPassword.error.fallback')
     )
   })

@@ -9,6 +9,7 @@ import type esClubs from '../locales/clubs/es.json'
 import type esSettings from '../locales/settings/es.json'
 import type esTickets from '../locales/tickets/es.json'
 import type esEvents from '../locales/events/es.json'
+import type esLanding from '../locales/landing/es.json'
 
 export type I18nResources = {
   common: typeof esCommon
@@ -22,6 +23,7 @@ export type I18nResources = {
   settings: typeof esSettings
   tickets: typeof esTickets
   events: typeof esEvents
+  landing: typeof esLanding
 }
 
 declare module 'i18next' {

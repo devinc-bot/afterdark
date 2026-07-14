@@ -17,6 +17,8 @@
     "TOKEN_INVALID": "The token is invalid.",
     "SESSION_NOT_FOUND": "Session not found.",
     "REFRESH_TOKEN_INVALID": "Invalid refresh token.",
+    "PASSWORD_RESET_TOKEN_INVALID": "The link is invalid or has expired.",
+    "PASSWORD_RESET_RATE_LIMITED": "Too many attempts. Please try again later.",
     "ROLE_NOT_CONFIGURED": "We could not complete registration. Please contact the administrator.",
     "REGISTER_SUCCESS": "Account created successfully. You can now sign in."
   },

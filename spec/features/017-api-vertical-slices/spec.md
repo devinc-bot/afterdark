@@ -1,9 +1,9 @@
 # Arquitectura de capas (repositorios + API vertical slice)
 
-| Campo      | Valor                    |
-| ---------- | ------------------------ |
-| **ID**     | `017-api-vertical-slices`  |
-| **Status** | `done`                   |
+| Campo      | Valor                                       |
+| ---------- | ------------------------------------------- |
+| **ID**     | `017-api-vertical-slices`                   |
+| **Status** | `done`                                      |
 | **Apps**   | `packages/db`, `packages/types`, `apps/api` |
 
 ---
@@ -84,12 +84,12 @@ Los archivos `*.repository.ts` monolíticos y los `*.service.ts` con toda la ló
 
 ### API — sin cambios de contrato HTTP
 
-| Método | Ruta | Auth | Use case |
-| ------ | ---- | ---- | -------- |
-| GET | `/api/clubs/my-clubs` | JWT + owner | `ListMyClubsUseCase` |
-| POST | `/api/clubs/create` | JWT | `CreateClubUseCase` |
-| PATCH | `/api/clubs/:documentId` | JWT | `UpdateClubUseCase` |
-| DELETE | `/api/clubs/:documentId` | JWT | `DeleteClubUseCase` |
+| Método | Ruta                     | Auth        | Use case             |
+| ------ | ------------------------ | ----------- | -------------------- |
+| GET    | `/api/clubs/my-clubs`    | JWT + owner | `ListMyClubsUseCase` |
+| POST   | `/api/clubs/create`      | JWT         | `CreateClubUseCase`  |
+| PATCH  | `/api/clubs/:documentId` | JWT         | `UpdateClubUseCase`  |
+| DELETE | `/api/clubs/:documentId` | JWT         | `DeleteClubUseCase`  |
 
 ### Layout API (módulo piloto `clubs`)
 

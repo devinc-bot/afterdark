@@ -6,10 +6,10 @@ Apps, packages, and data-flow conventions.
 
 ## Apps
 
-| App         | Role                                      | Port |
-| ----------- | ----------------------------------------- | ---- |
-| `web`       | Public client (auth, discover / buy)      | 3001 |
-| `dashboard` | Owner/staff panel (clubs, events, …)      | 3002 |
+| App         | Role                                        | Port |
+| ----------- | ------------------------------------------- | ---- |
+| `web`       | Public client (auth, discover / buy)        | 3001 |
+| `dashboard` | Owner/staff panel (clubs, events, …)        | 3002 |
 | `api`       | NestJS REST API + Drizzle (`@afterdark/db`) | 3000 |
 
 ```
@@ -121,11 +121,11 @@ apps/api/src/modules/mail/
 
 `app/modules/<feature>/` — use only the folders you need:
 
-| Folder | Role |
-| ------ | ---- |
-| `services/` | API wrappers (`QueryFactory` or `createServerFn`) |
-| `queries/` / `mutations/` | TanStack Query |
-| `components/`, `hooks/`, `stores/`, `utils/`, `constants/` | UI / local helpers |
+| Folder                                                     | Role                                              |
+| ---------------------------------------------------------- | ------------------------------------------------- |
+| `services/`                                                | API wrappers (`QueryFactory` or `createServerFn`) |
+| `queries/` / `mutations/`                                  | TanStack Query                                    |
+| `components/`, `hooks/`, `stores/`, `utils/`, `constants/` | UI / local helpers                                |
 
 - Routes import from modules; modules **must not** import sibling modules → share via `modules/common/`.
 - Navigation paths: `WEB_ROUTES` / `DASHBOARD_ROUTES` in `modules/common/constants/routes.ts`.
@@ -136,20 +136,20 @@ apps/api/src/modules/mail/
 
 ## Packages (rules)
 
-| Package | Rule |
-| ------- | ---- |
-| `@afterdark/common` | Single source for `API_PREFIX`, `API_URL`, `API_ROUTES`, `QueryFactory` |
-| `@afterdark/db` | `schema/` + `repositories/<domain>/` (one fn per file); migrations in prod |
+| Package                 | Rule                                                                                                                                                                                            |
+| ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `@afterdark/common`     | Single source for `API_PREFIX`, `API_URL`, `API_ROUTES`, `QueryFactory`                                                                                                                         |
+| `@afterdark/db`         | `schema/` + `repositories/<domain>/` (one fn per file); migrations in prod                                                                                                                      |
 | `@afterdark/validators` | All Zod schemas; do not redefine in apps. Env schemas live in `src/env/` (`database`, `mail`, `client`, `upload`); domain/form schemas stay at `src/*.ts`. Subpaths: `.`, `./database`, `./env` |
-| `@afterdark/types` | `enums/` + `dto/` + `repository/`; import only from package barrel |
-| `@afterdark/ui` | ShadCN in `packages/ui`; export from package index |
-| `@afterdark/i18n` | Shared locales / i18next |
+| `@afterdark/types`      | `enums/` + `dto/` + `repository/`; import only from package barrel                                                                                                                              |
+| `@afterdark/ui`         | ShadCN in `packages/ui`; export from package index                                                                                                                                              |
+| `@afterdark/i18n`       | Shared locales / i18next                                                                                                                                                                        |
 
 ---
 
 ## Env
 
-Root `.env`. Main vars: `VITE_API_URL`, `TURSO_*`, `NODE_ENV`, `PORT`, `JWT_SECRET`, `DASHBOARD_URL`, `CORS_ALLOWED_ORIGINS`, `RESEND_API_KEY`, `MAIL_FROM`, `MAIL_SMOKE_TO`.
+Root `.env`. Main vars: `VITE_API_URL`, `TURSO_*`, `NODE_ENV`, `PORT`, `JWT_SECRET`, `DASHBOARD_URL`, `WEB_URL`, `CORS_ALLOWED_ORIGINS`, `RESEND_API_KEY`, `MAIL_FROM`, `MAIL_SMOKE_TO`.
 
 Zod schemas for env live in `packages/validators/src/env/`. Apps compose them at boot (`apps/api/.../config/env.ts`, `packages/db`, web/dashboard client env). Mail keys may be empty at boot; `MailConfigService` / send use cases fail with `mail.NOT_CONFIGURED` when sending without config. `API_PREFIX` is a **code constant**, not env.
 
@@ -157,11 +157,11 @@ Zod schemas for env live in `packages/validators/src/env/`. Apps compose them at
 
 ## Adding work
 
-| Task | Where |
-| ---- | ----- |
-| New entity | `db` schema → repos → validators → types → `api` module (use cases) → `API_ROUTES` → app service |
-| New endpoint | repo → use case/controller → optional `API_ROUTES` + frontend service |
+| Task           | Where                                                                                                         |
+| -------------- | ------------------------------------------------------------------------------------------------------------- |
+| New entity     | `db` schema → repos → validators → types → `api` module (use cases) → `API_ROUTES` → app service              |
+| New endpoint   | repo → use case/controller → optional `API_ROUTES` + frontend service                                         |
 | New API module | Vertical slice under `apps/api/src/modules/<name>/` (`application/` + optional `presentation/` / `adapters/`) |
-| New env var | Schema in `packages/validators/src/env/` → extend app `ENV` parse |
-| New UI module | `app/modules/<name>/` + routes (`_app/` if authenticated dashboard) |
-| New ShadCN | `cd packages/ui && pnpm dlx shadcn@latest add <name>` |
+| New env var    | Schema in `packages/validators/src/env/` → extend app `ENV` parse                                             |
+| New UI module  | `app/modules/<name>/` + routes (`_app/` if authenticated dashboard)                                           |
+| New ShadCN     | `cd packages/ui && pnpm dlx shadcn@latest add <name>`                                                         |

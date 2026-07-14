@@ -96,15 +96,15 @@ packages/types/src/
 
 ### Mapeo desde archivos actuales
 
-| Origen | Destino |
-| ------ | ------- |
-| `api.ts` → auth/session | `dto/auth.ts`, `dto/user.ts` |
-| `api.ts` → club/asset | `dto/club.ts` |
-| `api.ts` → event, ticket, staff | `dto/event.ts`, `dto/ticket.ts`, `dto/staff.ts` |
-| `api.ts` → wrappers | `dto/common.ts` |
-| `pagination.ts` | `dto/common.ts` |
-| `domain.ts` → `User`, `Property` | `dto/user.ts` |
-| `domain.ts` → enums | permanece en `domain.ts` |
+| Origen                           | Destino                                         |
+| -------------------------------- | ----------------------------------------------- |
+| `api.ts` → auth/session          | `dto/auth.ts`, `dto/user.ts`                    |
+| `api.ts` → club/asset            | `dto/club.ts`                                   |
+| `api.ts` → event, ticket, staff  | `dto/event.ts`, `dto/ticket.ts`, `dto/staff.ts` |
+| `api.ts` → wrappers              | `dto/common.ts`                                 |
+| `pagination.ts`                  | `dto/common.ts`                                 |
+| `domain.ts` → `User`, `Property` | `dto/user.ts`                                   |
+| `domain.ts` → enums              | permanece en `domain.ts`                        |
 
 ### API / UI / Datos
 

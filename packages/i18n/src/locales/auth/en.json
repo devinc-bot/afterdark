@@ -25,9 +25,39 @@
   },
   "forgotPassword": {
     "metaTitle": "Recover password · afterdark Admin",
+    "metaTitleWeb": "Recover password · afterdark",
     "title": "Recover password",
-    "description": "You can't reset your password from here yet. Contact your venue administrator to regain access.",
-    "backToLogin": "Back to sign in"
+    "description": "Enter your email and we'll send you a link to reset your password.",
+    "email": "Email",
+    "emailPlaceholder": "admin@afterdark.io",
+    "emailPlaceholderWeb": "maria@email.com",
+    "submit": "Send link",
+    "submitting": "Sending…",
+    "success": "If the email is registered, you'll receive a link shortly.",
+    "backToLogin": "Back to sign in",
+    "error": {
+      "generic": "We couldn't send the link. Please try again.",
+      "fallback": "We couldn't send the link. Try again in a few minutes."
+    }
+  },
+  "resetPassword": {
+    "metaTitle": "New password · afterdark Admin",
+    "metaTitleWeb": "New password · afterdark",
+    "title": "New password",
+    "description": "Choose a new password for your account.",
+    "password": "Password",
+    "passwordPlaceholder": "Minimum 8 characters",
+    "confirmPassword": "Confirm password",
+    "confirmPasswordPlaceholder": "Repeat the password",
+    "submit": "Save password",
+    "submitting": "Saving…",
+    "success": "Password updated. You can now sign in.",
+    "invalidToken": "The link is invalid or has expired.",
+    "backToLogin": "Back to sign in",
+    "error": {
+      "generic": "We couldn't update the password. Please try again.",
+      "fallback": "We couldn't update the password. Try again in a few minutes."
+    }
   },
 
   "register": {
@@ -59,6 +89,14 @@
     }
   },
   "logout": "Sign out",
+  "google": {
+    "continue": "Continue with Google",
+    "or": "or",
+    "errors": {
+      "emailExists": "An account with this email already exists.",
+      "generic": "Could not continue with Google. Please try again."
+    }
+  },
   "session": {
     "expired": "Your session expired. Please sign in again.",
     "loadFallback": "We couldn't load your profile. Try again in a few minutes."
