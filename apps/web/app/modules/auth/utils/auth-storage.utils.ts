@@ -1,26 +1,29 @@
 import type { LoginResponse } from '@afterdark/types'
+import { deleteCookie, getCookieSync, setCookie } from '@afterdark/common'
+import { SESSION_DURATION_MS } from '~/modules/common/constants/auth-storage'
+import { COOKIE_KEYS } from '~/modules/common/constants/cookies'
 
-const AUTH_STORAGE_KEY = 'afterdark.auth'
+const accessTokenCookie = { name: COOKIE_KEYS.accessToken } as const
 
 export function saveAuthSession(session: LoginResponse): void {
-  localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(session))
+  setCookie({
+    ...accessTokenCookie,
+    value: session.accessToken,
+    maxAgeMs: SESSION_DURATION_MS,
+  })
 }
 
 export function getAuthSession(): LoginResponse | null {
-  const raw = localStorage.getItem(AUTH_STORAGE_KEY)
-  if (!raw) return null
+  const accessToken = getCookieSync(accessTokenCookie)
+  if (!accessToken) return null
 
-  try {
-    return JSON.parse(raw) as LoginResponse
-  } catch {
-    return null
-  }
+  return { accessToken }
 }
 
-export function getAccessToken(): string | null {
-  return getAuthSession()?.accessToken ?? null
+export function getAccessTokenSync(): string | null {
+  return getCookieSync(accessTokenCookie)
 }
 
 export function clearAuthSession(): void {
-  localStorage.removeItem(AUTH_STORAGE_KEY)
+  deleteCookie(accessTokenCookie)
 }

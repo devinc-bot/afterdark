@@ -1,11 +1,11 @@
 import { useTranslation } from 'react-i18next'
 import { useForm } from '@tanstack/react-form'
 import { Link, useSearch } from '@tanstack/react-router'
+import { googleOauthErrorMessageKey } from '@afterdark/common'
 import { loginSchema } from '@afterdark/validators'
 import { Button, Field, fieldErrorMessage } from '@afterdark/ui'
 import { DASHBOARD_ROUTES } from '../../common/constants/routes'
 import { useLogin } from '../mutations/use-auth-mutations'
-import { googleOauthErrorMessageKey } from '../utils/google-oauth.utils'
 import { AuthInput } from './auth-input'
 import { AuthMethodSeparator, GoogleContinueButton } from './google-continue-button'
 

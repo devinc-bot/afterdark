@@ -50,6 +50,10 @@ const localeImports: Record<
     es: () => import('../locales/events/es.json'),
     en: () => import('../locales/events/en.json'),
   },
+  landing: {
+    es: () => import('../locales/landing/es.json'),
+    en: () => import('../locales/landing/en.json'),
+  },
 }
 
 export const defaultLoad: LoadFn = async (language, namespace) => {

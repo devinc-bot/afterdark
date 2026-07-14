@@ -1,0 +1,77 @@
+{
+  "metaTitle": "afterdark · eventos nocturnos",
+  "skipToContent": "Ir al contenido",
+  "nav": {
+    "brand": "afterdark",
+    "ariaLabel": "Principal",
+    "login": "Iniciar sesión",
+    "register": "Crear cuenta",
+    "how": "Cómo funciona",
+    "nights": "Noches",
+    "events": "Eventos",
+    "tickets": "Tickets",
+    "accountAria": "Cuenta de {name}"
+  },
+  "hero": {
+    "headline": "La noche, antes de que empiece.",
+    "support": "Descubrí eventos, asegurá tu entrada y llegá con todo resuelto.",
+    "ctaPrimary": "Crear cuenta",
+    "ctaSecondary": "Iniciar sesión",
+    "imageAlt": "Público bajo luces en un evento nocturno"
+  },
+  "about": {
+    "headline": "La plataforma que deja la noche en claro.",
+    "body": "Afterdark une clubes y público en una sola experiencia: eventos reales, entradas sin ambigüedad y una interfaz que siente la noche sin disfrazarla de flyer.",
+    "imageAlt": "Escenario iluminado durante un show en vivo"
+  },
+  "how": {
+    "headline": "Tres pasos. Sin ruido.",
+    "steps": {
+      "1": {
+        "title": "Creá tu cuenta",
+        "body": "Registrate una vez. Después, cada noche queda a un toque."
+      },
+      "2": {
+        "title": "Elegí la noche",
+        "body": "Mirás fechas, clubes y entradas con la información que importa."
+      },
+      "3": {
+        "title": "Entrada lista",
+        "body": "Comprás, confirmás y llegás sabiendo que tu lugar ya está."
+      }
+    }
+  },
+  "nights": {
+    "headline": "Próximas noches",
+    "support": "Una muestra editorial. Pronto: agenda real desde la plataforma.",
+    "items": {
+      "1": {
+        "date": "Vie 18 jul",
+        "title": "Pulso",
+        "venue": "Club Nómina",
+        "imageAlt": "Escenario con luces fuertes en un show en vivo"
+      },
+      "2": {
+        "date": "Sáb 19 jul",
+        "title": "Bajo la línea",
+        "venue": "Mármol",
+        "imageAlt": "Público en un festival bajo luces de color"
+      },
+      "3": {
+        "date": "Jue 24 jul",
+        "title": "Residencia",
+        "venue": "Casa Norte",
+        "imageAlt": "Concierto con multitud frente al escenario"
+      }
+    }
+  },
+  "closing": {
+    "headline": "Esta noche ya tiene nombre.",
+    "support": "Creá tu cuenta y entrá cuando la agenda abra del todo.",
+    "cta": "Crear cuenta"
+  },
+  "footer": {
+    "tagline": "Eventos nocturnos, con precisión.",
+    "rights": "© {year} afterdark"
+  }
+}
