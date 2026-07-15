@@ -9,6 +9,7 @@ export const DASHBOARD_ROUTES = {
   clubManagementEdit: (documentId: string) => `/club-management/${documentId}/edit` as const,
   tickets: () => '/tickets' as const,
   events: () => '/events' as const,
+  sales: () => '/sales' as const,
   staff: () => '/staff' as const,
   settings: () => '/settings' as const,
   login,

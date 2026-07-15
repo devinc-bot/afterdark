@@ -2,11 +2,20 @@ import { Inject, Injectable, InternalServerErrorException } from '@nestjs/common
 import {
   findDashboardKpiByOwnerDocumentId,
   findDashboardTicketsSoldSeriesByOwnerDocumentId,
+  findOwnerSalesPaginated,
 } from '@afterdark/db'
-import type { DashboardKpiResponse, DashboardSalesAnalyticsResponse } from '@afterdark/types'
+import type {
+  DashboardKpiResponse,
+  DashboardSalesAnalyticsResponse,
+  OwnerSaleResponse,
+  PaginatedResponse,
+  PaymentStatus,
+  TicketType,
+} from '@afterdark/types'
 import type {
   DashboardKpiQueryInput,
   DashboardSalesAnalyticsQueryInput,
+  ListOwnerSalesQueryInput,
 } from '@afterdark/validators'
 import { TranslationService } from '@afterdark/i18n/server'
 import { resolveDashboardRevenueDateRange } from './utils/dashboard-date-range'
@@ -74,6 +83,48 @@ export class DashboardService {
       throw new InternalServerErrorException(
         this.ts.translateError('dashboard.SALES_ANALYTICS_FAILED')
       )
+    }
+  }
+
+  async listSales(
+    ownerDocumentId: string,
+    query: ListOwnerSalesQueryInput
+  ): Promise<PaginatedResponse<OwnerSaleResponse>> {
+    try {
+      const { rows, total } = await findOwnerSalesPaginated({
+        ownerDocumentId,
+        page: query.page,
+        limit: query.limit,
+        eventDocumentId: query.eventId,
+        clubDocumentId: query.clubId,
+        ticketType: query.ticketType,
+        from: query.from,
+        to: query.to,
+      })
+
+      const totalPages = total === 0 ? 0 : Math.ceil(total / query.limit)
+
+      return {
+        data: rows.map((row) => ({
+          id: row.orderDocumentId,
+          buyerName: `${row.buyerName} ${row.buyerLastName}`.trim(),
+          buyerEmail: row.buyerEmail,
+          eventName: row.eventName,
+          ticketName: row.ticketName,
+          ticketType: row.ticketType as TicketType,
+          clubName: row.clubName,
+          paidAt: row.paidAt ? row.paidAt.toISOString() : null,
+          quantity: row.quantity,
+          amount: row.amount,
+          status: row.status as PaymentStatus,
+        })),
+        total,
+        page: query.page,
+        limit: query.limit,
+        totalPages,
+      }
+    } catch {
+      throw new InternalServerErrorException(this.ts.translateError('dashboard.SALES_LIST_FAILED'))
     }
   }
 }

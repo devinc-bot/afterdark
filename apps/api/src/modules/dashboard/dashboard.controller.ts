@@ -3,13 +3,17 @@ import type {
   DashboardKpiResponse,
   DashboardSalesAnalyticsResponse,
   JwtPayload,
+  OwnerSaleResponse,
+  PaginatedResponse,
 } from '@afterdark/types'
 import { USER_ROLE } from '@afterdark/types'
 import {
   dashboardKpiQuerySchema,
   dashboardSalesAnalyticsQuerySchema,
+  listOwnerSalesQuerySchema,
   type DashboardKpiQueryInput,
   type DashboardSalesAnalyticsQueryInput,
+  type ListOwnerSalesQueryInput,
 } from '@afterdark/validators'
 import { CurrentUser } from '../common/decorators/current-user.decorator'
 import { Roles } from '../common/decorators/roles.decorator'
@@ -30,6 +34,16 @@ export class DashboardController {
     @Query(new ZodValidationPipe(dashboardKpiQuerySchema)) query: DashboardKpiQueryInput
   ): Promise<DashboardKpiResponse> {
     return this.dashboardService.getKpiDashboard(user.sub, query)
+  }
+
+  @Get('sales')
+  @Roles([USER_ROLE.OWNER])
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  listSales(
+    @CurrentUser() user: JwtPayload,
+    @Query(new ZodValidationPipe(listOwnerSalesQuerySchema)) query: ListOwnerSalesQueryInput
+  ): Promise<PaginatedResponse<OwnerSaleResponse>> {
+    return this.dashboardService.listSales(user.sub, query)
   }
 
   @Get('sales/analytics')

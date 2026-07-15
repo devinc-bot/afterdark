@@ -240,7 +240,24 @@ async function upsertOrder(
     .from(orders)
     .where(eq(orders.documentId, documentId))
     .limit(1)
-  if (existing) return existing.id
+
+  if (existing) {
+    await db
+      .update(orders)
+      .set({
+        ticketId: values.ticketId,
+        userId: values.userId,
+        status: values.status,
+        amount: values.amount,
+        quantity: values.quantity,
+        provider: values.provider,
+        paidAt: values.paidAt,
+        metadata: values.metadata,
+        updatedAt: new Date(),
+      })
+      .where(eq(orders.id, existing.id))
+    return existing.id
+  }
 
   const [row] = await db
     .insert(orders)
@@ -363,6 +380,8 @@ export async function seedTicketsOrders(): Promise<void> {
   }
 
   const SEED_COUNT = 6
+  /** First N orders are completed purchases on distinct past days. */
+  const COMPLETED_ORDER_COUNT = 4
   const ticketRefs: { id: number; price: number }[] = []
 
   for (let i = 1; i <= SEED_COUNT; i++) {
@@ -383,11 +402,14 @@ export async function seedTicketsOrders(): Promise<void> {
   for (let i = 1; i <= SEED_COUNT; i++) {
     const ticket = ticketRefs[i - 1]
     const quantity = (i % 4) + 1
-    const status = ORDER_STATUSES[i % ORDER_STATUSES.length]
-    const paidAt =
-      status === PAYMENT_STATUS.COMPLETED
-        ? new Date(now - i * 4 * DAY_MS - (i % 5) * 60 * 60 * 1000)
-        : null
+    const isCompleted = i <= COMPLETED_ORDER_COUNT
+    const status = isCompleted
+      ? PAYMENT_STATUS.COMPLETED
+      : ORDER_STATUSES[((i - COMPLETED_ORDER_COUNT) % (ORDER_STATUSES.length - 1)) + 1]
+    // Spread completed sales across the last ~2 weeks (distinct days + hour offsets).
+    const paidAt = isCompleted
+      ? new Date(now - i * 3 * DAY_MS - (i % 4) * 2 * 60 * 60 * 1000)
+      : null
 
     const orderId = await upsertOrder(`seed-order-${i}`, {
       documentId: `seed-order-${i}`,
@@ -398,16 +420,15 @@ export async function seedTicketsOrders(): Promise<void> {
       quantity,
       provider: PAYMENT_PROVIDER.MERCADO_PAGO,
       paidAt,
-      metadata:
-        status === PAYMENT_STATUS.COMPLETED
-          ? {
-              providerPaymentId: `mp-seed-${i}`,
-              preferenceId: `pref-seed-${i}`,
-            }
-          : null,
+      metadata: isCompleted
+        ? {
+            providerPaymentId: `mp-seed-${i}`,
+            preferenceId: `pref-seed-${i}`,
+          }
+        : null,
     })
 
-    if (status !== PAYMENT_STATUS.COMPLETED) continue
+    if (!isCompleted) continue
 
     for (let unit = 1; unit <= quantity; unit++) {
       const checkedIn = i % 2 === 0 && unit === 1

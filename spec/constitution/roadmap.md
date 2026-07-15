@@ -28,6 +28,7 @@
 | 021 | `password-reset`                   | Reset de contraseña                    | `in-progress` | `api`, `dashboard`, `web` | Forgot + reset por email (link). Roles user/owner/staff; link según app. Reutiliza `019`. Ver `spec/features/021-password-reset/`.                                                                                                                                                                                                                                                                                                           |
 | 022 | `google-auth`                      | Registro e inicio de sesión con Google | `in-progress` | `api`, `web`, `dashboard` | OAuth Google para cliente (`web`) y dueño (`dashboard`). Botón «Continuar con Google» en login/registro. `accounts.provider` local/google. Depende de `001`. Ver `spec/features/022-google-auth/`.                                                                                                                                                                                                                                           |
 | 023 | `web-landing`                      | Landing web                            | `in-progress` | `web`                     | Nav de landing según sesión: guest (Cómo funciona / Noches + Login/Register) vs autenticado (Eventos / Tickets + avatar; sin CTAs auth). Depende de `001`. Ver `spec/features/023-web-landing/`.                                                                                                                                                                                                                                              |
+| 024 | `owner-ticket-sales`               | Ventas de tickets (historial dueño)    | `approved`    | `api`, `dashboard`        | Sidebar “Ventas”: listado de compras (comprador, fecha, evento, ticket…). Depende de tickets/orders. Ver `spec/features/024-owner-ticket-sales/`.                                                                                                                                                                                                                                                                                             |
 
 ## Status
 
@@ -66,6 +67,7 @@
 021-password-reset                   →  requiere 001 (auth), 019 (email-service)
 022-google-auth                      →  requiere 001 (auth-sessions)
 023-web-landing                      →  requiere 001 (auth-sessions)
+024-owner-ticket-sales               →  requiere 006 (tickets), orders/tickets_sold
 ```
 
 ## Decisiones de prioridad

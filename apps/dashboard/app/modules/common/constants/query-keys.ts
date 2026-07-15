@@ -6,6 +6,9 @@ export const QUERY_KEYS = {
   tickets: (params?: { page?: number; limit?: number; status?: string }) =>
     ['tickets', params ?? {}] as const,
   events: (params?: { page?: number; limit?: number }) => ['events', params ?? {}] as const,
+  ownerSales: (params?: Record<string, unknown>) => ['owner-sales', params ?? {}] as const,
+  salesFilterClubs: () => ['sales-filter-clubs'] as const,
+  salesFilterEvents: () => ['sales-filter-events'] as const,
   dashboardKpi: (params?: { fromDate?: Date; toDate?: Date }) =>
     [
       'dashboard-kpi',

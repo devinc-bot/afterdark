@@ -1,3 +1,5 @@
+import type { TicketType } from '../enums/ticket.ts'
+
 export type FindDashboardKpiParams = {
   ownerDocumentId: string
   revenueFromDate: Date
@@ -15,4 +17,35 @@ export type FindDashboardTicketsSoldSeriesParams = {
   fromDate: Date
   toDate: Date
   granularity: 'day' | 'month'
+}
+
+export type ListOwnerSalesParams = {
+  ownerDocumentId: string
+  page: number
+  limit: number
+  eventDocumentId?: string
+  clubDocumentId?: string
+  ticketType?: TicketType
+  from?: Date
+  to?: Date
+}
+
+export type OwnerSaleRow = {
+  orderDocumentId: string
+  buyerName: string
+  buyerLastName: string
+  buyerEmail: string
+  eventName: string
+  ticketName: string
+  ticketType: TicketType
+  clubName: string
+  paidAt: Date | null
+  quantity: number
+  amount: number
+  status: string
+}
+
+export type PaginatedOwnerSalesResult = {
+  rows: OwnerSaleRow[]
+  total: number
 }
