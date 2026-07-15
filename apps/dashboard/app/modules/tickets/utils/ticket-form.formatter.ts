@@ -60,8 +60,8 @@ export function ticketResponseToRecordItem(ticket: TicketResponse): TicketRecord
     ticketTypeTone: resolveTicketTypeTone(ticket.type),
     price: ticket.price,
     quantity: ticket.quantity,
-    totalSold: 0,
-    revenue: 0,
+    totalSold: ticket.totalSold,
+    revenue: ticket.revenue,
     status: ticket.status,
   }
 }
