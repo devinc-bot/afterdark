@@ -1,7 +1,18 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import type { TicketResponse } from '@afterdark/types'
-import { Tabs, TabsContent, TabsList, TabsTrigger, toast } from '@afterdark/ui'
+import { TICKET_SALES_FILTER, type TicketResponse, type TicketSalesFilter } from '@afterdark/types'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+  toast,
+} from '@afterdark/ui'
 import { TicketCreateDialog } from '~/modules/tickets/components/dialog-create-ticket'
 import { TicketEditDialog } from '~/modules/tickets/components/dialog-edit-ticket'
 import { TicketRemoveDialog } from '~/modules/tickets/components/dialog-remove-ticket'
@@ -10,6 +21,11 @@ import {
   type TicketRecordsPagination,
   TicketRecords,
 } from '~/modules/tickets/components/ticket-record'
+import {
+  TICKET_SALES_FILTER_OPTION,
+  TICKET_SALES_FILTER_OPTIONS,
+  type TicketSalesFilterOption,
+} from '~/modules/tickets/constants/tickets-sales-filter.constants'
 import { TICKET_TAB, type TicketTab } from '~/modules/tickets/constants/tickets-tabs.constants'
 import { useDeleteTicket } from '~/modules/tickets/mutation/use-ticket-mutations'
 import { useTickets } from '~/modules/tickets/queries/use-ticket-queries'
@@ -18,9 +34,22 @@ import { PageLayout } from '~/modules/common/components/page-layout'
 
 const TICKETS_PAGE_SIZE = 10
 
+function toApiSalesFilter(option: TicketSalesFilterOption): TicketSalesFilter | undefined {
+  if (option === TICKET_SALES_FILTER_OPTION.SOLD) return TICKET_SALES_FILTER.SOLD
+  if (option === TICKET_SALES_FILTER_OPTION.UNSOLD) return TICKET_SALES_FILTER.UNSOLD
+  return undefined
+}
+
+function isTicketSalesFilterOption(value: string): value is TicketSalesFilterOption {
+  return TICKET_SALES_FILTER_OPTIONS.includes(value as TicketSalesFilterOption)
+}
+
 export function TicketsManagementView() {
   const { t } = useTranslation('tickets')
   const [activeTab, setActiveTab] = useState<TicketTab>(TICKET_TAB.ACTIVE)
+  const [salesFilter, setSalesFilter] = useState<TicketSalesFilterOption>(
+    TICKET_SALES_FILTER_OPTION.ALL
+  )
   const [page, setPage] = useState(1)
   const [editTicket, setEditTicket] = useState<TicketResponse | null>(null)
   const [editDialogOpen, setEditDialogOpen] = useState(false)
@@ -32,9 +61,14 @@ export function TicketsManagementView() {
 
   useEffect(() => {
     setPage(1)
-  }, [activeTab])
+  }, [activeTab, salesFilter])
 
-  const { data } = useTickets({ status, page, limit: TICKETS_PAGE_SIZE })
+  const { data } = useTickets({
+    status,
+    page,
+    limit: TICKETS_PAGE_SIZE,
+    salesFilter: toApiSalesFilter(salesFilter),
+  })
 
   const records = useMemo(
     () => (data?.data ?? []).map((ticket) => ticketResponseToRecordItem(ticket)),
@@ -109,14 +143,36 @@ export function TicketsManagementView() {
         onValueChange={(value) => setActiveTab(value as TicketTab)}
         className="flex flex-col gap-4"
       >
-        <TabsList variant="line">
-          <TabsTrigger variant="line" value={TICKET_TAB.ACTIVE}>
-            {t('tabs.active')}
-          </TabsTrigger>
-          <TabsTrigger variant="line" value={TICKET_TAB.INACTIVE}>
-            {t('tabs.inactive')}
-          </TabsTrigger>
-        </TabsList>
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <TabsList variant="line">
+            <TabsTrigger variant="line" value={TICKET_TAB.ACTIVE}>
+              {t('tabs.active')}
+            </TabsTrigger>
+            <TabsTrigger variant="line" value={TICKET_TAB.INACTIVE}>
+              {t('tabs.inactive')}
+            </TabsTrigger>
+          </TabsList>
+
+          <Select
+            value={salesFilter}
+            onValueChange={(value) => {
+              if (isTicketSalesFilterOption(value)) {
+                setSalesFilter(value)
+              }
+            }}
+          >
+            <SelectTrigger className="w-full sm:w-52" aria-label={t('filters.sales.ariaLabel')}>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {TICKET_SALES_FILTER_OPTIONS.map((option) => (
+                <SelectItem key={option} value={option}>
+                  {t(`filters.sales.${option}`)}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
 
         <TabsContent value={TICKET_TAB.ACTIVE} className="mt-0">
           <TicketRecords inventoryTab={TICKET_TAB.ACTIVE} {...ticketRecordsProps} />

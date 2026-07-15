@@ -1,10 +1,15 @@
 import { z } from 'zod'
-import { TICKET_STATUS, TICKET_TYPE } from '@afterdark/types'
+import { TICKET_SALES_FILTER, TICKET_STATUS, TICKET_TYPE } from '@afterdark/types'
 import { paginationSchema, optionalCoercedDateSchema, uuidSchema } from './common.ts'
 
 export const ticketStatusSchema = z.enum([TICKET_STATUS.ACTIVE, TICKET_STATUS.INACTIVE])
 
 export const ticketTypeSchema = z.enum([TICKET_TYPE.GENERAL, TICKET_TYPE.VIP])
+
+export const ticketSalesFilterSchema = z.enum([
+  TICKET_SALES_FILTER.SOLD,
+  TICKET_SALES_FILTER.UNSOLD,
+])
 
 const optionalDateTimeStringSchema = z.union([z.string(), z.undefined()]).transform((value) => {
   const trimmed = value?.trim() ?? ''
@@ -72,7 +77,8 @@ const ticketBaseSchema = z
     saleStartsAt: optionalCoercedDateSchema,
     saleEndsAt: optionalCoercedDateSchema,
     status: ticketStatusSchema.default(TICKET_STATUS.ACTIVE),
-    eventId: uuidSchema,
+    // Seed and real rows use documentId strings; not all seeds are UUID-shaped.
+    eventId: z.string().trim().min(1, 'validation:field.ticket.event'),
   })
   .refine(ticketSaleDatePairRefineApi.refine, {
     message: ticketSaleDatePairRefineApi.message,
@@ -115,21 +121,31 @@ export const ticketFormSchema = z
 export type TicketFormValues = z.infer<typeof ticketFormSchema>
 
 export function parseTicketFormToCreateInput(values: TicketFormValues): CreateTicketInput {
-  return createTicketSchema.parse(values)
+  try {
+    return createTicketSchema.parse(values)
+  } catch (error) {
+    console.error('[parseTicketFormToCreateInput] failed', { values, error })
+    throw error
+  }
 }
 
 export function parseTicketFormToUpdateInput(values: TicketFormValues): UpdateTicketInput {
-  return updateTicketSchema.parse({
-    name: values.name,
-    type: values.type,
-    price: values.price,
-    quantity: values.quantity,
-    description: values.description,
-    saleStartsAt: values.saleStartsAt,
-    saleEndsAt: values.saleEndsAt,
-    status: values.status,
-    eventId: values.eventId,
-  })
+  try {
+    return updateTicketSchema.parse({
+      name: values.name,
+      type: values.type,
+      price: values.price,
+      quantity: values.quantity,
+      description: values.description,
+      saleStartsAt: values.saleStartsAt,
+      saleEndsAt: values.saleEndsAt,
+      status: values.status,
+      eventId: values.eventId,
+    })
+  } catch (error) {
+    console.error('[parseTicketFormToUpdateInput] failed', { values, error })
+    throw error
+  }
 }
 
 export const createTicketSchema = ticketBaseSchema
@@ -143,6 +159,7 @@ export type UpdateTicketInput = z.infer<typeof updateTicketSchema>
 export const listTicketsQuerySchema = paginationSchema.extend({
   status: ticketStatusSchema.optional(),
   clubId: uuidSchema.optional(),
+  salesFilter: ticketSalesFilterSchema.optional(),
 })
 
 export type ListTicketsQueryInput = z.infer<typeof listTicketsQuerySchema>

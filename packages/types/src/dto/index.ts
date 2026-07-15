@@ -1,6 +1,7 @@
 export * from './auth.ts'
 export * from './club.ts'
 export * from './common.ts'
+export * from './dashboard.ts'
 export * from './event.ts'
 export * from './staff.ts'
 export * from './ticket.ts'

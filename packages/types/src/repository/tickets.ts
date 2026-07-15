@@ -1,10 +1,15 @@
 import type { ClubSelect, EventSelect, TicketSelect } from '@afterdark/db/schema'
-import type { TicketStatus, TicketType } from '../enums/ticket.ts'
+import type { TicketSalesFilter, TicketStatus, TicketType } from '../enums/ticket.ts'
 
 export type TicketWithRelations = {
   ticket: TicketSelect
   event: EventSelect | null
   club: ClubSelect | null
+}
+
+export type TicketWithRelationsAndSales = TicketWithRelations & {
+  totalSold: number
+  revenue: number
 }
 
 export type TicketUpsertInput = {
@@ -25,9 +30,10 @@ export type ListTicketsByOwnerParams = {
   limit: number
   status?: TicketStatus
   clubDocumentId?: string
+  salesFilter?: TicketSalesFilter
 }
 
 export type PaginatedTicketsResult = {
-  rows: TicketWithRelations[]
+  rows: TicketWithRelationsAndSales[]
   total: number
 }

@@ -6,6 +6,7 @@ import { CommonModule } from './modules/common/common.module'
 import { AuthModule } from './modules/auth'
 import { CategoriesModule } from './modules/categories'
 import { ClubsModule } from './modules/clubs'
+import { DashboardModule } from './modules/dashboard'
 import { HealthModule } from './modules/health'
 import { InvitationsModule } from './modules/invitations'
 import { OrdersModule } from './modules/orders'
@@ -24,6 +25,7 @@ import { MailModule } from './modules/mail'
     AuthModule,
     CategoriesModule,
     ClubsModule,
+    DashboardModule,
     HealthModule,
     InvitationsModule,
     OrdersModule,

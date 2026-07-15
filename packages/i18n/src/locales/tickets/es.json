@@ -8,6 +8,14 @@
     "active": "Activos",
     "inactive": "Inactivos"
   },
+  "filters": {
+    "sales": {
+      "ariaLabel": "Filtrar por ventas",
+      "all": "Todos",
+      "sold": "Vendidos",
+      "unsold": "Sin vender"
+    }
+  },
   "list": {
     "error": "No pudimos cargar los tickets. Intentá de nuevo en unos minutos."
   },
@@ -59,6 +67,7 @@
     "title": "Detalle del inventario de tickets",
     "registryCount": "{count, plural, one {1 ticket registrado} other {# tickets registrados}}",
     "club": "Club nocturno",
+    "name": "Nombre",
     "ticketType": "Tipo de entrada",
     "price": "Precio",
     "quantity": "Cantidad de tickets",

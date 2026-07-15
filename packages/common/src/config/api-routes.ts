@@ -9,7 +9,7 @@ export const API_INVITATIONS_PREFIX = '/invitations' as const
 export const API_TICKETS_PREFIX = '/tickets' as const
 export const API_EVENTS_PREFIX = '/events' as const
 export const API_HEALTH_PREFIX = '/health' as const
-
+export const API_DASHBOARD_PREFIX = '/dashboard' as const
 const routeSegment = (value: string) => (value.startsWith(':') ? value : encodeURIComponent(value))
 
 export const API_ROUTES = {
@@ -82,6 +82,14 @@ export const API_ROUTES = {
       create: () => '/' as const,
       update: (documentId: string) => `/${documentId}` as const,
       delete: (documentId: string) => `/${documentId}` as const,
+    },
+  },
+  dashboard: {
+    prefix: API_DASHBOARD_PREFIX,
+    path: {
+      kpiDashboard: () => '/kpidashboard' as const,
+      sales: () => '/sales' as const,
+      salesAnalytics: () => '/sales/analytics' as const,
     },
   },
   health: {

@@ -13,6 +13,7 @@ export const OWNER_ALLOWED_PATH_PREFIXES = [
   DASHBOARD_ROUTES.clubManagement(),
   DASHBOARD_ROUTES.tickets(),
   DASHBOARD_ROUTES.events(),
+  DASHBOARD_ROUTES.sales(),
   DASHBOARD_ROUTES.staff(),
   DASHBOARD_ROUTES.settings(),
 ] as const

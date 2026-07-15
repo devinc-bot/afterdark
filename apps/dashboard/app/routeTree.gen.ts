@@ -19,6 +19,7 @@ import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
 import { Route as AppTicketsRouteImport } from './routes/_app/tickets'
 import { Route as AppStaffRouteImport } from './routes/_app/staff'
 import { Route as AppSettingsRouteImport } from './routes/_app/settings'
+import { Route as AppSalesRouteImport } from './routes/_app/sales'
 import { Route as AppEventsRouteImport } from './routes/_app/events'
 import { Route as AppDashboardRouteImport } from './routes/_app/dashboard'
 import { Route as NameTokenRouteImport } from './routes/$name.$token'
@@ -75,6 +76,11 @@ const AppSettingsRoute = AppSettingsRouteImport.update({
   path: '/settings',
   getParentRoute: () => AppRoute,
 } as any)
+const AppSalesRoute = AppSalesRouteImport.update({
+  id: '/sales',
+  path: '/sales',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppEventsRoute = AppEventsRouteImport.update({
   id: '/events',
   path: '/events',
@@ -116,6 +122,7 @@ export interface FileRoutesByFullPath {
   '/$name/$token': typeof NameTokenRoute
   '/dashboard': typeof AppDashboardRoute
   '/events': typeof AppEventsRoute
+  '/sales': typeof AppSalesRoute
   '/settings': typeof AppSettingsRoute
   '/staff': typeof AppStaffRoute
   '/tickets': typeof AppTicketsRoute
@@ -132,6 +139,7 @@ export interface FileRoutesByTo {
   '/$name/$token': typeof NameTokenRoute
   '/dashboard': typeof AppDashboardRoute
   '/events': typeof AppEventsRoute
+  '/sales': typeof AppSalesRoute
   '/settings': typeof AppSettingsRoute
   '/staff': typeof AppStaffRoute
   '/tickets': typeof AppTicketsRoute
@@ -151,6 +159,7 @@ export interface FileRoutesById {
   '/$name/$token': typeof NameTokenRoute
   '/_app/dashboard': typeof AppDashboardRoute
   '/_app/events': typeof AppEventsRoute
+  '/_app/sales': typeof AppSalesRoute
   '/_app/settings': typeof AppSettingsRoute
   '/_app/staff': typeof AppStaffRoute
   '/_app/tickets': typeof AppTicketsRoute
@@ -171,6 +180,7 @@ export interface FileRouteTypes {
     | '/$name/$token'
     | '/dashboard'
     | '/events'
+    | '/sales'
     | '/settings'
     | '/staff'
     | '/tickets'
@@ -187,6 +197,7 @@ export interface FileRouteTypes {
     | '/$name/$token'
     | '/dashboard'
     | '/events'
+    | '/sales'
     | '/settings'
     | '/staff'
     | '/tickets'
@@ -205,6 +216,7 @@ export interface FileRouteTypes {
     | '/$name/$token'
     | '/_app/dashboard'
     | '/_app/events'
+    | '/_app/sales'
     | '/_app/settings'
     | '/_app/staff'
     | '/_app/tickets'
@@ -297,6 +309,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppSettingsRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/sales': {
+      id: '/_app/sales'
+      path: '/sales'
+      fullPath: '/sales'
+      preLoaderRoute: typeof AppSalesRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/events': {
       id: '/_app/events'
       path: '/events'
@@ -345,6 +364,7 @@ declare module '@tanstack/react-router' {
 interface AppRouteChildren {
   AppDashboardRoute: typeof AppDashboardRoute
   AppEventsRoute: typeof AppEventsRoute
+  AppSalesRoute: typeof AppSalesRoute
   AppSettingsRoute: typeof AppSettingsRoute
   AppStaffRoute: typeof AppStaffRoute
   AppTicketsRoute: typeof AppTicketsRoute
@@ -357,6 +377,7 @@ interface AppRouteChildren {
 const AppRouteChildren: AppRouteChildren = {
   AppDashboardRoute: AppDashboardRoute,
   AppEventsRoute: AppEventsRoute,
+  AppSalesRoute: AppSalesRoute,
   AppSettingsRoute: AppSettingsRoute,
   AppStaffRoute: AppStaffRoute,
   AppTicketsRoute: AppTicketsRoute,

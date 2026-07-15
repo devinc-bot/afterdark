@@ -22,6 +22,8 @@ import esTickets from '../locales/tickets/es.json' with { type: 'json' }
 import enTickets from '../locales/tickets/en.json' with { type: 'json' }
 import esEvents from '../locales/events/es.json' with { type: 'json' }
 import enEvents from '../locales/events/en.json' with { type: 'json' }
+import esSales from '../locales/sales/es.json' with { type: 'json' }
+import enSales from '../locales/sales/en.json' with { type: 'json' }
 import esLanding from '../locales/landing/es.json' with { type: 'json' }
 import enLanding from '../locales/landing/en.json' with { type: 'json' }
 
@@ -43,6 +45,7 @@ export const SERVER_RESOURCES: ServerResources = {
     settings: esSettings,
     tickets: esTickets,
     events: esEvents,
+    sales: esSales,
     landing: esLanding,
   },
   en: {
@@ -57,6 +60,7 @@ export const SERVER_RESOURCES: ServerResources = {
     settings: enSettings,
     tickets: enTickets,
     events: enEvents,
+    sales: enSales,
     landing: enLanding,
   },
 }

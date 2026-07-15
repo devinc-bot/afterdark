@@ -11,3 +11,11 @@ export const TICKET_TYPE = {
 } as const
 
 export type TicketType = (typeof TICKET_TYPE)[keyof typeof TICKET_TYPE]
+
+/** Inventory list filter: tickets with at least one completed sale vs none. */
+export const TICKET_SALES_FILTER = {
+  SOLD: 'sold',
+  UNSOLD: 'unsold',
+} as const
+
+export type TicketSalesFilter = (typeof TICKET_SALES_FILTER)[keyof typeof TICKET_SALES_FILTER]
