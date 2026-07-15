@@ -10,6 +10,7 @@ export const NAMESPACE = {
   SETTINGS: 'settings',
   TICKETS: 'tickets',
   EVENTS: 'events',
+  SALES: 'sales',
   LANDING: 'landing',
 } as const
 
@@ -29,5 +30,6 @@ export const ALL_NAMESPACES: Namespace[] = [
   NAMESPACE.SETTINGS,
   NAMESPACE.TICKETS,
   NAMESPACE.EVENTS,
+  NAMESPACE.SALES,
   NAMESPACE.LANDING,
 ]

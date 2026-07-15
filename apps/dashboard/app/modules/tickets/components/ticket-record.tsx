@@ -210,6 +210,7 @@ function TicketRecordRow({
           clubAvatarClassName={record.clubAvatarClassName}
         />
       </TableCell>
+      <TableCell className="p-6 font-semibold text-ink">{record.name}</TableCell>
       <TableCell className="p-6">
         <TicketTypeBadge
           label={ticketTypeLabel}
@@ -283,9 +284,9 @@ function TicketRecordsPaginationBar({
 }) {
   const { page, totalPages, onPageChange } = pagination
 
-  if (totalPages <= 1) return null
+  if (totalPages < 1) return null
 
-  const items = getPaginationItems(page, totalPages)
+  const items = getPaginationItems(page, Math.max(totalPages, 1))
 
   return (
     <div className="border-t border-hairline px-4 py-4 sm:px-6">
@@ -402,10 +403,11 @@ export function TicketRecords({
           </div>
         ) : (
           <Card variant="gradient">
-            <Table variant="compact" className="min-w-[960px]">
+            <Table variant="compact" className="min-w-[1080px]">
               <TableHeader>
                 <TableRow>
                   <TableHead className="p-6">{t('table.club')}</TableHead>
+                  <TableHead className="p-6">{t('table.name')}</TableHead>
                   <TableHead className="p-6">{t('table.ticketType')}</TableHead>
                   <TableHead className="p-6">{t('table.price')}</TableHead>
                   <TableHead className="p-6">{t('table.quantity')}</TableHead>

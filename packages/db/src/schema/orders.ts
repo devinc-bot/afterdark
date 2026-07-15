@@ -26,6 +26,7 @@ export const orders = sqliteTable('orders', {
     .notNull()
     .default(PAYMENT_PROVIDER.MERCADO_PAGO),
   metadata: text('metadata', { mode: 'json' }).$type<Record<string, unknown>>(),
+  paidAt: integer('paid_at', { mode: 'timestamp' }),
 })
 
 export type OrderSelect = typeof orders.$inferSelect

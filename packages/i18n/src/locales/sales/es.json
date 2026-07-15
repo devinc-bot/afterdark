@@ -1,0 +1,48 @@
+{
+  "page": {
+    "title": "Ventas",
+    "description": "Historial de compras completadas de tus clubes.",
+    "metaTitle": "Ventas · afterdark Admin"
+  },
+  "filters": {
+    "club": "Club",
+    "clubAll": "Todos los clubes",
+    "event": "Evento",
+    "eventAll": "Todos los eventos",
+    "ticketType": "Tipo de ticket",
+    "ticketTypeAll": "Todos los tipos",
+    "ticketTypeGeneral": "General",
+    "ticketTypeVip": "VIP",
+    "from": "Desde",
+    "to": "Hasta",
+    "reset": "Restablecer filtros",
+    "clubsLoading": "Cargando clubes…",
+    "eventsLoading": "Cargando eventos…",
+    "clubsError": "No pudimos cargar tus clubes.",
+    "eventsError": "No pudimos cargar tus eventos."
+  },
+  "table": {
+    "title": "Historial de ventas",
+    "registryCount": "{count, plural, one {1 venta} other {# ventas}}",
+    "buyer": "Comprador",
+    "email": "Email",
+    "event": "Evento",
+    "ticket": "Ticket",
+    "ticketType": "Tipo",
+    "club": "Club",
+    "paidAt": "Fecha de pago",
+    "quantity": "Cantidad",
+    "amount": "Monto",
+    "status": "Estado",
+    "statusCompleted": "Completada",
+    "empty": "No hay ventas para mostrar."
+  },
+  "list": {
+    "error": "No pudimos cargar el historial de ventas. Intentá de nuevo en unos minutos."
+  },
+  "pagination": {
+    "previous": "Anterior",
+    "next": "Siguiente",
+    "label": "Paginación de ventas"
+  }
+}

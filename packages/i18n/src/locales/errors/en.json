@@ -97,5 +97,10 @@
     "DELETE_FAILED": "We could not delete the event. Try again in a few minutes.",
     "LIST_FAILED": "We could not load events. Try again in a few minutes.",
     "HAS_TICKETS": "Cannot delete an event with associated tickets."
+  },
+  "dashboard": {
+    "KPI_FAILED": "We could not load dashboard metrics. Try again in a few minutes.",
+    "SALES_ANALYTICS_FAILED": "We could not load dashboard sales analytics. Try again in a few minutes.",
+    "SALES_LIST_FAILED": "We could not load the sales history. Try again in a few minutes."
   }
 }

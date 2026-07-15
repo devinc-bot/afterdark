@@ -25,6 +25,10 @@ export async function fetchTickets(
       searchParams.set('clubId', params.clubId)
     }
 
+    if (params.salesFilter) {
+      searchParams.set('salesFilter', params.salesFilter)
+    }
+
     return await api.get<PaginatedResponse<TicketResponse>>(
       `${buildApiPath(API_ROUTES.tickets, API_ROUTES.tickets.path.list())}?${searchParams.toString()}`
     )

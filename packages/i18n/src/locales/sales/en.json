@@ -1,0 +1,48 @@
+{
+  "page": {
+    "title": "Sales",
+    "description": "Completed purchase history for your clubs.",
+    "metaTitle": "Sales · afterdark Admin"
+  },
+  "filters": {
+    "club": "Club",
+    "clubAll": "All clubs",
+    "event": "Event",
+    "eventAll": "All events",
+    "ticketType": "Ticket type",
+    "ticketTypeAll": "All types",
+    "ticketTypeGeneral": "General",
+    "ticketTypeVip": "VIP",
+    "from": "From",
+    "to": "To",
+    "reset": "Reset filters",
+    "clubsLoading": "Loading clubs…",
+    "eventsLoading": "Loading events…",
+    "clubsError": "We could not load your clubs.",
+    "eventsError": "We could not load your events."
+  },
+  "table": {
+    "title": "Sales history",
+    "registryCount": "{count, plural, one {1 sale} other {# sales}}",
+    "buyer": "Buyer",
+    "email": "Email",
+    "event": "Event",
+    "ticket": "Ticket",
+    "ticketType": "Type",
+    "club": "Club",
+    "paidAt": "Paid at",
+    "quantity": "Quantity",
+    "amount": "Amount",
+    "status": "Status",
+    "statusCompleted": "Completed",
+    "empty": "No sales to show."
+  },
+  "list": {
+    "error": "We could not load the sales history. Try again in a few minutes."
+  },
+  "pagination": {
+    "previous": "Previous",
+    "next": "Next",
+    "label": "Sales pagination"
+  }
+}
