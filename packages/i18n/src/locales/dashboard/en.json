@@ -52,6 +52,13 @@
       "metaTitle": "Dashboard · afterdark Admin",
       "title": "Dashboard",
       "description": "Daily operations summary: clubs, tickets and recent activity.",
+      "kpi": {
+        "ariaLabel": "Dashboard metrics",
+        "publishedEvents": "Published events",
+        "ticketsSold": "Tickets sold",
+        "totalRevenue": "Period revenue",
+        "error": "We couldn't load dashboard metrics. Try again."
+      },
       "staff": {
         "metaTitle": "Dashboard · afterdark Admin",
         "description": "Review attendees and scan tickets at the door.",

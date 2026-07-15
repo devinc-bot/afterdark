@@ -10,6 +10,7 @@ export const API_STAFF_PREFIX = '/api/staff' as const
 export const API_INVITATIONS_PREFIX = '/api/invitations' as const
 export const API_TICKETS_PREFIX = '/api/tickets' as const
 export const API_EVENTS_PREFIX = '/api/events' as const
+export const API_DASHBOARD_PREFIX = '/api/dashboard' as const
 
 export const API_ROUTES = {
   auth: {
@@ -74,6 +75,12 @@ export const API_ROUTES = {
       create: () => '' as const,
       update: (documentId: string) => `/${documentId}` as const,
       delete: (documentId: string) => `/${documentId}` as const,
+    },
+  },
+  dashboard: {
+    prefix: API_DASHBOARD_PREFIX,
+    path: {
+      kpiDashboard: () => '/kpidashboard' as const,
     },
   },
   login: () => `${API_BASE_URL}${API_AUTH_PREFIX}/login` as const,

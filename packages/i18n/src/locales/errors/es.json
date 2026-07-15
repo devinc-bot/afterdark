@@ -90,5 +90,8 @@
     "DELETE_FAILED": "No pudimos eliminar el evento. Intentá de nuevo en unos minutos.",
     "LIST_FAILED": "No pudimos cargar los eventos. Intentá de nuevo en unos minutos.",
     "HAS_TICKETS": "No se puede eliminar un evento con entradas asociadas."
+  },
+  "dashboard": {
+    "KPI_FAILED": "No pudimos cargar los indicadores del dashboard. Intentá de nuevo en unos minutos."
   }
 }

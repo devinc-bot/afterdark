@@ -1,4 +1,6 @@
+import { hash } from 'bcryptjs'
 import { eq } from 'drizzle-orm'
+import { USER_ROLE } from '@afterdark/types'
 import {
   EVENT_STATUS,
   PAYMENT_PROVIDER,
@@ -7,15 +9,24 @@ import {
   TICKET_TYPE,
 } from '@afterdark/types/enums'
 import { db } from '../client.ts'
+import { seedEnv } from '../config/seed.env.ts'
+import { accounts } from '../schema/account.ts'
+import { accountRolesLnk } from '../schema/account-role-lnk.ts'
+import { addresses } from '../schema/address.ts'
+import { clubAddressesLnk } from '../schema/club-address-lnk.ts'
 import { clubs } from '../schema/club.ts'
 import { events } from '../schema/event.ts'
 import { orders } from '../schema/orders.ts'
+import { ownerAccountsLnk } from '../schema/owner-account-lnk.ts'
 import { owners } from '../schema/owner.ts'
+import { roles } from '../schema/role.ts'
 import { tickets } from '../schema/ticket.ts'
 import { ticketsSold } from '../schema/tickets_sold.ts'
+import { userAccountsLnk } from '../schema/user-account-lnk.ts'
 import { users } from '../schema/user.ts'
 
 const DAY_MS = 24 * 60 * 60 * 1000
+const BCRYPT_SALT_ROUNDS = 10
 
 const ORDER_STATUSES = [
   PAYMENT_STATUS.COMPLETED,
@@ -23,6 +34,84 @@ const ORDER_STATUSES = [
   PAYMENT_STATUS.REJECTED,
   PAYMENT_STATUS.CANCELLED,
 ] as const
+
+async function getRoleIdByName(name: string): Promise<number> {
+  const [row] = await db.select({ id: roles.id }).from(roles).where(eq(roles.name, name)).limit(1)
+  if (!row) throw new Error(`Role not found: ${name}`)
+  return row.id
+}
+
+async function upsertAccountByEmail(
+  documentId: string,
+  email: string,
+  plainPassword: string
+): Promise<number> {
+  const hashedPassword = await hash(plainPassword, BCRYPT_SALT_ROUNDS)
+  const [existing] = await db
+    .select({ id: accounts.id })
+    .from(accounts)
+    .where(eq(accounts.email, email))
+    .limit(1)
+
+  if (existing) {
+    await db
+      .update(accounts)
+      .set({ password: hashedPassword, updatedAt: new Date() })
+      .where(eq(accounts.id, existing.id))
+    return existing.id
+  }
+
+  const [row] = await db
+    .insert(accounts)
+    .values({ documentId, email, password: hashedPassword })
+    .returning({ id: accounts.id })
+  return row.id
+}
+
+async function upsertOwnerAccountLink(
+  documentId: string,
+  ownerId: number,
+  accountId: number
+): Promise<void> {
+  const [existing] = await db
+    .select({ id: ownerAccountsLnk.id })
+    .from(ownerAccountsLnk)
+    .where(eq(ownerAccountsLnk.accountId, accountId))
+    .limit(1)
+  if (existing) return
+
+  await db.insert(ownerAccountsLnk).values({ documentId, ownerId, accountId })
+}
+
+async function upsertAccountRoleLink(
+  documentId: string,
+  accountId: number,
+  roleId: number
+): Promise<void> {
+  const [existing] = await db
+    .select({ id: accountRolesLnk.id })
+    .from(accountRolesLnk)
+    .where(eq(accountRolesLnk.accountId, accountId))
+    .limit(1)
+  if (existing) return
+
+  await db.insert(accountRolesLnk).values({ documentId, accountId, roleId })
+}
+
+async function upsertUserAccountLink(
+  documentId: string,
+  userId: number,
+  accountId: number
+): Promise<void> {
+  const [existing] = await db
+    .select({ id: userAccountsLnk.id })
+    .from(userAccountsLnk)
+    .where(eq(userAccountsLnk.accountId, accountId))
+    .limit(1)
+  if (existing) return
+
+  await db.insert(userAccountsLnk).values({ documentId, userId, accountId })
+}
 
 async function upsertOwner(
   documentId: string,
@@ -70,6 +159,40 @@ async function upsertClub(documentId: string, values: typeof clubs.$inferInsert)
     .values({ ...values, documentId })
     .returning({ id: clubs.id })
   return row.id
+}
+
+async function upsertClubAddress(
+  clubId: number,
+  documentId: string,
+  values: Omit<typeof addresses.$inferInsert, 'documentId'>
+): Promise<void> {
+  const [existingLink] = await db
+    .select({ id: clubAddressesLnk.id })
+    .from(clubAddressesLnk)
+    .where(eq(clubAddressesLnk.clubId, clubId))
+    .limit(1)
+  if (existingLink) return
+
+  const [existingAddress] = await db
+    .select({ id: addresses.id })
+    .from(addresses)
+    .where(eq(addresses.documentId, documentId))
+    .limit(1)
+
+  const addressId =
+    existingAddress?.id ??
+    (
+      await db
+        .insert(addresses)
+        .values({ documentId, ...values })
+        .returning({ id: addresses.id })
+    )[0].id
+
+  await db.insert(clubAddressesLnk).values({
+    documentId: `${documentId}-lnk`,
+    clubId,
+    addressId,
+  })
 }
 
 async function upsertEvent(
@@ -141,35 +264,54 @@ async function upsertTicketSold(
 }
 
 export async function seedTicketsOrders(): Promise<void> {
-  const ownerIds = await Promise.all([
-    upsertOwner('seed-owner-1', {
-      documentId: 'seed-owner-1',
-      name: 'Ana',
-      lastName: 'García',
-      phone: '1130000001',
-    }),
-    upsertOwner('seed-owner-2', {
-      documentId: 'seed-owner-2',
-      name: 'Bruno',
-      lastName: 'López',
-      phone: '1130000002',
-    }),
+  const [ownerRoleId, userRoleId] = await Promise.all([
+    getRoleIdByName(USER_ROLE.OWNER),
+    getRoleIdByName(USER_ROLE.USER),
   ])
 
-  const userIds = await Promise.all([
-    upsertUser('seed-user-1', {
-      documentId: 'seed-user-1',
-      name: 'Carla',
-      lastName: 'Méndez',
-      phone: '1140000001',
-    }),
-    upsertUser('seed-user-2', {
-      documentId: 'seed-user-2',
-      name: 'Diego',
-      lastName: 'Ruiz',
-      phone: '1140000002',
-    }),
-  ])
+  const accountId = await upsertAccountByEmail(
+    seedEnv.SEED_ACCOUNT_DOCUMENT_ID,
+    seedEnv.SEED_OWNER_EMAIL,
+    seedEnv.SEED_OWNER_PASSWORD
+  )
+
+  const ownerId = await upsertOwner(seedEnv.SEED_OWNER_DOCUMENT_ID, {
+    documentId: seedEnv.SEED_OWNER_DOCUMENT_ID,
+    name: 'Test',
+    lastName: 'Owner',
+    phone: '1130000001',
+  })
+
+  await upsertOwnerAccountLink(`${seedEnv.SEED_OWNER_DOCUMENT_ID}-account-lnk`, ownerId, accountId)
+  await upsertAccountRoleLink(
+    `${seedEnv.SEED_ACCOUNT_DOCUMENT_ID}-role-lnk`,
+    accountId,
+    ownerRoleId
+  )
+
+  const buyerAccountId = await upsertAccountByEmail(
+    seedEnv.SEED_BUYER_ACCOUNT_DOCUMENT_ID,
+    seedEnv.SEED_BUYER_EMAIL,
+    seedEnv.SEED_BUYER_PASSWORD
+  )
+
+  const buyerUserId = await upsertUser(seedEnv.SEED_BUYER_DOCUMENT_ID, {
+    documentId: seedEnv.SEED_BUYER_DOCUMENT_ID,
+    name: seedEnv.SEED_BUYER_NAME,
+    lastName: seedEnv.SEED_BUYER_LAST_NAME,
+    phone: seedEnv.SEED_BUYER_PHONE,
+  })
+
+  await upsertUserAccountLink(
+    `${seedEnv.SEED_BUYER_DOCUMENT_ID}-account-lnk`,
+    buyerUserId,
+    buyerAccountId
+  )
+  await upsertAccountRoleLink(
+    `${seedEnv.SEED_BUYER_ACCOUNT_DOCUMENT_ID}-role-lnk`,
+    buyerAccountId,
+    userRoleId
+  )
 
   const clubIds = await Promise.all([
     upsertClub('seed-club-1', {
@@ -177,16 +319,29 @@ export async function seedTicketsOrders(): Promise<void> {
       name: 'Club Nocturno Aurora',
       capacity: '500',
       description: 'Club de prueba 1',
-      ownerId: ownerIds[0],
+      ownerId,
     }),
     upsertClub('seed-club-2', {
       documentId: 'seed-club-2',
       name: 'Club Nocturno Eclipse',
       capacity: '800',
       description: 'Club de prueba 2',
-      ownerId: ownerIds[1],
+      ownerId,
     }),
   ])
+
+  await upsertClubAddress(clubIds[0], 'seed-club-1-address', {
+    address: 'Av. Corrientes',
+    streetNumber: '1234',
+    city: 'Buenos Aires',
+    state: 'CABA',
+  })
+  await upsertClubAddress(clubIds[1], 'seed-club-2-address', {
+    address: 'Av. Santa Fe',
+    streetNumber: '5678',
+    city: 'Buenos Aires',
+    state: 'CABA',
+  })
 
   const now = Date.now()
   const eventClubIndexes = [0, 1, 0]
@@ -234,7 +389,7 @@ export async function seedTicketsOrders(): Promise<void> {
     const orderId = await upsertOrder(`seed-order-${i}`, {
       documentId: `seed-order-${i}`,
       ticketId: ticket.id,
-      userId: userIds[(i - 1) % userIds.length],
+      userId: buyerUserId,
       status,
       amount: ticket.price * quantity,
       quantity,

@@ -86,6 +86,9 @@
       "club": "Seleccioná un club.",
       "endDateAfterStart": "La fecha y hora de inicio debe ser anterior a la de finalización."
     },
+    "dashboard": {
+      "toDateAfterFrom": "La fecha hasta debe ser posterior o igual a la fecha desde."
+    },
     "organization": {
       "brandName": {
         "required": "Ingresá el nombre comercial.",

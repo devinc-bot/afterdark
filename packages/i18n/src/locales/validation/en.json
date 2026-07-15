@@ -86,6 +86,9 @@
       "club": "Select a club.",
       "endDateAfterStart": "Start date and time must be before the end date and time."
     },
+    "dashboard": {
+      "toDateAfterFrom": "The end date must be on or after the start date."
+    },
     "organization": {
       "brandName": {
         "required": "Enter a brand name.",

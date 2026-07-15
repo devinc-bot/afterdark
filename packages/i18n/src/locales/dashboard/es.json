@@ -52,6 +52,13 @@
       "metaTitle": "Panel · afterdark Admin",
       "title": "Panel",
       "description": "Resumen de operaciones del día: clubes, entradas y actividad reciente.",
+      "kpi": {
+        "ariaLabel": "Indicadores del panel",
+        "publishedEvents": "Eventos publicados",
+        "ticketsSold": "Entradas vendidas",
+        "totalRevenue": "Ingresos del período",
+        "error": "No pudimos cargar los indicadores. Intentá de nuevo."
+      },
       "staff": {
         "metaTitle": "Panel · afterdark Admin",
         "description": "Consultá asistentes y escaneá entradas en la puerta.",
