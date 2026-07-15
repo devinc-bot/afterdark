@@ -2,7 +2,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
 import { RegisteredClubs } from '~/modules/club-management/components/registered-clubs'
 import { PageLayout } from '~/modules/common/components/page-layout'
-import { usePageTitle } from '~/modules/common/hooks/use-page-title'
+import { usePageTitle } from '@afterdark/ui'
 
 export const Route = createFileRoute('/_app/club-management/')({
   component: ClubManagementPage,

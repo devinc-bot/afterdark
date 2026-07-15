@@ -186,3 +186,6 @@ export {
 } from './components/files-sdk/dropzone.tsx'
 export { FilePreview, type FilePreviewProps } from './components/files-sdk/file-preview.tsx'
 export { useFiles, type UseFilesOptions, type UseFilesResult } from 'files-sdk/react'
+export { useAutoDismiss } from './hooks/use-auto-dismiss.ts'
+export { usePageTitle } from './hooks/use-page-title.ts'
+export { useUnsavedChangesGuard } from './hooks/use-unsaved-changes-guard.ts'

@@ -1,0 +1,41 @@
+import {
+  Inject,
+  Injectable,
+  InternalServerErrorException,
+  ServiceUnavailableException,
+} from '@nestjs/common'
+import { Resend } from 'resend'
+import { MAIL_ERROR_CODE } from '@afterdark/i18n/constants'
+import { TranslationService } from '@afterdark/i18n/server'
+import { ENV } from '../../common/config/env'
+import type { MailSender } from '../mail-sender.port'
+import type { SendMailInput, SendMailResult } from '../types'
+
+@Injectable()
+export class ResendMailSender implements MailSender {
+  private readonly client: Resend | null
+
+  constructor(@Inject(TranslationService) private readonly ts: TranslationService) {
+    this.client = ENV.RESEND_API_KEY ? new Resend(ENV.RESEND_API_KEY) : null
+  }
+
+  async send(input: SendMailInput): Promise<SendMailResult> {
+    if (!this.client || !ENV.MAIL_FROM) {
+      throw new ServiceUnavailableException(this.ts.translateError(MAIL_ERROR_CODE.NOT_CONFIGURED))
+    }
+
+    const { data, error } = await this.client.emails.send({
+      from: ENV.MAIL_FROM,
+      to: input.to,
+      subject: input.subject,
+      html: input.html,
+      text: input.text,
+    })
+
+    if (error || !data?.id) {
+      throw new InternalServerErrorException(this.ts.translateError(MAIL_ERROR_CODE.SEND_FAILED))
+    }
+
+    return { id: data.id }
+  }
+}

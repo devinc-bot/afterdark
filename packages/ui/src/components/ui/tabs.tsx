@@ -21,13 +21,29 @@ const tabsListVariants = cva(
 )
 
 const tabsTriggerVariants = cva(
-  'inline-flex items-center justify-center whitespace-nowrap font-medium transition-colors focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50',
+  [
+    'inline-flex items-center justify-center whitespace-nowrap font-medium',
+    'transition-colors duration-(--duration-fast) ease-(--ease-emphasized)',
+    'focus-visible:outline-none',
+    'disabled:pointer-events-none disabled:opacity-50',
+    'motion-reduce:transition-none',
+  ],
   {
     variants: {
       variant: {
-        default:
-          'rounded-sm px-3 py-1.5 text-sm data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm',
-        line: 'relative rounded-none border-b-2 border-transparent py-4 font-label text-xs font-semibold uppercase tracking-label-xs text-on-surface-variant data-[state=active]:border-b-primary data-[state=active]:text-primary data-[state=inactive]:hover:text-on-surface focus-visible:ring-2 focus-visible:ring-primary/25 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-container',
+        default: [
+          'rounded-sm px-3 py-1.5 text-sm',
+          'data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm',
+        ],
+        line: [
+          'relative rounded-none py-4 font-label text-xs font-semibold uppercase tracking-label-xs text-on-surface-variant',
+          'after:pointer-events-none after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 after:origin-center after:scale-x-0 after:rounded-full after:bg-primary after:content-[""]',
+          'after:transition-transform after:duration-(--duration-fast) after:ease-[cubic-bezier(0.22,1,0.36,1)]',
+          'data-[state=active]:text-primary data-[state=active]:after:scale-x-100',
+          'data-[state=inactive]:hover:text-on-surface',
+          'focus-visible:ring-2 focus-visible:ring-primary/25 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-container',
+          'motion-reduce:after:transition-none',
+        ],
       },
     },
     defaultVariants: {
@@ -76,7 +92,10 @@ const TabsContent = React.forwardRef<
   <TabsPrimitive.Content
     ref={ref}
     className={cn(
-      'mt-2 focus-visible:outline-none focus-visible:ring-0 data-[state=inactive]:hidden',
+      'mt-2 focus-visible:outline-none focus-visible:ring-0',
+      'data-[state=inactive]:hidden',
+      'data-[state=active]:animate-in data-[state=active]:fade-in-0 data-[state=active]:duration-(--duration-fast)',
+      'motion-reduce:data-[state=active]:animate-none',
       className
     )}
     {...props}

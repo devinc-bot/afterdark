@@ -1,7 +1,14 @@
 {
+  "tabs": {
+    "login": "Entrar",
+    "register": "Registrarse"
+  },
   "login": {
     "metaTitle": "Iniciar sesión · afterdark Admin",
+    "metaTitleWeb": "Iniciar sesión · afterdark",
     "title": "Iniciar sesión",
+    "subtitle": "Accedé a tu cuenta para gestionar tus entradas.",
+    "createAccount": "Crear cuenta",
     "email": "Correo",
     "emailPlaceholder": "admin@afterdark.io",
     "password": "Contraseña",
@@ -12,21 +19,62 @@
     "noAccount": "¿No tenés cuenta?",
     "error": {
       "invalidCredentials": "Credenciales inválidas. Revisá tu correo y contraseña.",
-      "generic": "No se pudo iniciar sesión. Intentá de nuevo."
+      "generic": "No se pudo iniciar sesión. Intentá de nuevo.",
+      "fallback": "No pudimos iniciar sesión. Intentá de nuevo en unos minutos."
     }
   },
   "forgotPassword": {
-    "metaTitle": "Recuperar contraseña · afterdark Admin"
+    "metaTitle": "Recuperar contraseña · afterdark Admin",
+    "metaTitleWeb": "Recuperar contraseña · afterdark",
+    "title": "Recuperar contraseña",
+    "description": "Ingresá tu email y te enviamos un enlace para restablecer la contraseña.",
+    "email": "Correo",
+    "emailPlaceholder": "admin@afterdark.io",
+    "emailPlaceholderWeb": "maria@correo.com",
+    "submit": "Enviar enlace",
+    "submitting": "Enviando…",
+    "success": "Si el email está registrado, vas a recibir un enlace en breve.",
+    "backToLogin": "Volver a iniciar sesión",
+    "error": {
+      "generic": "No pudimos enviar el enlace. Intentá de nuevo.",
+      "fallback": "No pudimos enviar el enlace. Intentá de nuevo en unos minutos."
+    }
   },
+  "resetPassword": {
+    "metaTitle": "Nueva contraseña · afterdark Admin",
+    "metaTitleWeb": "Nueva contraseña · afterdark",
+    "title": "Nueva contraseña",
+    "description": "Elegí una contraseña nueva para tu cuenta.",
+    "password": "Contraseña",
+    "passwordPlaceholder": "Mínimo 8 caracteres",
+    "confirmPassword": "Confirmar contraseña",
+    "confirmPasswordPlaceholder": "Repetí la contraseña",
+    "submit": "Guardar contraseña",
+    "submitting": "Guardando…",
+    "success": "Contraseña actualizada. Ya podés iniciar sesión.",
+    "invalidToken": "El enlace no es válido o ya expiró.",
+    "backToLogin": "Volver a iniciar sesión",
+    "error": {
+      "generic": "No pudimos actualizar la contraseña. Intentá de nuevo.",
+      "fallback": "No pudimos actualizar la contraseña. Intentá de nuevo en unos minutos."
+    }
+  },
+
   "register": {
     "metaTitle": "Crear cuenta · afterdark Admin",
+    "metaTitleWeb": "Crear cuenta · afterdark",
     "title": "Crear cuenta",
+    "subtitle": "Unite a afterdark y empezá a descubrir la noche.",
+    "success": "Cuenta creada. Ya podés iniciar sesión.",
+    "signIn": "Iniciar sesión",
     "name": "Nombre",
     "namePlaceholder": "María",
     "lastName": "Apellido",
     "lastNamePlaceholder": "González",
     "email": "Correo corporativo",
     "emailPlaceholder": "local@afterdark.io",
+    "emailWeb": "Correo",
+    "emailPlaceholderWeb": "maria@correo.com",
     "password": "Contraseña",
     "passwordPlaceholder": "Mínimo 8 caracteres",
     "confirmPassword": "Confirmar contraseña",
@@ -36,10 +84,19 @@
     "alreadyHaveAccount": "¿Ya tenés cuenta?",
     "error": {
       "emailTaken": "Este correo ya está registrado.",
-      "generic": "No se pudo crear la cuenta. Intentá de nuevo."
+      "generic": "No se pudo crear la cuenta. Intentá de nuevo.",
+      "fallback": "No pudimos crear tu cuenta. Intentá de nuevo en unos minutos."
     }
   },
   "logout": "Cerrar sesión",
+  "google": {
+    "continue": "Continuar con Google",
+    "or": "o",
+    "errors": {
+      "emailExists": "Ya existe una cuenta con este correo.",
+      "generic": "No se pudo continuar con Google. Intentá de nuevo."
+    }
+  },
   "session": {
     "expired": "Tu sesión expiró. Volvé a iniciar sesión.",
     "loadFallback": "No pudimos cargar tu perfil. Intentá de nuevo en unos minutos."

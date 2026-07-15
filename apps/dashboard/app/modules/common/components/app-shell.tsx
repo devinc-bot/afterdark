@@ -1,7 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import type { TFunction } from 'i18next'
 import {
-  cn,
   matchesSidebarNavHref,
   Sidebar,
   SidebarContent,
@@ -23,6 +22,7 @@ import { LayoutGrid, LogOut, Martini, Ticket, Users, CalendarDays } from 'lucide
 import { USER_ROLE, type UserRole } from '@afterdark/types'
 import { clearAuthSession } from '~/modules/auth/utils/auth-storage.utils'
 import { AppShellLanguageSwitcher } from '~/modules/common/components/app-shell-language-switcher'
+import { AppShellNavIcon, navMenuButtonClassName } from '~/modules/common/components/app-shell-nav'
 import { AppShellSidebarFooter } from '~/modules/common/components/app-shell-sidebar-footer'
 import { AppShellSignOutDialog } from '~/modules/common/components/app-shell-sign-out-dialog'
 import { useSession } from '~/modules/common/hooks/use-session'
@@ -105,16 +105,6 @@ function resolveMobileHeaderTitle(
   return match?.label ?? fallback
 }
 
-const navMenuButtonClassName = 'gap-3 rounded-none'
-
-const navMenuButtonClassNameActive = 'gap-3 rounded-none border-l-2 border-primary'
-
-function AppShellNavIcon({ icon }: { icon: ReactNode }) {
-  return (
-    <span className="flex size-9 shrink-0 items-center justify-center [&_svg]:size-7">{icon}</span>
-  )
-}
-
 function AppShellNavMenu({
   items,
   pathname,
@@ -139,7 +129,9 @@ function AppShellNavMenu({
                 }}
               >
                 {item.icon ? <AppShellNavIcon icon={item.icon} /> : null}
-                <span>{item.label}</span>
+                <span className="transition-opacity duration-(--duration-instant) motion-reduce:transition-none">
+                  {item.label}
+                </span>
               </SidebarMenuButton>
             </SidebarMenuItem>
           )
@@ -169,7 +161,7 @@ function AppShellNavMenu({
             <SidebarMenuButton
               asChild
               size="lg"
-              className={cn(navMenuButtonClassName, isActive && navMenuButtonClassNameActive)}
+              className={navMenuButtonClassName}
               isActive={isActive}
               tooltip={item.title}
             >
@@ -179,7 +171,9 @@ function AppShellNavMenu({
                 aria-current={isActive ? 'page' : undefined}
               >
                 {item.icon ? <AppShellNavIcon icon={item.icon} /> : null}
-                <span>{item.label}</span>
+                <span className="transition-opacity duration-(--duration-instant) motion-reduce:transition-none">
+                  {item.label}
+                </span>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
@@ -244,7 +238,7 @@ function AppShellLayout({ children }: { children: React.ReactNode }) {
     <>
       <Sidebar collapsible="offcanvas">
         <SidebarHeader className="px-4 pt-5 pb-3">
-          <span className="font-heading text-base font-semibold tracking-[0.04em] text-sidebar-foreground">
+          <span className="font-heading text-base font-semibold tracking-[0.04em] text-sidebar-foreground transition-colors duration-(--duration-fast) ease-(--ease-emphasized) motion-reduce:transition-none">
             {t('brand.logo')}
           </span>
           <p className="text-sm text-sidebar-foreground/70">{t('brand.subtitle')}</p>
@@ -285,7 +279,12 @@ function AppShellLayout({ children }: { children: React.ReactNode }) {
       <SidebarInset className="min-h-0">
         <header className="sticky top-0 z-30 flex items-center gap-3 border-b border-hairline bg-surface-container-lowest px-4 py-3 md:hidden">
           <SidebarTrigger />
-          <p className="min-w-0 truncate text-sm font-medium text-ink">{mobileHeaderTitle}</p>
+          <p
+            key={mobileHeaderTitle}
+            className="min-w-0 truncate text-sm font-medium text-ink motion-reduce:animate-none animate-[app-shell-title-in_var(--duration-fast)_cubic-bezier(0.22,1,0.36,1)_both]"
+          >
+            {mobileHeaderTitle}
+          </p>
         </header>
         <div className="min-h-0 flex-1 overflow-auto">{children}</div>
       </SidebarInset>

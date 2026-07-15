@@ -8,6 +8,9 @@
     "active": "Active",
     "inactive": "Inactive"
   },
+  "list": {
+    "error": "We couldn't load tickets. Try again in a few minutes."
+  },
   "form": {
     "createTitle": "Create ticket",
     "createDescription": "Set the ticket type, price and stock for an event.",
@@ -48,7 +51,9 @@
     "successCreate": "Ticket created successfully",
     "successEdit": "Ticket updated successfully",
     "errorCreate": "We couldn't create the ticket. Try again.",
-    "errorEdit": "We couldn't update the ticket. Try again."
+    "errorEdit": "We couldn't update the ticket. Try again.",
+    "errorCreateFallback": "We couldn't create the ticket. Try again in a few minutes.",
+    "errorEditFallback": "We couldn't update the ticket. Try again in a few minutes."
   },
   "table": {
     "title": "Ticket inventory detail",
@@ -84,6 +89,7 @@
     "cancel": "Cancel",
     "confirm": "Delete",
     "success": "Ticket deleted successfully",
-    "error": "We couldn't delete the ticket. Try again."
+    "error": "We couldn't delete the ticket. Try again.",
+    "errorFallback": "We couldn't delete the ticket. Try again in a few minutes."
   }
 }

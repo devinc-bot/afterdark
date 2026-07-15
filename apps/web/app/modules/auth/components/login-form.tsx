@@ -1,15 +1,34 @@
+import { useMemo } from 'react'
 import { useForm } from '@tanstack/react-form'
-import { Link } from '@tanstack/react-router'
-import { loginSchema } from '@afterdark/validators'
-import { fieldErrorMessage } from '@afterdark/ui'
+import { Link, useSearch } from '@tanstack/react-router'
+import { useTranslation } from 'react-i18next'
+import { z } from 'zod'
+import { googleOauthErrorMessageKey } from '@afterdark/common'
+import { Button, Field, fieldErrorMessage } from '@afterdark/ui'
 import { WEB_ROUTES } from '../../common/constants/routes'
 import { useLogin } from '../mutations/use-auth-mutations'
+import { AuthInput } from './auth-input'
+import { AuthMethodSeparator, GoogleContinueButton } from './google-continue-button'
 
 export function LoginForm() {
+  const { t } = useTranslation('auth')
   const login = useLogin()
+  const { error: oauthError } = useSearch({ from: '/login' })
+
+  const loginFormSchema = useMemo(
+    () =>
+      z.object({
+        email: z.email(t('field.email', { ns: 'validation' })),
+        password: z.string().min(8, t('password.min', { min: 8 })),
+      }),
+    [t]
+  )
 
   const form = useForm({
     defaultValues: { email: '', password: '' },
+    validators: {
+      onSubmit: loginFormSchema,
+    },
     onSubmit: async ({ value }) => {
       await login.mutateAsync(value)
     },
@@ -18,77 +37,78 @@ export function LoginForm() {
   return (
     <form
       noValidate
-      className="w-full max-w-sm"
+      className="w-full"
       onSubmit={(event) => {
         event.preventDefault()
         event.stopPropagation()
         void form.handleSubmit()
       }}
     >
-      <h1 className="text-3xl font-bold tracking-tight text-balance">Iniciar sesión</h1>
-      <p className="mt-3 text-sm text-muted-foreground">
-        Accedé a tu cuenta para gestionar tus entradas.
-      </p>
+      <h1 className="font-display text-3xl font-bold tracking-tight text-balance text-on-surface md:text-4xl">
+        {t('login.title')}
+      </h1>
+      <p className="mt-3 text-sm leading-relaxed text-on-surface-variant">{t('login.subtitle')}</p>
 
-      <div className="mt-10 flex flex-col gap-6">
-        <form.Field name="email" validators={{ onSubmit: loginSchema.shape.email }}>
+      <div className="mt-10 space-y-5">
+        {oauthError ? (
+          <p
+            role="alert"
+            className="rounded-lg border border-error/40 bg-error-container/20 px-4 py-3 text-sm text-error"
+          >
+            {t(googleOauthErrorMessageKey(oauthError))}
+          </p>
+        ) : null}
+
+        <form.Field
+          name="email"
+          validators={{
+            onBlur: loginFormSchema.shape.email,
+            onSubmit: loginFormSchema.shape.email,
+          }}
+        >
           {(field) => {
             const error = fieldErrorMessage(field.state.meta.errors)
             return (
-              <div className="flex flex-col gap-2">
-                <label htmlFor={field.name} className="text-sm text-muted-foreground">
-                  Correo electrónico
-                </label>
-                <input
+              <Field label={t('login.email')} htmlFor={field.name} error={error}>
+                <AuthInput
                   id={field.name}
                   name={field.name}
                   type="email"
                   autoComplete="email"
-                  placeholder="nombre@ejemplo.com"
+                  placeholder={t('login.emailPlaceholder')}
                   value={field.state.value}
                   onBlur={field.handleBlur}
                   onChange={(event) => field.handleChange(event.target.value)}
                   aria-invalid={error ? true : undefined}
-                  aria-describedby={error ? `${field.name}-error` : undefined}
-                  className="w-full rounded-md border border-input bg-card px-3.5 py-2.5 text-sm text-foreground transition-colors duration-150 focus:border-ring aria-invalid:border-destructive"
                 />
-                {error ? (
-                  <p id={`${field.name}-error`} className="text-sm text-destructive">
-                    {error}
-                  </p>
-                ) : null}
-              </div>
+              </Field>
             )
           }}
         </form.Field>
 
-        <form.Field name="password" validators={{ onSubmit: loginSchema.shape.password }}>
+        <form.Field
+          name="password"
+          validators={{
+            onBlur: loginFormSchema.shape.password,
+            onSubmit: loginFormSchema.shape.password,
+          }}
+        >
           {(field) => {
             const error = fieldErrorMessage(field.state.meta.errors)
             return (
-              <div className="flex flex-col gap-2">
-                <label htmlFor={field.name} className="text-sm text-muted-foreground">
-                  Contraseña
-                </label>
-                <input
+              <Field label={t('login.password')} htmlFor={field.name} error={error}>
+                <AuthInput
                   id={field.name}
                   name={field.name}
                   type="password"
                   autoComplete="current-password"
-                  placeholder="••••••••"
+                  placeholder={t('login.passwordPlaceholder')}
                   value={field.state.value}
                   onBlur={field.handleBlur}
                   onChange={(event) => field.handleChange(event.target.value)}
                   aria-invalid={error ? true : undefined}
-                  aria-describedby={error ? `${field.name}-error` : undefined}
-                  className="w-full rounded-md border border-input bg-card px-3.5 py-2.5 text-sm text-foreground transition-colors duration-150 focus:border-ring aria-invalid:border-destructive"
                 />
-                {error ? (
-                  <p id={`${field.name}-error`} className="text-sm text-destructive">
-                    {error}
-                  </p>
-                ) : null}
-              </div>
+              </Field>
             )
           }}
         </form.Field>
@@ -96,7 +116,7 @@ export function LoginForm() {
         {login.isError ? (
           <p
             role="alert"
-            className="rounded-md border border-destructive/40 bg-destructive/10 px-3.5 py-3 text-sm text-destructive"
+            className="rounded-lg border border-error/40 bg-error-container/20 px-4 py-3 text-sm text-error"
           >
             {login.error.message}
           </p>
@@ -104,35 +124,39 @@ export function LoginForm() {
 
         <form.Subscribe selector={(state) => state.isSubmitting}>
           {(isSubmitting) => (
-            <button
+            <Button
               type="submit"
-              disabled={isSubmitting}
-              aria-busy={isSubmitting}
-              className="w-full rounded-md bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground transition-colors duration-150 hover:bg-primary-hover active:bg-primary disabled:cursor-not-allowed disabled:opacity-50"
+              size="lg"
+              className="w-full"
+              loading={isSubmitting || login.isPending}
+              disabled={isSubmitting || login.isPending}
             >
-              {isSubmitting ? 'Ingresando…' : 'Ingresar'}
-            </button>
+              {isSubmitting || login.isPending ? t('login.submitting') : t('login.submit')}
+            </Button>
           )}
         </form.Subscribe>
+
+        <AuthMethodSeparator />
+        <GoogleContinueButton />
       </div>
 
-      <hr className="mt-10 border-border" />
+      <hr className="mt-10 border-hairline" />
 
       <nav aria-label="Otras opciones de acceso" className="mt-6 flex justify-center gap-3 text-sm">
         <Link
           to={WEB_ROUTES.register()}
-          className="text-muted-foreground underline underline-offset-4 transition-colors duration-150 hover:text-accent"
+          className="text-on-surface-variant underline underline-offset-4 transition-colors duration-150 hover:text-primary"
         >
-          Crear cuenta
+          {t('login.createAccount')}
         </Link>
-        <span aria-hidden className="text-muted-foreground">
+        <span aria-hidden className="text-on-surface-variant">
           ·
         </span>
         <Link
           to={WEB_ROUTES.forgotPassword()}
-          className="text-muted-foreground underline underline-offset-4 transition-colors duration-150 hover:text-accent"
+          className="text-on-surface-variant underline underline-offset-4 transition-colors duration-150 hover:text-primary"
         >
-          Olvidé mi contraseña
+          {t('login.forgotPassword')}
         </Link>
       </nav>
     </form>

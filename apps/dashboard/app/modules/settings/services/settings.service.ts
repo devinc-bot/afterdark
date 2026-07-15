@@ -1,11 +1,12 @@
 import type { SettingsResponse } from '@afterdark/types'
 import { i18n } from '@afterdark/i18n/client'
-import { api } from '~/config/api'
-import { API_ROUTES } from '~/config/constants/api'
-import { toApiServiceError } from '~/modules/common/utils/api-service-error.utils'
+import { api, API_ROUTES } from '~/config/api'
+import { buildApiPath, toApiServiceError } from '@afterdark/common'
 
 export function getSettings() {
-  return api.get<SettingsResponse>(API_ROUTES.settings.prefix)
+  return api.get<SettingsResponse>(
+    buildApiPath(API_ROUTES.settings, API_ROUTES.settings.path.root())
+  )
 }
 
 export async function fetchSettings(): Promise<SettingsResponse> {
@@ -20,7 +21,10 @@ export async function updateSettings<T extends Record<string, unknown>>(
   input: T
 ): Promise<SettingsResponse> {
   try {
-    return await api.patch<SettingsResponse>(API_ROUTES.settings.prefix, input)
+    return await api.patch<SettingsResponse>(
+      buildApiPath(API_ROUTES.settings, API_ROUTES.settings.path.root()),
+      input
+    )
   } catch (error) {
     throw toApiServiceError(error, '')
   }

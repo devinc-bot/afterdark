@@ -17,6 +17,8 @@
     "TOKEN_INVALID": "El token es inválido.",
     "SESSION_NOT_FOUND": "Sesión no encontrada.",
     "REFRESH_TOKEN_INVALID": "Token de refresco inválido.",
+    "PASSWORD_RESET_TOKEN_INVALID": "El enlace no es válido o ya expiró.",
+    "PASSWORD_RESET_RATE_LIMITED": "Demasiados intentos. Probá de nuevo más tarde.",
     "ROLE_NOT_CONFIGURED": "No pudimos completar el registro. Contactá al administrador.",
     "REGISTER_SUCCESS": "Cuenta creada correctamente. Ya podés iniciar sesión."
   },
@@ -77,6 +79,11 @@
     "FILE_TOO_LARGE": "La imagen supera el tamaño máximo permitido.",
     "UPLOAD_FAILED": "No pudimos guardar la imagen. Intentá de nuevo en unos minutos.",
     "DELETE_FAILED": "No pudimos eliminar la imagen. Intentá de nuevo en unos minutos."
+  },
+  "mail": {
+    "NOT_CONFIGURED": "El servicio de correo no está configurado.",
+    "SEND_FAILED": "No pudimos enviar el correo. Intentá de nuevo en unos minutos.",
+    "RENDER_FAILED": "No pudimos generar el correo. Intentá de nuevo en unos minutos."
   },
   "guard": {
     "OWNER_ONLY": "Solo los propietarios pueden acceder a este recurso.",

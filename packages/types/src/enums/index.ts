@@ -1,3 +1,4 @@
+export * from './auth.ts'
 export * from './club.ts'
 export * from './event.ts'
 export * from './payment.ts'

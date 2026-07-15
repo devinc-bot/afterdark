@@ -1,4 +1,4 @@
-﻿import { STAFF_INVITATION_EXPIRY_OPTIONS } from '@afterdark/validators'
+import { STAFF_INVITATION_EXPIRY_OPTIONS } from '@afterdark/validators'
 import { hashValue } from '../../common'
 
 export const STAFF_INVITATION_PAYLOAD_VERSION = 1.1 as const
@@ -18,10 +18,10 @@ export type StaffInvitationPayload = {
  * leading/trailing hyphens.
  *
  * @example
- * slugifySegment('Ñoño García')  // → 'nono-garcia'
- * slugifySegment('  Hello World!!  ') // → 'hello-world'
- * slugifySegment('café@2024')    // → 'cafe-2024'
- * slugifySegment('---')          // → ''
+ * slugifySegment('Nino Garcia')  // -> 'nino-garcia'
+ * slugifySegment('  Hello World!!  ') // -> 'hello-world'
+ * slugifySegment('cafe@2024')    // -> 'cafe-2024'
+ * slugifySegment('---')          // -> ''
  */
 function slugifySegment(value: string): string {
   return value
@@ -52,7 +52,7 @@ export function buildStaffInvitationPath(slug: string, token: string): string {
  * Builds a staff invitation URL.
  *
  * @example
- * buildStaffInvitationUrl('https://dashboard.afterdark.com', 'example-afterdark-com', '1234567890') // → 'https://dashboard.afterdark.com/example-afterdark-com/1234567890'
+ * buildStaffInvitationUrl('https://dashboard.afterdark.com', 'example-afterdark-com', '1234567890') // -> 'https://dashboard.afterdark.com/example-afterdark-com/1234567890'
  */
 export function buildStaffInvitationUrl(origin: string, slug: string, token: string): string {
   const normalizedOrigin = origin.replace(/\/$/, '')

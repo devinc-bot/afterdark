@@ -1,0 +1,61 @@
+import type { AddressSelect, AssetSelect, ClubSelect } from '@afterdark/db'
+import type { ClubImageResponse, ClubResponse } from '@afterdark/types'
+import type { CreateClubInput, UpdateClubInput } from '@afterdark/validators'
+
+export function toClubImageResponse(asset: AssetSelect): ClubImageResponse {
+  return {
+    documentId: asset.documentId,
+    name: asset.name,
+    url: asset.url ?? '',
+  }
+}
+
+export function toClubResponse(
+  club: ClubSelect,
+  address: AddressSelect,
+  images: ClubImageResponse[] = []
+): ClubResponse {
+  return {
+    documentId: club.documentId,
+    name: club.name,
+    capacity: club.capacity,
+    description: club.description,
+    status: club.status,
+    address: address.address,
+    streetNumber: address.streetNumber,
+    state: address.state,
+    city: address.city,
+    images,
+    createdAt: club.createdAt,
+    updatedAt: club.updatedAt,
+  }
+}
+
+export function toClubUpsertInput(input: CreateClubInput | UpdateClubInput) {
+  return {
+    name: input.name,
+    capacity: input.capacity,
+    description: input.description,
+    status: input.status,
+    address: input.address,
+    streetNumber: input.street_number,
+    state: input.state,
+    city: input.city,
+  }
+}
+
+export function groupClubImagesByClubId(
+  imageRows: { clubId: number; asset: AssetSelect }[]
+): Map<number, ClubImageResponse[]> {
+  const map = new Map<number, ClubImageResponse[]>()
+
+  for (const { clubId, asset } of imageRows) {
+    const images = map.get(clubId) ?? []
+
+    images.push(toClubImageResponse(asset))
+
+    map.set(clubId, images)
+  }
+
+  return map
+}

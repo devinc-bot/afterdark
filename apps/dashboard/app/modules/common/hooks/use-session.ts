@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { SESSION_STATUS } from '~/modules/common/constants/session-status'
+import { SESSION_STATUS } from '@afterdark/common'
 import { useSessionStore } from '~/modules/common/stores/session.store'
 
 export function useSession() {

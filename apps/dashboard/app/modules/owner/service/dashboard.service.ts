@@ -1,15 +1,10 @@
 import type { DashboardKpiResponse } from '@afterdark/types'
 import type { DashboardKpiQueryInput } from '@afterdark/validators'
-import { api } from '~/config/api'
-import { API_ROUTES } from '~/config/constants/api'
-import { toApiServiceError } from '~/modules/common/utils/api-service-error.utils'
+import { buildApiPath, toApiServiceError } from '@afterdark/common'
+import { api, API_ROUTES } from '~/config/api'
 
 const DASHBOARD_KPI_ERROR =
   'No pudimos cargar los indicadores del panel. Intentá de nuevo en unos minutos.'
-
-function dashboardApiPath(path: string) {
-  return `${API_ROUTES.dashboard.prefix}${path}`
-}
 
 export async function fetchDashboardKpi(
   params: DashboardKpiQueryInput = {}
@@ -25,7 +20,7 @@ export async function fetchDashboardKpi(
   }
 
   const query = searchParams.toString()
-  const path = dashboardApiPath(API_ROUTES.dashboard.path.kpiDashboard())
+  const path = buildApiPath(API_ROUTES.dashboard, API_ROUTES.dashboard.path.kpiDashboard())
 
   try {
     return await api.get<DashboardKpiResponse>(query.length > 0 ? `${path}?${query}` : path)

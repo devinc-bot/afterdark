@@ -33,7 +33,9 @@
     "loadingProfile": "Loading profile"
   },
   "shell": {
-    "tagline": "Administration panel for venues and events"
+    "tagline": "Administration panel for venues and events",
+    "footer": "© afterdark",
+    "loading": "Loading…"
   },
   "notFound": {
     "title": "Page not found",

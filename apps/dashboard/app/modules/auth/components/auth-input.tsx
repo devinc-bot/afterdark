@@ -1,10 +1,8 @@
-import { Input, cn } from '@afterdark/ui'
+import { Input } from '@afterdark/ui'
 import type { InputHTMLAttributes } from 'react'
 
-interface AuthInputProps extends InputHTMLAttributes<HTMLInputElement> {
-  hasIcon?: boolean
-}
+type AuthInputProps = InputHTMLAttributes<HTMLInputElement>
 
-export function AuthInput({ className, hasIcon = false, ...props }: AuthInputProps) {
-  return <Input className={cn(hasIcon ? 'pl-9 pr-4' : undefined, className)} {...props} />
+export function AuthInput(props: AuthInputProps) {
+  return <Input {...props} />
 }

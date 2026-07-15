@@ -5,7 +5,15 @@ import { Loader2 } from 'lucide-react'
 import { cn } from '../../lib/utils'
 
 const buttonVariants = cva(
-  'inline-flex items-center cursor-pointer justify-center gap-2 whitespace-nowrap rounded-lg font-sans text-[15px] font-medium leading-none transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0',
+  [
+    'inline-flex items-center cursor-pointer justify-center gap-2 whitespace-nowrap rounded-control font-sans text-[15px] font-medium leading-none',
+    'transition-[color,background-color,border-color,box-shadow,opacity,transform] duration-(--duration-instant) ease-(--ease-emphasized)',
+    'active:scale-[0.98]',
+    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink',
+    'disabled:pointer-events-none disabled:opacity-50 disabled:active:scale-100',
+    '[&_svg]:pointer-events-none [&_svg]:shrink-0',
+    'motion-reduce:transition-none motion-reduce:active:scale-100',
+  ],
   {
     variants: {
       variant: {
@@ -14,11 +22,11 @@ const buttonVariants = cva(
         outline:
           'border border-hairline-strong bg-surface-card text-ink shadow-sm hover:bg-surface-strong',
         gradient:
-          'cn-gradient-border cn-gradient-border--field text-ink shadow-sm transition-[box-shadow] hover:opacity-90 focus-visible:ring-primary/25 disabled:opacity-60 motion-reduce:transition-none',
+          'cn-gradient-border cn-gradient-border--field text-ink shadow-sm hover:opacity-90 focus-visible:ring-primary/25 disabled:opacity-60',
         inverse: 'border border-white/20 bg-surface-card text-ink shadow-sm hover:bg-white',
         secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
         ghost: 'hover:bg-surface-strong hover:text-ink',
-        link: 'text-ink underline-offset-4 hover:underline',
+        link: 'text-ink underline-offset-4 hover:underline active:scale-100',
       },
       size: {
         default: 'h-10 px-5 [&_svg]:size-[16px]',
@@ -85,7 +93,10 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           <>
             {loading ? (
               <Loader2
-                className={cn('animate-spin', spinnerSizeClasses[size ?? 'default'])}
+                className={cn(
+                  'animate-spin motion-reduce:animate-none',
+                  spinnerSizeClasses[size ?? 'default']
+                )}
                 aria-hidden="true"
               />
             ) : (

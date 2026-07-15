@@ -1,76 +1,56 @@
 # DOMAIN.md — afterdark
 
-Business context, domain model, and product rules for the afterdark platform.
+Business context and product rules. Schema detail → `packages/db/DATABASE.md`. Layout → `ARCHITECTURE.md`.
 
 ---
 
-## Business context
+## Product
 
-**afterdark** is a night events platform. The platform supports two audiences:
+**afterdark** — plataforma de eventos nocturnos (clubes, eventos, entradas).
 
-| Audience  | App         | Capabilities                                      |
-| --------- | ----------- | ------------------------------------------------- |
-| Customers | `web`       | Browse catalog, filter products, view detail      |
-| Staff     | `dashboard` | Manage catalog and inventory (CRUD, admin tables) |
+| Audience | App         | Role                                      |
+| -------- | ----------- | ----------------------------------------- |
+| Cliente  | `web`       | Cuenta, descubrir/comprar entradas        |
+| Dueño    | `dashboard` | Clubes, eventos, tickets, staff, settings |
+| Staff    | `dashboard` | Operación en club (invitación + panel)    |
 
-Both apps operate on the same Turso (libSQL) database and share domain types and validation schemas through workspace packages.
+Misma DB Turso; tipos/validators compartidos.
 
 ---
 
-## Domain model
+## Roles
 
-### Entities
+| Role    | Quién          | Alta                                   |
+| ------- | -------------- | -------------------------------------- |
+| `user`  | Cliente        | `web` → `/register`                    |
+| `owner` | Dueño del club | `dashboard` → `/register`              |
+| `staff` | Personal       | Invitación del dueño (`/$name/$token`) |
+| `admin` | Plataforma     | Fuera de alcance UI actual             |
 
-| Entity     | Package                             | Description                           |
-| ---------- | ----------------------------------- | ------------------------------------- |
-| `User`     | `@afterdark/db`, `@afterdark/types` | Authentication and account management |
-| `Property` | `@afterdark/db`, `@afterdark/types` | Catalog item (furniture product)      |
+---
 
-All entities extend `BaseAppEntity`: UUID primary key, `createdAt`, `updatedAt`.
+## Core entities
 
-### Validation schemas
+| Entity                     | Idea                                                                |
+| -------------------------- | ------------------------------------------------------------------- |
+| `Account` + `Role`         | Credenciales; un account puede vincularse a perfil user/owner/staff |
+| `User` / `Owner` / `Staff` | Perfiles por rol                                                    |
+| `Club`                     | Local del dueño (+ address, assets)                                 |
+| `Event`                    | Evento en un club                                                   |
+| `Ticket`                   | Tipo de entrada de un evento                                        |
+| `Order` / `tickets_sold`   | Compra / entrada vendida                                            |
+| `StaffInvitation`          | Invite pendiente/aceptada                                           |
 
-Business rules for input validation live in `@afterdark/validators`:
+IDs: `documentId` (UUID) en API/JWT; `id` (int) solo para FKs internas.
 
-| Module     | Schemas                                                                |
-| ---------- | ---------------------------------------------------------------------- |
-| `auth`     | `loginSchema`, `registerSchema`                                        |
-| `user`     | `createUserSchema`, `updateUserSchema`                                 |
-| `property` | `createPropertySchema`, `updatePropertySchema`, `filterPropertySchema` |
-| `common`   | `paginationSchema`, `uuidSchema`                                       |
-
-Never redefine validation rules locally — always import from `@afterdark/validators`.
-
-### TypeScript interfaces
-
-Domain interfaces and enums are defined in `@afterdark/types`:
-
-- `domain.ts` — `User`, `Property`, and their enums
-- `api.ts` — `ApiResponse`, `ApiError`
-- `pagination.ts` — `PaginationParams`, `PaginatedResponse`
+Enums/DTOs → `@afterdark/types`. Validación → `@afterdark/validators`. No redefinir en apps.
 
 ---
 
 ## Product rules
 
-### Language
-
-- **UI copy** (labels, messages, placeholders, button text shown to users) must be in **Spanish**.
-- **Code identifiers** (files, functions, variables, constants, route paths) must be in **English**.
-
-### Data integrity
-
-- Entity `documentId` values are UUIDs exposed in API/JWT; internal `id` columns are integers for FK joins.
-- Forms validate against Zod schemas from `@afterdark/validators` before persisting.
-- Database access from `apps/api` goes through `packages/db/src/repositories/`; do not query `db` directly in NestJS services.
-- In development, `drizzle-kit push` may sync schema locally; production requires migrations (`drizzle-kit generate` + `migrate`).
-
-### App responsibilities
-
-| Concern          | `web`                           | `dashboard`                  |
-| ---------------- | ------------------------------- | ---------------------------- |
-| Catalog browsing | Yes — public listing and detail | Yes — admin table view       |
-| Product creation | No                              | Yes — `/properties/new`      |
-| Product editing  | No                              | Yes — `/properties/:id/edit` |
-| Product deletion | No                              | Yes — via mutations          |
-| Authentication   | Planned (`auth` module)         | Planned (`auth` module)      |
+- **UI copy en español** (vía `@afterdark/i18n`). Identifiers/código en **inglés**.
+- Validar con Zod de `@afterdark/validators` antes de persistir.
+- Dueño gestiona sus clubes/eventos/tickets/staff; cliente no administra inventario.
+- Staff entra solo por invitación del dueño (no registro libre de staff).
+- Auth: JWT + refresh; sesión vía `GET /session/me`.

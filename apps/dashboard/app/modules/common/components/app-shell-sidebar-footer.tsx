@@ -94,14 +94,24 @@ export function AppShellSidebarFooter({
     t('user.profileLinkLabel')
   )
 
-  const selectedItemClassName = 'bg-surface-container text-ink border-l-2 border-primary'
-  const itemClassName = 'text-ink hover:bg-surface-container/70'
+  const selectedItemClassName = cn(
+    'bg-surface-container text-ink',
+    'relative before:pointer-events-none before:absolute before:inset-y-2 before:left-0 before:w-0.5 before:origin-center before:scale-y-100 before:rounded-full before:bg-primary before:content-[""]',
+    'before:transition-transform before:duration-(--duration-fast) before:ease-[cubic-bezier(0.22,1,0.36,1)]',
+    'motion-reduce:before:transition-none'
+  )
+  const itemClassName = cn(
+    'relative text-ink hover:bg-surface-container/70',
+    'before:pointer-events-none before:absolute before:inset-y-2 before:left-0 before:w-0.5 before:origin-center before:scale-y-0 before:rounded-full before:bg-primary before:content-[""]',
+    'before:transition-transform before:duration-(--duration-fast) before:ease-[cubic-bezier(0.22,1,0.36,1)]',
+    'motion-reduce:before:transition-none'
+  )
 
   return (
     <Link
       to={settingsHref}
       className={cn(
-        'flex min-w-0 items-center gap-3 px-2 py-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/25 motion-reduce:transition-none',
+        'flex min-w-0 items-center gap-3 px-2 py-2 transition-colors duration-(--duration-fast) ease-(--ease-emphasized) focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/25 motion-reduce:transition-none',
         isSettingsActive ? selectedItemClassName : itemClassName,
         isLoading && 'pointer-events-none opacity-70'
       )}

@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import { PageLayout } from '~/modules/common/components/page-layout'
-import { usePageTitle } from '~/modules/common/hooks/use-page-title'
+import { usePageTitle } from '@afterdark/ui'
 import { OwnerPanelKpi } from '~/modules/owner/components/owner-panel-kpi'
 import { useDashboardKpi } from '~/modules/owner/queries/use-dashboard-kpi'
 
