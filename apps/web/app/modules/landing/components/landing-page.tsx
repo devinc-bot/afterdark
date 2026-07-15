@@ -15,9 +15,9 @@ const SECTION_Y = 'py-[clamp(4rem,10vw,7.5rem)]'
 const HEADING =
   'font-display text-[clamp(1.75rem,3.5vw,2.75rem)] font-bold leading-tight tracking-[-0.02em] text-balance'
 const NAV_LINK =
-  'inline-flex min-h-11 items-center font-label text-sm text-on-surface-variant transition-colors duration-(--duration-instant) ease-emphasized hover:text-on-surface focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink'
+  'inline-flex min-h-10 items-center font-label text-sm text-on-surface-variant transition-colors duration-(--duration-instant) ease-emphasized hover:text-on-surface focus-visible:rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink'
 const NAV_LINK_STATIC =
-  'inline-flex min-h-11 cursor-default items-center font-label text-sm text-on-surface-variant'
+  'inline-flex min-h-10 cursor-default items-center font-label text-sm text-on-surface-variant'
 
 export function LandingPage() {
   const { t } = useTranslation('landing')
@@ -49,79 +49,86 @@ export function LandingPage() {
         {t('skipToContent')}
       </a>
 
-      <header
-        className={cn(
-          'fixed inset-x-0 top-0 z-40 transition-[background-color,border-color,backdrop-filter] duration-(--duration-normal) ease-emphasized motion-reduce:transition-none',
-          navSolid
-            ? 'border-b border-hairline/60 bg-background/92 backdrop-blur-md'
-            : 'border-b border-transparent bg-transparent'
-        )}
-      >
-        <div className={cn(SHELL, 'flex h-16 items-center justify-between')}>
-          <a
-            href="#inicio"
-            className="font-display text-base font-bold tracking-tight text-on-surface transition-colors duration-(--duration-instant) ease-emphasized hover:text-primary focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink"
+      <header className="pointer-events-none fixed inset-x-0 top-0 z-40 pt-4 sm:pt-5">
+        <div className={SHELL}>
+          <div
+            className={cn(
+              'pointer-events-auto flex h-14 w-full items-center justify-between gap-2 rounded-full px-3 pl-5 shadow-none transition-[background-color,border-color,box-shadow,backdrop-filter] duration-(--duration-normal) ease-emphasized motion-reduce:transition-none sm:gap-3 sm:px-4 sm:pl-6',
+              navSolid
+                ? 'border border-hairline/50 bg-background/85 shadow-glass backdrop-blur-md'
+                : 'border border-white/10 bg-background/25 backdrop-blur-sm'
+            )}
           >
-            {t('nav.brand')}
-          </a>
+            <a
+              href="#inicio"
+              className="shrink-0 font-display text-sm font-bold tracking-tight text-on-surface transition-colors duration-(--duration-instant) ease-emphasized hover:text-primary focus-visible:rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink sm:text-base"
+            >
+              {t('nav.brand')}
+            </a>
 
-          <nav aria-label={t('nav.ariaLabel')} className="hidden items-center gap-1 md:flex">
-            {showAuthChrome ? (
-              <>
-                <span className={cn(NAV_LINK_STATIC, 'px-3')} aria-disabled="true">
-                  {t('nav.events')}
-                </span>
-                <span className={cn(NAV_LINK_STATIC, 'px-3')} aria-disabled="true">
-                  {t('nav.tickets')}
-                </span>
-              </>
-            ) : (
-              <>
-                <a href="#como-funciona" className={cn(NAV_LINK, 'px-3')}>
-                  {t('nav.how')}
-                </a>
-                <a href="#noches" className={cn(NAV_LINK, 'px-3')}>
-                  {t('nav.nights')}
-                </a>
-              </>
-            )}
-          </nav>
-
-          <div className="flex items-center gap-2 sm:gap-3">
-            {showAuthChrome ? (
-              isAuthenticated && user ? (
-                <div
-                  className="flex size-11 items-center justify-center"
-                  aria-label={t('nav.accountAria', { name: displayName })}
-                >
-                  <Avatar className="size-9 shrink-0" aria-hidden="true">
-                    {user.avatar ? <AvatarImage src={user.avatar} alt="" /> : null}
-                    <AvatarFallback className="bg-surface-container text-sm font-medium text-on-surface">
-                      {initials}
-                    </AvatarFallback>
-                  </Avatar>
-                </div>
+            <nav aria-label={t('nav.ariaLabel')} className="hidden items-center gap-0.5 md:flex">
+              {showAuthChrome ? (
+                <>
+                  <span className={cn(NAV_LINK_STATIC, 'px-2.5')} aria-disabled="true">
+                    {t('nav.events')}
+                  </span>
+                  <span className={cn(NAV_LINK_STATIC, 'px-2.5')} aria-disabled="true">
+                    {t('nav.tickets')}
+                  </span>
+                </>
               ) : (
-                <div
-                  className="size-9 animate-pulse rounded-full bg-surface-container"
-                  aria-hidden
-                />
-              )
-            ) : (
-              <>
-                <Link
-                  to={WEB_ROUTES.login()}
-                  variant="ghost"
-                  size="sm"
-                  className="hidden min-h-11 text-on-surface sm:inline-flex"
-                >
-                  {t('nav.login')}
-                </Link>
-                <Link to={WEB_ROUTES.register()} variant="default" size="sm" className="min-h-11">
-                  {t('nav.register')}
-                </Link>
-              </>
-            )}
+                <>
+                  <a href="#como-funciona" className={cn(NAV_LINK, 'rounded-full px-2.5')}>
+                    {t('nav.how')}
+                  </a>
+                  <a href="#noches" className={cn(NAV_LINK, 'rounded-full px-2.5')}>
+                    {t('nav.nights')}
+                  </a>
+                </>
+              )}
+            </nav>
+
+            <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
+              {showAuthChrome ? (
+                isAuthenticated && user ? (
+                  <div
+                    className="flex size-10 items-center justify-center"
+                    aria-label={t('nav.accountAria', { name: displayName })}
+                  >
+                    <Avatar className="size-8 shrink-0" aria-hidden="true">
+                      {user.avatar ? <AvatarImage src={user.avatar} alt="" /> : null}
+                      <AvatarFallback className="bg-surface-container text-xs font-medium text-on-surface">
+                        {initials}
+                      </AvatarFallback>
+                    </Avatar>
+                  </div>
+                ) : (
+                  <div
+                    className="size-8 animate-pulse rounded-full bg-surface-container"
+                    aria-hidden
+                  />
+                )
+              ) : (
+                <>
+                  <Link
+                    to={WEB_ROUTES.login()}
+                    variant="ghost"
+                    size="sm"
+                    className="hidden min-h-10 rounded-full text-on-surface sm:inline-flex"
+                  >
+                    {t('nav.login')}
+                  </Link>
+                  <Link
+                    to={WEB_ROUTES.register()}
+                    variant="default"
+                    size="sm"
+                    className="min-h-10 rounded-full"
+                  >
+                    {t('nav.register')}
+                  </Link>
+                </>
+              )}
+            </div>
           </div>
         </div>
       </header>
