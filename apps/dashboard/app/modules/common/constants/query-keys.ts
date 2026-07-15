@@ -7,7 +7,21 @@ export const QUERY_KEYS = {
     ['tickets', params ?? {}] as const,
   events: (params?: { page?: number; limit?: number }) => ['events', params ?? {}] as const,
   dashboardKpi: (params?: { fromDate?: Date; toDate?: Date }) =>
-    ['dashboard-kpi', params ?? {}] as const,
+    [
+      'dashboard-kpi',
+      {
+        fromDate: params?.fromDate?.toISOString(),
+        toDate: params?.toDate?.toISOString(),
+      },
+    ] as const,
+  dashboardSalesAnalytics: (params?: { fromDate?: Date; toDate?: Date }) =>
+    [
+      'dashboard-sales-analytics',
+      {
+        fromDate: params?.fromDate?.toISOString(),
+        toDate: params?.toDate?.toISOString(),
+      },
+    ] as const,
   staffInvitationLink: (slug: string, token: string) =>
     ['staff-invitation-link', slug, token] as const,
 } as const

@@ -18,3 +18,7 @@ export const dashboardKpiQuerySchema = z
   )
 
 export type DashboardKpiQueryInput = z.infer<typeof dashboardKpiQuerySchema>
+
+export const dashboardSalesAnalyticsQuerySchema = dashboardKpiQuerySchema
+
+export type DashboardSalesAnalyticsQueryInput = z.infer<typeof dashboardSalesAnalyticsQuerySchema>

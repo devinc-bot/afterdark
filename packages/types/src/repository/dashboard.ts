@@ -9,3 +9,10 @@ export type DashboardKpiRow = {
   ticketsSoldCount: number
   totalRevenue: number
 }
+
+export type FindDashboardTicketsSoldSeriesParams = {
+  ownerDocumentId: string
+  fromDate: Date
+  toDate: Date
+  granularity: 'day' | 'month'
+}

@@ -54,12 +54,26 @@
       "metaTitle": "Dashboard · afterdark Admin",
       "title": "Dashboard",
       "description": "Daily operations summary: clubs, tickets and recent activity.",
+      "period": {
+        "ariaLabel": "Dashboard period",
+        "this_week": "This week",
+        "this_month": "This month",
+        "this_year": "This year"
+      },
       "kpi": {
         "ariaLabel": "Dashboard metrics",
         "publishedEvents": "Published events",
         "ticketsSold": "Tickets sold",
         "totalRevenue": "Period revenue",
         "error": "We couldn't load dashboard metrics. Try again."
+      },
+      "chart": {
+        "title": "Tickets sold",
+        "description": "Ticket count by day or month for the selected period.",
+        "descriptionDays": "Tickets sold per day.",
+        "descriptionMonths": "Tickets sold per month.",
+        "dayLabel": "Day {day}",
+        "error": "We couldn't load the chart. Try again."
       },
       "staff": {
         "metaTitle": "Dashboard · afterdark Admin",

@@ -88,6 +88,7 @@ export const API_ROUTES = {
     prefix: API_DASHBOARD_PREFIX,
     path: {
       kpiDashboard: () => '/kpidashboard' as const,
+      salesAnalytics: () => '/sales/analytics' as const,
     },
   },
   health: {

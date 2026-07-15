@@ -54,12 +54,26 @@
       "metaTitle": "Panel · afterdark Admin",
       "title": "Panel",
       "description": "Resumen de operaciones del día: clubes, entradas y actividad reciente.",
+      "period": {
+        "ariaLabel": "Período del panel",
+        "this_week": "Esta semana",
+        "this_month": "Este mes",
+        "this_year": "Este año"
+      },
       "kpi": {
         "ariaLabel": "Indicadores del panel",
         "publishedEvents": "Eventos publicados",
         "ticketsSold": "Entradas vendidas",
         "totalRevenue": "Ingresos del período",
         "error": "No pudimos cargar los indicadores. Intentá de nuevo."
+      },
+      "chart": {
+        "title": "Entradas vendidas",
+        "description": "Cantidad de entradas por día o por mes según el período.",
+        "descriptionDays": "Cantidad de entradas vendidas por día.",
+        "descriptionMonths": "Cantidad de entradas vendidas por mes.",
+        "dayLabel": "Día {day}",
+        "error": "No pudimos cargar el gráfico. Intentá de nuevo."
       },
       "staff": {
         "metaTitle": "Panel · afterdark Admin",

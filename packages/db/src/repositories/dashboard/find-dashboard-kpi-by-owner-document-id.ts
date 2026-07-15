@@ -30,7 +30,14 @@ export async function findDashboardKpiByOwnerDocumentId(
       .innerJoin(events, eq(events.id, tickets.eventId))
       .innerJoin(clubs, eq(clubs.id, events.clubId))
       .innerJoin(owners, eq(owners.id, clubs.ownerId))
-      .where(ownerWhere),
+      .where(
+        and(
+          ownerWhere,
+          eq(orders.status, PAYMENT_STATUS.COMPLETED),
+          gte(orders.paidAt, revenueFromDate),
+          lte(orders.paidAt, revenueToDate)
+        )
+      ),
     db
       .select({ total: sum(orders.amount) })
       .from(orders)

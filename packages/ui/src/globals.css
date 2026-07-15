@@ -175,6 +175,13 @@
   --color-input: #514254;
   --color-ring: #ecb1ff;
 
+  /* ── Charts ───────────────────────────────────────────────────── */
+  --color-chart-1: #ecb1ff;
+  --color-chart-2: #ffb1c3;
+  --color-chart-3: #c8c6c7;
+  --color-chart-4: #7d4a90;
+  --color-chart-5: #e8006e;
+
   /* ── Sidebar (shadcn) ─────────────────────────────────────────── */
   --color-sidebar: var(--color-surface-container-lowest);
   --color-sidebar-foreground: var(--color-ink);

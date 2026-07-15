@@ -99,6 +99,7 @@
     "HAS_TICKETS": "No se puede eliminar un evento con entradas asociadas."
   },
   "dashboard": {
-    "KPI_FAILED": "No pudimos cargar los indicadores del dashboard. Intentá de nuevo en unos minutos."
+    "KPI_FAILED": "No pudimos cargar los indicadores del dashboard. Intentá de nuevo en unos minutos.",
+    "SALES_ANALYTICS_FAILED": "No pudimos cargar las ventas del dashboard. Intentá de nuevo en unos minutos."
   }
 }

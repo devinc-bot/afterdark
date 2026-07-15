@@ -384,7 +384,10 @@ export async function seedTicketsOrders(): Promise<void> {
     const ticket = ticketRefs[i - 1]
     const quantity = (i % 4) + 1
     const status = ORDER_STATUSES[i % ORDER_STATUSES.length]
-    const paidAt = status === PAYMENT_STATUS.COMPLETED ? new Date(now - i * 60 * 60 * 1000) : null
+    const paidAt =
+      status === PAYMENT_STATUS.COMPLETED
+        ? new Date(now - i * 4 * DAY_MS - (i % 5) * 60 * 60 * 1000)
+        : null
 
     const orderId = await upsertOrder(`seed-order-${i}`, {
       documentId: `seed-order-${i}`,

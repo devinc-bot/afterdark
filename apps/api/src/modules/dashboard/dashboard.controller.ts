@@ -1,7 +1,16 @@
 import { Controller, Get, Inject, Query, UseGuards } from '@nestjs/common'
-import type { DashboardKpiResponse, JwtPayload } from '@afterdark/types'
+import type {
+  DashboardKpiResponse,
+  DashboardSalesAnalyticsResponse,
+  JwtPayload,
+} from '@afterdark/types'
 import { USER_ROLE } from '@afterdark/types'
-import { dashboardKpiQuerySchema, type DashboardKpiQueryInput } from '@afterdark/validators'
+import {
+  dashboardKpiQuerySchema,
+  dashboardSalesAnalyticsQuerySchema,
+  type DashboardKpiQueryInput,
+  type DashboardSalesAnalyticsQueryInput,
+} from '@afterdark/validators'
 import { CurrentUser } from '../common/decorators/current-user.decorator'
 import { Roles } from '../common/decorators/roles.decorator'
 import { JwtAuthGuard } from '../common/guards/jwt-auth.guard'
@@ -26,7 +35,11 @@ export class DashboardController {
   @Get('sales/analytics')
   @Roles([USER_ROLE.OWNER])
   @UseGuards(JwtAuthGuard, RolesGuard)
-  getSalesAnalytics() {
-    return this.dashboardService.getSalesAnalytics()
+  getSalesAnalytics(
+    @CurrentUser() user: JwtPayload,
+    @Query(new ZodValidationPipe(dashboardSalesAnalyticsQuerySchema))
+    query: DashboardSalesAnalyticsQueryInput
+  ): Promise<DashboardSalesAnalyticsResponse> {
+    return this.dashboardService.getSalesAnalytics(user.sub, query)
   }
 }
