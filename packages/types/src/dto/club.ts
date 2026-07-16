@@ -16,6 +16,8 @@ export interface ClubResponse {
   streetNumber: string
   state: string
   city: string
+  latitude: number | null
+  longitude: number | null
   images: ClubImageResponse[]
   createdAt: Date
   updatedAt: Date

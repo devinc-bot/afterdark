@@ -46,7 +46,15 @@
     "imagesTitle": "Images",
     "imagesDescription": "Photos of the venue that will appear on the platform. You can upload up to 5 images.",
     "locationTitle": "Location",
-    "locationDescription": "Physical address of the venue for operations and internal references."
+    "locationDescription": "Physical address of the venue. Fill the fields, then fine-tune the pin on the map."
+  },
+  "location": {
+    "mapHint": "Drag the pin to fine-tune the exact location.",
+    "mapLoading": "Loading map…",
+    "coordinatesRequired": "Select the location on the map.",
+    "ipLocate": "Locate by IP",
+    "ipLocateLoading": "Locating…",
+    "ipLocateError": "We could not locate your area by IP. Try again or move the pin."
   },
   "unsaved": {
     "title": "Leave without saving?",

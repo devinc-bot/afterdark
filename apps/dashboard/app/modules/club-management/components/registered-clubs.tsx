@@ -26,6 +26,8 @@ function clubResponseToRegisteredClub(club: ClubResponse): RegisteredClub {
     state: club.state,
     street_number: club.streetNumber,
     city: club.city,
+    latitude: club.latitude,
+    longitude: club.longitude,
   }
 }
 

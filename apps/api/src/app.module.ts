@@ -16,6 +16,7 @@ import { StaffModule } from './modules/staff'
 import { TicketsModule } from './modules/tickets'
 import { EventsModule } from './modules/events'
 import { MailModule } from './modules/mail'
+import { GeoModule } from './modules/geo'
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { MailModule } from './modules/mail'
     TicketsModule,
     EventsModule,
     MailModule,
+    GeoModule,
   ],
   controllers: [AppController],
 })

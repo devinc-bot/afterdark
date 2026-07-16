@@ -1,9 +1,12 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useForm } from '@tanstack/react-form'
+import { Crosshair } from 'lucide-react'
 import { CLUB_STATUS, type ClubImageResponse } from '@afterdark/types'
 import { createClubSchema, clubStatusSchema, type CreateClubInput } from '@afterdark/validators'
 import {
+  Button,
+  cn,
   fieldErrorMessage,
   Input,
   Label,
@@ -16,10 +19,12 @@ import {
   toast,
 } from '@afterdark/ui'
 import { ImagesClubForm } from '~/modules/club-management/components/images-club-form'
+import { ClubLocationMap } from '~/modules/club-management/components/club-location-map'
 import {
   type useCreateClub,
   type useUpdateClub,
 } from '~/modules/club-management/mutation/use-club-management-mutations'
+import { fetchIpLocation } from '~/modules/club-management/service/geo.service'
 import { snapshotClubFormValues } from '~/modules/club-management/utils/club-form.formatter'
 
 export const CLUB_FORM_MODE = {
@@ -31,7 +36,9 @@ export type ClubFormMode = (typeof CLUB_FORM_MODE)[keyof typeof CLUB_FORM_MODE]
 
 export const CLUB_FORM_ID = 'club-form'
 
-export type ClubFormValues = CreateClubInput & {
+export type ClubFormValues = Omit<CreateClubInput, 'latitude' | 'longitude'> & {
+  latitude: number | null
+  longitude: number | null
   existingImages: ClubImageResponse[]
   clubImg: File[]
 }
@@ -45,6 +52,8 @@ export const EMPTY_CLUB_FORM_VALUES: ClubFormValues = {
   state: '',
   street_number: '',
   city: '',
+  latitude: null,
+  longitude: null,
   existingImages: [],
   clubImg: [],
 }
@@ -76,6 +85,7 @@ type ClubFormFieldProps = {
   onChange: (value: string) => void
   inputMode?: React.HTMLAttributes<HTMLInputElement>['inputMode']
   sanitize?: (value: string) => string
+  className?: string
 }
 
 function ClubFormField({
@@ -88,9 +98,10 @@ function ClubFormField({
   onChange,
   inputMode,
   sanitize,
+  className,
 }: ClubFormFieldProps) {
   return (
-    <div className="flex flex-col gap-2">
+    <div className={cn('flex flex-col gap-2', className)}>
       <Label htmlFor={id} className={fieldLabelClassName}>
         {label}
       </Label>
@@ -165,6 +176,10 @@ export function ClubForm({
   const initialSnapshotRef = useRef(
     snapshotClubFormValues({ ...EMPTY_CLUB_FORM_VALUES, ...defaultValues })
   )
+  const [mapViewToken, setMapViewToken] = useState(0)
+  const [ipLocating, setIpLocating] = useState(false)
+  const [ipLocateError, setIpLocateError] = useState<string | null>(null)
+  const pinAdjustedByUserRef = useRef(false)
 
   const clubStatusOptions = [
     { value: CLUB_STATUS.ACTIVE, label: t('form.fields.statusActive') },
@@ -174,6 +189,11 @@ export function ClubForm({
   const form = useForm({
     defaultValues: { ...EMPTY_CLUB_FORM_VALUES, ...defaultValues },
     onSubmit: async ({ value }) => {
+      if (value.latitude === null || value.longitude === null) {
+        toast.error(t('location.coordinatesRequired'))
+        return
+      }
+
       if (isCreate) {
         const formData = new FormData()
 
@@ -185,6 +205,8 @@ export function ClubForm({
         formData.append('street_number', value.street_number)
         formData.append('city', value.city)
         formData.append('state', value.state)
+        formData.append('latitude', String(value.latitude))
+        formData.append('longitude', String(value.longitude))
 
         for (const image of value.clubImg) {
           formData.append('images', image)
@@ -217,6 +239,8 @@ export function ClubForm({
       formData.append('street_number', clubPayload.street_number)
       formData.append('city', clubPayload.city)
       formData.append('state', clubPayload.state)
+      formData.append('latitude', String(clubPayload.latitude))
+      formData.append('longitude', String(clubPayload.longitude))
 
       for (const image of existingImages) {
         formData.append('keepImageIds', image.documentId)
@@ -235,6 +259,31 @@ export function ClubForm({
       }
     },
   })
+
+  function setCoordinatesFromMap(coords: { latitude: number; longitude: number }) {
+    pinAdjustedByUserRef.current = true
+    form.setFieldValue('latitude', coords.latitude)
+    form.setFieldValue('longitude', coords.longitude)
+  }
+
+  async function handleIpLocate() {
+    setIpLocating(true)
+    setIpLocateError(null)
+
+    try {
+      const result = await fetchIpLocation()
+      pinAdjustedByUserRef.current = true
+      form.setFieldValue('latitude', result.latitude)
+      form.setFieldValue('longitude', result.longitude)
+      form.setFieldValue('city', result.city ?? '')
+      form.setFieldValue('state', result.state ?? '')
+      setMapViewToken((token) => token + 1)
+    } catch (error) {
+      setIpLocateError(error instanceof Error ? error.message : t('location.ipLocateError'))
+    } finally {
+      setIpLocating(false)
+    }
+  }
 
   return (
     <form
@@ -374,21 +423,80 @@ export function ClubForm({
             title={t('sections.locationTitle')}
             description={t('sections.locationDescription')}
           >
-            <form.Field name="address" validators={{ onSubmit: createClubSchema.shape.address }}>
-              {(field) => (
-                <ClubFormField
-                  id={field.name}
-                  label={requiredFieldLabel(t('form.fields.address'))}
-                  placeholder={t('form.fields.addressPlaceholder')}
-                  value={field.state.value}
-                  error={fieldErrorMessage(field.state.meta.errors)}
-                  onBlur={field.handleBlur}
-                  onChange={field.handleChange}
-                />
-              )}
+            <form.Field name="city" validators={{ onSubmit: createClubSchema.shape.city }}>
+              {(field) => {
+                const error = fieldErrorMessage(field.state.meta.errors) ?? ipLocateError
+
+                return (
+                  <div className="flex flex-col gap-2">
+                    <Label htmlFor={field.name} className={fieldLabelClassName}>
+                      {requiredFieldLabel(t('form.fields.city'))}
+                    </Label>
+                    <div className="flex items-center gap-2">
+                      <Input
+                        id={field.name}
+                        name={field.name}
+                        type="text"
+                        autoComplete="off"
+                        value={field.state.value}
+                        placeholder={t('form.fields.cityPlaceholder')}
+                        onBlur={field.handleBlur}
+                        onChange={(event) => {
+                          setIpLocateError(null)
+                          field.handleChange(event.target.value)
+                        }}
+                        aria-invalid={error ? true : undefined}
+                        aria-describedby={error ? `${field.name}-error` : undefined}
+                        className="min-w-0 flex-1"
+                      />
+                      <Button
+                        type="button"
+                        size="icon"
+                        aria-label={t('location.ipLocate')}
+                        title={t('location.ipLocate')}
+                        disabled={ipLocating}
+                        onClick={() => {
+                          void handleIpLocate()
+                        }}
+                      >
+                        <Crosshair
+                          className={`size-4 ${ipLocating ? 'animate-pulse' : ''}`}
+                          aria-hidden
+                        />
+                      </Button>
+                    </div>
+                    {ipLocating ? (
+                      <p className="text-xs text-ink-muted">{t('location.ipLocateLoading')}</p>
+                    ) : null}
+                    {error && !ipLocating ? (
+                      <p
+                        id={`${field.name}-error`}
+                        role="alert"
+                        className={fieldErrorMessageClassName}
+                      >
+                        {error}
+                      </p>
+                    ) : null}
+                  </div>
+                )
+              }}
             </form.Field>
 
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+              <form.Field name="address" validators={{ onSubmit: createClubSchema.shape.address }}>
+                {(field) => (
+                  <ClubFormField
+                    id={field.name}
+                    label={requiredFieldLabel(t('form.fields.address'))}
+                    placeholder={t('form.fields.addressPlaceholder')}
+                    value={field.state.value}
+                    error={fieldErrorMessage(field.state.meta.errors)}
+                    onBlur={field.handleBlur}
+                    onChange={field.handleChange}
+                    className="col-span-2"
+                  />
+                )}
+              </form.Field>
               <form.Field
                 name="street_number"
                 validators={{ onSubmit: createClubSchema.shape.street_number }}
@@ -404,20 +512,7 @@ export function ClubForm({
                     error={fieldErrorMessage(field.state.meta.errors)}
                     onBlur={field.handleBlur}
                     onChange={field.handleChange}
-                  />
-                )}
-              </form.Field>
-
-              <form.Field name="city" validators={{ onSubmit: createClubSchema.shape.city }}>
-                {(field) => (
-                  <ClubFormField
-                    id={field.name}
-                    label={requiredFieldLabel(t('form.fields.city'))}
-                    placeholder={t('form.fields.cityPlaceholder')}
-                    value={field.state.value}
-                    error={fieldErrorMessage(field.state.meta.errors)}
-                    onBlur={field.handleBlur}
-                    onChange={field.handleChange}
+                    className="col-span-1"
                   />
                 )}
               </form.Field>
@@ -436,6 +531,55 @@ export function ClubForm({
                 />
               )}
             </form.Field>
+
+            <form.Subscribe
+              selector={(state) => ({
+                latitude: state.values.latitude,
+                longitude: state.values.longitude,
+              })}
+            >
+              {(location) => (
+                <form.Field
+                  name="latitude"
+                  validators={{
+                    onSubmit: ({ value }) =>
+                      value === null ? t('location.coordinatesRequired') : undefined,
+                  }}
+                >
+                  {(latField) => (
+                    <form.Field
+                      name="longitude"
+                      validators={{
+                        onSubmit: ({ value }) =>
+                          value === null ? t('location.coordinatesRequired') : undefined,
+                      }}
+                    >
+                      {(lngField) => {
+                        const coordsError =
+                          fieldErrorMessage(latField.state.meta.errors) ??
+                          fieldErrorMessage(lngField.state.meta.errors)
+
+                        return (
+                          <div className="flex flex-col gap-2">
+                            <ClubLocationMap
+                              latitude={location.latitude}
+                              longitude={location.longitude}
+                              viewToken={mapViewToken}
+                              onCoordinatesChange={setCoordinatesFromMap}
+                            />
+                            {coordsError ? (
+                              <p role="alert" className={fieldErrorMessageClassName}>
+                                {coordsError}
+                              </p>
+                            ) : null}
+                          </div>
+                        )
+                      }}
+                    </form.Field>
+                  )}
+                </form.Field>
+              )}
+            </form.Subscribe>
           </FormSection>
         </div>
 

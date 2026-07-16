@@ -30,6 +30,8 @@ export type RegisteredClub = {
   state?: string
   street_number?: string
   city?: string
+  latitude?: number | null
+  longitude?: number | null
 }
 
 const clubActionIconClassName = '!size-[20px] shrink-0'

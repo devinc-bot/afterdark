@@ -98,6 +98,10 @@
     "LIST_FAILED": "No pudimos cargar los eventos. Intentá de nuevo en unos minutos.",
     "HAS_TICKETS": "No se puede eliminar un evento con entradas asociadas."
   },
+  "geo": {
+    "PROVIDER_FAILED": "No pudimos ubicar tu zona. Probá de nuevo o mové el pin.",
+    "RATE_LIMITED": "Demasiadas búsquedas. Esperá un momento e intentá de nuevo."
+  },
   "dashboard": {
     "KPI_FAILED": "No pudimos cargar los indicadores del dashboard. Intentá de nuevo en unos minutos.",
     "SALES_ANALYTICS_FAILED": "No pudimos cargar las ventas del dashboard. Intentá de nuevo en unos minutos.",
