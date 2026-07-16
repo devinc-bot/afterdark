@@ -1,48 +1,58 @@
-# Tasks — Pantallas create/edit club
+# Tasks — Pantallas create/edit club + mapa
 
-> Checklist de tareas. Marcar `[x]` al completar.
+> Checklist. Marcar `[x]` al completar.
 
 ## Spec & plan
 
-- [x] Entrevista completa (`progress.md` fases 1–5 en `done`)
-- [x] `spec.md` completo y en status `approved`
-- [x] `plan.md` revisado (fase 6)
-- [x] Entrada en `spec/constitution/roadmap.md`
+- [x] Entrevista ampliación (fases 1–5) `done`
+- [x] `spec.md` status `approved` (mapa + ajustes IP / sin autocomplete-geocode)
+- [x] `plan.md` actualizado (2026-07-16)
+- [x] `progress.md` log de ajustes post-implementación
+- [x] `roadmap.md` actualizado
 
-## Shared packages
+## packages/db
 
-- [ ] _(N/A — sin cambios en validators, types, db, api)_
+- [x] Añadir `latitude` / `longitude` nullable (`real`) en `addresses`
+- [x] Generar y aplicar migración (`0020_equal_shaman`)
+- [x] Actualizar `create-club-with-address` / `update-club-with-address`
 
-## Dashboard — constants
+## packages/validators · types · common · i18n
 
-- [ ] Agregar `clubManagementNew` y `clubManagementEdit` en `routes.ts`
-- [ ] Crear `club.copy.ts` con copy de spec
+- [x] Extender `createClubSchema` con `latitude` / `longitude`
+- [x] `ClubResponse` + `GeoIpLocateResult`
+- [x] `API_ROUTES.geo.ipLocate`
+- [x] Keys i18n (mapa, IP locate, validación coords, errores geo)
+- [x] Retirar schemas/rutas/DTOs de autocomplete y geocode
 
-## Dashboard — componentes
+## apps/api — clubs
 
-- [ ] Crear `club-form.tsx` (extraer de `dialog-form.tsx`, layout 2 columnas)
-- [ ] Crear `club-form-page-layout.tsx` (header, footer sticky)
-- [ ] Crear `club-unsaved-changes-dialog.tsx`
-- [ ] Crear `club-create-page.tsx`
-- [ ] Crear `club-edit-page.tsx` (+ estado not found)
-- [ ] Actualizar `registered-clubs.tsx` (links, quitar dialog create/edit)
-- [ ] Eliminar `dialog-form.tsx`
-- [ ] (Opcional) `club-form.mapper.ts` para mapeos de valores iniciales
+- [x] Persistir y devolver lat/lng en create / update / my-clubs
 
-## Dashboard — rutas
+## apps/api — geo
 
-- [ ] Crear `routes/_app/club-management/new.tsx`
-- [ ] Crear `routes/_app/club-management/$documentId/edit.tsx` con loader
-- [ ] Verificar `routeTree.gen.ts` regenerado vía `pnpm dev:dashboard`
+- [x] Módulo `geo` con `GET /api/geo/ip-locate` (ipquery + rate-limit + client IP)
+- [x] Retirar Photon / autocomplete / geocode
+
+## packages/ui — mapcn
+
+- [x] `@mapcn/map` en `packages/ui`
+- [x] Exportar Map / Marker desde `@afterdark/ui`
+
+## apps/dashboard
+
+- [x] `fetchIpLocation` + botón IP junto a Ciudad
+- [x] `club-location-map.tsx` (mapcn, pin click/drag, geo browser + fallback BA)
+- [x] Integrar en `club-form.tsx` (lat/lng, isDirty, FormData)
+- [x] Edit: carga con `useClubs()` en cliente (sin loader SSR)
+- [x] Retirar autocomplete UI y auto-geocode
 
 ## Calidad
 
-- [ ] `pnpm type-check`
-- [ ] `pnpm lint`
-- [ ] `pnpm format` (o pre-commit)
+- [x] Type-check (api / dashboard / packages afectados)
+- [ ] `pnpm lint` / format
 - [ ] Verificación manual según `plan.md`
-- [ ] Criterios de aceptación de `spec.md` cumplidos
+- [ ] Criterios US-7…US-9 de `spec.md`
 
 ## Cierre
 
-- [ ] Status → `done` en `spec.md` y `roadmap.md`
+- [ ] Status → `done` en `spec.md` y `roadmap.md` tras QA manual

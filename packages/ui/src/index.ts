@@ -200,3 +200,11 @@ export { useFiles, type UseFilesOptions, type UseFilesResult } from 'files-sdk/r
 export { useAutoDismiss } from './hooks/use-auto-dismiss.ts'
 export { usePageTitle } from './hooks/use-page-title.ts'
 export { useUnsavedChangesGuard } from './hooks/use-unsaved-changes-guard.ts'
+export {
+  Map,
+  MapControls,
+  MapMarker,
+  MarkerContent,
+  useMap,
+  type MapRef,
+} from './components/ui/map.tsx'

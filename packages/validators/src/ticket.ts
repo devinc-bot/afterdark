@@ -121,31 +121,21 @@ export const ticketFormSchema = z
 export type TicketFormValues = z.infer<typeof ticketFormSchema>
 
 export function parseTicketFormToCreateInput(values: TicketFormValues): CreateTicketInput {
-  try {
-    return createTicketSchema.parse(values)
-  } catch (error) {
-    console.error('[parseTicketFormToCreateInput] failed', { values, error })
-    throw error
-  }
+  return createTicketSchema.parse(values)
 }
 
 export function parseTicketFormToUpdateInput(values: TicketFormValues): UpdateTicketInput {
-  try {
-    return updateTicketSchema.parse({
-      name: values.name,
-      type: values.type,
-      price: values.price,
-      quantity: values.quantity,
-      description: values.description,
-      saleStartsAt: values.saleStartsAt,
-      saleEndsAt: values.saleEndsAt,
-      status: values.status,
-      eventId: values.eventId,
-    })
-  } catch (error) {
-    console.error('[parseTicketFormToUpdateInput] failed', { values, error })
-    throw error
-  }
+  return updateTicketSchema.parse({
+    name: values.name,
+    type: values.type,
+    price: values.price,
+    quantity: values.quantity,
+    description: values.description,
+    saleStartsAt: values.saleStartsAt,
+    saleEndsAt: values.saleEndsAt,
+    status: values.status,
+    eventId: values.eventId,
+  })
 }
 
 export const createTicketSchema = ticketBaseSchema

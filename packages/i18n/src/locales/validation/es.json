@@ -67,7 +67,15 @@
         "required": "El número de calle es requerido.",
         "invalid": "El número de calle solo puede contener números."
       },
-      "city": "La ciudad es requerida."
+      "city": "La ciudad es requerida.",
+      "latitude": {
+        "required": "Seleccioná la ubicación en el mapa.",
+        "invalid": "La latitud no es válida."
+      },
+      "longitude": {
+        "required": "Seleccioná la ubicación en el mapa.",
+        "invalid": "La longitud no es válida."
+      }
     },
     "ticket": {
       "name": "El tipo de entrada es requerido.",

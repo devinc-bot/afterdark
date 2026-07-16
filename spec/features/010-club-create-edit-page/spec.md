@@ -2,12 +2,14 @@
 
 > Entrevista guiada — [INTERVIEW.md](../../INTERVIEW.md). Estado por fase en `progress.md`.
 
-| Campo          | Valor                                            |
-| -------------- | ------------------------------------------------ |
-| **ID**         | `010-club-create-edit-page`                      |
-| **Status**     | `approved`                                       |
-| **Apps**       | `dashboard`                                      |
-| **Depende de** | `002-club-management` (API y listado existentes) |
+| Campo          | Valor                                                                |
+| -------------- | -------------------------------------------------------------------- |
+| **ID**         | `010-club-create-edit-page`                                          |
+| **Status**     | `in-progress`                                                        |
+| **Apps**       | `dashboard`, `api` (+ esquema `addresses` / validators / types)      |
+| **Depende de** | `002-club-management` (API y listado existentes)                     |
+
+> **Ampliación (2026-07-15):** mapa [mapcn](https://www.mapcn.dev/docs) en la sección de ubicación del formulario create/edit para elegir coordenadas exactas y persistirlas en `addresses`.
 
 ---
 
@@ -24,15 +26,23 @@ El dueño completa el mismo formulario (información general, imágenes, ubicaci
 
 Tras guardar con éxito: toast y vuelta a `/club-management`. Al cancelar, volver o usar el enlace _Volver_ **con cambios sin guardar**: diálogo de confirmación antes de salir.
 
+### Ampliación — ubicación en mapa
+
+En la sección **Ubicación** (create y edit), el dueño ve un mapa [mapcn](https://www.mapcn.dev/docs) (MapLibre), completa los campos de dirección a mano y coloca/ajusta un **pin** (click o arrastre). Puede usar **ubicación aproximada por IP** (botón junto a Ciudad). Al guardar, las coordenadas se persisten en `addresses`.
+
 ## Por qué
 
 El diálogo actual concentra tres secciones y 9+ campos (más hasta 5 imágenes) en un modal con scroll interno (`max-h ~ 48rem`). Eso genera mala UX, sobre todo en mobile (teclado + scroll en modal, acciones lejos del contenido).
 
-Una pantalla dedicada da más espacio, mejor jerarquía y navegación clara sin cambiar reglas de negocio ni API.
+Una pantalla dedicada da más espacio, mejor jerarquía y navegación clara.
+
+La dirección textual sola no alcanza para una ubicación exacta. El mapa con pin + ubicación por IP da precisión sin depender de proveedores de autocomplete/geocode de pago.
 
 ## Alcance
 
 ### Incluye
+
+**Pantallas create/edit (base `010`)**
 
 - Rutas TanStack Router: `new` y `$documentId/edit` bajo `/_app/club-management`.
 - Extraer formulario de `dialog-form.tsx` a componentes de página (sin `Dialog` para create/edit).
@@ -41,18 +51,30 @@ Una pantalla dedicada da más espacio, mejor jerarquía y navegación clara sin 
 - Diálogo de confirmación al salir con cambios sin guardar (create y edit).
 - Navegación desde `RegisteredClubs` vía `Link` / `useNavigate` (sin abrir modal de formulario).
 - Reutilizar mutaciones (`useCreateClub`, `useUpdateClub`), `ImagesClubForm`, validadores y envío `FormData`.
-- Edición: precargar club desde cache de `GET /api/clubs/my-clubs` (loader con `ensureQueryData`).
+- Edición: precargar club desde cache / `GET /api/clubs/my-clubs` en **cliente** (`useClubs`), no loader SSR autenticado.
 - Mantener `ClubRemoveDialog` en el listado para eliminar.
 - Constantes de rutas en `DASHBOARD_ROUTES` (patrón `newProperty` / `editProperty`).
 
+**Mapa y coordenadas (ampliación)**
+
+- Mapa mapcn en la sección Ubicación (create y edit).
+- Pin colocable por **click** en el mapa y **arrastrable**; lat/lng se actualizan al soltar.
+- Botón **ubicación por IP** junto al input Ciudad → `GET /api/geo/ip-locate` ([ipquery](https://ipquery.io/#docs)); centra el mapa y setea lat/lng (y ciudad/estado si el provider los envía).
+- Centro inicial en create (aún sin pin): **geolocalización del browser**, con **fallback** Buenos Aires si niega o falla.
+- En edit: mostrar pin en las coordenadas guardadas; si no hay coords, el dueño coloca el pin (IP, click o drag) antes de guardar.
+- Columnas `latitude` / `longitude` en `addresses` + create/update club + respuesta de `my-clubs`.
+- Coordenadas **requeridas** al enviar el formulario.
+
 ### No incluye
 
-- Cambios de API (sin `GET /clubs/:id` nuevo).
-- Cambios en validación, límites de imágenes o contratos multipart.
 - Vista de detalle de club (solo formulario).
 - Wizard multi-paso.
 - Mover eliminar club fuera del diálogo actual.
-- Cambios en `web` ni catálogo público.
+- Mapa en listado, `web` o catálogo público.
+- **Autocomplete de direcciones** y **forward geocode** (endpoints / UI eliminados).
+- Proveedores de mapas de pago (MapTiler, Google Places, etc.) — tiles CARTO free de mapcn por defecto.
+- Cambiar el layout de dos columnas de `010`.
+- Reverse geocoding que **reescriba** calle/número al **arrastrar** el pin (el drag solo ajusta lat/lng).
 
 ---
 
@@ -130,36 +152,103 @@ Una pantalla dedicada da más espacio, mejor jerarquía y navegación clara sin 
 - [ ] **Dado** cualquier viewport, **Cuando** estoy en create o edit, **Entonces** el footer con acciones está fijo al pie de la ventana (`sticky`/`fixed` con padding inferior al contenido).
 - [ ] **Dado** errores de campo al enviar, **Cuando** valido, **Entonces** se muestran con `role="alert"` y labels asociados (mismo patrón que el diálogo actual).
 
----
+### US-7: Ubicar el mapa por IP
+
+**Como** dueño de clubes  
+**Quiero** ubicar el mapa con mi zona aproximada por IP  
+**Para** no tener que buscar el punto a mano desde cero
+
+**Criterios de aceptación**
+
+- [ ] **Dado** el formulario create/edit, **Cuando** pulso el botón de ubicación por IP junto a Ciudad, **Entonces** el mapa se centra, se coloca/actualiza el pin y se setean lat/lng (y ciudad/estado si el provider los envía).
+- [ ] **Dado** que `ip-locate` falla, **Cuando** ocurre el error, **Entonces** veo un mensaje en español y puedo reintentar o colocar el pin a mano.
+
+### US-8: Ajustar precisión con el pin
+
+**Como** dueño  
+**Quiero** colocar y arrastrar el pin en el mapa  
+**Para** fijar la ubicación exacta del local
+
+**Criterios de aceptación**
+
+- [ ] **Dado** el mapa, **Cuando** hago click o arrastro el pin y suelto, **Entonces** se actualizan `latitude` / `longitude` **sin** reescribir calle ni número (el drag no reescribe texto).
+- [ ] **Dado** create sin pin aún, **Cuando** cargo la pantalla, **Entonces** el mapa intenta geolocalización del browser (o fallback Buenos Aires si falla/niega).
+- [ ] **Dado** edit con coordenadas guardadas, **Cuando** abro el formulario, **Entonces** el pin está en ese punto.
+- [ ] **Dado** edit sin coordenadas, **Cuando** abro el formulario, **Entonces** no hay pin hasta que lo coloque (IP, click o drag); al guardar hace falta pin.
+
+### US-9: Guardar coordenadas
+
+**Como** dueño  
+**Quiero** que al registrar/actualizar se guarden lat/lng  
+**Para** reutilizarlas después (mapas / producto)
+
+**Criterios de aceptación**
+
+- [ ] **Dado** formulario válido con pin, **Cuando** envío create/update, **Entonces** la petición incluye `latitude` y `longitude` y se persisten en `addresses`.
+- [ ] **Dado** que no hay coordenadas al enviar, **Cuando** valido, **Entonces** veo error de campo en español y no se envía la petición.
 
 ## Contratos
 
 ### API
 
-Sin cambios. Reutiliza endpoints de `002-club-management`:
+Reutiliza endpoints de `002-club-management` y añade campos de coordenadas. Proxy de ubicación por IP en `api` (JWT dueño).
 
-| Método  | Ruta                     | Uso                                                  |
-| ------- | ------------------------ | ---------------------------------------------------- |
-| `GET`   | `/api/clubs/my-clubs`    | Prefetch en loader de edición; resolver `documentId` |
-| `POST`  | `/api/clubs/create`      | Crear desde `/club-management/new`                   |
-| `PATCH` | `/api/clubs/:documentId` | Editar desde `/club-management/:documentId/edit`     |
+| Método  | Ruta                     | Auth      | Uso                                                              |
+| ------- | ------------------------ | --------- | ---------------------------------------------------------------- |
+| `GET`   | `/api/clubs/my-clubs`    | JWT owner | Listado / edición; responde `latitude` / `longitude` (nullable)  |
+| `POST`  | `/api/clubs/create`      | JWT owner | Crear; multipart incluye `latitude` + `longitude` **requeridos** |
+| `PATCH` | `/api/clubs/:documentId` | JWT owner | Editar; multipart incluye `latitude` + `longitude` **requeridos** |
+| `GET`   | `/api/geo/ip-locate`     | JWT owner | Ubicación aproximada por IP ([ipquery](https://ipquery.io/#docs)) |
 
-**Request create** — `multipart/form-data`: campos de `createClubSchema` + `images[]` (0–5).
+**Request create/update** — `multipart/form-data`: campos de `createClubSchema` (ampliado) + imágenes como hoy + `latitude` + `longitude`.
 
-**Request update** — `multipart/form-data`: campos de `updateClubSchema` + `keepImageIds[]` + `images[]` nuevas.
+**`createClubSchema` (delta)**
+
+```ts
+latitude: z.coerce.number().min(-90).max(90)
+longitude: z.coerce.number().min(-180).max(180)
+```
+
+**`ClubResponse` (delta)**
+
+```ts
+latitude: number | null
+longitude: number | null
+```
+
+**`GeoIpLocateResult` (sketch)**
+
+```ts
+{
+  latitude: number
+  longitude: number
+  city?: string
+  state?: string
+  country?: string
+}
+```
 
 **Errores (mensaje al usuario en español)**
 
-| HTTP | Cuándo                                | Mensaje                              |
-| ---- | ------------------------------------- | ------------------------------------ |
-| 400  | Validación / imágenes / IDs inválidos | Mensaje de API                       |
-| 401  | Sin sesión                            | Redirigir a login (`_app`)           |
-| 404  | Club no encontrado (PATCH)            | _No encontramos el club solicitado._ |
-| 500  | Fallo create/update/upload            | Fallbacks actuales del dashboard     |
+| HTTP | Cuándo                               | Mensaje                                                          |
+| ---- | ------------------------------------ | ---------------------------------------------------------------- |
+| 400  | Validación / imágenes / IDs / coords | Mensaje de API / validación i18n                                 |
+| 401  | Sin sesión                           | Redirigir a login (`_app`)                                       |
+| 404  | Club no encontrado (PATCH)           | _No encontramos el club solicitado._                             |
+| 429  | Rate-limit geo                       | _Demasiadas búsquedas. Esperá un momento e intentá de nuevo._    |
+| 502  | Fallo del proveedor IP               | _No pudimos ubicar tu zona. Probá de nuevo o mové el pin._       |
+| 500  | Fallo create/update/upload           | Fallbacks actuales del dashboard                                 |
 
 ### Datos
 
-Sin migraciones ni cambios de esquema.
+| Tabla / campo         | Cambio                                                                  |
+| --------------------- | ----------------------------------------------------------------------- |
+| `addresses.latitude`  | Columna nueva, tipo numérico (`real`), **nullable** (clubes existentes) |
+| `addresses.longitude` | Idem                                                                    |
+
+- Create/update: lat/lng obligatorios en request y persistidos.
+- Filas antiguas: `null` hasta que el dueño edite y guarde con pin.
+- Migración Drizzle; repositories create/update + mappers.
 
 ### UI (`dashboard`)
 
@@ -177,6 +266,9 @@ Sin migraciones ni cambios de esquema.
 ├───────────────────────┬──────────────────────────┤
 │ Información general   │ Imágenes                 │
 │ Ubicación             │ (dropzone + previews)    │
+│  [ciudad] [IP btn]    │                          │
+│  [campos dirección]   │                          │
+│  [mapa mapcn + pin]   │                          │
 ├───────────────────────┴──────────────────────────┤
 │              Cancelar  |  Registrar/Actualizar   │  ← sticky footer
 └──────────────────────────────────────────────────┘
@@ -184,52 +276,41 @@ Sin migraciones ni cambios de esquema.
 
 **Componentes**
 
-| Componente                        | Responsabilidad                                                           |
-| --------------------------------- | ------------------------------------------------------------------------- |
-| `club-form.tsx`                   | Formulario compartido (`@tanstack/react-form`, secciones, submit handler) |
-| `club-form-page-layout.tsx`       | Header, grid 2 cols, footer sticky, slot para form                        |
-| `club-unsaved-changes-dialog.tsx` | `AlertDialog` al salir con `isDirty`                                      |
-| `club-create-page.tsx`            | Orquestación modo create                                                  |
-| `club-edit-page.tsx`              | Resolver club por `documentId`, modo edit                                 |
-| `images-club-form.tsx`            | Sin cambios funcionales                                                   |
-| `registered-clubs.tsx`            | `Link` a rutas; quitar `ClubDialogForm`                                   |
+| Componente                        | Responsabilidad                                              |
+| --------------------------------- | ------------------------------------------------------------ |
+| `club-form.tsx`                   | Formulario; ubicación + botón IP + mapa                      |
+| `club-location-map.tsx`           | mapcn: centro, click-to-pin, pin arrastrable, geo browser    |
+| `club-form-page-layout.tsx`       | Header, grid 2 cols, footer sticky, slot para form           |
+| `club-unsaved-changes-dialog.tsx` | `AlertDialog` al salir con `isDirty`                         |
+| `club-create-view.tsx`            | Orquestación modo create                                     |
+| `club-edit-view.tsx`              | Modo edit; club resuelto en ruta con `useClubs()` (cliente)  |
+| `images-club-form.tsx`            | Sin cambios funcionales                                      |
+| `registered-clubs.tsx`            | `Link` / navigate a rutas                                    |
 
-**Loader edición**
+**Carga edición (cliente)**
 
 ```ts
-loader: ({ context: { queryClient }, params }) =>
-  queryClient.ensureQueryData(clubsQueryOptions()).then((clubs) => {
-    const club = clubs.find((c) => c.documentId === params.documentId)
-    if (!club) throw notFound() // o componente dedicado
-    return club
-  })
+// routes/.../$documentId/edit.tsx — sin loader SSR autenticado
+const { data: clubs, isLoading, isError } = useClubs()
+const club = clubs?.find((c) => c.documentId === documentId)
 ```
 
-**Copy (español)**
+**Copy (español) — ubicación (delta)**
 
-| Contexto                    | Texto                                                                      |
-| --------------------------- | -------------------------------------------------------------------------- |
-| Volver                      | `Volver a clubes`                                                          |
-| Título crear                | `Añadir nuevo club`                                                        |
-| Descripción crear           | `Completá los datos para registrar un club en la plataforma.`              |
-| Título editar               | `Editar club`                                                              |
-| Descripción editar          | `Actualizá la información del club. Los cambios se reflejan de inmediato.` |
-| Cancelar                    | `Cancelar`                                                                 |
-| CTA crear                   | `Registrar club` / pendiente `Registrando…`                                |
-| CTA editar                  | `Actualizar club` / pendiente `Actualizando…`                              |
-| Toast éxito crear           | `Club registrado correctamente`                                            |
-| Toast éxito editar          | `Club actualizado correctamente`                                           |
-| Club no encontrado          | `No encontramos el club que querés editar.`                                |
-| Diálogo salir — título      | `¿Salir sin guardar?`                                                      |
-| Diálogo salir — descripción | `Tenés cambios sin guardar. Si salís ahora, se perderán.`                  |
-| Diálogo salir — quedarse    | `Seguir editando`                                                          |
-| Diálogo salir — confirmar   | `Salir sin guardar`                                                        |
+| Contexto              | Texto                                                                    |
+| --------------------- | ------------------------------------------------------------------------ |
+| Hint mapa             | `Arrastrá el pin para ajustar la ubicación exacta.`                      |
+| Lat/lng faltantes     | `Seleccioná la ubicación en el mapa.`                                    |
+| Botón IP              | `Ubicarme por IP`                                                        |
+| IP cargando           | `Ubicando…`                                                              |
+| Error IP              | `No pudimos ubicar tu zona por IP. Probá de nuevo o mové el pin.`        |
 
-**Rutas tipadas (`DASHBOARD_ROUTES`)**
+Lat/lng **no** se muestran como inputs (solo mapa + campos hidden). Geolocalización denegada: fallback de centro sin modal.
+
+**Constantes API (`API_ROUTES`) — delta geo**
 
 ```ts
-clubManagementNew: () => '/club-management/new'
-clubManagementEdit: (documentId: string) => `/club-management/${documentId}/edit`
+geo: { ipLocate: '/geo/ip-locate' }
 ```
 
 ---
@@ -239,10 +320,15 @@ clubManagementEdit: (documentId: string) => `/club-management/${documentId}/edit
 - Misma validación que hoy: `createClubSchema` al enviar; máximo `CLUB_IMAGE_MAX_COUNT` (5) imágenes totales en edición (conservadas + nuevas).
 - Solo dueños autenticados bajo `_app`.
 - En edición solo clubes presentes en `my-clubs` del dueño actual.
-- `isDirty` incluye cambios en campos de texto, estado, imágenes nuevas y eliminación de imágenes existentes en UI.
+- `isDirty` incluye cambios en campos de texto, estado, imágenes nuevas, eliminación de imágenes existentes **y** cambios de pin / `latitude` / `longitude`.
 - Tras create/update exitoso: invalidar query de clubes (mutaciones actuales) y navegar al listado.
 - Eliminar club permanece en el listado con `ClubRemoveDialog`.
+- Arrastrar / click del pin **no** reescribe calle ni número (solo lat/lng).
+- Ubicación por IP setea lat/lng y puede rellenar ciudad/estado si el provider los envía.
+- Create y edit: sin coordenadas no se puede enviar; mensaje _Seleccioná la ubicación en el mapa._
+- Edit de club sin coords históricas: se puede abrir el form; al guardar hace falta pin (IP, click o arrastre).
+- `ip-locate` solo vía proxy del backend; rate-limit por cuenta.
 
 ## Preguntas abiertas
 
-- Ninguna bloqueante para implementar (copy de confirmación definido arriba).
+- Ninguna bloqueante. QA manual pendiente para marcar feature `done`.

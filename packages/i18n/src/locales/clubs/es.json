@@ -46,7 +46,15 @@
     "imagesTitle": "Imágenes",
     "imagesDescription": "Fotos del local que se mostrarán en la plataforma. Podés subir hasta 5 imágenes.",
     "locationTitle": "Ubicación",
-    "locationDescription": "Dirección física del local para operaciones y referencias internas."
+    "locationDescription": "Dirección física del local. Completá los datos y ajustá el pin en el mapa."
+  },
+  "location": {
+    "mapHint": "Arrastrá el pin para ajustar la ubicación exacta.",
+    "mapLoading": "Cargando mapa…",
+    "coordinatesRequired": "Seleccioná la ubicación en el mapa.",
+    "ipLocate": "Ubicarme por IP",
+    "ipLocateLoading": "Ubicando…",
+    "ipLocateError": "No pudimos ubicar tu zona por IP. Probá de nuevo o mové el pin."
   },
   "unsaved": {
     "title": "¿Salir sin guardar?",
