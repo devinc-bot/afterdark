@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { Link, Toaster } from '@afterdark/ui'
 import { I18nProvider } from '@afterdark/i18n/client'
 import { installZodI18n } from '@afterdark/i18n'
-import dashboardEs from '@afterdark/i18n/locales/dashboard/es.json'
+import commonEs from '@afterdark/i18n/locales/common/es.json'
 import { ErrorBoundaryView } from '~/modules/common/components/error-boundary-view'
 import globalsCssUrl from '@afterdark/ui/globals.css?url'
 import { DASHBOARD_ROUTES } from '~/modules/common/constants/routes'
@@ -19,7 +19,7 @@ export const Route = createRootRouteWithContext<RouterContext>()({
     meta: [
       { charSet: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { title: dashboardEs.brand.metaTitle },
+      { title: `${commonEs.appNameDisplay} · Panel` },
     ],
     links: [{ rel: 'stylesheet', href: globalsCssUrl }],
   }),

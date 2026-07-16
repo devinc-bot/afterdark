@@ -2,7 +2,7 @@
   "page": {
     "title": "Staff management",
     "description": "Manage team permissions and access to ticket control in active clubs.",
-    "metaTitle": "Staff management · afterdark Admin"
+    "metaTitle": "Staff management · {appNameAdmin}"
   },
   "form": {
     "title": "Invite team member",
@@ -41,7 +41,7 @@
     "close": "Close",
     "pending": "Pending invitation",
     "accept": {
-      "metaTitle": "Activate access · afterdark Admin",
+      "metaTitle": "Activate access · {appNameAdmin}",
       "title": "Activate your access",
       "description": "Complete the form to create your account. Use the security word you agreed on with your administrator, if applicable.",
       "invitedAs": "Invited email",

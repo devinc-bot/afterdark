@@ -2,7 +2,7 @@
   "page": {
     "title": "Gestión de tickets",
     "description": "Administrá los tipos de entrada, precios, disponibilidad y estado de venta por club.",
-    "metaTitle": "Gestión de tickets · afterdark Admin"
+    "metaTitle": "Gestión de tickets · {appNameAdmin}"
   },
   "tabs": {
     "active": "Activos",

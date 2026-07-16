@@ -1,6 +1,15 @@
 import type { InitOptions } from 'i18next'
 import { DEFAULT_LANGUAGE, FALLBACK_LANGUAGE, LANGUAGE } from './languages.ts'
 import { ALL_NAMESPACES, DEFAULT_NAMESPACE } from './namespaces.ts'
+import commonEn from '../locales/common/en.json' with { type: 'json' }
+
+/** Brand vars injected into every `t()` call (ICU). Source of truth: common locale. */
+export const APP_BRAND_VARS = {
+  appName: commonEn.appName,
+  appNameDisplay: commonEn.appNameDisplay,
+  appNameUpper: commonEn.appNameUpper,
+  appNameAdmin: commonEn.appNameAdmin,
+} as const
 
 export const BASE_I18N_OPTIONS: InitOptions = {
   fallbackLng: FALLBACK_LANGUAGE,
@@ -9,6 +18,7 @@ export const BASE_I18N_OPTIONS: InitOptions = {
   supportedLngs: [LANGUAGE.ES, LANGUAGE.EN],
   interpolation: {
     escapeValue: false,
+    defaultVariables: { ...APP_BRAND_VARS },
   },
   react: {
     useSuspense: true,

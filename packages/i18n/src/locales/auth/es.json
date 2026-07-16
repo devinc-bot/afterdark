@@ -4,8 +4,8 @@
     "register": "Registrarse"
   },
   "login": {
-    "metaTitle": "Iniciar sesión · afterdark Admin",
-    "metaTitleWeb": "Iniciar sesión · afterdark",
+    "metaTitle": "Iniciar sesión · {appNameAdmin}",
+    "metaTitleWeb": "Iniciar sesión · {appName}",
     "title": "Iniciar sesión",
     "subtitle": "Accedé a tu cuenta para gestionar tus entradas.",
     "createAccount": "Crear cuenta",
@@ -24,8 +24,8 @@
     }
   },
   "forgotPassword": {
-    "metaTitle": "Recuperar contraseña · afterdark Admin",
-    "metaTitleWeb": "Recuperar contraseña · afterdark",
+    "metaTitle": "Recuperar contraseña · {appNameAdmin}",
+    "metaTitleWeb": "Recuperar contraseña · {appName}",
     "title": "Recuperar contraseña",
     "description": "Ingresá tu email y te enviamos un enlace para restablecer la contraseña.",
     "email": "Correo",
@@ -41,8 +41,8 @@
     }
   },
   "resetPassword": {
-    "metaTitle": "Nueva contraseña · afterdark Admin",
-    "metaTitleWeb": "Nueva contraseña · afterdark",
+    "metaTitle": "Nueva contraseña · {appNameAdmin}",
+    "metaTitleWeb": "Nueva contraseña · {appName}",
     "title": "Nueva contraseña",
     "description": "Elegí una contraseña nueva para tu cuenta.",
     "password": "Contraseña",
@@ -61,10 +61,10 @@
   },
 
   "register": {
-    "metaTitle": "Crear cuenta · afterdark Admin",
-    "metaTitleWeb": "Crear cuenta · afterdark",
+    "metaTitle": "Crear cuenta · {appNameAdmin}",
+    "metaTitleWeb": "Crear cuenta · {appName}",
     "title": "Crear cuenta",
-    "subtitle": "Unite a afterdark y empezá a descubrir la noche.",
+    "subtitle": "Unite a {appName} y empezá a descubrir la noche.",
     "success": "Cuenta creada. Ya podés iniciar sesión.",
     "signIn": "Iniciar sesión",
     "name": "Nombre",

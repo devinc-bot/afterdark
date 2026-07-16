@@ -1,6 +1,7 @@
 import { HeadContent, Outlet, Scripts, createRootRouteWithContext } from '@tanstack/react-router'
 import { QueryClientProvider, type QueryClient } from '@tanstack/react-query'
 import { I18nProvider } from '@afterdark/i18n/client'
+import commonEs from '@afterdark/i18n/locales/common/es.json'
 import { Toaster } from '@afterdark/ui'
 import globalsCssUrl from '@afterdark/ui/globals.css?url'
 
@@ -13,7 +14,7 @@ export const Route = createRootRouteWithContext<RouterContext>()({
     meta: [
       { charSet: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { title: 'afterdark' },
+      { title: commonEs.appName },
     ],
     links: [{ rel: 'stylesheet', href: globalsCssUrl }],
   }),

@@ -2,7 +2,7 @@
   "page": {
     "title": "Sales",
     "description": "Completed purchase history for your clubs.",
-    "metaTitle": "Sales · afterdark Admin"
+    "metaTitle": "Sales · {appNameAdmin}"
   },
   "filters": {
     "club": "Club",

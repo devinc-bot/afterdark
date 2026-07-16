@@ -2,7 +2,7 @@
   "page": {
     "title": "Ticket management",
     "description": "Manage ticket types, prices, availability and sale status per club.",
-    "metaTitle": "Ticket management · afterdark Admin"
+    "metaTitle": "Ticket management · {appNameAdmin}"
   },
   "tabs": {
     "active": "Active",
