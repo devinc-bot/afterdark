@@ -1,8 +1,8 @@
 {
   "brand": {
-    "logo": "AFTERDARK",
+    "logo": "{appNameUpper}",
     "subtitle": "Panel operativo",
-    "metaTitle": "Afterdark · Panel"
+    "metaTitle": "{appNameDisplay} · Panel"
   },
   "nav": {
     "panel": "Panel",
@@ -35,7 +35,7 @@
   },
   "shell": {
     "tagline": "Panel de administración para locales y eventos",
-    "footer": "© afterdark",
+    "footer": "© {appName}",
     "loading": "Cargando…"
   },
   "notFound": {
@@ -52,7 +52,7 @@
   },
   "pages": {
     "panel": {
-      "metaTitle": "Panel · afterdark Admin",
+      "metaTitle": "Panel · {appNameAdmin}",
       "title": "Panel",
       "description": "Resumen de operaciones del día: clubes, entradas y actividad reciente.",
       "period": {
@@ -77,7 +77,7 @@
         "error": "No pudimos cargar el gráfico. Intentá de nuevo."
       },
       "staff": {
-        "metaTitle": "Panel · afterdark Admin",
+        "metaTitle": "Panel · {appNameAdmin}",
         "description": "Consultá asistentes y escaneá entradas en la puerta.",
         "scan": "Escanear",
         "table": {

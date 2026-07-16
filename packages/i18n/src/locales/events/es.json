@@ -2,7 +2,7 @@
   "page": {
     "title": "Gestión de eventos",
     "description": "Creá y consultá los eventos de tus clubes.",
-    "metaTitle": "Gestión de eventos · afterdark Admin"
+    "metaTitle": "Gestión de eventos · {appNameAdmin}"
   },
   "form": {
     "trigger": "Crear evento",

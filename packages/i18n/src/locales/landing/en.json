@@ -1,8 +1,8 @@
 {
-  "metaTitle": "afterdark · nightlife events",
+  "metaTitle": "{appName} · nightlife events",
   "skipToContent": "Skip to content",
   "nav": {
-    "brand": "afterdark",
+    "brand": "{appName}",
     "ariaLabel": "Primary",
     "login": "Sign in",
     "register": "Create account",
@@ -21,7 +21,7 @@
   },
   "about": {
     "headline": "The platform that makes the night clear.",
-    "body": "Afterdark connects clubs and audiences in one experience: real events, unambiguous tickets, and an interface that feels the night without dressing it up as a flyer.",
+    "body": "{appNameDisplay} connects clubs and audiences in one experience: real events, unambiguous tickets, and an interface that feels the night without dressing it up as a flyer.",
     "imageAlt": "Lit stage during a live show"
   },
   "how": {
@@ -72,6 +72,6 @@
   },
   "footer": {
     "tagline": "Nightlife events, with precision.",
-    "rights": "© {year} afterdark"
+    "rights": "© {year} {appName}"
   }
 }

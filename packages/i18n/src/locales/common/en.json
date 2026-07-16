@@ -1,4 +1,8 @@
 {
+  "appName": "afterdark",
+  "appNameDisplay": "Afterdark",
+  "appNameUpper": "AFTERDARK",
+  "appNameAdmin": "afterdark Admin",
   "save": "Save",
   "cancel": "Cancel",
   "delete": "Delete",

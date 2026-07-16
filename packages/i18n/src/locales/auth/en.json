@@ -4,8 +4,8 @@
     "register": "Register"
   },
   "login": {
-    "metaTitle": "Sign in · afterdark Admin",
-    "metaTitleWeb": "Sign in · afterdark",
+    "metaTitle": "Sign in · {appNameAdmin}",
+    "metaTitleWeb": "Sign in · {appName}",
     "title": "Sign in",
     "subtitle": "Sign in to manage your tickets.",
     "createAccount": "Create account",
@@ -24,8 +24,8 @@
     }
   },
   "forgotPassword": {
-    "metaTitle": "Recover password · afterdark Admin",
-    "metaTitleWeb": "Recover password · afterdark",
+    "metaTitle": "Recover password · {appNameAdmin}",
+    "metaTitleWeb": "Recover password · {appName}",
     "title": "Recover password",
     "description": "Enter your email and we'll send you a link to reset your password.",
     "email": "Email",
@@ -41,8 +41,8 @@
     }
   },
   "resetPassword": {
-    "metaTitle": "New password · afterdark Admin",
-    "metaTitleWeb": "New password · afterdark",
+    "metaTitle": "New password · {appNameAdmin}",
+    "metaTitleWeb": "New password · {appName}",
     "title": "New password",
     "description": "Choose a new password for your account.",
     "password": "Password",
@@ -61,10 +61,10 @@
   },
 
   "register": {
-    "metaTitle": "Create account · afterdark Admin",
-    "metaTitleWeb": "Create account · afterdark",
+    "metaTitle": "Create account · {appNameAdmin}",
+    "metaTitleWeb": "Create account · {appName}",
     "title": "Create account",
-    "subtitle": "Join afterdark and start discovering the night.",
+    "subtitle": "Join {appName} and start discovering the night.",
     "success": "Account created. You can now sign in.",
     "signIn": "Sign in",
     "name": "First name",

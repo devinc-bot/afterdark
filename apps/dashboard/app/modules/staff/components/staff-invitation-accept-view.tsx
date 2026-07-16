@@ -29,6 +29,7 @@ type StaffInvitationAcceptViewProps = {
 
 export function StaffInvitationAcceptView({ invitation, token }: StaffInvitationAcceptViewProps) {
   const { t } = useTranslation('staff')
+  const { t: tCommon } = useTranslation('common')
   const { t: tValidation } = useTranslation('validation', { useSuspense: false })
   const navigate = useNavigate()
 
@@ -84,7 +85,7 @@ export function StaffInvitationAcceptView({ invitation, token }: StaffInvitation
           to={DASHBOARD_ROUTES.login()}
           className="text-lg tracking-tight text-ink transition-colors duration-150 hover:text-primary"
         >
-          Afterdark
+          {tCommon('appNameDisplay')}
         </Link>
       </header>
 

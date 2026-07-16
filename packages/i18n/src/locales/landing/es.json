@@ -1,8 +1,8 @@
 {
-  "metaTitle": "afterdark · eventos nocturnos",
+  "metaTitle": "{appName} · eventos nocturnos",
   "skipToContent": "Ir al contenido",
   "nav": {
-    "brand": "afterdark",
+    "brand": "{appName}",
     "ariaLabel": "Principal",
     "login": "Iniciar sesión",
     "register": "Crear cuenta",
@@ -21,7 +21,7 @@
   },
   "about": {
     "headline": "La plataforma que deja la noche en claro.",
-    "body": "Afterdark une clubes y público en una sola experiencia: eventos reales, entradas sin ambigüedad y una interfaz que siente la noche sin disfrazarla de flyer.",
+    "body": "{appNameDisplay} une clubes y público en una sola experiencia: eventos reales, entradas sin ambigüedad y una interfaz que siente la noche sin disfrazarla de flyer.",
     "imageAlt": "Escenario iluminado durante un show en vivo"
   },
   "how": {
@@ -72,6 +72,6 @@
   },
   "footer": {
     "tagline": "Eventos nocturnos, con precisión.",
-    "rights": "© {year} afterdark"
+    "rights": "© {year} {appName}"
   }
 }
