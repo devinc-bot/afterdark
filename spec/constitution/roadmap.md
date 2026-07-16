@@ -29,6 +29,7 @@
 | 022 | `google-auth`                      | Registro e inicio de sesión con Google | `in-progress` | `api`, `web`, `dashboard` | OAuth Google para cliente (`web`) y dueño (`dashboard`). Botón «Continuar con Google» en login/registro. `accounts.provider` local/google. Depende de `001`. Ver `spec/features/022-google-auth/`.                                                                                                                                                                                                                                           |
 | 023 | `web-landing`                      | Landing web                            | `in-progress` | `web`                     | Nav de landing según sesión: guest (Cómo funciona / Noches + Login/Register) vs autenticado (Eventos / Tickets + avatar; sin CTAs auth). Depende de `001`. Ver `spec/features/023-web-landing/`.                                                                                                                                                                                                                                              |
 | 024 | `owner-ticket-sales`               | Ventas de tickets (historial dueño)    | `approved`    | `api`, `dashboard`        | Sidebar “Ventas”: listado de compras (comprador, fecha, evento, ticket…). Depende de tickets/orders. Ver `spec/features/024-owner-ticket-sales/`.                                                                                                                                                                                                                                                                                             |
+| 025 | `orm-settings`                     | Configuración del ORM (Drizzle)        | `done`        | `db`                      | Prefijo `timestamp` en migraciones nuevas (`drizzle.config.ts`); existentes `0000`…`0020` intactas. Ver `spec/features/025-orm-settings/`.                                                                                                                                                                                                                                                                                                    |
 
 ## Status
 
@@ -68,6 +69,7 @@
 022-google-auth                      →  requiere 001 (auth-sessions)
 023-web-landing                      →  requiere 001 (auth-sessions)
 024-owner-ticket-sales               →  requiere 006 (tickets), orders/tickets_sold
+025-orm-settings                     →  (sin deps; infra DX en packages/db)
 ```
 
 ## Decisiones de prioridad

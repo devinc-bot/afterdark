@@ -30,4 +30,7 @@ export default {
   out: './src/migrations',
   dialect: getDialect(isProduction),
   dbCredentials: getDbCredentials(isProduction),
+  migrations: {
+    prefix: 'timestamp',
+  },
 } satisfies Config
