@@ -46,6 +46,8 @@ export async function updateClubWithAddress(
         streetNumber: input.streetNumber,
         state: input.state,
         city: input.city,
+        latitude: input.latitude,
+        longitude: input.longitude,
         updatedAt: now,
       })
       .where(eq(addresses.id, link.addressId))

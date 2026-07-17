@@ -12,6 +12,8 @@ export function clubResponseToFormValues(club: ClubResponse): Partial<ClubFormVa
     state: club.state,
     street_number: club.streetNumber,
     city: club.city,
+    latitude: club.latitude,
+    longitude: club.longitude,
     existingImages: club.images,
     clubImg: [],
   }
@@ -27,6 +29,8 @@ export function registeredClubToFormValues(club: RegisteredClub): Partial<ClubFo
     state: club.state ?? '',
     street_number: club.street_number ?? '',
     city: club.city ?? '',
+    latitude: club.latitude ?? null,
+    longitude: club.longitude ?? null,
     existingImages: club.images,
     clubImg: [],
   }
@@ -42,7 +46,9 @@ export function snapshotClubFormValues(values: ClubFormValues): string {
     state: values.state,
     street_number: values.street_number,
     city: values.city,
-    existingImageIds: [...values.existingImages.map((image) => image.documentId)].sort(),
+    latitude: values.latitude,
+    longitude: values.longitude,
+    existingImageIds: values.existingImages.map((image) => image.documentId).toSorted(),
     newImages: values.clubImg.map((file) => `${file.name}:${file.size}:${file.lastModified}`),
   })
 }

@@ -25,6 +25,8 @@ export function toClubResponse(
     streetNumber: address.streetNumber,
     state: address.state,
     city: address.city,
+    latitude: address.latitude ?? null,
+    longitude: address.longitude ?? null,
     images,
     createdAt: club.createdAt,
     updatedAt: club.updatedAt,
@@ -41,6 +43,8 @@ export function toClubUpsertInput(input: CreateClubInput | UpdateClubInput) {
     streetNumber: input.street_number,
     state: input.state,
     city: input.city,
+    latitude: input.latitude,
+    longitude: input.longitude,
   }
 }
 

@@ -2,7 +2,7 @@
   "page": {
     "title": "Gestión de personal",
     "description": "Administrá permisos del equipo y el acceso al control de entradas en los clubes activos.",
-    "metaTitle": "Gestión de personal · afterdark Admin"
+    "metaTitle": "Gestión de personal · {appNameAdmin}"
   },
   "form": {
     "title": "Invitar personal del equipo",
@@ -41,7 +41,7 @@
     "close": "Cerrar",
     "pending": "Invitación pendiente",
     "accept": {
-      "metaTitle": "Activar acceso · afterdark Admin",
+      "metaTitle": "Activar acceso · {appNameAdmin}",
       "title": "Activá tu acceso",
       "description": "Completá el formulario para crear tu cuenta. Usá la palabra de seguridad que acordaste con tu administrador, si corresponde.",
       "invitedAs": "Correo invitado",

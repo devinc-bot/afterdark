@@ -1,8 +1,8 @@
 {
-  "metaTitle": "afterdark · nightlife events",
+  "metaTitle": "{appName} · nightlife events",
   "skipToContent": "Skip to content",
   "nav": {
-    "brand": "afterdark",
+    "brand": "{appName}",
     "ariaLabel": "Primary",
     "login": "Sign in",
     "register": "Create account",

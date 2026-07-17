@@ -15,13 +15,7 @@ export class CreateTicketUseCase {
     try {
       const row = await createTicket(toTicketUpsertInput(input, eventId))
       return toTicketResponse(row.ticket, row.event, row.club)
-    } catch (error) {
-      console.error('[CreateTicketUseCase] create failed', {
-        ownerDocumentId,
-        input,
-        eventId,
-        error,
-      })
+    } catch {
       throw new InternalServerErrorException(this.ts.translateError('ticket.CREATE_FAILED'))
     }
   }

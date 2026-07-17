@@ -2,7 +2,7 @@
   "page": {
     "title": "Event management",
     "description": "Create and review events for your clubs.",
-    "metaTitle": "Event management · afterdark Admin"
+    "metaTitle": "Event management · {appNameAdmin}"
   },
   "form": {
     "trigger": "Create event",

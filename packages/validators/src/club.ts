@@ -21,6 +21,33 @@ function nonNegativeDigitsField(requiredKey: string, invalidKey: string) {
   return z.string().min(1, requiredKey).regex(/^\d+$/, invalidKey)
 }
 
+function coordinateField(requiredKey: string, invalidKey: string, min: number, max: number) {
+  return z.preprocess(
+    (value) => {
+      if (value === '' || value === null || value === undefined) {
+        return undefined
+      }
+
+      if (typeof value === 'number') {
+        return Number.isFinite(value) ? value : undefined
+      }
+
+      if (typeof value === 'string') {
+        const trimmed = value.trim()
+        if (!trimmed) {
+          return undefined
+        }
+
+        const parsed = Number(trimmed)
+        return Number.isFinite(parsed) ? parsed : undefined
+      }
+
+      return undefined
+    },
+    z.number({ error: requiredKey }).min(min, invalidKey).max(max, invalidKey)
+  )
+}
+
 export const clubStatusSchema = z.enum([CLUB_STATUS.ACTIVE, CLUB_STATUS.INACTIVE])
 
 export const createClubSchema = z.object({
@@ -38,6 +65,18 @@ export const createClubSchema = z.object({
     'validation:field.club.streetNumber.invalid'
   ),
   city: z.string().min(1, 'validation:field.club.city'),
+  latitude: coordinateField(
+    'validation:field.club.latitude.required',
+    'validation:field.club.latitude.invalid',
+    -90,
+    90
+  ),
+  longitude: coordinateField(
+    'validation:field.club.longitude.required',
+    'validation:field.club.longitude.invalid',
+    -180,
+    180
+  ),
 })
 export type CreateClubInput = z.infer<typeof createClubSchema>
 

@@ -31,6 +31,8 @@ export async function createClubWithAddress(
         streetNumber: input.streetNumber,
         state: input.state,
         city: input.city,
+        latitude: input.latitude,
+        longitude: input.longitude,
       })
       .returning()
 

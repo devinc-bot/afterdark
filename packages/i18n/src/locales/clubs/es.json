@@ -1,6 +1,6 @@
 {
   "listPage": {
-    "metaTitle": "Clubes · afterdark Admin",
+    "metaTitle": "Clubes · {appNameAdmin}",
     "title": "Clubes",
     "description": "Gestioná los clubes registrados, su estado operativo y la información publicada en la plataforma."
   },
@@ -21,11 +21,11 @@
   "formPage": {
     "back": "Volver a clubes",
     "cancel": "Cancelar",
-    "createMetaTitle": "Añadir nuevo club · afterdark Admin",
+    "createMetaTitle": "Añadir nuevo club · {appNameAdmin}",
     "createTitle": "Añadir nuevo club",
     "createDescription": "Completá los datos para registrar un club en la plataforma.",
     "requiredFieldsHint": "Los campos marcados con * son obligatorios.",
-    "editMetaTitle": "Editar club · afterdark Admin",
+    "editMetaTitle": "Editar club · {appNameAdmin}",
     "editTitle": "Editar club",
     "editDescription": "Actualizá la información del club. Los cambios se reflejan de inmediato.",
     "submitCreate": "Registrar club",
@@ -46,7 +46,15 @@
     "imagesTitle": "Imágenes",
     "imagesDescription": "Fotos del local que se mostrarán en la plataforma. Podés subir hasta 5 imágenes.",
     "locationTitle": "Ubicación",
-    "locationDescription": "Dirección física del local para operaciones y referencias internas."
+    "locationDescription": "Dirección física del local. Completá los datos y ajustá el pin en el mapa."
+  },
+  "location": {
+    "mapHint": "Arrastrá el pin para ajustar la ubicación exacta.",
+    "mapLoading": "Cargando mapa…",
+    "coordinatesRequired": "Seleccioná la ubicación en el mapa.",
+    "ipLocate": "Ubicarme por IP",
+    "ipLocateLoading": "Ubicando…",
+    "ipLocateError": "No pudimos ubicar tu zona por IP. Probá de nuevo o mové el pin."
   },
   "unsaved": {
     "title": "¿Salir sin guardar?",

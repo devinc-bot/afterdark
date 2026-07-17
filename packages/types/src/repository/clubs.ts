@@ -11,6 +11,8 @@ export type ClubAddressInput = {
   streetNumber: string
   state: string
   city: string
+  latitude: number
+  longitude: number
 }
 
 export type ClubUpsertInput = {

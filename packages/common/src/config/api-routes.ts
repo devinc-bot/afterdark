@@ -8,6 +8,7 @@ export const API_STAFF_PREFIX = '/staff' as const
 export const API_INVITATIONS_PREFIX = '/invitations' as const
 export const API_TICKETS_PREFIX = '/tickets' as const
 export const API_EVENTS_PREFIX = '/events' as const
+export const API_GEO_PREFIX = '/geo' as const
 export const API_HEALTH_PREFIX = '/health' as const
 export const API_DASHBOARD_PREFIX = '/dashboard' as const
 const routeSegment = (value: string) => (value.startsWith(':') ? value : encodeURIComponent(value))
@@ -45,6 +46,12 @@ export const API_ROUTES = {
       create: () => '/create' as const,
       update: (documentId: string) => `/${documentId}` as const,
       delete: (documentId: string) => `/${documentId}` as const,
+    },
+  },
+  geo: {
+    prefix: API_GEO_PREFIX,
+    path: {
+      ipLocate: () => '/ip-locate' as const,
     },
   },
   staff: {

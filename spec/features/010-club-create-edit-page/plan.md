@@ -1,115 +1,96 @@
-# Plan de implementación — Pantallas create/edit club
+# Plan de implementación — Pantallas create/edit club + mapa
 
-> Complementa [spec.md](./spec.md). Status spec: `approved`.
+> Complementa [spec.md](./spec.md). Status spec: `approved` / implementación `in-progress`.
 
-## Orden de capas
+## Estado
 
-```text
-1. apps/dashboard — constants (DASHBOARD_ROUTES, CLUB_COPY)
-2. apps/dashboard — extraer club-form + layout + unsaved dialog
-3. apps/dashboard — rutas new + edit (loaders)
-4. apps/dashboard — registered-clubs (navegación, quitar dialog-form)
-5. apps/dashboard — eliminar dialog-form.tsx
-6. pnpm dev:dashboard → codegen routeTree.gen.ts
-```
+Base create/edit + mapa + lat/lng + **ip-locate** implementados. **Sin** autocomplete ni forward geocode (retirados por pedido del usuario, 2026-07-16).
 
-Sin cambios en `@afterdark/validators`, `@afterdark/types`, `packages/db` ni `apps/api`.
-
-## Archivos a crear / modificar
-
-### Dashboard — constants
-
-| Archivo                                              | Cambio                                                         |
-| ---------------------------------------------------- | -------------------------------------------------------------- |
-| `app/modules/common/constants/routes.ts`             | `clubManagementNew()`, `clubManagementEdit(documentId)`        |
-| `app/modules/club-management/constants/club.copy.ts` | **Nuevo** — copy de páginas, footer, unsaved dialog, not found |
-
-### Dashboard — club-management module
-
-| Archivo                                      | Cambio                                                                                                         |
-| -------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
-| `components/club-form.tsx`                   | **Nuevo** — lógica de `ClubDialogFormInner` sin Dialog; grid 2 cols en `lg+`                                   |
-| `components/club-form-page-layout.tsx`       | **Nuevo** — header con `Link` volver, título, descripción, footer sticky                                       |
-| `components/club-unsaved-changes-dialog.tsx` | **Nuevo** — `AlertDialog` controlado                                                                           |
-| `components/club-create-page.tsx`            | **Nuevo** — modo create, valores vacíos, navigate on success                                                   |
-| `components/club-edit-page.tsx`              | **Nuevo** — recibe club del loader, not found UI                                                               |
-| `components/registered-clubs.tsx`            | Quitar estado dialog create/edit; `Link`/`navigate` a rutas nuevas                                             |
-| `components/dialog-form.tsx`                 | **Eliminar** tras migrar                                                                                       |
-| `utils/club-form.mapper.ts`                  | **Nuevo** (opcional) — `clubResponseToFormValues`, `registeredClubToFormValues` (mover desde registered-clubs) |
-
-### Dashboard — routes
-
-| Archivo                                                | Cambio                                                                              |
-| ------------------------------------------------------ | ----------------------------------------------------------------------------------- |
-| `app/routes/_app/club-management/new.tsx`              | **Nuevo** — `createFileRoute('/_app/club-management/new')`, render `ClubCreatePage` |
-| `app/routes/_app/club-management/$documentId/edit.tsx` | **Nuevo** — loader `ensureQueryData(clubsQueryOptions)` + resolver club             |
-| `app/routes/_app/club-management.tsx`                  | Sin cambios funcionales (sigue siendo listado) o `head` meta si aplica              |
-
-## Diseño técnico
-
-### Formulario compartido
-
-- Extraer de `dialog-form.tsx`: `ClubFormField`, `FormSection`, `sanitizeNonNegativeDigits`, `EMPTY_CLUB_FORM_VALUES`, submit con `FormData` (create/update).
-- Props: `mode: 'create' | 'edit'`, `clubDocumentId?`, `defaultValues`, `onSuccess`, `onDirtyChange?`.
-- Layout interno:
-
-```tsx
-<div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
-  <div className="flex flex-col gap-8">{/* Información general + Ubicación */}</div>
-  <div>{/* Imágenes */}</div>
-</div>
-```
-
-### Dirty state y salida
-
-- `@tanstack/react-form` `form.state.isDirty` + tracking de cambios en `existingImages` / `clubImg` (si el form no los marca dirty, comparar con snapshot inicial en `useEffect` o `Subscribe`).
-- `ClubFormPageLayout` recibe `isDirty` y `onNavigateAway: () => void`.
-- Botón _Volver_, _Cancelar_ y `useBlocker` (TanStack Router) cuando `isDirty` → abrir `ClubUnsavedChangesDialog`.
-- Al confirmar salida: `navigate({ to: DASHBOARD_ROUTES.clubManagement() })`.
-
-### Edición — datos
+## Orden de capas (histórico)
 
 ```text
-loader (edit)
-  └─ ensureQueryData(clubsQueryOptions)
-       └─ find by documentId
-            ├─ found → ClubEditPage + defaultValues
-            └─ missing → NotFound UI (sin throw si se prefiere UI inline)
+1. packages/db          — addresses.latitude / longitude + migración
+2. packages/validators  — createClubSchema coords
+3. packages/types       — ClubResponse + GeoIpLocateResult
+4. packages/common      — API_ROUTES.geo.ipLocate
+5. packages/db repos    — create/update club address con coords
+6. apps/api clubs       — persist + mapear lat/lng
+7. apps/api geo         — módulo ip-locate (ipquery) + rate-limit
+8. packages/ui          — mapcn Map / MapMarker
+9. apps/dashboard       — mapa + botón IP + wiring form
+10. Verificar type-check / QA manual
 ```
 
-### Listado
+## Proveedores
 
-- _Agregar club_ → `<Link to={DASHBOARD_ROUTES.clubManagementNew()}>`.
-- _Editar_ en fila → `navigate({ to: DASHBOARD_ROUTES.clubManagementEdit(club.id) })`.
-- Eliminar: sin cambios (`ClubRemoveDialog`).
+| Uso              | Proveedor                         | Notas                                      |
+| ---------------- | --------------------------------- | ------------------------------------------ |
+| Tiles mapa       | CARTO (mapcn / MapLibre)          | Sin API key de pago                        |
+| Ubicación por IP | [ipquery](https://ipquery.io/#docs) | Proxy `GET /api/geo/ip-locate`             |
 
-### Flujo post-guardado
+Fallback create sin geo browser: **Buenos Aires** `[-58.3816, -34.6037]`.
+
+## API — geo (vigente)
 
 ```text
-submit OK → toast → invalidateQueries (mutation actual) → navigate('/club-management')
+apps/api/src/modules/geo/
+├── presentation/geo.controller.ts      # solo ip-locate
+├── application/
+│   ├── locate-by-ip.use-case.ts
+│   └── services/geo-rate-limit.service.ts
+├── adapters/ipquery.locator.ts
+├── utils/client-ip.ts
+└── geo.module.ts
+```
+
+Auth: JWT owner. IP privada/local → locate sin IP (egress del server).
+
+## Dashboard (vigente)
+
+| Archivo                            | Rol                                                              |
+| ---------------------------------- | ---------------------------------------------------------------- |
+| `club-location-map.tsx`            | mapcn, click-to-pin, pin draggable, geo browser + fallback BA    |
+| `club-form.tsx`                    | Campos dirección + botón IP junto a Ciudad + mapa + FormData     |
+| `service/geo.service.ts`           | `fetchIpLocation()` → `/api/geo/ip-locate`                       |
+| `.../$documentId/edit.tsx`         | `useClubs()` en cliente (sin loader SSR con token)               |
+
+## Flujo ubicación
+
+```text
+create (mount)
+  └─ geolocation browser?
+       ├─ ok → set pin
+       └─ deny/fail → BA fallback (sin pin obligatorio hasta colocar)
+
+usuario pulsa “Ubicarme por IP”
+  └─ GET /api/geo/ip-locate
+       └─ set lat/lng (+ city/state si vienen) + flyTo + pin
+
+usuario click / drag pin
+  └─ set latitude/longitude only (drag no reescribe calle/número)
+
+submit
+  └─ Zod exige lat/lng → FormData → POST/PATCH clubs
 ```
 
 ## Riesgos / edge cases
 
-| Caso                                        | Comportamiento esperado                                       |
-| ------------------------------------------- | ------------------------------------------------------------- |
-| Editar con `documentId` ajeno o inexistente | UI not found + volver al listado                              |
-| Cache de clubes vacío/stale en edit         | Loader espera query; si no está el club tras fetch, not found |
-| Usuario agrega imágenes y cancela           | Diálogo unsaved; al salir no se sube nada                     |
-| Usuario quita imagen existente y cancela    | `isDirty` true; confirmación al salir                         |
-| Submit con red lenta                        | Footer `loading` en CTA; deshabilitar Cancelar                |
-| `routeTree.gen.ts`                          | Regenerar con `pnpm dev:dashboard`; no editar a mano          |
+| Caso                      | Mitigación                                           |
+| ------------------------- | ---------------------------------------------------- |
+| Rate limit ipquery        | Rate-limit por cuenta en API                         |
+| SSR sin cookie JWT        | Edit carga clubs en cliente (`useClubs`)             |
+| Clubes legacy sin coords  | Nullable DB; submit exige pin                        |
+| Bundle MapLibre           | Solo en form de club                                 |
 
 ## Verificación manual
 
-| Paso                                   | Resultado esperado                                                |
-| -------------------------------------- | ----------------------------------------------------------------- |
-| 1. `/club-management` → _Agregar club_ | Navega a `/club-management/new`, sin modal                        |
-| 2. Completar y guardar club nuevo      | Toast éxito, vuelve al listado, club visible                      |
-| 3. _Editar_ en un club                 | `/club-management/:id/edit`, datos precargados, 2 cols en desktop |
-| 4. Quitar imagen + guardar             | Imagen desaparece del listado tras refresh                        |
-| 5. Cambiar campo + _Cancelar_          | Diálogo unsaved; _Seguir editando_ mantiene datos                 |
-| 6. Cambiar campo + _Salir sin guardar_ | Vuelve al listado sin PATCH                                       |
-| 7. URL edit inválida                   | Mensaje not found                                                 |
-| 8. Eliminar club desde listado         | `ClubRemoveDialog` sigue OK                                       |
-| 9. `pnpm type-check` + `pnpm lint`     | Sin errores en dashboard                                          |
+| Paso                                | Resultado esperado                                      |
+| ----------------------------------- | ------------------------------------------------------- |
+| 1. Create: deny geo                 | Mapa en BA fallback                                     |
+| 2. Botón IP                         | Pin + coords; ciudad/estado si vienen                   |
+| 3. Click / arrastrar pin            | Lat/lng cambian; calle/número intactos al drag         |
+| 4. Guardar create                   | Club con coords; edit muestra mismo pin                 |
+| 5. Edit club viejo sin coords       | Sin pin automático; usuario coloca pin; guardar persiste|
+| 6. Submit sin pin                   | Error _Seleccioná la ubicación en el mapa._             |
+| 7. Full reload edit logueado        | Sin 500 Unauthorized                                    |
+| 8. `pnpm type-check` + lint         | Verde                                                   |

@@ -1,4 +1,4 @@
-import { sqliteTable, text } from 'drizzle-orm/sqlite-core'
+import { real, sqliteTable, text } from 'drizzle-orm/sqlite-core'
 import { createBaseColumns } from './base.ts'
 
 export const addresses = sqliteTable('addresses', {
@@ -7,6 +7,8 @@ export const addresses = sqliteTable('addresses', {
   streetNumber: text('street_number').notNull(),
   state: text('state').notNull(),
   city: text('city').notNull(),
+  latitude: real('latitude'),
+  longitude: real('longitude'),
 })
 
 export type AddressSelect = typeof addresses.$inferSelect

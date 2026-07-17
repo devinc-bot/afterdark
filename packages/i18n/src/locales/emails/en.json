@@ -1,14 +1,14 @@
 {
   "common": {
     "greeting": "Hi {name}",
-    "footer": "This email was sent by Afterdark.",
+    "footer": "This email was sent by {appNameDisplay}.",
     "unsubscribe": "To unsubscribe from these emails, click here.",
-    "copyright": "© {year} Afterdark. All rights reserved."
+    "copyright": "© {year} {appNameDisplay}. All rights reserved."
   },
   "staffInvitation": {
     "subject": "You've been invited to join the {clubName} team",
     "title": "Team invitation",
-    "body": "{inviterName} invited you to join the {clubName} team on Afterdark.",
+    "body": "{inviterName} invited you to join the {clubName} team on {appNameDisplay}.",
     "cta": "Activate access",
     "expires": "This link expires in {hours} hours.",
     "securityWordNote": "Remember the security word you agreed on with your administrator.",
@@ -23,7 +23,7 @@
     "ignore": "If you didn't request this change, ignore this email."
   },
   "welcome": {
-    "subject": "Welcome to Afterdark",
+    "subject": "Welcome to {appNameDisplay}",
     "title": "Welcome, {name}!",
     "body": "Your account was created successfully. You can now sign in.",
     "cta": "Go to dashboard"

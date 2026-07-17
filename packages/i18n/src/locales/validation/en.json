@@ -67,7 +67,15 @@
         "required": "Street number is required.",
         "invalid": "Street number must contain only digits."
       },
-      "city": "City is required."
+      "city": "City is required.",
+      "latitude": {
+        "required": "Select the location on the map.",
+        "invalid": "Latitude is invalid."
+      },
+      "longitude": {
+        "required": "Select the location on the map.",
+        "invalid": "Longitude is invalid."
+      }
     },
     "ticket": {
       "name": "Ticket type is required.",

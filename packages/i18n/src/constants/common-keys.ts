@@ -1,4 +1,8 @@
 export const COMMON_KEY = {
+  APP_NAME: 'common:appName',
+  APP_NAME_DISPLAY: 'common:appNameDisplay',
+  APP_NAME_UPPER: 'common:appNameUpper',
+  APP_NAME_ADMIN: 'common:appNameAdmin',
   SAVE: 'common:save',
   CANCEL: 'common:cancel',
   DELETE: 'common:delete',

@@ -474,6 +474,8 @@ Export Drizzle: `chats`. Solo columnas base; sin campos adicionales.
 
 ## Migraciones
 
+Las migraciones **nuevas** se generan con prefijo `timestamp` (`YYYYMMDDHHmmss_….sql`) vía `migrations.prefix` en `drizzle.config.ts`, para evitar colisiones de índice secuencial entre ramas. Las históricas `0000`…`0020` se mantienen con prefijo numérico y no se renombran.
+
 Historial en `src/migrations/meta/_journal.json`:
 
 | #    | Archivo                         | Cambio principal                                                       |
