@@ -7,10 +7,12 @@
     "login": "Sign in",
     "register": "Create account",
     "how": "How it works",
-    "nights": "Nights",
+    "clarity": "Clarity",
     "events": "Events",
     "tickets": "Tickets",
-    "accountAria": "Account for {name}"
+    "accountAria": "Account for {name}",
+    "openMenu": "Open menu",
+    "mobileAriaLabel": "Navigation menu"
   },
   "hero": {
     "headline": "The night, before it starts.",
@@ -21,8 +23,14 @@
   },
   "about": {
     "headline": "The platform that makes the night clear.",
-    "body": "Afterdark connects clubs and audiences in one experience: real events, unambiguous tickets, and an interface that feels the night without dressing it up as a flyer.",
+    "body": "Afterdark connects events and audiences in one experience: real events, unambiguous tickets, and an interface that feels the night without dressing it up as a flyer.",
     "imageAlt": "Lit stage during a live show"
+  },
+  "atmosphere": {
+    "eyebrow": "The night, undisguised",
+    "quote": "Less flyer. More certainty.",
+    "support": "Clear tickets, real dates, and a schedule you can read in seconds — before the first drop hits.",
+    "imageAlt": "Crowd with hands in the air at a night show"
   },
   "how": {
     "headline": "Three steps. No noise.",
@@ -41,8 +49,42 @@
       }
     }
   },
-  "nights": {
-    "headline": "Upcoming nights",
+  "clarity": {
+    "headline": "What matters, up front.",
+    "support": "No visual noise. Just what you need to decide and arrive.",
+    "items": {
+      "ticket": {
+        "title": "Unambiguous tickets",
+        "body": "Type, price, and availability in one place. No hidden fine print."
+      },
+      "secure": {
+        "title": "Access with backup",
+        "body": "Clear confirmation and a QR ready for the door. Less friction in line."
+      },
+      "time": {
+        "title": "On-time schedule",
+        "body": "Dates, times, and clubs you can scan fast — while there’s still room."
+      }
+    }
+  },
+  "pulse": {
+    "eyebrow": "The platform’s pulse",
+    "headline": "Built for the night that’s already moving.",
+    "body": "Afterdark doesn’t invent the scene — it organizes it. Discover, choose, and secure your place without losing the mood.",
+    "imageAlt": "Crowd hands raised in front of the stage",
+    "stats": {
+      "nights": {
+        "label": "Focus",
+        "value": "Real nights"
+      },
+      "focus": {
+        "label": "Promise",
+        "value": "Zero ambiguity"
+      }
+    }
+  },
+  "events": {
+    "headline": "Upcoming events",
     "support": "Editorial sample. Soon: a live schedule from the platform.",
     "items": {
       "1": {
@@ -72,6 +114,14 @@
   },
   "footer": {
     "tagline": "Nightlife events, with precision.",
-    "rights": "© {year} afterdark"
+    "explore": "Explore",
+    "navAria": "Footer links",
+    "madeFor": "Made so you can enjoy an unforgettable night.",
+    "rights": "© {year} afterdark",
+    "social": {
+      "title": "Follow us",
+      "instagram": "afterdark on Instagram",
+      "facebook": "afterdark on Facebook"
+    }
   }
 }
