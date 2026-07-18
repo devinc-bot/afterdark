@@ -1,12 +1,12 @@
 {
   "page": {
     "title": "Sales",
-    "description": "Completed purchase history for your clubs.",
+    "description": "Completed purchase history for your locations.",
     "metaTitle": "Sales · {appNameAdmin}"
   },
   "filters": {
-    "club": "Club",
-    "clubAll": "All clubs",
+    "location": "Location",
+    "locationAll": "All locations",
     "event": "Event",
     "eventAll": "All events",
     "ticketType": "Ticket type",
@@ -16,9 +16,9 @@
     "from": "From",
     "to": "To",
     "reset": "Reset filters",
-    "clubsLoading": "Loading clubs…",
+    "locationsLoading": "Loading locations…",
     "eventsLoading": "Loading events…",
-    "clubsError": "We could not load your clubs.",
+    "locationsError": "We could not load your locations.",
     "eventsError": "We could not load your events."
   },
   "table": {
@@ -29,7 +29,7 @@
     "event": "Event",
     "ticket": "Ticket",
     "ticketType": "Type",
-    "club": "Club",
+    "location": "Location",
     "paidAt": "Paid at",
     "quantity": "Quantity",
     "amount": "Amount",

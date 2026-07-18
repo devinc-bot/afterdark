@@ -82,13 +82,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/auth/callback'
   fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/'
-    | '/forgot-password'
-    | '/login'
-    | '/register'
-    | '/reset-password'
-    | '/auth/callback'
+  to: '/' | '/forgot-password' | '/login' | '/register' | '/reset-password' | '/auth/callback'
   id:
     | '__root__'
     | '/'

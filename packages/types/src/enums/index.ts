@@ -1,5 +1,5 @@
 export * from './auth.ts'
-export * from './club.ts'
+export * from './location.ts'
 export * from './event.ts'
 export * from './payment.ts'
 export * from './staff.ts'

@@ -15,17 +15,17 @@ Sin cambios en validators, types, db ni api.
 
 ### i18n
 
-| Archivo | Cambio |
-| ------- | ------ |
+| Archivo                                     | Cambio                                         |
+| ------------------------------------------- | ---------------------------------------------- |
 | `packages/i18n/src/locales/landing/es.json` | `nav.events`, `nav.tickets`, `nav.accountAria` |
-| `packages/i18n/src/locales/landing/en.json` | Idem EN |
+| `packages/i18n/src/locales/landing/en.json` | Idem EN                                        |
 
 ### Client (`web`)
 
-| Archivo | Cambio |
-| ------- | ------ |
-| `apps/web/app/modules/landing/components/landing-page.tsx` | Header y CTAs condicionados por `useSession`; avatar auth |
-| Opcional: `apps/web/app/modules/landing/components/landing-header-actions.tsx` (o similar) | Extraer bloque derecha del header si el JSX crece |
+| Archivo                                                                                    | Cambio                                                    |
+| ------------------------------------------------------------------------------------------ | --------------------------------------------------------- |
+| `apps/web/app/modules/landing/components/landing-page.tsx`                                 | Header y CTAs condicionados por `useSession`; avatar auth |
+| Opcional: `apps/web/app/modules/landing/components/landing-header-actions.tsx` (o similar) | Extraer bloque derecha del header si el JSX crece         |
 
 ## Diseño técnico
 
@@ -43,18 +43,18 @@ Sin cambios en validators, types, db ni api.
 
 ## Riesgos / edge cases
 
-| Caso | Comportamiento esperado |
-| ---- | ----------------------- |
+| Caso               | Comportamiento esperado                                       |
+| ------------------ | ------------------------------------------------------------- |
 | Flash guest → auth | Mitigar con cookie: ocultar CTAs durante loading si hay token |
-| 401 | Store → unauthenticated; UI guest |
-| Error de red | UI guest |
-| Sin avatar URL | Iniciales de `name` + `lastName` |
+| 401                | Store → unauthenticated; UI guest                             |
+| Error de red       | UI guest                                                      |
+| Sin avatar URL     | Iniciales de `name` + `lastName`                              |
 
 ## Verificación manual
 
-| Paso | Resultado esperado |
-| ---- | ------------------ |
-| 1. Sin sesión en `/` | Nav marketing + Login/Register en header, hero y closing |
-| 2. Login y volver a `/` | Eventos/Tickets + avatar; sin CTAs auth |
-| 3. Avatar sin foto | Iniciales visibles |
-| 4. Token inválido | Vuelve a UI guest sin toast |
+| Paso                    | Resultado esperado                                       |
+| ----------------------- | -------------------------------------------------------- |
+| 1. Sin sesión en `/`    | Nav marketing + Login/Register en header, hero y closing |
+| 2. Login y volver a `/` | Eventos/Tickets + avatar; sin CTAs auth                  |
+| 3. Avatar sin foto      | Iniciales visibles                                       |
+| 4. Token inválido       | Vuelve a UI guest sin toast                              |

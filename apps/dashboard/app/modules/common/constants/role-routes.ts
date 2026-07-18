@@ -10,7 +10,7 @@ export const STAFF_ALLOWED_PATH_PREFIXES = [
 /** Rutas accesibles por owner (prefijos; incluye subrutas). */
 export const OWNER_ALLOWED_PATH_PREFIXES = [
   DASHBOARD_ROUTES.home(),
-  DASHBOARD_ROUTES.clubManagement(),
+  DASHBOARD_ROUTES.locations(),
   DASHBOARD_ROUTES.tickets(),
   DASHBOARD_ROUTES.events(),
   DASHBOARD_ROUTES.sales(),

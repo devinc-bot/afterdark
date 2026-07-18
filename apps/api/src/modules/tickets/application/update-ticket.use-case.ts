@@ -28,7 +28,7 @@ export class UpdateTicketUseCase {
 
     try {
       const row = await updateTicketByDocumentId(documentId, toTicketUpsertInput(input, eventId))
-      return toTicketResponse(row.ticket, row.event, row.club)
+      return toTicketResponse(row.ticket, row.event, row.location)
     } catch {
       throw new InternalServerErrorException(this.ts.translateError('ticket.UPDATE_FAILED'))
     }

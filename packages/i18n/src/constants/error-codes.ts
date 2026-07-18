@@ -30,12 +30,12 @@ export const INVITATION_ERROR_CODE = {
   ACCEPT_FAILED: 'invitation.ACCEPT_FAILED',
 } as const
 
-export const CLUB_ERROR_CODE = {
-  NOT_FOUND: 'club.NOT_FOUND',
-  FORBIDDEN: 'club.FORBIDDEN',
-  CREATE_FAILED: 'club.CREATE_FAILED',
-  UPDATE_FAILED: 'club.UPDATE_FAILED',
-  DELETE_FAILED: 'club.DELETE_FAILED',
+export const LOCATION_ERROR_CODE = {
+  NOT_FOUND: 'location.NOT_FOUND',
+  FORBIDDEN: 'location.FORBIDDEN',
+  CREATE_FAILED: 'location.CREATE_FAILED',
+  UPDATE_FAILED: 'location.UPDATE_FAILED',
+  DELETE_FAILED: 'location.DELETE_FAILED',
 } as const
 
 export const STAFF_ERROR_CODE = {
@@ -100,7 +100,7 @@ export const GEO_ERROR_CODE = {
 
 export type AuthErrorCode = (typeof AUTH_ERROR_CODE)[keyof typeof AUTH_ERROR_CODE]
 export type InvitationErrorCode = (typeof INVITATION_ERROR_CODE)[keyof typeof INVITATION_ERROR_CODE]
-export type ClubErrorCode = (typeof CLUB_ERROR_CODE)[keyof typeof CLUB_ERROR_CODE]
+export type LocationErrorCode = (typeof LOCATION_ERROR_CODE)[keyof typeof LOCATION_ERROR_CODE]
 export type StaffErrorCode = (typeof STAFF_ERROR_CODE)[keyof typeof STAFF_ERROR_CODE]
 export type OwnerErrorCode = (typeof OWNER_ERROR_CODE)[keyof typeof OWNER_ERROR_CODE]
 export type TicketErrorCode = (typeof TICKET_ERROR_CODE)[keyof typeof TICKET_ERROR_CODE]
@@ -113,7 +113,7 @@ export type GeoErrorCode = (typeof GEO_ERROR_CODE)[keyof typeof GEO_ERROR_CODE]
 export type ErrorCode =
   | AuthErrorCode
   | InvitationErrorCode
-  | ClubErrorCode
+  | LocationErrorCode
   | StaffErrorCode
   | OwnerErrorCode
   | TicketErrorCode

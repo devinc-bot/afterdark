@@ -8,7 +8,7 @@ import {
 import {
   accountExistsByEmail,
   createStaffInvitation as insertStaffInvitation,
-  findClubByDocumentId,
+  findLocationByDocumentId,
 } from '@afterdark/db'
 import { TranslationService } from '@afterdark/i18n/server'
 import { CreateStaffInvitationResponse, STAFF_INVITATION_STATUS, USER_ROLE } from '@afterdark/types'
@@ -36,16 +36,16 @@ export class CreateStaffInvitationUseCase {
       throw new ConflictException(this.ts.translateError('auth.EMAIL_ALREADY_REGISTERED'))
     }
 
-    const club = await findClubByDocumentId(input.clubId)
+    const location = await findLocationByDocumentId(input.locationId)
 
-    if (!club) {
+    if (!location) {
       throw new NotFoundException(this.ts.translateError('invitation.CLUB_NOT_FOUND'))
     }
 
     const { payload, slug, expiresAt, expiresInSeconds, securityWordHash } =
       await buildStaffInvitationPayload({
         email: input.email,
-        clubDocumentId: club.documentId,
+        locationDocumentId: location.documentId,
         securityWord: input.securityWord,
         expiresInMs: input.expiresInMs,
       })
@@ -55,7 +55,7 @@ export class CreateStaffInvitationUseCase {
     try {
       const invitation = await insertStaffInvitation({
         email: input.email,
-        clubId: club.id,
+        locationId: location.id,
         invitedByOwnerId: inviter.id,
         slug,
         token,
@@ -65,7 +65,7 @@ export class CreateStaffInvitationUseCase {
         role: USER_ROLE.STAFF,
       })
 
-      return toStaffInvitationResponse(invitation, club, inviter.documentId)
+      return toStaffInvitationResponse(invitation, location, inviter.documentId)
     } catch {
       throw new InternalServerErrorException(this.ts.translateError('invitation.CREATE_FAILED'))
     }

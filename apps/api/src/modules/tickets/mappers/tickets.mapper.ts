@@ -1,4 +1,4 @@
-import type { ClubSelect, EventSelect, TicketSelect } from '@afterdark/db'
+import type { LocationSelect, EventSelect, TicketSelect } from '@afterdark/db'
 import type { TicketResponse } from '@afterdark/types'
 import type { CreateTicketInput, UpdateTicketInput } from '@afterdark/validators'
 
@@ -12,7 +12,7 @@ const EMPTY_SALES: TicketSalesStats = { totalSold: 0, revenue: 0 }
 export function toTicketResponse(
   ticket: TicketSelect,
   event: Pick<EventSelect, 'documentId'> | null,
-  club: Pick<ClubSelect, 'documentId' | 'name'> | null,
+  location: Pick<LocationSelect, 'documentId' | 'name'> | null,
   sales: TicketSalesStats = EMPTY_SALES
 ): TicketResponse {
   return {
@@ -26,8 +26,8 @@ export function toTicketResponse(
     saleStartsAt: ticket.saleStartsAt,
     saleEndsAt: ticket.saleEndsAt,
     eventId: event?.documentId ?? null,
-    clubId: club?.documentId ?? null,
-    clubName: club?.name ?? null,
+    locationId: location?.documentId ?? null,
+    locationName: location?.name ?? null,
     totalSold: sales.totalSold,
     revenue: sales.revenue,
     createdAt: ticket.createdAt,

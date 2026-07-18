@@ -3,7 +3,7 @@ import { db, type Transaction } from '../../client.ts'
 import { accounts } from '../../schema/account.ts'
 import { staff } from '../../schema/staff.ts'
 import { staffAccountsLnk } from '../../schema/staff-account-lnk.ts'
-import { staffClubsLnk } from '../../schema/staff-club-lnk.ts'
+import { staffLocationsLnk } from '../../schema/staff-location-lnk.ts'
 import { findStaffOwnershipByDocumentId } from './find-staff-ownership-by-document-id.ts'
 
 export async function deleteStaffByDocumentId(
@@ -14,7 +14,7 @@ export async function deleteStaffByDocumentId(
   if (!ownership) return false
 
   await db.transaction(async (tx: Transaction) => {
-    await tx.delete(staffClubsLnk).where(eq(staffClubsLnk.staffId, ownership.staffId))
+    await tx.delete(staffLocationsLnk).where(eq(staffLocationsLnk.staffId, ownership.staffId))
     await tx.delete(staffAccountsLnk).where(eq(staffAccountsLnk.staffId, ownership.staffId))
     await tx.delete(staff).where(eq(staff.id, ownership.staffId))
     await tx.delete(accounts).where(eq(accounts.id, ownership.accountId))

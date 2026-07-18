@@ -7,7 +7,7 @@ import {
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common'
-import { findStaffInvitationByTokenWithClub } from '@afterdark/db'
+import { findStaffInvitationByTokenWithLocation } from '@afterdark/db'
 import { TranslationService } from '@afterdark/i18n/server'
 import { STAFF_INVITATION_STATUS, type StaffInvitationPublicResponse } from '@afterdark/types'
 import { JwtService } from '@nestjs/jwt'
@@ -28,7 +28,7 @@ export class GetStaffInvitationByLinkUseCase {
     }
 
     try {
-      const row = await findStaffInvitationByTokenWithClub(token)
+      const row = await findStaffInvitationByTokenWithLocation(token)
 
       if (!row) {
         throw new NotFoundException(this.ts.translateError('invitation.PUBLIC_INVALID'))
@@ -60,8 +60,8 @@ export class GetStaffInvitationByLinkUseCase {
       return {
         documentId: row.invitation.documentId,
         email: row.invitation.email,
-        clubId: row.clubDocumentId,
-        clubName: row.clubName,
+        locationId: row.locationDocumentId,
+        locationName: row.locationName,
         slug: row.invitation.slug,
         expiresAt: row.invitation.expiresAt,
         hasSecurityWord: Boolean(row.invitation.securityWordHash),

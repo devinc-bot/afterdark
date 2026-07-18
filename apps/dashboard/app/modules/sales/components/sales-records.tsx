@@ -101,7 +101,7 @@ function SaleRecordRow({ sale }: { sale: OwnerSaleResponse }) {
       <TableCell className="p-6 text-ink">{sale.eventName}</TableCell>
       <TableCell className="p-6 text-ink">{sale.ticketName}</TableCell>
       <TableCell className="p-6 text-ink">{typeLabel}</TableCell>
-      <TableCell className="p-6 text-ink">{sale.clubName}</TableCell>
+      <TableCell className="p-6 text-ink">{sale.locationName}</TableCell>
       <TableCell className="p-6 text-ink">{formatSaleDateTime(sale.paidAt)}</TableCell>
       <TableCell className="p-6 text-ink">{sale.quantity}</TableCell>
       <TableCell className="p-6 font-semibold text-ink">{formatSaleAmount(sale.amount)}</TableCell>
@@ -155,7 +155,7 @@ export function SalesRecords({
                 <TableHead className="p-6">{t('table.event')}</TableHead>
                 <TableHead className="p-6">{t('table.ticket')}</TableHead>
                 <TableHead className="p-6">{t('table.ticketType')}</TableHead>
-                <TableHead className="p-6">{t('table.club')}</TableHead>
+                <TableHead className="p-6">{t('table.location')}</TableHead>
                 <TableHead className="p-6">{t('table.paidAt')}</TableHead>
                 <TableHead className="p-6">{t('table.quantity')}</TableHead>
                 <TableHead className="p-6">{t('table.amount')}</TableHead>

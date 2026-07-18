@@ -5,7 +5,7 @@ import type esErrors from '../locales/errors/es.json'
 import type esEmails from '../locales/emails/es.json'
 import type esDashboard from '../locales/dashboard/es.json'
 import type esStaff from '../locales/staff/es.json'
-import type esClubs from '../locales/clubs/es.json'
+import type esLocations from '../locales/locations/es.json'
 import type esSettings from '../locales/settings/es.json'
 import type esTickets from '../locales/tickets/es.json'
 import type esEvents from '../locales/events/es.json'
@@ -20,7 +20,7 @@ export type I18nResources = {
   emails: typeof esEmails
   dashboard: typeof esDashboard
   staff: typeof esStaff
-  clubs: typeof esClubs
+  locations: typeof esLocations
   settings: typeof esSettings
   tickets: typeof esTickets
   events: typeof esEvents

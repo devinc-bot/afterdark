@@ -1,5 +1,5 @@
 export * from './auth.ts'
-export * from './club.ts'
+export * from './location.ts'
 export * from './common.ts'
 export * from './geo.ts'
 export * from './dashboard.ts'

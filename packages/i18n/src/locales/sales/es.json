@@ -1,12 +1,12 @@
 {
   "page": {
     "title": "Ventas",
-    "description": "Historial de compras completadas de tus clubes.",
+    "description": "Historial de compras completadas de tus ubicaciones.",
     "metaTitle": "Ventas · {appNameAdmin}"
   },
   "filters": {
-    "club": "Club",
-    "clubAll": "Todos los clubes",
+    "location": "Ubicación",
+    "locationAll": "Todas las ubicaciones",
     "event": "Evento",
     "eventAll": "Todos los eventos",
     "ticketType": "Tipo de ticket",
@@ -16,9 +16,9 @@
     "from": "Desde",
     "to": "Hasta",
     "reset": "Restablecer filtros",
-    "clubsLoading": "Cargando clubes…",
+    "locationsLoading": "Cargando ubicaciones…",
     "eventsLoading": "Cargando eventos…",
-    "clubsError": "No pudimos cargar tus clubes.",
+    "locationsError": "No pudimos cargar tus ubicaciones.",
     "eventsError": "No pudimos cargar tus eventos."
   },
   "table": {
@@ -29,7 +29,7 @@
     "event": "Evento",
     "ticket": "Ticket",
     "ticketType": "Tipo",
-    "club": "Club",
+    "location": "Ubicación",
     "paidAt": "Fecha de pago",
     "quantity": "Cantidad",
     "amount": "Monto",

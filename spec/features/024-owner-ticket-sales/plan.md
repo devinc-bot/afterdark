@@ -17,48 +17,48 @@
 
 ### Validators
 
-| Archivo | Cambio |
-| ------- | ------ |
+| Archivo                                               | Cambio                                                                                                    |
+| ----------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
 | `packages/validators/src/dashboard.ts` (o `sales.ts`) | `listOwnerSalesQuerySchema`: page, limit, eventId?, clubId?, ticketType?, from?, to? (+ refine from ≤ to) |
 
 ### Types
 
-| Archivo | Cambio |
-| ------- | ------ |
-| `packages/types/src/dto/…` | `OwnerSaleResponse` |
+| Archivo                           | Cambio                          |
+| --------------------------------- | ------------------------------- |
+| `packages/types/src/dto/…`        | `OwnerSaleResponse`             |
 | `packages/types/src/repository/…` | params/row del listado paginado |
 
 ### Database
 
-| Archivo | Cambio |
-| ------- | ------ |
+| Archivo                                                                | Cambio                                    |
+| ---------------------------------------------------------------------- | ----------------------------------------- |
 | `packages/db/src/repositories/dashboard/find-owner-sales-paginated.ts` | Query COMPLETED + joins + filtros + count |
-| `packages/db/src/repositories/dashboard/index.ts` | export |
+| `packages/db/src/repositories/dashboard/index.ts`                      | export                                    |
 
 ### Common
 
-| Archivo | Cambio |
-| ------- | ------ |
+| Archivo                                    | Cambio                              |
+| ------------------------------------------ | ----------------------------------- |
 | `packages/common/src/config/api-routes.ts` | `dashboard.path.sales()` → `/sales` |
 
 ### API
 
-| Archivo | Cambio |
-| ------- | ------ |
-| `apps/api/src/modules/dashboard/dashboard.controller.ts` | `GET sales` owner-only |
-| `apps/api/src/modules/dashboard/dashboard.service.ts` | `listSales` / map a DTO |
+| Archivo                                                             | Cambio                  |
+| ------------------------------------------------------------------- | ----------------------- |
+| `apps/api/src/modules/dashboard/dashboard.controller.ts`            | `GET sales` owner-only  |
+| `apps/api/src/modules/dashboard/dashboard.service.ts`               | `listSales` / map a DTO |
 | (opcional) mapper / use-case si se alinea vertical-slice del módulo |
 
 ### Dashboard
 
-| Archivo | Cambio |
-| ------- | ------ |
-| `app/modules/common/constants/routes.ts` | `sales()` |
-| `app/modules/common/constants/role-routes.ts` | `/sales` en owner allowed |
-| `app/modules/common/components/app-shell.tsx` | nav **Ventas** |
-| `app/modules/sales/` | service, query, components (filters + table + pagination) |
-| `app/routes/_app/sales.tsx` | ruta |
-| `packages/i18n` locales dashboard/sales | copy ES/EN |
+| Archivo                                       | Cambio                                                    |
+| --------------------------------------------- | --------------------------------------------------------- |
+| `app/modules/common/constants/routes.ts`      | `sales()`                                                 |
+| `app/modules/common/constants/role-routes.ts` | `/sales` en owner allowed                                 |
+| `app/modules/common/components/app-shell.tsx` | nav **Ventas**                                            |
+| `app/modules/sales/`                          | service, query, components (filters + table + pagination) |
+| `app/routes/_app/sales.tsx`                   | ruta                                                      |
+| `packages/i18n` locales dashboard/sales       | copy ES/EN                                                |
 
 ## Diseño técnico
 
@@ -69,18 +69,18 @@
 
 ## Riesgos / edge cases
 
-| Caso | Comportamiento |
-| ---- | -------------- |
+| Caso                           | Comportamiento                       |
+| ------------------------------ | ------------------------------------ |
 | Sin ventas / filtros sin match | Empty: _No hay ventas para mostrar._ |
-| `from` > `to` | 400 i18n |
-| IDs ajenos | página vacía |
-| Staff URL directa | redirect + 403 API |
+| `from` > `to`                  | 400 i18n                             |
+| IDs ajenos                     | página vacía                         |
+| Staff URL directa              | redirect + 403 API                   |
 
 ## Verificación manual
 
-| Paso | Resultado esperado |
-| ---- | ------------------ |
+| Paso                                       | Resultado esperado              |
+| ------------------------------------------ | ------------------------------- |
 | 1. Login owner → sidebar Ventas → `/sales` | Tabla con ventas seed COMPLETED |
-| 2. Filtrar club / evento / tipo / fechas | Listado acotado; page reset a 1 |
-| 3. Login staff → `/sales` | Sin nav; ruta bloqueada |
-| 4. `GET /api/dashboard/sales` sin owner | 403 |
+| 2. Filtrar club / evento / tipo / fechas   | Listado acotado; page reset a 1 |
+| 3. Login staff → `/sales`                  | Sin nav; ruta bloqueada         |
+| 4. `GET /api/dashboard/sales` sin owner    | 403                             |

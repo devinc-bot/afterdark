@@ -30,7 +30,7 @@ const optionalDocumentIdSchema = z.string().trim().min(1).optional()
 export const listOwnerSalesQuerySchema = paginationSchema
   .extend({
     eventId: optionalDocumentIdSchema,
-    clubId: optionalDocumentIdSchema,
+    locationId: optionalDocumentIdSchema,
     ticketType: ticketTypeSchema.optional(),
     from: optionalCoercedDateSchema,
     to: optionalCoercedDateSchema,

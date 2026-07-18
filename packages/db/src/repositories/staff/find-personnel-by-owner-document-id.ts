@@ -2,11 +2,11 @@ import { desc, eq } from 'drizzle-orm'
 import { USER_ROLE } from '@afterdark/types'
 import { db } from '../../client.ts'
 import { accounts } from '../../schema/account.ts'
-import { clubs } from '../../schema/club.ts'
+import { locations } from '../../schema/location.ts'
 import { owners } from '../../schema/owner.ts'
 import { staff } from '../../schema/staff.ts'
 import { staffAccountsLnk } from '../../schema/staff-account-lnk.ts'
-import { staffClubsLnk } from '../../schema/staff-club-lnk.ts'
+import { staffLocationsLnk } from '../../schema/staff-location-lnk.ts'
 import type { OwnerStaffPersonnelRow } from '@afterdark/types'
 
 export async function findPersonnelByOwnerDocumentId(
@@ -20,14 +20,14 @@ export async function findPersonnelByOwnerDocumentId(
       email: accounts.email,
       avatar: staff.avatar,
       staffStatus: staff.status,
-      clubDocumentId: clubs.documentId,
-      clubName: clubs.name,
+      locationDocumentId: locations.documentId,
+      locationName: locations.name,
       lastActiveAt: staff.updatedAt,
     })
-    .from(staffClubsLnk)
-    .innerJoin(staff, eq(staff.id, staffClubsLnk.staffId))
-    .innerJoin(clubs, eq(clubs.id, staffClubsLnk.clubId))
-    .innerJoin(owners, eq(owners.id, clubs.ownerId))
+    .from(staffLocationsLnk)
+    .innerJoin(staff, eq(staff.id, staffLocationsLnk.staffId))
+    .innerJoin(locations, eq(locations.id, staffLocationsLnk.locationId))
+    .innerJoin(owners, eq(owners.id, locations.ownerId))
     .innerJoin(staffAccountsLnk, eq(staffAccountsLnk.staffId, staff.id))
     .innerJoin(accounts, eq(accounts.id, staffAccountsLnk.accountId))
     .where(eq(owners.documentId, ownerDocumentId))

@@ -89,9 +89,7 @@
       "indexes": {
         "users_document_id_unique": {
           "name": "users_document_id_unique",
-          "columns": [
-            "document_id"
-          ],
+          "columns": ["document_id"],
           "isUnique": true
         }
       },
@@ -192,9 +190,7 @@
       "indexes": {
         "owners_document_id_unique": {
           "name": "owners_document_id_unique",
-          "columns": [
-            "document_id"
-          ],
+          "columns": ["document_id"],
           "isUnique": true
         }
       },
@@ -274,9 +270,7 @@
       "indexes": {
         "staff_document_id_unique": {
           "name": "staff_document_id_unique",
-          "columns": [
-            "document_id"
-          ],
+          "columns": ["document_id"],
           "isUnique": true
         }
       },
@@ -349,23 +343,17 @@
       "indexes": {
         "accounts_document_id_unique": {
           "name": "accounts_document_id_unique",
-          "columns": [
-            "document_id"
-          ],
+          "columns": ["document_id"],
           "isUnique": true
         },
         "accounts_email_unique": {
           "name": "accounts_email_unique",
-          "columns": [
-            "email"
-          ],
+          "columns": ["email"],
           "isUnique": true
         },
         "accounts_provider_account_id_unique": {
           "name": "accounts_provider_account_id_unique",
-          "columns": [
-            "provider_account_id"
-          ],
+          "columns": ["provider_account_id"],
           "isUnique": true
         }
       },
@@ -423,9 +411,7 @@
       "indexes": {
         "roles_document_id_unique": {
           "name": "roles_document_id_unique",
-          "columns": [
-            "document_id"
-          ],
+          "columns": ["document_id"],
           "isUnique": true
         }
       },
@@ -483,16 +469,12 @@
       "indexes": {
         "account_role_lnk_document_id_unique": {
           "name": "account_role_lnk_document_id_unique",
-          "columns": [
-            "document_id"
-          ],
+          "columns": ["document_id"],
           "isUnique": true
         },
         "account_role_lnk_account_id_unique": {
           "name": "account_role_lnk_account_id_unique",
-          "columns": [
-            "account_id"
-          ],
+          "columns": ["account_id"],
           "isUnique": true
         }
       },
@@ -501,12 +483,8 @@
           "name": "account_role_lnk_account_id_accounts_id_fk",
           "tableFrom": "account_role_lnk",
           "tableTo": "accounts",
-          "columnsFrom": [
-            "account_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["account_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -514,12 +492,8 @@
           "name": "account_role_lnk_role_id_roles_id_fk",
           "tableFrom": "account_role_lnk",
           "tableTo": "roles",
-          "columnsFrom": [
-            "role_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["role_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -591,9 +565,7 @@
       "indexes": {
         "assets_document_id_unique": {
           "name": "assets_document_id_unique",
-          "columns": [
-            "document_id"
-          ],
+          "columns": ["document_id"],
           "isUnique": true
         }
       },
@@ -679,9 +651,7 @@
       "indexes": {
         "addresses_document_id_unique": {
           "name": "addresses_document_id_unique",
-          "columns": [
-            "document_id"
-          ],
+          "columns": ["document_id"],
           "isUnique": true
         }
       },
@@ -746,9 +716,7 @@
       "indexes": {
         "user_assets_lnk_document_id_unique": {
           "name": "user_assets_lnk_document_id_unique",
-          "columns": [
-            "document_id"
-          ],
+          "columns": ["document_id"],
           "isUnique": true
         }
       },
@@ -757,12 +725,8 @@
           "name": "user_assets_lnk_user_id_users_id_fk",
           "tableFrom": "user_assets_lnk",
           "tableTo": "users",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -770,12 +734,8 @@
           "name": "user_assets_lnk_asset_id_assets_id_fk",
           "tableFrom": "user_assets_lnk",
           "tableTo": "assets",
-          "columnsFrom": [
-            "asset_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["asset_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -833,9 +793,7 @@
       "indexes": {
         "user_accounts_lnk_document_id_unique": {
           "name": "user_accounts_lnk_document_id_unique",
-          "columns": [
-            "document_id"
-          ],
+          "columns": ["document_id"],
           "isUnique": true
         }
       },
@@ -844,12 +802,8 @@
           "name": "user_accounts_lnk_user_id_users_id_fk",
           "tableFrom": "user_accounts_lnk",
           "tableTo": "users",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -857,12 +811,8 @@
           "name": "user_accounts_lnk_account_id_accounts_id_fk",
           "tableFrom": "user_accounts_lnk",
           "tableTo": "accounts",
-          "columnsFrom": [
-            "account_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["account_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -920,9 +870,7 @@
       "indexes": {
         "owner_account_lnk_document_id_unique": {
           "name": "owner_account_lnk_document_id_unique",
-          "columns": [
-            "document_id"
-          ],
+          "columns": ["document_id"],
           "isUnique": true
         }
       },
@@ -931,12 +879,8 @@
           "name": "owner_account_lnk_owner_id_owners_id_fk",
           "tableFrom": "owner_account_lnk",
           "tableTo": "owners",
-          "columnsFrom": [
-            "owner_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["owner_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -944,12 +888,8 @@
           "name": "owner_account_lnk_account_id_accounts_id_fk",
           "tableFrom": "owner_account_lnk",
           "tableTo": "accounts",
-          "columnsFrom": [
-            "account_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["account_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -1007,9 +947,7 @@
       "indexes": {
         "staff_account_lnk_document_id_unique": {
           "name": "staff_account_lnk_document_id_unique",
-          "columns": [
-            "document_id"
-          ],
+          "columns": ["document_id"],
           "isUnique": true
         }
       },
@@ -1018,12 +956,8 @@
           "name": "staff_account_lnk_staff_id_staff_id_fk",
           "tableFrom": "staff_account_lnk",
           "tableTo": "staff",
-          "columnsFrom": [
-            "staff_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["staff_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -1031,12 +965,8 @@
           "name": "staff_account_lnk_account_id_accounts_id_fk",
           "tableFrom": "staff_account_lnk",
           "tableTo": "accounts",
-          "columnsFrom": [
-            "account_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["account_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -1094,17 +1024,12 @@
       "indexes": {
         "staff_club_lnk_document_id_unique": {
           "name": "staff_club_lnk_document_id_unique",
-          "columns": [
-            "document_id"
-          ],
+          "columns": ["document_id"],
           "isUnique": true
         },
         "staff_club_lnk_unique": {
           "name": "staff_club_lnk_unique",
-          "columns": [
-            "staff_id",
-            "club_id"
-          ],
+          "columns": ["staff_id", "club_id"],
           "isUnique": true
         }
       },
@@ -1113,12 +1038,8 @@
           "name": "staff_club_lnk_staff_id_staff_id_fk",
           "tableFrom": "staff_club_lnk",
           "tableTo": "staff",
-          "columnsFrom": [
-            "staff_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["staff_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -1126,12 +1047,8 @@
           "name": "staff_club_lnk_club_id_clubs_id_fk",
           "tableFrom": "staff_club_lnk",
           "tableTo": "clubs",
-          "columnsFrom": [
-            "club_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["club_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -1189,23 +1106,17 @@
       "indexes": {
         "owner_addresses_lnk_document_id_unique": {
           "name": "owner_addresses_lnk_document_id_unique",
-          "columns": [
-            "document_id"
-          ],
+          "columns": ["document_id"],
           "isUnique": true
         },
         "owner_addresses_lnk_owner_id_unique": {
           "name": "owner_addresses_lnk_owner_id_unique",
-          "columns": [
-            "owner_id"
-          ],
+          "columns": ["owner_id"],
           "isUnique": true
         },
         "owner_addresses_lnk_address_id_unique": {
           "name": "owner_addresses_lnk_address_id_unique",
-          "columns": [
-            "address_id"
-          ],
+          "columns": ["address_id"],
           "isUnique": true
         }
       },
@@ -1214,12 +1125,8 @@
           "name": "owner_addresses_lnk_owner_id_owners_id_fk",
           "tableFrom": "owner_addresses_lnk",
           "tableTo": "owners",
-          "columnsFrom": [
-            "owner_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["owner_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -1227,12 +1134,8 @@
           "name": "owner_addresses_lnk_address_id_addresses_id_fk",
           "tableFrom": "owner_addresses_lnk",
           "tableTo": "addresses",
-          "columnsFrom": [
-            "address_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["address_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -1312,9 +1215,7 @@
       "indexes": {
         "clubs_document_id_unique": {
           "name": "clubs_document_id_unique",
-          "columns": [
-            "document_id"
-          ],
+          "columns": ["document_id"],
           "isUnique": true
         }
       },
@@ -1323,12 +1224,8 @@
           "name": "clubs_owner_id_owners_id_fk",
           "tableFrom": "clubs",
           "tableTo": "owners",
-          "columnsFrom": [
-            "owner_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["owner_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -1386,9 +1283,7 @@
       "indexes": {
         "club_assets_lnk_document_id_unique": {
           "name": "club_assets_lnk_document_id_unique",
-          "columns": [
-            "document_id"
-          ],
+          "columns": ["document_id"],
           "isUnique": true
         }
       },
@@ -1397,12 +1292,8 @@
           "name": "club_assets_lnk_club_id_clubs_id_fk",
           "tableFrom": "club_assets_lnk",
           "tableTo": "clubs",
-          "columnsFrom": [
-            "club_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["club_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -1410,12 +1301,8 @@
           "name": "club_assets_lnk_asset_id_assets_id_fk",
           "tableFrom": "club_assets_lnk",
           "tableTo": "assets",
-          "columnsFrom": [
-            "asset_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["asset_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -1473,23 +1360,17 @@
       "indexes": {
         "club_addresses_lnk_document_id_unique": {
           "name": "club_addresses_lnk_document_id_unique",
-          "columns": [
-            "document_id"
-          ],
+          "columns": ["document_id"],
           "isUnique": true
         },
         "club_addresses_lnk_club_id_unique": {
           "name": "club_addresses_lnk_club_id_unique",
-          "columns": [
-            "club_id"
-          ],
+          "columns": ["club_id"],
           "isUnique": true
         },
         "club_addresses_lnk_address_id_unique": {
           "name": "club_addresses_lnk_address_id_unique",
-          "columns": [
-            "address_id"
-          ],
+          "columns": ["address_id"],
           "isUnique": true
         }
       },
@@ -1498,12 +1379,8 @@
           "name": "club_addresses_lnk_club_id_clubs_id_fk",
           "tableFrom": "club_addresses_lnk",
           "tableTo": "clubs",
-          "columnsFrom": [
-            "club_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["club_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -1511,12 +1388,8 @@
           "name": "club_addresses_lnk_address_id_addresses_id_fk",
           "tableFrom": "club_addresses_lnk",
           "tableTo": "addresses",
-          "columnsFrom": [
-            "address_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["address_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -1610,9 +1483,7 @@
       "indexes": {
         "events_document_id_unique": {
           "name": "events_document_id_unique",
-          "columns": [
-            "document_id"
-          ],
+          "columns": ["document_id"],
           "isUnique": true
         }
       },
@@ -1621,12 +1492,8 @@
           "name": "events_club_id_clubs_id_fk",
           "tableFrom": "events",
           "tableTo": "clubs",
-          "columnsFrom": [
-            "club_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["club_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -1684,9 +1551,7 @@
       "indexes": {
         "services_document_id_unique": {
           "name": "services_document_id_unique",
-          "columns": [
-            "document_id"
-          ],
+          "columns": ["document_id"],
           "isUnique": true
         }
       },
@@ -1795,9 +1660,7 @@
       "indexes": {
         "tickets_document_id_unique": {
           "name": "tickets_document_id_unique",
-          "columns": [
-            "document_id"
-          ],
+          "columns": ["document_id"],
           "isUnique": true
         }
       },
@@ -1806,12 +1669,8 @@
           "name": "tickets_event_id_events_id_fk",
           "tableFrom": "tickets",
           "tableTo": "events",
-          "columnsFrom": [
-            "event_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["event_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -1913,9 +1772,7 @@
       "indexes": {
         "orders_document_id_unique": {
           "name": "orders_document_id_unique",
-          "columns": [
-            "document_id"
-          ],
+          "columns": ["document_id"],
           "isUnique": true
         }
       },
@@ -1924,12 +1781,8 @@
           "name": "orders_ticket_id_tickets_id_fk",
           "tableFrom": "orders",
           "tableTo": "tickets",
-          "columnsFrom": [
-            "ticket_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["ticket_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -1937,12 +1790,8 @@
           "name": "orders_user_id_users_id_fk",
           "tableFrom": "orders",
           "tableTo": "users",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -2015,16 +1864,12 @@
       "indexes": {
         "tickets_sold_document_id_unique": {
           "name": "tickets_sold_document_id_unique",
-          "columns": [
-            "document_id"
-          ],
+          "columns": ["document_id"],
           "isUnique": true
         },
         "tickets_sold_qr_code_unique": {
           "name": "tickets_sold_qr_code_unique",
-          "columns": [
-            "qr_code"
-          ],
+          "columns": ["qr_code"],
           "isUnique": true
         }
       },
@@ -2033,12 +1878,8 @@
           "name": "tickets_sold_order_id_orders_id_fk",
           "tableFrom": "tickets_sold",
           "tableTo": "orders",
-          "columnsFrom": [
-            "order_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["order_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -2082,9 +1923,7 @@
       "indexes": {
         "chat_document_id_unique": {
           "name": "chat_document_id_unique",
-          "columns": [
-            "document_id"
-          ],
+          "columns": ["document_id"],
           "isUnique": true
         }
       },
@@ -2156,9 +1995,7 @@
       "indexes": {
         "messages_document_id_unique": {
           "name": "messages_document_id_unique",
-          "columns": [
-            "document_id"
-          ],
+          "columns": ["document_id"],
           "isUnique": true
         }
       },
@@ -2167,12 +2004,8 @@
           "name": "messages_from_id_users_id_fk",
           "tableFrom": "messages",
           "tableTo": "users",
-          "columnsFrom": [
-            "from_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["from_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -2180,12 +2013,8 @@
           "name": "messages_to_id_users_id_fk",
           "tableFrom": "messages",
           "tableTo": "users",
-          "columnsFrom": [
-            "to_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["to_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -2193,12 +2022,8 @@
           "name": "messages_chat_id_chat_id_fk",
           "tableFrom": "messages",
           "tableTo": "chat",
-          "columnsFrom": [
-            "chat_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["chat_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -2314,16 +2139,12 @@
       "indexes": {
         "staff_invitations_document_id_unique": {
           "name": "staff_invitations_document_id_unique",
-          "columns": [
-            "document_id"
-          ],
+          "columns": ["document_id"],
           "isUnique": true
         },
         "staff_invitations_token_unique": {
           "name": "staff_invitations_token_unique",
-          "columns": [
-            "token"
-          ],
+          "columns": ["token"],
           "isUnique": true
         }
       },
@@ -2332,12 +2153,8 @@
           "name": "staff_invitations_club_id_clubs_id_fk",
           "tableFrom": "staff_invitations",
           "tableTo": "clubs",
-          "columnsFrom": [
-            "club_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["club_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -2345,12 +2162,8 @@
           "name": "staff_invitations_invited_by_owner_id_owners_id_fk",
           "tableFrom": "staff_invitations",
           "tableTo": "owners",
-          "columnsFrom": [
-            "invited_by_owner_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["invited_by_owner_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -2422,16 +2235,12 @@
       "indexes": {
         "password_reset_tokens_document_id_unique": {
           "name": "password_reset_tokens_document_id_unique",
-          "columns": [
-            "document_id"
-          ],
+          "columns": ["document_id"],
           "isUnique": true
         },
         "password_reset_tokens_token_unique": {
           "name": "password_reset_tokens_token_unique",
-          "columns": [
-            "token"
-          ],
+          "columns": ["token"],
           "isUnique": true
         }
       },
@@ -2440,12 +2249,8 @@
           "name": "password_reset_tokens_account_id_accounts_id_fk",
           "tableFrom": "password_reset_tokens",
           "tableTo": "accounts",
-          "columnsFrom": [
-            "account_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["account_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }

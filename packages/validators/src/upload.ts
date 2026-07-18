@@ -30,7 +30,7 @@ export const IMAGE_OPTIMIZATION = {
   QUALITY: 70,
 } as const
 
-export const CLUB_IMAGE_MAX_COUNT = 5
+export const LOCATION_IMAGE_MAX_COUNT = 5
 
 export function isAllowedImageMimeType(mimeType: string): mimeType is AllowedImageMimeType {
   return (ALLOWED_IMAGE_MIME_TYPES as readonly string[]).includes(mimeType)

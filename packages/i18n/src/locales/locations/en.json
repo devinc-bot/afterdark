@@ -1,0 +1,115 @@
+{
+  "listPage": {
+    "metaTitle": "Locations · {appNameAdmin}",
+    "title": "Locations",
+    "description": "Manage registered permanent locations and the information published on the platform."
+  },
+  "registry": {
+    "title": "Registered locations",
+    "loading": "Loading locations…",
+    "registryCount": "{count, plural, one {1 location registered} other {# locations registered}}",
+    "addLocation": "Add location",
+    "loadErrorTitle": "We couldn't load locations",
+    "loadErrorFallback": "Try again in a few minutes.",
+    "listError": "We couldn't load locations. Try again in a few minutes.",
+    "emptyTitle": "No locations yet",
+    "emptyDescription": "Register the first location to start managing its information.",
+    "deleteSuccess": "Location deleted successfully",
+    "deleteError": "We couldn't delete the location. Try again.",
+    "deleteFallback": "We couldn't delete the location. Try again in a few minutes."
+  },
+  "formPage": {
+    "back": "Back to locations",
+    "cancel": "Cancel",
+    "createMetaTitle": "Add new location · {appNameAdmin}",
+    "createTitle": "Add new location",
+    "createDescription": "Fill in the details to register a permanent location on the platform.",
+    "requiredFieldsHint": "Fields marked with * are required.",
+    "editMetaTitle": "Edit location · {appNameAdmin}",
+    "editTitle": "Edit location",
+    "editDescription": "Update the location information. Changes are reflected immediately.",
+    "submitCreate": "Register location",
+    "submitCreatePending": "Registering…",
+    "submitEdit": "Update location",
+    "submitEditPending": "Updating…",
+    "toastCreateSuccess": "Location registered successfully",
+    "toastEditSuccess": "Location updated successfully",
+    "toastCreateError": "We couldn't register the location. Try again.",
+    "toastEditError": "We couldn't update the location. Try again.",
+    "toastCreateFallback": "We couldn't register the location. Try again in a few minutes.",
+    "toastEditFallback": "We couldn't update the location. Try again in a few minutes.",
+    "toastMissingLocationId": "We couldn't identify the location to update."
+  },
+  "sections": {
+    "generalTitle": "General information",
+    "generalDescription": "Basic location details that users will see on the platform.",
+    "imagesTitle": "Images",
+    "imagesDescription": "Photos of the venue that will appear on the platform. You can upload up to 5 images.",
+    "locationTitle": "Address",
+    "locationDescription": "Physical address of the venue. Fill the fields, then fine-tune the pin on the map."
+  },
+  "map": {
+    "mapHint": "Drag the pin to fine-tune the exact location.",
+    "mapLoading": "Loading map…",
+    "coordinatesRequired": "Select the location on the map.",
+    "ipLocate": "Locate by IP",
+    "ipLocateLoading": "Locating…",
+    "ipLocateError": "We could not locate your area by IP. Try again or move the pin."
+  },
+  "unsaved": {
+    "title": "Leave without saving?",
+    "description": "You have unsaved changes. If you leave now, they will be lost.",
+    "stay": "Keep editing",
+    "leave": "Leave without saving"
+  },
+  "notFound": {
+    "title": "We couldn't find the location you want to edit.",
+    "description": "The location doesn't exist or you don't have permission to edit it."
+  },
+  "form": {
+    "fields": {
+      "name": "Location name",
+      "namePlaceholder": "Neon Venue",
+      "capacity": "Capacity",
+      "capacityPlaceholder": "500",
+      "additionalInfo": "Additional information",
+      "additionalInfoPlaceholder": "Atmosphere, dress code, access rules…",
+      "address": "Address",
+      "addressPlaceholder": "Main Street",
+      "streetNumber": "Street number",
+      "streetNumberPlaceholder": "123",
+      "city": "City",
+      "cityPlaceholder": "Madrid",
+      "state": "State",
+      "statePlaceholder": "Community of Madrid"
+    }
+  },
+  "delete": {
+    "title": "Delete location",
+    "description": "Are you sure you want to delete",
+    "descriptionSuffix": "This action cannot be undone.",
+    "cancel": "Cancel",
+    "confirm": "Delete"
+  },
+  "images": {
+    "count": "{current} of {max} images",
+    "saved": "Saved image",
+    "remove": "Remove {name}",
+    "dropzoneTitle": "Drag or click to select images",
+    "dropzoneHint": "JPG, PNG or WEBP · up to {count, plural, one {# image} other {# images}} · max. {maxMb} MB each",
+    "maxReached": "You've reached the maximum of {max} images.",
+    "invalidType": "The file must be a JPG, PNG, or WEBP image.",
+    "tooLarge": "The image exceeds the maximum size of {maxMb} MB."
+  },
+  "kpi": {
+    "ariaLabel": "Location indicators",
+    "totalLocations": "Total locations",
+    "totalLocationsTrend": "+3 this month",
+    "activeTickets": "Active tickets",
+    "activeTicketsSubtext": "Sessions in progress",
+    "revenue24h": "Revenue (24 h)",
+    "revenue24hSubtext": "Above yesterday",
+    "pendingVerifications": "Pending verifications",
+    "pendingVerificationsSubtext": "Need attention"
+  }
+}

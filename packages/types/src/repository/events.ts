@@ -1,13 +1,13 @@
-import type { ClubSelect, EventSelect } from '@afterdark/db/schema'
+import type { LocationSelect, EventSelect } from '@afterdark/db/schema'
 import type { EventStatus } from '../enums/event.ts'
 
-export type EventWithClub = {
+export type EventWithLocation = {
   event: EventSelect
-  club: ClubSelect
+  location: LocationSelect
 }
 
 export type EventUpsertInput = {
-  clubId: number
+  locationId: number
   name: string
   description: string
   startsAt: Date
@@ -22,6 +22,6 @@ export type ListEventsByOwnerParams = {
 }
 
 export type PaginatedEventsResult = {
-  rows: EventWithClub[]
+  rows: EventWithLocation[]
   total: number
 }

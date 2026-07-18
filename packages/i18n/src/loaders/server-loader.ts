@@ -14,8 +14,8 @@ import esDashboard from '../locales/dashboard/es.json' with { type: 'json' }
 import enDashboard from '../locales/dashboard/en.json' with { type: 'json' }
 import esStaff from '../locales/staff/es.json' with { type: 'json' }
 import enStaff from '../locales/staff/en.json' with { type: 'json' }
-import esClubs from '../locales/clubs/es.json' with { type: 'json' }
-import enClubs from '../locales/clubs/en.json' with { type: 'json' }
+import esLocations from '../locales/locations/es.json' with { type: 'json' }
+import enLocations from '../locales/locations/en.json' with { type: 'json' }
 import esSettings from '../locales/settings/es.json' with { type: 'json' }
 import enSettings from '../locales/settings/en.json' with { type: 'json' }
 import esTickets from '../locales/tickets/es.json' with { type: 'json' }
@@ -41,7 +41,7 @@ export const SERVER_RESOURCES: ServerResources = {
     emails: esEmails,
     dashboard: esDashboard,
     staff: esStaff,
-    clubs: esClubs,
+    locations: esLocations,
     settings: esSettings,
     tickets: esTickets,
     events: esEvents,
@@ -56,7 +56,7 @@ export const SERVER_RESOURCES: ServerResources = {
     emails: enEmails,
     dashboard: enDashboard,
     staff: enStaff,
-    clubs: enClubs,
+    locations: enLocations,
     settings: enSettings,
     tickets: enTickets,
     events: enEvents,

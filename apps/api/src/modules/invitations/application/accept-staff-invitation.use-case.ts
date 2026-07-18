@@ -13,8 +13,8 @@ import {
   accountExistsByEmail,
   deleteStaffInvitationById,
   findRoleByName,
-  findStaffInvitationByTokenWithClub,
-  registerStaffForClub,
+  findStaffInvitationByTokenWithLocation,
+  registerStaffForLocation,
 } from '@afterdark/db'
 import { TranslationService } from '@afterdark/i18n/server'
 import { STAFF_INVITATION_STATUS, USER_ROLE } from '@afterdark/types'
@@ -43,7 +43,7 @@ export class AcceptStaffInvitationUseCase {
       throw new NotFoundException(this.ts.translateError('invitation.PUBLIC_INVALID'))
     }
 
-    const row = await findStaffInvitationByTokenWithClub(token)
+    const row = await findStaffInvitationByTokenWithLocation(token)
 
     if (!row) {
       throw new NotFoundException(this.ts.translateError('invitation.PUBLIC_INVALID'))
@@ -92,13 +92,13 @@ export class AcceptStaffInvitationUseCase {
     const hashedPassword = await hashValue(input.password)
 
     try {
-      await registerStaffForClub({
+      await registerStaffForLocation({
         email: row.invitation.email,
         hashedPassword,
         roleId: staffRole.id,
         roleName: USER_ROLE.STAFF,
         profile: { name: input.name, lastName: input.lastName, phone: input.phone },
-        clubId: row.invitation.clubId,
+        locationId: row.invitation.locationId,
       })
     } catch {
       throw new InternalServerErrorException(this.ts.translateError('invitation.ACCEPT_FAILED'))
