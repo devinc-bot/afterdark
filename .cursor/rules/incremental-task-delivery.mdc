@@ -17,7 +17,7 @@ Cuando el usuario pida una **feature**, **cambio grande** o **refactor amplio**,
 
 ## Tamaño de cada entrega
 
-- Preferir cortes por capa: types/validators → db/migración → API → dashboard/UI → consumidores cruzados → i18n/copy.
+- Preferir cortes por capa: types/validators → db/migración → API → dashboard/UI → consumidores cruzados → i18n.
 - Cada entrega debe poder revisarse sola (diff acotado, criterio de “listo” claro).
 - Evitar tocar apps/paquetes no necesarios para la tarea actual.
 
