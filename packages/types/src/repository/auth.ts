@@ -19,4 +19,4 @@ export type RegisterAccountInput = {
   providerAccountId?: string | null
 }
 
-export type RegisterStaffForClubInput = RegisterAccountInput & { clubId: number }
+export type RegisterStaffForLocationInput = RegisterAccountInput & { locationId: number }

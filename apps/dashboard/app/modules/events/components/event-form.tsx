@@ -21,7 +21,7 @@ import {
   toast,
 } from '@afterdark/ui'
 import type { TFunction } from 'i18next'
-import { useClubs } from '~/modules/club-management/queries/use-club-management-queries'
+import { useLocations } from '~/modules/locations/queries/use-locations-queries'
 import { useCreateEvent, useUpdateEvent } from '~/modules/events/mutation/use-event-mutations'
 import { EMPTY_EVENT_FORM_VALUES } from '~/modules/events/utils/event-form.mapper'
 
@@ -34,43 +34,43 @@ export type EventFormMode = (typeof EVENT_FORM_MODE)[keyof typeof EVENT_FORM_MOD
 
 export const EVENT_FORM_ID = 'event-form'
 
-type ClubSelectFieldDisplayInput = {
+type LocationSelectFieldDisplayInput = {
   isLoading: boolean
   isError: boolean
-  clubCount: number
+  locationCount: number
   fieldError: string | null
   t: TFunction<'events'>
 }
 
-type ClubSelectFieldDisplay = {
+type LocationSelectFieldDisplay = {
   placeholder: string
   error: string | undefined
 }
 
-function getClubSelectFieldDisplay({
+function getLocationSelectFieldDisplay({
   isLoading,
   isError,
-  clubCount,
+  locationCount,
   fieldError,
   t,
-}: ClubSelectFieldDisplayInput): ClubSelectFieldDisplay {
+}: LocationSelectFieldDisplayInput): LocationSelectFieldDisplay {
   if (isLoading) {
-    return { placeholder: t('form.clubLoading'), error: fieldError ?? undefined }
+    return { placeholder: t('form.locationLoading'), error: fieldError ?? undefined }
   }
 
   if (isError) {
     return {
-      placeholder: t('form.clubPlaceholder'),
-      error: t('form.clubsLoadError'),
+      placeholder: t('form.locationPlaceholder'),
+      error: t('form.locationsLoadError'),
     }
   }
 
-  if (clubCount === 0) {
-    return { placeholder: t('form.clubEmpty'), error: fieldError ?? undefined }
+  if (locationCount === 0) {
+    return { placeholder: t('form.locationEmpty'), error: fieldError ?? undefined }
   }
 
   return {
-    placeholder: t('form.clubPlaceholder'),
+    placeholder: t('form.locationPlaceholder'),
     error: fieldError ?? undefined,
   }
 }
@@ -91,7 +91,11 @@ export function EventForm({ mode, documentId, defaultValues, onSuccess }: EventF
   const resolveFieldError = useResolveFieldError()
   const createEventMutation = useCreateEvent()
   const updateEventMutation = useUpdateEvent()
-  const { data: clubs = [], isLoading: isClubsLoading, isError: isClubsError } = useClubs()
+  const {
+    data: locations = [],
+    isLoading: isLocationsLoading,
+    isError: isLocationsError,
+  } = useLocations()
 
   const isEdit = mode === EVENT_FORM_MODE.EDIT
   const initialValues = defaultValues ?? EMPTY_EVENT_FORM_VALUES
@@ -146,30 +150,30 @@ export function EventForm({ mode, documentId, defaultValues, onSuccess }: EventF
         >
           <p className="text-xs text-ink-muted">{t('form.requiredFieldsHint')}</p>
 
-          <form.Field name="clubId" validators={{ onSubmit: eventFormSchema.shape.clubId }}>
+          <form.Field name="locationId" validators={{ onSubmit: eventFormSchema.shape.locationId }}>
             {(field) => {
               const error = resolveFieldError(field.state.meta.errors)
-              const { placeholder: clubPlaceholder, error: clubFieldError } =
-                getClubSelectFieldDisplay({
-                  isLoading: isClubsLoading,
-                  isError: isClubsError,
-                  clubCount: clubs.length,
+              const { placeholder: locationPlaceholder, error: locationFieldError } =
+                getLocationSelectFieldDisplay({
+                  isLoading: isLocationsLoading,
+                  isError: isLocationsError,
+                  locationCount: locations.length,
                   fieldError: error,
                   t,
                 })
 
               return (
                 <SelectField
-                  label={requiredFieldLabel(t('form.club'))}
+                  label={requiredFieldLabel(t('form.location'))}
                   value={field.state.value || undefined}
                   onValueChange={(value) => field.handleChange(value)}
-                  placeholder={clubPlaceholder}
-                  error={clubFieldError}
-                  disabled={isClubsLoading || clubs.length === 0}
+                  placeholder={locationPlaceholder}
+                  error={locationFieldError}
+                  disabled={isLocationsLoading || locations.length === 0}
                 >
-                  {clubs.map((club) => (
-                    <SelectItem key={club.documentId} value={club.documentId}>
-                      {club.name}
+                  {locations.map((location) => (
+                    <SelectItem key={location.documentId} value={location.documentId}>
+                      {location.name}
                     </SelectItem>
                   ))}
                 </SelectField>

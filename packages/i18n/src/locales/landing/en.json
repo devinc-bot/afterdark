@@ -23,7 +23,7 @@
   },
   "about": {
     "headline": "The platform that makes the night clear.",
-    "body": "Afterdark connects events and audiences in one experience: real events, unambiguous tickets, and an interface that feels the night without dressing it up as a flyer.",
+    "body": "{appNameDisplay} connects clubs and audiences in one experience: real events, unambiguous tickets, and an interface that feels the night without dressing it up as a flyer.",
     "imageAlt": "Lit stage during a live show"
   },
   "atmosphere": {
@@ -117,11 +117,11 @@
     "explore": "Explore",
     "navAria": "Footer links",
     "madeFor": "Made so you can enjoy an unforgettable night.",
-    "rights": "© {year} afterdark",
+    "rights": "© {year} {appName}",
     "social": {
       "title": "Follow us",
-      "instagram": "afterdark on Instagram",
-      "facebook": "afterdark on Facebook"
+      "instagram": "{appName} on Instagram",
+      "facebook": "{appName} on Facebook"
     }
   }
 }

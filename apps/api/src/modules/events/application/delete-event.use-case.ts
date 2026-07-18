@@ -8,7 +8,7 @@ import {
 import {
   countTicketsByEventId,
   deleteEventByDocumentId,
-  findEventWithClubOwnedByOwnerDocumentId,
+  findEventWithLocationOwnedByOwnerDocumentId,
 } from '@afterdark/db'
 import { TranslationService } from '@afterdark/i18n/server'
 
@@ -17,7 +17,7 @@ export class DeleteEventUseCase {
   constructor(@Inject(TranslationService) private readonly ts: TranslationService) {}
 
   async execute(ownerDocumentId: string, documentId: string): Promise<void> {
-    const existing = await findEventWithClubOwnedByOwnerDocumentId(documentId, ownerDocumentId)
+    const existing = await findEventWithLocationOwnedByOwnerDocumentId(documentId, ownerDocumentId)
 
     if (!existing) {
       throw new NotFoundException(this.ts.translateError('event.NOT_FOUND'))

@@ -5,7 +5,7 @@ import { I18nModule } from '@afterdark/i18n/server'
 import { CommonModule } from './modules/common/common.module'
 import { AuthModule } from './modules/auth'
 import { CategoriesModule } from './modules/categories'
-import { ClubsModule } from './modules/clubs'
+import { LocationsModule } from './modules/locations'
 import { DashboardModule } from './modules/dashboard'
 import { HealthModule } from './modules/health'
 import { InvitationsModule } from './modules/invitations'
@@ -25,7 +25,7 @@ import { GeoModule } from './modules/geo'
     CommonModule,
     AuthModule,
     CategoriesModule,
-    ClubsModule,
+    LocationsModule,
     DashboardModule,
     HealthModule,
     InvitationsModule,

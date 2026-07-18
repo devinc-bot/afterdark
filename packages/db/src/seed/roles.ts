@@ -4,7 +4,7 @@ import { db } from '../client.ts'
 import { roles } from '../schema/role.ts'
 
 const defaultRoles = [
-  { name: USER_ROLE.OWNER, description: 'Club owner' },
+  { name: USER_ROLE.OWNER, description: 'Location owner' },
   { name: USER_ROLE.ADMIN, description: 'Administrator' },
   { name: USER_ROLE.STAFF, description: 'Staff member' },
   { name: USER_ROLE.USER, description: 'Regular user' },

@@ -381,27 +381,27 @@ Regla de negocio (API): solo un usuario con rol `owner` puede crear invitaciones
 
 #### `orders` — `orders.ts`
 
-| Columna (TS) | SQL         | Tipo    | Null   | FK / default                                    |
-| ------------ | ----------- | ------- | ------ | ----------------------------------------------- |
-| `ticketId`   | `ticket_id` | integer | NO     | `tickets.id`                                    |
-| `userId`     | `user_id`   | integer | NO     | `users.id`                                      |
-| `status`     | `status`    | text    | **SÍ** | Enum `PAYMENT_STATUS`; sin default en schema    |
-| `amount`     | `amount`    | real    | NO     | —                                               |
-| `quantity`   | `quantity`  | integer | NO     | Default `1`                                     |
-| `provider`   | `provider`  | text    | NO     | Enum `PAYMENT_PROVIDER`; default `mercado_pago` |
-| `metadata`   | `metadata`  | json    | SÍ     | Respuesta / datos del proveedor de pago      |
-| `paidAt`     | `paid_at`   | timestamp | SÍ   | Fecha en que el pago pasó a `completed`      |
+| Columna (TS) | SQL         | Tipo      | Null   | FK / default                                    |
+| ------------ | ----------- | --------- | ------ | ----------------------------------------------- |
+| `ticketId`   | `ticket_id` | integer   | NO     | `tickets.id`                                    |
+| `userId`     | `user_id`   | integer   | NO     | `users.id`                                      |
+| `status`     | `status`    | text      | **SÍ** | Enum `PAYMENT_STATUS`; sin default en schema    |
+| `amount`     | `amount`    | real      | NO     | —                                               |
+| `quantity`   | `quantity`  | integer   | NO     | Default `1`                                     |
+| `provider`   | `provider`  | text      | NO     | Enum `PAYMENT_PROVIDER`; default `mercado_pago` |
+| `metadata`   | `metadata`  | json      | SÍ     | Respuesta / datos del proveedor de pago         |
+| `paidAt`     | `paid_at`   | timestamp | SÍ     | Fecha en que el pago pasó a `completed`         |
 
 Columnas base: `createdAt` (creación de la orden / inicio de checkout), `updatedAt` (última modificación).
 
 #### `tickets_sold` — `tickets_sold.ts`
 
-| Columna (TS) | SQL         | Tipo    | Null | FK / notas              |
-| ------------ | ----------- | ------- | ---- | ----------------------- |
-| `orderId`    | `order_id`  | integer | NO   | FK → `orders.id`        |
-| `qrCode`     | `qr_code`   | text    | NO   | UNIQUE; código QR emitido |
-| `checkedIn`  | `checked_in` | boolean | NO  | Default `false`           |
-| `usedAt`     | `used_at`   | timestamp_ms | SÍ | Fecha/hora de uso en puerta |
+| Columna (TS) | SQL          | Tipo         | Null | FK / notas                  |
+| ------------ | ------------ | ------------ | ---- | --------------------------- |
+| `orderId`    | `order_id`   | integer      | NO   | FK → `orders.id`            |
+| `qrCode`     | `qr_code`    | text         | NO   | UNIQUE; código QR emitido   |
+| `checkedIn`  | `checked_in` | boolean      | NO   | Default `false`             |
+| `usedAt`     | `used_at`    | timestamp_ms | SÍ   | Fecha/hora de uso en puerta |
 
 ---
 

@@ -2,8 +2,8 @@ import type { EventStatus } from '../enums/event.ts'
 
 export interface EventResponse {
   documentId: string
-  clubId: string
-  clubName: string
+  locationId: string
+  locationName: string
   name: string
   description: string
   startsAt: Date

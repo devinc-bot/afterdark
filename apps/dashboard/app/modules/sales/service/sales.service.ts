@@ -1,5 +1,5 @@
 import type {
-  ClubResponse,
+  LocationResponse,
   EventResponse,
   OwnerSaleResponse,
   PaginatedResponse,
@@ -16,7 +16,7 @@ function toSalesSearchParams(params: ListOwnerSalesQueryInput): string {
   })
 
   if (params.eventId) searchParams.set('eventId', params.eventId)
-  if (params.clubId) searchParams.set('clubId', params.clubId)
+  if (params.locationId) searchParams.set('locationId', params.locationId)
   if (params.ticketType) searchParams.set('ticketType', params.ticketType)
   if (params.from) searchParams.set('from', params.from.toISOString())
   if (params.to) searchParams.set('to', params.to.toISOString())
@@ -37,13 +37,13 @@ export async function fetchOwnerSales(
   }
 }
 
-export async function fetchSalesFilterClubs(): Promise<ClubResponse[]> {
+export async function fetchSalesFilterLocations(): Promise<LocationResponse[]> {
   try {
-    return await api.get<ClubResponse[]>(
-      buildApiPath(API_ROUTES.clubs, API_ROUTES.clubs.path.list())
+    return await api.get<LocationResponse[]>(
+      buildApiPath(API_ROUTES.locations, API_ROUTES.locations.path.list())
     )
   } catch (error) {
-    throw toApiServiceError(error, i18n.t('sales:filters.clubsError'))
+    throw toApiServiceError(error, i18n.t('sales:filters.locationsError'))
   }
 }
 

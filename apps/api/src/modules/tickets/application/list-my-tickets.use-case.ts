@@ -19,15 +19,15 @@ export class ListMyTicketsUseCase {
         page: query.page,
         limit: query.limit,
         status: query.status,
-        clubDocumentId: query.clubId,
+        locationDocumentId: query.locationId,
         salesFilter: query.salesFilter,
       })
 
       const totalPages = total === 0 ? 0 : Math.ceil(total / query.limit)
 
       return {
-        data: rows.map(({ ticket, event, club, totalSold, revenue }) =>
-          toTicketResponse(ticket, event, club, { totalSold, revenue })
+        data: rows.map(({ ticket, event, location, totalSold, revenue }) =>
+          toTicketResponse(ticket, event, location, { totalSold, revenue })
         ),
         total,
         page: query.page,

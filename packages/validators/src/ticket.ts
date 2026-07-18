@@ -148,7 +148,7 @@ export type UpdateTicketInput = z.infer<typeof updateTicketSchema>
 
 export const listTicketsQuerySchema = paginationSchema.extend({
   status: ticketStatusSchema.optional(),
-  clubId: uuidSchema.optional(),
+  locationId: uuidSchema.optional(),
   salesFilter: ticketSalesFilterSchema.optional(),
 })
 

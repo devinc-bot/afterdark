@@ -21,8 +21,8 @@ export async function fetchTickets(
       searchParams.set('status', params.status)
     }
 
-    if (params.clubId) {
-      searchParams.set('clubId', params.clubId)
+    if (params.locationId) {
+      searchParams.set('locationId', params.locationId)
     }
 
     if (params.salesFilter) {

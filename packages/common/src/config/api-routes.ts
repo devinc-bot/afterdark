@@ -3,7 +3,7 @@ import { API_PREFIX } from '../constants/api.ts'
 export const API_AUTH_PREFIX = '/auth' as const
 export const API_SETTINGS_PREFIX = '/settings' as const
 export const API_SESSION_PREFIX = '/session' as const
-export const API_CLUBS_PREFIX = '/clubs' as const
+export const API_LOCATIONS_PREFIX = '/locations' as const
 export const API_STAFF_PREFIX = '/staff' as const
 export const API_INVITATIONS_PREFIX = '/invitations' as const
 export const API_TICKETS_PREFIX = '/tickets' as const
@@ -39,10 +39,10 @@ export const API_ROUTES = {
       root: () => '/' as const,
     },
   },
-  clubs: {
-    prefix: API_CLUBS_PREFIX,
+  locations: {
+    prefix: API_LOCATIONS_PREFIX,
     path: {
-      list: () => '/my-clubs' as const,
+      list: () => '/my-locations' as const,
       create: () => '/create' as const,
       update: (documentId: string) => `/${documentId}` as const,
       delete: (documentId: string) => `/${documentId}` as const,

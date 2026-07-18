@@ -59,7 +59,7 @@ export const createStaffUserSchema = z.object({
   name: z.string().trim().min(2).max(255),
   email: z.email('validation:field.invitation.email'),
   password: z.string().min(8),
-  clubId: z.string().min(1, 'validation:field.invitation.club'),
+  locationId: z.string().min(1, 'validation:field.invitation.location'),
 })
 
 export const STAFF_INVITATION_EXPIRY_OPTIONS = {
@@ -75,7 +75,7 @@ export type StaffInvitationExpiryMs =
 
 export const createStaffInvitationSchema = z.object({
   email: z.email('validation:field.invitation.email'),
-  clubId: z.string().min(1, 'validation:field.invitation.club'),
+  locationId: z.string().min(1, 'validation:field.invitation.location'),
   securityWord: z
     .string()
     .trim()

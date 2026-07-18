@@ -1,11 +1,11 @@
 import { and, eq } from 'drizzle-orm'
 import { db } from '../../client.ts'
 import { accounts } from '../../schema/account.ts'
-import { clubs } from '../../schema/club.ts'
+import { locations } from '../../schema/location.ts'
 import { owners } from '../../schema/owner.ts'
 import { staff } from '../../schema/staff.ts'
 import { staffAccountsLnk } from '../../schema/staff-account-lnk.ts'
-import { staffClubsLnk } from '../../schema/staff-club-lnk.ts'
+import { staffLocationsLnk } from '../../schema/staff-location-lnk.ts'
 
 export async function findStaffOwnershipByDocumentId(
   staffDocumentId: string,
@@ -14,9 +14,9 @@ export async function findStaffOwnershipByDocumentId(
   const [row] = await db
     .select({ staffId: staff.id, accountId: accounts.id })
     .from(staff)
-    .innerJoin(staffClubsLnk, eq(staffClubsLnk.staffId, staff.id))
-    .innerJoin(clubs, eq(clubs.id, staffClubsLnk.clubId))
-    .innerJoin(owners, eq(owners.id, clubs.ownerId))
+    .innerJoin(staffLocationsLnk, eq(staffLocationsLnk.staffId, staff.id))
+    .innerJoin(locations, eq(locations.id, staffLocationsLnk.locationId))
+    .innerJoin(owners, eq(owners.id, locations.ownerId))
     .innerJoin(staffAccountsLnk, eq(staffAccountsLnk.staffId, staff.id))
     .innerJoin(accounts, eq(accounts.id, staffAccountsLnk.accountId))
     .where(and(eq(staff.documentId, staffDocumentId), eq(owners.documentId, ownerDocumentId)))

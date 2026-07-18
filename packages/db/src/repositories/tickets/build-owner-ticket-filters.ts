@@ -2,7 +2,7 @@ import { and, eq, exists, not, sql, type SQL } from 'drizzle-orm'
 import { PAYMENT_STATUS } from '@afterdark/types/enums'
 import { TICKET_SALES_FILTER, type ListTicketsByOwnerParams } from '@afterdark/types'
 import { db } from '../../client.ts'
-import { clubs } from '../../schema/club.ts'
+import { locations } from '../../schema/location.ts'
 import { orders } from '../../schema/orders.ts'
 import { owners } from '../../schema/owner.ts'
 import { tickets } from '../../schema/ticket.ts'
@@ -21,7 +21,7 @@ function completedSalesExist(): SQL {
 export function buildOwnerTicketFilters({
   ownerDocumentId,
   status,
-  clubDocumentId,
+  locationDocumentId,
   salesFilter,
 }: Omit<ListTicketsByOwnerParams, 'page' | 'limit'>): SQL | undefined {
   const filters: SQL[] = [eq(owners.documentId, ownerDocumentId)]
@@ -30,8 +30,8 @@ export function buildOwnerTicketFilters({
     filters.push(eq(tickets.status, status))
   }
 
-  if (clubDocumentId) {
-    filters.push(eq(clubs.documentId, clubDocumentId))
+  if (locationDocumentId) {
+    filters.push(eq(locations.documentId, locationDocumentId))
   }
 
   if (salesFilter === TICKET_SALES_FILTER.SOLD) {

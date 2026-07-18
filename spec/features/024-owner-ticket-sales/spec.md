@@ -103,37 +103,37 @@ En panel e inventario solo ve agregados. Necesita el detalle de cada venta para 
 
 ### API
 
-| Método | Ruta                     | Auth      | Descripción                          |
-| ------ | ------------------------ | --------- | ------------------------------------ |
-| `GET`  | `/api/dashboard/sales`   | Owner JWT | Listado paginado de ventas completadas |
+| Método | Ruta                   | Auth      | Descripción                            |
+| ------ | ---------------------- | --------- | -------------------------------------- |
+| `GET`  | `/api/dashboard/sales` | Owner JWT | Listado paginado de ventas completadas |
 
 **Query**
 
-| Param        | Obligatorio   | Notas                                      |
-| ------------ | ------------- | ------------------------------------------ |
-| `page`       | default `1`   | paginación                                 |
-| `limit`      | default `10`  | paginación                                 |
-| `eventId`    | no            | `documentId` del evento                    |
-| `clubId`     | no            | `documentId` del club del dueño            |
-| `ticketType` | no            | `general` \| `vip` (`TICKET_TYPE`)         |
-| `from`       | no            | ISO datetime; límite inferior de `paidAt`  |
-| `to`         | no            | ISO datetime; límite superior de `paidAt`  |
+| Param        | Obligatorio  | Notas                                     |
+| ------------ | ------------ | ----------------------------------------- |
+| `page`       | default `1`  | paginación                                |
+| `limit`      | default `10` | paginación                                |
+| `eventId`    | no           | `documentId` del evento                   |
+| `clubId`     | no           | `documentId` del club del dueño           |
+| `ticketType` | no           | `general` \| `vip` (`TICKET_TYPE`)        |
+| `from`       | no           | ISO datetime; límite inferior de `paidAt` |
+| `to`         | no           | ISO datetime; límite superior de `paidAt` |
 
 **Response:** `PaginatedResponse<OwnerSaleResponse>`
 
-| Campo         | Tipo     | Notas                          |
-| ------------- | -------- | ------------------------------ |
-| `id`          | string   | `documentId` de la orden       |
-| `buyerName`   | string   | perfil usuario                 |
-| `buyerEmail`  | string   | email de la account            |
-| `eventName`   | string   |                                |
-| `ticketName`  | string   |                                |
-| `ticketType`  | enum     | `general` \| `vip`             |
-| `clubName`    | string   |                                |
-| `paidAt`      | string \| null | ISO; en COMPLETED suele estar seteado |
-| `quantity`    | number   |                                |
-| `amount`      | number   | monto de la orden              |
-| `status`      | enum     | siempre `COMPLETED` en este listado |
+| Campo        | Tipo           | Notas                                 |
+| ------------ | -------------- | ------------------------------------- |
+| `id`         | string         | `documentId` de la orden              |
+| `buyerName`  | string         | perfil usuario                        |
+| `buyerEmail` | string         | email de la account                   |
+| `eventName`  | string         |                                       |
+| `ticketName` | string         |                                       |
+| `ticketType` | enum           | `general` \| `vip`                    |
+| `clubName`   | string         |                                       |
+| `paidAt`     | string \| null | ISO; en COMPLETED suele estar seteado |
+| `quantity`   | number         |                                       |
+| `amount`     | number         | monto de la orden                     |
+| `status`     | enum           | siempre `COMPLETED` en este listado   |
 
 **Errores:** `401` no auth · `403` no owner · `400` query inválida (p. ej. `from` > `to`, ids mal formados) — mensajes i18n en español.
 
@@ -145,15 +145,15 @@ Sin migración. Repository bajo `packages/db/.../dashboard/` (o `orders/` si con
 
 ### UI
 
-| Pieza | Valor |
-| ----- | ----- |
-| Ruta | `/_app/sales` · `DASHBOARD_ROUTES.sales()` |
-| Nav | Sidebar **Ventas** solo `owner` · `/sales` en `OWNER_ALLOWED_PATH_PREFIXES` |
-| Filtros | **Evento** · **Club** · **Tipo de ticket** · **Desde** · **Hasta** |
-| Empty | _No hay ventas para mostrar._ |
-| Error carga | Mensaje genérico recuperable (patrón inventario/eventos) |
-| Tabla | Columnas del DTO; paginación visible como inventario |
-| i18n | Namespace `sales` (`es` / `en`) |
+| Pieza       | Valor                                                                       |
+| ----------- | --------------------------------------------------------------------------- |
+| Ruta        | `/_app/sales` · `DASHBOARD_ROUTES.sales()`                                  |
+| Nav         | Sidebar **Ventas** solo `owner` · `/sales` en `OWNER_ALLOWED_PATH_PREFIXES` |
+| Filtros     | **Evento** · **Club** · **Tipo de ticket** · **Desde** · **Hasta**          |
+| Empty       | _No hay ventas para mostrar._                                               |
+| Error carga | Mensaje genérico recuperable (patrón inventario/eventos)                    |
+| Tabla       | Columnas del DTO; paginación visible como inventario                        |
+| i18n        | Namespace `sales` (`es` / `en`)                                             |
 
 ---
 

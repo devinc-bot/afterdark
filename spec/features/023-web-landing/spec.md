@@ -88,17 +88,17 @@ Sin cambios de esquema.
 
 ### UI (si aplica)
 
-| Ruta | Pantalla |
-| ---- | -------- |
+| Ruta | Pantalla                                         |
+| ---- | ------------------------------------------------ |
 | `/`  | Landing (header + CTAs condicionados por sesión) |
 
 **Copy**
 
-| Contexto | ES | EN |
-| -------- | -- | -- |
-| Nav autenticada — eventos | Eventos | Events |
-| Nav autenticada — tickets | Tickets | Tickets |
-| Aria del avatar | Cuenta de {nombre} | Account for {name} |
+| Contexto                  | ES                 | EN                 |
+| ------------------------- | ------------------ | ------------------ |
+| Nav autenticada — eventos | Eventos            | Events             |
+| Nav autenticada — tickets | Tickets            | Tickets            |
+| Aria del avatar           | Cuenta de {nombre} | Account for {name} |
 
 **Interacción (supuestos confirmados con “ok” en fase 4)**
 

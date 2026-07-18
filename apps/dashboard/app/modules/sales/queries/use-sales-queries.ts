@@ -3,7 +3,7 @@ import type { ListOwnerSalesQueryInput } from '@afterdark/validators'
 import { QUERY_KEYS } from '~/modules/common/constants/query-keys'
 import {
   fetchOwnerSales,
-  fetchSalesFilterClubs,
+  fetchSalesFilterLocations,
   fetchSalesFilterEvents,
 } from '~/modules/sales/service/sales.service'
 
@@ -20,7 +20,7 @@ export function useOwnerSales(params: Partial<ListOwnerSalesQueryInput> = {}) {
       page: query.page,
       limit: query.limit,
       eventId: query.eventId,
-      clubId: query.clubId,
+      locationId: query.locationId,
       ticketType: query.ticketType,
       from: query.from?.toISOString(),
       to: query.to?.toISOString(),
@@ -29,10 +29,10 @@ export function useOwnerSales(params: Partial<ListOwnerSalesQueryInput> = {}) {
   })
 }
 
-export function useSalesFilterClubs() {
+export function useSalesFilterLocations() {
   return useQuery({
-    queryKey: QUERY_KEYS.salesFilterClubs(),
-    queryFn: fetchSalesFilterClubs,
+    queryKey: QUERY_KEYS.salesFilterLocations(),
+    queryFn: fetchSalesFilterLocations,
   })
 }
 

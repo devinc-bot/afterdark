@@ -1,15 +1,15 @@
-import type { ClubSelect, EventSelect } from '@afterdark/db'
+import type { EventSelect, LocationSelect } from '@afterdark/db'
 import type { EventResponse } from '@afterdark/types'
 import type { CreateEventInput, UpdateEventInput } from '@afterdark/validators'
 
 export function toEventResponse(
   event: EventSelect,
-  club: Pick<ClubSelect, 'documentId' | 'name'>
+  location: Pick<LocationSelect, 'documentId' | 'name'>
 ): EventResponse {
   return {
     documentId: event.documentId,
-    clubId: club.documentId,
-    clubName: club.name,
+    locationId: location.documentId,
+    locationName: location.name,
     name: event.name,
     description: event.description,
     startsAt: event.startsAt,
@@ -20,9 +20,9 @@ export function toEventResponse(
   }
 }
 
-export function toEventUpsertInput(input: CreateEventInput | UpdateEventInput, clubId: number) {
+export function toEventUpsertInput(input: CreateEventInput | UpdateEventInput, locationId: number) {
   return {
-    clubId,
+    locationId,
     name: input.name,
     description: input.description,
     startsAt: input.startsAt,

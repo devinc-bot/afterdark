@@ -1,6 +1,6 @@
 import { eq } from 'drizzle-orm'
 import { db } from '../../client.ts'
-import { clubs } from '../../schema/club.ts'
+import { locations } from '../../schema/location.ts'
 import { events } from '../../schema/event.ts'
 import { owners } from '../../schema/owner.ts'
 import { tickets } from '../../schema/ticket.ts'
@@ -10,10 +10,10 @@ export function ticketRelationsQuery() {
     .select({
       ticket: tickets,
       event: events,
-      club: clubs,
+      location: locations,
     })
     .from(tickets)
     .innerJoin(events, eq(events.id, tickets.eventId))
-    .innerJoin(clubs, eq(clubs.id, events.clubId))
-    .innerJoin(owners, eq(owners.id, clubs.ownerId))
+    .innerJoin(locations, eq(locations.id, events.locationId))
+    .innerJoin(owners, eq(owners.id, locations.ownerId))
 }

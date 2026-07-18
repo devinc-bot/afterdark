@@ -14,11 +14,11 @@
 
 ### Database / config
 
-| Archivo | Cambio |
-| ------- | ------ |
-| `packages/db/drizzle.config.ts` | Añadir `migrations: { prefix: 'timestamp' }` al objeto exportado |
-| `packages/db/DATABASE.md` | En sección Migraciones: explicar que nuevas usan timestamp; históricas `0000`…`0020` se mantienen |
-| `AGENTS.md` | En gotcha de Drizzle migrations: mencionar prefijo `timestamp` |
+| Archivo                         | Cambio                                                                                            |
+| ------------------------------- | ------------------------------------------------------------------------------------------------- |
+| `packages/db/drizzle.config.ts` | Añadir `migrations: { prefix: 'timestamp' }` al objeto exportado                                  |
+| `packages/db/DATABASE.md`       | En sección Migraciones: explicar que nuevas usan timestamp; históricas `0000`…`0020` se mantienen |
+| `AGENTS.md`                     | En gotcha de Drizzle migrations: mencionar prefijo `timestamp`                                    |
 
 ## Diseño técnico
 
@@ -28,16 +28,16 @@ No hace falta migración ni cambio de schema para activar el prefijo.
 
 ## Riesgos / edge cases
 
-| Caso | Comportamiento esperado |
-| ---- | ----------------------- |
-| Dos generates el mismo segundo | Colisión de nombre; resolver en merge a mano |
+| Caso                           | Comportamiento esperado                         |
+| ------------------------------ | ----------------------------------------------- |
+| Dos generates el mismo segundo | Colisión de nombre; resolver en merge a mano    |
 | Journal / snapshots existentes | Sin cambio; solo entradas nuevas usan timestamp |
-| CI / `db:migrate` | Sin cambio de comando; lee journal por orden |
+| CI / `db:migrate`              | Sin cambio de comando; lee journal por orden    |
 
 ## Verificación manual
 
-| Paso | Resultado esperado |
-| ---- | ------------------ |
-| 1. Revisar `drizzle.config.ts` | Contiene `migrations.prefix: 'timestamp'` |
-| 2. Listar `src/migrations/*.sql` | Siguen existiendo `0000`…`0020` sin renombrar |
+| Paso                                                                              | Resultado esperado                                                                                 |
+| --------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| 1. Revisar `drizzle.config.ts`                                                    | Contiene `migrations.prefix: 'timestamp'`                                                          |
+| 2. Listar `src/migrations/*.sql`                                                  | Siguen existiendo `0000`…`0020` sin renombrar                                                      |
 | 3. (Opcional) Cambio mínimo de schema + `pnpm --filter @afterdark/db db:generate` | Archivo nuevo con prefijo timestamp; luego descartar el cambio de prueba si no se quiere commitear |

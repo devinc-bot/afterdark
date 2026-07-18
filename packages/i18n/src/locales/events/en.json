@@ -1,7 +1,7 @@
 {
   "page": {
     "title": "Event management",
-    "description": "Create and review events for your clubs.",
+    "description": "Create and review events for your locations.",
     "metaTitle": "Event management · {appNameAdmin}"
   },
   "form": {
@@ -9,11 +9,11 @@
     "createTitle": "Create event",
     "createDescription": "Fill in the event details.",
     "requiredFieldsHint": "Fields marked with * are required.",
-    "club": "Club",
-    "clubPlaceholder": "Select a club",
-    "clubLoading": "Loading clubs…",
-    "clubEmpty": "You have no registered clubs",
-    "clubsLoadError": "We could not load your clubs.",
+    "location": "Location",
+    "locationPlaceholder": "Select a location",
+    "locationLoading": "Loading locations…",
+    "locationEmpty": "You have no registered locations",
+    "locationsLoadError": "We could not load your locations.",
     "name": "Event name",
     "namePlaceholder": "E.g. Electronic night",
     "description": "Description",
@@ -42,7 +42,7 @@
   "table": {
     "title": "Registered events",
     "registryCount": "{count, plural, one {1 event registered} other {# events registered}}",
-    "club": "Club",
+    "location": "Location",
     "event": "Event",
     "startsAt": "Start",
     "endsAt": "End",
@@ -50,7 +50,7 @@
     "actions": "Actions",
     "actionEdit": "Edit",
     "actionDelete": "Delete",
-    "rowActionsLabel": "Actions for {event} at {club}",
+    "rowActionsLabel": "Actions for {event} at {location}",
     "emptyTitle": "No registered events",
     "emptyDescription": "Create your first event to get started."
   },

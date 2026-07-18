@@ -117,7 +117,7 @@ function EventRecordRow({
               className="text-ink-muted hover:text-ink"
               aria-label={t('table.rowActionsLabel', {
                 event: record.name,
-                club: record.clubName,
+                location: record.clubName,
               })}
             >
               <EllipsisVertical aria-hidden="true" />
@@ -262,7 +262,7 @@ export function EventRecords({
           <Table variant="compact" className="min-w-[960px]">
             <TableHeader>
               <TableRow>
-                <TableHead className="p-6">{t('table.club')}</TableHead>
+                <TableHead className="p-6">{t('table.location')}</TableHead>
                 <TableHead className="p-6">{t('table.event')}</TableHead>
                 <TableHead className="p-6">{t('table.startsAt')}</TableHead>
                 <TableHead className="p-6">{t('table.endsAt')}</TableHead>

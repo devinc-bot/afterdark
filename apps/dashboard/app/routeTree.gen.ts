@@ -23,9 +23,9 @@ import { Route as AppSalesRouteImport } from './routes/_app/sales'
 import { Route as AppEventsRouteImport } from './routes/_app/events'
 import { Route as AppDashboardRouteImport } from './routes/_app/dashboard'
 import { Route as NameTokenRouteImport } from './routes/$name.$token'
-import { Route as AppClubManagementIndexRouteImport } from './routes/_app/club-management/index'
-import { Route as AppClubManagementNewRouteImport } from './routes/_app/club-management/new'
-import { Route as AppClubManagementDocumentIdEditRouteImport } from './routes/_app/club-management/$documentId/edit'
+import { Route as AppLocationsIndexRouteImport } from './routes/_app/locations/index'
+import { Route as AppLocationsNewRouteImport } from './routes/_app/locations/new'
+import { Route as AppLocationsDocumentIdEditRouteImport } from './routes/_app/locations/$documentId/edit'
 
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
   id: '/reset-password',
@@ -96,20 +96,20 @@ const NameTokenRoute = NameTokenRouteImport.update({
   path: '/$name/$token',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AppClubManagementIndexRoute = AppClubManagementIndexRouteImport.update({
-  id: '/club-management/',
-  path: '/club-management/',
+const AppLocationsIndexRoute = AppLocationsIndexRouteImport.update({
+  id: '/locations/',
+  path: '/locations/',
   getParentRoute: () => AppRoute,
 } as any)
-const AppClubManagementNewRoute = AppClubManagementNewRouteImport.update({
-  id: '/club-management/new',
-  path: '/club-management/new',
+const AppLocationsNewRoute = AppLocationsNewRouteImport.update({
+  id: '/locations/new',
+  path: '/locations/new',
   getParentRoute: () => AppRoute,
 } as any)
-const AppClubManagementDocumentIdEditRoute =
-  AppClubManagementDocumentIdEditRouteImport.update({
-    id: '/club-management/$documentId/edit',
-    path: '/club-management/$documentId/edit',
+const AppLocationsDocumentIdEditRoute =
+  AppLocationsDocumentIdEditRouteImport.update({
+    id: '/locations/$documentId/edit',
+    path: '/locations/$documentId/edit',
     getParentRoute: () => AppRoute,
   } as any)
 
@@ -127,9 +127,9 @@ export interface FileRoutesByFullPath {
   '/staff': typeof AppStaffRoute
   '/tickets': typeof AppTicketsRoute
   '/auth/callback': typeof AuthCallbackRoute
-  '/club-management/new': typeof AppClubManagementNewRoute
-  '/club-management/': typeof AppClubManagementIndexRoute
-  '/club-management/$documentId/edit': typeof AppClubManagementDocumentIdEditRoute
+  '/locations/new': typeof AppLocationsNewRoute
+  '/locations/': typeof AppLocationsIndexRoute
+  '/locations/$documentId/edit': typeof AppLocationsDocumentIdEditRoute
 }
 export interface FileRoutesByTo {
   '/forgot-password': typeof ForgotPasswordRoute
@@ -145,9 +145,9 @@ export interface FileRoutesByTo {
   '/tickets': typeof AppTicketsRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/': typeof AppIndexRoute
-  '/club-management/new': typeof AppClubManagementNewRoute
-  '/club-management': typeof AppClubManagementIndexRoute
-  '/club-management/$documentId/edit': typeof AppClubManagementDocumentIdEditRoute
+  '/locations/new': typeof AppLocationsNewRoute
+  '/locations': typeof AppLocationsIndexRoute
+  '/locations/$documentId/edit': typeof AppLocationsDocumentIdEditRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -165,9 +165,9 @@ export interface FileRoutesById {
   '/_app/tickets': typeof AppTicketsRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/_app/': typeof AppIndexRoute
-  '/_app/club-management/new': typeof AppClubManagementNewRoute
-  '/_app/club-management/': typeof AppClubManagementIndexRoute
-  '/_app/club-management/$documentId/edit': typeof AppClubManagementDocumentIdEditRoute
+  '/_app/locations/new': typeof AppLocationsNewRoute
+  '/_app/locations/': typeof AppLocationsIndexRoute
+  '/_app/locations/$documentId/edit': typeof AppLocationsDocumentIdEditRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -185,9 +185,9 @@ export interface FileRouteTypes {
     | '/staff'
     | '/tickets'
     | '/auth/callback'
-    | '/club-management/new'
-    | '/club-management/'
-    | '/club-management/$documentId/edit'
+    | '/locations/new'
+    | '/locations/'
+    | '/locations/$documentId/edit'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/forgot-password'
@@ -203,9 +203,9 @@ export interface FileRouteTypes {
     | '/tickets'
     | '/auth/callback'
     | '/'
-    | '/club-management/new'
-    | '/club-management'
-    | '/club-management/$documentId/edit'
+    | '/locations/new'
+    | '/locations'
+    | '/locations/$documentId/edit'
   id:
     | '__root__'
     | '/_app'
@@ -222,9 +222,9 @@ export interface FileRouteTypes {
     | '/_app/tickets'
     | '/auth/callback'
     | '/_app/'
-    | '/_app/club-management/new'
-    | '/_app/club-management/'
-    | '/_app/club-management/$documentId/edit'
+    | '/_app/locations/new'
+    | '/_app/locations/'
+    | '/_app/locations/$documentId/edit'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -337,25 +337,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NameTokenRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_app/club-management/': {
-      id: '/_app/club-management/'
-      path: '/club-management'
-      fullPath: '/club-management/'
-      preLoaderRoute: typeof AppClubManagementIndexRouteImport
+    '/_app/locations/': {
+      id: '/_app/locations/'
+      path: '/locations'
+      fullPath: '/locations/'
+      preLoaderRoute: typeof AppLocationsIndexRouteImport
       parentRoute: typeof AppRoute
     }
-    '/_app/club-management/new': {
-      id: '/_app/club-management/new'
-      path: '/club-management/new'
-      fullPath: '/club-management/new'
-      preLoaderRoute: typeof AppClubManagementNewRouteImport
+    '/_app/locations/new': {
+      id: '/_app/locations/new'
+      path: '/locations/new'
+      fullPath: '/locations/new'
+      preLoaderRoute: typeof AppLocationsNewRouteImport
       parentRoute: typeof AppRoute
     }
-    '/_app/club-management/$documentId/edit': {
-      id: '/_app/club-management/$documentId/edit'
-      path: '/club-management/$documentId/edit'
-      fullPath: '/club-management/$documentId/edit'
-      preLoaderRoute: typeof AppClubManagementDocumentIdEditRouteImport
+    '/_app/locations/$documentId/edit': {
+      id: '/_app/locations/$documentId/edit'
+      path: '/locations/$documentId/edit'
+      fullPath: '/locations/$documentId/edit'
+      preLoaderRoute: typeof AppLocationsDocumentIdEditRouteImport
       parentRoute: typeof AppRoute
     }
   }
@@ -369,9 +369,9 @@ interface AppRouteChildren {
   AppStaffRoute: typeof AppStaffRoute
   AppTicketsRoute: typeof AppTicketsRoute
   AppIndexRoute: typeof AppIndexRoute
-  AppClubManagementNewRoute: typeof AppClubManagementNewRoute
-  AppClubManagementIndexRoute: typeof AppClubManagementIndexRoute
-  AppClubManagementDocumentIdEditRoute: typeof AppClubManagementDocumentIdEditRoute
+  AppLocationsNewRoute: typeof AppLocationsNewRoute
+  AppLocationsIndexRoute: typeof AppLocationsIndexRoute
+  AppLocationsDocumentIdEditRoute: typeof AppLocationsDocumentIdEditRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
@@ -382,9 +382,9 @@ const AppRouteChildren: AppRouteChildren = {
   AppStaffRoute: AppStaffRoute,
   AppTicketsRoute: AppTicketsRoute,
   AppIndexRoute: AppIndexRoute,
-  AppClubManagementNewRoute: AppClubManagementNewRoute,
-  AppClubManagementIndexRoute: AppClubManagementIndexRoute,
-  AppClubManagementDocumentIdEditRoute: AppClubManagementDocumentIdEditRoute,
+  AppLocationsNewRoute: AppLocationsNewRoute,
+  AppLocationsIndexRoute: AppLocationsIndexRoute,
+  AppLocationsDocumentIdEditRoute: AppLocationsDocumentIdEditRoute,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)

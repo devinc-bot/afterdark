@@ -119,10 +119,10 @@ Bajar la fricción de alta e inicio de sesión: el usuario no necesita inventar 
 
 ### UI (`web` · `dashboard`)
 
-| Ruta        | Cambio                                                       |
-| ----------- | ------------------------------------------------------------ |
+| Ruta        | Cambio                                                                |
+| ----------- | --------------------------------------------------------------------- |
 | `/login`    | Botón «Continuar con Google» + separador «o» debajo del CTA principal |
-| `/register` | Igual                                                                |
+| `/register` | Igual                                                                 |
 
 **Copy (español, i18n `auth`)**
 

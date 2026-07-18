@@ -30,7 +30,7 @@ export type OwnerSaleResponse = {
   eventName: string
   ticketName: string
   ticketType: TicketType
-  clubName: string
+  locationName: string
   paidAt: string | null
   quantity: number
   amount: number

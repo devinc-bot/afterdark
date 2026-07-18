@@ -1,18 +1,18 @@
-import type { ClubSelect, StaffInvitationSelect } from '@afterdark/db'
+import type { LocationSelect, StaffInvitationSelect } from '@afterdark/db'
 import type { CreateStaffInvitationResponse } from '@afterdark/types'
 import { ENV } from '../../common/config/env'
 import { buildStaffInvitationUrl } from '../utils/staff-invitation.utils'
 
 export function toStaffInvitationResponse(
   invitation: StaffInvitationSelect,
-  club: Pick<ClubSelect, 'documentId' | 'name'>,
+  location: Pick<LocationSelect, 'documentId' | 'name'>,
   invitedByOwnerDocumentId: string
 ): CreateStaffInvitationResponse {
   return {
     documentId: invitation.documentId,
     email: invitation.email,
-    clubId: club.documentId,
-    clubName: club.name,
+    locationId: location.documentId,
+    locationName: location.name,
     invitedByOwnerId: invitedByOwnerDocumentId,
     slug: invitation.slug,
     url: buildStaffInvitationUrl(ENV.DASHBOARD_URL, invitation.slug, invitation.token),

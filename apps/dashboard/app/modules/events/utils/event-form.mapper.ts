@@ -3,7 +3,7 @@ import type { EventFormValues } from '@afterdark/validators'
 import type { EventRecordItem } from '~/modules/events/components/event-record'
 
 export const EMPTY_EVENT_FORM_VALUES: EventFormValues = {
-  clubId: '',
+  locationId: '',
   name: '',
   description: '',
   startsAt: '',
@@ -18,7 +18,7 @@ function formatDateForDatetimeLocal(value: Date): string {
 
 export function eventResponseToFormValues(event: EventResponse): EventFormValues {
   return {
-    clubId: event.clubId,
+    locationId: event.locationId,
     name: event.name,
     description: event.description,
     startsAt: formatDateForDatetimeLocal(new Date(event.startsAt)),
@@ -38,8 +38,8 @@ export function eventResponseToRecordItem(event: EventResponse): EventRecordItem
   return {
     id: event.documentId,
     name: event.name,
-    clubName: event.clubName,
-    clubInitials: clubInitials(event.clubName),
+    clubName: event.locationName,
+    clubInitials: clubInitials(event.locationName),
     clubAvatarClassName: 'border-hairline-strong bg-surface-container-high text-ink-muted',
     startsAt: new Date(event.startsAt),
     endsAt: new Date(event.endsAt),
