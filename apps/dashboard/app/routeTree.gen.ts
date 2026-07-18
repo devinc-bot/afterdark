@@ -106,11 +106,12 @@ const AppLocationsNewRoute = AppLocationsNewRouteImport.update({
   path: '/locations/new',
   getParentRoute: () => AppRoute,
 } as any)
-const AppLocationsDocumentIdEditRoute = AppLocationsDocumentIdEditRouteImport.update({
-  id: '/locations/$documentId/edit',
-  path: '/locations/$documentId/edit',
-  getParentRoute: () => AppRoute,
-} as any)
+const AppLocationsDocumentIdEditRoute =
+  AppLocationsDocumentIdEditRouteImport.update({
+    id: '/locations/$documentId/edit',
+    path: '/locations/$documentId/edit',
+    getParentRoute: () => AppRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof AppIndexRoute
