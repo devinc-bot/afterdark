@@ -44,7 +44,7 @@
     "generalTitle": "General information",
     "generalDescription": "Basic location details that users will see on the platform.",
     "imagesTitle": "Images",
-    "imagesDescription": "Photos of the venue that will appear on the platform. You can upload up to 5 images.",
+    "imagesDescription": "Photos of the venue that will appear on the platform. You can upload up to 4 images.",
     "locationTitle": "Address",
     "locationDescription": "Physical address of the venue. Fill the fields, then fine-tune the pin on the map."
   },

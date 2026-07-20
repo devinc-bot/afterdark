@@ -44,7 +44,7 @@
     "generalTitle": "Información general",
     "generalDescription": "Datos básicos de la ubicación que verán los usuarios en la plataforma.",
     "imagesTitle": "Imágenes",
-    "imagesDescription": "Fotos del local que se mostrarán en la plataforma. Podés subir hasta 5 imágenes.",
+    "imagesDescription": "Fotos del local que se mostrarán en la plataforma. Podés subir hasta 4 imágenes.",
     "locationTitle": "Dirección",
     "locationDescription": "Dirección física del local. Completá los datos y ajustá el pin en el mapa."
   },

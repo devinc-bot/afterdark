@@ -1,6 +1,21 @@
 import { z } from 'zod'
 import { EVENT_STATUS } from '@afterdark/types'
 import { paginationSchema, uuidSchema } from './common.ts'
+import { EVENT_IMAGE_MAX_COUNT } from './upload.ts'
+
+function multipartUuidListSchema() {
+  return z
+    .union([z.string(), z.array(z.string())])
+    .optional()
+    .transform((value) => {
+      if (value === undefined) {
+        return []
+      }
+
+      return Array.isArray(value) ? value : [value]
+    })
+    .pipe(z.array(uuidSchema))
+}
 
 export const eventStatusSchema = z.enum([
   EVENT_STATUS.DRAFT,
@@ -29,25 +44,38 @@ const eventDateRangeRefineApi = {
   path: ['endsAt'] as const,
 }
 
-export const createEventSchema = z
-  .object({
-    locationId: uuidSchema,
-    name: z.string().trim().min(1, 'validation:field.event.name'),
-    description: z.string().trim().min(1, 'validation:field.event.description'),
-    startsAt: z.coerce.date({ message: 'validation:field.event.startDate' }),
-    endsAt: z.coerce.date({ message: 'validation:field.event.endDate' }),
-    status: eventStatusSchema.default(EVENT_STATUS.PUBLISHED),
-  })
-  .refine(eventDateRangeRefineApi.refine, {
-    message: eventDateRangeRefineApi.message,
-    path: [...eventDateRangeRefineApi.path],
-  })
+const createEventFieldsSchema = z.object({
+  locationId: uuidSchema,
+  name: z.string().trim().min(1, 'validation:field.event.name'),
+  description: z.string().trim().min(1, 'validation:field.event.description'),
+  startsAt: z.coerce.date({ message: 'validation:field.event.startDate' }),
+  endsAt: z.coerce.date({ message: 'validation:field.event.endDate' }),
+  status: eventStatusSchema.default(EVENT_STATUS.PUBLISHED),
+})
+
+export const createEventSchema = createEventFieldsSchema.refine(eventDateRangeRefineApi.refine, {
+  message: eventDateRangeRefineApi.message,
+  path: [...eventDateRangeRefineApi.path],
+})
 
 export type CreateEventInput = z.infer<typeof createEventSchema>
 
 export const updateEventSchema = createEventSchema
 
 export type UpdateEventInput = z.infer<typeof updateEventSchema>
+
+export const updateEventMultipartSchema = createEventFieldsSchema
+  .extend({
+    keepImageIds: multipartUuidListSchema(),
+  })
+  .refine(eventDateRangeRefineApi.refine, {
+    message: eventDateRangeRefineApi.message,
+    path: [...eventDateRangeRefineApi.path],
+  })
+
+export type UpdateEventMultipartInput = z.infer<typeof updateEventMultipartSchema>
+
+export { EVENT_IMAGE_MAX_COUNT }
 
 export const eventFormSchema = z
   .object({

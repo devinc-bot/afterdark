@@ -1,10 +1,11 @@
 import type { EventSelect, LocationSelect } from '@afterdark/db'
-import type { EventResponse } from '@afterdark/types'
+import type { EventImageResponse, EventResponse } from '@afterdark/types'
 import type { CreateEventInput, UpdateEventInput } from '@afterdark/validators'
 
 export function toEventResponse(
   event: EventSelect,
-  location: Pick<LocationSelect, 'documentId' | 'name'>
+  location: Pick<LocationSelect, 'documentId' | 'name'>,
+  images: EventImageResponse[] = []
 ): EventResponse {
   return {
     documentId: event.documentId,
@@ -15,6 +16,7 @@ export function toEventResponse(
     startsAt: event.startsAt,
     endsAt: event.endsAt,
     status: event.status,
+    images,
     createdAt: event.createdAt,
     updatedAt: event.updatedAt,
   }
