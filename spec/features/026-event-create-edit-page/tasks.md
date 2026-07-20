@@ -13,8 +13,8 @@
 
 - [x] `EVENT_IMAGE_MAX_COUNT = 2` y `LOCATION_IMAGE_MAX_COUNT = 4` en `@afterdark/validators`
 - [x] `EventResponse.images` (+ tipo imagen) en `@afterdark/types`
-- [ ] Schema `event_assets_lnk` + migración Drizzle
-- [ ] Repository: find event by documentId (owner) + CRUD links de imágenes
+- [x] Schema `event_assets_lnk` + migración Drizzle
+- [x] Repository: find event by documentId (owner) + CRUD links de imágenes
 - [ ] `API_ROUTES.events` get por `documentId` en `@afterdark/common`
 - [ ] i18n: wizard, unsaved, imágenes evento, 404 edit
 
