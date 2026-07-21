@@ -10,6 +10,7 @@
     "clarity": "Clarity",
     "events": "Events",
     "tickets": "Tickets",
+    "publish": "Publish your event",
     "accountAria": "Account for {name}",
     "openMenu": "Open menu",
     "mobileAriaLabel": "Navigation menu"
@@ -115,6 +116,7 @@
   "footer": {
     "tagline": "Nightlife events, with precision.",
     "explore": "Explore",
+    "publish": "Publish your event",
     "navAria": "Footer links",
     "madeFor": "Made so you can enjoy an unforgettable night.",
     "rights": "© {year} {appName}",

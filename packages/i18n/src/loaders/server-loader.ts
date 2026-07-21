@@ -26,6 +26,8 @@ import esSales from '../locales/sales/es.json' with { type: 'json' }
 import enSales from '../locales/sales/en.json' with { type: 'json' }
 import esLanding from '../locales/landing/es.json' with { type: 'json' }
 import enLanding from '../locales/landing/en.json' with { type: 'json' }
+import esDashboardLanding from '../locales/dashboard-landing/es.json' with { type: 'json' }
+import enDashboardLanding from '../locales/dashboard-landing/en.json' with { type: 'json' }
 
 export type ServerResources = {
   es: I18nResources
@@ -47,6 +49,7 @@ export const SERVER_RESOURCES: ServerResources = {
     events: esEvents,
     sales: esSales,
     landing: esLanding,
+    dashboardLanding: esDashboardLanding,
   },
   en: {
     common: enCommon,
@@ -62,6 +65,7 @@ export const SERVER_RESOURCES: ServerResources = {
     events: enEvents,
     sales: enSales,
     landing: enLanding,
+    dashboardLanding: enDashboardLanding,
   },
 }
 

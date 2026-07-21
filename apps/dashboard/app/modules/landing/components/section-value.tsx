@@ -1,0 +1,57 @@
+import { useTranslation } from 'react-i18next'
+import { LANDING_VALUE_KEYS } from '../constants/landing-content'
+import { LANDING_IMAGES } from '../constants/images'
+
+export function SectionValue() {
+  const { t } = useTranslation('dashboardLanding')
+
+  return (
+    <section
+      id="value"
+      aria-labelledby="value-heading"
+      className="border-b border-hairline/60 bg-surface-container-lowest"
+    >
+      <div className="mx-auto grid w-full max-w-6xl items-center gap-12 px-margin-mobile py-[clamp(4rem,8vw,6rem)] md:grid-cols-2 md:gap-16 md:px-margin-desktop">
+        <div className="relative aspect-[4/3] overflow-hidden rounded-3xl border border-hairline/60">
+          <img
+            src={LANDING_IMAGES.value.src}
+            srcSet={LANDING_IMAGES.value.srcSet}
+            sizes="(min-width: 768px) 50vw, 100vw"
+            alt={t('value.imageAlt')}
+            loading="lazy"
+            decoding="async"
+            className="h-full w-full object-cover"
+          />
+        </div>
+
+        <div>
+          <p className="font-label text-sm font-medium tracking-label-sm text-primary uppercase">
+            {t('value.eyebrow')}
+          </p>
+          <h2
+            id="value-heading"
+            className="mt-4 font-display text-[clamp(1.75rem,3.5vw,2.75rem)] font-bold leading-[1.15] tracking-[-0.02em] text-balance text-on-surface"
+          >
+            {t('value.headline')}
+          </h2>
+          <p className="mt-4 text-base leading-relaxed text-pretty text-on-surface-variant">
+            {t('value.support')}
+          </p>
+
+          <ul className="mt-10 flex flex-col gap-6">
+            {LANDING_VALUE_KEYS.map((key) => (
+              <li key={key} className="border-l-2 border-hairline-strong pl-4">
+                <h3 className="font-heading text-lg font-semibold text-on-surface">
+                  {t(`value.items.${key}.title`)}
+                </h3>
+                <p className="mt-1 text-sm leading-relaxed text-on-surface-variant">
+                  {t(`value.items.${key}.body`)}
+                </p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+  )
+}

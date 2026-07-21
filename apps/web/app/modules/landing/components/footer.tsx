@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
+import { DASHBOARD_URL } from '@afterdark/common'
 import { cn } from '@afterdark/ui'
 import { handleSectionNavClick } from '../utils/scroll-to-section.utils'
 
@@ -101,6 +102,14 @@ export function LandingFooter() {
                   </a>
                 </li>
               ))}
+              <li>
+                <a
+                  href={DASHBOARD_URL}
+                  className="inline-flex min-h-10 items-center font-label text-sm text-on-surface-variant transition-colors duration-(--duration-fast) ease-emphasized hover:text-on-surface focus-visible:rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink"
+                >
+                  {t('footer.publish')}
+                </a>
+              </li>
             </ul>
           </nav>
 

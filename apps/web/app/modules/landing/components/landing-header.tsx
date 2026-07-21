@@ -1,7 +1,7 @@
 import { useEffect, useState, type MouseEvent } from 'react'
 import { Menu } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
-import { getCookieSync } from '@afterdark/common'
+import { DASHBOARD_URL, getCookieSync } from '@afterdark/common'
 import {
   Avatar,
   AvatarFallback,
@@ -103,6 +103,9 @@ export function LandingHeader() {
                 </a>
               ))
             )}
+            <a href={DASHBOARD_URL} className={cn(NAV_LINK, 'rounded-full px-2.5 text-on-surface')}>
+              {t('nav.publish')}
+            </a>
           </nav>
 
           <div className="flex shrink-0 items-center gap-1 sm:gap-2">
@@ -199,6 +202,13 @@ export function LandingHeader() {
                       </a>
                     ))
                   )}
+                  <a
+                    href={DASHBOARD_URL}
+                    onClick={() => setMenuOpen(false)}
+                    className={MOBILE_LINK}
+                  >
+                    {t('nav.publish')}
+                  </a>
                 </nav>
 
                 {showAuthCtas ? (

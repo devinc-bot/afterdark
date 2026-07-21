@@ -58,6 +58,10 @@ const localeImports: Record<
     es: () => import('../locales/landing/es.json'),
     en: () => import('../locales/landing/en.json'),
   },
+  dashboardLanding: {
+    es: () => import('../locales/dashboard-landing/es.json'),
+    en: () => import('../locales/dashboard-landing/en.json'),
+  },
 }
 
 export const defaultLoad: LoadFn = async (language, namespace) => {

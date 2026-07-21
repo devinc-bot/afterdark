@@ -12,6 +12,7 @@ export const NAMESPACE = {
   EVENTS: 'events',
   SALES: 'sales',
   LANDING: 'landing',
+  DASHBOARD_LANDING: 'dashboardLanding',
 } as const
 
 export type Namespace = (typeof NAMESPACE)[keyof typeof NAMESPACE]
@@ -32,4 +33,5 @@ export const ALL_NAMESPACES: Namespace[] = [
   NAMESPACE.EVENTS,
   NAMESPACE.SALES,
   NAMESPACE.LANDING,
+  NAMESPACE.DASHBOARD_LANDING,
 ]

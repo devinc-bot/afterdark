@@ -1,0 +1,158 @@
+{
+  "metaTitle": "afterdark · Panel for club owners",
+  "header": {
+    "brand": "{appName}",
+    "login": "Log in",
+    "register": "Create account",
+    "navAria": "Main"
+  },
+  "hero": {
+    "eyebrow": "Panel to manage events and clubs",
+    "headline": "Run your club without missing a beat.",
+    "support": "Events, tickets, staff and sales in a single panel. Fewer scattered spreadsheets, more control over your night.",
+    "ctaPrimary": "Create account",
+    "ctaSecondary": "Log in"
+  },
+  "features": {
+    "eyebrow": "All in one panel",
+    "headline": "Your whole event or nightlife business, in order.",
+    "support": "Every part of the operation in its place, with data that talks to each other.",
+    "items": {
+      "events": {
+        "title": "Events",
+        "body": "Publish your lineup and keep every date up to date from one place."
+      },
+      "tickets": {
+        "title": "Tickets",
+        "body": "Set ticket types, prices and sale windows with no ambiguity."
+      },
+      "staff": {
+        "title": "Team",
+        "body": "Invite your staff and give them scoped access based on their role."
+      },
+      "sales": {
+        "title": "Sales",
+        "body": "Track the purchase history and understand how each night performs."
+      }
+    }
+  },
+  "how": {
+    "eyebrow": "Start today",
+    "headline": "In three steps.",
+    "steps": {
+      "1": {
+        "title": "Create your location",
+        "body": "The place where the event will take place, with the details your audience needs."
+      },
+      "2": {
+        "title": "Publish an event",
+        "body": "Add the date, the details and get everything ready to sell."
+      },
+      "3": {
+        "title": "Sell tickets",
+        "body": "Open sales and follow every purchase from the panel."
+      }
+    }
+  },
+  "audiences": {
+    "eyebrow": "Who it's for",
+    "headline": "Made for the people who build the night.",
+    "support": "If you run events or manage a nightlife venue, afterdark organizes your operation no matter the size.",
+    "imageAlt": "Crowd enjoying a nightlife event",
+    "items": {
+      "1": {
+        "title": "Club owners",
+        "body": "Centralize the lineup, tickets, and team for every night in a single panel."
+      },
+      "2": {
+        "title": "Event producers",
+        "body": "Coordinate dates, venues, and sales for each production without loose spreadsheets."
+      },
+      "3": {
+        "title": "Bars and venues",
+        "body": "Add your special events and control access without friction."
+      }
+    }
+  },
+  "value": {
+    "eyebrow": "Value proposition",
+    "headline": "Fewer scattered tools. More control.",
+    "support": "afterdark brings together what you solve today with spreadsheets, chats, and separate apps into one place built for the night.",
+    "imageAlt": "Club lights during a live event",
+    "items": {
+      "1": {
+        "title": "Everything connected",
+        "body": "Events, tickets, staff, and sales share the same data, with no duplicate entry."
+      },
+      "2": {
+        "title": "Decisions with data",
+        "body": "See how each night performs and adjust your lineup with real data, not guesswork."
+      },
+      "3": {
+        "title": "Your team, focused",
+        "body": "Everyone gets into their own area with role-based access: fewer errors, more rhythm."
+      }
+    }
+  },
+  "social": {
+    "eyebrow": "Why afterdark",
+    "headline": "Built for the real operation of a club.",
+    "items": {
+      "1": {
+        "quote": "I stopped chasing spreadsheets. Now the whole night organizes itself from one place.",
+        "author": "Club owner"
+      },
+      "2": {
+        "quote": "Adding the team and giving the right access takes minutes, not a meeting.",
+        "author": "Floor manager"
+      },
+      "3": {
+        "quote": "Knowing which tickets sell and when changed how we build the lineup.",
+        "author": "Event producer"
+      }
+    }
+  },
+  "faq": {
+    "eyebrow": "Frequent questions",
+    "headline": "Before you start.",
+    "items": {
+      "1": {
+        "question": "Do I need a card to create an account?",
+        "answer": "No. You create your owner account and start setting up your club with no upfront cost."
+      },
+      "2": {
+        "question": "Can I add my team?",
+        "answer": "Yes. You invite your staff by email and each one signs in with access scoped to their role."
+      },
+      "3": {
+        "question": "Can I manage more than one club?",
+        "answer": "Yes. You manage your locations and their events from the same panel."
+      },
+      "4": {
+        "question": "How do I charge for tickets?",
+        "answer": "You define ticket types and prices; the sales and payment flow is handled from the platform."
+      }
+    }
+  },
+  "closing": {
+    "headline": "Your next event starts here.",
+    "support": "Create your owner account and start organizing your club today.",
+    "cta": "Create account"
+  },
+  "footer": {
+    "tagline": "The panel for event and club owners.",
+    "explore": "Explore",
+    "navAria": "Footer links",
+    "product": "Product",
+    "features": "Features",
+    "how": "How it works",
+    "faq": "FAQ",
+    "company": "Company",
+    "about": "About",
+    "contact": "Contact",
+    "legal": "Legal",
+    "terms": "Terms",
+    "privacy": "Privacy",
+    "rights": "© {year} {appName}"
+  }
+}

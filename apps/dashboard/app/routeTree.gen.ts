@@ -14,7 +14,7 @@ import { Route as RegisterRouteImport } from './routes/register'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as AppRouteImport } from './routes/_app'
-import { Route as AppIndexRouteImport } from './routes/_app/index'
+import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
 import { Route as AppTicketsRouteImport } from './routes/_app/tickets'
 import { Route as AppStaffRouteImport } from './routes/_app/staff'
@@ -51,10 +51,10 @@ const AppRoute = AppRouteImport.update({
   id: '/_app',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AppIndexRoute = AppIndexRouteImport.update({
+const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => AppRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AuthCallbackRoute = AuthCallbackRouteImport.update({
   id: '/auth/callback',
@@ -114,7 +114,7 @@ const AppLocationsDocumentIdEditRoute =
   } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof AppIndexRoute
+  '/': typeof IndexRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
@@ -132,6 +132,7 @@ export interface FileRoutesByFullPath {
   '/locations/$documentId/edit': typeof AppLocationsDocumentIdEditRoute
 }
 export interface FileRoutesByTo {
+  '/': typeof IndexRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
@@ -144,13 +145,13 @@ export interface FileRoutesByTo {
   '/staff': typeof AppStaffRoute
   '/tickets': typeof AppTicketsRoute
   '/auth/callback': typeof AuthCallbackRoute
-  '/': typeof AppIndexRoute
   '/locations/new': typeof AppLocationsNewRoute
   '/locations': typeof AppLocationsIndexRoute
   '/locations/$documentId/edit': typeof AppLocationsDocumentIdEditRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
   '/_app': typeof AppRouteWithChildren
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
@@ -164,7 +165,6 @@ export interface FileRoutesById {
   '/_app/staff': typeof AppStaffRoute
   '/_app/tickets': typeof AppTicketsRoute
   '/auth/callback': typeof AuthCallbackRoute
-  '/_app/': typeof AppIndexRoute
   '/_app/locations/new': typeof AppLocationsNewRoute
   '/_app/locations/': typeof AppLocationsIndexRoute
   '/_app/locations/$documentId/edit': typeof AppLocationsDocumentIdEditRoute
@@ -190,6 +190,7 @@ export interface FileRouteTypes {
     | '/locations/$documentId/edit'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/'
     | '/forgot-password'
     | '/login'
     | '/register'
@@ -202,12 +203,12 @@ export interface FileRouteTypes {
     | '/staff'
     | '/tickets'
     | '/auth/callback'
-    | '/'
     | '/locations/new'
     | '/locations'
     | '/locations/$documentId/edit'
   id:
     | '__root__'
+    | '/'
     | '/_app'
     | '/forgot-password'
     | '/login'
@@ -221,13 +222,13 @@ export interface FileRouteTypes {
     | '/_app/staff'
     | '/_app/tickets'
     | '/auth/callback'
-    | '/_app/'
     | '/_app/locations/new'
     | '/_app/locations/'
     | '/_app/locations/$documentId/edit'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
+  IndexRoute: typeof IndexRoute
   AppRoute: typeof AppRouteWithChildren
   ForgotPasswordRoute: typeof ForgotPasswordRoute
   LoginRoute: typeof LoginRoute
@@ -274,12 +275,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_app/': {
-      id: '/_app/'
+    '/': {
+      id: '/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof AppIndexRouteImport
-      parentRoute: typeof AppRoute
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/auth/callback': {
       id: '/auth/callback'
@@ -368,7 +369,6 @@ interface AppRouteChildren {
   AppSettingsRoute: typeof AppSettingsRoute
   AppStaffRoute: typeof AppStaffRoute
   AppTicketsRoute: typeof AppTicketsRoute
-  AppIndexRoute: typeof AppIndexRoute
   AppLocationsNewRoute: typeof AppLocationsNewRoute
   AppLocationsIndexRoute: typeof AppLocationsIndexRoute
   AppLocationsDocumentIdEditRoute: typeof AppLocationsDocumentIdEditRoute
@@ -381,7 +381,6 @@ const AppRouteChildren: AppRouteChildren = {
   AppSettingsRoute: AppSettingsRoute,
   AppStaffRoute: AppStaffRoute,
   AppTicketsRoute: AppTicketsRoute,
-  AppIndexRoute: AppIndexRoute,
   AppLocationsNewRoute: AppLocationsNewRoute,
   AppLocationsIndexRoute: AppLocationsIndexRoute,
   AppLocationsDocumentIdEditRoute: AppLocationsDocumentIdEditRoute,
@@ -390,6 +389,7 @@ const AppRouteChildren: AppRouteChildren = {
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
   AppRoute: AppRouteWithChildren,
   ForgotPasswordRoute: ForgotPasswordRoute,
   LoginRoute: LoginRoute,

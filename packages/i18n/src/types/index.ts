@@ -11,6 +11,7 @@ import type esTickets from '../locales/tickets/es.json'
 import type esEvents from '../locales/events/es.json'
 import type esSales from '../locales/sales/es.json'
 import type esLanding from '../locales/landing/es.json'
+import type esDashboardLanding from '../locales/dashboard-landing/es.json'
 
 export type I18nResources = {
   common: typeof esCommon
@@ -26,6 +27,7 @@ export type I18nResources = {
   events: typeof esEvents
   sales: typeof esSales
   landing: typeof esLanding
+  dashboardLanding: typeof esDashboardLanding
 }
 
 declare module 'i18next' {
