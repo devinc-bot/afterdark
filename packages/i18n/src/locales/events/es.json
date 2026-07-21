@@ -82,6 +82,7 @@
     "actionEdit": "Editar",
     "actionDelete": "Borrar",
     "rowActionsLabel": "Acciones para {event} en {location}",
+    "loading": "Cargando eventos…",
     "emptyTitle": "No hay eventos registrados",
     "emptyDescription": "Creá tu primer evento para empezar."
   },
@@ -90,7 +91,9 @@
     "next": "Siguiente"
   },
   "list": {
-    "error": "No pudimos cargar los eventos. Intentá de nuevo en unos minutos."
+    "error": "No pudimos cargar los eventos. Intentá de nuevo en unos minutos.",
+    "errorTitle": "No pudimos cargar los eventos",
+    "retry": "Reintentar"
   },
   "delete": {
     "title": "Eliminar evento",

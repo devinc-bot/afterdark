@@ -17,6 +17,7 @@ import {
   PaginationItem,
   PaginationNext,
   PaginationPrevious,
+  Skeleton,
   Table,
   TableBody,
   TableCell,
@@ -214,24 +215,176 @@ function EventRecordsPaginationBar({
   )
 }
 
+function EventRecordsHead() {
+  const { t } = useTranslation('events')
+
+  return (
+    <TableHeader>
+      <TableRow>
+        <TableHead className="p-6">{t('table.location')}</TableHead>
+        <TableHead className="p-6">{t('table.event')}</TableHead>
+        <TableHead className="p-6">{t('table.startsAt')}</TableHead>
+        <TableHead className="p-6">{t('table.endsAt')}</TableHead>
+        <TableHead className="p-6">{t('table.status')}</TableHead>
+        <TableHead className="p-6 text-right">{t('table.actions')}</TableHead>
+      </TableRow>
+    </TableHeader>
+  )
+}
+
+const SKELETON_ROW_KEYS = ['a', 'b', 'c', 'd', 'e'] as const
+
+function EventRecordsSkeleton() {
+  const { t } = useTranslation('events')
+
+  return (
+    <Card variant="gradient" aria-busy="true">
+      <span className="sr-only">{t('table.loading')}</span>
+      <Table variant="compact" className="min-w-240">
+        <EventRecordsHead />
+        <TableBody>
+          {SKELETON_ROW_KEYS.map((rowKey) => (
+            <TableRow key={rowKey} className="border-0">
+              <TableCell className="p-6">
+                <div className="flex items-center gap-3">
+                  <Skeleton className="size-9 shrink-0 rounded-md" />
+                  <Skeleton className="h-4 w-28 max-w-full" />
+                </div>
+              </TableCell>
+              <TableCell className="p-6">
+                <Skeleton className="h-4 w-36 max-w-full" />
+              </TableCell>
+              <TableCell className="p-6">
+                <Skeleton className="h-4 w-24" />
+              </TableCell>
+              <TableCell className="p-6">
+                <Skeleton className="h-4 w-24" />
+              </TableCell>
+              <TableCell className="p-6">
+                <Skeleton className="h-6 w-20 rounded-full" />
+              </TableCell>
+              <TableCell className="p-6">
+                <div className="flex justify-end">
+                  <Skeleton className="size-9 rounded-md" />
+                </div>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </Card>
+  )
+}
+
+function EventStateMessage({
+  variant = 'empty',
+  title,
+  description,
+  action,
+}: {
+  variant?: 'empty' | 'error'
+  title: string
+  description?: string
+  action?: ReactNode
+}) {
+  return (
+    <div
+      className={cn(
+        'flex flex-col items-center gap-5 rounded-xl border border-dashed px-6 py-12 text-center',
+        variant === 'error'
+          ? 'border-error/40 bg-error-container/20'
+          : 'border-hairline bg-surface-container-low'
+      )}
+    >
+      <div className="flex flex-col gap-2">
+        <p className="font-heading text-base font-semibold text-ink">{title}</p>
+        {description ? (
+          <p className="mx-auto max-w-sm text-sm text-ink-muted">{description}</p>
+        ) : null}
+      </div>
+      {action}
+    </div>
+  )
+}
+
 export function EventRecords({
   records,
   pagination,
   onEdit,
   onDelete,
   headerAction,
+  isLoading = false,
+  isError = false,
+  onRetry,
 }: {
   records: EventRecordItem[]
   pagination?: EventRecordsPagination
   onEdit?: (record: EventRecordItem) => void
   onDelete?: (record: EventRecordItem) => void
   headerAction?: ReactNode
+  isLoading?: boolean
+  isError?: boolean
+  onRetry?: () => void
 }) {
   const { t } = useTranslation('events')
 
   const registryCount = pagination?.total ?? records.length
   const registrySubtitle =
-    registryCount > 0 ? t('table.registryCount', { count: registryCount }) : null
+    !isLoading && !isError && registryCount > 0
+      ? t('table.registryCount', { count: registryCount })
+      : null
+
+  function renderBody() {
+    if (isLoading) {
+      return <EventRecordsSkeleton />
+    }
+
+    if (isError) {
+      return (
+        <EventStateMessage
+          variant="error"
+          title={t('list.errorTitle')}
+          description={t('list.error')}
+          action={
+            onRetry ? (
+              <Button type="button" variant="outline" onClick={onRetry}>
+                {t('list.retry')}
+              </Button>
+            ) : undefined
+          }
+        />
+      )
+    }
+
+    if (records.length === 0) {
+      return (
+        <EventStateMessage
+          title={t('table.emptyTitle')}
+          description={t('table.emptyDescription')}
+        />
+      )
+    }
+
+    return (
+      <Card variant="gradient">
+        <Table variant="compact" className="min-w-240">
+          <EventRecordsHead />
+          <TableBody>
+            {records.map((record) => (
+              <EventRecordRow key={record.id} record={record} onEdit={onEdit} onDelete={onDelete} />
+            ))}
+          </TableBody>
+        </Table>
+        {pagination ? (
+          <EventRecordsPaginationBar
+            pagination={pagination}
+            previousLabel={t('pagination.previous')}
+            nextLabel={t('pagination.next')}
+          />
+        ) : null}
+      </Card>
+    )
+  }
 
   return (
     <section aria-labelledby="event-inventory-heading">
@@ -250,46 +403,7 @@ export function EventRecords({
         {headerAction}
       </header>
 
-      {records.length === 0 ? (
-        <div className="px-6 py-12 text-center">
-          <p className="font-heading text-base font-semibold text-ink">{t('table.emptyTitle')}</p>
-          <p className="mx-auto mt-2 max-w-sm text-sm text-ink-muted">
-            {t('table.emptyDescription')}
-          </p>
-        </div>
-      ) : (
-        <Card variant="gradient">
-          <Table variant="compact" className="min-w-[960px]">
-            <TableHeader>
-              <TableRow>
-                <TableHead className="p-6">{t('table.location')}</TableHead>
-                <TableHead className="p-6">{t('table.event')}</TableHead>
-                <TableHead className="p-6">{t('table.startsAt')}</TableHead>
-                <TableHead className="p-6">{t('table.endsAt')}</TableHead>
-                <TableHead className="p-6">{t('table.status')}</TableHead>
-                <TableHead className="p-6 text-right">{t('table.actions')}</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {records.map((record) => (
-                <EventRecordRow
-                  key={record.id}
-                  record={record}
-                  onEdit={onEdit}
-                  onDelete={onDelete}
-                />
-              ))}
-            </TableBody>
-          </Table>
-          {pagination ? (
-            <EventRecordsPaginationBar
-              pagination={pagination}
-              previousLabel={t('pagination.previous')}
-              nextLabel={t('pagination.next')}
-            />
-          ) : null}
-        </Card>
-      )}
+      {renderBody()}
     </section>
   )
 }

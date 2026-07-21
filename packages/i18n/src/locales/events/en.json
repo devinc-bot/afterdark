@@ -82,6 +82,7 @@
     "actionEdit": "Edit",
     "actionDelete": "Delete",
     "rowActionsLabel": "Actions for {event} at {location}",
+    "loading": "Loading events…",
     "emptyTitle": "No registered events",
     "emptyDescription": "Create your first event to get started."
   },
@@ -90,7 +91,9 @@
     "next": "Next"
   },
   "list": {
-    "error": "We could not load events. Try again in a few minutes."
+    "error": "We could not load events. Try again in a few minutes.",
+    "errorTitle": "We could not load events",
+    "retry": "Retry"
   },
   "delete": {
     "title": "Delete event",

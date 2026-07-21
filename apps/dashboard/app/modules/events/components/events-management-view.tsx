@@ -24,7 +24,7 @@ export function EventsManagementView() {
   const [recordToRemove, setRecordToRemove] = useState<EventRecordItem | null>(null)
   const deleteEventMutation = useDeleteEvent()
 
-  const { data, isError } = useEvents({ page, limit: EVENTS_PAGE_SIZE })
+  const { data, isLoading, isError, refetch } = useEvents({ page, limit: EVENTS_PAGE_SIZE })
 
   const records = useMemo(
     () => (data?.data ?? []).map((event) => eventResponseToRecordItem(event)),
@@ -79,23 +79,20 @@ export function EventsManagementView() {
 
   return (
     <PageLayout title={t('page.title')} description={t('page.description')}>
-      {isError ? (
-        <p className="text-sm text-error" role="alert">
-          {t('list.error')}
-        </p>
-      ) : (
-        <EventRecords
-          records={records}
-          pagination={pagination}
-          onEdit={handleEditRecord}
-          onDelete={openRemoveDialog}
-          headerAction={
-            <Button asChild className="w-full shrink-0 sm:w-auto">
-              <Link to={DASHBOARD_ROUTES.eventsNew()}>{t('form.trigger')}</Link>
-            </Button>
-          }
-        />
-      )}
+      <EventRecords
+        records={records}
+        pagination={pagination}
+        onEdit={handleEditRecord}
+        onDelete={openRemoveDialog}
+        isLoading={isLoading}
+        isError={isError}
+        onRetry={() => void refetch()}
+        headerAction={
+          <Button asChild className="w-full shrink-0 sm:w-auto">
+            <Link to={DASHBOARD_ROUTES.eventsNew()}>{t('form.trigger')}</Link>
+          </Button>
+        }
+      />
 
       <EventRemoveDialog
         record={recordToRemove}
