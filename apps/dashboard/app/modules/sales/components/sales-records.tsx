@@ -2,6 +2,7 @@ import type { ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import { TICKET_TYPE, type OwnerSaleResponse } from '@afterdark/types'
 import {
+  Button,
   Card,
   getPaginationItems,
   Pagination,
@@ -11,6 +12,7 @@ import {
   PaginationItem,
   PaginationNext,
   PaginationPrevious,
+  Skeleton,
   Table,
   TableBody,
   TableCell,
@@ -25,6 +27,88 @@ export type SalesRecordsPagination = {
   totalPages: number
   total: number
   onPageChange: (page: number) => void
+}
+
+const SALES_COLUMN_KEYS = [
+  'buyer',
+  'event',
+  'ticket',
+  'ticketType',
+  'location',
+  'paidAt',
+  'quantity',
+  'amount',
+  'status',
+] as const
+
+function SalesRecordsHead() {
+  const { t } = useTranslation('sales')
+
+  return (
+    <TableHeader>
+      <TableRow>
+        {SALES_COLUMN_KEYS.map((columnKey) => (
+          <TableHead key={columnKey} className="p-6">
+            {t(`table.${columnKey}`)}
+          </TableHead>
+        ))}
+      </TableRow>
+    </TableHeader>
+  )
+}
+
+const SKELETON_ROW_KEYS = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'] as const
+
+function SalesRecordsSkeleton() {
+  const { t } = useTranslation('sales')
+
+  return (
+    <Card variant="gradient" aria-busy="true">
+      <span className="sr-only">{t('table.loading')}</span>
+      <Table variant="compact" className="min-w-275">
+        <SalesRecordsHead />
+        <TableBody>
+          {SKELETON_ROW_KEYS.map((rowKey) => (
+            <TableRow key={rowKey} className="border-0">
+              <TableCell className="p-6">
+                <div className="flex flex-col gap-2">
+                  <Skeleton className="h-4 w-36 max-w-full" />
+                  <Skeleton className="h-3 w-44 max-w-full" />
+                </div>
+              </TableCell>
+              {SALES_COLUMN_KEYS.slice(1).map((columnKey) => (
+                <TableCell key={columnKey} className="p-6">
+                  <Skeleton className="h-4 w-20" />
+                </TableCell>
+              ))}
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </Card>
+  )
+}
+
+function SalesStateMessage({
+  title,
+  description,
+  action,
+}: {
+  title: string
+  description?: string
+  action?: ReactNode
+}) {
+  return (
+    <div className="flex flex-col items-center gap-5 rounded-xl border border-dashed border-hairline bg-surface-container-low px-6 py-12 text-center">
+      <div className="flex flex-col gap-2">
+        <p className="font-heading text-base font-semibold text-ink">{title}</p>
+        {description ? (
+          <p className="mx-auto max-w-sm text-sm text-ink-muted">{description}</p>
+        ) : null}
+      </div>
+      {action}
+    </div>
+  )
 }
 
 function SalesRecordsPaginationBar({
@@ -114,15 +198,79 @@ export function SalesRecords({
   sales,
   pagination,
   filters,
+  isLoading = false,
+  isError = false,
+  hasActiveFilters = false,
+  onRetry,
 }: {
   sales: OwnerSaleResponse[]
   pagination?: SalesRecordsPagination
   filters?: ReactNode
+  isLoading?: boolean
+  isError?: boolean
+  hasActiveFilters?: boolean
+  onRetry?: () => void
 }) {
   const { t } = useTranslation('sales')
   const registryCount = pagination?.total ?? sales.length
   const registrySubtitle =
-    registryCount > 0 ? t('table.registryCount', { count: registryCount }) : null
+    !isLoading && !isError && registryCount > 0
+      ? t('table.registryCount', { count: registryCount })
+      : null
+
+  function renderBody() {
+    if (isLoading) {
+      return <SalesRecordsSkeleton />
+    }
+
+    if (isError) {
+      return (
+        <SalesStateMessage
+          title={t('list.errorTitle')}
+          description={t('list.error')}
+          action={
+            onRetry ? (
+              <Button type="button" variant="outline" onClick={onRetry}>
+                {t('list.retry')}
+              </Button>
+            ) : undefined
+          }
+        />
+      )
+    }
+
+    if (sales.length === 0) {
+      return (
+        <SalesStateMessage
+          title={hasActiveFilters ? t('table.emptyFiltered') : t('table.empty')}
+          description={
+            hasActiveFilters ? t('table.emptyFilteredDescription') : t('table.emptyDescription')
+          }
+        />
+      )
+    }
+
+    return (
+      <Card variant="gradient">
+        <Table variant="compact" className="min-w-275">
+          <SalesRecordsHead />
+          <TableBody>
+            {sales.map((sale) => (
+              <SaleRecordRow key={sale.id} sale={sale} />
+            ))}
+          </TableBody>
+        </Table>
+        {pagination ? (
+          <SalesRecordsPaginationBar
+            pagination={pagination}
+            previousLabel={t('pagination.previous')}
+            nextLabel={t('pagination.next')}
+            ariaLabel={t('pagination.label')}
+          />
+        ) : null}
+      </Card>
+    )
+  }
 
   return (
     <section aria-labelledby="sales-history-heading" className="flex flex-col gap-4">
@@ -142,42 +290,7 @@ export function SalesRecords({
 
       {filters}
 
-      {sales.length === 0 ? (
-        <div className="px-6 py-12 text-center">
-          <p className="font-heading text-base font-semibold text-ink">{t('table.empty')}</p>
-        </div>
-      ) : (
-        <Card variant="gradient">
-          <Table variant="compact" className="min-w-[1100px]">
-            <TableHeader>
-              <TableRow>
-                <TableHead className="p-6">{t('table.buyer')}</TableHead>
-                <TableHead className="p-6">{t('table.event')}</TableHead>
-                <TableHead className="p-6">{t('table.ticket')}</TableHead>
-                <TableHead className="p-6">{t('table.ticketType')}</TableHead>
-                <TableHead className="p-6">{t('table.location')}</TableHead>
-                <TableHead className="p-6">{t('table.paidAt')}</TableHead>
-                <TableHead className="p-6">{t('table.quantity')}</TableHead>
-                <TableHead className="p-6">{t('table.amount')}</TableHead>
-                <TableHead className="p-6">{t('table.status')}</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {sales.map((sale) => (
-                <SaleRecordRow key={sale.id} sale={sale} />
-              ))}
-            </TableBody>
-          </Table>
-          {pagination ? (
-            <SalesRecordsPaginationBar
-              pagination={pagination}
-              previousLabel={t('pagination.previous')}
-              nextLabel={t('pagination.next')}
-              ariaLabel={t('pagination.label')}
-            />
-          ) : null}
-        </Card>
-      )}
+      {renderBody()}
     </section>
   )
 }
