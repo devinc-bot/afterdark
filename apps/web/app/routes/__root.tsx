@@ -16,7 +16,11 @@ export const Route = createRootRouteWithContext<RouterContext>()({
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { title: commonEs.appName },
     ],
-    links: [{ rel: 'stylesheet', href: globalsCssUrl }],
+    links: [
+      { rel: 'icon', type: 'image/png', href: '/landing/logo.png' },
+      { rel: 'apple-touch-icon', href: '/landing/logo.png' },
+      { rel: 'stylesheet', href: globalsCssUrl },
+    ],
   }),
   component: RootComponent,
 })

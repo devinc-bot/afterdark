@@ -11,7 +11,7 @@ function RouteNotFoundView() {
   return (
     <main className="flex min-h-full flex-col items-center justify-center bg-background px-6 py-16 text-center">
       <p className="font-mono text-xs font-semibold tracking-widest text-ink-muted uppercase">
-        AFTERDARK
+        EVENTFLOW
       </p>
       <div className="mt-6 max-w-sm space-y-2">
         <p className="font-heading text-xl font-semibold text-ink">{t('notFound.title')}</p>

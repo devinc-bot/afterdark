@@ -24,7 +24,7 @@ export function ErrorBoundaryView({ error, reset, strings }: ErrorBoundaryViewPr
   return (
     <div className="flex min-h-dvh flex-col items-center justify-center bg-background px-6 text-center">
       <p className="font-mono text-xs font-semibold tracking-widest text-ink-muted uppercase">
-        AFTERDARK
+        EVENTFLOW
       </p>
 
       <div className="mt-6 max-w-sm space-y-2">

@@ -1,5 +1,5 @@
 {
-  "metaTitle": "afterdark · Panel para dueños de clubes",
+  "metaTitle": "EventFlow · Panel para dueños de clubes",
   "header": {
     "brand": "{appName}",
     "login": "Iniciar sesión",
@@ -63,7 +63,7 @@
   "audiences": {
     "eyebrow": "Para quién es",
     "headline": "Hecho para quienes arman la noche.",
-    "support": "Si organizás eventos o gestionás un espacio nocturno, afterdark ordena tu operación sin importar el tamaño.",
+    "support": "Si organizás eventos o gestionás un espacio nocturno, EventFlow ordena tu operación sin importar el tamaño.",
     "imageAlt": "Público disfrutando de un evento nocturno",
     "items": {
       "1": {
@@ -83,7 +83,7 @@
   "value": {
     "eyebrow": "Propuesta de valor",
     "headline": "Menos herramientas sueltas. Más control.",
-    "support": "afterdark reúne lo que hoy resolvés con planillas, chats y apps separadas en un solo lugar pensado para la noche.",
+    "support": "EventFlow reúne lo que hoy resolvés con planillas, chats y apps separadas en un solo lugar pensado para la noche.",
     "imageAlt": "Luces de un club durante un evento en vivo",
     "items": {
       "1": {
@@ -101,7 +101,7 @@
     }
   },
   "social": {
-    "eyebrow": "Por qué afterdark",
+    "eyebrow": "Por qué EventFlow",
     "headline": "Pensado para la operación real de un club.",
     "items": {
       "1": {

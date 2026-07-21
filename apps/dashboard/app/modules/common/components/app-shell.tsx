@@ -243,9 +243,17 @@ function AppShellLayout({ children }: { children: React.ReactNode }) {
     <>
       <Sidebar collapsible="offcanvas">
         <SidebarHeader className="px-4 pt-5 pb-3">
-          <span className="font-heading text-base font-semibold tracking-[0.04em] text-sidebar-foreground transition-colors duration-(--duration-fast) ease-(--ease-emphasized) motion-reduce:transition-none">
-            {t('brand.logo')}
-          </span>
+          <div className="flex items-center gap-2">
+            <img
+              src="/landing/logo.png"
+              alt=""
+              aria-hidden="true"
+              className="h-11 w-11 shrink-0 object-contain"
+            />
+            <span className="font-heading text-base font-semibold tracking-[0.04em] text-sidebar-foreground transition-colors duration-(--duration-fast) ease-emphasized motion-reduce:transition-none">
+              {t('brand.logo')}
+            </span>
+          </div>
           <p className="text-sm text-sidebar-foreground/70">{t('brand.subtitle')}</p>
         </SidebarHeader>
 

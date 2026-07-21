@@ -42,9 +42,15 @@ export function LandingHeader() {
         aria-label={t('header.navAria')}
         className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between gap-4 px-margin-mobile md:px-margin-desktop"
       >
-        <Link to={DASHBOARD_ROUTES.home()} className="flex shrink-0 items-center">
+        <Link to={DASHBOARD_ROUTES.home()} className="flex shrink-0 items-center gap-2">
+          <img
+            src="/landing/logo.png"
+            alt=""
+            aria-hidden="true"
+            className="size-11 object-contain"
+          />
           <span className="font-display text-lg font-bold tracking-tight text-on-surface">
-            {t('header.brand', { appName: 'afterdark' })}
+            {t('header.brand')}
           </span>
         </Link>
 
@@ -87,8 +93,14 @@ export function LandingHeader() {
             className="flex h-full w-[min(100%,20rem)] flex-col border-hairline/60 bg-background p-0 text-on-surface"
           >
             <SheetHeader className="border-b border-hairline/60 px-5 py-5 text-left">
-              <SheetTitle className="font-display text-lg font-bold tracking-tight">
-                {t('header.brand', { appName: 'afterdark' })}
+              <SheetTitle className="flex items-center gap-2 font-display text-lg font-bold tracking-tight">
+                <img
+                  src="/landing/logo.png"
+                  alt=""
+                  aria-hidden="true"
+                  className="size-11 object-contain"
+                />
+                {t('header.brand')}
               </SheetTitle>
             </SheetHeader>
 

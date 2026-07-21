@@ -77,7 +77,17 @@ export function LandingFooter() {
       <div className={cn(SHELL, 'py-12 sm:py-14')}>
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-12 lg:gap-12">
           <div className="lg:col-span-5">
-            <p className="font-display text-lg font-bold tracking-tight">{t('nav.brand')}</p>
+            <div className="flex items-center gap-2">
+              <img
+                src="/landing/logo.png"
+                alt=""
+                aria-hidden="true"
+                className="size-12 object-contain"
+              />
+              <span className="font-display text-lg font-bold tracking-tight">
+                {t('nav.brand')}
+              </span>
+            </div>
             <p className="mt-2 max-w-sm text-sm leading-relaxed text-on-surface-variant">
               {t('footer.tagline')}
             </p>

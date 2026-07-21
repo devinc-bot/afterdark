@@ -31,7 +31,17 @@ export function LandingFooter() {
     <footer className="bg-surface-container-lowest">
       <div className="mx-auto grid w-full max-w-6xl gap-10 px-margin-mobile py-[clamp(3rem,6vw,4.5rem)] md:grid-cols-12 md:px-margin-desktop">
         <div className="md:col-span-4">
-          <p className="font-display text-lg font-bold tracking-tight text-on-surface">afterdark</p>
+          <div className="flex items-center gap-2">
+            <img
+              src="/landing/logo.png"
+              alt=""
+              aria-hidden="true"
+              className="size-12 object-contain"
+            />
+            <span className="font-display text-lg font-bold tracking-tight text-on-surface">
+              {t('header.brand')}
+            </span>
+          </div>
           <p className="mt-3 max-w-xs text-sm leading-relaxed text-on-surface-variant">
             {t('footer.tagline')}
           </p>
@@ -75,9 +85,7 @@ export function LandingFooter() {
 
       <div className="border-t border-hairline/60">
         <div className="mx-auto w-full max-w-6xl px-margin-mobile py-6 md:px-margin-desktop">
-          <p className="text-xs text-on-surface-variant">
-            {t('footer.rights', { year, appName: 'afterdark' })}
-          </p>
+          <p className="text-xs text-on-surface-variant">{t('footer.rights', { year })}</p>
         </div>
       </div>
     </footer>
