@@ -1,10 +1,27 @@
 import { useTranslation } from 'react-i18next'
+import { handleSectionNavClick } from '../utils/scroll-to-section.utils'
 
 const FOOTER_GROUPS = [
-  { title: 'footer.product', links: ['footer.features', 'footer.how', 'footer.faq'] },
-  { title: 'footer.company', links: ['footer.about', 'footer.contact'] },
-  { title: 'footer.legal', links: ['footer.terms', 'footer.privacy'] },
+  {
+    title: 'footer.product',
+    links: [
+      { labelKey: 'footer.features', hash: '#features' },
+      { labelKey: 'footer.how', hash: '#how' },
+      { labelKey: 'footer.faq', hash: '#faq' },
+    ],
+  },
+  {
+    title: 'footer.company',
+    links: [{ labelKey: 'footer.about' }, { labelKey: 'footer.contact' }],
+  },
+  {
+    title: 'footer.legal',
+    links: [{ labelKey: 'footer.terms' }, { labelKey: 'footer.privacy' }],
+  },
 ] as const
+
+const FOOTER_LINK =
+  'inline-flex min-h-8 items-center text-sm text-on-surface-variant transition-colors duration-(--duration-fast) ease-emphasized hover:text-on-surface focus-visible:outline-none focus-visible:rounded-sm focus-visible:ring-2 focus-visible:ring-primary/25'
 
 export function LandingFooter() {
   const { t } = useTranslation('dashboardLanding')
@@ -29,12 +46,25 @@ export function LandingFooter() {
               <p className="font-label text-sm tracking-label-sm text-on-surface">
                 {t(group.title)}
               </p>
-              <ul className="mt-4 space-y-3">
+              <ul className="mt-4 space-y-1">
                 {group.links.map((link) => (
-                  <li key={link}>
-                    <span aria-disabled className="cursor-default text-sm text-on-surface-variant">
-                      {t(link)}
-                    </span>
+                  <li key={link.labelKey}>
+                    {'hash' in link ? (
+                      <a
+                        href={link.hash}
+                        onClick={(event) => handleSectionNavClick(event, link.hash)}
+                        className={FOOTER_LINK}
+                      >
+                        {t(link.labelKey)}
+                      </a>
+                    ) : (
+                      <span
+                        aria-disabled
+                        className="cursor-default text-sm text-on-surface-variant"
+                      >
+                        {t(link.labelKey)}
+                      </span>
+                    )}
                   </li>
                 ))}
               </ul>

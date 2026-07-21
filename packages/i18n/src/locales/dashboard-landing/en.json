@@ -4,7 +4,13 @@
     "brand": "{appName}",
     "login": "Log in",
     "register": "Create account",
-    "navAria": "Main"
+    "navAria": "Main",
+    "features": "Features",
+    "how": "How it works",
+    "audiences": "Who it's for",
+    "faq": "FAQ",
+    "openMenu": "Open menu",
+    "mobileAriaLabel": "Navigation menu"
   },
   "hero": {
     "eyebrow": "Panel to manage events and clubs",

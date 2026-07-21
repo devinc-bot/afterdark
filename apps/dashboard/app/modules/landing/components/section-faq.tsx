@@ -9,7 +9,7 @@ export function SectionFaq() {
     <section
       id="faq"
       aria-labelledby="faq-heading"
-      className="border-b border-hairline/60 bg-surface-container-lowest"
+      className="scroll-mt-20 border-b border-hairline/60 bg-surface-container-lowest"
     >
       <div className="mx-auto grid w-full max-w-6xl gap-12 px-margin-mobile py-[clamp(4rem,8vw,6rem)] md:grid-cols-12 md:px-margin-desktop">
         <div className="md:col-span-4">

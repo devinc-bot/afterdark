@@ -8,7 +8,7 @@ export function SectionHow() {
     <section
       id="how"
       aria-labelledby="how-heading"
-      className="border-b border-hairline/60 bg-surface-container-lowest"
+      className="scroll-mt-20 border-b border-hairline/60 bg-surface-container-lowest"
     >
       <div className="mx-auto w-full max-w-6xl px-margin-mobile py-[clamp(4rem,8vw,6rem)] md:px-margin-desktop">
         <div className="max-w-2xl">

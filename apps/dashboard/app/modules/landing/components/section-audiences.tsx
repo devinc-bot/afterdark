@@ -9,7 +9,7 @@ export function SectionAudiences() {
     <section
       id="audiences"
       aria-labelledby="audiences-heading"
-      className="border-b border-hairline/60"
+      className="scroll-mt-20 border-b border-hairline/60"
     >
       <div className="mx-auto grid w-full max-w-6xl items-center gap-12 px-margin-mobile py-[clamp(4rem,8vw,6rem)] md:grid-cols-2 md:gap-16 md:px-margin-desktop">
         <div>
@@ -40,7 +40,7 @@ export function SectionAudiences() {
           </ul>
         </div>
 
-        <div className="relative aspect-[4/3] overflow-hidden rounded-3xl border border-hairline/60 md:order-last">
+        <div className="relative aspect-4/3 overflow-hidden rounded-3xl border border-hairline/60 md:order-last">
           <img
             src={LANDING_IMAGES.audiences.src}
             srcSet={LANDING_IMAGES.audiences.srcSet}
