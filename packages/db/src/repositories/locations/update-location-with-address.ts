@@ -19,7 +19,6 @@ export async function updateLocationWithAddress(
         name: input.name,
         capacity: input.capacity,
         description: input.description,
-        type: input.type,
         updatedAt: now,
       })
       .where(eq(locations.documentId, documentId))

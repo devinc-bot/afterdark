@@ -1,13 +1,13 @@
 import { AlertCircle } from 'lucide-react'
 import { cn } from '@afterdark/ui'
 
-type EventWizardErrorAlertProps = {
+type EventFormErrorAlertProps = {
   message: string
   title?: string
   className?: string
 }
 
-export function EventWizardErrorAlert({ message, title, className }: EventWizardErrorAlertProps) {
+export function EventFormErrorAlert({ message, title, className }: EventFormErrorAlertProps) {
   return (
     <div
       role="alert"

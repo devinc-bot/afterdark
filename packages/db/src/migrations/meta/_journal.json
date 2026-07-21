@@ -162,6 +162,13 @@
       "when": 1784586379333,
       "tag": "1784586379333_event_assets_lnk",
       "breakpoints": true
+    },
+    {
+      "idx": 23,
+      "version": "6",
+      "when": 1784666717251,
+      "tag": "1784666717251_drop_location_type",
+      "breakpoints": true
     }
   ]
 }

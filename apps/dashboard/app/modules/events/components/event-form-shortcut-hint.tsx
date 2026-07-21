@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
 import { cn } from '@afterdark/ui'
 
-type EventWizardShortcutHintProps = {
+type EventFormShortcutHintProps = {
   label: string
   className?: string
 }
 
-export function EventWizardShortcutHint({ label, className }: EventWizardShortcutHintProps) {
+export function EventFormShortcutHint({ label, className }: EventFormShortcutHintProps) {
   const [modifier, setModifier] = useState<string | null>(null)
 
   useEffect(() => {

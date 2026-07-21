@@ -1,7 +1,6 @@
 import { Inject, Injectable, InternalServerErrorException } from '@nestjs/common'
 import { createLocationWithAddress } from '@afterdark/db'
 import type { LocationResponse } from '@afterdark/types'
-import { LOCATION_TYPE } from '@afterdark/types'
 import { LOCATION_IMAGE_MAX_COUNT, type CreateLocationInput } from '@afterdark/validators'
 import { TranslationService } from '@afterdark/i18n/server'
 import { toLocationResponse, toLocationUpsertInput } from '../mappers/location.mapper'
@@ -39,10 +38,7 @@ export class CreateLocationUseCase {
 
   private async createLocationRecord(ownerId: number, input: CreateLocationInput) {
     try {
-      return await createLocationWithAddress(
-        ownerId,
-        toLocationUpsertInput(input, LOCATION_TYPE.PERMANENT)
-      )
+      return await createLocationWithAddress(ownerId, toLocationUpsertInput(input))
     } catch {
       throw new InternalServerErrorException(this.ts.translateError('location.CREATE_FAILED'))
     }

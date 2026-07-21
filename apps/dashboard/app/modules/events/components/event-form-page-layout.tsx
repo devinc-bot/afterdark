@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next'
 import { ArrowLeft } from 'lucide-react'
 import { Button, cn, useSidebar } from '@afterdark/ui'
 
-type EventWizardPageLayoutProps = {
+type EventFormPageLayoutProps = {
   title: string
   description: string
   onBack: () => void
@@ -11,14 +11,14 @@ type EventWizardPageLayoutProps = {
   children: React.ReactNode
 }
 
-export function EventWizardPageLayout({
+export function EventFormPageLayout({
   title,
   description,
   onBack,
   footer,
   footerBanner,
   children,
-}: EventWizardPageLayoutProps) {
+}: EventFormPageLayoutProps) {
   const { t } = useTranslation('events')
   const { state, isMobile } = useSidebar()
   const sidebarExpanded = !isMobile && state === 'expanded'
@@ -35,7 +35,7 @@ export function EventWizardPageLayout({
             onClick={onBack}
           >
             <ArrowLeft className="size-4" aria-hidden="true" />
-            {t('wizard.back')}
+            {t('form.back')}
           </Button>
           <div className="max-w-2xl">
             <h1 className="text-balance font-heading text-2xl font-bold text-ink sm:text-3xl">

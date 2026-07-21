@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { EventWizardCreateView } from '~/modules/events/components/event-wizard-create-view'
+import { EventCreateView } from '~/modules/events/components/event-create-view'
 import { usePageTitle } from '@afterdark/ui'
 
 export const Route = createFileRoute('/_app/events/new')({
@@ -7,7 +7,7 @@ export const Route = createFileRoute('/_app/events/new')({
 })
 
 function EventCreatePage() {
-  usePageTitle('events', 'wizard.createMetaTitle')
+  usePageTitle('events', 'form.createMetaTitle')
 
-  return <EventWizardCreateView />
+  return <EventCreateView />
 }
