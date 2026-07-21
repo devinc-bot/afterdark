@@ -1,37 +1,43 @@
 ---
-description: Entrevista guiada obligatoria antes de implementar cambios o specs nuevas
+description: Flujo OpenSpec obligatorio antes de implementar cambios o features nuevas
 alwaysApply: true
 ---
 
-# Spec interview antes de cada cambio nuevo
+# OpenSpec antes de cada cambio nuevo
 
-Cuando el usuario pida un **cambio nuevo**, **feature nueva**, o **ampliación de alcance**, ejecutar la entrevista de [spec/INTERVIEW.md](../../spec/INTERVIEW.md) **antes** de escribir código o actualizar `plan.md`/`tasks.md`.
+El desarrollo usa **OpenSpec** (carpeta `openspec/`). Cuando el usuario pida un **cambio nuevo**,
+**feature nueva** o **ampliación de alcance**, primero crear/actualizar un cambio OpenSpec y
+**alinear la propuesta** antes de escribir código.
 
 ## Disparadores
 
 - "quiero que…", "agregá…", "nueva feature", "creá spec", "implementá…"
-- Cualquier pedido que agregue comportamiento, endpoints, pantallas o reglas de negocio no cubiertas por la spec actual
+- Cualquier pedido que agregue comportamiento, endpoints, pantallas o reglas de negocio no cubiertas.
 
-## Comportamiento
+## Flujo
 
-1. Leer `spec/INTERVIEW.md` y, si existe feature relacionada, `spec/features/00N-<slug>/progress.md`.
-2. **Una fase por turno** (máx. ~5 preguntas). Usar `AskQuestion` para opciones finitas.
-3. Pre-rellenar desde código/roadmap y **confirmar** con el usuario.
-4. Actualizar `progress.md` y `spec.md` tras cada fase; `plan.md`/`tasks.md` en fase 6.
-5. **No implementar código** hasta spec `approved` o pedido explícito del usuario.
+1. **Explorar** (opcional, si el área es grande o incierta): `/opsx:explore` para leer el código y acotar el enfoque.
+2. **Proponer**: `/opsx:propose <slug>` genera `openspec/changes/<slug>/` con `proposal.md`, `specs/` (deltas ADDED/MODIFIED/REMOVED), `design.md` y `tasks.md`.
+3. **Revisar la propuesta con el usuario** antes de codear (intención, alcance, non-goals, specs delta). Ajustar artefactos según feedback.
+4. **Aplicar**: `/opsx:apply` implementa las tareas de `tasks.md` (respetar entregas incrementales por capa).
+5. **Archivar**: `/opsx:archive` mergea los deltas a `openspec/specs/` y mueve el cambio a `changes/archive/`.
+
+CLI local: `pnpm openspec <cmd>` (list, show, validate, view, doctor). Los slash `/opsx:*` corren en el chat.
+
+## Reglas
+
+- **No implementar código** hasta que la propuesta esté revisada, salvo pedido explícito del usuario.
+- **Deltas, no specs completas**: describir solo lo que cambia respecto al comportamiento actual (brownfield-first).
+- Copy de UI y mensajes de error en **español**; identificadores, rutas y requisitos técnicos en **inglés**.
+- Validación vía `@afterdark/validators`; no duplicar reglas en prosa.
+- Contexto y convenciones del repo viven en `openspec/config.yaml` (se inyecta al generar artefactos).
+
+## Legacy SDD (`spec/`)
+
+Las specs previas en `spec/features/NNN-*/` quedan como **referencia/histórico**. Migrar una feature a
+`openspec/specs/` **solo cuando se la vuelva a tocar** (no back-fillear todo de una vez).
 
 ## Excepciones
 
-- **Retomar**: continuar desde la primera fase `pending` en `progress.md`.
-- **Cambio acotado** sobre spec ya `approved`: entrevista solo en las secciones afectadas (decirlo al usuario).
-- **"seguí con lo que tengas" / "inferí vos"**: documentar supuestos en *Preguntas abiertas*.
-
-## Formato de respuesta
-
-```markdown
-## Fase N — [nombre]
-[preguntas]
----
-**Ya escrito:** `spec/features/…`
-**Siguiente:** fase N+1
-```
+- **Fix trivial** (1–2 archivos, sin nuevo comportamiento): implementar directo, sin propuesta.
+- **"seguí con lo que tengas" / "inferí vos"**: documentar supuestos en la propuesta y avanzar.

@@ -10,14 +10,36 @@ Read the relevant doc before making changes:
 
 | Doc                                                                                                  | When to consult                                                       |
 | ---------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- |
-| [spec/INTERVIEW.md](./spec/INTERVIEW.md)                                                             | Creating a feature spec (guided Q&A; do not fill alone)               |
-| [.claude/rules/spec-interview-before-changes.md](./.claude/rules/spec-interview-before-changes.md)   | **Antes de cada cambio nuevo** — entrevista obligatoria (Claude Code) |
-| [.cursor/rules/spec-interview-before-changes.mdc](./.cursor/rules/spec-interview-before-changes.mdc) | **Antes de cada cambio nuevo** — entrevista obligatoria (Cursor)      |
-| [spec/README.md](./spec/README.md)                                                                   | SDD layout, spec folder conventions                                   |
+| [openspec/config.yaml](./openspec/config.yaml)                                                       | **Development flow** — OpenSpec project context & per-artifact rules  |
+| [.cursor/rules/spec-interview-before-changes.mdc](./.cursor/rules/spec-interview-before-changes.mdc) | **Antes de cada cambio nuevo** — flujo OpenSpec obligatorio (Cursor)  |
+| [spec/README.md](./spec/README.md)                                                                   | Legacy SDD layout (reference/history; migrate on next touch)          |
 | [ARCHITECTURE.md](./ARCHITECTURE.md)                                                                 | Project structure, modules, routes, layers, packages                  |
 | [STYLEGUIDE.md](./STYLEGUIDE.md)                                                                     | Naming, constants, dependencies, lint/format                          |
 | [DOMAIN.md](./DOMAIN.md)                                                                             | Business context, entities, validation, UI language                   |
 | [packages/db/DATABASE.md](./packages/db/DATABASE.md)                                                 | Schema, migrations, repositories                                      |
+
+---
+
+## Development flow — OpenSpec
+
+New work is spec-driven via **OpenSpec** (`openspec/`). Before implementing a new feature or scope
+change, create and align an OpenSpec change first:
+
+```text
+/opsx:explore            # optional — read the area, shape the approach
+/opsx:propose <slug>     # drafts openspec/changes/<slug>/ (proposal, specs deltas, design, tasks)
+                         # → review the proposal with the user BEFORE coding
+/opsx:apply              # implements tasks.md (respect incremental delivery by layer)
+/opsx:archive            # merges spec deltas into openspec/specs/ and archives the change
+```
+
+- Slash `/opsx:*` commands run in the AI chat; the CLI runs in the terminal: `pnpm openspec <cmd>`
+  (`list`, `show <item>`, `validate`, `view`, `doctor`, `context`).
+- Project context and per-artifact rules live in [openspec/config.yaml](./openspec/config.yaml).
+- **Brownfield-first**: write **deltas** (ADDED/MODIFIED/REMOVED), not full specs. Don't back-fill specs
+  for code you aren't changing.
+- Legacy specs under `spec/features/NNN-*/` stay as reference; migrate a feature to `openspec/specs/`
+  only when you next touch it.
 
 ---
 
@@ -35,6 +57,12 @@ Read the relevant doc before making changes:
 ## Common commands
 
 ```bash
+# OpenSpec (spec-driven flow)
+pnpm openspec list           # active changes
+pnpm openspec show <item>    # view a change or spec
+pnpm openspec validate       # validate changes and specs
+pnpm openspec doctor         # health of the OpenSpec root
+
 # Development
 pnpm dev              # both apps in parallel
 pnpm dev:web        # web only  → http://localhost:3001
