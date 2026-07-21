@@ -16,7 +16,7 @@ export function MailLayout({ preview, title, children, footer, copyright }: Mail
       <Preview>{preview}</Preview>
       <Body style={bodyStyle}>
         <Container style={containerStyle}>
-          <Text style={brandStyle}>afterdark</Text>
+          <Text style={brandStyle}>EventFlow</Text>
           <Heading style={headingStyle}>{title}</Heading>
           <Section>{children}</Section>
           <Hr style={hrStyle} />

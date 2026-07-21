@@ -2,6 +2,12 @@ export { cn } from './lib/utils'
 export { fieldErrorMessage } from './lib/form-field.utils'
 export { getPaginationItems, type PaginationRangeItem } from './lib/pagination.utils.ts'
 
+export {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from './components/ui/accordion.tsx'
 export { Badge, badgeVariants, type BadgeProps } from './components/ui/badge.tsx'
 export { Avatar, AvatarFallback, AvatarImage } from './components/ui/avatar.tsx'
 export { Button, buttonVariants, type ButtonProps } from './components/ui/button.tsx'

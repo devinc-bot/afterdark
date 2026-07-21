@@ -1,0 +1,164 @@
+{
+  "metaTitle": "EventFlow · Panel para dueños de clubes",
+  "header": {
+    "brand": "{appName}",
+    "login": "Iniciar sesión",
+    "register": "Crear cuenta",
+    "navAria": "Principal",
+    "features": "Funciones",
+    "how": "Cómo funciona",
+    "audiences": "Para quién es",
+    "faq": "Preguntas",
+    "openMenu": "Abrir menú",
+    "mobileAriaLabel": "Menú de navegación"
+  },
+  "hero": {
+    "eyebrow": "Panel para gestionar eventos y clubes",
+    "headline": "Gestioná tu club sin perder el ritmo.",
+    "support": "Eventos, entradas, staff y ventas en un solo panel. Menos planillas sueltas, más control de tu noche.",
+    "ctaPrimary": "Crear cuenta",
+    "ctaSecondary": "Iniciar sesión"
+  },
+  "features": {
+    "eyebrow": "Todo en un panel",
+    "headline": "Todo tu evento o negocio nocturno, ordenado.",
+    "support": "Cada parte de la operación en su lugar, con datos que hablan entre sí.",
+    "items": {
+      "events": {
+        "title": "Eventos",
+        "body": "Publicá tu agenda y mantené cada fecha al día desde un mismo lugar."
+      },
+      "tickets": {
+        "title": "Entradas",
+        "body": "Definí tipos de entrada, precios y ventanas de venta sin ambigüedad."
+      },
+      "staff": {
+        "title": "Equipo",
+        "body": "Invitá a tu personal y dales acceso acotado según su rol."
+      },
+      "sales": {
+        "title": "Ventas",
+        "body": "Seguí el historial de compras y entendé cómo rinde cada noche."
+      }
+    }
+  },
+  "how": {
+    "eyebrow": "Empezá hoy",
+    "headline": "En tres pasos.",
+    "steps": {
+      "1": {
+        "title": "Creá tu ubicación",
+        "body": "El lugar donde se va a realizar el evento, con los datos que tu público necesita."
+      },
+      "2": {
+        "title": "Publicá un evento",
+        "body": "Cargá la fecha, los detalles y dejá todo listo para la venta."
+      },
+      "3": {
+        "title": "Vendé entradas",
+        "body": "Abrí la venta y seguí cada compra desde el panel."
+      }
+    }
+  },
+  "audiences": {
+    "eyebrow": "Para quién es",
+    "headline": "Hecho para quienes arman la noche.",
+    "support": "Si organizás eventos o gestionás un espacio nocturno, EventFlow ordena tu operación sin importar el tamaño.",
+    "imageAlt": "Público disfrutando de un evento nocturno",
+    "items": {
+      "1": {
+        "title": "Dueños de clubes",
+        "body": "Centralizá agenda, entradas y equipo de todas tus noches en un solo panel."
+      },
+      "2": {
+        "title": "Productoras de eventos",
+        "body": "Coordiná fechas, ubicaciones y ventas de cada producción sin planillas sueltas."
+      },
+      "3": {
+        "title": "Bares y espacios",
+        "body": "Sumá tus eventos especiales y controlá el acceso sin fricción."
+      }
+    }
+  },
+  "value": {
+    "eyebrow": "Propuesta de valor",
+    "headline": "Menos herramientas sueltas. Más control.",
+    "support": "EventFlow reúne lo que hoy resolvés con planillas, chats y apps separadas en un solo lugar pensado para la noche.",
+    "imageAlt": "Luces de un club durante un evento en vivo",
+    "items": {
+      "1": {
+        "title": "Todo conectado",
+        "body": "Eventos, entradas, staff y ventas comparten los mismos datos, sin duplicar cargas."
+      },
+      "2": {
+        "title": "Decisiones con información",
+        "body": "Ves cómo rinde cada noche y ajustás tu agenda con datos reales, no con intuición."
+      },
+      "3": {
+        "title": "Tu equipo, con foco",
+        "body": "Cada persona entra a lo suyo con permisos por rol: menos errores, más ritmo."
+      }
+    }
+  },
+  "social": {
+    "eyebrow": "Por qué EventFlow",
+    "headline": "Pensado para la operación real de un club.",
+    "items": {
+      "1": {
+        "quote": "Dejé de perseguir planillas. Ahora la noche entera se organiza sola desde un lugar.",
+        "author": "Dueño de club"
+      },
+      "2": {
+        "quote": "Sumar al equipo y darle acceso justo tarda minutos, no una reunión.",
+        "author": "Encargado de sala"
+      },
+      "3": {
+        "quote": "Saber qué entradas se venden y cuándo cambió cómo armamos la agenda.",
+        "author": "Productora de eventos"
+      }
+    }
+  },
+  "faq": {
+    "eyebrow": "Dudas frecuentes",
+    "headline": "Antes de empezar.",
+    "items": {
+      "1": {
+        "question": "¿Necesito tarjeta para crear una cuenta?",
+        "answer": "No. Creás tu cuenta de dueño y empezás a configurar tu club sin costo inicial."
+      },
+      "2": {
+        "question": "¿Puedo sumar a mi equipo?",
+        "answer": "Sí. Invitás a tu personal por email y cada uno entra con permisos acotados a su rol."
+      },
+      "3": {
+        "question": "¿Puedo gestionar más de un club?",
+        "answer": "Sí. Administrás tus ubicaciones y sus eventos desde el mismo panel."
+      },
+      "4": {
+        "question": "¿Cómo cobro las entradas?",
+        "answer": "Definís tipos de entrada y precios; el flujo de venta y cobro se gestiona desde la plataforma."
+      }
+    }
+  },
+  "closing": {
+    "headline": "Tu próximo evento empieza acá.",
+    "support": "Creá tu cuenta de dueño y empezá a ordenar tu club hoy.",
+    "cta": "Crear cuenta"
+  },
+  "footer": {
+    "tagline": "El panel para dueños de eventos o clubes.",
+    "explore": "Explorar",
+    "navAria": "Enlaces del pie de página",
+    "product": "Producto",
+    "features": "Funciones",
+    "how": "Cómo funciona",
+    "faq": "Preguntas frecuentes",
+    "company": "Compañía",
+    "about": "Nosotros",
+    "contact": "Contacto",
+    "legal": "Legal",
+    "terms": "Términos",
+    "privacy": "Privacidad",
+    "rights": "© {year} {appName}"
+  }
+}

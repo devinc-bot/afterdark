@@ -21,7 +21,11 @@ export const Route = createRootRouteWithContext<RouterContext>()({
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { title: `${commonEs.appNameDisplay} · Panel` },
     ],
-    links: [{ rel: 'stylesheet', href: globalsCssUrl }],
+    links: [
+      { rel: 'icon', type: 'image/png', href: '/landing/logo.png' },
+      { rel: 'apple-touch-icon', href: '/landing/logo.png' },
+      { rel: 'stylesheet', href: globalsCssUrl },
+    ],
   }),
   errorComponent: RootErrorBoundary,
   notFoundComponent: RootNotFound,
@@ -63,7 +67,7 @@ function RootNotFound() {
       </head>
       <body className="flex min-h-dvh flex-col items-center justify-center bg-background px-6 text-center">
         <p className="font-mono text-xs font-semibold tracking-widest text-ink-muted uppercase">
-          AFTERDARK
+          {commonEs.appNameUpper}
         </p>
         <div className="mt-6 max-w-sm space-y-2">
           <p className="font-heading text-xl font-semibold text-ink">{t('notFound.title')}</p>
