@@ -6,6 +6,7 @@ export const QUERY_KEYS = {
   tickets: (params?: { page?: number; limit?: number; status?: string }) =>
     ['tickets', params ?? {}] as const,
   events: (params?: { page?: number; limit?: number }) => ['events', params ?? {}] as const,
+  event: (documentId: string) => ['event', documentId] as const,
   ownerSales: (params?: Record<string, unknown>) => ['owner-sales', params ?? {}] as const,
   salesFilterLocations: () => ['sales-filter-locations'] as const,
   salesFilterEvents: () => ['sales-filter-events'] as const,

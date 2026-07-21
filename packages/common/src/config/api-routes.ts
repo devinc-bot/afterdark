@@ -86,6 +86,7 @@ export const API_ROUTES = {
     prefix: API_EVENTS_PREFIX,
     path: {
       list: () => '/my-events' as const,
+      get: (documentId: string) => `/${documentId}` as const,
       create: () => '/' as const,
       update: (documentId: string) => `/${documentId}` as const,
       delete: (documentId: string) => `/${documentId}` as const,

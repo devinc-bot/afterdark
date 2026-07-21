@@ -15,28 +15,28 @@
 - [x] `EventResponse.images` (+ tipo imagen) en `@afterdark/types`
 - [x] Schema `event_assets_lnk` + migración Drizzle
 - [x] Repository: find event by documentId (owner) + CRUD links de imágenes
-- [ ] `API_ROUTES.events` get por `documentId` en `@afterdark/common`
-- [ ] i18n: wizard, unsaved, imágenes evento, 404 edit
+- [x] `API_ROUTES.events` get por `documentId` en `@afterdark/common`
+- [x] i18n: wizard step 2 imágenes evento (copy restante)
 
 ## API
 
-- [ ] `EventImagesService` (upload/save/remove; espejo locations)
-- [ ] `GET /api/events/:documentId` (owner)
-- [ ] `POST /api/events` multipart (`images` 0–2)
-- [ ] `PATCH /api/events/:documentId` multipart + keep ids
-- [ ] Mensajes de error en español / i18n server
-- [ ] Validar tope location 4 en create/update locations (vía constante)
+- [x] `EventImagesService` (upload/save/remove; espejo locations)
+- [x] `GET /api/events/:documentId` (owner)
+- [x] `POST /api/events` multipart (`images` 0–2)
+- [x] `PATCH /api/events/:documentId` multipart + keep ids
+- [x] Mensajes de error en español / i18n server
+- [x] Validar tope location 4 en create/update locations (vía constante)
 
 ## Dashboard
 
-- [ ] `DASHBOARD_ROUTES.eventsNew` / `eventsEdit`
-- [ ] Rutas TanStack: `events.new`, `events.$documentId.edit`
-- [ ] Shell página + unsaved dialog (patrón locations)
-- [ ] Step 1: select ubicaciones + “agregar diferente” (form simplificado)
-- [ ] Step 2: campos evento sin location select + `ImagesEventForm` (máx. 2)
-- [ ] Orquestación submit: location nueva → event create/update
-- [ ] Listado: CTA/edit navegan a pantallas; quitar diálogos create/edit
-- [ ] Edit 404 / loading states
+- [x] `DASHBOARD_ROUTES.eventsNew` / `eventsEdit`
+- [x] Rutas TanStack: `events.new`, `events.$documentId.edit`
+- [x] Shell página + unsaved dialog (patrón locations)
+- [x] Step 1: select ubicaciones + “agregar diferente” (form simplificado)
+- [x] Step 2: campos evento sin location select + `ImagesEventForm` (máx. 2)
+- [x] Orquestación submit: location nueva → event create/update
+- [x] Listado: CTA/edit navegan a pantallas; quitar diálogos create/edit
+- [x] Edit 404 / loading states
 
 ## Calidad
 

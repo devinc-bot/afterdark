@@ -16,6 +16,8 @@ import {
   DateTimeInput,
   Field,
   Input,
+  optionalFieldLabel,
+  requiredFieldLabel,
   SelectField,
   SelectItem,
   Textarea,
@@ -81,14 +83,6 @@ function sanitizeNonNegativeDigits(value: string): string {
 
 function sanitizePrice(value: string): string {
   return value.replace(/[^\d.,]/g, '')
-}
-
-function requiredFieldLabel(label: string): string {
-  return `${label} *`
-}
-
-function optionalFieldLabel(label: string, optionalText: string): string {
-  return `${label} (${optionalText})`
 }
 
 type TicketFormProps = {

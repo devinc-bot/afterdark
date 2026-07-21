@@ -96,7 +96,10 @@
     "UPDATE_FAILED": "We could not update the event. Try again in a few minutes.",
     "DELETE_FAILED": "We could not delete the event. Try again in a few minutes.",
     "LIST_FAILED": "We could not load events. Try again in a few minutes.",
-    "HAS_TICKETS": "Cannot delete an event with associated tickets."
+    "HAS_TICKETS": "Cannot delete an event with associated tickets.",
+    "IMAGE_UPLOAD_FAILED": "Could not save the event images. Please try again.",
+    "TOO_MANY_IMAGES": "You can upload up to {max} images per event.",
+    "INVALID_IMAGE_IDS": "One or more images do not belong to this event."
   },
   "geo": {
     "PROVIDER_FAILED": "We could not locate your area. Try again or move the pin.",

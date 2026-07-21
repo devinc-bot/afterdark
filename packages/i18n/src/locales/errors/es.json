@@ -96,7 +96,10 @@
     "UPDATE_FAILED": "No pudimos actualizar el evento. Intentá de nuevo en unos minutos.",
     "DELETE_FAILED": "No pudimos eliminar el evento. Intentá de nuevo en unos minutos.",
     "LIST_FAILED": "No pudimos cargar los eventos. Intentá de nuevo en unos minutos.",
-    "HAS_TICKETS": "No se puede eliminar un evento con entradas asociadas."
+    "HAS_TICKETS": "No se puede eliminar un evento con entradas asociadas.",
+    "IMAGE_UPLOAD_FAILED": "No pudimos guardar las imágenes del evento. Intentá de nuevo.",
+    "TOO_MANY_IMAGES": "Podés subir hasta {max} imágenes por evento.",
+    "INVALID_IMAGE_IDS": "Una o más imágenes no pertenecen a este evento."
   },
   "geo": {
     "PROVIDER_FAILED": "No pudimos ubicar tu zona. Probá de nuevo o mové el pin.",

@@ -1,26 +1,26 @@
-import type { LocationImageResponse } from '@afterdark/types'
-import { LOCATION_IMAGE_MAX_COUNT } from '@afterdark/validators'
+import type { EventImageResponse } from '@afterdark/types'
+import { EVENT_IMAGE_MAX_COUNT } from '@afterdark/validators'
 import { useTranslation } from 'react-i18next'
 import { ImageUploadField } from '~/modules/common/components/image-upload-field'
 
-type ImagesLocationFormProps = {
-  existingImages: LocationImageResponse[]
-  onExistingImagesChange: (images: LocationImageResponse[]) => void
+type ImagesEventFormProps = {
+  existingImages: EventImageResponse[]
+  onExistingImagesChange: (images: EventImageResponse[]) => void
   newImages: File[]
   onNewImagesChange: (files: File[]) => void
 }
 
-export function ImagesLocationForm({
+export function ImagesEventForm({
   existingImages,
   onExistingImagesChange,
   newImages,
   onNewImagesChange,
-}: ImagesLocationFormProps) {
-  const { t } = useTranslation('locations')
+}: ImagesEventFormProps) {
+  const { t } = useTranslation('events')
 
   return (
     <ImageUploadField
-      maxCount={LOCATION_IMAGE_MAX_COUNT}
+      maxCount={EVENT_IMAGE_MAX_COUNT}
       existingImages={existingImages}
       onExistingImagesChange={onExistingImagesChange}
       newImages={newImages}

@@ -39,6 +39,20 @@
     "errorCreateFallback": "We could not create the event. Try again in a few minutes.",
     "errorEditFallback": "We could not update the event. Try again in a few minutes."
   },
+  "sections": {
+    "imagesTitle": "Images",
+    "imagesDescription": "Photos of the event that will appear on the platform. You can upload up to 2 images."
+  },
+  "images": {
+    "count": "{current} of {max} images",
+    "saved": "Saved image",
+    "remove": "Remove {name}",
+    "dropzoneTitle": "Drag or click to select images",
+    "dropzoneHint": "JPG, PNG or WEBP · up to {count, plural, one {# image} other {# images}} · max. {maxMb} MB each",
+    "maxReached": "You've reached the maximum of {max} images.",
+    "invalidType": "The file must be a JPG, PNG, or WEBP image.",
+    "tooLarge": "The image exceeds the maximum size of {maxMb} MB."
+  },
   "table": {
     "title": "Registered events",
     "registryCount": "{count, plural, one {1 event registered} other {# events registered}}",
@@ -70,5 +84,50 @@
     "success": "Event deleted successfully",
     "error": "We could not delete the event. Try again.",
     "errorFallback": "We could not delete the event. Try again in a few minutes."
+  },
+  "wizard": {
+    "createMetaTitle": "Create event · {appNameAdmin}",
+    "editMetaTitle": "Edit event · {appNameAdmin}",
+    "createTitle": "Create event",
+    "createDescription": "Choose a location, then fill in the event details.",
+    "editTitle": "Edit event",
+    "editDescription": "Update the location or event details.",
+    "back": "Back to events",
+    "cancel": "Cancel",
+    "next": "Next",
+    "backStep": "Back",
+    "stepperLabel": "Event progress",
+    "stepLocationShort": "Location",
+    "stepDetailsShort": "Details",
+    "stepStatusComplete": "completed",
+    "stepStatusCurrent": "current step",
+    "stepStatusUpcoming": "upcoming",
+    "locationSummaryLabel": "Location",
+    "locationSummaryChange": "Change",
+    "locationSummaryChangeAria": "Change location",
+    "locationSummaryNew": "New",
+    "locationSummaryFallback": "Selected location",
+    "lastLocationHint": "Last used location",
+    "locationResolveError": "We couldn't confirm the location. Choose a location to continue.",
+    "submitErrorTitle": "We couldn't save the event",
+    "loading": "Loading event…",
+    "loadErrorTitle": "We could not load the event",
+    "loadErrorFallback": "Try again in a few minutes.",
+    "notFoundTitle": "We could not find the event you want to edit.",
+    "notFoundDescription": "The event does not exist or you do not have permission to edit it.",
+    "stepLocationTitle": "Event location",
+    "stepLocationDescription": "Select an existing location or add a different one.",
+    "useExistingLocation": "Existing",
+    "addDifferentLocation": "New",
+    "newLocationHint": "Fill in the new location details. It will be saved when you create the event.",
+    "newLocationInvalid": "Review the location details before continuing.",
+    "stepDetailsTitle": "Event details",
+    "stepDetailsDescription": "Fill in the event details. Images are optional."
+  },
+  "unsaved": {
+    "title": "Leave without saving?",
+    "description": "You have unsaved changes. If you leave now, they will be lost.",
+    "stay": "Keep editing",
+    "leave": "Leave without saving"
   }
 }

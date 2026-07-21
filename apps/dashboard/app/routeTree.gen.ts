@@ -20,12 +20,14 @@ import { Route as AppTicketsRouteImport } from './routes/_app/tickets'
 import { Route as AppStaffRouteImport } from './routes/_app/staff'
 import { Route as AppSettingsRouteImport } from './routes/_app/settings'
 import { Route as AppSalesRouteImport } from './routes/_app/sales'
-import { Route as AppEventsRouteImport } from './routes/_app/events'
 import { Route as AppDashboardRouteImport } from './routes/_app/dashboard'
 import { Route as NameTokenRouteImport } from './routes/$name.$token'
 import { Route as AppLocationsIndexRouteImport } from './routes/_app/locations/index'
+import { Route as AppEventsIndexRouteImport } from './routes/_app/events/index'
 import { Route as AppLocationsNewRouteImport } from './routes/_app/locations/new'
+import { Route as AppEventsNewRouteImport } from './routes/_app/events/new'
 import { Route as AppLocationsDocumentIdEditRouteImport } from './routes/_app/locations/$documentId/edit'
+import { Route as AppEventsDocumentIdEditRouteImport } from './routes/_app/events/$documentId/edit'
 
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
   id: '/reset-password',
@@ -81,11 +83,6 @@ const AppSalesRoute = AppSalesRouteImport.update({
   path: '/sales',
   getParentRoute: () => AppRoute,
 } as any)
-const AppEventsRoute = AppEventsRouteImport.update({
-  id: '/events',
-  path: '/events',
-  getParentRoute: () => AppRoute,
-} as any)
 const AppDashboardRoute = AppDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -101,9 +98,19 @@ const AppLocationsIndexRoute = AppLocationsIndexRouteImport.update({
   path: '/locations/',
   getParentRoute: () => AppRoute,
 } as any)
+const AppEventsIndexRoute = AppEventsIndexRouteImport.update({
+  id: '/events/',
+  path: '/events/',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppLocationsNewRoute = AppLocationsNewRouteImport.update({
   id: '/locations/new',
   path: '/locations/new',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppEventsNewRoute = AppEventsNewRouteImport.update({
+  id: '/events/new',
+  path: '/events/new',
   getParentRoute: () => AppRoute,
 } as any)
 const AppLocationsDocumentIdEditRoute =
@@ -112,6 +119,11 @@ const AppLocationsDocumentIdEditRoute =
     path: '/locations/$documentId/edit',
     getParentRoute: () => AppRoute,
   } as any)
+const AppEventsDocumentIdEditRoute = AppEventsDocumentIdEditRouteImport.update({
+  id: '/events/$documentId/edit',
+  path: '/events/$documentId/edit',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof AppIndexRoute
@@ -121,14 +133,16 @@ export interface FileRoutesByFullPath {
   '/reset-password': typeof ResetPasswordRoute
   '/$name/$token': typeof NameTokenRoute
   '/dashboard': typeof AppDashboardRoute
-  '/events': typeof AppEventsRoute
   '/sales': typeof AppSalesRoute
   '/settings': typeof AppSettingsRoute
   '/staff': typeof AppStaffRoute
   '/tickets': typeof AppTicketsRoute
   '/auth/callback': typeof AuthCallbackRoute
+  '/events/new': typeof AppEventsNewRoute
   '/locations/new': typeof AppLocationsNewRoute
+  '/events/': typeof AppEventsIndexRoute
   '/locations/': typeof AppLocationsIndexRoute
+  '/events/$documentId/edit': typeof AppEventsDocumentIdEditRoute
   '/locations/$documentId/edit': typeof AppLocationsDocumentIdEditRoute
 }
 export interface FileRoutesByTo {
@@ -138,15 +152,17 @@ export interface FileRoutesByTo {
   '/reset-password': typeof ResetPasswordRoute
   '/$name/$token': typeof NameTokenRoute
   '/dashboard': typeof AppDashboardRoute
-  '/events': typeof AppEventsRoute
   '/sales': typeof AppSalesRoute
   '/settings': typeof AppSettingsRoute
   '/staff': typeof AppStaffRoute
   '/tickets': typeof AppTicketsRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/': typeof AppIndexRoute
+  '/events/new': typeof AppEventsNewRoute
   '/locations/new': typeof AppLocationsNewRoute
+  '/events': typeof AppEventsIndexRoute
   '/locations': typeof AppLocationsIndexRoute
+  '/events/$documentId/edit': typeof AppEventsDocumentIdEditRoute
   '/locations/$documentId/edit': typeof AppLocationsDocumentIdEditRoute
 }
 export interface FileRoutesById {
@@ -158,15 +174,17 @@ export interface FileRoutesById {
   '/reset-password': typeof ResetPasswordRoute
   '/$name/$token': typeof NameTokenRoute
   '/_app/dashboard': typeof AppDashboardRoute
-  '/_app/events': typeof AppEventsRoute
   '/_app/sales': typeof AppSalesRoute
   '/_app/settings': typeof AppSettingsRoute
   '/_app/staff': typeof AppStaffRoute
   '/_app/tickets': typeof AppTicketsRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/_app/': typeof AppIndexRoute
+  '/_app/events/new': typeof AppEventsNewRoute
   '/_app/locations/new': typeof AppLocationsNewRoute
+  '/_app/events/': typeof AppEventsIndexRoute
   '/_app/locations/': typeof AppLocationsIndexRoute
+  '/_app/events/$documentId/edit': typeof AppEventsDocumentIdEditRoute
   '/_app/locations/$documentId/edit': typeof AppLocationsDocumentIdEditRoute
 }
 export interface FileRouteTypes {
@@ -179,14 +197,16 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/$name/$token'
     | '/dashboard'
-    | '/events'
     | '/sales'
     | '/settings'
     | '/staff'
     | '/tickets'
     | '/auth/callback'
+    | '/events/new'
     | '/locations/new'
+    | '/events/'
     | '/locations/'
+    | '/events/$documentId/edit'
     | '/locations/$documentId/edit'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -196,15 +216,17 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/$name/$token'
     | '/dashboard'
-    | '/events'
     | '/sales'
     | '/settings'
     | '/staff'
     | '/tickets'
     | '/auth/callback'
     | '/'
+    | '/events/new'
     | '/locations/new'
+    | '/events'
     | '/locations'
+    | '/events/$documentId/edit'
     | '/locations/$documentId/edit'
   id:
     | '__root__'
@@ -215,15 +237,17 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/$name/$token'
     | '/_app/dashboard'
-    | '/_app/events'
     | '/_app/sales'
     | '/_app/settings'
     | '/_app/staff'
     | '/_app/tickets'
     | '/auth/callback'
     | '/_app/'
+    | '/_app/events/new'
     | '/_app/locations/new'
+    | '/_app/events/'
     | '/_app/locations/'
+    | '/_app/events/$documentId/edit'
     | '/_app/locations/$documentId/edit'
   fileRoutesById: FileRoutesById
 }
@@ -316,13 +340,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppSalesRouteImport
       parentRoute: typeof AppRoute
     }
-    '/_app/events': {
-      id: '/_app/events'
-      path: '/events'
-      fullPath: '/events'
-      preLoaderRoute: typeof AppEventsRouteImport
-      parentRoute: typeof AppRoute
-    }
     '/_app/dashboard': {
       id: '/_app/dashboard'
       path: '/dashboard'
@@ -344,11 +361,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppLocationsIndexRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/events/': {
+      id: '/_app/events/'
+      path: '/events'
+      fullPath: '/events/'
+      preLoaderRoute: typeof AppEventsIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/locations/new': {
       id: '/_app/locations/new'
       path: '/locations/new'
       fullPath: '/locations/new'
       preLoaderRoute: typeof AppLocationsNewRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/events/new': {
+      id: '/_app/events/new'
+      path: '/events/new'
+      fullPath: '/events/new'
+      preLoaderRoute: typeof AppEventsNewRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/locations/$documentId/edit': {
@@ -358,32 +389,43 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppLocationsDocumentIdEditRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/events/$documentId/edit': {
+      id: '/_app/events/$documentId/edit'
+      path: '/events/$documentId/edit'
+      fullPath: '/events/$documentId/edit'
+      preLoaderRoute: typeof AppEventsDocumentIdEditRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
 interface AppRouteChildren {
   AppDashboardRoute: typeof AppDashboardRoute
-  AppEventsRoute: typeof AppEventsRoute
   AppSalesRoute: typeof AppSalesRoute
   AppSettingsRoute: typeof AppSettingsRoute
   AppStaffRoute: typeof AppStaffRoute
   AppTicketsRoute: typeof AppTicketsRoute
   AppIndexRoute: typeof AppIndexRoute
+  AppEventsNewRoute: typeof AppEventsNewRoute
   AppLocationsNewRoute: typeof AppLocationsNewRoute
+  AppEventsIndexRoute: typeof AppEventsIndexRoute
   AppLocationsIndexRoute: typeof AppLocationsIndexRoute
+  AppEventsDocumentIdEditRoute: typeof AppEventsDocumentIdEditRoute
   AppLocationsDocumentIdEditRoute: typeof AppLocationsDocumentIdEditRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
   AppDashboardRoute: AppDashboardRoute,
-  AppEventsRoute: AppEventsRoute,
   AppSalesRoute: AppSalesRoute,
   AppSettingsRoute: AppSettingsRoute,
   AppStaffRoute: AppStaffRoute,
   AppTicketsRoute: AppTicketsRoute,
   AppIndexRoute: AppIndexRoute,
+  AppEventsNewRoute: AppEventsNewRoute,
   AppLocationsNewRoute: AppLocationsNewRoute,
+  AppEventsIndexRoute: AppEventsIndexRoute,
   AppLocationsIndexRoute: AppLocationsIndexRoute,
+  AppEventsDocumentIdEditRoute: AppEventsDocumentIdEditRoute,
   AppLocationsDocumentIdEditRoute: AppLocationsDocumentIdEditRoute,
 }
 

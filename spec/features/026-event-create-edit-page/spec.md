@@ -2,13 +2,13 @@
 
 > Entrevista guiada — [INTERVIEW.md](../../INTERVIEW.md). Estado por fase en `progress.md`.
 
-| Campo          | Valor                                                                                         |
-| -------------- | --------------------------------------------------------------------------------------------- |
-| **ID**         | `026-event-create-edit-page`                                                                  |
-| **Status**     | `approved`                                                                                    |
-| **Apps**       | `dashboard`, `api` (+ `validators`, `types`, `i18n`; `db` si hace falta schema/assets)         |
+| Campo          | Valor                                                                                        |
+| -------------- | -------------------------------------------------------------------------------------------- |
+| **ID**         | `026-event-create-edit-page`                                                                 |
+| **Status**     | `approved`                                                                                   |
+| **Apps**       | `dashboard`, `api` (+ `validators`, `types`, `i18n`; `db` si hace falta schema/assets)       |
 | **Depende de** | `002-locations-management`, `010-location-create-edit-page` (formulario simplificado + mapa) |
-| **Reemplaza**  | `011-events-management` (spec eliminada; listado/API base pueden vivir en código)             |
+| **Reemplaza**  | `011-events-management` (spec eliminada; listado/API base pueden vivir en código)            |
 
 ---
 
@@ -122,13 +122,13 @@ El modal queda corto para combinar ubicación + datos del evento + imágenes. Al
 
 ### API
 
-| Método | Ruta                         | Auth (JWT + owner) | Notas                                                                 |
-| ------ | ---------------------------- | ------------------ | --------------------------------------------------------------------- |
-| GET    | `/api/events/my-events`      | sí                 | Listado paginado existente (sin cambio de contrato salvo `images`).   |
-| GET    | `/api/events/:documentId`    | sí                 | **Nuevo.** Detalle para hidratar edit (ownership). Incluye `images`.  |
-| POST   | `/api/events`                | sí                 | Create; multipart con campo `images` (0–2) + campos del evento.       |
-| PATCH  | `/api/events/:documentId`    | sí                 | Update; multipart `images` nuevas + ids a conservar (patrón location).|
-| POST   | `/api/locations` (existente) | sí                 | Usado si el wizard crea ubicación nueva **en el submit final**.       |
+| Método | Ruta                         | Auth (JWT + owner) | Notas                                                                  |
+| ------ | ---------------------------- | ------------------ | ---------------------------------------------------------------------- |
+| GET    | `/api/events/my-events`      | sí                 | Listado paginado existente (sin cambio de contrato salvo `images`).    |
+| GET    | `/api/events/:documentId`    | sí                 | **Nuevo.** Detalle para hidratar edit (ownership). Incluye `images`.   |
+| POST   | `/api/events`                | sí                 | Create; multipart con campo `images` (0–2) + campos del evento.        |
+| PATCH  | `/api/events/:documentId`    | sí                 | Update; multipart `images` nuevas + ids a conservar (patrón location). |
+| POST   | `/api/locations` (existente) | sí                 | Usado si el wizard crea ubicación nueva **en el submit final**.        |
 
 **Orquestación ubicación nueva (asumido — opción B):** el paso 1 no llama a la API. En el submit final del wizard:
 
@@ -147,41 +147,41 @@ No se requiere endpoint compuesto evento+ubicación en v1.
 
 **Errores (mensaje al usuario en español)**
 
-| HTTP | Cuándo                         | Mensaje (orientativo / i18n)                                      |
-| ---- | ------------------------------ | ----------------------------------------------------------------- |
-| 400  | Validación / demasiadas imgs   | p. ej. _Podés subir hasta 2 imágenes del evento._ / _…hasta 4…_ |
-| 401  | Sin sesión                     | Mensaje auth existente                                            |
-| 403  | No es dueño del recurso        | Mensaje ownership existente                                       |
-| 404  | Evento no encontrado / no propio | _No encontramos el evento que querés editar._                     |
+| HTTP | Cuándo                           | Mensaje (orientativo / i18n)                                    |
+| ---- | -------------------------------- | --------------------------------------------------------------- |
+| 400  | Validación / demasiadas imgs     | p. ej. _Podés subir hasta 2 imágenes del evento._ / _…hasta 4…_ |
+| 401  | Sin sesión                       | Mensaje auth existente                                          |
+| 403  | No es dueño del recurso          | Mensaje ownership existente                                     |
+| 404  | Evento no encontrado / no propio | _No encontramos el evento que querés editar._                   |
 
 ### Datos
 
-| Tabla / campo                         | Cambio                                                                 |
-| ------------------------------------- | ---------------------------------------------------------------------- |
-| `event_assets_lnk` (nueva)            | Link `event_id` ↔ `asset_id` (espejo de `location_assets_lnk`).        |
-| `assets`                              | Reuso; sin cambio de schema salvo filas nuevas.                        |
-| `LOCATION_IMAGE_MAX_COUNT`            | Valor de negocio 4 (constante validators; no columna DB).              |
-| `events`                              | Sin columnas nuevas de imagen (relación vía link).                     |
+| Tabla / campo              | Cambio                                                          |
+| -------------------------- | --------------------------------------------------------------- |
+| `event_assets_lnk` (nueva) | Link `event_id` ↔ `asset_id` (espejo de `location_assets_lnk`). |
+| `assets`                   | Reuso; sin cambio de schema salvo filas nuevas.                 |
+| `LOCATION_IMAGE_MAX_COUNT` | Valor de negocio 4 (constante validators; no columna DB).       |
+| `events`                   | Sin columnas nuevas de imagen (relación vía link).              |
 
 ### UI
 
-| Ruta                         | Pantalla                                      |
-| ---------------------------- | --------------------------------------------- |
-| `/events`                    | Listado (CTA → create; acción → edit).        |
-| `/events/new`                | Wizard create (2 steps).                      |
-| `/events/$documentId/edit`   | Wizard edit (2 steps; ubicación preseleccionada). |
+| Ruta                       | Pantalla                                          |
+| -------------------------- | ------------------------------------------------- |
+| `/events`                  | Listado (CTA → create; acción → edit).            |
+| `/events/new`              | Wizard create (2 steps).                          |
+| `/events/$documentId/edit` | Wizard edit (2 steps; ubicación preseleccionada). |
 
 **Copy (español) — orientativo**
 
-| Contexto              | Texto                                              |
-| --------------------- | -------------------------------------------------- |
-| CTA listado           | Crear evento / equivalente i18n actual             |
-| Step 1 título         | Ubicación del evento                               |
-| Step 1 CTA alt        | Agregar ubicación diferente                        |
-| Step 2 título         | Datos del evento                                   |
-| Footer                | Cancelar · Siguiente / Guardar (crear o actualizar)|
-| Unsaved dialog        | Mismo patrón que locations (_Seguir editando_ / _Salir sin guardar_) |
-| Edit 404              | No encontramos el evento que querés editar.        |
+| Contexto       | Texto                                                                |
+| -------------- | -------------------------------------------------------------------- |
+| CTA listado    | Crear evento / equivalente i18n actual                               |
+| Step 1 título  | Ubicación del evento                                                 |
+| Step 1 CTA alt | Agregar ubicación diferente                                          |
+| Step 2 título  | Datos del evento                                                     |
+| Footer         | Cancelar · Siguiente / Guardar (crear o actualizar)                  |
+| Unsaved dialog | Mismo patrón que locations (_Seguir editando_ / _Salir sin guardar_) |
+| Edit 404       | No encontramos el evento que querés editar.                          |
 
 Constantes ruta: `DASHBOARD_ROUTES.eventsNew()`, `eventsEdit(documentId)` (espejo locations).
 

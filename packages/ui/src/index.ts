@@ -1,5 +1,5 @@
 export { cn } from './lib/utils'
-export { fieldErrorMessage } from './lib/form-field.utils'
+export { fieldErrorMessage, optionalFieldLabel, requiredFieldLabel } from './lib/form-field.utils'
 export { getPaginationItems, type PaginationRangeItem } from './lib/pagination.utils.ts'
 
 export { Badge, badgeVariants, type BadgeProps } from './components/ui/badge.tsx'

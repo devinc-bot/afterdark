@@ -39,6 +39,20 @@
     "errorCreateFallback": "No pudimos crear el evento. Intentá de nuevo en unos minutos.",
     "errorEditFallback": "No pudimos actualizar el evento. Intentá de nuevo en unos minutos."
   },
+  "sections": {
+    "imagesTitle": "Imágenes",
+    "imagesDescription": "Fotos del evento que se mostrarán en la plataforma. Podés subir hasta 2 imágenes."
+  },
+  "images": {
+    "count": "{current} de {max} imágenes",
+    "saved": "Imagen guardada",
+    "remove": "Quitar {name}",
+    "dropzoneTitle": "Arrastrá o hacé clic para seleccionar imágenes",
+    "dropzoneHint": "JPG, PNG o WEBP · hasta {count, plural, one {# imagen} other {# imágenes}} · máx. {maxMb} MB c/u",
+    "maxReached": "Alcanzaste el máximo de {max} imágenes.",
+    "invalidType": "El archivo debe ser una imagen JPG, PNG o WEBP.",
+    "tooLarge": "La imagen supera el tamaño máximo de {maxMb} MB."
+  },
   "table": {
     "title": "Eventos registrados",
     "registryCount": "{count, plural, one {1 evento registrado} other {# eventos registrados}}",
@@ -70,5 +84,50 @@
     "success": "Evento eliminado correctamente",
     "error": "No pudimos eliminar el evento. Intentá de nuevo.",
     "errorFallback": "No pudimos eliminar el evento. Intentá de nuevo en unos minutos."
+  },
+  "wizard": {
+    "createMetaTitle": "Crear evento · {appNameAdmin}",
+    "editMetaTitle": "Editar evento · {appNameAdmin}",
+    "createTitle": "Crear evento",
+    "createDescription": "Elegí la ubicación y después completá los datos del evento.",
+    "editTitle": "Editar evento",
+    "editDescription": "Actualizá la ubicación o los datos del evento.",
+    "back": "Volver a eventos",
+    "cancel": "Cancelar",
+    "next": "Siguiente",
+    "backStep": "Anterior",
+    "stepperLabel": "Progreso del evento",
+    "stepLocationShort": "Ubicación",
+    "stepDetailsShort": "Datos",
+    "stepStatusComplete": "completado",
+    "stepStatusCurrent": "paso actual",
+    "stepStatusUpcoming": "pendiente",
+    "locationSummaryLabel": "Ubicación",
+    "locationSummaryChange": "Cambiar",
+    "locationSummaryChangeAria": "Cambiar ubicación",
+    "locationSummaryNew": "Nueva",
+    "locationSummaryFallback": "Ubicación seleccionada",
+    "lastLocationHint": "Última ubicación usada",
+    "locationResolveError": "No pudimos confirmar la ubicación. Elegí una ubicación para continuar.",
+    "submitErrorTitle": "No se pudo guardar el evento",
+    "loading": "Cargando evento…",
+    "loadErrorTitle": "No pudimos cargar el evento",
+    "loadErrorFallback": "Intentá de nuevo en unos minutos.",
+    "notFoundTitle": "No encontramos el evento que querés editar.",
+    "notFoundDescription": "El evento no existe o no tenés permiso para editarlo.",
+    "stepLocationTitle": "Ubicación del evento",
+    "stepLocationDescription": "Seleccioná una ubicación existente o agregá una diferente.",
+    "useExistingLocation": "Existente",
+    "addDifferentLocation": "Nueva",
+    "newLocationHint": "Completá los datos de la nueva ubicación. Se guardará al crear el evento.",
+    "newLocationInvalid": "Revisá los datos de la ubicación antes de continuar.",
+    "stepDetailsTitle": "Datos del evento",
+    "stepDetailsDescription": "Completá la información del evento. Las imágenes son opcionales."
+  },
+  "unsaved": {
+    "title": "¿Salir sin guardar?",
+    "description": "Tenés cambios sin guardar. Si salís ahora, se perderán.",
+    "stay": "Seguir editando",
+    "leave": "Salir sin guardar"
   }
 }

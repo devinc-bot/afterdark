@@ -1,9 +1,9 @@
 import { Inject, Injectable, InternalServerErrorException } from '@nestjs/common'
-import { findEventsPaginatedByOwner } from '@afterdark/db'
+import { findEventImageAssetsByEventIds, findEventsPaginatedByOwner } from '@afterdark/db'
 import { TranslationService } from '@afterdark/i18n/server'
 import type { EventResponse, PaginatedResponse } from '@afterdark/types'
 import type { ListEventsQueryInput } from '@afterdark/validators'
-import { toEventResponse } from '../mappers/events.mapper'
+import { groupEventImagesByEventId, toEventResponse } from '../mappers/events.mapper'
 
 @Injectable()
 export class ListMyEventsUseCase {
@@ -20,10 +20,16 @@ export class ListMyEventsUseCase {
         limit: query.limit,
       })
 
+      const imagesByEventId = groupEventImagesByEventId(
+        await findEventImageAssetsByEventIds(rows.map(({ event }) => event.id))
+      )
+
       const totalPages = total === 0 ? 0 : Math.ceil(total / query.limit)
 
       return {
-        data: rows.map(({ event, location }) => toEventResponse(event, location)),
+        data: rows.map(({ event, location }) =>
+          toEventResponse(event, location, imagesByEventId.get(event.id) ?? [])
+        ),
         total,
         page: query.page,
         limit: query.limit,

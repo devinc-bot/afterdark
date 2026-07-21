@@ -77,21 +77,36 @@ export type UpdateEventMultipartInput = z.infer<typeof updateEventMultipartSchem
 
 export { EVENT_IMAGE_MAX_COUNT }
 
-export const eventFormSchema = z
+export const eventFieldSchemas = {
+  locationId: z.string().min(1, 'validation:field.event.location'),
+  name: z.string().trim().min(1, 'validation:field.event.name'),
+  description: z.string().trim().min(1, 'validation:field.event.description'),
+  startsAt: z.string().trim().min(1, 'validation:field.event.startDate'),
+  endsAt: z.string().trim().min(1, 'validation:field.event.endDate'),
+  status: eventStatusSchema,
+}
+
+export const eventFormSchema = z.object(eventFieldSchemas).refine(eventDateRangeRefineForm.refine, {
+  message: eventDateRangeRefineForm.message,
+  path: [...eventDateRangeRefineForm.path],
+})
+
+export type EventFormValues = z.infer<typeof eventFormSchema>
+
+export const eventDetailsFormSchema = z
   .object({
-    locationId: z.string().min(1, 'validation:field.event.location'),
-    name: z.string().trim().min(1, 'validation:field.event.name'),
-    description: z.string().trim().min(1, 'validation:field.event.description'),
-    startsAt: z.string().trim().min(1, 'validation:field.event.startDate'),
-    endsAt: z.string().trim().min(1, 'validation:field.event.endDate'),
-    status: eventStatusSchema,
+    name: eventFieldSchemas.name,
+    description: eventFieldSchemas.description,
+    startsAt: eventFieldSchemas.startsAt,
+    endsAt: eventFieldSchemas.endsAt,
+    status: eventFieldSchemas.status,
   })
   .refine(eventDateRangeRefineForm.refine, {
     message: eventDateRangeRefineForm.message,
     path: [...eventDateRangeRefineForm.path],
   })
 
-export type EventFormValues = z.infer<typeof eventFormSchema>
+export type EventDetailsFormValues = z.infer<typeof eventDetailsFormSchema>
 
 export function parseEventFormToCreateInput(values: EventFormValues): CreateEventInput {
   return createEventSchema.parse(values)

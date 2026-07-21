@@ -4,7 +4,17 @@ import { useForm } from '@tanstack/react-form'
 import { Crosshair } from 'lucide-react'
 import type { LocationImageResponse } from '@afterdark/types'
 import { createLocationSchema, type CreateLocationInput } from '@afterdark/validators'
-import { Button, cn, fieldErrorMessage, Input, Label, Textarea, toast } from '@afterdark/ui'
+import {
+  Button,
+  cn,
+  fieldErrorMessage,
+  Input,
+  Label,
+  optionalFieldLabel,
+  requiredFieldLabel,
+  Textarea,
+  toast,
+} from '@afterdark/ui'
 import { ImagesLocationForm } from '~/modules/locations/components/images-location-form'
 import { LocationMap } from '~/modules/locations/components/location-map'
 import {
@@ -51,14 +61,6 @@ const fieldErrorMessageClassName = 'text-xs text-error'
 
 function sanitizeNonNegativeDigits(value: string): string {
   return value.replace(/\D/g, '')
-}
-
-function requiredFieldLabel(label: string): string {
-  return `${label} *`
-}
-
-function optionalFieldLabel(label: string, optionalText: string): string {
-  return `${label} (${optionalText})`
 }
 
 type LocationFormFieldProps = {

@@ -38,6 +38,25 @@ export function registeredLocationToFormValues(
   }
 }
 
+export function buildCreateLocationFormData(values: LocationFormValues): FormData {
+  const formData = new FormData()
+  formData.append('name', values.name)
+  formData.append('capacity', values.capacity)
+  formData.append('description', values.description)
+  formData.append('address', values.address)
+  formData.append('street_number', values.street_number)
+  formData.append('city', values.city)
+  formData.append('state', values.state)
+  formData.append('latitude', String(values.latitude))
+  formData.append('longitude', String(values.longitude))
+
+  for (const image of values.locationImg) {
+    formData.append('images', image)
+  }
+
+  return formData
+}
+
 export function snapshotLocationFormValues(values: LocationFormValues): string {
   return JSON.stringify({
     name: values.name,

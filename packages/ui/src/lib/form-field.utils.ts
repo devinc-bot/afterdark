@@ -7,3 +7,11 @@ export function fieldErrorMessage(errors: ReadonlyArray<unknown>): string | null
   }
   return null
 }
+
+export function requiredFieldLabel(label: string): string {
+  return `${label} *`
+}
+
+export function optionalFieldLabel(label: string, optionalText: string): string {
+  return `${label} (${optionalText})`
+}

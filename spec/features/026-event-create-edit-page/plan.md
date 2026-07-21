@@ -19,57 +19,57 @@
 
 ### Validators / upload
 
-| Archivo | Cambio |
-| ------- | ------ |
-| `packages/validators/src/upload.ts` | `LOCATION_IMAGE_MAX_COUNT = 4`; `EVENT_IMAGE_MAX_COUNT = 2` |
-| `packages/validators/src/event.ts` | Soporte parse multipart / keepImageIds si aplica (espejo location) |
-| `packages/validators/src/location.ts` | Reexport del nuevo tope (sin lógica extra) |
+| Archivo                               | Cambio                                                             |
+| ------------------------------------- | ------------------------------------------------------------------ |
+| `packages/validators/src/upload.ts`   | `LOCATION_IMAGE_MAX_COUNT = 4`; `EVENT_IMAGE_MAX_COUNT = 2`        |
+| `packages/validators/src/event.ts`    | Soporte parse multipart / keepImageIds si aplica (espejo location) |
+| `packages/validators/src/location.ts` | Reexport del nuevo tope (sin lógica extra)                         |
 
 ### Types
 
-| Archivo | Cambio |
-| ------- | ------ |
+| Archivo                           | Cambio                                                   |
+| --------------------------------- | -------------------------------------------------------- |
 | `packages/types/src/dto/event.ts` | `images: EventImageResponse[]` (o tipo asset compartido) |
 
 ### Database
 
-| Archivo | Cambio |
-| ------- | ------ |
-| `packages/db/src/schema/event-asset-lnk.ts` | Tabla `event_assets_lnk` |
-| `packages/db/src/schema/index.ts` | Export |
-| `packages/db/drizzle/` | Migración generada |
-| `packages/db/src/repositories/events/` | Queries imágenes / find by documentId con assets |
+| Archivo                                     | Cambio                                           |
+| ------------------------------------------- | ------------------------------------------------ |
+| `packages/db/src/schema/event-asset-lnk.ts` | Tabla `event_assets_lnk`                         |
+| `packages/db/src/schema/index.ts`           | Export                                           |
+| `packages/db/drizzle/`                      | Migración generada                               |
+| `packages/db/src/repositories/events/`      | Queries imágenes / find by documentId con assets |
 
 ### API
 
-| Archivo | Cambio |
-| ------- | ------ |
-| `apps/api/.../events/presentation/events.controller.ts` | `FilesInterceptor`; `GET :documentId`; create/update multipart |
-| `apps/api/.../events/application/*` | Create/Update con imágenes; GetEventByDocumentId |
-| `apps/api/.../events/application/services/event-images.service.ts` | Espejo `LocationImagesService` |
-| `packages/common/.../api-routes.ts` | `path.get(':documentId')` si no existe |
+| Archivo                                                            | Cambio                                                         |
+| ------------------------------------------------------------------ | -------------------------------------------------------------- |
+| `apps/api/.../events/presentation/events.controller.ts`            | `FilesInterceptor`; `GET :documentId`; create/update multipart |
+| `apps/api/.../events/application/*`                                | Create/Update con imágenes; GetEventByDocumentId               |
+| `apps/api/.../events/application/services/event-images.service.ts` | Espejo `LocationImagesService`                                 |
+| `packages/common/.../api-routes.ts`                                | `path.get(':documentId')` si no existe                         |
 
 ### Dashboard
 
-| Archivo | Cambio |
-| ------- | ------ |
-| `app/modules/common/constants/routes.ts` | `eventsNew`, `eventsEdit` |
-| `app/routes/_app/events.new.tsx` | Ruta create |
-| `app/routes/_app/events.$documentId.edit.tsx` | Ruta edit |
-| `app/modules/events/components/event-form-page.tsx` | Shell + unsaved dialog (patrón locations) |
-| `app/modules/events/components/event-wizard.tsx` | Estado steps + orquestación submit |
-| `app/modules/events/components/event-wizard-step-location.tsx` | Select + form ubicación simplificado |
-| `app/modules/events/components/event-wizard-step-details.tsx` | Campos evento sin location + imgs evento |
-| `app/modules/events/components/images-event-form.tsx` | Galería máx. 2 |
-| `app/modules/events/components/events-management-view.tsx` | Links en lugar de diálogos |
-| `dialog-create-event.tsx` / `dialog-edit-event.tsx` | Eliminar o dejar de usar |
-| `event-form.tsx` | Extraer/reusar campos para step 2 |
-| i18n `events` | Copy wizard, unsaved, 404, imágenes |
+| Archivo                                                        | Cambio                                    |
+| -------------------------------------------------------------- | ----------------------------------------- |
+| `app/modules/common/constants/routes.ts`                       | `eventsNew`, `eventsEdit`                 |
+| `app/routes/_app/events.new.tsx`                               | Ruta create                               |
+| `app/routes/_app/events.$documentId.edit.tsx`                  | Ruta edit                                 |
+| `app/modules/events/components/event-form-page.tsx`            | Shell + unsaved dialog (patrón locations) |
+| `app/modules/events/components/event-wizard.tsx`               | Estado steps + orquestación submit        |
+| `app/modules/events/components/event-wizard-step-location.tsx` | Select + form ubicación simplificado      |
+| `app/modules/events/components/event-wizard-step-details.tsx`  | Campos evento sin location + imgs evento  |
+| `app/modules/events/components/images-event-form.tsx`          | Galería máx. 2                            |
+| `app/modules/events/components/events-management-view.tsx`     | Links en lugar de diálogos                |
+| `dialog-create-event.tsx` / `dialog-edit-event.tsx`            | Eliminar o dejar de usar                  |
+| `event-form.tsx`                                               | Extraer/reusar campos para step 2         |
+| i18n `events`                                                  | Copy wizard, unsaved, 404, imágenes       |
 
 ### Locations (colateral)
 
-| Archivo | Cambio |
-| ------- | ------ |
+| Archivo                                    | Cambio                                       |
+| ------------------------------------------ | -------------------------------------------- |
 | UI/API que lean `LOCATION_IMAGE_MAX_COUNT` | Pasan a tope 4 automáticamente vía constante |
 
 ## Diseño técnico
@@ -96,24 +96,24 @@ Reutilizar componentes de locations para el form simplificado (capacity, address
 
 ## Riesgos / edge cases
 
-| Caso | Comportamiento esperado |
-| ---- | ----------------------- |
+| Caso                                   | Comportamiento esperado                                                                     |
+| -------------------------------------- | ------------------------------------------------------------------------------------------- |
 | Create location OK, create event falla | Toast error; location ya creada (aceptable v1; documentado). Opcional: no compensar delete. |
-| Sin ubicaciones | Solo flujo “nueva”; Siguiente exige form válido |
-| Edit 404 | Mensaje + link a `/events` |
-| >2 imgs evento / >4 location | Rechazo cliente + 400 API |
-| Dirty cancel | Sin POST |
+| Sin ubicaciones                        | Solo flujo “nueva”; Siguiente exige form válido                                             |
+| Edit 404                               | Mensaje + link a `/events`                                                                  |
+| >2 imgs evento / >4 location           | Rechazo cliente + 400 API                                                                   |
+| Dirty cancel                           | Sin POST                                                                                    |
 
 ## Verificación manual
 
-| Paso | Resultado esperado |
-| ---- | ------------------ |
-| 1. CTA crear en `/events` | Navega a `/events/new` (sin modal) |
-| 2. Step 1 sin selección | Siguiente disabled |
-| 3. Select location → Siguiente → guardar sin imgs | Evento creado; vuelve a listado |
-| 4. Ubicación nueva + 4 imgs + evento + 2 imgs | Ambos persistidos; edit muestra datos |
-| 5. Intentar 3 imgs evento / 5 location | Bloqueo UI |
-| 6. Edit: ubicación preseleccionada; cambiar y guardar | Update OK |
-| 7. Dirty + Cancelar | Dialog unsaved; salir no persiste |
-| 8. `/locations` create con 5 imgs | Rechazado (tope 4) |
-| 9. `pnpm type-check` + lint | Verde |
+| Paso                                                  | Resultado esperado                    |
+| ----------------------------------------------------- | ------------------------------------- |
+| 1. CTA crear en `/events`                             | Navega a `/events/new` (sin modal)    |
+| 2. Step 1 sin selección                               | Siguiente disabled                    |
+| 3. Select location → Siguiente → guardar sin imgs     | Evento creado; vuelve a listado       |
+| 4. Ubicación nueva + 4 imgs + evento + 2 imgs         | Ambos persistidos; edit muestra datos |
+| 5. Intentar 3 imgs evento / 5 location                | Bloqueo UI                            |
+| 6. Edit: ubicación preseleccionada; cambiar y guardar | Update OK                             |
+| 7. Dirty + Cancelar                                   | Dialog unsaved; salir no persiste     |
+| 8. `/locations` create con 5 imgs                     | Rechazado (tope 4)                    |
+| 9. `pnpm type-check` + lint                           | Verde                                 |
