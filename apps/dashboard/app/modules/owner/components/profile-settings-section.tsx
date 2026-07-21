@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import { Avatar, AvatarFallback, AvatarImage, Button, Field, Input, Label } from '@afterdark/ui'
-import { SettingsSection } from '~/modules/settings/components/settings-section'
+import { FormSection } from '~/modules/common/components/form-section'
 import { useSettingsForm } from '~/modules/owner/hooks/settings-form-context'
 
 export function ProfileSettingsSection() {
@@ -13,28 +13,34 @@ export function ProfileSettingsSection() {
     t('owner.profile.avatarFallback')
 
   return (
-    <SettingsSection title={t('owner.sections.profile')}>
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-[auto_1fr] sm:gap-8">
-        <div className="flex flex-col items-start gap-3">
-          <Avatar className="size-16 ring-1 ring-hairline">
+    <>
+      <FormSection
+        id="owner-profile"
+        title={t('owner.sections.profile')}
+        description={t('owner.sections.profileDescription')}
+      >
+        <div className="flex items-center gap-4">
+          <Avatar className="size-16 shrink-0 ring-1 ring-hairline">
             <AvatarImage src={avatarSrc ?? undefined} alt={avatarLabel} className="object-cover" />
             <AvatarFallback className="bg-surface-container-low font-heading text-lg font-medium text-ink-muted">
               {avatarLabel.charAt(0).toUpperCase()}
             </AvatarFallback>
           </Avatar>
-          <Button
-            type="button"
-            variant="ghost"
-            size="sm"
-            className="h-10 min-h-11 px-2 text-ink-muted"
-            disabled
-            aria-describedby="settings-avatar-hint"
-          >
-            {t('owner.profile.changePhoto')}
-          </Button>
-          <p id="settings-avatar-hint" className="max-w-44 text-sm text-ink-muted">
-            {t('owner.profile.photoHint')}
-          </p>
+          <div className="flex flex-col items-start gap-1">
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              className="h-10 min-h-11 px-2 text-ink-muted"
+              disabled
+              aria-describedby="settings-avatar-hint"
+            >
+              {t('owner.profile.changePhoto')}
+            </Button>
+            <p id="settings-avatar-hint" className="text-sm text-ink-muted">
+              {t('owner.profile.photoHint')}
+            </p>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-6">
@@ -42,7 +48,7 @@ export function ProfileSettingsSection() {
             label={t('owner.profile.name')}
             htmlFor="settings-name"
             error={errors.profile?.name ?? null}
-            className="col-span-3"
+            className="sm:col-span-3"
           >
             <Input
               id="settings-name"
@@ -60,7 +66,7 @@ export function ProfileSettingsSection() {
             label={t('owner.profile.lastName')}
             htmlFor="settings-last-name"
             error={errors.profile?.lastName ?? null}
-            className="col-span-3"
+            className="sm:col-span-3"
           >
             <Input
               id="settings-last-name"
@@ -78,7 +84,7 @@ export function ProfileSettingsSection() {
             label={t('owner.profile.phone')}
             htmlFor="settings-phone"
             error={errors.profile?.phone ?? null}
-            className="col-span-4"
+            className="sm:col-span-4"
           >
             <Input
               id="settings-phone"
@@ -97,7 +103,7 @@ export function ProfileSettingsSection() {
             label={t('owner.profile.birthday')}
             htmlFor="settings-birthday"
             error={errors.profile?.birthday ?? null}
-            className="col-span-2"
+            className="sm:col-span-2"
           >
             <Input
               id="settings-birthday"
@@ -114,7 +120,7 @@ export function ProfileSettingsSection() {
             label={t('owner.profile.nationalId')}
             htmlFor="settings-national-id"
             error={errors.profile?.nationalId ?? null}
-            className="col-span-3"
+            className="sm:col-span-3"
           >
             <Input
               id="settings-national-id"
@@ -133,7 +139,7 @@ export function ProfileSettingsSection() {
             label={t('owner.profile.taxId')}
             htmlFor="settings-tax-id"
             error={errors.profile?.taxId ?? null}
-            className="col-span-3"
+            className="sm:col-span-3"
           >
             <Input
               id="settings-tax-id"
@@ -147,17 +153,20 @@ export function ProfileSettingsSection() {
               aria-invalid={errors.profile?.taxId ? true : undefined}
             />
           </Field>
+        </div>
+      </FormSection>
 
-          <div className="col-span-6 border-t border-hairline/60 mt-2 mb-2" />
-          <Label variant="field" className="col-span-6">
-            {t('owner.profile.addressSection')}
-          </Label>
-
+      <FormSection
+        id="owner-address"
+        title={t('owner.sections.address')}
+        description={t('owner.sections.addressDescription')}
+      >
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-6">
           <Field
             label={t('owner.profile.address')}
             htmlFor="settings-address"
             error={errors.profile?.address ?? null}
-            className="col-span-4"
+            className="sm:col-span-4"
           >
             <Input
               id="settings-address"
@@ -174,7 +183,7 @@ export function ProfileSettingsSection() {
           <Field
             label={t('owner.profile.streetNumber')}
             htmlFor="settings-street-number"
-            className="col-span-2"
+            className="sm:col-span-2"
           >
             <Input
               id="settings-street-number"
@@ -188,7 +197,11 @@ export function ProfileSettingsSection() {
             />
           </Field>
 
-          <Field label={t('owner.profile.state')} htmlFor="settings-state" className="col-span-3">
+          <Field
+            label={t('owner.profile.state')}
+            htmlFor="settings-state"
+            className="sm:col-span-3"
+          >
             <Input
               id="settings-state"
               name="state"
@@ -200,7 +213,7 @@ export function ProfileSettingsSection() {
             />
           </Field>
 
-          <Field label={t('owner.profile.city')} htmlFor="settings-city" className="col-span-3">
+          <Field label={t('owner.profile.city')} htmlFor="settings-city" className="sm:col-span-3">
             <Input
               id="settings-city"
               name="city"
@@ -211,39 +224,44 @@ export function ProfileSettingsSection() {
               onChange={(event) => setNestedProfileField('address', 'city', event.target.value)}
             />
           </Field>
-
-          <div className="col-span-6 border-t border-hairline/60 mt-2 mb-2" />
-          <Field label={t('owner.profile.email')} htmlFor="settings-email" className="col-span-4">
-            <Input
-              id="settings-email"
-              name="email"
-              type="email"
-              autoComplete="email"
-              readOnly
-              value={user.email}
-              aria-readonly="true"
-            />
-          </Field>
-          <p className="col-span-6 -mt-2 text-sm text-ink-muted">{t('owner.profile.emailHint')}</p>
-
-          <div className="col-span-6 flex flex-col gap-2 border-t border-hairline/60 pt-4">
-            <Label variant="field">{t('owner.profile.password')}</Label>
-            <Button
-              type="button"
-              variant="ghost"
-              size="sm"
-              className="h-10 min-h-11 w-fit px-2 text-ink-muted"
-              disabled
-              aria-describedby="settings-password-hint"
-            >
-              {t('owner.profile.changePassword')}
-            </Button>
-            <p id="settings-password-hint" className="text-sm text-ink-muted">
-              {t('owner.profile.passwordHint')}
-            </p>
-          </div>
         </div>
-      </div>
-    </SettingsSection>
+      </FormSection>
+
+      <FormSection
+        id="owner-account"
+        title={t('owner.sections.account')}
+        description={t('owner.sections.accountDescription')}
+      >
+        <Field label={t('owner.profile.email')} htmlFor="settings-email">
+          <Input
+            id="settings-email"
+            name="email"
+            type="email"
+            autoComplete="email"
+            readOnly
+            value={user.email}
+            aria-readonly="true"
+          />
+          <p className="mt-2 text-sm text-ink-muted">{t('owner.profile.emailHint')}</p>
+        </Field>
+
+        <div className="flex flex-col items-start gap-1">
+          <Label variant="field">{t('owner.profile.password')}</Label>
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            className="h-10 min-h-11 px-2 text-ink-muted"
+            disabled
+            aria-describedby="settings-password-hint"
+          >
+            {t('owner.profile.changePassword')}
+          </Button>
+          <p id="settings-password-hint" className="text-sm text-ink-muted">
+            {t('owner.profile.passwordHint')}
+          </p>
+        </div>
+      </FormSection>
+    </>
   )
 }

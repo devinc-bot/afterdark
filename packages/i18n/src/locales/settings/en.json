@@ -32,7 +32,12 @@
       "description": "Manage your profile."
     },
     "sections": {
-      "profile": "Profile"
+      "profile": "Profile",
+      "profileDescription": "Your personal and contact information.",
+      "address": "Address",
+      "addressDescription": "Where you live. Optional.",
+      "account": "Account",
+      "accountDescription": "How you sign in to Afterdark."
     },
     "profile": {
       "changePhoto": "Change photo",
@@ -62,7 +67,10 @@
       "description": "Manage your profile."
     },
     "sections": {
-      "profile": "Profile"
+      "profile": "Profile",
+      "profileDescription": "Your personal and contact information.",
+      "account": "Account",
+      "accountDescription": "How you sign in to Afterdark."
     },
     "profile": {
       "name": "First name",
