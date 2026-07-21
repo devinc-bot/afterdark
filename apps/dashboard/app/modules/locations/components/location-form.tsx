@@ -15,6 +15,7 @@ import {
   Textarea,
   toast,
 } from '@afterdark/ui'
+import { FormSection } from '~/modules/common/components/form-section'
 import { ImagesLocationForm } from '~/modules/locations/components/images-location-form'
 import { LocationMap } from '~/modules/locations/components/location-map'
 import {
@@ -112,30 +113,6 @@ function LocationFormField({
         </p>
       ) : null}
     </div>
-  )
-}
-
-function FormSection({
-  title,
-  description,
-  children,
-}: {
-  title: string
-  description?: string
-  children: React.ReactNode
-}) {
-  const headingId = title.toLowerCase().replace(/\s+/g, '-')
-
-  return (
-    <section className="flex flex-col gap-4" aria-labelledby={headingId}>
-      <div className="flex flex-col gap-1 border-b border-hairline pb-3">
-        <h2 id={headingId} className="font-heading text-sm font-semibold text-ink">
-          {title}
-        </h2>
-        {description ? <p className="text-sm text-ink-muted">{description}</p> : null}
-      </div>
-      {children}
-    </section>
   )
 }
 
@@ -286,243 +263,244 @@ export function LocationForm({
         )}
       </form.Subscribe>
 
-      <p className="mb-8 text-xs text-ink-muted">{t('formPage.requiredFieldsHint')}</p>
+      <div className="flex flex-col gap-12">
+        <FormSection
+          id="location-general"
+          title={t('sections.generalTitle')}
+          description={t('sections.generalDescription')}
+        >
+          <p className="text-xs text-ink-muted">{t('formPage.requiredFieldsHint')}</p>
 
-      <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:items-start">
-        <div className="flex flex-col gap-8">
-          <FormSection
-            title={t('sections.generalTitle')}
-            description={t('sections.generalDescription')}
+          <form.Field name="name" validators={{ onSubmit: createLocationSchema.shape.name }}>
+            {(field) => (
+              <LocationFormField
+                id={field.name}
+                label={requiredFieldLabel(t('form.fields.name'))}
+                placeholder={t('form.fields.namePlaceholder')}
+                value={field.state.value}
+                error={fieldErrorMessage(field.state.meta.errors)}
+                onBlur={field.handleBlur}
+                onChange={field.handleChange}
+              />
+            )}
+          </form.Field>
+
+          <form.Field
+            name="capacity"
+            validators={{ onSubmit: createLocationSchema.shape.capacity }}
           >
-            <form.Field name="name" validators={{ onSubmit: createLocationSchema.shape.name }}>
-              {(field) => (
-                <LocationFormField
-                  id={field.name}
-                  label={requiredFieldLabel(t('form.fields.name'))}
-                  placeholder={t('form.fields.namePlaceholder')}
-                  value={field.state.value}
-                  error={fieldErrorMessage(field.state.meta.errors)}
-                  onBlur={field.handleBlur}
-                  onChange={field.handleChange}
-                />
-              )}
-            </form.Field>
+            {(field) => (
+              <LocationFormField
+                id={field.name}
+                label={requiredFieldLabel(t('form.fields.capacity'))}
+                placeholder={t('form.fields.capacityPlaceholder')}
+                inputMode="numeric"
+                sanitize={sanitizeNonNegativeDigits}
+                value={field.state.value}
+                error={fieldErrorMessage(field.state.meta.errors)}
+                onBlur={field.handleBlur}
+                onChange={field.handleChange}
+              />
+            )}
+          </form.Field>
 
+          <form.Field
+            name="description"
+            validators={{ onSubmit: createLocationSchema.shape.description }}
+          >
+            {(field) => {
+              const error = fieldErrorMessage(field.state.meta.errors)
+
+              return (
+                <div className="flex flex-col gap-2">
+                  <Label htmlFor={field.name} className={fieldLabelClassName}>
+                    {requiredFieldLabel(t('form.fields.additionalInfo'))}
+                  </Label>
+                  <Textarea
+                    id={field.name}
+                    name={field.name}
+                    value={field.state.value}
+                    placeholder={t('form.fields.additionalInfoPlaceholder')}
+                    onBlur={field.handleBlur}
+                    onChange={(event) => field.handleChange(event.target.value)}
+                    error={error ?? undefined}
+                    className="text-sm"
+                  />
+                </div>
+              )
+            }}
+          </form.Field>
+        </FormSection>
+
+        <FormSection
+          id="location-address"
+          title={t('sections.locationTitle')}
+          description={t('sections.locationDescription')}
+        >
+          <form.Field name="city" validators={{ onSubmit: createLocationSchema.shape.city }}>
+            {(field) => {
+              const error = fieldErrorMessage(field.state.meta.errors) ?? ipLocateError
+
+              return (
+                <div className="flex flex-col gap-2">
+                  <Label htmlFor={field.name} className={fieldLabelClassName}>
+                    {requiredFieldLabel(t('form.fields.city'))}
+                  </Label>
+                  <div className="flex items-center gap-2">
+                    <Input
+                      id={field.name}
+                      name={field.name}
+                      type="text"
+                      autoComplete="off"
+                      value={field.state.value}
+                      placeholder={t('form.fields.cityPlaceholder')}
+                      onBlur={field.handleBlur}
+                      onChange={(event) => {
+                        setIpLocateError(null)
+                        field.handleChange(event.target.value)
+                      }}
+                      aria-invalid={error ? true : undefined}
+                      aria-describedby={error ? `${field.name}-error` : undefined}
+                      className="min-w-0 flex-1"
+                    />
+                    <Button
+                      type="button"
+                      size="icon"
+                      aria-label={t('map.ipLocate')}
+                      title={t('map.ipLocate')}
+                      disabled={ipLocating}
+                      onClick={() => {
+                        void handleIpLocate()
+                      }}
+                    >
+                      <Crosshair
+                        className={`size-4 ${ipLocating ? 'animate-pulse' : ''}`}
+                        aria-hidden
+                      />
+                    </Button>
+                  </div>
+                  {ipLocating ? (
+                    <p className="text-xs text-ink-muted">{t('map.ipLocateLoading')}</p>
+                  ) : null}
+                  {error && !ipLocating ? (
+                    <p
+                      id={`${field.name}-error`}
+                      role="alert"
+                      className={fieldErrorMessageClassName}
+                    >
+                      {error}
+                    </p>
+                  ) : null}
+                </div>
+              )
+            }}
+          </form.Field>
+
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
             <form.Field
-              name="capacity"
-              validators={{ onSubmit: createLocationSchema.shape.capacity }}
+              name="address"
+              validators={{ onSubmit: createLocationSchema.shape.address }}
             >
               {(field) => (
                 <LocationFormField
                   id={field.name}
-                  label={requiredFieldLabel(t('form.fields.capacity'))}
-                  placeholder={t('form.fields.capacityPlaceholder')}
+                  label={requiredFieldLabel(t('form.fields.address'))}
+                  placeholder={t('form.fields.addressPlaceholder')}
+                  value={field.state.value}
+                  error={fieldErrorMessage(field.state.meta.errors)}
+                  onBlur={field.handleBlur}
+                  onChange={field.handleChange}
+                  className="col-span-2"
+                />
+              )}
+            </form.Field>
+            <form.Field
+              name="street_number"
+              validators={{ onSubmit: createLocationSchema.shape.street_number }}
+            >
+              {(field) => (
+                <LocationFormField
+                  id={field.name}
+                  label={requiredFieldLabel(t('form.fields.streetNumber'))}
+                  placeholder={t('form.fields.streetNumberPlaceholder')}
                   inputMode="numeric"
                   sanitize={sanitizeNonNegativeDigits}
                   value={field.state.value}
                   error={fieldErrorMessage(field.state.meta.errors)}
                   onBlur={field.handleBlur}
                   onChange={field.handleChange}
+                  className="col-span-1"
                 />
               )}
             </form.Field>
+          </div>
 
-            <form.Field
-              name="description"
-              validators={{ onSubmit: createLocationSchema.shape.description }}
-            >
-              {(field) => {
-                const error = fieldErrorMessage(field.state.meta.errors)
+          <form.Field name="state" validators={{ onSubmit: createLocationSchema.shape.state }}>
+            {(field) => (
+              <LocationFormField
+                id={field.name}
+                label={requiredFieldLabel(t('form.fields.state'))}
+                placeholder={t('form.fields.statePlaceholder')}
+                value={field.state.value}
+                error={fieldErrorMessage(field.state.meta.errors)}
+                onBlur={field.handleBlur}
+                onChange={field.handleChange}
+              />
+            )}
+          </form.Field>
 
-                return (
-                  <div className="flex flex-col gap-2">
-                    <Label htmlFor={field.name} className={fieldLabelClassName}>
-                      {requiredFieldLabel(t('form.fields.additionalInfo'))}
-                    </Label>
-                    <Textarea
-                      id={field.name}
-                      name={field.name}
-                      value={field.state.value}
-                      placeholder={t('form.fields.additionalInfoPlaceholder')}
-                      onBlur={field.handleBlur}
-                      onChange={(event) => field.handleChange(event.target.value)}
-                      error={error ?? undefined}
-                      className="text-sm"
-                    />
-                  </div>
-                )
-              }}
-            </form.Field>
-          </FormSection>
-
-          <FormSection
-            title={t('sections.locationTitle')}
-            description={t('sections.locationDescription')}
+          <form.Subscribe
+            selector={(state) => ({
+              latitude: state.values.latitude,
+              longitude: state.values.longitude,
+            })}
           >
-            <form.Field name="city" validators={{ onSubmit: createLocationSchema.shape.city }}>
-              {(field) => {
-                const error = fieldErrorMessage(field.state.meta.errors) ?? ipLocateError
-
-                return (
-                  <div className="flex flex-col gap-2">
-                    <Label htmlFor={field.name} className={fieldLabelClassName}>
-                      {requiredFieldLabel(t('form.fields.city'))}
-                    </Label>
-                    <div className="flex items-center gap-2">
-                      <Input
-                        id={field.name}
-                        name={field.name}
-                        type="text"
-                        autoComplete="off"
-                        value={field.state.value}
-                        placeholder={t('form.fields.cityPlaceholder')}
-                        onBlur={field.handleBlur}
-                        onChange={(event) => {
-                          setIpLocateError(null)
-                          field.handleChange(event.target.value)
-                        }}
-                        aria-invalid={error ? true : undefined}
-                        aria-describedby={error ? `${field.name}-error` : undefined}
-                        className="min-w-0 flex-1"
-                      />
-                      <Button
-                        type="button"
-                        size="icon"
-                        aria-label={t('map.ipLocate')}
-                        title={t('map.ipLocate')}
-                        disabled={ipLocating}
-                        onClick={() => {
-                          void handleIpLocate()
-                        }}
-                      >
-                        <Crosshair
-                          className={`size-4 ${ipLocating ? 'animate-pulse' : ''}`}
-                          aria-hidden
-                        />
-                      </Button>
-                    </div>
-                    {ipLocating ? (
-                      <p className="text-xs text-ink-muted">{t('map.ipLocateLoading')}</p>
-                    ) : null}
-                    {error && !ipLocating ? (
-                      <p
-                        id={`${field.name}-error`}
-                        role="alert"
-                        className={fieldErrorMessageClassName}
-                      >
-                        {error}
-                      </p>
-                    ) : null}
-                  </div>
-                )
-              }}
-            </form.Field>
-
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+            {(location) => (
               <form.Field
-                name="address"
-                validators={{ onSubmit: createLocationSchema.shape.address }}
+                name="latitude"
+                validators={{
+                  onSubmit: ({ value }) =>
+                    value === null ? t('map.coordinatesRequired') : undefined,
+                }}
               >
-                {(field) => (
-                  <LocationFormField
-                    id={field.name}
-                    label={requiredFieldLabel(t('form.fields.address'))}
-                    placeholder={t('form.fields.addressPlaceholder')}
-                    value={field.state.value}
-                    error={fieldErrorMessage(field.state.meta.errors)}
-                    onBlur={field.handleBlur}
-                    onChange={field.handleChange}
-                    className="col-span-2"
-                  />
+                {(latField) => (
+                  <form.Field
+                    name="longitude"
+                    validators={{
+                      onSubmit: ({ value }) =>
+                        value === null ? t('map.coordinatesRequired') : undefined,
+                    }}
+                  >
+                    {(lngField) => {
+                      const coordsError =
+                        fieldErrorMessage(latField.state.meta.errors) ??
+                        fieldErrorMessage(lngField.state.meta.errors)
+
+                      return (
+                        <div className="flex flex-col gap-2">
+                          <LocationMap
+                            latitude={location.latitude}
+                            longitude={location.longitude}
+                            viewToken={mapViewToken}
+                            onCoordinatesChange={setCoordinatesFromMap}
+                          />
+                          {coordsError ? (
+                            <p role="alert" className={fieldErrorMessageClassName}>
+                              {coordsError}
+                            </p>
+                          ) : null}
+                        </div>
+                      )
+                    }}
+                  </form.Field>
                 )}
               </form.Field>
-              <form.Field
-                name="street_number"
-                validators={{ onSubmit: createLocationSchema.shape.street_number }}
-              >
-                {(field) => (
-                  <LocationFormField
-                    id={field.name}
-                    label={requiredFieldLabel(t('form.fields.streetNumber'))}
-                    placeholder={t('form.fields.streetNumberPlaceholder')}
-                    inputMode="numeric"
-                    sanitize={sanitizeNonNegativeDigits}
-                    value={field.state.value}
-                    error={fieldErrorMessage(field.state.meta.errors)}
-                    onBlur={field.handleBlur}
-                    onChange={field.handleChange}
-                    className="col-span-1"
-                  />
-                )}
-              </form.Field>
-            </div>
-
-            <form.Field name="state" validators={{ onSubmit: createLocationSchema.shape.state }}>
-              {(field) => (
-                <LocationFormField
-                  id={field.name}
-                  label={requiredFieldLabel(t('form.fields.state'))}
-                  placeholder={t('form.fields.statePlaceholder')}
-                  value={field.state.value}
-                  error={fieldErrorMessage(field.state.meta.errors)}
-                  onBlur={field.handleBlur}
-                  onChange={field.handleChange}
-                />
-              )}
-            </form.Field>
-
-            <form.Subscribe
-              selector={(state) => ({
-                latitude: state.values.latitude,
-                longitude: state.values.longitude,
-              })}
-            >
-              {(location) => (
-                <form.Field
-                  name="latitude"
-                  validators={{
-                    onSubmit: ({ value }) =>
-                      value === null ? t('map.coordinatesRequired') : undefined,
-                  }}
-                >
-                  {(latField) => (
-                    <form.Field
-                      name="longitude"
-                      validators={{
-                        onSubmit: ({ value }) =>
-                          value === null ? t('map.coordinatesRequired') : undefined,
-                      }}
-                    >
-                      {(lngField) => {
-                        const coordsError =
-                          fieldErrorMessage(latField.state.meta.errors) ??
-                          fieldErrorMessage(lngField.state.meta.errors)
-
-                        return (
-                          <div className="flex flex-col gap-2">
-                            <LocationMap
-                              latitude={location.latitude}
-                              longitude={location.longitude}
-                              viewToken={mapViewToken}
-                              onCoordinatesChange={setCoordinatesFromMap}
-                            />
-                            {coordsError ? (
-                              <p role="alert" className={fieldErrorMessageClassName}>
-                                {coordsError}
-                              </p>
-                            ) : null}
-                          </div>
-                        )
-                      }}
-                    </form.Field>
-                  )}
-                </form.Field>
-              )}
-            </form.Subscribe>
-          </FormSection>
-        </div>
+            )}
+          </form.Subscribe>
+        </FormSection>
 
         <FormSection
+          id="location-images"
           title={optionalFieldLabel(t('sections.imagesTitle'), tCommon('optional'))}
           description={t('sections.imagesDescription')}
         >

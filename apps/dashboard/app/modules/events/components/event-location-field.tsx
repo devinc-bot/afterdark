@@ -4,7 +4,7 @@ import { Link } from '@tanstack/react-router'
 import type { LocationResponse } from '@afterdark/types'
 import { Button, requiredFieldLabel, SelectField, SelectItem } from '@afterdark/ui'
 import { DASHBOARD_ROUTES } from '~/modules/common/constants/routes'
-import { EventFormSection } from '~/modules/events/components/event-form-section'
+import { FormSection } from '~/modules/common/components/form-section'
 
 type EventLocationFieldProps = {
   locations: LocationResponse[]
@@ -27,7 +27,7 @@ export function EventLocationField({
   const isEmpty = !isLoading && !isError && locations.length === 0
 
   return (
-    <EventFormSection
+    <FormSection
       id="event-location-field"
       title={t('form.locationSectionTitle')}
       description={t('form.locationSectionDescription')}
@@ -63,6 +63,6 @@ export function EventLocationField({
           ) : null}
         </div>
       )}
-    </EventFormSection>
+    </FormSection>
   )
 }

@@ -14,7 +14,7 @@ import {
   SelectItem,
   Textarea,
 } from '@afterdark/ui'
-import { EventFormSection } from '~/modules/events/components/event-form-section'
+import { FormSection } from '~/modules/common/components/form-section'
 import { ImagesEventForm } from '~/modules/events/components/images-event-form'
 
 export type EventDetailsValues = EventDetailsFormValues & {
@@ -108,7 +108,7 @@ export function EventDetailsForm({ ref, defaultValues, onDirtyChange }: EventDet
           event.stopPropagation()
         }}
       >
-        <EventFormSection
+        <FormSection
           id="event-details-form"
           title={t('form.detailsSectionTitle')}
           description={t('form.detailsSectionDescription')}
@@ -258,9 +258,9 @@ export function EventDetailsForm({ ref, defaultValues, onDirtyChange }: EventDet
               )
             }}
           </form.Field>
-        </EventFormSection>
+        </FormSection>
 
-        <EventFormSection
+        <FormSection
           id="event-images-form"
           title={t('sections.imagesTitle')}
           description={t('sections.imagesDescription')}
@@ -279,7 +279,7 @@ export function EventDetailsForm({ ref, defaultValues, onDirtyChange }: EventDet
               </form.Field>
             )}
           </form.Field>
-        </EventFormSection>
+        </FormSection>
       </form>
     </>
   )

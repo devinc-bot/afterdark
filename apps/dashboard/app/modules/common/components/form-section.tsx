@@ -1,11 +1,11 @@
-type EventFormSectionProps = {
+type FormSectionProps = {
   id: string
   title: string
-  description: string
+  description?: string
   children: React.ReactNode
 }
 
-export function EventFormSection({ id, title, description, children }: EventFormSectionProps) {
+export function FormSection({ id, title, description, children }: FormSectionProps) {
   const headingId = `${id}-title`
 
   return (
@@ -17,7 +17,7 @@ export function EventFormSection({ id, title, description, children }: EventForm
         <h2 id={headingId} className="font-heading text-sm font-semibold text-ink">
           {title}
         </h2>
-        <p className="text-pretty text-sm text-ink-muted">{description}</p>
+        {description ? <p className="text-pretty text-sm text-ink-muted">{description}</p> : null}
       </div>
       <div className="flex min-w-0 flex-col gap-5">{children}</div>
     </section>
