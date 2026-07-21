@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next'
 import { LocationRemoveDialog } from '~/modules/locations/components/dialog-remove'
 import {
   RegisteredLocationRecords,
+  RegisteredLocationRecordsSkeleton,
   type RegisteredLocation,
 } from '~/modules/locations/components/registered-location-records'
 import { useLocations } from '~/modules/locations/queries/use-locations-queries'
@@ -33,7 +34,7 @@ function locationResponseToRegisteredLocation(location: LocationResponse): Regis
 export function RegisteredLocations() {
   const { t } = useTranslation('locations')
   const navigate = useNavigate()
-  const { data, isLoading, isError, error } = useLocations()
+  const { data, isLoading, isError, error, refetch } = useLocations()
   const deleteLocationMutation = useDeleteLocation()
   const locations = data?.map(locationResponseToRegisteredLocation) ?? []
 
@@ -99,26 +100,34 @@ export function RegisteredLocations() {
         </header>
 
         {isLoading ? (
-          <div className="rounded-xl border border-hairline bg-surface-container-low px-6 py-12 text-center">
-            <p className="text-sm text-ink-muted">{t('registry.loading')}</p>
-          </div>
+          <RegisteredLocationRecordsSkeleton />
         ) : isError ? (
-          <div className="rounded-xl border border-dashed border-error/40 bg-error-container/20 px-6 py-12 text-center">
-            <p className="font-heading text-base font-semibold text-ink">
-              {t('registry.loadErrorTitle')}
-            </p>
-            <p className="mx-auto mt-2 max-w-sm text-sm text-ink-muted">
-              {error instanceof Error ? error.message : t('registry.loadErrorFallback')}
-            </p>
+          <div className="flex flex-col items-center gap-5 rounded-xl border border-dashed border-error/40 bg-error-container/20 px-6 py-12 text-center">
+            <div className="flex flex-col gap-2">
+              <p className="font-heading text-base font-semibold text-ink">
+                {t('registry.loadErrorTitle')}
+              </p>
+              <p className="mx-auto max-w-sm text-sm text-ink-muted">
+                {error instanceof Error ? error.message : t('registry.loadErrorFallback')}
+              </p>
+            </div>
+            <Button type="button" variant="outline" onClick={() => void refetch()}>
+              {t('registry.retry')}
+            </Button>
           </div>
         ) : locations.length === 0 ? (
-          <div className="rounded-xl border border-dashed border-hairline bg-surface-container-low px-6 py-12 text-center">
-            <p className="font-heading text-base font-semibold text-ink">
-              {t('registry.emptyTitle')}
-            </p>
-            <p className="mx-auto mt-2 max-w-sm text-sm text-ink-muted">
-              {t('registry.emptyDescription')}
-            </p>
+          <div className="flex flex-col items-center gap-5 rounded-xl border border-dashed border-hairline bg-surface-container-low px-6 py-12 text-center">
+            <div className="flex flex-col gap-2">
+              <p className="font-heading text-base font-semibold text-ink">
+                {t('registry.emptyTitle')}
+              </p>
+              <p className="mx-auto max-w-sm text-sm text-ink-muted">
+                {t('registry.emptyDescription')}
+              </p>
+            </div>
+            <Button asChild type="button" iconLeft={<Plus aria-hidden="true" />}>
+              <Link to={DASHBOARD_ROUTES.locationsNew()}>{t('registry.addLocation')}</Link>
+            </Button>
           </div>
         ) : (
           <RegisteredLocationRecords
