@@ -117,11 +117,11 @@
     "explore": "Explore",
     "navAria": "Footer links",
     "madeFor": "Made so you can enjoy an unforgettable night.",
-    "rights": "© {year} afterdark",
+    "rights": "© {year} {appName}",
     "social": {
       "title": "Follow us",
-      "instagram": "afterdark on Instagram",
-      "facebook": "afterdark on Facebook"
+      "instagram": "{appName} on Instagram",
+      "facebook": "{appName} on Facebook"
     }
   }
 }

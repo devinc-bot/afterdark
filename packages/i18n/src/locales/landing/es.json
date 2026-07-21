@@ -117,11 +117,11 @@
     "explore": "Explorar",
     "navAria": "Enlaces del pie de página",
     "madeFor": "Hecha para que disfrutes de un evento inolvidable.",
-    "rights": "© {year} afterdark",
+    "rights": "© {year} {appName}",
     "social": {
       "title": "Seguinos",
-      "instagram": "Instagram de afterdark",
-      "facebook": "Facebook de afterdark"
+      "instagram": "Instagram de {appName}",
+      "facebook": "Facebook de {appName}"
     }
   }
 }

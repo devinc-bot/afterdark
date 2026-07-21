@@ -2,7 +2,7 @@ import { count, desc, eq, sql } from 'drizzle-orm'
 import { PAYMENT_STATUS } from '@afterdark/types/enums'
 import type { ListTicketsByOwnerParams, PaginatedTicketsResult } from '@afterdark/types'
 import { db } from '../../client.ts'
-import { clubs } from '../../schema/club.ts'
+import { locations } from '../../schema/location.ts'
 import { events } from '../../schema/event.ts'
 import { owners } from '../../schema/owner.ts'
 import { tickets } from '../../schema/ticket.ts'
@@ -35,14 +35,14 @@ export async function findTicketsPaginatedByOwner(
       .select({
         ticket: tickets,
         event: events,
-        club: clubs,
+        location: locations,
         totalSold: totalSoldSql,
         revenue: revenueSql,
       })
       .from(tickets)
       .innerJoin(events, eq(events.id, tickets.eventId))
-      .innerJoin(clubs, eq(clubs.id, events.clubId))
-      .innerJoin(owners, eq(owners.id, clubs.ownerId))
+      .innerJoin(locations, eq(locations.id, events.locationId))
+      .innerJoin(owners, eq(owners.id, locations.ownerId))
       .where(where)
       .orderBy(desc(tickets.createdAt))
       .limit(limit)
@@ -51,8 +51,8 @@ export async function findTicketsPaginatedByOwner(
       .select({ total: count() })
       .from(tickets)
       .innerJoin(events, eq(events.id, tickets.eventId))
-      .innerJoin(clubs, eq(clubs.id, events.clubId))
-      .innerJoin(owners, eq(owners.id, clubs.ownerId))
+      .innerJoin(locations, eq(locations.id, events.locationId))
+      .innerJoin(owners, eq(owners.id, locations.ownerId))
       .where(where),
   ])
 
@@ -60,7 +60,7 @@ export async function findTicketsPaginatedByOwner(
     rows: rows.map((row) => ({
       ticket: row.ticket,
       event: row.event,
-      club: row.club,
+      location: row.location,
       totalSold: row.totalSold,
       revenue: row.revenue,
     })),

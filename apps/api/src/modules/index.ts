@@ -1,6 +1,6 @@
 export { AuthModule } from './auth'
 export { CategoriesModule } from './categories'
-export { ClubsModule } from './clubs'
+export { LocationsModule } from './locations'
 export { DashboardModule } from './dashboard'
 export { CommonModule } from './common'
 export { FilesModule } from './files'

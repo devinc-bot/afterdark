@@ -34,9 +34,9 @@ const localeImports: Record<
     es: () => import('../locales/staff/es.json'),
     en: () => import('../locales/staff/en.json'),
   },
-  clubs: {
-    es: () => import('../locales/clubs/es.json'),
-    en: () => import('../locales/clubs/en.json'),
+  locations: {
+    es: () => import('../locales/locations/es.json'),
+    en: () => import('../locales/locations/en.json'),
   },
   settings: {
     es: () => import('../locales/settings/es.json'),

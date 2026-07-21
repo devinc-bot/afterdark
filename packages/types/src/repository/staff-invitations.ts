@@ -1,7 +1,7 @@
 import type { StaffInvitationSelect } from '@afterdark/db/schema'
 
-export type StaffInvitationWithClubRow = {
+export type StaffInvitationWithLocationRow = {
   invitation: StaffInvitationSelect
-  clubDocumentId: string
-  clubName: string
+  locationDocumentId: string
+  locationName: string
 }

@@ -48,7 +48,7 @@ function resolveTicketTypeTone(type: TicketResponse['type']): TicketRecordItem['
 }
 
 export function ticketResponseToRecordItem(ticket: TicketResponse): TicketRecordItem {
-  const clubName = ticket.clubName ?? '—'
+  const clubName = ticket.locationName ?? '—'
 
   return {
     id: ticket.documentId,

@@ -24,7 +24,7 @@ export type ListOwnerSalesParams = {
   page: number
   limit: number
   eventDocumentId?: string
-  clubDocumentId?: string
+  locationDocumentId?: string
   ticketType?: TicketType
   from?: Date
   to?: Date
@@ -38,7 +38,7 @@ export type OwnerSaleRow = {
   eventName: string
   ticketName: string
   ticketType: TicketType
-  clubName: string
+  locationName: string
   paidAt: Date | null
   quantity: number
   amount: number

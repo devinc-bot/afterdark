@@ -2,15 +2,15 @@ import { eq } from 'drizzle-orm'
 import { db } from '../../client.ts'
 import { events } from '../../schema/event.ts'
 import { eventsByOwnerQuery } from './events-by-owner-query.ts'
-import type { EventUpsertInput, EventWithClub } from '@afterdark/types'
+import type { EventUpsertInput, EventWithLocation } from '@afterdark/types'
 
-export async function createEvent(input: EventUpsertInput): Promise<EventWithClub> {
+export async function createEvent(input: EventUpsertInput): Promise<EventWithLocation> {
   const now = new Date()
 
   const [event] = await db
     .insert(events)
     .values({
-      clubId: input.clubId,
+      locationId: input.locationId,
       name: input.name,
       description: input.description,
       startsAt: input.startsAt,

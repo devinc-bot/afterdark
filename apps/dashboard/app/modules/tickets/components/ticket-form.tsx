@@ -191,7 +191,7 @@ export function TicketForm({ mode, documentId, defaultValues, onSuccess }: Ticke
                 >
                   {events.map((event) => (
                     <SelectItem key={event.documentId} value={event.documentId}>
-                      {`${event.name} — ${event.clubName}`}
+                      {`${event.name} — ${event.locationName}`}
                     </SelectItem>
                   ))}
                 </SelectField>

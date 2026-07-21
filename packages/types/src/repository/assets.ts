@@ -1,12 +1,12 @@
 import type { AssetSelect } from '@afterdark/db/schema'
 
-export type ClubImageAssetInput = {
+export type LocationImageAssetInput = {
   name: string
   url: string
   storageKey: string
 }
 
-export type ClubImageAsset = {
-  clubId: number
+export type LocationImageAsset = {
+  locationId: number
   asset: AssetSelect
 }

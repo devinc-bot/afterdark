@@ -40,15 +40,15 @@
     "ACCEPT_SUCCESS": "Cuenta creada. Ya podés iniciar sesión.",
     "ACCEPT_FAILED": "No se pudo crear la cuenta. Intentá de nuevo."
   },
-  "club": {
-    "NOT_FOUND": "Club no encontrado.",
-    "FORBIDDEN": "No tenés permiso para este club.",
-    "CREATE_FAILED": "No se pudo crear el club.",
-    "UPDATE_FAILED": "No se pudo actualizar el club.",
-    "DELETE_FAILED": "No se pudo eliminar el club.",
+  "location": {
+    "NOT_FOUND": "Ubicación no encontrada.",
+    "FORBIDDEN": "No tenés permiso para esta ubicación.",
+    "CREATE_FAILED": "No se pudo crear la ubicación.",
+    "UPDATE_FAILED": "No se pudo actualizar la ubicación.",
+    "DELETE_FAILED": "No se pudo eliminar la ubicación.",
     "IMAGE_UPLOAD_FAILED": "No pudimos guardar las imágenes. Intentá de nuevo.",
-    "TOO_MANY_IMAGES": "Podés subir hasta {max} imágenes por club.",
-    "INVALID_IMAGE_IDS": "Una o más imágenes no pertenecen a este club."
+    "TOO_MANY_IMAGES": "Podés subir hasta {max} imágenes por ubicación.",
+    "INVALID_IMAGE_IDS": "Una o más imágenes no pertenecen a esta ubicación."
   },
   "staff": {
     "NOT_FOUND": "Personal no encontrado.",

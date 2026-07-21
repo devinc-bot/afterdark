@@ -13,8 +13,8 @@ import { seedEnv } from '../config/seed.env.ts'
 import { accounts } from '../schema/account.ts'
 import { accountRolesLnk } from '../schema/account-role-lnk.ts'
 import { addresses } from '../schema/address.ts'
-import { clubAddressesLnk } from '../schema/club-address-lnk.ts'
-import { clubs } from '../schema/club.ts'
+import { locationAddressesLnk } from '../schema/location-address-lnk.ts'
+import { locations } from '../schema/location.ts'
 import { events } from '../schema/event.ts'
 import { orders } from '../schema/orders.ts'
 import { ownerAccountsLnk } from '../schema/owner-account-lnk.ts'
@@ -146,30 +146,33 @@ async function upsertUser(documentId: string, values: typeof users.$inferInsert)
   return row.id
 }
 
-async function upsertClub(documentId: string, values: typeof clubs.$inferInsert): Promise<number> {
+async function upsertLocation(
+  documentId: string,
+  values: typeof locations.$inferInsert
+): Promise<number> {
   const [existing] = await db
-    .select({ id: clubs.id })
-    .from(clubs)
-    .where(eq(clubs.documentId, documentId))
+    .select({ id: locations.id })
+    .from(locations)
+    .where(eq(locations.documentId, documentId))
     .limit(1)
   if (existing) return existing.id
 
   const [row] = await db
-    .insert(clubs)
+    .insert(locations)
     .values({ ...values, documentId })
-    .returning({ id: clubs.id })
+    .returning({ id: locations.id })
   return row.id
 }
 
-async function upsertClubAddress(
-  clubId: number,
+async function upsertLocationAddress(
+  locationId: number,
   documentId: string,
   values: Omit<typeof addresses.$inferInsert, 'documentId'>
 ): Promise<void> {
   const [existingLink] = await db
-    .select({ id: clubAddressesLnk.id })
-    .from(clubAddressesLnk)
-    .where(eq(clubAddressesLnk.clubId, clubId))
+    .select({ id: locationAddressesLnk.id })
+    .from(locationAddressesLnk)
+    .where(eq(locationAddressesLnk.locationId, locationId))
     .limit(1)
   if (existingLink) return
 
@@ -188,9 +191,9 @@ async function upsertClubAddress(
         .returning({ id: addresses.id })
     )[0].id
 
-  await db.insert(clubAddressesLnk).values({
+  await db.insert(locationAddressesLnk).values({
     documentId: `${documentId}-lnk`,
-    clubId,
+    locationId,
     addressId,
   })
 }
@@ -330,30 +333,30 @@ export async function seedTicketsOrders(): Promise<void> {
     userRoleId
   )
 
-  const clubIds = await Promise.all([
-    upsertClub('seed-club-1', {
-      documentId: 'seed-club-1',
-      name: 'Club Nocturno Aurora',
+  const locationIds = await Promise.all([
+    upsertLocation('seed-location-1', {
+      documentId: 'seed-location-1',
+      name: 'Location Nocturno Aurora',
       capacity: '500',
-      description: 'Club de prueba 1',
+      description: 'Location de prueba 1',
       ownerId,
     }),
-    upsertClub('seed-club-2', {
-      documentId: 'seed-club-2',
-      name: 'Club Nocturno Eclipse',
+    upsertLocation('seed-location-2', {
+      documentId: 'seed-location-2',
+      name: 'Location Nocturno Eclipse',
       capacity: '800',
-      description: 'Club de prueba 2',
+      description: 'Location de prueba 2',
       ownerId,
     }),
   ])
 
-  await upsertClubAddress(clubIds[0], 'seed-club-1-address', {
+  await upsertLocationAddress(locationIds[0], 'seed-location-1-address', {
     address: 'Av. Corrientes',
     streetNumber: '1234',
     city: 'Buenos Aires',
     state: 'CABA',
   })
-  await upsertClubAddress(clubIds[1], 'seed-club-2-address', {
+  await upsertLocationAddress(locationIds[1], 'seed-location-2-address', {
     address: 'Av. Santa Fe',
     streetNumber: '5678',
     city: 'Buenos Aires',
@@ -361,14 +364,14 @@ export async function seedTicketsOrders(): Promise<void> {
   })
 
   const now = Date.now()
-  const eventClubIndexes = [0, 1, 0]
+  const eventLocationIndexes = [0, 1, 0]
   const eventIds: number[] = []
 
-  for (let i = 0; i < eventClubIndexes.length; i++) {
+  for (let i = 0; i < eventLocationIndexes.length; i++) {
     const n = i + 1
     const id = await upsertEvent(`seed-event-${n}`, {
       documentId: `seed-event-${n}`,
-      clubId: clubIds[eventClubIndexes[i]],
+      locationId: locationIds[eventLocationIndexes[i]],
       name: `Evento ${n}`,
       description: `Evento de prueba número ${n}`,
       startsAt: new Date(now + n * DAY_MS),

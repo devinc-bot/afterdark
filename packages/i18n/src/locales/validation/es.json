@@ -52,11 +52,11 @@
     },
     "invitation": {
       "email": "Ingresá un email válido.",
-      "club": "Seleccioná un club."
+      "location": "Seleccioná una ubicación."
     },
-    "club": {
-      "name": "El nombre del club es requerido.",
-      "address": "La dirección del club es requerida.",
+    "location": {
+      "name": "El nombre de la ubicación es requerido.",
+      "address": "La dirección de la ubicación es requerida.",
       "capacity": {
         "required": "La capacidad es requerida.",
         "invalid": "La capacidad solo puede contener números."
@@ -91,7 +91,7 @@
       "description": "La descripción es requerida.",
       "startDate": "La fecha y hora de inicio son requeridas.",
       "endDate": "La fecha y hora de finalización son requeridas.",
-      "club": "Seleccioná un club.",
+      "location": "Seleccioná una ubicación.",
       "endDateAfterStart": "La fecha y hora de inicio debe ser anterior a la de finalización."
     },
     "dashboard": {

@@ -18,55 +18,55 @@ import {
 } from '@afterdark/ui'
 import type { TFunction } from 'i18next'
 import { useResolveFieldError } from '@afterdark/i18n/client'
-import { useClubs } from '~/modules/club-management/queries/use-club-management-queries'
+import { useLocations } from '~/modules/locations/queries/use-locations-queries'
 import { postStaffInvitation } from '~/modules/staff/services/staff-invitations.service'
 
 const STAFF_USER_FORM_ID = 'staff-user-form'
 
 const EMPTY_STAFF_INVITATION_FORM_VALUES: CreateStaffInvitationInput = {
   email: '',
-  clubId: '',
+  locationId: '',
   securityWord: '',
   expiresInMs: STAFF_INVITATION_EXPIRY_OPTIONS['12h'],
 }
 
-type ClubSelectFieldDisplayInput = {
+type LocationSelectFieldDisplayInput = {
   isLoading: boolean
   isError: boolean
-  clubCount: number
+  locationCount: number
   fieldError: string | null
   t: TFunction<'staff'>
 }
 
-type ClubSelectFieldDisplay = {
+type LocationSelectFieldDisplay = {
   placeholder: string
   error: string | undefined
 }
 
-function getClubSelectFieldDisplay({
+function getLocationSelectFieldDisplay({
   isLoading,
   isError,
-  clubCount,
+  locationCount,
   fieldError,
   t,
-}: ClubSelectFieldDisplayInput): ClubSelectFieldDisplay {
+}: LocationSelectFieldDisplayInput): LocationSelectFieldDisplay {
   if (isLoading) {
-    return { placeholder: t('form.clubLoading'), error: fieldError ?? undefined }
+    return { placeholder: t('form.locationLoading'), error: fieldError ?? undefined }
   }
 
   if (isError) {
     return {
-      placeholder: t('form.clubPlaceholder'),
-      error: t('form.clubsLoadError'),
+      placeholder: t('form.locationPlaceholder'),
+      error: t('form.locationsLoadError'),
     }
   }
 
-  if (clubCount === 0) {
-    return { placeholder: t('form.clubEmpty'), error: fieldError ?? undefined }
+  if (locationCount === 0) {
+    return { placeholder: t('form.locationEmpty'), error: fieldError ?? undefined }
   }
 
   return {
-    placeholder: t('form.clubPlaceholder'),
+    placeholder: t('form.locationPlaceholder'),
     error: fieldError ?? undefined,
   }
 }
@@ -85,7 +85,11 @@ type StaffUserFormProps = {
 export function StaffUserForm({ onInviteSuccess }: StaffUserFormProps) {
   const { t } = useTranslation('staff')
   const resolveFieldError = useResolveFieldError()
-  const { data: clubs = [], isLoading: isClubsLoading, isError: isClubsError } = useClubs()
+  const {
+    data: locations = [],
+    isLoading: isLocationsLoading,
+    isError: isLocationsError,
+  } = useLocations()
 
   const form = useForm({
     defaultValues: EMPTY_STAFF_INVITATION_FORM_VALUES,
@@ -148,32 +152,32 @@ export function StaffUserForm({ onInviteSuccess }: StaffUserFormProps) {
           </form.Field>
 
           <form.Field
-            name="clubId"
-            validators={{ onSubmit: createStaffInvitationSchema.shape.clubId }}
+            name="locationId"
+            validators={{ onSubmit: createStaffInvitationSchema.shape.locationId }}
           >
             {(field) => {
               const error = resolveFieldError(field.state.meta.errors)
-              const { placeholder: clubPlaceholder, error: clubFieldError } =
-                getClubSelectFieldDisplay({
-                  isLoading: isClubsLoading,
-                  isError: isClubsError,
-                  clubCount: clubs.length,
+              const { placeholder: locationPlaceholder, error: locationFieldError } =
+                getLocationSelectFieldDisplay({
+                  isLoading: isLocationsLoading,
+                  isError: isLocationsError,
+                  locationCount: locations.length,
                   fieldError: error,
                   t,
                 })
 
               return (
                 <SelectField
-                  label={t('form.club')}
+                  label={t('form.location')}
                   value={field.state.value || undefined}
                   onValueChange={(value) => field.handleChange(value)}
-                  placeholder={clubPlaceholder}
-                  error={clubFieldError}
-                  disabled={isClubsLoading || clubs.length === 0}
+                  placeholder={locationPlaceholder}
+                  error={locationFieldError}
+                  disabled={isLocationsLoading || locations.length === 0}
                 >
-                  {clubs.map((club) => (
-                    <SelectItem key={club.documentId} value={club.documentId}>
-                      {club.name}
+                  {locations.map((location) => (
+                    <SelectItem key={location.documentId} value={location.documentId}>
+                      {location.name}
                     </SelectItem>
                   ))}
                 </SelectField>

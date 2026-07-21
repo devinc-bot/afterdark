@@ -18,7 +18,7 @@ import {
 } from '@afterdark/ui'
 import { Link, useNavigate, useRouterState } from '@tanstack/react-router'
 import { useCallback, useMemo, useRef, useState, type ReactNode } from 'react'
-import { LayoutGrid, LogOut, Martini, Ticket, Users, CalendarDays, ShoppingBag } from 'lucide-react'
+import { LayoutGrid, LogOut, MapPin, Ticket, Users, CalendarDays, ShoppingBag } from 'lucide-react'
 import { USER_ROLE, type UserRole } from '@afterdark/types'
 import { clearAuthSession } from '~/modules/auth/utils/auth-storage.utils'
 import { AppShellLanguageSwitcher } from '~/modules/common/components/app-shell-language-switcher'
@@ -46,9 +46,9 @@ function buildPrimaryNav(t: TFunction<'dashboard'>, role?: UserRole): AppShellNa
       icon: <LayoutGrid aria-hidden="true" />,
     },
     {
-      label: t('nav.clubs'),
-      href: DASHBOARD_ROUTES.clubManagement(),
-      icon: <Martini aria-hidden="true" />,
+      label: t('nav.locations'),
+      href: DASHBOARD_ROUTES.locations(),
+      icon: <MapPin aria-hidden="true" />,
     },
     {
       label: t('nav.tickets'),

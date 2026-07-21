@@ -15,7 +15,7 @@ import { PageLayout } from '~/modules/common/components/page-layout'
 import { SalesRecords, type SalesRecordsPagination } from '~/modules/sales/components/sales-records'
 import {
   useOwnerSales,
-  useSalesFilterClubs,
+  useSalesFilterLocations,
   useSalesFilterEvents,
 } from '~/modules/sales/queries/use-sales-queries'
 import { dateInputToEndOfDay, dateInputToStartOfDay } from '~/modules/sales/utils/sales.formatter'
@@ -26,24 +26,24 @@ const FILTER_ALL = 'all' as const
 export function SalesManagementView() {
   const { t } = useTranslation('sales')
   const [page, setPage] = useState(1)
-  const [clubId, setClubId] = useState<string>(FILTER_ALL)
+  const [locationId, setLocationId] = useState<string>(FILTER_ALL)
   const [eventId, setEventId] = useState<string>(FILTER_ALL)
   const [ticketType, setTicketType] = useState<string>(FILTER_ALL)
   const [fromInput, setFromInput] = useState('')
   const [toInput, setToInput] = useState('')
 
-  const clubsQuery = useSalesFilterClubs()
+  const locationsQuery = useSalesFilterLocations()
   const eventsQuery = useSalesFilterEvents()
 
   const hasActiveFilters =
-    clubId !== FILTER_ALL ||
+    locationId !== FILTER_ALL ||
     eventId !== FILTER_ALL ||
     ticketType !== FILTER_ALL ||
     fromInput !== '' ||
     toInput !== ''
 
   function resetFilters() {
-    setClubId(FILTER_ALL)
+    setLocationId(FILTER_ALL)
     setEventId(FILTER_ALL)
     setTicketType(FILTER_ALL)
     setFromInput('')
@@ -53,13 +53,13 @@ export function SalesManagementView() {
 
   useEffect(() => {
     setPage(1)
-  }, [clubId, eventId, ticketType, fromInput, toInput])
+  }, [locationId, eventId, ticketType, fromInput, toInput])
 
   const filteredEvents = useMemo(() => {
     const events = eventsQuery.data ?? []
-    if (clubId === FILTER_ALL) return events
-    return events.filter((event) => event.clubId === clubId)
-  }, [eventsQuery.data, clubId])
+    if (locationId === FILTER_ALL) return events
+    return events.filter((event) => event.locationId === locationId)
+  }, [eventsQuery.data, locationId])
 
   useEffect(() => {
     if (eventId === FILTER_ALL) return
@@ -70,7 +70,7 @@ export function SalesManagementView() {
   const { data, isError, isLoading } = useOwnerSales({
     page,
     limit: SALES_PAGE_SIZE,
-    clubId: clubId === FILTER_ALL ? undefined : clubId,
+    locationId: locationId === FILTER_ALL ? undefined : locationId,
     eventId: eventId === FILTER_ALL ? undefined : eventId,
     ticketType: ticketType === FILTER_ALL ? undefined : (ticketType as TicketType),
     from: dateInputToStartOfDay(fromInput),
@@ -95,20 +95,26 @@ export function SalesManagementView() {
     <div className="flex flex-col gap-3">
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
         <div className="flex flex-col gap-1.5">
-          <Label htmlFor="sales-filter-club">{t('filters.club')}</Label>
-          <Select value={clubId} onValueChange={setClubId} disabled={clubsQuery.isLoading}>
-            <SelectTrigger id="sales-filter-club" className="w-full">
+          <Label htmlFor="sales-filter-location">{t('filters.location')}</Label>
+          <Select
+            value={locationId}
+            onValueChange={setLocationId}
+            disabled={locationsQuery.isLoading}
+          >
+            <SelectTrigger id="sales-filter-location" className="w-full">
               <SelectValue
                 placeholder={
-                  clubsQuery.isLoading ? t('filters.clubsLoading') : t('filters.clubAll')
+                  locationsQuery.isLoading
+                    ? t('filters.locationsLoading')
+                    : t('filters.locationAll')
                 }
               />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value={FILTER_ALL}>{t('filters.clubAll')}</SelectItem>
-              {(clubsQuery.data ?? []).map((club) => (
-                <SelectItem key={club.documentId} value={club.documentId}>
-                  {club.name}
+              <SelectItem value={FILTER_ALL}>{t('filters.locationAll')}</SelectItem>
+              {(locationsQuery.data ?? []).map((location) => (
+                <SelectItem key={location.documentId} value={location.documentId}>
+                  {location.name}
                 </SelectItem>
               ))}
             </SelectContent>

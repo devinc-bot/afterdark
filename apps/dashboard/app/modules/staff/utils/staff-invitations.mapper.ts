@@ -7,8 +7,8 @@ export function mapStaffInvitationToRecord(
   return {
     id: item.documentId,
     email: item.email,
-    clubId: item.clubId,
-    clubName: item.clubName,
+    clubId: item.locationId,
+    clubName: item.locationName,
     url: item.url,
     expiresAt: new Date(item.expiresAt).getTime(),
     createdAt: new Date(item.createdAt).getTime(),

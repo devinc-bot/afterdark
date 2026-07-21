@@ -56,9 +56,9 @@ No aplica (sin endpoints).
 
 ### Datos
 
-| Tabla / campo | Cambio |
-| ------------- | ------ |
-| — | Sin cambios de schema. Solo naming de archivos de migración nuevos vía drizzle-kit. |
+| Tabla / campo | Cambio                                                                              |
+| ------------- | ----------------------------------------------------------------------------------- |
+| —             | Sin cambios de schema. Solo naming de archivos de migración nuevos vía drizzle-kit. |
 
 ### UI
 
@@ -66,11 +66,11 @@ No aplica.
 
 **Config (DX)**
 
-| Archivo | Cambio |
-| ------- | ------ |
-| `packages/db/drizzle.config.ts` | `migrations: { prefix: 'timestamp' }` |
-| `packages/db/DATABASE.md` | Documentar convenio de prefijos |
-| `AGENTS.md` | Una línea: nuevas migraciones usan prefijo `timestamp` |
+| Archivo                         | Cambio                                                 |
+| ------------------------------- | ------------------------------------------------------ |
+| `packages/db/drizzle.config.ts` | `migrations: { prefix: 'timestamp' }`                  |
+| `packages/db/DATABASE.md`       | Documentar convenio de prefijos                        |
+| `AGENTS.md`                     | Una línea: nuevas migraciones usan prefijo `timestamp` |
 
 ---
 

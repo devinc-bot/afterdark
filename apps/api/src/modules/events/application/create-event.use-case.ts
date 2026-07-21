@@ -1,5 +1,5 @@
 import { Inject, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common'
-import { createEvent, findClubOwnedByOwnerDocumentId } from '@afterdark/db'
+import { createEvent, findLocationOwnedByOwnerDocumentId } from '@afterdark/db'
 import { TranslationService } from '@afterdark/i18n/server'
 import type { EventResponse } from '@afterdark/types'
 import type { CreateEventInput } from '@afterdark/validators'
@@ -10,15 +10,15 @@ export class CreateEventUseCase {
   constructor(@Inject(TranslationService) private readonly ts: TranslationService) {}
 
   async execute(ownerDocumentId: string, input: CreateEventInput): Promise<EventResponse> {
-    const club = await findClubOwnedByOwnerDocumentId(input.clubId, ownerDocumentId)
+    const location = await findLocationOwnedByOwnerDocumentId(input.locationId, ownerDocumentId)
 
-    if (!club) {
+    if (!location) {
       throw new NotFoundException(this.ts.translateError('event.CLUB_NOT_FOUND'))
     }
 
     try {
-      const row = await createEvent(toEventUpsertInput(input, club.id))
-      return toEventResponse(row.event, row.club)
+      const row = await createEvent(toEventUpsertInput(input, location.id))
+      return toEventResponse(row.event, row.location)
     } catch {
       throw new InternalServerErrorException(this.ts.translateError('event.CREATE_FAILED'))
     }

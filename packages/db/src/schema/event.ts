@@ -1,13 +1,13 @@
 import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core'
 import { EVENT_STATUS } from '@afterdark/types/enums'
 import { createBaseColumns } from './base.ts'
-import { clubs } from './club.ts'
+import { locations } from './location.ts'
 
 export const events = sqliteTable('events', {
   ...createBaseColumns('events'),
-  clubId: integer('club_id')
+  locationId: integer('location_id')
     .notNull()
-    .references(() => clubs.id),
+    .references(() => locations.id),
   name: text('name').notNull(),
   description: text('description').notNull(),
   startsAt: integer('starts_at', { mode: 'timestamp' }).notNull(),

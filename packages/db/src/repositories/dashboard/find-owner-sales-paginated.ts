@@ -3,7 +3,7 @@ import { PAYMENT_STATUS } from '@afterdark/types/enums'
 import type { ListOwnerSalesParams, PaginatedOwnerSalesResult } from '@afterdark/types'
 import { db } from '../../client.ts'
 import { accounts } from '../../schema/account.ts'
-import { clubs } from '../../schema/club.ts'
+import { locations } from '../../schema/location.ts'
 import { events } from '../../schema/event.ts'
 import { orders } from '../../schema/orders.ts'
 import { owners } from '../../schema/owner.ts'
@@ -21,8 +21,8 @@ function buildOwnerSalesFilters(params: ListOwnerSalesParams): SQL {
     conditions.push(eq(events.documentId, params.eventDocumentId))
   }
 
-  if (params.clubDocumentId) {
-    conditions.push(eq(clubs.documentId, params.clubDocumentId))
+  if (params.locationDocumentId) {
+    conditions.push(eq(locations.documentId, params.locationDocumentId))
   }
 
   if (params.ticketType) {
@@ -57,7 +57,7 @@ export async function findOwnerSalesPaginated(
         eventName: events.name,
         ticketName: tickets.name,
         ticketType: tickets.type,
-        clubName: clubs.name,
+        locationName: locations.name,
         paidAt: orders.paidAt,
         quantity: orders.quantity,
         amount: orders.amount,
@@ -66,8 +66,8 @@ export async function findOwnerSalesPaginated(
       .from(orders)
       .innerJoin(tickets, eq(tickets.id, orders.ticketId))
       .innerJoin(events, eq(events.id, tickets.eventId))
-      .innerJoin(clubs, eq(clubs.id, events.clubId))
-      .innerJoin(owners, eq(owners.id, clubs.ownerId))
+      .innerJoin(locations, eq(locations.id, events.locationId))
+      .innerJoin(owners, eq(owners.id, locations.ownerId))
       .innerJoin(users, eq(users.id, orders.userId))
       .innerJoin(userAccountsLnk, eq(userAccountsLnk.userId, users.id))
       .innerJoin(accounts, eq(accounts.id, userAccountsLnk.accountId))
@@ -80,8 +80,8 @@ export async function findOwnerSalesPaginated(
       .from(orders)
       .innerJoin(tickets, eq(tickets.id, orders.ticketId))
       .innerJoin(events, eq(events.id, tickets.eventId))
-      .innerJoin(clubs, eq(clubs.id, events.clubId))
-      .innerJoin(owners, eq(owners.id, clubs.ownerId))
+      .innerJoin(locations, eq(locations.id, events.locationId))
+      .innerJoin(owners, eq(owners.id, locations.ownerId))
       .innerJoin(users, eq(users.id, orders.userId))
       .innerJoin(userAccountsLnk, eq(userAccountsLnk.userId, users.id))
       .innerJoin(accounts, eq(accounts.id, userAccountsLnk.accountId))
@@ -97,7 +97,7 @@ export async function findOwnerSalesPaginated(
       eventName: row.eventName,
       ticketName: row.ticketName,
       ticketType: row.ticketType,
-      clubName: row.clubName,
+      locationName: row.locationName,
       paidAt: row.paidAt,
       quantity: row.quantity,
       amount: row.amount,

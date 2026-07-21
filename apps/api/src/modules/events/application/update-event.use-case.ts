@@ -1,7 +1,7 @@
 import { Inject, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common'
 import {
-  findClubOwnedByOwnerDocumentId,
-  findEventWithClubOwnedByOwnerDocumentId,
+  findEventWithLocationOwnedByOwnerDocumentId,
+  findLocationOwnedByOwnerDocumentId,
   updateEventByDocumentId,
 } from '@afterdark/db'
 import { TranslationService } from '@afterdark/i18n/server'
@@ -18,21 +18,21 @@ export class UpdateEventUseCase {
     documentId: string,
     input: UpdateEventInput
   ): Promise<EventResponse> {
-    const existing = await findEventWithClubOwnedByOwnerDocumentId(documentId, ownerDocumentId)
+    const existing = await findEventWithLocationOwnedByOwnerDocumentId(documentId, ownerDocumentId)
 
     if (!existing) {
       throw new NotFoundException(this.ts.translateError('event.NOT_FOUND'))
     }
 
-    const club = await findClubOwnedByOwnerDocumentId(input.clubId, ownerDocumentId)
+    const location = await findLocationOwnedByOwnerDocumentId(input.locationId, ownerDocumentId)
 
-    if (!club) {
+    if (!location) {
       throw new NotFoundException(this.ts.translateError('event.CLUB_NOT_FOUND'))
     }
 
     try {
-      const row = await updateEventByDocumentId(documentId, toEventUpsertInput(input, club.id))
-      return toEventResponse(row.event, row.club)
+      const row = await updateEventByDocumentId(documentId, toEventUpsertInput(input, location.id))
+      return toEventResponse(row.event, row.location)
     } catch {
       throw new InternalServerErrorException(this.ts.translateError('event.UPDATE_FAILED'))
     }

@@ -1,5 +1,5 @@
 export * from './find-event-owned-by-owner-document-id.ts'
-export * from './find-event-with-club-owned-by-owner-document-id.ts'
+export * from './find-event-with-location-owned-by-owner-document-id.ts'
 export * from './find-events-paginated-by-owner.ts'
 export * from './create-event.ts'
 export * from './update-event-by-document-id.ts'

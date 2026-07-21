@@ -1,7 +1,7 @@
 {
   "page": {
     "title": "Gestión de eventos",
-    "description": "Creá y consultá los eventos de tus clubes.",
+    "description": "Creá y consultá los eventos de tus ubicaciones.",
     "metaTitle": "Gestión de eventos · {appNameAdmin}"
   },
   "form": {
@@ -9,11 +9,11 @@
     "createTitle": "Crear evento",
     "createDescription": "Completá los datos del evento.",
     "requiredFieldsHint": "Los campos marcados con * son obligatorios.",
-    "club": "Club",
-    "clubPlaceholder": "Seleccioná un club",
-    "clubLoading": "Cargando clubes…",
-    "clubEmpty": "No tenés clubes registrados",
-    "clubsLoadError": "No pudimos cargar tus clubes.",
+    "location": "Ubicación",
+    "locationPlaceholder": "Seleccioná una ubicación",
+    "locationLoading": "Cargando ubicaciones…",
+    "locationEmpty": "No tenés ubicaciones registradas",
+    "locationsLoadError": "No pudimos cargar tus ubicaciones.",
     "name": "Nombre del evento",
     "namePlaceholder": "Ej. Noche electrónica",
     "description": "Descripción",
@@ -42,7 +42,7 @@
   "table": {
     "title": "Eventos registrados",
     "registryCount": "{count, plural, one {1 evento registrado} other {# eventos registrados}}",
-    "club": "Club",
+    "location": "Ubicación",
     "event": "Evento",
     "startsAt": "Inicio",
     "endsAt": "Fin",
@@ -50,7 +50,7 @@
     "actions": "Acciones",
     "actionEdit": "Editar",
     "actionDelete": "Borrar",
-    "rowActionsLabel": "Acciones para {event} en {club}",
+    "rowActionsLabel": "Acciones para {event} en {location}",
     "emptyTitle": "No hay eventos registrados",
     "emptyDescription": "Creá tu primer evento para empezar."
   },

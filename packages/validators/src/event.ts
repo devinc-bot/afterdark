@@ -31,7 +31,7 @@ const eventDateRangeRefineApi = {
 
 export const createEventSchema = z
   .object({
-    clubId: uuidSchema,
+    locationId: uuidSchema,
     name: z.string().trim().min(1, 'validation:field.event.name'),
     description: z.string().trim().min(1, 'validation:field.event.description'),
     startsAt: z.coerce.date({ message: 'validation:field.event.startDate' }),
@@ -51,7 +51,7 @@ export type UpdateEventInput = z.infer<typeof updateEventSchema>
 
 export const eventFormSchema = z
   .object({
-    clubId: z.string().min(1, 'validation:field.event.club'),
+    locationId: z.string().min(1, 'validation:field.event.location'),
     name: z.string().trim().min(1, 'validation:field.event.name'),
     description: z.string().trim().min(1, 'validation:field.event.description'),
     startsAt: z.string().trim().min(1, 'validation:field.event.startDate'),
