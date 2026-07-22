@@ -19,8 +19,8 @@ export function ProfileSettingsSection() {
         title={t('owner.sections.profile')}
         description={t('owner.sections.profileDescription')}
       >
-        <div className="flex items-center gap-4">
-          <Avatar className="size-16 shrink-0 ring-1 ring-hairline">
+        <div className="flex items-center gap-4 mb-4">
+          <Avatar className="size-16 shrink-0 ring-1 ring-hairline transition-[ring-color] duration-(--duration-fast) ease-emphasized hover:ring-primary/40">
             <AvatarImage src={avatarSrc ?? undefined} alt={avatarLabel} className="object-cover" />
             <AvatarFallback className="bg-surface-container-low font-heading text-lg font-medium text-ink-muted">
               {avatarLabel.charAt(0).toUpperCase()}

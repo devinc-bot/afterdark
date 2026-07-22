@@ -65,3 +65,12 @@ export function resolveSaveErrorMessage(error: unknown, fallback: string): strin
 
   return fallback
 }
+
+/** Night-hours success copy for after-hours saves (local time). */
+export function resolveSaveSuccessMessageKey(
+  now = new Date()
+): 'shared.messages.saveSuccess' | 'shared.messages.saveSuccessNight' {
+  const hour = now.getHours()
+  const isNight = hour >= 22 || hour < 6
+  return isNight ? 'shared.messages.saveSuccessNight' : 'shared.messages.saveSuccess'
+}

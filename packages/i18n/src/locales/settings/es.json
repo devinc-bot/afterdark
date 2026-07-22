@@ -15,21 +15,22 @@
     "actions": {
       "save": "Guardar cambios",
       "discard": "Descartar cambios",
-      "dirty": "Tenés cambios sin guardar.",
-      "clean": "No hay cambios pendientes.",
+      "dirty": "Hay cambios sin guardar.",
+      "clean": "Todo al día.",
       "confirmLeave": "Tenés cambios sin guardar. ¿Salir de todas formas?"
     },
     "messages": {
       "validationSummary": "Revisá los campos con error antes de guardar.",
-      "saving": "Guardando cambios…",
-      "saveSuccess": "Listo. Actualizamos tu perfil.",
-      "saveFallback": "No pudimos guardar los cambios. Revisá tu conexión e intentá de nuevo."
+      "saving": "Guardando…",
+      "saveSuccess": "Listo. Tu perfil quedó al día.",
+      "saveSuccessNight": "Guardado. Buena noche.",
+      "saveFallback": "No pudimos guardar. Revisá tu conexión e intentá de nuevo."
     }
   },
   "owner": {
     "page": {
       "title": "Configuración",
-      "description": "Administrá tu perfil."
+      "description": "Tu perfil, en un solo lugar."
     },
     "sections": {
       "profile": "Perfil",
@@ -41,7 +42,7 @@
     },
     "profile": {
       "changePhoto": "Cambiar foto",
-      "photoHint": "La carga de foto estará disponible pronto.",
+      "photoHint": "Pronto vas a poder subir tu foto acá.",
       "name": "Nombre",
       "lastName": "Apellido",
       "phone": "Teléfono",
@@ -57,14 +58,14 @@
       "emailHint": "Para cambiar el correo, escribinos a soporte.",
       "password": "Contraseña",
       "changePassword": "Cambiar contraseña",
-      "passwordHint": "El cambio de contraseña estará disponible pronto.",
+      "passwordHint": "Pronto vas a poder cambiarla desde acá.",
       "avatarFallback": "Usuario"
     }
   },
   "staff": {
     "page": {
       "title": "Configuración",
-      "description": "Administrá tu perfil."
+      "description": "Tu perfil, en un solo lugar."
     },
     "sections": {
       "profile": "Perfil",
