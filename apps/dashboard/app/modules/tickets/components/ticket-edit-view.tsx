@@ -1,11 +1,16 @@
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from '@tanstack/react-router'
 import type { TicketResponse } from '@afterdark/types'
-import { Button, Skeleton } from '@afterdark/ui'
+import { Button } from '@afterdark/ui'
 import { DASHBOARD_ROUTES } from '~/modules/common/constants/routes'
-import { LoadErrorBanner } from '~/modules/common/components/load-error-banner'
-import { TicketAuthoringShell } from '~/modules/tickets/components/ticket-authoring-shell'
+import { FormPageLayout } from '~/modules/common/components/form-page-layout'
+import {
+  FormPageErrorState,
+  FormPageLoadingState,
+  FormPageNotFoundState,
+  FormPageSectionSkeleton,
+} from '~/modules/common/components/form-page-states'
 import {
   TICKET_FORM_MODE,
   TicketForm,
@@ -25,50 +30,20 @@ function useGoToTicketsList() {
   }, [navigate])
 }
 
-function TicketFormFieldSkeleton() {
-  return (
-    <div className="flex flex-col gap-2">
-      <Skeleton className="h-3.5 w-20" />
-      <Skeleton className="h-10 w-full" />
-    </div>
-  )
-}
-
 export function TicketEditLoadingView() {
   const { t } = useTranslation('tickets')
   const goToList = useGoToTicketsList()
 
   return (
-    <TicketAuthoringShell
+    <FormPageLoadingState
       title={t('editPage.title')}
       description={t('editPage.description')}
       backLabel={t('editPage.back')}
       onBack={goToList}
+      loadingLabel={t('editPage.loading')}
     >
-      <div
-        className="overflow-hidden rounded-xl border border-hairline bg-surface-container-lowest"
-        aria-busy="true"
-      >
-        <span className="sr-only">{t('editPage.loading')}</span>
-        <div className="flex flex-col gap-5 px-6 py-6 sm:px-8">
-          <TicketFormFieldSkeleton />
-          <TicketFormFieldSkeleton />
-          <div className="grid gap-5 sm:grid-cols-2">
-            <TicketFormFieldSkeleton />
-            <TicketFormFieldSkeleton />
-          </div>
-          <div className="grid gap-5 sm:grid-cols-2">
-            <TicketFormFieldSkeleton />
-            <TicketFormFieldSkeleton />
-          </div>
-          <TicketFormFieldSkeleton />
-        </div>
-        <div className="flex flex-col gap-3 border-t border-hairline px-6 py-6 sm:flex-row sm:justify-end sm:px-8">
-          <Skeleton className="h-10 w-full sm:w-40" />
-          <Skeleton className="h-10 w-full sm:w-40" />
-        </div>
-      </div>
-    </TicketAuthoringShell>
+      <FormPageSectionSkeleton />
+    </FormPageLoadingState>
   )
 }
 
@@ -87,21 +62,17 @@ export function TicketEditErrorView({
   const goToList = useGoToTicketsList()
 
   return (
-    <TicketAuthoringShell
+    <FormPageErrorState
       title={t('editPage.title')}
       description={t('editPage.description')}
       backLabel={t('editPage.back')}
       onBack={goToList}
-    >
-      <LoadErrorBanner
-        className="my-0"
-        title={t('editPage.loadErrorTitle')}
-        message={message}
-        retryLabel={t('editPage.retry')}
-        onRetry={onRetry}
-        isRetrying={isRetrying}
-      />
-    </TicketAuthoringShell>
+      errorTitle={t('editPage.loadErrorTitle')}
+      message={message}
+      retryLabel={t('editPage.retry')}
+      onRetry={onRetry}
+      isRetrying={isRetrying}
+    />
   )
 }
 
@@ -110,57 +81,53 @@ export function TicketEditNotFoundView() {
   const goToList = useGoToTicketsList()
 
   return (
-    <TicketAuthoringShell
+    <FormPageNotFoundState
       title={t('editPage.notFoundTitle')}
       description={t('editPage.notFoundDescription')}
       backLabel={t('editPage.back')}
       onBack={goToList}
-    >
-      <div className="rounded-xl border border-dashed border-hairline bg-surface-container-low/60 px-6 py-10 text-center sm:px-8">
-        <Button type="button" variant="outline" onClick={goToList}>
-          {t('editPage.back')}
-        </Button>
-      </div>
-    </TicketAuthoringShell>
+      actionLabel={t('editPage.back')}
+    />
   )
 }
 
 export function TicketEditView({ ticket }: TicketEditViewProps) {
   const { t } = useTranslation('tickets')
   const goToList = useGoToTicketsList()
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   return (
-    <TicketAuthoringShell
+    <FormPageLayout
       title={t('editPage.title')}
       description={t('editPage.description')}
       backLabel={t('editPage.back')}
       onBack={goToList}
+      footer={
+        <>
+          <Button
+            type="button"
+            variant="outline"
+            size="default"
+            disabled={isSubmitting}
+            className="min-w-36 sm:min-w-40"
+            onClick={goToList}
+          >
+            {t('form.cancel')}
+          </Button>
+          <TicketFormSubmitButton mode={TICKET_FORM_MODE.EDIT} isSubmitting={isSubmitting} />
+        </>
+      }
     >
-      <div className="overflow-hidden rounded-xl border border-hairline bg-surface-container-lowest">
-        <TicketForm
-          key={ticket.documentId}
-          mode={TICKET_FORM_MODE.EDIT}
-          documentId={ticket.documentId}
-          defaultValues={ticketResponseToFormValues(ticket)}
-          onSuccess={goToList}
-          bodyClassName="px-6 py-6 sm:px-8"
-          renderFooter={({ isSubmitting }) => (
-            <div className="flex flex-col gap-3 border-t border-hairline px-6 py-6 sm:flex-row sm:justify-end sm:px-8">
-              <Button
-                type="button"
-                variant="outline"
-                size="default"
-                disabled={isSubmitting}
-                className="min-w-36 sm:min-w-40"
-                onClick={goToList}
-              >
-                {t('form.cancel')}
-              </Button>
-              <TicketFormSubmitButton mode={TICKET_FORM_MODE.EDIT} isSubmitting={isSubmitting} />
-            </div>
-          )}
-        />
-      </div>
-    </TicketAuthoringShell>
+      <TicketForm
+        key={ticket.documentId}
+        mode={TICKET_FORM_MODE.EDIT}
+        documentId={ticket.documentId}
+        defaultValues={ticketResponseToFormValues(ticket)}
+        onSuccess={goToList}
+        bodyClassName=""
+        renderFooter={() => null}
+        onSubmittingChange={setIsSubmitting}
+      />
+    </FormPageLayout>
   )
 }

@@ -27,4 +27,4 @@
 
 ## 6. Smoke check
 
-- [ ] 6.1 Manually verify: list create → `/tickets/new` → success returns to list; list edit → edit page (incl. refresh) → save returns to list; delete dialog still works; guided event→`/tickets/new` still works
+- [x] 6.1 Manually verify: list create → `/tickets/new` → success returns to list; list edit → edit page (incl. refresh) → save returns to list; delete dialog still works; guided event→`/tickets/new` still works

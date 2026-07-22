@@ -1,4 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
+import { useTranslation } from 'react-i18next'
 import {
   LocationEditErrorView,
   LocationEditLoadingView,
@@ -14,7 +15,8 @@ export const Route = createFileRoute('/_app/locations/$documentId/edit')({
 
 function LocationEditPage() {
   const { documentId } = Route.useParams()
-  const { data: locations, isLoading, isError, error } = useLocations()
+  const { t } = useTranslation('locations')
+  const { data: locations, isLoading, isError, error, refetch, isFetching } = useLocations()
   usePageTitle('locations', 'formPage.editMetaTitle')
 
   if (isLoading) {
@@ -22,7 +24,15 @@ function LocationEditPage() {
   }
 
   if (isError) {
-    return <LocationEditErrorView message={error instanceof Error ? error.message : undefined} />
+    return (
+      <LocationEditErrorView
+        message={error instanceof Error ? error.message : t('registry.loadErrorFallback')}
+        onRetry={() => {
+          void refetch()
+        }}
+        isRetrying={isFetching}
+      />
+    )
   }
 
   const location = locations?.find((item) => item.documentId === documentId)

@@ -53,6 +53,7 @@
     "loading": "Cargando evento…",
     "loadErrorTitle": "No pudimos cargar el evento",
     "loadErrorFallback": "Intentá de nuevo en unos minutos.",
+    "retry": "Reintentar",
     "notFoundTitle": "No encontramos el evento que querés editar.",
     "notFoundDescription": "El evento no existe o no tenés permiso para editarlo."
   },

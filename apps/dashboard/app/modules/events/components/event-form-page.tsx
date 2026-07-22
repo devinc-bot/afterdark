@@ -7,7 +7,6 @@ import { Button, toast } from '@afterdark/ui'
 import { EventUnsavedChangesDialog } from '~/modules/events/components/event-unsaved-changes-dialog'
 import { EventFormPageLayout } from '~/modules/events/components/event-form-page-layout'
 import { EventFormErrorAlert } from '~/modules/events/components/event-form-error-alert'
-import { EventFormShortcutHint } from '~/modules/events/components/event-form-shortcut-hint'
 import { EventLocationField } from '~/modules/events/components/event-location-field'
 import {
   EventDetailsForm,
@@ -208,11 +207,8 @@ export function EventFormPage({ mode, title, description, event }: EventFormPage
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [])
 
-  const shortcutLabel = isCreate ? t('form.submitCreate') : t('form.submitEdit')
-
   const footer = (
     <>
-      <EventFormShortcutHint label={shortcutLabel} className="sm:mr-auto" />
       <Button
         type="button"
         variant="outline"

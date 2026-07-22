@@ -53,6 +53,7 @@
     "loading": "Loading event…",
     "loadErrorTitle": "We could not load the event",
     "loadErrorFallback": "Try again in a few minutes.",
+    "retry": "Retry",
     "notFoundTitle": "We could not find the event you want to edit.",
     "notFoundDescription": "The event does not exist or you do not have permission to edit it."
   },

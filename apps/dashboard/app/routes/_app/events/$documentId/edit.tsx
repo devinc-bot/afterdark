@@ -1,10 +1,13 @@
-import { createFileRoute, Link } from '@tanstack/react-router'
+import { createFileRoute } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
-import { EventEditView } from '~/modules/events/components/event-edit-view'
+import {
+  EventEditErrorView,
+  EventEditLoadingView,
+  EventEditNotFoundView,
+  EventEditView,
+} from '~/modules/events/components/event-edit-view'
 import { useEvent } from '~/modules/events/queries/use-event-queries'
-import { PageLayout } from '~/modules/common/components/page-layout'
-import { DASHBOARD_ROUTES } from '~/modules/common/constants/routes'
-import { Button, usePageTitle } from '@afterdark/ui'
+import { usePageTitle } from '@afterdark/ui'
 
 export const Route = createFileRoute('/_app/events/$documentId/edit')({
   component: EventEditPage,
@@ -13,38 +16,27 @@ export const Route = createFileRoute('/_app/events/$documentId/edit')({
 function EventEditPage() {
   const { documentId } = Route.useParams()
   const { t } = useTranslation('events')
-  const { data: event, isLoading, isError, error } = useEvent(documentId)
+  const { data: event, isLoading, isError, error, refetch, isFetching } = useEvent(documentId)
   usePageTitle('events', 'form.editMetaTitle')
 
   if (isLoading) {
-    return (
-      <div className="rounded-xl border border-hairline bg-surface-container-low px-6 py-12 text-center">
-        <p className="text-sm text-ink-muted">{t('form.loading')}</p>
-      </div>
-    )
+    return <EventEditLoadingView />
   }
 
   if (isError) {
     return (
-      <div className="rounded-xl border border-dashed border-error/40 bg-error-container/20 px-6 py-12 text-center">
-        <p className="font-heading text-base font-semibold text-ink">{t('form.loadErrorTitle')}</p>
-        <p className="mx-auto mt-2 max-w-sm text-sm text-ink-muted">
-          {error instanceof Error ? error.message : t('form.loadErrorFallback')}
-        </p>
-      </div>
+      <EventEditErrorView
+        message={error instanceof Error ? error.message : t('form.loadErrorFallback')}
+        onRetry={() => {
+          void refetch()
+        }}
+        isRetrying={isFetching}
+      />
     )
   }
 
   if (!event) {
-    return (
-      <PageLayout title={t('form.notFoundTitle')} description={t('form.notFoundDescription')}>
-        <div>
-          <Button asChild variant="outline">
-            <Link to={DASHBOARD_ROUTES.events()}>{t('form.back')}</Link>
-          </Button>
-        </div>
-      </PageLayout>
-    )
+    return <EventEditNotFoundView />
   }
 
   return <EventEditView event={event} />
