@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
+import { DASHBOARD_URL } from '@afterdark/common'
 import { cn } from '@afterdark/ui'
 import { handleSectionNavClick } from '../utils/scroll-to-section.utils'
 
@@ -76,7 +77,17 @@ export function LandingFooter() {
       <div className={cn(SHELL, 'py-12 sm:py-14')}>
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-12 lg:gap-12">
           <div className="lg:col-span-5">
-            <p className="font-display text-lg font-bold tracking-tight">{t('nav.brand')}</p>
+            <div className="flex items-center gap-2">
+              <img
+                src="/landing/logo.png"
+                alt=""
+                aria-hidden="true"
+                className="size-12 object-contain"
+              />
+              <span className="font-display text-lg font-bold tracking-tight">
+                {t('nav.brand')}
+              </span>
+            </div>
             <p className="mt-2 max-w-sm text-sm leading-relaxed text-on-surface-variant">
               {t('footer.tagline')}
             </p>
@@ -101,6 +112,14 @@ export function LandingFooter() {
                   </a>
                 </li>
               ))}
+              <li>
+                <a
+                  href={DASHBOARD_URL}
+                  className="inline-flex min-h-10 items-center font-label text-sm text-on-surface-variant transition-colors duration-(--duration-fast) ease-emphasized hover:text-on-surface focus-visible:rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink"
+                >
+                  {t('footer.publish')}
+                </a>
+              </li>
             </ul>
           </nav>
 

@@ -1,8 +1,8 @@
 {
-  "appName": "afterdark",
-  "appNameDisplay": "Afterdark",
-  "appNameUpper": "AFTERDARK",
-  "appNameAdmin": "afterdark Admin",
+  "appName": "EventFlow",
+  "appNameDisplay": "EventFlow",
+  "appNameUpper": "EVENTFLOW",
+  "appNameAdmin": "EventFlow Admin",
   "save": "Guardar",
   "cancel": "Cancelar",
   "delete": "Eliminar",

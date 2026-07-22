@@ -31,6 +31,7 @@
 | 024 | `owner-ticket-sales`               | Ventas de tickets (historial dueño)       | `approved`    | `api`, `dashboard`                                      | Sidebar “Ventas”: listado de compras (comprador, fecha, evento, ticket…). Depende de tickets/orders. Ver `spec/features/024-owner-ticket-sales/`.                                                                                                                                                                                                                                                                                            |
 | 025 | `orm-settings`                     | Configuración del ORM (Drizzle)           | `done`        | `db`                                                    | Prefijo `timestamp` en migraciones nuevas (`drizzle.config.ts`); existentes `0000`…`0020` intactas. Ver `spec/features/025-orm-settings/`.                                                                                                                                                                                                                                                                                                   |
 | 026 | `event-create-edit-page`           | Crear/editar evento en pantalla (wizard)  | `approved`    | `api`, `dashboard`                                      | Wizard 2 steps (ubicación → datos evento); create + edit; imágenes evento opcionales (máx. 2) y límite 4 en ubicación. Depende de `002`/`010`. Reemplaza `011`.                                                                                                                                                                                                                                                                              |
+| 027 | `dashboard-landing`                | Landing del dashboard                     | `draft`       | `dashboard`                                             | Landing pública de marketing para dueños de clubes (pre-login) en la ruta `/` del dashboard: explica el producto e invita a crear cuenta / iniciar sesión. Estilo `023-web-landing`, orientada al negocio. Depende de `001`. Ver `spec/features/027-dashboard-landing/`.                                                                                                                                                                      |
 
 ## Status
 
@@ -57,7 +58,6 @@
 010-location-create-edit-page →  requiere 002
 011-events-management                →  (eliminada; ver 026)
 012-ticket-form-event-and-sale-dates →  requiere 026 (antes 011)
-026-event-create-edit-page           →  requiere 002, 010
 013-language-switcher                →  requiere 004 (settings del dueño)
 014-staff-settings                   →  requiere 004 (módulo settings), 003 (modelo de datos staff)
 015-files-module                     →  (sin deps; infra transversal)
@@ -72,6 +72,8 @@
 023-web-landing                      →  requiere 001 (auth-sessions)
 024-owner-ticket-sales               →  requiere 006 (tickets), orders/tickets_sold
 025-orm-settings                     →  (sin deps; infra DX en packages/db)
+026-event-create-edit-page           →  requiere 002, 010
+027-dashboard-landing                →  requiere 001 (auth-sessions); referencia 023 (web-landing)
 ```
 
 ## Decisiones de prioridad

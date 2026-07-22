@@ -1,7 +1,7 @@
 import { useEffect, useState, type MouseEvent } from 'react'
 import { Menu } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
-import { getCookieSync } from '@afterdark/common'
+import { DASHBOARD_URL, getCookieSync } from '@afterdark/common'
 import {
   Avatar,
   AvatarFallback,
@@ -76,9 +76,17 @@ export function LandingHeader() {
           <a
             href="#inicio"
             onClick={(event) => handleSectionNavClick(event, '#inicio')}
-            className="shrink-0 font-display text-sm font-bold tracking-tight text-on-surface transition-colors duration-(--duration-instant) ease-emphasized hover:text-primary focus-visible:rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink sm:text-base"
+            className="flex shrink-0 items-center gap-2 rounded-full text-on-surface transition-colors duration-(--duration-instant) ease-emphasized hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink"
           >
-            {t('nav.brand')}
+            <img
+              src="/landing/logo.png"
+              alt=""
+              aria-hidden="true"
+              className="size-10 object-contain"
+            />
+            <span className="font-display text-sm font-bold tracking-tight sm:text-base">
+              {t('nav.brand')}
+            </span>
           </a>
 
           <nav aria-label={t('nav.ariaLabel')} className="hidden items-center gap-0.5 md:flex">
@@ -103,6 +111,9 @@ export function LandingHeader() {
                 </a>
               ))
             )}
+            <a href={DASHBOARD_URL} className={cn(NAV_LINK, 'rounded-full px-2.5 text-on-surface')}>
+              {t('nav.publish')}
+            </a>
           </nav>
 
           <div className="flex shrink-0 items-center gap-1 sm:gap-2">
@@ -163,7 +174,13 @@ export function LandingHeader() {
                 className="flex h-full w-[min(100%,20rem)] flex-col border-hairline/50 bg-background p-0 text-on-surface"
               >
                 <SheetHeader className="border-b border-hairline/40 px-5 py-5 text-left">
-                  <SheetTitle className="font-display text-lg font-bold tracking-tight">
+                  <SheetTitle className="flex items-center gap-2 font-display text-lg font-bold tracking-tight">
+                    <img
+                      src="/landing/logo.png"
+                      alt=""
+                      aria-hidden="true"
+                      className="size-10 object-contain"
+                    />
                     {t('nav.brand')}
                   </SheetTitle>
                 </SheetHeader>
@@ -199,6 +216,13 @@ export function LandingHeader() {
                       </a>
                     ))
                   )}
+                  <a
+                    href={DASHBOARD_URL}
+                    onClick={() => setMenuOpen(false)}
+                    className={MOBILE_LINK}
+                  >
+                    {t('nav.publish')}
+                  </a>
                 </nav>
 
                 {showAuthCtas ? (
