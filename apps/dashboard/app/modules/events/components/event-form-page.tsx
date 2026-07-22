@@ -4,6 +4,7 @@ import { useNavigate } from '@tanstack/react-router'
 import type { EventResponse } from '@afterdark/types'
 import { parseEventFormToCreateInput, parseEventFormToUpdateInput } from '@afterdark/validators'
 import { Button, toast } from '@afterdark/ui'
+import { FormPageActions } from '~/modules/common/components/form-page-actions'
 import { EventUnsavedChangesDialog } from '~/modules/events/components/event-unsaved-changes-dialog'
 import { EventFormPageLayout } from '~/modules/events/components/event-form-page-layout'
 import { EventFormErrorAlert } from '~/modules/events/components/event-form-error-alert'
@@ -49,6 +50,7 @@ function buildDetailsDefaults(event?: EventResponse): EventDetailsValues {
 
 export function EventFormPage({ mode, title, description, event }: EventFormPageProps) {
   const { t } = useTranslation('events')
+  const { t: tCommon } = useTranslation('common')
   const navigate = useNavigate()
   const isCreate = mode === EVENT_FORM_MODE.CREATE
 
@@ -129,7 +131,7 @@ export function EventFormPage({ mode, title, description, event }: EventFormPage
   }
 
   const handleDetailsDirty = (dirty: boolean) => {
-    if (dirty) setDetailsDirty(true)
+    setDetailsDirty(dirty)
   }
 
   const handleSubmit = async () => {
@@ -190,7 +192,7 @@ export function EventFormPage({ mode, title, description, event }: EventFormPage
 
   useEffect(() => {
     keyboardActionRef.current = () => {
-      if (unsavedOpen || isSubmitting || !canSubmit) return
+      if (unsavedOpen || isSubmitting || !canSubmit || !anyDirty) return
       void handleSubmit()
     }
   })
@@ -208,30 +210,28 @@ export function EventFormPage({ mode, title, description, event }: EventFormPage
   }, [])
 
   const footer = (
-    <>
+    <FormPageActions
+      isDirty={anyDirty}
+      isSaving={isSubmitting}
+      dirtyLabel={tCommon('formActions.dirty')}
+      cleanLabel={tCommon('formActions.clean')}
+      cancelLabel={t('form.cancel')}
+      onCancel={() => requestLeave(goToList)}
+      cancelDisabled={isSubmitting}
+    >
       <Button
         type="button"
-        variant="outline"
-        size="default"
-        className="min-w-36 sm:min-w-40"
-        disabled={isSubmitting}
-        onClick={() => requestLeave(goToList)}
-      >
-        {t('form.cancel')}
-      </Button>
-      <Button
-        type="button"
-        size="default"
-        className="min-w-36 sm:min-w-40"
+        variant={anyDirty ? 'default' : 'outline'}
+        className="w-full sm:w-auto"
         loading={isSubmitting}
-        disabled={!canSubmit}
+        disabled={!canSubmit || isSubmitting || !anyDirty}
         onClick={() => {
           void handleSubmit()
         }}
       >
         {isCreate ? t('form.submitCreate') : t('form.submitEdit')}
       </Button>
-    </>
+    </FormPageActions>
   )
 
   return (

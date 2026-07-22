@@ -45,12 +45,16 @@ type TicketFormSubmitButtonProps = {
   mode: TicketFormMode
   isSubmitting: boolean
   className?: string
+  disabled?: boolean
+  variant?: 'default' | 'outline'
 }
 
 export function TicketFormSubmitButton({
   mode,
   isSubmitting,
   className,
+  disabled = false,
+  variant = 'default',
 }: TicketFormSubmitButtonProps) {
   const { t } = useTranslation('tickets')
   const isEdit = mode === TICKET_FORM_MODE.EDIT
@@ -59,9 +63,10 @@ export function TicketFormSubmitButton({
     <Button
       type="submit"
       form={TICKET_FORM_ID}
-      size="default"
+      variant={variant}
       loading={isSubmitting}
-      className={cn('min-w-36 sm:min-w-40', className)}
+      disabled={disabled || isSubmitting}
+      className={cn('w-full sm:w-auto', className)}
     >
       {isSubmitting
         ? isEdit
@@ -123,6 +128,20 @@ function sanitizePrice(value: string): string {
   return value.replace(/[^\d.,]/g, '')
 }
 
+function TicketFormDirtyReporter({
+  isDirty,
+  onDirtyChange,
+}: {
+  isDirty: boolean
+  onDirtyChange?: (isDirty: boolean) => void
+}) {
+  useEffect(() => {
+    onDirtyChange?.(isDirty)
+  }, [isDirty, onDirtyChange])
+
+  return null
+}
+
 type TicketFormFooterState = {
   isSubmitting: boolean
 }
@@ -135,6 +154,7 @@ type TicketFormProps = {
   bodyClassName?: string
   renderFooter?: (state: TicketFormFooterState) => React.ReactNode
   onSubmittingChange?: (isSubmitting: boolean) => void
+  onDirtyChange?: (isDirty: boolean) => void
 }
 
 export function TicketForm({
@@ -145,6 +165,7 @@ export function TicketForm({
   bodyClassName,
   renderFooter,
   onSubmittingChange,
+  onDirtyChange,
 }: TicketFormProps) {
   const { t } = useTranslation('tickets')
   const { t: tCommon } = useTranslation('common')
@@ -206,6 +227,9 @@ export function TicketForm({
 
   return (
     <>
+      <form.Subscribe selector={(state) => state.isDirty}>
+        {(isDirty) => <TicketFormDirtyReporter isDirty={isDirty} onDirtyChange={onDirtyChange} />}
+      </form.Subscribe>
       <div className={bodyClassName ?? DEFAULT_TICKET_FORM_BODY_CLASS}>
         <form
           id={TICKET_FORM_ID}

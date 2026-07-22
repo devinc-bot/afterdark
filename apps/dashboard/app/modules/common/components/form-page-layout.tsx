@@ -64,9 +64,7 @@ export function FormPageLayout({
         >
           <div className="mx-auto w-full max-w-6xl px-4 py-4 sm:px-8">
             {footerBanner ? <div className="mb-3">{footerBanner}</div> : null}
-            {footer ? (
-              <div className="flex flex-col gap-3 sm:flex-row sm:justify-end">{footer}</div>
-            ) : null}
+            {footer}
           </div>
         </footer>
       ) : null}

@@ -16,7 +16,7 @@
       "save": "Guardar cambios",
       "discard": "Descartar cambios",
       "dirty": "Hay cambios sin guardar.",
-      "clean": "Todo al día.",
+      "clean": "No hay cambios",
       "confirmLeave": "Tenés cambios sin guardar. ¿Salir de todas formas?"
     },
     "messages": {

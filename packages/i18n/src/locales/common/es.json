@@ -42,5 +42,9 @@
   "all": "Todos",
   "none": "Ninguno",
   "or": "o",
-  "and": "y"
+  "and": "y",
+  "formActions": {
+    "dirty": "Hay cambios sin guardar.",
+    "clean": "No hay cambios"
+  }
 }

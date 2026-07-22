@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from '@tanstack/react-router'
-import { Button } from '@afterdark/ui'
+import { FormPageActions } from '~/modules/common/components/form-page-actions'
 import { DASHBOARD_ROUTES } from '~/modules/common/constants/routes'
 import { FormPageLayout } from '~/modules/common/components/form-page-layout'
 import {
@@ -12,8 +12,10 @@ import {
 
 export function TicketCreateView() {
   const { t } = useTranslation('tickets')
+  const { t: tCommon } = useTranslation('common')
   const navigate = useNavigate()
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isDirty, setIsDirty] = useState(false)
 
   const goToList = useCallback(() => {
     void navigate({ to: DASHBOARD_ROUTES.tickets() })
@@ -26,19 +28,22 @@ export function TicketCreateView() {
       backLabel={t('createPage.back')}
       onBack={goToList}
       footer={
-        <>
-          <Button
-            type="button"
-            variant="outline"
-            size="default"
-            disabled={isSubmitting}
-            className="min-w-36 sm:min-w-40"
-            onClick={goToList}
-          >
-            {t('form.cancel')}
-          </Button>
-          <TicketFormSubmitButton mode={TICKET_FORM_MODE.CREATE} isSubmitting={isSubmitting} />
-        </>
+        <FormPageActions
+          isDirty={isDirty}
+          isSaving={isSubmitting}
+          dirtyLabel={tCommon('formActions.dirty')}
+          cleanLabel={tCommon('formActions.clean')}
+          cancelLabel={t('form.cancel')}
+          onCancel={goToList}
+          cancelDisabled={isSubmitting}
+        >
+          <TicketFormSubmitButton
+            mode={TICKET_FORM_MODE.CREATE}
+            isSubmitting={isSubmitting}
+            disabled={!isDirty}
+            variant={isDirty ? 'default' : 'outline'}
+          />
+        </FormPageActions>
       }
     >
       <TicketForm
@@ -47,6 +52,7 @@ export function TicketCreateView() {
         bodyClassName=""
         renderFooter={() => null}
         onSubmittingChange={setIsSubmitting}
+        onDirtyChange={setIsDirty}
       />
     </FormPageLayout>
   )

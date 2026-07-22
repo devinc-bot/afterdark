@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from '@tanstack/react-router'
 import type { TicketResponse } from '@afterdark/types'
-import { Button } from '@afterdark/ui'
+import { FormPageActions } from '~/modules/common/components/form-page-actions'
 import { DASHBOARD_ROUTES } from '~/modules/common/constants/routes'
 import { FormPageLayout } from '~/modules/common/components/form-page-layout'
 import {
@@ -93,8 +93,10 @@ export function TicketEditNotFoundView() {
 
 export function TicketEditView({ ticket }: TicketEditViewProps) {
   const { t } = useTranslation('tickets')
+  const { t: tCommon } = useTranslation('common')
   const goToList = useGoToTicketsList()
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isDirty, setIsDirty] = useState(false)
 
   return (
     <FormPageLayout
@@ -103,19 +105,22 @@ export function TicketEditView({ ticket }: TicketEditViewProps) {
       backLabel={t('editPage.back')}
       onBack={goToList}
       footer={
-        <>
-          <Button
-            type="button"
-            variant="outline"
-            size="default"
-            disabled={isSubmitting}
-            className="min-w-36 sm:min-w-40"
-            onClick={goToList}
-          >
-            {t('form.cancel')}
-          </Button>
-          <TicketFormSubmitButton mode={TICKET_FORM_MODE.EDIT} isSubmitting={isSubmitting} />
-        </>
+        <FormPageActions
+          isDirty={isDirty}
+          isSaving={isSubmitting}
+          dirtyLabel={tCommon('formActions.dirty')}
+          cleanLabel={tCommon('formActions.clean')}
+          cancelLabel={t('form.cancel')}
+          onCancel={goToList}
+          cancelDisabled={isSubmitting}
+        >
+          <TicketFormSubmitButton
+            mode={TICKET_FORM_MODE.EDIT}
+            isSubmitting={isSubmitting}
+            disabled={!isDirty}
+            variant={isDirty ? 'default' : 'outline'}
+          />
+        </FormPageActions>
       }
     >
       <TicketForm
@@ -127,6 +132,7 @@ export function TicketEditView({ ticket }: TicketEditViewProps) {
         bodyClassName=""
         renderFooter={() => null}
         onSubmittingChange={setIsSubmitting}
+        onDirtyChange={setIsDirty}
       />
     </FormPageLayout>
   )

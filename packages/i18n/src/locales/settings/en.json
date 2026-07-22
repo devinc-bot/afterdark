@@ -16,7 +16,7 @@
       "save": "Save changes",
       "discard": "Discard changes",
       "dirty": "You have unsaved changes.",
-      "clean": "All caught up.",
+      "clean": "No changes",
       "confirmLeave": "You have unsaved changes. Leave anyway?"
     },
     "messages": {
