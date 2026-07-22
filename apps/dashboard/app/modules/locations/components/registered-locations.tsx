@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from '@tanstack/react-router'
 import type { LocationResponse } from '@afterdark/types'
 import { Button, toast } from '@afterdark/ui'
-import { Plus } from 'lucide-react'
+import { MapPinPlus } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { LocationRemoveDialog } from '~/modules/locations/components/dialog-remove'
 import {
@@ -89,13 +89,11 @@ export function RegisteredLocations() {
             </p>
           </div>
 
-          <Button
-            asChild
-            type="button"
-            className="w-full shrink-0 sm:w-auto"
-            iconLeft={<Plus aria-hidden="true" />}
-          >
-            <Link to={DASHBOARD_ROUTES.locationsNew()}>{t('registry.addLocation')}</Link>
+          <Button asChild type="button" className="w-full shrink-0 sm:w-auto">
+            <Link to={DASHBOARD_ROUTES.locationsNew()}>
+              <MapPinPlus aria-hidden="true" />
+              {t('registry.addLocation')}
+            </Link>
           </Button>
         </header>
 
@@ -125,8 +123,11 @@ export function RegisteredLocations() {
                 {t('registry.emptyDescription')}
               </p>
             </div>
-            <Button asChild type="button" iconLeft={<Plus aria-hidden="true" />}>
-              <Link to={DASHBOARD_ROUTES.locationsNew()}>{t('registry.addLocation')}</Link>
+            <Button asChild type="button">
+              <Link to={DASHBOARD_ROUTES.locationsNew()}>
+                <MapPinPlus aria-hidden="true" />
+                {t('registry.addLocation')}
+              </Link>
             </Button>
           </div>
         ) : (

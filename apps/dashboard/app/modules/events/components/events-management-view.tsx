@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useNavigate } from '@tanstack/react-router'
 import { Button, toast } from '@afterdark/ui'
+import { CalendarPlus } from 'lucide-react'
 import { EventRemoveDialog } from '~/modules/events/components/dialog-remove-event'
 import {
   type EventRecordItem,
@@ -89,7 +90,10 @@ export function EventsManagementView() {
         onRetry={() => void refetch()}
         headerAction={
           <Button asChild className="w-full shrink-0 sm:w-auto">
-            <Link to={DASHBOARD_ROUTES.eventsNew()}>{t('form.trigger')}</Link>
+            <Link to={DASHBOARD_ROUTES.eventsNew()}>
+              <CalendarPlus aria-hidden="true" />
+              {t('form.trigger')}
+            </Link>
           </Button>
         }
       />
