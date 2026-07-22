@@ -16,14 +16,15 @@ import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as AppIndexRouteImport } from './routes/_app/index'
 import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
-import { Route as AppTicketsRouteImport } from './routes/_app/tickets'
 import { Route as AppStaffRouteImport } from './routes/_app/staff'
 import { Route as AppSettingsRouteImport } from './routes/_app/settings'
 import { Route as AppSalesRouteImport } from './routes/_app/sales'
 import { Route as AppDashboardRouteImport } from './routes/_app/dashboard'
 import { Route as NameTokenRouteImport } from './routes/$name.$token'
+import { Route as AppTicketsIndexRouteImport } from './routes/_app/tickets/index'
 import { Route as AppLocationsIndexRouteImport } from './routes/_app/locations/index'
 import { Route as AppEventsIndexRouteImport } from './routes/_app/events/index'
+import { Route as AppTicketsNewRouteImport } from './routes/_app/tickets/new'
 import { Route as AppLocationsNewRouteImport } from './routes/_app/locations/new'
 import { Route as AppEventsNewRouteImport } from './routes/_app/events/new'
 import { Route as AppLocationsDocumentIdEditRouteImport } from './routes/_app/locations/$documentId/edit'
@@ -63,11 +64,6 @@ const AuthCallbackRoute = AuthCallbackRouteImport.update({
   path: '/auth/callback',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AppTicketsRoute = AppTicketsRouteImport.update({
-  id: '/tickets',
-  path: '/tickets',
-  getParentRoute: () => AppRoute,
-} as any)
 const AppStaffRoute = AppStaffRouteImport.update({
   id: '/staff',
   path: '/staff',
@@ -93,6 +89,11 @@ const NameTokenRoute = NameTokenRouteImport.update({
   path: '/$name/$token',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppTicketsIndexRoute = AppTicketsIndexRouteImport.update({
+  id: '/tickets/',
+  path: '/tickets/',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppLocationsIndexRoute = AppLocationsIndexRouteImport.update({
   id: '/locations/',
   path: '/locations/',
@@ -101,6 +102,11 @@ const AppLocationsIndexRoute = AppLocationsIndexRouteImport.update({
 const AppEventsIndexRoute = AppEventsIndexRouteImport.update({
   id: '/events/',
   path: '/events/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppTicketsNewRoute = AppTicketsNewRouteImport.update({
+  id: '/tickets/new',
+  path: '/tickets/new',
   getParentRoute: () => AppRoute,
 } as any)
 const AppLocationsNewRoute = AppLocationsNewRouteImport.update({
@@ -136,12 +142,13 @@ export interface FileRoutesByFullPath {
   '/sales': typeof AppSalesRoute
   '/settings': typeof AppSettingsRoute
   '/staff': typeof AppStaffRoute
-  '/tickets': typeof AppTicketsRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/events/new': typeof AppEventsNewRoute
   '/locations/new': typeof AppLocationsNewRoute
+  '/tickets/new': typeof AppTicketsNewRoute
   '/events/': typeof AppEventsIndexRoute
   '/locations/': typeof AppLocationsIndexRoute
+  '/tickets/': typeof AppTicketsIndexRoute
   '/events/$documentId/edit': typeof AppEventsDocumentIdEditRoute
   '/locations/$documentId/edit': typeof AppLocationsDocumentIdEditRoute
 }
@@ -155,13 +162,14 @@ export interface FileRoutesByTo {
   '/sales': typeof AppSalesRoute
   '/settings': typeof AppSettingsRoute
   '/staff': typeof AppStaffRoute
-  '/tickets': typeof AppTicketsRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/': typeof AppIndexRoute
   '/events/new': typeof AppEventsNewRoute
   '/locations/new': typeof AppLocationsNewRoute
+  '/tickets/new': typeof AppTicketsNewRoute
   '/events': typeof AppEventsIndexRoute
   '/locations': typeof AppLocationsIndexRoute
+  '/tickets': typeof AppTicketsIndexRoute
   '/events/$documentId/edit': typeof AppEventsDocumentIdEditRoute
   '/locations/$documentId/edit': typeof AppLocationsDocumentIdEditRoute
 }
@@ -177,13 +185,14 @@ export interface FileRoutesById {
   '/_app/sales': typeof AppSalesRoute
   '/_app/settings': typeof AppSettingsRoute
   '/_app/staff': typeof AppStaffRoute
-  '/_app/tickets': typeof AppTicketsRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/_app/': typeof AppIndexRoute
   '/_app/events/new': typeof AppEventsNewRoute
   '/_app/locations/new': typeof AppLocationsNewRoute
+  '/_app/tickets/new': typeof AppTicketsNewRoute
   '/_app/events/': typeof AppEventsIndexRoute
   '/_app/locations/': typeof AppLocationsIndexRoute
+  '/_app/tickets/': typeof AppTicketsIndexRoute
   '/_app/events/$documentId/edit': typeof AppEventsDocumentIdEditRoute
   '/_app/locations/$documentId/edit': typeof AppLocationsDocumentIdEditRoute
 }
@@ -200,12 +209,13 @@ export interface FileRouteTypes {
     | '/sales'
     | '/settings'
     | '/staff'
-    | '/tickets'
     | '/auth/callback'
     | '/events/new'
     | '/locations/new'
+    | '/tickets/new'
     | '/events/'
     | '/locations/'
+    | '/tickets/'
     | '/events/$documentId/edit'
     | '/locations/$documentId/edit'
   fileRoutesByTo: FileRoutesByTo
@@ -219,13 +229,14 @@ export interface FileRouteTypes {
     | '/sales'
     | '/settings'
     | '/staff'
-    | '/tickets'
     | '/auth/callback'
     | '/'
     | '/events/new'
     | '/locations/new'
+    | '/tickets/new'
     | '/events'
     | '/locations'
+    | '/tickets'
     | '/events/$documentId/edit'
     | '/locations/$documentId/edit'
   id:
@@ -240,13 +251,14 @@ export interface FileRouteTypes {
     | '/_app/sales'
     | '/_app/settings'
     | '/_app/staff'
-    | '/_app/tickets'
     | '/auth/callback'
     | '/_app/'
     | '/_app/events/new'
     | '/_app/locations/new'
+    | '/_app/tickets/new'
     | '/_app/events/'
     | '/_app/locations/'
+    | '/_app/tickets/'
     | '/_app/events/$documentId/edit'
     | '/_app/locations/$documentId/edit'
   fileRoutesById: FileRoutesById
@@ -312,13 +324,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthCallbackRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_app/tickets': {
-      id: '/_app/tickets'
-      path: '/tickets'
-      fullPath: '/tickets'
-      preLoaderRoute: typeof AppTicketsRouteImport
-      parentRoute: typeof AppRoute
-    }
     '/_app/staff': {
       id: '/_app/staff'
       path: '/staff'
@@ -354,6 +359,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NameTokenRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_app/tickets/': {
+      id: '/_app/tickets/'
+      path: '/tickets'
+      fullPath: '/tickets/'
+      preLoaderRoute: typeof AppTicketsIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/locations/': {
       id: '/_app/locations/'
       path: '/locations'
@@ -366,6 +378,13 @@ declare module '@tanstack/react-router' {
       path: '/events'
       fullPath: '/events/'
       preLoaderRoute: typeof AppEventsIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/tickets/new': {
+      id: '/_app/tickets/new'
+      path: '/tickets/new'
+      fullPath: '/tickets/new'
+      preLoaderRoute: typeof AppTicketsNewRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/locations/new': {
@@ -404,12 +423,13 @@ interface AppRouteChildren {
   AppSalesRoute: typeof AppSalesRoute
   AppSettingsRoute: typeof AppSettingsRoute
   AppStaffRoute: typeof AppStaffRoute
-  AppTicketsRoute: typeof AppTicketsRoute
   AppIndexRoute: typeof AppIndexRoute
   AppEventsNewRoute: typeof AppEventsNewRoute
   AppLocationsNewRoute: typeof AppLocationsNewRoute
+  AppTicketsNewRoute: typeof AppTicketsNewRoute
   AppEventsIndexRoute: typeof AppEventsIndexRoute
   AppLocationsIndexRoute: typeof AppLocationsIndexRoute
+  AppTicketsIndexRoute: typeof AppTicketsIndexRoute
   AppEventsDocumentIdEditRoute: typeof AppEventsDocumentIdEditRoute
   AppLocationsDocumentIdEditRoute: typeof AppLocationsDocumentIdEditRoute
 }
@@ -419,12 +439,13 @@ const AppRouteChildren: AppRouteChildren = {
   AppSalesRoute: AppSalesRoute,
   AppSettingsRoute: AppSettingsRoute,
   AppStaffRoute: AppStaffRoute,
-  AppTicketsRoute: AppTicketsRoute,
   AppIndexRoute: AppIndexRoute,
   AppEventsNewRoute: AppEventsNewRoute,
   AppLocationsNewRoute: AppLocationsNewRoute,
+  AppTicketsNewRoute: AppTicketsNewRoute,
   AppEventsIndexRoute: AppEventsIndexRoute,
   AppLocationsIndexRoute: AppLocationsIndexRoute,
+  AppTicketsIndexRoute: AppTicketsIndexRoute,
   AppEventsDocumentIdEditRoute: AppEventsDocumentIdEditRoute,
   AppLocationsDocumentIdEditRoute: AppLocationsDocumentIdEditRoute,
 }

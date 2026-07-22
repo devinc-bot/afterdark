@@ -55,6 +55,27 @@
       "metaTitle": "Dashboard · {appNameAdmin}",
       "title": "Dashboard",
       "description": "Daily operations summary: clubs, tickets and recent activity.",
+      "onboarding": {
+        "title": "Set up your first event in 3 steps",
+        "description": "First the location, then the event, then the tickets. When you finish each step we take you to the next.",
+        "cta": "Create location",
+        "ctaHint": "Start with step 1. After you save, we take you to the event.",
+        "dismiss": "Hide guide",
+        "steps": {
+          "location": {
+            "title": "Create the location",
+            "description": "Register the club or venue where the event will take place."
+          },
+          "event": {
+            "title": "Create the event",
+            "description": "Set the date, time and details at that location."
+          },
+          "ticket": {
+            "title": "Create the tickets",
+            "description": "Add ticket types, prices and stock so you can start selling."
+          }
+        }
+      },
       "period": {
         "ariaLabel": "Dashboard period",
         "this_week": "This week",

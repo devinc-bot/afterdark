@@ -19,6 +19,12 @@
   "list": {
     "error": "We couldn't load tickets. Try again in a few minutes."
   },
+  "createPage": {
+    "metaTitle": "Create ticket · {appNameAdmin}",
+    "title": "Create ticket",
+    "description": "Last step: add the ticket type, price and stock for your event and start selling.",
+    "back": "Back to tickets"
+  },
   "form": {
     "createTitle": "Create ticket",
     "createDescription": "Set the ticket type, price and stock for an event.",

@@ -49,6 +49,10 @@ export function LocationFormPage({
     navigate({ to: DASHBOARD_ROUTES.locations() })
   }, [navigate])
 
+  const goToEventCreation = useCallback(() => {
+    navigate({ to: DASHBOARD_ROUTES.eventsNew() })
+  }, [navigate])
+
   const requestLeave = useCallback(
     (action: () => void) => {
       leaveActionRef.current = action
@@ -115,7 +119,7 @@ export function LocationFormPage({
           createLocationMutation={createLocationMutation}
           updateLocationMutation={updateLocationMutation}
           onDirtyChange={setIsDirty}
-          onSuccess={goToList}
+          onSuccess={isCreate ? goToEventCreation : goToList}
         />
       </LocationFormPageLayout>
 

@@ -170,7 +170,12 @@ export function EventFormPage({ mode, title, description, event }: EventFormPage
 
       setLocationDirty(false)
       setDetailsDirty(false)
-      goToList()
+
+      if (isCreate) {
+        navigate({ to: DASHBOARD_ROUTES.ticketsNew() })
+      } else {
+        goToList()
+      }
     } catch (error) {
       setSubmitError(
         error instanceof Error && error.message

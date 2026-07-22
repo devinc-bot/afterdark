@@ -11,6 +11,7 @@ import {
 import { useResolveFieldError } from '@afterdark/i18n/client'
 import {
   Button,
+  cn,
   DialogClose,
   DialogFooter,
   DateTimeInput,
@@ -35,6 +36,41 @@ export const TICKET_FORM_MODE = {
 export type TicketFormMode = (typeof TICKET_FORM_MODE)[keyof typeof TICKET_FORM_MODE]
 
 export const TICKET_FORM_ID = 'ticket-form'
+
+const DEFAULT_TICKET_FORM_BODY_CLASS = 'flex-1 overflow-y-auto px-6 py-6 sm:px-8'
+
+type TicketFormSubmitButtonProps = {
+  mode: TicketFormMode
+  isSubmitting: boolean
+  className?: string
+}
+
+export function TicketFormSubmitButton({
+  mode,
+  isSubmitting,
+  className,
+}: TicketFormSubmitButtonProps) {
+  const { t } = useTranslation('tickets')
+  const isEdit = mode === TICKET_FORM_MODE.EDIT
+
+  return (
+    <Button
+      type="submit"
+      form={TICKET_FORM_ID}
+      size="default"
+      loading={isSubmitting}
+      className={cn('min-w-36 sm:min-w-40', className)}
+    >
+      {isSubmitting
+        ? isEdit
+          ? t('form.submittingEdit')
+          : t('form.submittingCreate')
+        : isEdit
+          ? t('form.submitEdit')
+          : t('form.submitCreate')}
+    </Button>
+  )
+}
 
 type EventSelectFieldDisplayInput = {
   isLoading: boolean
@@ -85,14 +121,27 @@ function sanitizePrice(value: string): string {
   return value.replace(/[^\d.,]/g, '')
 }
 
+type TicketFormFooterState = {
+  isSubmitting: boolean
+}
+
 type TicketFormProps = {
   mode: TicketFormMode
   documentId?: string
   defaultValues?: TicketFormValues
   onSuccess: () => void
+  bodyClassName?: string
+  renderFooter?: (state: TicketFormFooterState) => React.ReactNode
 }
 
-export function TicketForm({ mode, documentId, defaultValues, onSuccess }: TicketFormProps) {
+export function TicketForm({
+  mode,
+  documentId,
+  defaultValues,
+  onSuccess,
+  bodyClassName,
+  renderFooter,
+}: TicketFormProps) {
   const { t } = useTranslation('tickets')
   const { t: tCommon } = useTranslation('common')
   const resolveFieldError = useResolveFieldError()
@@ -149,7 +198,7 @@ export function TicketForm({ mode, documentId, defaultValues, onSuccess }: Ticke
 
   return (
     <>
-      <div className="flex-1 overflow-y-auto px-6 py-6 sm:px-8">
+      <div className={bodyClassName ?? DEFAULT_TICKET_FORM_BODY_CLASS}>
         <form
           id={TICKET_FORM_ID}
           noValidate
@@ -434,34 +483,24 @@ export function TicketForm({ mode, documentId, defaultValues, onSuccess }: Ticke
         </form>
       </div>
 
-      <DialogFooter className="mx-0 mb-0 mt-0 shrink-0 flex-col gap-3 border-t border-hairline px-6 py-6 sm:flex-row sm:justify-end sm:px-8">
-        <DialogClose asChild>
-          <Button
-            type="button"
-            variant="outline"
-            size="default"
-            disabled={isSubmitting}
-            className="min-w-36 sm:min-w-40"
-          >
-            {t('form.cancel')}
-          </Button>
-        </DialogClose>
-        <Button
-          type="submit"
-          form={TICKET_FORM_ID}
-          size="default"
-          loading={isSubmitting}
-          className="min-w-36 sm:min-w-40"
-        >
-          {isSubmitting
-            ? isEdit
-              ? t('form.submittingEdit')
-              : t('form.submittingCreate')
-            : isEdit
-              ? t('form.submitEdit')
-              : t('form.submitCreate')}
-        </Button>
-      </DialogFooter>
+      {renderFooter ? (
+        renderFooter({ isSubmitting })
+      ) : (
+        <DialogFooter className="mx-0 mb-0 mt-0 shrink-0 flex-col gap-3 border-t border-hairline px-6 py-6 sm:flex-row sm:justify-end sm:px-8">
+          <DialogClose asChild>
+            <Button
+              type="button"
+              variant="outline"
+              size="default"
+              disabled={isSubmitting}
+              className="min-w-36 sm:min-w-40"
+            >
+              {t('form.cancel')}
+            </Button>
+          </DialogClose>
+          <TicketFormSubmitButton mode={mode} isSubmitting={isSubmitting} />
+        </DialogFooter>
+      )}
     </>
   )
 }

@@ -19,6 +19,12 @@
   "list": {
     "error": "No pudimos cargar los tickets. Intentá de nuevo en unos minutos."
   },
+  "createPage": {
+    "metaTitle": "Crear ticket · {appNameAdmin}",
+    "title": "Crear ticket",
+    "description": "Último paso: cargá el tipo de entrada, precio y stock para tu evento y empezá a vender.",
+    "back": "Volver a tickets"
+  },
   "form": {
     "createTitle": "Crear ticket",
     "createDescription": "Definí el tipo de entrada, precio y stock para un evento.",
