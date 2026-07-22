@@ -42,14 +42,19 @@ export function LandingPage() {
       <main id="contenido">
         <SectionHero showAuthCtas={showAuthCtas}>
           <div className="mt-8 flex flex-wrap items-center gap-3">
-            <Link to={WEB_ROUTES.register()} variant="default" size="lg" className="min-h-11">
+            <Link
+              to={WEB_ROUTES.register()}
+              variant="button"
+              size="lg"
+              className="min-h-11 rounded-full"
+            >
               {t('hero.ctaPrimary')}
             </Link>
             <Link
               to={WEB_ROUTES.login()}
               variant="outline"
               size="lg"
-              className="min-h-11 border-white/20 bg-transparent hover:bg-white/10"
+              className="min-h-11 rounded-full border-white/20 bg-transparent hover:bg-white/10"
             >
               {t('hero.ctaSecondary')}
             </Link>

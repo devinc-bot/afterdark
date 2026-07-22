@@ -140,15 +140,14 @@ export function LandingHeader() {
               <>
                 <Link
                   to={WEB_ROUTES.login()}
-                  variant="ghost"
                   size="sm"
-                  className="hidden min-h-10 rounded-full text-on-surface sm:inline-flex"
+                  className="hidden min-h-10 rounded-full text-on-surface sm:inline-flex hover:text-primary"
                 >
                   {t('nav.login')}
                 </Link>
                 <Link
                   to={WEB_ROUTES.register()}
-                  variant="default"
+                  variant="button"
                   size="sm"
                   className="hidden min-h-10 rounded-full sm:inline-flex"
                 >
@@ -232,7 +231,7 @@ export function LandingHeader() {
                         to={WEB_ROUTES.login()}
                         variant="outline"
                         size="lg"
-                        className="min-h-11 w-full rounded-lg"
+                        className="min-h-11 w-full rounded-lg hover:text-primary"
                       >
                         {t('nav.login')}
                       </Link>
@@ -240,7 +239,7 @@ export function LandingHeader() {
                     <SheetClose asChild>
                       <Link
                         to={WEB_ROUTES.register()}
-                        variant="default"
+                        variant="button"
                         size="lg"
                         className="min-h-11 w-full rounded-lg"
                       >

@@ -9,6 +9,7 @@
     "how": "How it works",
     "clarity": "Clarity",
     "events": "Events",
+    "publish": "Publish",
     "tickets": "Tickets",
     "accountAria": "Account for {name}",
     "openMenu": "Open menu",
@@ -115,6 +116,7 @@
   "footer": {
     "tagline": "Nightlife events, with precision.",
     "explore": "Explore",
+    "publish": "Publish",
     "navAria": "Footer links",
     "madeFor": "Made so you can enjoy an unforgettable night.",
     "rights": "© {year} {appName}",

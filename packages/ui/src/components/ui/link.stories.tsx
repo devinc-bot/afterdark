@@ -10,7 +10,17 @@ const meta = {
   argTypes: {
     variant: {
       control: 'select',
-      options: ['default', 'destructive', 'outline', 'inverse', 'secondary', 'ghost', 'link'],
+      options: [
+        'default',
+        'button',
+        'destructive',
+        'outline',
+        'gradient',
+        'inverse',
+        'secondary',
+        'ghost',
+        'link',
+      ],
     },
     size: {
       control: 'select',
@@ -29,6 +39,14 @@ export const Default: Story = {
   },
 }
 
+export const Button: Story = {
+  args: {
+    to: '/',
+    variant: 'button',
+    children: 'Crear cuenta',
+  },
+}
+
 export const Outline: Story = {
   args: {
     to: '/about',
@@ -40,13 +58,16 @@ export const Outline: Story = {
 export const AsButtonStyle: Story = {
   render: () => (
     <div className="flex flex-wrap gap-3">
-      <Link to="/">Default</Link>
+      <Link to="/" variant="button">
+        Button
+      </Link>
       <Link to="/about" variant="outline">
         Outline
       </Link>
       <Link to="/" variant="ghost">
         Ghost
       </Link>
+      <Link to="/">Default (sin estilo)</Link>
     </div>
   ),
 }
