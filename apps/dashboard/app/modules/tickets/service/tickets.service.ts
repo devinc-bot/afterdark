@@ -37,6 +37,16 @@ export async function fetchTickets(
   }
 }
 
+export async function fetchTicket(documentId: string): Promise<TicketResponse> {
+  try {
+    return await api.get<TicketResponse>(
+      buildApiPath(API_ROUTES.tickets, API_ROUTES.tickets.path.get(documentId))
+    )
+  } catch (error) {
+    throw toApiServiceError(error, i18n.t('tickets:form.errorEditFallback'))
+  }
+}
+
 export async function createTicket(input: CreateTicketInput): Promise<TicketResponse> {
   try {
     return await api.post<TicketResponse>(

@@ -25,6 +25,18 @@
     "description": "Last step: add the ticket type, price and stock for your event and start selling.",
     "back": "Back to tickets"
   },
+  "editPage": {
+    "metaTitle": "Edit ticket · {appNameAdmin}",
+    "title": "Edit ticket",
+    "description": "Update ticket information. Changes apply immediately.",
+    "back": "Back to tickets",
+    "loading": "Loading ticket…",
+    "loadErrorTitle": "We could not load the ticket",
+    "loadErrorFallback": "Try again in a few minutes.",
+    "retry": "Retry",
+    "notFoundTitle": "We could not find the ticket you want to edit.",
+    "notFoundDescription": "The ticket does not exist or you do not have permission to edit it."
+  },
   "form": {
     "createTitle": "Create ticket",
     "createDescription": "Set the ticket type, price and stock for an event.",

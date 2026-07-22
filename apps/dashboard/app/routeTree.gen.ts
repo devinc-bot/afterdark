@@ -27,6 +27,7 @@ import { Route as AppEventsIndexRouteImport } from './routes/_app/events/index'
 import { Route as AppTicketsNewRouteImport } from './routes/_app/tickets/new'
 import { Route as AppLocationsNewRouteImport } from './routes/_app/locations/new'
 import { Route as AppEventsNewRouteImport } from './routes/_app/events/new'
+import { Route as AppTicketsDocumentIdEditRouteImport } from './routes/_app/tickets/$documentId/edit'
 import { Route as AppLocationsDocumentIdEditRouteImport } from './routes/_app/locations/$documentId/edit'
 import { Route as AppEventsDocumentIdEditRouteImport } from './routes/_app/events/$documentId/edit'
 
@@ -119,6 +120,12 @@ const AppEventsNewRoute = AppEventsNewRouteImport.update({
   path: '/events/new',
   getParentRoute: () => AppRoute,
 } as any)
+const AppTicketsDocumentIdEditRoute =
+  AppTicketsDocumentIdEditRouteImport.update({
+    id: '/tickets/$documentId/edit',
+    path: '/tickets/$documentId/edit',
+    getParentRoute: () => AppRoute,
+  } as any)
 const AppLocationsDocumentIdEditRoute =
   AppLocationsDocumentIdEditRouteImport.update({
     id: '/locations/$documentId/edit',
@@ -151,6 +158,7 @@ export interface FileRoutesByFullPath {
   '/tickets/': typeof AppTicketsIndexRoute
   '/events/$documentId/edit': typeof AppEventsDocumentIdEditRoute
   '/locations/$documentId/edit': typeof AppLocationsDocumentIdEditRoute
+  '/tickets/$documentId/edit': typeof AppTicketsDocumentIdEditRoute
 }
 export interface FileRoutesByTo {
   '/forgot-password': typeof ForgotPasswordRoute
@@ -172,6 +180,7 @@ export interface FileRoutesByTo {
   '/tickets': typeof AppTicketsIndexRoute
   '/events/$documentId/edit': typeof AppEventsDocumentIdEditRoute
   '/locations/$documentId/edit': typeof AppLocationsDocumentIdEditRoute
+  '/tickets/$documentId/edit': typeof AppTicketsDocumentIdEditRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -195,6 +204,7 @@ export interface FileRoutesById {
   '/_app/tickets/': typeof AppTicketsIndexRoute
   '/_app/events/$documentId/edit': typeof AppEventsDocumentIdEditRoute
   '/_app/locations/$documentId/edit': typeof AppLocationsDocumentIdEditRoute
+  '/_app/tickets/$documentId/edit': typeof AppTicketsDocumentIdEditRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -218,6 +228,7 @@ export interface FileRouteTypes {
     | '/tickets/'
     | '/events/$documentId/edit'
     | '/locations/$documentId/edit'
+    | '/tickets/$documentId/edit'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/forgot-password'
@@ -239,6 +250,7 @@ export interface FileRouteTypes {
     | '/tickets'
     | '/events/$documentId/edit'
     | '/locations/$documentId/edit'
+    | '/tickets/$documentId/edit'
   id:
     | '__root__'
     | '/_app'
@@ -261,6 +273,7 @@ export interface FileRouteTypes {
     | '/_app/tickets/'
     | '/_app/events/$documentId/edit'
     | '/_app/locations/$documentId/edit'
+    | '/_app/tickets/$documentId/edit'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -401,6 +414,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppEventsNewRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/tickets/$documentId/edit': {
+      id: '/_app/tickets/$documentId/edit'
+      path: '/tickets/$documentId/edit'
+      fullPath: '/tickets/$documentId/edit'
+      preLoaderRoute: typeof AppTicketsDocumentIdEditRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/locations/$documentId/edit': {
       id: '/_app/locations/$documentId/edit'
       path: '/locations/$documentId/edit'
@@ -432,6 +452,7 @@ interface AppRouteChildren {
   AppTicketsIndexRoute: typeof AppTicketsIndexRoute
   AppEventsDocumentIdEditRoute: typeof AppEventsDocumentIdEditRoute
   AppLocationsDocumentIdEditRoute: typeof AppLocationsDocumentIdEditRoute
+  AppTicketsDocumentIdEditRoute: typeof AppTicketsDocumentIdEditRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
@@ -448,6 +469,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppTicketsIndexRoute: AppTicketsIndexRoute,
   AppEventsDocumentIdEditRoute: AppEventsDocumentIdEditRoute,
   AppLocationsDocumentIdEditRoute: AppLocationsDocumentIdEditRoute,
+  AppTicketsDocumentIdEditRoute: AppTicketsDocumentIdEditRoute,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)

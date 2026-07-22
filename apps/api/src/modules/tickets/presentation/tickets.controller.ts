@@ -31,6 +31,7 @@ import { RolesGuard } from '../../common/guards/roles.guard'
 import { ZodValidationPipe } from '../../common/pipes/zod-validation.pipe'
 import { CreateTicketUseCase } from '../application/create-ticket.use-case'
 import { DeleteTicketUseCase } from '../application/delete-ticket.use-case'
+import { GetTicketByDocumentIdUseCase } from '../application/get-ticket-by-document-id.use-case'
 import { ListMyTicketsUseCase } from '../application/list-my-tickets.use-case'
 import { UpdateTicketUseCase } from '../application/update-ticket.use-case'
 
@@ -38,6 +39,8 @@ import { UpdateTicketUseCase } from '../application/update-ticket.use-case'
 export class TicketsController {
   constructor(
     @Inject(ListMyTicketsUseCase) private readonly listMyTicketsUseCase: ListMyTicketsUseCase,
+    @Inject(GetTicketByDocumentIdUseCase)
+    private readonly getTicketByDocumentIdUseCase: GetTicketByDocumentIdUseCase,
     @Inject(CreateTicketUseCase) private readonly createTicketUseCase: CreateTicketUseCase,
     @Inject(UpdateTicketUseCase) private readonly updateTicketUseCase: UpdateTicketUseCase,
     @Inject(DeleteTicketUseCase) private readonly deleteTicketUseCase: DeleteTicketUseCase
@@ -51,6 +54,16 @@ export class TicketsController {
     @Query(new ZodValidationPipe(listTicketsQuerySchema)) query: ListTicketsQueryInput
   ): Promise<PaginatedResponse<TicketResponse>> {
     return this.listMyTicketsUseCase.execute(user.sub, query)
+  }
+
+  @Get(API_ROUTES.tickets.path.get(':documentId'))
+  @Roles([USER_ROLE.OWNER])
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  getByDocumentId(
+    @CurrentUser() user: JwtPayload,
+    @Param('documentId', new ZodValidationPipe(uuidSchema)) documentId: string
+  ): Promise<TicketResponse> {
+    return this.getTicketByDocumentIdUseCase.execute(user.sub, documentId)
   }
 
   @Post(API_ROUTES.tickets.path.create())

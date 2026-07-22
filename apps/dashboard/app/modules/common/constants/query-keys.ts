@@ -5,6 +5,7 @@ export const QUERY_KEYS = {
   staffInvitations: () => ['staff-invitations'] as const,
   tickets: (params?: { page?: number; limit?: number; status?: string }) =>
     ['tickets', params ?? {}] as const,
+  ticket: (documentId: string) => ['ticket', documentId] as const,
   events: (params?: { page?: number; limit?: number }) => ['events', params ?? {}] as const,
   event: (documentId: string) => ['event', documentId] as const,
   ownerSales: (params?: Record<string, unknown>) => ['owner-sales', params ?? {}] as const,

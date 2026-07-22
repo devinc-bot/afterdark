@@ -4,6 +4,7 @@ import { JwtAuthGuard } from '../common/guards/jwt-auth.guard'
 import { RolesGuard } from '../common/guards/roles.guard'
 import { CreateTicketUseCase } from './application/create-ticket.use-case'
 import { DeleteTicketUseCase } from './application/delete-ticket.use-case'
+import { GetTicketByDocumentIdUseCase } from './application/get-ticket-by-document-id.use-case'
 import { ListMyTicketsUseCase } from './application/list-my-tickets.use-case'
 import { UpdateTicketUseCase } from './application/update-ticket.use-case'
 import { TicketsController } from './presentation/tickets.controller'
@@ -13,6 +14,7 @@ import { TicketsController } from './presentation/tickets.controller'
   controllers: [TicketsController],
   providers: [
     ListMyTicketsUseCase,
+    GetTicketByDocumentIdUseCase,
     CreateTicketUseCase,
     UpdateTicketUseCase,
     DeleteTicketUseCase,

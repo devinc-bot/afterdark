@@ -25,6 +25,18 @@
     "description": "Último paso: cargá el tipo de entrada, precio y stock para tu evento y empezá a vender.",
     "back": "Volver a tickets"
   },
+  "editPage": {
+    "metaTitle": "Editar ticket · {appNameAdmin}",
+    "title": "Editar ticket",
+    "description": "Actualizá la información del ticket. Los cambios se reflejan de inmediato.",
+    "back": "Volver a tickets",
+    "loading": "Cargando ticket…",
+    "loadErrorTitle": "No pudimos cargar el ticket",
+    "loadErrorFallback": "Intentá de nuevo en unos minutos.",
+    "retry": "Reintentar",
+    "notFoundTitle": "No encontramos el ticket que querés editar.",
+    "notFoundDescription": "El ticket no existe o no tenés permiso para editarlo."
+  },
   "form": {
     "createTitle": "Crear ticket",
     "createDescription": "Definí el tipo de entrada, precio y stock para un evento.",

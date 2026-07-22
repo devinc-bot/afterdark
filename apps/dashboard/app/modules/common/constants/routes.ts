@@ -9,6 +9,7 @@ export const DASHBOARD_ROUTES = {
   locationsEdit: (documentId: string) => `/locations/${documentId}/edit` as const,
   tickets: () => '/tickets' as const,
   ticketsNew: () => '/tickets/new' as const,
+  ticketsEdit: (documentId: string) => `/tickets/${documentId}/edit` as const,
   events: () => '/events' as const,
   eventsNew: () => '/events/new' as const,
   eventsEdit: (documentId: string) => `/events/${documentId}/edit` as const,
