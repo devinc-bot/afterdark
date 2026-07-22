@@ -2,11 +2,11 @@
 
 > Completar con la entrevista guiada — [INTERVIEW.md](../../INTERVIEW.md). Estado por fase en `progress.md`.
 
-| Campo      | Valor                 |
-| ---------- | --------------------- |
+| Campo      | Valor                   |
+| ---------- | ----------------------- |
 | **ID**     | `027-dashboard-landing` |
-| **Status** | `approved`            |
-| **Apps**   | `dashboard`           |
+| **Status** | `approved`              |
+| **Apps**   | `dashboard`             |
 
 **Depende de:** `001-auth-sessions` (CTAs de login/registro y estado de sesión). Toma `023-web-landing` como referencia de estilo/estructura.
 
@@ -99,33 +99,33 @@ Sin cambios de esquema.
 
 ### UI
 
-| Ruta | Pantalla                                                                 |
-| ---- | ------------------------------------------------------------------------ |
+| Ruta | Pantalla                                                                    |
+| ---- | --------------------------------------------------------------------------- |
 | `/`  | Landing pública del dashboard (redirige a `/dashboard` si hay sesión owner) |
 
 **Estructura de secciones**
 
-| # | Sección        | Contenido                                                                             |
-| - | -------------- | ------------------------------------------------------------------------------------- |
-| 1 | Header         | Logo/marca + link "Iniciar sesión" + botón "Crear cuenta"                             |
-| 2 | Hero           | Titular, subtítulo, CTAs "Crear cuenta" (`/register`) e "Iniciar sesión" (`/login`)   |
-| 3 | Beneficios     | ~4 tarjetas: eventos, entradas, staff, ventas                                         |
-| 4 | Cómo funciona  | 3 pasos: crear club → publicar evento → vender entradas                               |
-| 5 | Prueba social  | Frases de valor / testimonios **cualitativos** (sin números)                          |
-| 6 | FAQ            | ~4 preguntas frecuentes                                                               |
-| 7 | Cierre         | CTA final a "Crear cuenta"                                                            |
-| 8 | Footer         | Marca + links placeholder (legal, contacto, redes)                                    |
+| #   | Sección       | Contenido                                                                           |
+| --- | ------------- | ----------------------------------------------------------------------------------- |
+| 1   | Header        | Logo/marca + link "Iniciar sesión" + botón "Crear cuenta"                           |
+| 2   | Hero          | Titular, subtítulo, CTAs "Crear cuenta" (`/register`) e "Iniciar sesión" (`/login`) |
+| 3   | Beneficios    | ~4 tarjetas: eventos, entradas, staff, ventas                                       |
+| 4   | Cómo funciona | 3 pasos: crear club → publicar evento → vender entradas                             |
+| 5   | Prueba social | Frases de valor / testimonios **cualitativos** (sin números)                        |
+| 6   | FAQ           | ~4 preguntas frecuentes                                                             |
+| 7   | Cierre        | CTA final a "Crear cuenta"                                                          |
+| 8   | Footer        | Marca + links placeholder (legal, contacto, redes)                                  |
 
 **Copy (ES / EN)** — namespace i18n propuesto `dashboardLanding` en `@afterdark/i18n`. Texto final se redacta en implementación; ejemplos:
 
-| Contexto        | ES                                              | EN                                              |
-| --------------- | ----------------------------------------------- | ----------------------------------------------- |
-| Hero — titular  | Gestioná tu club sin perder el ritmo            | Run your club without missing a beat            |
-| Hero — CTA 1    | Crear cuenta                                     | Create account                                  |
-| Hero — CTA 2    | Iniciar sesión                                   | Log in                                          |
-| Beneficios — título | Todo tu negocio nocturno en un panel         | Your whole nightlife business in one panel      |
-| Cómo funciona — título | Empezá en tres pasos                      | Get started in three steps                      |
-| Cierre — CTA    | Crear cuenta                                     | Create account                                  |
+| Contexto               | ES                                   | EN                                         |
+| ---------------------- | ------------------------------------ | ------------------------------------------ |
+| Hero — titular         | Gestioná tu club sin perder el ritmo | Run your club without missing a beat       |
+| Hero — CTA 1           | Crear cuenta                         | Create account                             |
+| Hero — CTA 2           | Iniciar sesión                       | Log in                                     |
+| Beneficios — título    | Todo tu negocio nocturno en un panel | Your whole nightlife business in one panel |
+| Cómo funciona — título | Empezá en tres pasos                 | Get started in three steps                 |
+| Cierre — CTA           | Crear cuenta                         | Create account                             |
 
 ---
 

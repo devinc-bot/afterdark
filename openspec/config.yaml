@@ -47,5 +47,5 @@ rules:
     - New API DB access goes through a repository in packages/db/src/repositories/ (export from index).
     - Note migrations needed (drizzle-kit, timestamp-prefixed) and any i18n keys to add.
   tasks:
-    - "Order tasks incrementally by layer: types/validators → db/migration → API → dashboard/UI → i18n."
-    - "Keep each task independently reviewable; every change must pass oxlint + oxfmt."
+    - 'Order tasks incrementally by layer: types/validators → db/migration → API → dashboard/UI → i18n.'
+    - 'Keep each task independently reviewable; every change must pass oxlint + oxfmt.'

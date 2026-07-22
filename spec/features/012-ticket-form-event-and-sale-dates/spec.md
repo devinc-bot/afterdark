@@ -2,11 +2,11 @@
 
 > Requisitos provistos por el dueño del producto. Estado por fase en `progress.md`.
 
-| Campo          | Valor                                                         |
-| -------------- | ------------------------------------------------------------- |
-| **ID**         | `012-ticket-form-event-and-sale-dates`                        |
-| **Status**     | `approved`                                                    |
-| **Apps**       | `api`, `dashboard`                                            |
+| Campo          | Valor                                                                    |
+| -------------- | ------------------------------------------------------------------------ |
+| **ID**         | `012-ticket-form-event-and-sale-dates`                                   |
+| **Status**     | `approved`                                                               |
+| **Apps**       | `api`, `dashboard`                                                       |
 | **Depende de** | `026-event-create-edit-page` (eventos del dueño en API; reemplaza `011`) |
 
 ---

@@ -1,6 +1,6 @@
 ## 1. API route + get-by-id
 
-- [x] 1.1 Add `get: (documentId: string) => \`/${documentId}\` as const` to `API_ROUTES.tickets.path` in `packages/common/src/config/api-routes.ts` (same shape as events)
+- [x] 1.1 Add `get: (documentId: string) => \`/${documentId}\` as const`to`API_ROUTES.tickets.path`in`packages/common/src/config/api-routes.ts` (same shape as events)
 - [x] 1.2 Add `GetTicketUseCase` in `apps/api` tickets module using `findTicketWithRelationsOwnedByOwner` + existing mapper; wire into `TicketsController` as `GET` by `documentId` (owner-only); register provider in the tickets module
 
 ## 2. Dashboard data layer
@@ -15,7 +15,7 @@
 
 ## 4. Edit page route
 
-- [x] 4.1 Add `ticketsEdit: (documentId: string) => \`/tickets/${documentId}/edit\` as const` to `DASHBOARD_ROUTES`
+- [x] 4.1 Add `ticketsEdit: (documentId: string) => \`/tickets/${documentId}/edit\` as const`to`DASHBOARD_ROUTES`
 - [x] 4.2 Create `TicketEditView` (and loading/error/not-found helpers as needed) mirroring `TicketCreateView` / events edit, wiring `TicketForm` mode EDIT with `onSuccess` → tickets list
 - [x] 4.3 Add route `apps/dashboard/app/routes/_app/tickets/$documentId/edit.tsx` with `createFileRoute('/_app/tickets/$documentId/edit')`, `usePageTitle`, and `useTicket` load states (do not edit `routeTree.gen.ts`)
 - [x] 4.4 In `tickets-management-view.tsx`, navigate edit actions to `/tickets/$documentId/edit`; remove edit dialog state and `TicketEditDialog`

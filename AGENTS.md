@@ -8,15 +8,15 @@ Instructions for AI assistants (Claude Code, Cursor, etc.) working on this proje
 
 Read the relevant doc before making changes:
 
-| Doc                                                                                                  | When to consult                                                       |
-| ---------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- |
-| [openspec/config.yaml](./openspec/config.yaml)                                                       | **Development flow** — OpenSpec project context & per-artifact rules  |
-| [.cursor/rules/spec-interview-before-changes.mdc](./.cursor/rules/spec-interview-before-changes.mdc) | **Antes de cada cambio nuevo** — flujo OpenSpec obligatorio (Cursor)  |
-| [spec/README.md](./spec/README.md)                                                                   | Legacy SDD layout (reference/history; migrate on next touch)          |
-| [ARCHITECTURE.md](./ARCHITECTURE.md)                                                                 | Project structure, modules, routes, layers, packages                  |
-| [STYLEGUIDE.md](./STYLEGUIDE.md)                                                                     | Naming, constants, dependencies, lint/format                          |
-| [DOMAIN.md](./DOMAIN.md)                                                                             | Business context, entities, validation, UI language                   |
-| [packages/db/DATABASE.md](./packages/db/DATABASE.md)                                                 | Schema, migrations, repositories                                      |
+| Doc                                                                                                  | When to consult                                                      |
+| ---------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| [openspec/config.yaml](./openspec/config.yaml)                                                       | **Development flow** — OpenSpec project context & per-artifact rules |
+| [.cursor/rules/spec-interview-before-changes.mdc](./.cursor/rules/spec-interview-before-changes.mdc) | **Antes de cada cambio nuevo** — flujo OpenSpec obligatorio (Cursor) |
+| [spec/README.md](./spec/README.md)                                                                   | Legacy SDD layout (reference/history; migrate on next touch)         |
+| [ARCHITECTURE.md](./ARCHITECTURE.md)                                                                 | Project structure, modules, routes, layers, packages                 |
+| [STYLEGUIDE.md](./STYLEGUIDE.md)                                                                     | Naming, constants, dependencies, lint/format                         |
+| [DOMAIN.md](./DOMAIN.md)                                                                             | Business context, entities, validation, UI language                  |
+| [packages/db/DATABASE.md](./packages/db/DATABASE.md)                                                 | Schema, migrations, repositories                                     |
 
 ---
 

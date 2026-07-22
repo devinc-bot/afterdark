@@ -15,31 +15,31 @@ Sin cambios en `validators`, `types`, `db` ni `api` (feature 100% UI + copy).
 
 ### i18n (`packages/i18n`)
 
-| Archivo                                          | Cambio                                                             |
-| ------------------------------------------------ | ------------------------------------------------------------------ |
-| `src/locales/dashboard-landing/es.json`          | **Nuevo** — copy ES de todas las secciones                        |
-| `src/locales/dashboard-landing/en.json`          | **Nuevo** — copy EN                                               |
-| `src/config/namespaces.ts`                       | Agregar `DASHBOARD_LANDING: 'dashboardLanding'` + a `ALL_NAMESPACES` |
-| `src/loaders/client-loader.ts`                   | Agregar entry `dashboardLanding` al `localeImports`                |
-| `src/loaders/server-loader.ts`                   | Importar es/en + agregar a `SERVER_RESOURCES`                      |
-| `src/types/index.ts`                             | Importar tipo es + agregar a `I18nResources`                       |
+| Archivo                                 | Cambio                                                               |
+| --------------------------------------- | -------------------------------------------------------------------- |
+| `src/locales/dashboard-landing/es.json` | **Nuevo** — copy ES de todas las secciones                           |
+| `src/locales/dashboard-landing/en.json` | **Nuevo** — copy EN                                                  |
+| `src/config/namespaces.ts`              | Agregar `DASHBOARD_LANDING: 'dashboardLanding'` + a `ALL_NAMESPACES` |
+| `src/loaders/client-loader.ts`          | Agregar entry `dashboardLanding` al `localeImports`                  |
+| `src/loaders/server-loader.ts`          | Importar es/en + agregar a `SERVER_RESOURCES`                        |
+| `src/types/index.ts`                    | Importar tipo es + agregar a `I18nResources`                         |
 
 ### dashboard (`apps/dashboard`)
 
-| Archivo                                                        | Cambio                                                            |
-| ------------------------------------------------------------- | ----------------------------------------------------------------- |
-| `app/modules/landing/components/landing-page.tsx`             | **Nuevo** — contenedor que compone header + secciones + footer    |
-| `app/modules/landing/components/landing-header.tsx`           | **Nuevo** — marca + login/registro                               |
-| `app/modules/landing/components/section-hero.tsx`             | **Nuevo**                                                         |
-| `app/modules/landing/components/section-features.tsx`         | **Nuevo** — ~4 beneficios                                        |
-| `app/modules/landing/components/section-how.tsx`              | **Nuevo** — 3 pasos                                              |
-| `app/modules/landing/components/section-social.tsx`           | **Nuevo** — testimonios cualitativos (sin números)              |
-| `app/modules/landing/components/section-faq.tsx`              | **Nuevo** — ~4 preguntas                                        |
-| `app/modules/landing/components/section-cta.tsx`              | **Nuevo** — cierre                                              |
-| `app/modules/landing/components/landing-footer.tsx`           | **Nuevo** — links placeholder                                    |
-| `app/modules/landing/constants/landing-content.ts`            | **Nuevo** — claves de listas (features, steps, testimonios, faq) |
-| `app/routes/index.tsx`                                        | **Nuevo** — ruta pública `/`; `RequireGuest` + `LandingPage`     |
-| `app/routes/_app/index.tsx`                                   | **Eliminar** — evita conflicto de ruta `/`; el redirect a `/dashboard` ya lo cubre `RequireGuest` |
+| Archivo                                               | Cambio                                                                                            |
+| ----------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| `app/modules/landing/components/landing-page.tsx`     | **Nuevo** — contenedor que compone header + secciones + footer                                    |
+| `app/modules/landing/components/landing-header.tsx`   | **Nuevo** — marca + login/registro                                                                |
+| `app/modules/landing/components/section-hero.tsx`     | **Nuevo**                                                                                         |
+| `app/modules/landing/components/section-features.tsx` | **Nuevo** — ~4 beneficios                                                                         |
+| `app/modules/landing/components/section-how.tsx`      | **Nuevo** — 3 pasos                                                                               |
+| `app/modules/landing/components/section-social.tsx`   | **Nuevo** — testimonios cualitativos (sin números)                                                |
+| `app/modules/landing/components/section-faq.tsx`      | **Nuevo** — ~4 preguntas                                                                          |
+| `app/modules/landing/components/section-cta.tsx`      | **Nuevo** — cierre                                                                                |
+| `app/modules/landing/components/landing-footer.tsx`   | **Nuevo** — links placeholder                                                                     |
+| `app/modules/landing/constants/landing-content.ts`    | **Nuevo** — claves de listas (features, steps, testimonios, faq)                                  |
+| `app/routes/index.tsx`                                | **Nuevo** — ruta pública `/`; `RequireGuest` + `LandingPage`                                      |
+| `app/routes/_app/index.tsx`                           | **Eliminar** — evita conflicto de ruta `/`; el redirect a `/dashboard` ya lo cubre `RequireGuest` |
 
 ## Diseño técnico
 
@@ -52,19 +52,19 @@ Sin cambios en `validators`, `types`, `db` ni `api` (feature 100% UI + copy).
 
 ## Riesgos / edge cases
 
-| Caso | Comportamiento esperado |
-| ---- | ----------------------- |
+| Caso                                | Comportamiento esperado                                                |
+| ----------------------------------- | ---------------------------------------------------------------------- |
 | Sesión cargando con token en cookie | `SessionLoading` (sin flash de landing) hasta resolver, luego redirect |
-| Error de red al resolver sesión | `use-session` deja status no autenticado → se muestra landing (guest) |
-| Staff autenticado entra a `/` | Redirect a `/dashboard` (cualquier sesión válida) |
-| Conflicto de ruta `/` | Resuelto al eliminar `_app/index.tsx` |
+| Error de red al resolver sesión     | `use-session` deja status no autenticado → se muestra landing (guest)  |
+| Staff autenticado entra a `/`       | Redirect a `/dashboard` (cualquier sesión válida)                      |
+| Conflicto de ruta `/`               | Resuelto al eliminar `_app/index.tsx`                                  |
 
 ## Verificación manual
 
-| Paso | Resultado esperado |
-| ---- | ------------------ |
-| 1. Sin sesión, ir a `/` | Se ve la landing completa (8 secciones) |
-| 2. Click "Crear cuenta" / "Iniciar sesión" | Navega a `/register` / `/login` |
-| 3. Logueado como dueño, ir a `/` | Redirige a `/dashboard` sin ver landing |
-| 4. Cambiar idioma (EN) | Copy de la landing cambia a inglés |
-| 5. `pnpm type-check` + `pnpm lint` | Sin errores |
+| Paso                                       | Resultado esperado                      |
+| ------------------------------------------ | --------------------------------------- |
+| 1. Sin sesión, ir a `/`                    | Se ve la landing completa (8 secciones) |
+| 2. Click "Crear cuenta" / "Iniciar sesión" | Navega a `/register` / `/login`         |
+| 3. Logueado como dueño, ir a `/`           | Redirige a `/dashboard` sin ver landing |
+| 4. Cambiar idioma (EN)                     | Copy de la landing cambia a inglés      |
+| 5. `pnpm type-check` + `pnpm lint`         | Sin errores                             |

@@ -56,22 +56,22 @@ openspec/
 
 Perfil **expanded** activo (12 workflows). Se escriben en el chat de Cursor.
 
-| Comando | Para qué sirve |
-| --- | --- |
-| `/opsx:explore` | Compañero de análisis sin compromiso: lee el código, sopesa opciones y acota un enfoque antes de proponer nada. Ideal cuando el área es grande o incierta. |
-| `/opsx:propose <slug>` | Crea el cambio completo de una: `proposal.md`, `specs/` (deltas), `design.md` y `tasks.md`. Punto de entrada cuando ya sabés qué querés. |
-| `/opsx:new <slug>` | Crea el cambio vacío/mínimo para irlo llenando artefacto por artefacto (flujo granular, alternativa a `propose`). |
-| `/opsx:continue` | Genera/actualiza el **siguiente** artefacto pendiente del cambio activo, de a uno. |
-| `/opsx:ff` | "Fast-forward": completa todos los artefactos restantes del cambio de una pasada. |
-| `/opsx:apply` | Implementa las tareas de `tasks.md`, marcándolas a medida que avanza. |
-| `/opsx:verify` | Revisa que la implementación cumpla la propuesta/specs antes de archivar. |
-| `/opsx:sync` | Reconcilia specs y artefactos cuando hubo ediciones manuales o quedaron desalineados. |
-| `/opsx:archive` | Cierra el cambio: mergea los deltas a `openspec/specs/` y lo mueve a `changes/archive/`. |
-| `/opsx:bulk-archive` | Archiva varios cambios completados de una vez. |
-| `/opsx:onboard` | Tour guiado: busca una mejora chica y segura y te lleva por todo el ciclo explicando cada paso. |
-| `/opsx:update` | Regenera las instrucciones/comandos del asistente (tras actualizar OpenSpec o cambiar el perfil). |
+| Comando                | Para qué sirve                                                                                                                                             |
+| ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `/opsx:explore`        | Compañero de análisis sin compromiso: lee el código, sopesa opciones y acota un enfoque antes de proponer nada. Ideal cuando el área es grande o incierta. |
+| `/opsx:propose <slug>` | Crea el cambio completo de una: `proposal.md`, `specs/` (deltas), `design.md` y `tasks.md`. Punto de entrada cuando ya sabés qué querés.                   |
+| `/opsx:new <slug>`     | Crea el cambio vacío/mínimo para irlo llenando artefacto por artefacto (flujo granular, alternativa a `propose`).                                          |
+| `/opsx:continue`       | Genera/actualiza el **siguiente** artefacto pendiente del cambio activo, de a uno.                                                                         |
+| `/opsx:ff`             | "Fast-forward": completa todos los artefactos restantes del cambio de una pasada.                                                                          |
+| `/opsx:apply`          | Implementa las tareas de `tasks.md`, marcándolas a medida que avanza.                                                                                      |
+| `/opsx:verify`         | Revisa que la implementación cumpla la propuesta/specs antes de archivar.                                                                                  |
+| `/opsx:sync`           | Reconcilia specs y artefactos cuando hubo ediciones manuales o quedaron desalineados.                                                                      |
+| `/opsx:archive`        | Cierra el cambio: mergea los deltas a `openspec/specs/` y lo mueve a `changes/archive/`.                                                                   |
+| `/opsx:bulk-archive`   | Archiva varios cambios completados de una vez.                                                                                                             |
+| `/opsx:onboard`        | Tour guiado: busca una mejora chica y segura y te lleva por todo el ciclo explicando cada paso.                                                            |
+| `/opsx:update`         | Regenera las instrucciones/comandos del asistente (tras actualizar OpenSpec o cambiar el perfil).                                                          |
 
-**Flujo típico:** `explore` (opcional) → `propose` → *revisar* → `apply` → `verify` → `archive`.
+**Flujo típico:** `explore` (opcional) → `propose` → _revisar_ → `apply` → `verify` → `archive`.
 
 ---
 
@@ -79,19 +79,19 @@ Perfil **expanded** activo (12 workflows). Se escriben en el chat de Cursor.
 
 En la terminal. Los más usados:
 
-| Comando | Para qué sirve |
-| --- | --- |
-| `pnpm openspec list` | Lista los cambios activos. Con `--specs` lista las specs. |
-| `pnpm openspec show <item>` | Muestra un cambio o una spec. |
-| `pnpm openspec view` | Dashboard interactivo de specs y cambios. |
-| `pnpm openspec status` | Estado de completitud de los artefactos de un cambio. |
-| `pnpm openspec validate [item]` | Valida formato de cambios y specs. |
-| `pnpm openspec doctor` | Chequea la salud del root de OpenSpec. |
-| `pnpm openspec context` | Imprime el contexto de trabajo resuelto (lo que "ve" la IA). |
-| `pnpm openspec archive [change]` | Archiva un cambio desde la terminal. |
-| `pnpm openspec config list` | Muestra la config global (perfil, workflows, delivery). |
-| `pnpm openspec update` | Actualiza los archivos de instrucciones del proyecto. |
-| `pnpm openspec --help` | Ayuda general; `pnpm openspec <cmd> --help` para cada subcomando. |
+| Comando                          | Para qué sirve                                                    |
+| -------------------------------- | ----------------------------------------------------------------- |
+| `pnpm openspec list`             | Lista los cambios activos. Con `--specs` lista las specs.         |
+| `pnpm openspec show <item>`      | Muestra un cambio o una spec.                                     |
+| `pnpm openspec view`             | Dashboard interactivo de specs y cambios.                         |
+| `pnpm openspec status`           | Estado de completitud de los artefactos de un cambio.             |
+| `pnpm openspec validate [item]`  | Valida formato de cambios y specs.                                |
+| `pnpm openspec doctor`           | Chequea la salud del root de OpenSpec.                            |
+| `pnpm openspec context`          | Imprime el contexto de trabajo resuelto (lo que "ve" la IA).      |
+| `pnpm openspec archive [change]` | Archiva un cambio desde la terminal.                              |
+| `pnpm openspec config list`      | Muestra la config global (perfil, workflows, delivery).           |
+| `pnpm openspec update`           | Actualiza los archivos de instrucciones del proyecto.             |
+| `pnpm openspec --help`           | Ayuda general; `pnpm openspec <cmd> --help` para cada subcomando. |
 
 > Nota: usá siempre `pnpm openspec ...` (o `pnpm exec openspec ...`); así corre la versión pineada del repo.
 
@@ -101,12 +101,12 @@ En la terminal. Los más usados:
 
 Cada carpeta en `openspec/changes/<slug>/` tiene estos artefactos, que se construyen uno sobre otro:
 
-| Artefacto | Contenido |
-| --- | --- |
-| `proposal.md` | El **por qué** y el **qué**: intención, alcance, *non-goals*, apps/paquetes afectados. |
-| `specs/` | Los **deltas**: requisitos que se agregan/modifican/eliminan, con escenarios Given/When/Then. |
-| `design.md` | El **cómo**: decisiones técnicas, capas, repositories, migraciones, claves i18n. |
-| `tasks.md` | Checklist de implementación (se tilda al aplicar). |
+| Artefacto     | Contenido                                                                                     |
+| ------------- | --------------------------------------------------------------------------------------------- |
+| `proposal.md` | El **por qué** y el **qué**: intención, alcance, _non-goals_, apps/paquetes afectados.        |
+| `specs/`      | Los **deltas**: requisitos que se agregan/modifican/eliminan, con escenarios Given/When/Then. |
+| `design.md`   | El **cómo**: decisiones técnicas, capas, repositories, migraciones, claves i18n.              |
+| `tasks.md`    | Checklist de implementación (se tilda al aplicar).                                            |
 
 ### Deltas: solo lo que cambia
 
@@ -117,19 +117,25 @@ actual. Los deltas se escriben con estas secciones:
 ## ADDED Requirements
 
 ### Requirement: Nombre del requisito
+
 El sistema DEBE ...
 
 #### Scenario: Caso concreto
+
 - GIVEN una precondición
 - WHEN ocurre algo
 - THEN pasa este resultado
 
 ## MODIFIED Requirements
+
 ### Requirement: Requisito existente
+
 (nueva definición que reemplaza a la anterior)
 
 ## REMOVED Requirements
+
 ### Requirement: Requisito viejo
+
 (motivo de la baja)
 ```
 

@@ -18,22 +18,27 @@
 ## Decisions
 
 ### Decision: Mirror events/locations list CTAs
+
 Replace `headerAction={<TicketCreateDialog />}` with a `Button asChild` + `Link` to `DASHBOARD_ROUTES.ticketsNew()`, same as `EventsManagementView`. Edit uses `navigate({ to: '/tickets/$documentId/edit', params: { documentId } })` (string-literal route file; constant only for Link/`to` helpers).
 
 **Alternatives considered:** Keep create as modal and only add a page for guided flow — rejected; user wants one pattern.
 
 ### Decision: Add owner GET ticket by documentId
+
 Implement `GET` under the tickets module (path constant in `API_ROUTES.tickets`), use-case wrapping `findTicketWithRelationsOwnedByOwner`, map with existing tickets mapper. Dashboard: `fetchTicket` + `useTicket(documentId)` like events. Edit route loads via that query (loading / error / not-found), then `TicketEditView` with `TicketForm` mode EDIT.
 
 **Alternatives considered:** Prefill from list cache / router state only — rejected (broken on refresh and across pages). Scan paginated list for the id — rejected (unreliable).
 
 ### Decision: Page shell for edit mirrors `TicketCreateView`
+
 Reuse the create page layout (back link, title, bordered form card, footer cancel/submit via `renderFooter`) rather than inventing a shared `TicketFormPage` in this change unless duplication is painful. Prefer copying the create-view structure into `TicketEditView` for a small diff; optional extract later.
 
 ### Decision: Delete dialogs and unused components
+
 Remove `dialog-create-ticket.tsx` and `dialog-edit-ticket.tsx` after wiring. Leave `dialog-remove-ticket.tsx` and view-ticket dialogs as-is.
 
 ### Decision: i18n
+
 Add `editPage` (or reuse `form.editTitle` / `form.editDescription` + new `editPage.metaTitle` / `back`) in `tickets` es/en, parallel to `createPage`. UI Spanish remains source of truth.
 
 ## Risks / Trade-offs
