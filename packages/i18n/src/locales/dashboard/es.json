@@ -54,7 +54,28 @@
     "panel": {
       "metaTitle": "Panel · {appNameAdmin}",
       "title": "Panel",
-      "description": "Resumen de operaciones del día: clubes, entradas y actividad reciente.",
+      "description": "Resumen de operaciones del día: ubicaciones, entradas y actividad reciente.",
+      "onboarding": {
+        "title": "Configurá tu primer evento en 3 pasos",
+        "description": "Primero la ubicación, después el evento y al final los tickets. Al terminar cada paso te llevamos al siguiente.",
+        "cta": "Crear ubicación",
+        "ctaHint": "Empezá por el paso 1. Al guardar te llevamos al evento.",
+        "dismiss": "Ocultar guía",
+        "steps": {
+          "location": {
+            "title": "Creá la ubicación",
+            "description": "Registrá el club o espacio donde se va a hacer el evento."
+          },
+          "event": {
+            "title": "Creá el evento",
+            "description": "Definí la fecha, el horario y los detalles en esa ubicación."
+          },
+          "ticket": {
+            "title": "Creá los tickets",
+            "description": "Cargá tipos de entrada, precios y stock para empezar a vender."
+          }
+        }
+      },
       "period": {
         "ariaLabel": "Período del panel",
         "this_week": "Esta semana",

@@ -1,7 +1,8 @@
+import { TICKET_SALES_FILTER } from '@afterdark/types'
+
 export const TICKET_SALES_FILTER_OPTION = {
   ALL: 'all',
-  SOLD: 'sold',
-  UNSOLD: 'unsold',
+  ...TICKET_SALES_FILTER,
 } as const
 
 export type TicketSalesFilterOption =

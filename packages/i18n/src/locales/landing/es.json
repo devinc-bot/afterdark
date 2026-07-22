@@ -10,7 +10,6 @@
     "clarity": "Claridad",
     "events": "Eventos",
     "tickets": "Tickets",
-    "publish": "Publicá tu evento",
     "accountAria": "Cuenta de {name}",
     "openMenu": "Abrir menú",
     "mobileAriaLabel": "Menú de navegación"
@@ -24,7 +23,7 @@
   },
   "about": {
     "headline": "La plataforma que deja la noche en claro.",
-    "body": "EventFlow une eventos y público en una sola experiencia: eventos reales, entradas sin ambigüedad y una interfaz que siente la noche sin disfrazarla de flyer.",
+    "body": "{appNameDisplay} une clubes y público en una sola experiencia: eventos reales, entradas sin ambigüedad y una interfaz que siente la noche sin disfrazarla de flyer.",
     "imageAlt": "Escenario iluminado durante un show en vivo"
   },
   "atmosphere": {
@@ -71,7 +70,7 @@
   "pulse": {
     "eyebrow": "El ritmo de la plataforma",
     "headline": "Hecha para la noche que ya está en marcha.",
-    "body": "EventFlow no inventa la escena: la ordena. Descubrís, elegís y asegurás tu lugar sin perder el clima.",
+    "body": "Afterdark no inventa la escena: la ordena. Descubrís, elegís y asegurás tu lugar sin perder el clima.",
     "imageAlt": "Manos del público levantadas frente al escenario",
     "stats": {
       "nights": {
@@ -116,7 +115,6 @@
   "footer": {
     "tagline": "Eventos nocturnos, con precisión.",
     "explore": "Explorar",
-    "publish": "Publicá tu evento",
     "navAria": "Enlaces del pie de página",
     "madeFor": "Hecha para que disfrutes de un evento inolvidable.",
     "rights": "© {year} {appName}",

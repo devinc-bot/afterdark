@@ -16,27 +16,33 @@
       "save": "Save changes",
       "discard": "Discard changes",
       "dirty": "You have unsaved changes.",
-      "clean": "No pending changes.",
+      "clean": "No changes",
       "confirmLeave": "You have unsaved changes. Leave anyway?"
     },
     "messages": {
       "validationSummary": "Fix the fields with errors before saving.",
-      "saving": "Saving changes…",
-      "saveSuccess": "Done. Your profile has been updated.",
-      "saveFallback": "We couldn't save the changes. Check your connection and try again."
+      "saving": "Saving…",
+      "saveSuccess": "Done. Your profile is up to date.",
+      "saveSuccessNight": "Saved. Have a good night.",
+      "saveFallback": "We couldn't save. Check your connection and try again."
     }
   },
   "owner": {
     "page": {
       "title": "Settings",
-      "description": "Manage your profile."
+      "description": "Your profile, in one place."
     },
     "sections": {
-      "profile": "Profile"
+      "profile": "Profile",
+      "profileDescription": "Your personal and contact information.",
+      "address": "Address",
+      "addressDescription": "Where you live. Optional.",
+      "account": "Account",
+      "accountDescription": "How you sign in to Afterdark."
     },
     "profile": {
       "changePhoto": "Change photo",
-      "photoHint": "Photo upload will be available soon.",
+      "photoHint": "You'll soon be able to upload your photo here.",
       "name": "First name",
       "lastName": "Last name",
       "phone": "Phone",
@@ -52,17 +58,20 @@
       "emailHint": "To change your email, contact support.",
       "password": "Password",
       "changePassword": "Change password",
-      "passwordHint": "Password change will be available soon.",
+      "passwordHint": "You'll soon be able to change it from here.",
       "avatarFallback": "User"
     }
   },
   "staff": {
     "page": {
       "title": "Settings",
-      "description": "Manage your profile."
+      "description": "Your profile, in one place."
     },
     "sections": {
-      "profile": "Profile"
+      "profile": "Profile",
+      "profileDescription": "Your personal and contact information.",
+      "account": "Account",
+      "accountDescription": "How you sign in to Afterdark."
     },
     "profile": {
       "name": "First name",

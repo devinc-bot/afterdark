@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import { Button } from '@afterdark/ui'
+import { FormPageActions } from '~/modules/common/components/form-page-actions'
 import { SETTINGS_FORM_ID } from '~/modules/settings/constants/settings-form'
 
 export function SettingsFormActions({
@@ -14,32 +15,25 @@ export function SettingsFormActions({
   const { t } = useTranslation('settings')
 
   return (
-    <div className="flex flex-col-reverse gap-3 border-t border-hairline/60 pt-6 sm:flex-row sm:items-center sm:justify-between">
-      <p className="text-sm text-ink-muted">
-        {isDirty ? t('shared.actions.dirty') : t('shared.actions.clean')}
-      </p>
-
-      <div className="flex flex-col gap-2 sm:flex-row sm:justify-end">
-        <Button
-          type="button"
-          variant="ghost"
-          className="w-full sm:w-auto"
-          disabled={!isDirty || isSaving}
-          onClick={onDiscard}
-        >
-          {t('shared.actions.discard')}
-        </Button>
-        <Button
-          type="submit"
-          form={SETTINGS_FORM_ID}
-          variant={isDirty ? 'default' : 'outline'}
-          className="w-full sm:w-auto"
-          loading={isSaving}
-          disabled={!isDirty || isSaving}
-        >
-          {t('shared.actions.save')}
-        </Button>
-      </div>
-    </div>
+    <FormPageActions
+      isDirty={isDirty}
+      isSaving={isSaving}
+      dirtyLabel={t('shared.actions.dirty')}
+      cleanLabel={t('shared.actions.clean')}
+      cancelLabel={t('shared.actions.discard')}
+      onCancel={onDiscard}
+      withBorder
+    >
+      <Button
+        type="submit"
+        form={SETTINGS_FORM_ID}
+        variant={isDirty ? 'default' : 'outline'}
+        className="w-full sm:w-auto"
+        loading={isSaving}
+        disabled={!isDirty || isSaving}
+      >
+        {t('shared.actions.save')}
+      </Button>
+    </FormPageActions>
   )
 }

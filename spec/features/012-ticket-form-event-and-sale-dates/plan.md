@@ -48,7 +48,7 @@
 | Referencia                                | Uso                                      |
 | ----------------------------------------- | ---------------------------------------- |
 | `EventForm` / `StaffUserForm` club select | Select eventos con loading/error/empty   |
-| `011-events-management`                   | `fetchEvents`, `EventResponse`           |
+| `026-event-create-edit-page` (ex-`011`)   | `fetchEvents`, `EventResponse`           |
 | Refine fechas en `ticket.ts` actual       | Mantener lógica; solo actualizar mensaje |
 
 ## Verificación

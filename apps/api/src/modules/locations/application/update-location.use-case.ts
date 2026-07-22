@@ -52,7 +52,7 @@ export class UpdateLocationUseCase {
       const locationData = await updateLocationWithAddress(
         documentId,
         locationId,
-        toLocationUpsertInput(input, existing.type)
+        toLocationUpsertInput(input)
       )
       await this.locationImages.removeUnwanted(locationId, keepImageIds)
       await this.locationImages.saveNew(locationId, files, uploadedImages)

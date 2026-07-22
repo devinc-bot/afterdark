@@ -6,14 +6,25 @@
   },
   "form": {
     "trigger": "Crear evento",
+    "createMetaTitle": "Crear evento · {appNameAdmin}",
+    "editMetaTitle": "Editar evento · {appNameAdmin}",
+    "back": "Volver a eventos",
     "createTitle": "Crear evento",
     "createDescription": "Completá los datos del evento.",
     "requiredFieldsHint": "Los campos marcados con * son obligatorios.",
+    "locationSectionTitle": "Ubicación del evento",
     "location": "Ubicación",
+    "locationSectionDescription": "Elegí una de tus ubicaciones para el evento.",
     "locationPlaceholder": "Seleccioná una ubicación",
     "locationLoading": "Cargando ubicaciones…",
     "locationEmpty": "No tenés ubicaciones registradas",
     "locationsLoadError": "No pudimos cargar tus ubicaciones.",
+    "noLocationsMessage": "No tenés ninguna ubicación creada.",
+    "addLocationLink": "Agregar ubicación",
+    "locationRequiredError": "Seleccioná una ubicación para el evento.",
+    "lastLocationHint": "Última ubicación usada",
+    "detailsSectionTitle": "Datos del evento",
+    "detailsSectionDescription": "Completá la información del evento. Las imágenes son opcionales.",
     "name": "Nombre del evento",
     "namePlaceholder": "Ej. Noche electrónica",
     "description": "Descripción",
@@ -37,7 +48,28 @@
     "errorCreate": "No pudimos crear el evento. Intentá de nuevo.",
     "errorEdit": "No pudimos actualizar el evento. Intentá de nuevo.",
     "errorCreateFallback": "No pudimos crear el evento. Intentá de nuevo en unos minutos.",
-    "errorEditFallback": "No pudimos actualizar el evento. Intentá de nuevo en unos minutos."
+    "errorEditFallback": "No pudimos actualizar el evento. Intentá de nuevo en unos minutos.",
+    "submitErrorTitle": "No se pudo guardar el evento",
+    "loading": "Cargando evento…",
+    "loadErrorTitle": "No pudimos cargar el evento",
+    "loadErrorFallback": "Intentá de nuevo en unos minutos.",
+    "retry": "Reintentar",
+    "notFoundTitle": "No encontramos el evento que querés editar.",
+    "notFoundDescription": "El evento no existe o no tenés permiso para editarlo."
+  },
+  "sections": {
+    "imagesTitle": "Imágenes",
+    "imagesDescription": "Fotos del evento que se mostrarán en la plataforma. Podés subir hasta 2 imágenes."
+  },
+  "images": {
+    "count": "{current} de {max} imágenes",
+    "saved": "Imagen guardada",
+    "remove": "Quitar {name}",
+    "dropzoneTitle": "Arrastrá o hacé clic para seleccionar imágenes",
+    "dropzoneHint": "JPG, PNG o WEBP · hasta {count, plural, one {# imagen} other {# imágenes}} · máx. {maxMb} MB c/u",
+    "maxReached": "Alcanzaste el máximo de {max} imágenes.",
+    "invalidType": "El archivo debe ser una imagen JPG, PNG o WEBP.",
+    "tooLarge": "La imagen supera el tamaño máximo de {maxMb} MB."
   },
   "table": {
     "title": "Eventos registrados",
@@ -51,6 +83,7 @@
     "actionEdit": "Editar",
     "actionDelete": "Borrar",
     "rowActionsLabel": "Acciones para {event} en {location}",
+    "loading": "Cargando eventos…",
     "emptyTitle": "No hay eventos registrados",
     "emptyDescription": "Creá tu primer evento para empezar."
   },
@@ -59,7 +92,9 @@
     "next": "Siguiente"
   },
   "list": {
-    "error": "No pudimos cargar los eventos. Intentá de nuevo en unos minutos."
+    "error": "No pudimos cargar los eventos. Intentá de nuevo en unos minutos.",
+    "errorTitle": "No pudimos cargar los eventos",
+    "retry": "Reintentar"
   },
   "delete": {
     "title": "Eliminar evento",
@@ -70,5 +105,11 @@
     "success": "Evento eliminado correctamente",
     "error": "No pudimos eliminar el evento. Intentá de nuevo.",
     "errorFallback": "No pudimos eliminar el evento. Intentá de nuevo en unos minutos."
+  },
+  "unsaved": {
+    "title": "¿Salir sin guardar?",
+    "description": "Tenés cambios sin guardar. Si salís ahora, se perderán.",
+    "stay": "Seguir editando",
+    "leave": "Salir sin guardar"
   }
 }

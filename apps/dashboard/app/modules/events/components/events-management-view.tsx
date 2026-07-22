@@ -1,9 +1,8 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import type { EventResponse } from '@afterdark/types'
-import { toast } from '@afterdark/ui'
-import { EventCreateDialog } from '~/modules/events/components/dialog-create-event'
-import { EventEditDialog } from '~/modules/events/components/dialog-edit-event'
+import { Link, useNavigate } from '@tanstack/react-router'
+import { Button, toast } from '@afterdark/ui'
+import { CalendarPlus } from 'lucide-react'
 import { EventRemoveDialog } from '~/modules/events/components/dialog-remove-event'
 import {
   type EventRecordItem,
@@ -14,19 +13,19 @@ import { useDeleteEvent } from '~/modules/events/mutation/use-event-mutations'
 import { useEvents } from '~/modules/events/queries/use-event-queries'
 import { eventResponseToRecordItem } from '~/modules/events/utils/event-form.mapper'
 import { PageLayout } from '~/modules/common/components/page-layout'
+import { DASHBOARD_ROUTES } from '~/modules/common/constants/routes'
 
 const EVENTS_PAGE_SIZE = 10
 
 export function EventsManagementView() {
   const { t } = useTranslation('events')
+  const navigate = useNavigate()
   const [page, setPage] = useState(1)
-  const [editEvent, setEditEvent] = useState<EventResponse | null>(null)
-  const [editDialogOpen, setEditDialogOpen] = useState(false)
   const [removeDialogOpen, setRemoveDialogOpen] = useState(false)
   const [recordToRemove, setRecordToRemove] = useState<EventRecordItem | null>(null)
   const deleteEventMutation = useDeleteEvent()
 
-  const { data, isError } = useEvents({ page, limit: EVENTS_PAGE_SIZE })
+  const { data, isLoading, isError, refetch } = useEvents({ page, limit: EVENTS_PAGE_SIZE })
 
   const records = useMemo(
     () => (data?.data ?? []).map((event) => eventResponseToRecordItem(event)),
@@ -50,17 +49,10 @@ export function EventsManagementView() {
     : undefined
 
   const handleEditRecord = (record: EventRecordItem) => {
-    const event = data?.data.find((item) => item.documentId === record.id)
-    if (!event) return
-    setEditEvent(event)
-    setEditDialogOpen(true)
-  }
-
-  const handleEditDialogOpenChange = (open: boolean) => {
-    setEditDialogOpen(open)
-    if (!open) {
-      setEditEvent(null)
-    }
+    void navigate({
+      to: '/events/$documentId/edit',
+      params: { documentId: record.id },
+    })
   }
 
   const openRemoveDialog = (record: EventRecordItem) => {
@@ -88,24 +80,22 @@ export function EventsManagementView() {
 
   return (
     <PageLayout title={t('page.title')} description={t('page.description')}>
-      {isError ? (
-        <p className="text-sm text-error" role="alert">
-          {t('list.error')}
-        </p>
-      ) : (
-        <EventRecords
-          records={records}
-          pagination={pagination}
-          onEdit={handleEditRecord}
-          onDelete={openRemoveDialog}
-          headerAction={<EventCreateDialog />}
-        />
-      )}
-
-      <EventEditDialog
-        event={editEvent}
-        open={editDialogOpen}
-        onOpenChange={handleEditDialogOpenChange}
+      <EventRecords
+        records={records}
+        pagination={pagination}
+        onEdit={handleEditRecord}
+        onDelete={openRemoveDialog}
+        isLoading={isLoading}
+        isError={isError}
+        onRetry={() => void refetch()}
+        headerAction={
+          <Button asChild className="w-full shrink-0 sm:w-auto">
+            <Link to={DASHBOARD_ROUTES.eventsNew()}>
+              <CalendarPlus aria-hidden="true" />
+              {t('form.trigger')}
+            </Link>
+          </Button>
+        }
       />
 
       <EventRemoveDialog

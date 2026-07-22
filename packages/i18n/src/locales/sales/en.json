@@ -35,10 +35,16 @@
     "amount": "Amount",
     "status": "Status",
     "statusCompleted": "Completed",
-    "empty": "No sales to show."
+    "loading": "Loading sales…",
+    "empty": "No sales yet",
+    "emptyDescription": "Completed purchases will show up here once they're recorded.",
+    "emptyFiltered": "No sales match those filters",
+    "emptyFilteredDescription": "Try adjusting the date range or removing some filters."
   },
   "list": {
-    "error": "We could not load the sales history. Try again in a few minutes."
+    "error": "We could not load the sales history. Try again in a few minutes.",
+    "errorTitle": "We couldn't load the sales history",
+    "retry": "Retry"
   },
   "pagination": {
     "previous": "Previous",

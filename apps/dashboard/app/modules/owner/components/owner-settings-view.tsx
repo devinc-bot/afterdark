@@ -1,6 +1,5 @@
 import type { CurrentOwnerResponse } from '@afterdark/types'
 import { useTranslation } from 'react-i18next'
-import { FormLayout } from '@afterdark/ui'
 import { PageLayout } from '~/modules/common/components/page-layout'
 import { ProfileSettingsSection } from '~/modules/owner/components/profile-settings-section'
 import { SettingsFormActions } from '~/modules/settings/components/settings-form-actions'
@@ -15,26 +14,21 @@ function SettingsFormContent() {
     <form
       id={SETTINGS_FORM_ID}
       noValidate
+      className="flex flex-col gap-8"
       onSubmit={(event) => {
         event.preventDefault()
         void save()
       }}
     >
-      <FormLayout className="gap-2 sm:gap-4">
-        <FormLayout.Span span={12}>
-          <SettingsStatusBanner saveStatus={saveStatus} saveMessage={saveMessage} />
-        </FormLayout.Span>
-        <FormLayout.Span span={12}>
-          <ProfileSettingsSection />
-        </FormLayout.Span>
-        <FormLayout.Span span={12}>
-          <SettingsFormActions
-            isDirty={isDirty}
-            isSaving={saveStatus === SETTINGS_SAVE_STATUS.SAVING}
-            onDiscard={discard}
-          />
-        </FormLayout.Span>
-      </FormLayout>
+      <SettingsStatusBanner saveStatus={saveStatus} saveMessage={saveMessage} />
+      <div className="flex flex-col gap-12">
+        <ProfileSettingsSection />
+      </div>
+      <SettingsFormActions
+        isDirty={isDirty}
+        isSaving={saveStatus === SETTINGS_SAVE_STATUS.SAVING}
+        onDiscard={discard}
+      />
     </form>
   )
 }
@@ -43,7 +37,7 @@ export function OwnerSettingsView({ owner }: { owner: CurrentOwnerResponse }) {
   const { t } = useTranslation('settings')
 
   return (
-    <PageLayout title={t('owner.page.title')} description={t('owner.page.description')} narrow>
+    <PageLayout title={t('owner.page.title')} description={t('owner.page.description')}>
       <SettingsFormProvider user={owner}>
         <SettingsFormContent />
       </SettingsFormProvider>

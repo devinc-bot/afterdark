@@ -67,7 +67,7 @@ export function SalesManagementView() {
     if (!stillVisible) setEventId(FILTER_ALL)
   }, [filteredEvents, eventId])
 
-  const { data, isError, isLoading } = useOwnerSales({
+  const { data, isError, isLoading, refetch } = useOwnerSales({
     page,
     limit: SALES_PAGE_SIZE,
     locationId: locationId === FILTER_ALL ? undefined : locationId,
@@ -191,17 +191,15 @@ export function SalesManagementView() {
 
   return (
     <PageLayout title={t('page.title')} description={t('page.description')}>
-      {isError ? (
-        <p className="text-sm text-error" role="alert">
-          {t('list.error')}
-        </p>
-      ) : (
-        <SalesRecords
-          sales={isLoading ? [] : (data?.data ?? [])}
-          pagination={isLoading ? undefined : pagination}
-          filters={filters}
-        />
-      )}
+      <SalesRecords
+        sales={data?.data ?? []}
+        pagination={pagination}
+        filters={filters}
+        isLoading={isLoading}
+        isError={isError}
+        hasActiveFilters={hasActiveFilters}
+        onRetry={() => void refetch()}
+      />
     </PageLayout>
   )
 }

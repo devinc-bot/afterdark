@@ -42,5 +42,9 @@
   "all": "All",
   "none": "None",
   "or": "or",
-  "and": "and"
+  "and": "and",
+  "formActions": {
+    "dirty": "You have unsaved changes.",
+    "clean": "No changes"
+  }
 }

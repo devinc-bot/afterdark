@@ -2,12 +2,12 @@
 
 > Requisitos provistos por el dueño del producto. Estado por fase en `progress.md`.
 
-| Campo          | Valor                                                         |
-| -------------- | ------------------------------------------------------------- |
-| **ID**         | `012-ticket-form-event-and-sale-dates`                        |
-| **Status**     | `approved`                                                    |
-| **Apps**       | `api`, `dashboard`                                            |
-| **Depende de** | `011-events-management` (listado de eventos del dueño en API) |
+| Campo          | Valor                                                                    |
+| -------------- | ------------------------------------------------------------------------ |
+| **ID**         | `012-ticket-form-event-and-sale-dates`                                   |
+| **Status**     | `approved`                                                               |
+| **Apps**       | `api`, `dashboard`                                                       |
+| **Depende de** | `026-event-create-edit-page` (eventos del dueño en API; reemplaza `011`) |
 
 ---
 
@@ -23,7 +23,7 @@ El club del ticket se **deriva del evento** elegido (ya resuelto en API vía `ev
 
 ## Por qué
 
-Tras `011-events-management`, cada ticket debe pertenecer a un evento concreto. Las fechas en el formulario hoy se etiquetan como “inicio/fin del evento” pero en DB son `sale_starts_at` / `sale_ends_at` — ventana opcional de venta de entradas, no la duración del evento.
+Tras la gestión de eventos (`026`, ex-`011`), cada ticket debe pertenecer a un evento concreto. Las fechas en el formulario hoy se etiquetan como “inicio/fin del evento” pero en DB son `sale_starts_at` / `sale_ends_at` — ventana opcional de venta de entradas, no la duración del evento.
 
 ## Alcance
 

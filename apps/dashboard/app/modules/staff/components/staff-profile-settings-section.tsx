@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import { Avatar, AvatarFallback, AvatarImage, Field, Input } from '@afterdark/ui'
-import { SettingsSection } from '~/modules/settings/components/settings-section'
+import { FormSection } from '~/modules/common/components/form-section'
 import { useStaffSettingsForm } from '~/modules/staff/hooks/settings-form-context'
 
 export function StaffProfileSettingsSection() {
@@ -13,10 +13,14 @@ export function StaffProfileSettingsSection() {
     t('staff.profile.avatarFallback')
 
   return (
-    <SettingsSection title={t('staff.sections.profile')}>
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-[auto_1fr] sm:gap-8">
-        <div className="flex flex-col items-start gap-3">
-          <Avatar className="size-16 ring-1 ring-hairline">
+    <>
+      <FormSection
+        id="staff-profile"
+        title={t('staff.sections.profile')}
+        description={t('staff.sections.profileDescription')}
+      >
+        <div className="flex items-center gap-4">
+          <Avatar className="size-16 shrink-0 ring-1 ring-hairline transition-[ring-color] duration-(--duration-fast) ease-emphasized hover:ring-primary/40">
             <AvatarImage src={avatarSrc ?? undefined} alt={avatarLabel} className="object-cover" />
             <AvatarFallback className="bg-surface-container-low font-heading text-lg font-medium text-ink-muted">
               {avatarLabel.charAt(0).toUpperCase()}
@@ -29,7 +33,7 @@ export function StaffProfileSettingsSection() {
             label={t('staff.profile.name')}
             htmlFor="settings-name"
             error={errors.profile?.name ?? null}
-            className="col-span-3"
+            className="sm:col-span-3"
           >
             <Input
               id="settings-name"
@@ -47,7 +51,7 @@ export function StaffProfileSettingsSection() {
             label={t('staff.profile.lastName')}
             htmlFor="settings-last-name"
             error={errors.profile?.lastName ?? null}
-            className="col-span-3"
+            className="sm:col-span-3"
           >
             <Input
               id="settings-last-name"
@@ -65,7 +69,7 @@ export function StaffProfileSettingsSection() {
             label={t('staff.profile.phone')}
             htmlFor="settings-phone"
             error={errors.profile?.phone ?? null}
-            className="col-span-4"
+            className="sm:col-span-4"
           >
             <Input
               id="settings-phone"
@@ -79,22 +83,27 @@ export function StaffProfileSettingsSection() {
               aria-invalid={errors.profile?.phone ? true : undefined}
             />
           </Field>
-
-          <div className="col-span-6 border-t border-hairline/60 mt-2 mb-2" />
-          <Field label={t('staff.profile.email')} htmlFor="settings-email" className="col-span-4">
-            <Input
-              id="settings-email"
-              name="email"
-              type="email"
-              autoComplete="email"
-              readOnly
-              value={user.email}
-              aria-readonly="true"
-            />
-          </Field>
-          <p className="col-span-6 -mt-2 text-sm text-ink-muted">{t('staff.profile.emailHint')}</p>
         </div>
-      </div>
-    </SettingsSection>
+      </FormSection>
+
+      <FormSection
+        id="staff-account"
+        title={t('staff.sections.account')}
+        description={t('staff.sections.accountDescription')}
+      >
+        <Field label={t('staff.profile.email')} htmlFor="settings-email">
+          <Input
+            id="settings-email"
+            name="email"
+            type="email"
+            autoComplete="email"
+            readOnly
+            value={user.email}
+            aria-readonly="true"
+          />
+          <p className="mt-2 text-sm text-ink-muted">{t('staff.profile.emailHint')}</p>
+        </Field>
+      </FormSection>
+    </>
   )
 }

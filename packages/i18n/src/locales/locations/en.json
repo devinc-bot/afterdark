@@ -12,8 +12,21 @@
     "loadErrorTitle": "We couldn't load locations",
     "loadErrorFallback": "Try again in a few minutes.",
     "listError": "We couldn't load locations. Try again in a few minutes.",
+    "retry": "Retry",
     "emptyTitle": "No locations yet",
     "emptyDescription": "Register the first location to start managing its information.",
+    "columns": {
+      "location": "Location",
+      "address": "Address",
+      "capacity": "Capacity",
+      "actions": "Actions"
+    },
+    "row": {
+      "menuLabel": "Actions for {name}",
+      "noImageAlt": "No image for {name}",
+      "edit": "Edit",
+      "delete": "Delete"
+    },
     "deleteSuccess": "Location deleted successfully",
     "deleteError": "We couldn't delete the location. Try again.",
     "deleteFallback": "We couldn't delete the location. Try again in a few minutes."
@@ -44,7 +57,7 @@
     "generalTitle": "General information",
     "generalDescription": "Basic location details that users will see on the platform.",
     "imagesTitle": "Images",
-    "imagesDescription": "Photos of the venue that will appear on the platform. You can upload up to 5 images.",
+    "imagesDescription": "Photos of the venue that will appear on the platform. You can upload up to 4 images.",
     "locationTitle": "Address",
     "locationDescription": "Physical address of the venue. Fill the fields, then fine-tune the pin on the map."
   },

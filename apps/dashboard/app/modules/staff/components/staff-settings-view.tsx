@@ -1,6 +1,5 @@
 import type { CurrentStaffResponse } from '@afterdark/types'
 import { useTranslation } from 'react-i18next'
-import { FormLayout } from '@afterdark/ui'
 import { PageLayout } from '~/modules/common/components/page-layout'
 import { StaffProfileSettingsSection } from '~/modules/staff/components/staff-profile-settings-section'
 import { SettingsFormActions } from '~/modules/settings/components/settings-form-actions'
@@ -18,26 +17,21 @@ function StaffSettingsFormContent() {
     <form
       id={SETTINGS_FORM_ID}
       noValidate
+      className="flex flex-col gap-8"
       onSubmit={(event) => {
         event.preventDefault()
         void save()
       }}
     >
-      <FormLayout className="gap-2 sm:gap-4">
-        <FormLayout.Span span={12}>
-          <SettingsStatusBanner saveStatus={saveStatus} saveMessage={saveMessage} />
-        </FormLayout.Span>
-        <FormLayout.Span span={12}>
-          <StaffProfileSettingsSection />
-        </FormLayout.Span>
-        <FormLayout.Span span={12}>
-          <SettingsFormActions
-            isDirty={isDirty}
-            isSaving={saveStatus === SETTINGS_SAVE_STATUS.SAVING}
-            onDiscard={discard}
-          />
-        </FormLayout.Span>
-      </FormLayout>
+      <SettingsStatusBanner saveStatus={saveStatus} saveMessage={saveMessage} />
+      <div className="flex flex-col gap-12">
+        <StaffProfileSettingsSection />
+      </div>
+      <SettingsFormActions
+        isDirty={isDirty}
+        isSaving={saveStatus === SETTINGS_SAVE_STATUS.SAVING}
+        onDiscard={discard}
+      />
     </form>
   )
 }
@@ -46,7 +40,7 @@ export function StaffSettingsView({ staff }: { staff: CurrentStaffResponse }) {
   const { t } = useTranslation('settings')
 
   return (
-    <PageLayout title={t('staff.page.title')} description={t('staff.page.description')} narrow>
+    <PageLayout title={t('staff.page.title')} description={t('staff.page.description')}>
       <StaffSettingsFormProvider user={staff}>
         <StaffSettingsFormContent />
       </StaffSettingsFormProvider>

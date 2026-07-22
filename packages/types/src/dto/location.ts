@@ -1,4 +1,4 @@
-import type { AssetType, LocationType } from '../enums/location.ts'
+import type { AssetType } from '../enums/location.ts'
 
 export interface LocationImageResponse {
   documentId: string
@@ -11,7 +11,6 @@ export interface LocationResponse {
   name: string
   capacity: string
   description: string | null
-  type: LocationType
   address: string
   streetNumber: string
   state: string

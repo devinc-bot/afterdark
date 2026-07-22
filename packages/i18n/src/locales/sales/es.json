@@ -35,10 +35,16 @@
     "amount": "Monto",
     "status": "Estado",
     "statusCompleted": "Completada",
-    "empty": "No hay ventas para mostrar."
+    "loading": "Cargando ventas…",
+    "empty": "Todavía no hay ventas",
+    "emptyDescription": "Cuando se registren compras completadas, vas a verlas acá.",
+    "emptyFiltered": "No encontramos ventas con esos filtros",
+    "emptyFilteredDescription": "Probá ajustar el rango de fechas o quitar algunos filtros."
   },
   "list": {
-    "error": "No pudimos cargar el historial de ventas. Intentá de nuevo en unos minutos."
+    "error": "No pudimos cargar el historial de ventas. Intentá de nuevo en unos minutos.",
+    "errorTitle": "No pudimos cargar el historial de ventas",
+    "retry": "Reintentar"
   },
   "pagination": {
     "previous": "Anterior",

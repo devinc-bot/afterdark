@@ -8,6 +8,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
   NotImage,
+  Skeleton,
   Table,
   TableBody,
   TableCell,
@@ -16,6 +17,7 @@ import {
   TableRow,
 } from '@afterdark/ui'
 import { EllipsisVertical, MapPin, Pencil, Trash2, Users } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
 export type RegisteredLocation = {
   id: string
@@ -36,6 +38,8 @@ const locationActionIconClassName = '!size-[20px] shrink-0'
 const locationActionItemClassName = 'gap-3 py-2.5 text-base'
 
 function LocationIdentityCell({ location }: { location: RegisteredLocation }) {
+  const { t } = useTranslation('locations')
+
   return (
     <div className="flex items-center gap-3">
       {location.imageUrl ? (
@@ -50,7 +54,7 @@ function LocationIdentityCell({ location }: { location: RegisteredLocation }) {
         <NotImage
           size="sm"
           className="size-9 shrink-0 [&_svg]:size-4"
-          label={`Sin imagen de ${location.name}`}
+          label={t('registry.row.noImageAlt', { name: location.name })}
         />
       )}
       <p className="min-w-0 truncate font-medium text-ink">{location.name}</p>
@@ -89,6 +93,8 @@ function LocationRecordActions({
   onEdit?: (location: RegisteredLocation) => void
   onDelete?: (location: RegisteredLocation) => void
 }) {
+  const { t } = useTranslation('locations')
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -97,7 +103,7 @@ function LocationRecordActions({
           variant="ghost"
           size="icon"
           className="text-ink-muted hover:text-ink"
-          aria-label={`Acciones para ${location.name}`}
+          aria-label={t('registry.row.menuLabel', { name: location.name })}
         >
           <EllipsisVertical aria-hidden="true" />
         </Button>
@@ -108,14 +114,14 @@ function LocationRecordActions({
           onClick={() => onEdit?.(location)}
         >
           <Pencil aria-hidden="true" className={locationActionIconClassName} />
-          Editar
+          {t('registry.row.edit')}
         </DropdownMenuItem>
         <DropdownMenuItem
           className={cn(locationActionItemClassName, 'text-error focus:text-error')}
           onClick={() => onDelete?.(location)}
         >
           <Trash2 aria-hidden="true" className={cn(locationActionIconClassName, 'text-error')} />
-          Eliminar
+          {t('registry.row.delete')}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
@@ -158,15 +164,17 @@ export function RegisteredLocationRecords({
   onEdit?: (location: RegisteredLocation) => void
   onDelete?: (location: RegisteredLocation) => void
 }) {
+  const { t } = useTranslation('locations')
+
   return (
     <Card variant="gradient">
       <Table variant="compact">
         <TableHeader>
           <TableRow>
-            <TableHead className="p-6">Ubicación</TableHead>
-            <TableHead className="p-6">Dirección</TableHead>
-            <TableHead className="p-6">Capacidad</TableHead>
-            <TableHead className="p-6 text-right">Acciones</TableHead>
+            <TableHead className="p-6">{t('registry.columns.location')}</TableHead>
+            <TableHead className="p-6">{t('registry.columns.address')}</TableHead>
+            <TableHead className="p-6">{t('registry.columns.capacity')}</TableHead>
+            <TableHead className="p-6 text-right">{t('registry.columns.actions')}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -177,6 +185,51 @@ export function RegisteredLocationRecords({
               onEdit={onEdit}
               onDelete={onDelete}
             />
+          ))}
+        </TableBody>
+      </Table>
+    </Card>
+  )
+}
+
+const SKELETON_ROW_KEYS = ['a', 'b', 'c', 'd', 'e'] as const
+
+export function RegisteredLocationRecordsSkeleton() {
+  const { t } = useTranslation('locations')
+
+  return (
+    <Card variant="gradient" aria-busy="true">
+      <span className="sr-only">{t('registry.loading')}</span>
+      <Table variant="compact">
+        <TableHeader>
+          <TableRow>
+            <TableHead className="p-6">{t('registry.columns.location')}</TableHead>
+            <TableHead className="p-6">{t('registry.columns.address')}</TableHead>
+            <TableHead className="p-6">{t('registry.columns.capacity')}</TableHead>
+            <TableHead className="p-6 text-right">{t('registry.columns.actions')}</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {SKELETON_ROW_KEYS.map((rowKey) => (
+            <TableRow key={rowKey} className="border-0">
+              <TableCell className="p-6">
+                <div className="flex items-center gap-3">
+                  <Skeleton className="size-9 shrink-0 rounded-lg" />
+                  <Skeleton className="h-4 w-32 max-w-full" />
+                </div>
+              </TableCell>
+              <TableCell className="p-6">
+                <Skeleton className="h-4 w-40 max-w-full" />
+              </TableCell>
+              <TableCell className="p-6">
+                <Skeleton className="h-4 w-16" />
+              </TableCell>
+              <TableCell className="p-6">
+                <div className="flex justify-end">
+                  <Skeleton className="size-9 rounded-lg" />
+                </div>
+              </TableCell>
+            </TableRow>
           ))}
         </TableBody>
       </Table>

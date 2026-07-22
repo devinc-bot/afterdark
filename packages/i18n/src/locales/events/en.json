@@ -6,14 +6,25 @@
   },
   "form": {
     "trigger": "Create event",
+    "createMetaTitle": "Create event · {appNameAdmin}",
+    "editMetaTitle": "Edit event · {appNameAdmin}",
+    "back": "Back to events",
     "createTitle": "Create event",
     "createDescription": "Fill in the event details.",
     "requiredFieldsHint": "Fields marked with * are required.",
+    "locationSectionTitle": "Event location",
     "location": "Location",
+    "locationSectionDescription": "Choose one of your locations for the event.",
     "locationPlaceholder": "Select a location",
     "locationLoading": "Loading locations…",
     "locationEmpty": "You have no registered locations",
     "locationsLoadError": "We could not load your locations.",
+    "noLocationsMessage": "You don't have any locations yet.",
+    "addLocationLink": "Add location",
+    "locationRequiredError": "Select a location for the event.",
+    "lastLocationHint": "Last used location",
+    "detailsSectionTitle": "Event details",
+    "detailsSectionDescription": "Fill in the event details. Images are optional.",
     "name": "Event name",
     "namePlaceholder": "E.g. Electronic night",
     "description": "Description",
@@ -37,7 +48,28 @@
     "errorCreate": "We could not create the event. Try again.",
     "errorEdit": "We could not update the event. Try again.",
     "errorCreateFallback": "We could not create the event. Try again in a few minutes.",
-    "errorEditFallback": "We could not update the event. Try again in a few minutes."
+    "errorEditFallback": "We could not update the event. Try again in a few minutes.",
+    "submitErrorTitle": "We couldn't save the event",
+    "loading": "Loading event…",
+    "loadErrorTitle": "We could not load the event",
+    "loadErrorFallback": "Try again in a few minutes.",
+    "retry": "Retry",
+    "notFoundTitle": "We could not find the event you want to edit.",
+    "notFoundDescription": "The event does not exist or you do not have permission to edit it."
+  },
+  "sections": {
+    "imagesTitle": "Images",
+    "imagesDescription": "Photos of the event that will appear on the platform. You can upload up to 2 images."
+  },
+  "images": {
+    "count": "{current} of {max} images",
+    "saved": "Saved image",
+    "remove": "Remove {name}",
+    "dropzoneTitle": "Drag or click to select images",
+    "dropzoneHint": "JPG, PNG or WEBP · up to {count, plural, one {# image} other {# images}} · max. {maxMb} MB each",
+    "maxReached": "You've reached the maximum of {max} images.",
+    "invalidType": "The file must be a JPG, PNG, or WEBP image.",
+    "tooLarge": "The image exceeds the maximum size of {maxMb} MB."
   },
   "table": {
     "title": "Registered events",
@@ -51,6 +83,7 @@
     "actionEdit": "Edit",
     "actionDelete": "Delete",
     "rowActionsLabel": "Actions for {event} at {location}",
+    "loading": "Loading events…",
     "emptyTitle": "No registered events",
     "emptyDescription": "Create your first event to get started."
   },
@@ -59,7 +92,9 @@
     "next": "Next"
   },
   "list": {
-    "error": "We could not load events. Try again in a few minutes."
+    "error": "We could not load events. Try again in a few minutes.",
+    "errorTitle": "We could not load events",
+    "retry": "Retry"
   },
   "delete": {
     "title": "Delete event",
@@ -70,5 +105,11 @@
     "success": "Event deleted successfully",
     "error": "We could not delete the event. Try again.",
     "errorFallback": "We could not delete the event. Try again in a few minutes."
+  },
+  "unsaved": {
+    "title": "Leave without saving?",
+    "description": "You have unsaved changes. If you leave now, they will be lost.",
+    "stay": "Keep editing",
+    "leave": "Leave without saving"
   }
 }

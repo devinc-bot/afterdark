@@ -1,5 +1,4 @@
 import { z } from 'zod'
-import { LOCATION_TYPE } from '@afterdark/types'
 import { uuidSchema } from './common.ts'
 import { LOCATION_IMAGE_MAX_COUNT } from './upload.ts'
 
@@ -47,8 +46,6 @@ function coordinateField(requiredKey: string, invalidKey: string, min: number, m
     z.number({ error: requiredKey }).min(min, invalidKey).max(max, invalidKey)
   )
 }
-
-export const locationTypeSchema = z.enum([LOCATION_TYPE.PERMANENT, LOCATION_TYPE.TEMPORARY])
 
 export const createLocationSchema = z.object({
   name: z.string().min(1, 'validation:field.location.name'),

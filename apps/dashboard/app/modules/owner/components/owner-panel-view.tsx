@@ -9,6 +9,7 @@ import {
   usePageTitle,
 } from '@afterdark/ui'
 import { PageLayout } from '~/modules/common/components/page-layout'
+import { OnboardingFlowAlert } from '~/modules/owner/components/onboarding-flow-alert'
 import { OwnerPanelChart } from '~/modules/owner/components/owner-panel-chart'
 import { OwnerPanelKpi } from '~/modules/owner/components/owner-panel-kpi'
 import {
@@ -36,6 +37,8 @@ export function OwnerPanelView() {
   return (
     <PageLayout title={t('pages.panel.title')} description={t('pages.panel.description')}>
       <div className="flex flex-col gap-6">
+        <OnboardingFlowAlert />
+
         <OwnerPanelKpi
           data={kpiQuery.data}
           isLoading={kpiQuery.isLoading}

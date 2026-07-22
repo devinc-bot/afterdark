@@ -11,10 +11,14 @@ import {
   findEventWithLocationOwnedByOwnerDocumentId,
 } from '@afterdark/db'
 import { TranslationService } from '@afterdark/i18n/server'
+import { EventImagesService } from './services/event-images.service'
 
 @Injectable()
 export class DeleteEventUseCase {
-  constructor(@Inject(TranslationService) private readonly ts: TranslationService) {}
+  constructor(
+    @Inject(EventImagesService) private readonly eventImages: EventImagesService,
+    @Inject(TranslationService) private readonly ts: TranslationService
+  ) {}
 
   async execute(ownerDocumentId: string, documentId: string): Promise<void> {
     const existing = await findEventWithLocationOwnedByOwnerDocumentId(documentId, ownerDocumentId)
@@ -30,6 +34,7 @@ export class DeleteEventUseCase {
     }
 
     try {
+      await this.eventImages.removeUnwanted(existing.event.id, [])
       await deleteEventByDocumentId(documentId)
     } catch {
       throw new InternalServerErrorException(this.ts.translateError('event.DELETE_FAILED'))

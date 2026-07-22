@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from '@tanstack/react-router'
 import { Button } from '@afterdark/ui'
+import { FormPageActions } from '~/modules/common/components/form-page-actions'
 import {
   LOCATION_FORM_ID,
   LOCATION_FORM_MODE,
@@ -33,6 +34,7 @@ export function LocationFormPage({
   defaultValues,
 }: LocationFormPageProps) {
   const { t } = useTranslation('locations')
+  const { t: tCommon } = useTranslation('common')
   const navigate = useNavigate()
   const createLocationMutation = useCreateLocation()
   const updateLocationMutation = useUpdateLocation()
@@ -47,6 +49,10 @@ export function LocationFormPage({
 
   const goToList = useCallback(() => {
     navigate({ to: DASHBOARD_ROUTES.locations() })
+  }, [navigate])
+
+  const goToEventCreation = useCallback(() => {
+    navigate({ to: DASHBOARD_ROUTES.eventsNew() })
   }, [navigate])
 
   const requestLeave = useCallback(
@@ -79,23 +85,22 @@ export function LocationFormPage({
         description={description}
         onBack={() => requestLeave(goToList)}
         footer={
-          <>
-            <Button
-              type="button"
-              variant="outline"
-              size="default"
-              disabled={pending}
-              className="min-w-36 sm:min-w-40"
-              onClick={() => requestLeave(goToList)}
-            >
-              {t('formPage.cancel')}
-            </Button>
+          <FormPageActions
+            isDirty={isDirty}
+            isSaving={pending}
+            dirtyLabel={tCommon('formActions.dirty')}
+            cleanLabel={tCommon('formActions.clean')}
+            cancelLabel={t('formPage.cancel')}
+            onCancel={() => requestLeave(goToList)}
+            cancelDisabled={pending}
+          >
             <Button
               type="submit"
               form={LOCATION_FORM_ID}
-              size="default"
+              variant={isDirty ? 'default' : 'outline'}
+              className="w-full sm:w-auto"
               loading={pending}
-              className="min-w-36 sm:min-w-40"
+              disabled={!isDirty || pending}
             >
               {pending
                 ? isCreate
@@ -105,7 +110,7 @@ export function LocationFormPage({
                   ? t('formPage.submitCreate')
                   : t('formPage.submitEdit')}
             </Button>
-          </>
+          </FormPageActions>
         }
       >
         <LocationForm
@@ -115,7 +120,7 @@ export function LocationFormPage({
           createLocationMutation={createLocationMutation}
           updateLocationMutation={updateLocationMutation}
           onDirtyChange={setIsDirty}
-          onSuccess={goToList}
+          onSuccess={isCreate ? goToEventCreation : goToList}
         />
       </LocationFormPageLayout>
 

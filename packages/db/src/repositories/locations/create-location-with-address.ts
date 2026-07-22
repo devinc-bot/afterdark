@@ -16,7 +16,6 @@ export async function createLocationWithAddress(
         capacity: input.capacity,
         description: input.description,
         ownerId,
-        type: input.type,
       })
       .returning()
 

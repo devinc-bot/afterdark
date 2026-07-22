@@ -1,7 +1,9 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { TICKET_SALES_FILTER, type TicketResponse, type TicketSalesFilter } from '@afterdark/types'
+import { Link, useNavigate } from '@tanstack/react-router'
+import { TICKET_SALES_FILTER, type TicketSalesFilter } from '@afterdark/types'
 import {
+  Button,
   Select,
   SelectContent,
   SelectItem,
@@ -13,8 +15,7 @@ import {
   TabsTrigger,
   toast,
 } from '@afterdark/ui'
-import { TicketCreateDialog } from '~/modules/tickets/components/dialog-create-ticket'
-import { TicketEditDialog } from '~/modules/tickets/components/dialog-edit-ticket'
+import { TicketPlus } from 'lucide-react'
 import { TicketRemoveDialog } from '~/modules/tickets/components/dialog-remove-ticket'
 import {
   type TicketRecordItem,
@@ -31,6 +32,7 @@ import { useDeleteTicket } from '~/modules/tickets/mutation/use-ticket-mutations
 import { useTickets } from '~/modules/tickets/queries/use-ticket-queries'
 import { ticketResponseToRecordItem } from '~/modules/tickets/utils/ticket-form.formatter'
 import { PageLayout } from '~/modules/common/components/page-layout'
+import { DASHBOARD_ROUTES } from '~/modules/common/constants/routes'
 
 const TICKETS_PAGE_SIZE = 10
 
@@ -46,13 +48,12 @@ function isTicketSalesFilterOption(value: string): value is TicketSalesFilterOpt
 
 export function TicketsManagementView() {
   const { t } = useTranslation('tickets')
+  const navigate = useNavigate()
   const [activeTab, setActiveTab] = useState<TicketTab>(TICKET_TAB.ACTIVE)
   const [salesFilter, setSalesFilter] = useState<TicketSalesFilterOption>(
     TICKET_SALES_FILTER_OPTION.ALL
   )
   const [page, setPage] = useState(1)
-  const [editTicket, setEditTicket] = useState<TicketResponse | null>(null)
-  const [editDialogOpen, setEditDialogOpen] = useState(false)
   const [removeDialogOpen, setRemoveDialogOpen] = useState(false)
   const [recordToRemove, setRecordToRemove] = useState<TicketRecordItem | null>(null)
   const deleteTicketMutation = useDeleteTicket()
@@ -92,17 +93,10 @@ export function TicketsManagementView() {
     : undefined
 
   const handleEditRecord = (record: TicketRecordItem) => {
-    const ticket = data?.data.find((item) => item.documentId === record.id)
-    if (!ticket) return
-    setEditTicket(ticket)
-    setEditDialogOpen(true)
-  }
-
-  const handleEditDialogOpenChange = (open: boolean) => {
-    setEditDialogOpen(open)
-    if (!open) {
-      setEditTicket(null)
-    }
+    void navigate({
+      to: '/tickets/$documentId/edit',
+      params: { documentId: record.id },
+    })
   }
 
   const openRemoveDialog = (record: TicketRecordItem) => {
@@ -133,7 +127,14 @@ export function TicketsManagementView() {
     onEdit: handleEditRecord,
     onDelete: openRemoveDialog,
     pagination,
-    headerAction: <TicketCreateDialog />,
+    headerAction: (
+      <Button asChild className="w-full shrink-0 sm:w-auto">
+        <Link to={DASHBOARD_ROUTES.ticketsNew()}>
+          <TicketPlus aria-hidden="true" />
+          {t('form.trigger')}
+        </Link>
+      </Button>
+    ),
   }
 
   return (
@@ -182,12 +183,6 @@ export function TicketsManagementView() {
           <TicketRecords inventoryTab={TICKET_TAB.INACTIVE} {...ticketRecordsProps} />
         </TabsContent>
       </Tabs>
-
-      <TicketEditDialog
-        ticket={editTicket}
-        open={editDialogOpen}
-        onOpenChange={handleEditDialogOpenChange}
-      />
 
       <TicketRemoveDialog
         record={recordToRemove}

@@ -1,6 +1,5 @@
 import type { AddressSelect, AssetSelect, LocationSelect } from '@afterdark/db'
-import type { LocationImageResponse, LocationResponse, LocationType } from '@afterdark/types'
-import { LOCATION_TYPE } from '@afterdark/types'
+import type { LocationImageResponse, LocationResponse } from '@afterdark/types'
 import type { CreateLocationInput, UpdateLocationInput } from '@afterdark/validators'
 
 export function toLocationImageResponse(asset: AssetSelect): LocationImageResponse {
@@ -21,7 +20,6 @@ export function toLocationResponse(
     name: location.name,
     capacity: location.capacity,
     description: location.description,
-    type: location.type,
     address: address.address,
     streetNumber: address.streetNumber,
     state: address.state,
@@ -34,15 +32,11 @@ export function toLocationResponse(
   }
 }
 
-export function toLocationUpsertInput(
-  input: CreateLocationInput | UpdateLocationInput,
-  type: LocationType = LOCATION_TYPE.PERMANENT
-) {
+export function toLocationUpsertInput(input: CreateLocationInput | UpdateLocationInput) {
   return {
     name: input.name,
     capacity: input.capacity,
     description: input.description,
-    type,
     address: input.address,
     streetNumber: input.street_number,
     state: input.state,

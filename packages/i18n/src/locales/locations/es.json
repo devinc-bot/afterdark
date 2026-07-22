@@ -12,8 +12,21 @@
     "loadErrorTitle": "No pudimos cargar las ubicaciones",
     "loadErrorFallback": "Intentá de nuevo en unos minutos.",
     "listError": "No pudimos cargar las ubicaciones. Intentá de nuevo en unos minutos.",
+    "retry": "Reintentar",
     "emptyTitle": "Todavía no hay ubicaciones",
     "emptyDescription": "Registrá la primera ubicación para empezar a gestionar su información.",
+    "columns": {
+      "location": "Ubicación",
+      "address": "Dirección",
+      "capacity": "Capacidad",
+      "actions": "Acciones"
+    },
+    "row": {
+      "menuLabel": "Acciones para {name}",
+      "noImageAlt": "Sin imagen de {name}",
+      "edit": "Editar",
+      "delete": "Eliminar"
+    },
     "deleteSuccess": "Ubicación eliminada correctamente",
     "deleteError": "No pudimos eliminar la ubicación. Intentá de nuevo.",
     "deleteFallback": "No pudimos eliminar la ubicación. Intentá de nuevo en unos minutos."
@@ -44,7 +57,7 @@
     "generalTitle": "Información general",
     "generalDescription": "Datos básicos de la ubicación que verán los usuarios en la plataforma.",
     "imagesTitle": "Imágenes",
-    "imagesDescription": "Fotos del local que se mostrarán en la plataforma. Podés subir hasta 5 imágenes.",
+    "imagesDescription": "Fotos del local que se mostrarán en la plataforma. Podés subir hasta 4 imágenes.",
     "locationTitle": "Dirección",
     "locationDescription": "Dirección física del local. Completá los datos y ajustá el pin en el mapa."
   },

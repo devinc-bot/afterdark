@@ -19,6 +19,24 @@
   "list": {
     "error": "No pudimos cargar los tickets. Intentá de nuevo en unos minutos."
   },
+  "createPage": {
+    "metaTitle": "Crear ticket · {appNameAdmin}",
+    "title": "Crear ticket",
+    "description": "Último paso: cargá el tipo de entrada, precio y stock para tu evento y empezá a vender.",
+    "back": "Volver a tickets"
+  },
+  "editPage": {
+    "metaTitle": "Editar ticket · {appNameAdmin}",
+    "title": "Editar ticket",
+    "description": "Actualizá la información del ticket. Los cambios se reflejan de inmediato.",
+    "back": "Volver a tickets",
+    "loading": "Cargando ticket…",
+    "loadErrorTitle": "No pudimos cargar el ticket",
+    "loadErrorFallback": "Intentá de nuevo en unos minutos.",
+    "retry": "Reintentar",
+    "notFoundTitle": "No encontramos el ticket que querés editar.",
+    "notFoundDescription": "El ticket no existe o no tenés permiso para editarlo."
+  },
   "form": {
     "createTitle": "Crear ticket",
     "createDescription": "Definí el tipo de entrada, precio y stock para un evento.",
@@ -27,6 +45,12 @@
     "clearDates": "Limpiar fechas",
     "saleDatesHint": "Completá ambas fechas o dejá las dos vacías.",
     "requiredFieldsHint": "Los campos marcados con * son obligatorios.",
+    "eventSectionTitle": "Evento",
+    "eventSectionDescription": "Elegí el evento al que pertenece este tipo de entrada.",
+    "detailsSectionTitle": "Datos del ticket",
+    "detailsSectionDescription": "Nombre, tipo, estado y descripción visibles en la venta.",
+    "salesSectionTitle": "Precio y disponibilidad",
+    "salesSectionDescription": "Definí el precio, el stock y el período de venta.",
     "trigger": "Crear ticket",
     "cancel": "Cancelar",
     "name": "Nombre",

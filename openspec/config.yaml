@@ -1,0 +1,51 @@
+schema: spec-driven
+
+# Project context — shown to the AI when creating any artifact.
+context: |
+  afterdark — pnpm monorepo for a nightlife events/ticketing platform.
+
+  Apps:
+    - apps/web (@afterdark/web) — public site, TanStack Start → http://localhost:3001
+    - apps/dashboard (@afterdark/dashboard) — owner/staff panel, TanStack Start/Router → http://localhost:3002
+    - apps/api (@afterdark/api) — NestJS, vertical-slice modules (application/presentation/mappers/...)
+
+  Shared packages:
+    - packages/db (@afterdark/db) — Drizzle ORM on Turso/libSQL (sqliteTable, no decorators).
+      ALL queries used by the API live in packages/db/src/repositories/; API services call
+      repository functions, they do NOT import `db` directly.
+    - packages/validators (@afterdark/validators) — Zod v4 schemas (single source of validation truth).
+    - packages/ui (@afterdark/ui) — ShadCN components, Tailwind v4.
+    - packages/i18n (@afterdark/i18n) — locale JSON; UI copy is Spanish.
+    - packages/types, packages/common — shared domain types and config (e.g. api-routes).
+
+  Conventions:
+    - UI copy in Spanish; identifiers, routes, code and specs' technical parts in English.
+    - Naming, pinned deps, no magic strings per STYLEGUIDE.md.
+    - Only linter/formatter: oxlint + oxfmt (oxlint.json / .oxfmtrc.json). Pre-commit runs both.
+    - DB changes use drizzle-kit migrations with a timestamp prefix; never rename committed migrations.
+    - `routeTree.gen.ts` is generated on `pnpm dev` — never edit it.
+    - `createFileRoute` needs a string-literal path (TanStack codegen); route constants are for navigation only.
+
+  Reference docs (read before proposing): ARCHITECTURE.md, DOMAIN.md, STYLEGUIDE.md,
+  packages/db/DATABASE.md, AGENTS.md.
+
+  Legacy SDD: earlier specs live under spec/features/NNN-*/ (kept for reference/history).
+  New work uses OpenSpec (openspec/). Migrate a legacy feature only when you next touch it.
+
+# Per-artifact rules — injected only for the matching artifact.
+rules:
+  proposal:
+    - Write in English; link to the business goal (mission/roadmap) when relevant.
+    - Include an explicit "Non-goals" / out-of-scope section to prevent scope creep.
+    - State which apps and packages are affected (api, web, dashboard, db, ui, validators, i18n).
+  specs:
+    - Use Given/When/Then scenarios for every requirement.
+    - UI-facing copy and error messages in Spanish; requirement text in English.
+    - Reference @afterdark/validators for validation; do NOT restate validation rules in prose.
+  design:
+    - Follow the layer conventions in ARCHITECTURE.md (vertical-slice modules in the API).
+    - New API DB access goes through a repository in packages/db/src/repositories/ (export from index).
+    - Note migrations needed (drizzle-kit, timestamp-prefixed) and any i18n keys to add.
+  tasks:
+    - 'Order tasks incrementally by layer: types/validators → db/migration → API → dashboard/UI → i18n.'
+    - 'Keep each task independently reviewable; every change must pass oxlint + oxfmt.'

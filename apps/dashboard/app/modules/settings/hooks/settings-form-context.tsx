@@ -18,6 +18,7 @@ import {
   getFirstInvalidFieldId,
   mapSettingsFormErrors,
   resolveSaveErrorMessage,
+  resolveSaveSuccessMessageKey,
   validateSettingsForm,
   type SettingsFieldErrors,
 } from '~/modules/settings/utils/settings-form.utils'
@@ -143,7 +144,7 @@ export function createSettingsFormProvider<
 
         commit(config.toFormValues(updatedUser))
         setSaveStatus(SETTINGS_SAVE_STATUS.SUCCESS)
-        setSaveMessage(t('shared.messages.saveSuccess'))
+        setSaveMessage(t(resolveSaveSuccessMessageKey()))
 
         useSessionStore.setState({ user: toSessionUser(updatedUser) })
         void refetchSettings()

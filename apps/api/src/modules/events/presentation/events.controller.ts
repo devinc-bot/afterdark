@@ -10,27 +10,33 @@ import {
   Patch,
   Post,
   Query,
+  UploadedFiles,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common'
+import { FilesInterceptor } from '@nestjs/platform-express'
 import { API_ROUTES } from '@afterdark/common'
 import type { EventResponse, JwtPayload, PaginatedResponse } from '@afterdark/types'
 import { USER_ROLE } from '@afterdark/types'
 import {
+  EVENT_IMAGE_MAX_COUNT,
   createEventSchema,
   listEventsQuerySchema,
-  updateEventSchema,
+  updateEventMultipartSchema,
   uuidSchema,
   type CreateEventInput,
   type ListEventsQueryInput,
-  type UpdateEventInput,
+  type UpdateEventMultipartInput,
 } from '@afterdark/validators'
 import { CurrentUser } from '../../common/decorators/current-user.decorator'
 import { Roles } from '../../common/decorators/roles.decorator'
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard'
 import { RolesGuard } from '../../common/guards/roles.guard'
 import { ZodValidationPipe } from '../../common/pipes/zod-validation.pipe'
+import { imageUploadOptions } from '../../files/image-upload.options'
 import { CreateEventUseCase } from '../application/create-event.use-case'
 import { DeleteEventUseCase } from '../application/delete-event.use-case'
+import { GetEventByDocumentIdUseCase } from '../application/get-event-by-document-id.use-case'
 import { ListMyEventsUseCase } from '../application/list-my-events.use-case'
 import { UpdateEventUseCase } from '../application/update-event.use-case'
 
@@ -38,6 +44,8 @@ import { UpdateEventUseCase } from '../application/update-event.use-case'
 export class EventsController {
   constructor(
     @Inject(ListMyEventsUseCase) private readonly listMyEventsUseCase: ListMyEventsUseCase,
+    @Inject(GetEventByDocumentIdUseCase)
+    private readonly getEventByDocumentIdUseCase: GetEventByDocumentIdUseCase,
     @Inject(CreateEventUseCase) private readonly createEventUseCase: CreateEventUseCase,
     @Inject(UpdateEventUseCase) private readonly updateEventUseCase: UpdateEventUseCase,
     @Inject(DeleteEventUseCase) private readonly deleteEventUseCase: DeleteEventUseCase
@@ -53,26 +61,47 @@ export class EventsController {
     return this.listMyEventsUseCase.execute(user.sub, query)
   }
 
+  @Get(API_ROUTES.events.path.get(':documentId'))
+  @Roles([USER_ROLE.OWNER])
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  getByDocumentId(
+    @CurrentUser() user: JwtPayload,
+    @Param('documentId', new ZodValidationPipe(uuidSchema)) documentId: string
+  ): Promise<EventResponse> {
+    return this.getEventByDocumentIdUseCase.execute(user.sub, documentId)
+  }
+
   @Post(API_ROUTES.events.path.create())
   @HttpCode(HttpStatus.CREATED)
   @Roles([USER_ROLE.OWNER])
   @UseGuards(JwtAuthGuard, RolesGuard)
+  @UseInterceptors(FilesInterceptor('images', EVENT_IMAGE_MAX_COUNT, imageUploadOptions))
   create(
     @CurrentUser() user: JwtPayload,
-    @Body(new ZodValidationPipe(createEventSchema)) body: CreateEventInput
+    @Body(new ZodValidationPipe(createEventSchema)) body: CreateEventInput,
+    @UploadedFiles() files?: Express.Multer.File[]
   ): Promise<EventResponse> {
-    return this.createEventUseCase.execute(user.sub, body)
+    return this.createEventUseCase.execute(user.sub, body, files ?? [])
   }
 
   @Patch(API_ROUTES.events.path.update(':documentId'))
   @Roles([USER_ROLE.OWNER])
   @UseGuards(JwtAuthGuard, RolesGuard)
+  @UseInterceptors(FilesInterceptor('images', EVENT_IMAGE_MAX_COUNT, imageUploadOptions))
   update(
     @CurrentUser() user: JwtPayload,
     @Param('documentId', new ZodValidationPipe(uuidSchema)) documentId: string,
-    @Body(new ZodValidationPipe(updateEventSchema)) body: UpdateEventInput
+    @Body(new ZodValidationPipe(updateEventMultipartSchema)) body: UpdateEventMultipartInput,
+    @UploadedFiles() files?: Express.Multer.File[]
   ): Promise<EventResponse> {
-    return this.updateEventUseCase.execute(user.sub, documentId, body)
+    const { keepImageIds, ...eventInput } = body
+    return this.updateEventUseCase.execute(
+      user.sub,
+      documentId,
+      eventInput,
+      files ?? [],
+      keepImageIds
+    )
   }
 
   @Delete(API_ROUTES.events.path.delete(':documentId'))

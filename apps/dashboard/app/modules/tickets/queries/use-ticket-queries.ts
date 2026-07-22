@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import { TICKET_STATUS } from '@afterdark/types'
 import type { ListTicketsQueryInput } from '@afterdark/validators'
 import { QUERY_KEYS } from '~/modules/common/constants/query-keys'
-import { fetchTickets } from '~/modules/tickets/service/tickets.service'
+import { fetchTicket, fetchTickets } from '~/modules/tickets/service/tickets.service'
 
 const DEFAULT_TICKETS_QUERY: ListTicketsQueryInput = {
   page: 1,
@@ -15,6 +15,14 @@ export function useTickets(params: Partial<ListTicketsQueryInput> = {}) {
   return useQuery({
     queryKey: QUERY_KEYS.tickets(query),
     queryFn: () => fetchTickets(query),
+  })
+}
+
+export function useTicket(documentId: string) {
+  return useQuery({
+    queryKey: QUERY_KEYS.ticket(documentId),
+    queryFn: () => fetchTicket(documentId),
+    enabled: Boolean(documentId),
   })
 }
 
