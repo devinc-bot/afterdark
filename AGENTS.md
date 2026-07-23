@@ -29,7 +29,7 @@ change, create and align an OpenSpec change first:
 /opsx:explore            # optional — read the area, shape the approach
 /opsx:propose <slug>     # drafts openspec/changes/<slug>/ (proposal, specs deltas, design, tasks)
                          # → review the proposal with the user BEFORE coding
-/opsx:apply              # implements tasks.md (respect incremental delivery by layer)
+/opsx:apply              # implements ONE tasks.md item per turn, then pauses (say "seguí"/"todas" to continue)
 /opsx:archive            # merges spec deltas into openspec/specs/ and archives the change
 ```
 

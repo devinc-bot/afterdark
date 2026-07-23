@@ -6,14 +6,16 @@ alwaysApply: true
 # Entregas incrementales
 
 Cuando el usuario pida una **feature**, **cambio grande** o **refactor amplio**, no implementar todo de una vez.
+En OpenSpec, `/opsx:apply` debe seguir esta misma regla (una tarea de `tasks.md` por turno).
 
 ## Flujo
 
 1. **Dividir** el trabajo en tareas pequeñas y revisables (idealmente 1 capa o 1 concern por entrega).
 2. **Mostrar el plan** de tareas al usuario antes de codear (lista corta, orden sugerido).
 3. **Implementar una sola tarea** por turno (o el lote mínimo que el usuario apruebe).
-4. Al terminar esa tarea: resumir qué cambió, cómo probarlo, y **preguntar** antes de seguir con la siguiente.
+4. Al terminar esa tarea: resumir qué cambió, cómo probarlo, y **preguntar** antes de seguir con la siguiente (`AskQuestion` si hay opciones).
 5. Solo continuar automáticamente si el usuario dice explícitamente “seguí”, “siguiente”, “todas”, etc.
+6. Si el pedido o la tarea es **ambigua**, llamar **`AskQuestion`** (UI nativo) antes de codear — no adivinar ni pegar A/B/C en el chat.
 
 ## Tamaño de cada entrega
 

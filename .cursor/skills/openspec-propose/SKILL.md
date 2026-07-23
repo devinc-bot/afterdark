@@ -28,15 +28,22 @@ When ready to implement, run /opsx:apply
 
 **Steps**
 
-1. **If no clear input provided, ask what they want to build**
+1. **Clarify the request before creating artifacts**
 
-   Use the **AskUserQuestion tool** (open-ended, no preset options) to ask:
+   Use the **AskQuestion tool** when:
+   - No clear input was provided (open-ended: what to build/fix)
+   - The request is **ambiguous** — unclear scope, audience, apps affected, UX, success criteria, or competing approaches
+   - A product/tech decision would otherwise be invented by the agent
 
-   > "What change do you want to work on? Describe what you want to build or fix."
+   Prefer a short set of concrete options (2–4) so the user can decide quickly. Ask only what blocks drafting a coherent proposal.
 
-   From their description, derive a kebab-case name (e.g., "add user authentication" → `add-user-auth`).
+   **CRITICAL**: Call the **`AskQuestion` tool** so Cursor shows the native multiple-choice UI. Do **not** paste numbered A/B/C lists into the chat message — that forces manual typing and is wrong when AskQuestion exists.
 
-   **IMPORTANT**: Do NOT proceed without understanding what the user wants to build.
+   If `AskQuestion` is missing from the toolset or the call fails (common with Composer in Agent mode): say so explicitly, suggest Plan mode (Shift+Tab) or a non-Composer model, and only then fall back to text.
+
+   From their answers, derive a kebab-case name (e.g., "add user authentication" → `add-user-auth`).
+
+   **IMPORTANT**: Do NOT proceed on guesswork when ambiguity would change the proposal, specs, or tasks. If the user says "inferí vos" / "seguí con lo que tengas", document assumptions in the proposal and continue.
 
 2. **Create the change directory**
 
@@ -86,7 +93,7 @@ When ready to implement, run /opsx:apply
    - Stop when all `applyRequires` artifacts are done
 
    c. **If an artifact requires user input** (unclear context):
-   - Use **AskUserQuestion tool** to clarify
+   - Use **AskQuestion tool** to clarify
    - Then continue with creation
 
 5. **Show final status**
@@ -117,6 +124,7 @@ After completing all artifacts, summarize:
 
 - Create ALL artifacts needed for implementation (as defined by schema's `apply.requires`)
 - Always read dependency artifacts before creating a new one
-- If context is critically unclear, ask the user - but prefer making reasonable decisions to keep momentum
+- If the request or a decision is ambiguous, use **AskQuestion** — do not invent product decisions; only keep momentum when the user delegated ("inferí vos") or the choice is purely mechanical
+- Size `tasks.md` for incremental apply (one reviewable task per checkbox / layer slice)
 - If a change with that name already exists, ask if user wants to continue it or create a new one
 - Verify each artifact file exists after writing before proceeding to next

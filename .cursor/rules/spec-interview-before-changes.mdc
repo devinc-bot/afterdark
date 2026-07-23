@@ -27,6 +27,8 @@ CLI local: `pnpm openspec <cmd>` (list, show, validate, view, doctor). Los slash
 ## Reglas
 
 - **No implementar código** hasta que la propuesta esté revisada, salvo pedido explícito del usuario.
+- **Pedido ambiguo**: llamar **`AskQuestion`** (UI multiple-choice de Cursor). No inventar decisiones ni listar A/B/C como texto en el chat. Si la tool no está disponible (Composer en Agent), avisar y sugerir Plan mode o otro modelo.
+- **Apply incremental**: `/opsx:apply` implementa **una tarea por turno** y pausa; solo sigue en lote si el usuario dice “seguí”, “siguiente”, “todas”, etc.
 - **Deltas, no specs completas**: describir solo lo que cambia respecto al comportamiento actual (brownfield-first).
 - Copy de UI y mensajes de error en **español**; identificadores, rutas y requisitos técnicos en **inglés**.
 - Validación vía `@afterdark/validators`; no duplicar reglas en prosa.
