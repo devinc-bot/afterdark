@@ -32,11 +32,10 @@ export function initI18n(language?: Language): Promise<void> {
 function detectLanguage(): Language {
   if (typeof window === 'undefined') return DEFAULT_LANGUAGE
 
+  // Explicit user choice only. Product is Spanish-first; do not follow
+  // browser locale (would flip the public web to English without a switcher).
   const stored = localStorage.getItem('afterdark:language')
   if (stored === LANGUAGE.ES || stored === LANGUAGE.EN) return stored as Language
-
-  const browser = navigator.language.split('-')[0]
-  if (browser === LANGUAGE.ES || browser === LANGUAGE.EN) return browser as Language
 
   return DEFAULT_LANGUAGE
 }

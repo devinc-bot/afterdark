@@ -5,6 +5,7 @@ import { CtaButton, MailLayout } from './mail-layout'
 export type PasswordResetEmailProps = {
   preview: string
   title: string
+  brand: string
   body: string
   cta: string
   url: string
@@ -17,6 +18,7 @@ export type PasswordResetEmailProps = {
 export function PasswordResetEmail({
   preview,
   title,
+  brand,
   body,
   cta,
   url,
@@ -26,7 +28,7 @@ export function PasswordResetEmail({
   copyright,
 }: PasswordResetEmailProps) {
   return (
-    <MailLayout preview={preview} title={title} footer={footer} copyright={copyright}>
+    <MailLayout preview={preview} title={title} brand={brand} footer={footer} copyright={copyright}>
       <Text style={bodyTextStyle}>{body}</Text>
       {expires ? <Text style={mutedTextStyle}>{expires}</Text> : null}
       <CtaButton href={url} label={cta} />

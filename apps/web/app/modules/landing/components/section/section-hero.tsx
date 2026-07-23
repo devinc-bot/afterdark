@@ -2,9 +2,8 @@ import { useEffect, useState, type ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import { cn } from '@afterdark/ui'
 import { LANDING_IMAGES } from '../../constants/images'
+import { LANDING_SHELL } from '../../constants/layout'
 import { LANDING_VIDEOS } from '../../constants/videos'
-
-const SHELL = 'mx-auto max-w-7xl px-margin-mobile sm:px-8 lg:px-margin-desktop'
 
 type SectionHeroProps = {
   showAuthCtas?: boolean
@@ -58,17 +57,17 @@ export function SectionHero({ showAuthCtas = true, children, className }: Sectio
         )}
         <div
           aria-hidden
-          className="absolute inset-0 bg-linear-to-b from-background/55 via-background/20 to-background/95"
+          className="absolute inset-0 bg-linear-to-b from-background/70 via-background/60 to-background/95"
         />
         <div
           aria-hidden
-          className="absolute inset-0 bg-linear-to-r from-background/70 via-background/25 to-transparent"
+          className="absolute inset-0 bg-linear-to-r from-background/80 via-background/40 to-transparent"
         />
       </div>
 
       <div
         className={cn(
-          SHELL,
+          LANDING_SHELL,
           'relative z-10 flex min-h-dvh flex-col justify-end pb-[max(4rem,8vh)] pt-28 sm:pb-[max(5rem,10vh)]'
         )}
       >

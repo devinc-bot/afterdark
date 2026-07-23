@@ -1,10 +1,14 @@
 import type { ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import { DASHBOARD_URL } from '@afterdark/common'
-import { cn } from '@afterdark/ui'
+import { AppLogo, cn } from '@afterdark/ui'
+import { LANDING_FOCUS_RING, LANDING_SHELL } from '../constants/layout'
 import { handleSectionNavClick } from '../utils/scroll-to-section.utils'
 
-const SHELL = 'mx-auto max-w-7xl px-margin-mobile sm:px-8 lg:px-margin-desktop'
+const FOOTER_LINK = cn(
+  'inline-flex min-h-10 items-center rounded-lg font-label text-sm text-on-surface-variant transition-colors duration-(--duration-fast) ease-emphasized hover:text-on-surface',
+  LANDING_FOCUS_RING
+)
 
 const SOCIAL_LINKS = [
   {
@@ -20,9 +24,9 @@ const SOCIAL_LINKS = [
 ] as const
 
 const FOOTER_NAV = [
+  { href: '#eventos', labelKey: 'nav.events' },
   { href: '#como-funciona', labelKey: 'nav.how' },
   { href: '#claridad', labelKey: 'nav.clarity' },
-  { href: '#eventos', labelKey: 'nav.events' },
 ] as const
 
 const SOCIAL_ICON_CLASS = 'h-8 w-8 shrink-0'
@@ -74,16 +78,11 @@ export function LandingFooter() {
 
   return (
     <footer className="border-t border-hairline/40">
-      <div className={cn(SHELL, 'py-12 sm:py-14')}>
+      <div className={cn(LANDING_SHELL, 'py-12 sm:py-14')}>
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-12 lg:gap-12">
           <div className="lg:col-span-5">
             <div className="flex items-center gap-2">
-              <img
-                src="/landing/logo.png"
-                alt=""
-                aria-hidden="true"
-                className="size-12 object-contain"
-              />
+              <AppLogo size="xl" />
               <span className="font-display text-lg font-bold tracking-tight">
                 {t('nav.brand')}
               </span>
@@ -106,17 +105,14 @@ export function LandingFooter() {
                   <a
                     href={item.href}
                     onClick={(event) => handleSectionNavClick(event, item.href)}
-                    className="inline-flex min-h-10 items-center font-label text-sm text-on-surface-variant transition-colors duration-(--duration-fast) ease-emphasized hover:text-on-surface focus-visible:rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink"
+                    className={FOOTER_LINK}
                   >
                     {t(item.labelKey)}
                   </a>
                 </li>
               ))}
               <li>
-                <a
-                  href={DASHBOARD_URL}
-                  className="inline-flex min-h-10 items-center font-label text-sm text-on-surface-variant transition-colors duration-(--duration-fast) ease-emphasized hover:text-on-surface focus-visible:rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink"
-                >
+                <a href={DASHBOARD_URL} className={FOOTER_LINK}>
                   {t('footer.publish')}
                 </a>
               </li>
@@ -134,7 +130,7 @@ export function LandingFooter() {
                     href={item.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex size-14 items-center justify-center rounded-full border border-hairline/50 text-on-surface transition-colors duration-(--duration-fast) ease-emphasized hover:border-primary/50 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink"
+                    className="inline-flex size-14 items-center justify-center rounded-lg border border-hairline/50 text-on-surface-variant transition-colors duration-(--duration-fast) ease-emphasized hover:border-hairline hover:text-on-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink"
                     aria-label={t(item.labelKey)}
                   >
                     {SOCIAL_ICONS[item.key]}

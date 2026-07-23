@@ -1,5 +1,5 @@
 ---
-name: Afterdark Pulse Refined
+name: EventFlow Pulse Refined
 colors:
   surface: '#131314'
   surface-dim: '#131314'

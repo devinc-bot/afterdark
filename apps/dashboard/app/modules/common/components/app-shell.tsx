@@ -15,6 +15,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
   useSidebar,
+  AppLogo,
 } from '@afterdark/ui'
 import { Link, useNavigate, useRouterState } from '@tanstack/react-router'
 import { useCallback, useMemo, useRef, useState, type ReactNode } from 'react'
@@ -244,12 +245,7 @@ function AppShellLayout({ children }: { children: React.ReactNode }) {
       <Sidebar collapsible="offcanvas">
         <SidebarHeader className="px-4 pt-5 pb-3">
           <div className="flex items-center gap-2">
-            <img
-              src="/landing/logo.png"
-              alt=""
-              aria-hidden="true"
-              className="h-11 w-11 shrink-0 object-contain"
-            />
+            <AppLogo size="lg" />
             <span className="font-heading text-base font-semibold tracking-[0.04em] text-sidebar-foreground transition-colors duration-(--duration-fast) ease-emphasized motion-reduce:transition-none">
               {t('brand.logo')}
             </span>

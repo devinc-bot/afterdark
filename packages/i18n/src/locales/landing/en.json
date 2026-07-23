@@ -7,9 +7,9 @@
     "login": "Sign in",
     "register": "Create account",
     "how": "How it works",
-    "clarity": "Clarity",
+    "clarity": "Tickets",
     "events": "Events",
-    "publish": "Publish",
+    "publish": "Organizers",
     "tickets": "Tickets",
     "accountAria": "Account for {name}",
     "openMenu": "Open menu",
@@ -51,27 +51,27 @@
     }
   },
   "clarity": {
-    "headline": "What matters, up front.",
-    "support": "No visual noise. Just what you need to decide and arrive.",
+    "headline": "Ticket, door, and schedule — no fine print.",
+    "support": "What you need to decide and arrive, up front.",
     "items": {
       "ticket": {
-        "title": "Unambiguous tickets",
-        "body": "Type, price, and availability in one place. No hidden fine print."
+        "title": "Clear tickets",
+        "body": "Type, price, and availability in one place. No surprises in line."
       },
       "secure": {
-        "title": "Access with backup",
-        "body": "Clear confirmation and a QR ready for the door. Less friction in line."
+        "title": "QR ready at the door",
+        "body": "Clear confirmation and a code ready when you arrive. Less friction at entry."
       },
       "time": {
-        "title": "On-time schedule",
-        "body": "Dates, times, and clubs you can scan fast — while there’s still room."
+        "title": "Dates you can scan fast",
+        "body": "Times and clubs in view — while there’s still room."
       }
     }
   },
   "pulse": {
     "eyebrow": "The platform’s pulse",
     "headline": "Built for the night that’s already moving.",
-    "body": "Afterdark doesn’t invent the scene — it organizes it. Discover, choose, and secure your place without losing the mood.",
+    "body": "{appNameDisplay} doesn’t invent the scene — it organizes it. Discover, choose, and secure your place without losing the mood.",
     "imageAlt": "Crowd hands raised in front of the stage",
     "stats": {
       "nights": {
@@ -85,25 +85,18 @@
     }
   },
   "events": {
-    "headline": "Upcoming events",
-    "support": "Editorial sample. Soon: a live schedule from the platform.",
+    "headline": "The schedule isn’t open yet",
+    "support": "When nights go live, they’ll live here. Create your account so you’re ready the day the first date drops.",
+    "cta": "Create account",
+    "previewAria": "Live-night atmosphere — no published dates yet",
     "items": {
       "1": {
-        "date": "Fri 18 Jul",
-        "title": "Pulse",
-        "venue": "Club Nómina",
         "imageAlt": "Stage with strong lights at a live show"
       },
       "2": {
-        "date": "Sat 19 Jul",
-        "title": "Below the line",
-        "venue": "Mármol",
         "imageAlt": "Crowd at a festival under colored lights"
       },
       "3": {
-        "date": "Thu 24 Jul",
-        "title": "Residency",
-        "venue": "Casa Norte",
         "imageAlt": "Concert with a crowd facing the stage"
       }
     }
@@ -116,7 +109,7 @@
   "footer": {
     "tagline": "Nightlife events, with precision.",
     "explore": "Explore",
-    "publish": "Publish",
+    "publish": "Organizers",
     "navAria": "Footer links",
     "madeFor": "Made so you can enjoy an unforgettable night.",
     "rights": "© {year} {appName}",

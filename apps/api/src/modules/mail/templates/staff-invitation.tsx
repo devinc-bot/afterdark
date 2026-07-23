@@ -5,6 +5,7 @@ import { CtaButton, MailLayout } from './mail-layout'
 export type StaffInvitationEmailProps = {
   preview: string
   title: string
+  brand: string
   body: string
   cta: string
   url: string
@@ -18,6 +19,7 @@ export type StaffInvitationEmailProps = {
 export function StaffInvitationEmail({
   preview,
   title,
+  brand,
   body,
   cta,
   url,
@@ -28,7 +30,7 @@ export function StaffInvitationEmail({
   copyright,
 }: StaffInvitationEmailProps) {
   return (
-    <MailLayout preview={preview} title={title} footer={footer} copyright={copyright}>
+    <MailLayout preview={preview} title={title} brand={brand} footer={footer} copyright={copyright}>
       <Text style={bodyTextStyle}>{body}</Text>
       {expires ? <Text style={mutedTextStyle}>{expires}</Text> : null}
       {securityWordNote ? <Text style={mutedTextStyle}>{securityWordNote}</Text> : null}

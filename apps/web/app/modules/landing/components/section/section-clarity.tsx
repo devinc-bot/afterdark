@@ -1,12 +1,8 @@
 import { Ticket, ShieldCheck, Clock3 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { cn } from '@afterdark/ui'
+import { LANDING_HEADING, LANDING_SECTION_Y, LANDING_SHELL } from '../../constants/layout'
 import { Reveal } from '../reveal'
-
-const SHELL = 'mx-auto max-w-7xl px-margin-mobile sm:px-8 lg:px-margin-desktop'
-const SECTION_Y = 'py-[clamp(4rem,10vw,7.5rem)]'
-const HEADING =
-  'font-display text-[clamp(1.75rem,3.5vw,2.75rem)] font-bold leading-[1.15] tracking-[-0.02em] text-balance'
 
 const CLARITY_ITEMS = [
   { id: 'ticket', Icon: Ticket },
@@ -25,12 +21,12 @@ export function SectionClarity({ className }: SectionClarityProps) {
     <section
       id="claridad"
       aria-labelledby="clarity-heading"
-      className={cn('scroll-mt-20 border-t border-hairline/40', className)}
+      className={cn('scroll-mt-24 border-t border-hairline/40', className)}
     >
-      <div className={cn(SHELL, SECTION_Y)}>
+      <div className={cn(LANDING_SHELL, LANDING_SECTION_Y)}>
         <Reveal>
           <div className="max-w-2xl">
-            <h2 id="clarity-heading" className={HEADING}>
+            <h2 id="clarity-heading" className={cn(LANDING_HEADING, 'text-on-surface')}>
               {t('clarity.headline')}
             </h2>
             <p className="mt-4 max-w-[46ch] text-base leading-relaxed text-pretty text-on-surface-variant sm:text-lg">
@@ -47,12 +43,12 @@ export function SectionClarity({ className }: SectionClarityProps) {
                   index === 0 && 'md:pl-0'
                 )}
               >
-                <div
-                  className="flex size-14 items-center justify-center rounded-2xl bg-primary/12 text-primary"
+                <Icon
+                  className="size-8 text-on-surface-variant"
+                  strokeWidth={1.5}
+                  absoluteStrokeWidth
                   aria-hidden
-                >
-                  <Icon className="size-8" strokeWidth={1.75} absoluteStrokeWidth />
-                </div>
+                />
                 <div>
                   <h3 className="font-display text-xl font-semibold tracking-tight text-balance text-on-surface">
                     {t(`clarity.items.${id}.title`)}

@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { HeadContent, Outlet, Scripts, createRootRouteWithContext } from '@tanstack/react-router'
 import { QueryClientProvider, type QueryClient } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
-import { Link, Toaster } from '@afterdark/ui'
+import { APP_LOGO_SRC, Link, Toaster } from '@afterdark/ui'
 import { I18nProvider } from '@afterdark/i18n/client'
 import { installZodI18n } from '@afterdark/i18n'
 import commonEs from '@afterdark/i18n/locales/common/es.json'
@@ -22,8 +22,8 @@ export const Route = createRootRouteWithContext<RouterContext>()({
       { title: `${commonEs.appNameDisplay} · Panel` },
     ],
     links: [
-      { rel: 'icon', type: 'image/png', href: '/landing/logo.png' },
-      { rel: 'apple-touch-icon', href: '/landing/logo.png' },
+      { rel: 'icon', type: 'image/png', href: APP_LOGO_SRC },
+      { rel: 'apple-touch-icon', href: APP_LOGO_SRC },
       { rel: 'stylesheet', href: globalsCssUrl },
     ],
   }),

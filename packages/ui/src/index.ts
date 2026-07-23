@@ -83,6 +83,12 @@ export { Loader, type LoaderProps } from './components/ui/loader.tsx'
 export { Link, type LinkProps } from './components/ui/link.tsx'
 export { NotImage, notImageVariants, type NotImageProps } from './components/ui/not-image.tsx'
 export {
+  AppLogo,
+  APP_LOGO_SRC,
+  appLogoVariants,
+  type AppLogoProps,
+} from './components/ui/app-logo.tsx'
+export {
   Select,
   SelectContent,
   SelectField,

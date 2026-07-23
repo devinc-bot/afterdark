@@ -12,7 +12,7 @@ brand
 
 ## Product Purpose
 
-Afterdark is an events and ticketing platform. Owners and staff manage locations, events, categories, and orders through an admin dashboard. Customers discover and purchase event access through the public web. Success looks like: staff spend less time on logistics, customers feel confident about the experience before they arrive.
+EventFlow is an events and ticketing platform. Owners and staff manage locations, events, categories, and orders through an admin dashboard. Customers discover and purchase event access through the public web. Success looks like: staff spend less time on logistics, customers feel confident about the experience before they arrive.
 
 ## Brand Personality
 
@@ -23,7 +23,7 @@ Not the nightclub flyer — the venue itself when the room is ready and the ligh
 ## Anti-references
 
 - **Nightclub flyer aesthetic**: neon on black, aggressive glow effects, gradient text, zero hierarchy. That's the costume, not the identity.
-- **Generic SaaS (Stripe / Notion aesthetic)**: neutral whites, system-font everything, no character. Afterdark is not a productivity tool.
+- **Generic SaaS (Stripe / Notion aesthetic)**: neutral whites, system-font everything, no character. EventFlow is not a productivity tool.
 - **Instagram-influencer commerce**: pastel gradients, aspirational lifestyle copy, beauty-brand softness. Wrong register entirely.
 
 ## Design Principles

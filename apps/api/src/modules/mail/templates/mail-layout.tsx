@@ -4,19 +4,27 @@ import { Body, Container, Head, Heading, Hr, Html, Link, Preview, Section, Text 
 type MailLayoutProps = {
   preview: string
   title: string
+  brand: string
   children: ReactNode
   footer: string
   copyright: string
 }
 
-export function MailLayout({ preview, title, children, footer, copyright }: MailLayoutProps) {
+export function MailLayout({
+  preview,
+  title,
+  brand,
+  children,
+  footer,
+  copyright,
+}: MailLayoutProps) {
   return (
     <Html lang="es">
       <Head />
       <Preview>{preview}</Preview>
       <Body style={bodyStyle}>
         <Container style={containerStyle}>
-          <Text style={brandStyle}>EventFlow</Text>
+          <Text style={brandStyle}>{brand}</Text>
           <Heading style={headingStyle}>{title}</Heading>
           <Section>{children}</Section>
           <Hr style={hrStyle} />

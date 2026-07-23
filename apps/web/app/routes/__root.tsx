@@ -2,7 +2,7 @@ import { HeadContent, Outlet, Scripts, createRootRouteWithContext } from '@tanst
 import { QueryClientProvider, type QueryClient } from '@tanstack/react-query'
 import { I18nProvider } from '@afterdark/i18n/client'
 import commonEs from '@afterdark/i18n/locales/common/es.json'
-import { Toaster } from '@afterdark/ui'
+import { APP_LOGO_SRC, Toaster } from '@afterdark/ui'
 import globalsCssUrl from '@afterdark/ui/globals.css?url'
 
 interface RouterContext {
@@ -17,8 +17,8 @@ export const Route = createRootRouteWithContext<RouterContext>()({
       { title: commonEs.appName },
     ],
     links: [
-      { rel: 'icon', type: 'image/png', href: '/landing/logo.png' },
-      { rel: 'apple-touch-icon', href: '/landing/logo.png' },
+      { rel: 'icon', type: 'image/png', href: APP_LOGO_SRC },
+      { rel: 'apple-touch-icon', href: APP_LOGO_SRC },
       { rel: 'stylesheet', href: globalsCssUrl },
     ],
   }),

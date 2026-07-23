@@ -1,7 +1,7 @@
 import { useEffect, useState, type MouseEvent } from 'react'
 import { Menu } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
-import { DASHBOARD_URL, getCookieSync } from '@afterdark/common'
+import { getCookieSync } from '@afterdark/common'
 import {
   Avatar,
   AvatarFallback,
@@ -14,26 +14,32 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
+  AppLogo,
   cn,
 } from '@afterdark/ui'
 import { COOKIE_KEYS } from '~/modules/common/constants/cookies'
 import { WEB_ROUTES } from '~/modules/common/constants/routes'
 import { useSession } from '~/modules/common/hooks/use-session'
 import { getUserInitials } from '../utils/user-initials.utils'
+import { LANDING_CTA_PRIMARY, LANDING_FOCUS_RING, LANDING_SHELL } from '../constants/layout'
 import { handleSectionNavClick } from '../utils/scroll-to-section.utils'
 
-const SHELL = 'mx-auto max-w-7xl px-margin-mobile sm:px-8 lg:px-margin-desktop'
-const NAV_LINK =
-  'inline-flex min-h-10 items-center font-label text-sm text-on-surface-variant transition-colors duration-(--duration-instant) ease-emphasized hover:text-on-surface focus-visible:rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink'
+const NAV_LINK = cn(
+  'inline-flex min-h-10 items-center rounded-lg px-2.5 font-label text-sm text-on-surface-variant transition-colors duration-(--duration-instant) ease-emphasized hover:text-on-surface',
+  LANDING_FOCUS_RING
+)
 const NAV_LINK_STATIC =
-  'inline-flex min-h-10 cursor-default items-center font-label text-sm text-on-surface-variant'
-const MOBILE_LINK =
-  'flex min-h-12 w-full items-center rounded-xl px-3 font-label text-base text-on-surface transition-colors duration-(--duration-instant) ease-emphasized hover:bg-surface-container focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink'
+  'inline-flex min-h-10 cursor-default items-center px-2.5 font-label text-sm text-on-surface-variant'
+const MOBILE_LINK = cn(
+  'flex min-h-12 w-full items-center rounded-lg px-3 font-label text-base text-on-surface transition-colors duration-(--duration-instant) ease-emphasized hover:bg-surface-container',
+  LANDING_FOCUS_RING
+)
 
+/** Attendee path first. Organizer CTA lives in the footer only. */
 const LANDING_NAV = [
+  { href: '#eventos', labelKey: 'nav.events' },
   { href: '#como-funciona', labelKey: 'nav.how' },
   { href: '#claridad', labelKey: 'nav.clarity' },
-  { href: '#eventos', labelKey: 'nav.events' },
 ] as const
 
 export function LandingHeader() {
@@ -64,26 +70,24 @@ export function LandingHeader() {
 
   return (
     <header className="pointer-events-none fixed inset-x-0 top-0 z-40 pt-4 sm:pt-5">
-      <div className={SHELL}>
+      <div className={LANDING_SHELL}>
         <div
           className={cn(
-            'pointer-events-auto flex h-14 w-full items-center justify-between gap-2 rounded-full px-3 pl-5 shadow-none transition-[background-color,border-color,box-shadow,backdrop-filter] duration-(--duration-normal) ease-emphasized motion-reduce:transition-none sm:gap-3 sm:px-4 sm:pl-6',
+            'pointer-events-auto flex h-14 w-full items-center justify-between gap-2 rounded-lg px-3 pl-5 transition-[background-color,border-color] duration-(--duration-normal) ease-emphasized motion-reduce:transition-none sm:gap-3 sm:px-4 sm:pl-6',
             navSolid
-              ? 'border border-hairline/50 bg-background/85 shadow-glass backdrop-blur-md'
-              : 'border border-white/10 bg-background/25 backdrop-blur-sm'
+              ? 'border border-hairline/50 bg-background'
+              : 'border border-transparent bg-transparent'
           )}
         >
           <a
             href="#inicio"
             onClick={(event) => handleSectionNavClick(event, '#inicio')}
-            className="flex shrink-0 items-center gap-2 rounded-full text-on-surface transition-colors duration-(--duration-instant) ease-emphasized hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink"
+            className={cn(
+              'flex shrink-0 items-center gap-2 rounded-lg text-on-surface transition-opacity duration-(--duration-instant) ease-emphasized hover:opacity-80',
+              LANDING_FOCUS_RING
+            )}
           >
-            <img
-              src="/landing/logo.png"
-              alt=""
-              aria-hidden="true"
-              className="size-10 object-contain"
-            />
+            <AppLogo />
             <span className="font-display text-sm font-bold tracking-tight sm:text-base">
               {t('nav.brand')}
             </span>
@@ -105,15 +109,12 @@ export function LandingHeader() {
                   key={item.href}
                   href={item.href}
                   onClick={(event) => handleSectionNavClick(event, item.href)}
-                  className={cn(NAV_LINK, 'rounded-full px-2.5')}
+                  className={NAV_LINK}
                 >
                   {t(item.labelKey)}
                 </a>
               ))
             )}
-            <a href={DASHBOARD_URL} className={cn(NAV_LINK, 'rounded-full px-2.5 text-on-surface')}>
-              {t('nav.publish')}
-            </a>
           </nav>
 
           <div className="flex shrink-0 items-center gap-1 sm:gap-2">
@@ -141,15 +142,14 @@ export function LandingHeader() {
                 <Link
                   to={WEB_ROUTES.login()}
                   size="sm"
-                  className="hidden min-h-10 rounded-full text-on-surface sm:inline-flex hover:text-primary"
+                  className="hidden min-h-10 rounded-lg text-on-surface-variant sm:inline-flex hover:text-on-surface"
                 >
                   {t('nav.login')}
                 </Link>
                 <Link
                   to={WEB_ROUTES.register()}
-                  variant="button"
                   size="sm"
-                  className="hidden min-h-10 rounded-full sm:inline-flex"
+                  className={cn('hidden px-4 sm:inline-flex', LANDING_CTA_PRIMARY)}
                 >
                   {t('nav.register')}
                 </Link>
@@ -162,7 +162,7 @@ export function LandingHeader() {
                   type="button"
                   variant="ghost"
                   size="icon"
-                  className="size-10 shrink-0 rounded-full text-on-surface md:hidden"
+                  className="size-10 shrink-0 rounded-lg text-on-surface md:hidden"
                   aria-label={t('nav.openMenu')}
                 >
                   <Menu className="size-5" aria-hidden />
@@ -174,12 +174,7 @@ export function LandingHeader() {
               >
                 <SheetHeader className="border-b border-hairline/40 px-5 py-5 text-left">
                   <SheetTitle className="flex items-center gap-2 font-display text-lg font-bold tracking-tight">
-                    <img
-                      src="/landing/logo.png"
-                      alt=""
-                      aria-hidden="true"
-                      className="size-10 object-contain"
-                    />
+                    <AppLogo />
                     {t('nav.brand')}
                   </SheetTitle>
                 </SheetHeader>
@@ -215,13 +210,6 @@ export function LandingHeader() {
                       </a>
                     ))
                   )}
-                  <a
-                    href={DASHBOARD_URL}
-                    onClick={() => setMenuOpen(false)}
-                    className={MOBILE_LINK}
-                  >
-                    {t('nav.publish')}
-                  </a>
                 </nav>
 
                 {showAuthCtas ? (
@@ -231,7 +219,7 @@ export function LandingHeader() {
                         to={WEB_ROUTES.login()}
                         variant="outline"
                         size="lg"
-                        className="min-h-11 w-full rounded-lg hover:text-primary"
+                        className="min-h-11 w-full rounded-lg hover:text-on-surface"
                       >
                         {t('nav.login')}
                       </Link>
@@ -239,9 +227,8 @@ export function LandingHeader() {
                     <SheetClose asChild>
                       <Link
                         to={WEB_ROUTES.register()}
-                        variant="button"
                         size="lg"
-                        className="min-h-11 w-full rounded-lg"
+                        className={cn('w-full', LANDING_CTA_PRIMARY)}
                       >
                         {t('nav.register')}
                       </Link>

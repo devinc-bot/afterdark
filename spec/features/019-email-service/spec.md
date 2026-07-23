@@ -126,7 +126,7 @@ Cada helper: `render*(props, locale) → { subject, html, text? }` usando `@reac
 | Variable         | Uso                                           |
 | ---------------- | --------------------------------------------- |
 | `RESEND_API_KEY` | Auth Resend                                   |
-| `MAIL_FROM`      | Remitente (ej. `Afterdark <noreply@dominio>`) |
+| `MAIL_FROM`      | Remitente (ej. `EventFlow <noreply@dominio>`) |
 | `MAIL_SMOKE_TO`  | Destinatario del humo en dev (opcional)       |
 
 Validación al estilo `uploadEnvSchema` / `ENV` en `apps/api`.

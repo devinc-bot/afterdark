@@ -1,8 +1,13 @@
 import { Link } from '@tanstack/react-router'
 import type { ReactNode } from 'react'
+import { useTranslation } from 'react-i18next'
+import { AppLogo } from '@afterdark/ui'
 import { WEB_ROUTES } from '~/modules/common/constants/routes'
 
 export function AuthPageLayout({ children }: { children: ReactNode }) {
+  const { t } = useTranslation('common')
+  const year = new Date().getFullYear()
+
   return (
     <div className="relative flex min-h-dvh flex-col bg-background text-on-surface">
       <div
@@ -13,9 +18,10 @@ export function AuthPageLayout({ children }: { children: ReactNode }) {
       <header className="relative z-10 px-6 py-5 sm:px-8">
         <Link
           to={WEB_ROUTES.home()}
-          className="font-display text-lg font-bold tracking-tight text-on-surface transition-colors duration-150 hover:text-primary"
+          className="inline-flex items-center gap-2 font-display text-lg font-bold tracking-tight text-on-surface transition-opacity duration-150 hover:opacity-80"
         >
-          afterdark
+          <AppLogo />
+          <span>{t('appName')}</span>
         </Link>
       </header>
 
@@ -24,7 +30,9 @@ export function AuthPageLayout({ children }: { children: ReactNode }) {
       </main>
 
       <footer className="relative z-10 px-6 py-5 text-center">
-        <p className="text-xs text-on-surface-variant">© afterdark</p>
+        <p className="text-xs text-on-surface-variant">
+          © {year} {t('appName')}
+        </p>
       </footer>
     </div>
   )

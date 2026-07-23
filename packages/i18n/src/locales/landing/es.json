@@ -7,10 +7,10 @@
     "login": "Iniciar sesión",
     "register": "Crear cuenta",
     "how": "Cómo funciona",
-    "clarity": "Claridad",
+    "clarity": "Entradas",
     "events": "Eventos",
-    "publish": "Publicar",
-    "tickets": "Tickets",
+    "publish": "¿Organizás?",
+    "tickets": "Entradas",
     "accountAria": "Cuenta de {name}",
     "openMenu": "Abrir menú",
     "mobileAriaLabel": "Menú de navegación"
@@ -30,7 +30,7 @@
   "atmosphere": {
     "eyebrow": "La noche, sin disfraz",
     "quote": "Menos flyer. Más certeza.",
-    "support": "Entradas claras, fechas reales y una agenda que se lee en segundos — antes de que suene el primer drop.",
+    "support": "Entradas claras, fechas reales y una agenda que se lee en segundos — antes de que empiece la noche.",
     "imageAlt": "Público con las manos en el aire en un show nocturno"
   },
   "how": {
@@ -51,27 +51,27 @@
     }
   },
   "clarity": {
-    "headline": "Lo que importa, al frente.",
-    "support": "Sin ruido visual. Solo lo que necesitás para decidir y llegar.",
+    "headline": "Entrada, puerta y agenda — sin letra chica.",
+    "support": "Lo que necesitás para decidir y llegar, al frente.",
     "items": {
       "ticket": {
-        "title": "Entrada inequívoca",
-        "body": "Tipo, precio y disponibilidad en un solo lugar. Sin letras chicas escondidas."
+        "title": "Entrada clara",
+        "body": "Tipo, precio y disponibilidad en un solo lugar. Sin sorpresas en la fila."
       },
       "secure": {
-        "title": "Acceso con respaldo",
-        "body": "Confirmación clara y QR listo para la puerta. Menos fricción en la fila."
+        "title": "QR listo para la puerta",
+        "body": "Confirmación clara y código listo cuando llegás. Menos fricción al entrar."
       },
       "time": {
-        "title": "Agenda a tiempo",
-        "body": "Fechas, horarios y clubes que se leen rápido — cuando todavía hay lugar."
+        "title": "Fechas que se leen rápido",
+        "body": "Horarios y clubes a la vista — mientras todavía hay lugar."
       }
     }
   },
   "pulse": {
     "eyebrow": "El ritmo de la plataforma",
     "headline": "Hecha para la noche que ya está en marcha.",
-    "body": "Afterdark no inventa la escena: la ordena. Descubrís, elegís y asegurás tu lugar sin perder el clima.",
+    "body": "{appNameDisplay} no inventa la escena: la ordena. Descubrís, elegís y asegurás tu lugar sin perder el clima.",
     "imageAlt": "Manos del público levantadas frente al escenario",
     "stats": {
       "nights": {
@@ -85,25 +85,18 @@
     }
   },
   "events": {
-    "headline": "Próximos eventos",
-    "support": "Una muestra editorial. Pronto: agenda real desde la plataforma.",
+    "headline": "La agenda aún no abrió",
+    "support": "Cuando haya noches publicadas, van a vivir acá. Creá tu cuenta para estar listo el día que salga la primera fecha.",
+    "cta": "Crear cuenta",
+    "previewAria": "Ambiente de noches en vivo — sin fechas publicadas todavía",
     "items": {
       "1": {
-        "date": "Vie 18 jul",
-        "title": "Pulso",
-        "venue": "Club Nómina",
         "imageAlt": "Escenario con luces fuertes en un show en vivo"
       },
       "2": {
-        "date": "Sáb 19 jul",
-        "title": "Bajo la línea",
-        "venue": "Mármol",
         "imageAlt": "Público en un festival bajo luces de color"
       },
       "3": {
-        "date": "Jue 24 jul",
-        "title": "Residencia",
-        "venue": "Casa Norte",
         "imageAlt": "Concierto con multitud frente al escenario"
       }
     }
@@ -116,9 +109,9 @@
   "footer": {
     "tagline": "Eventos nocturnos, con precisión.",
     "explore": "Explorar",
-    "publish": "Publicar",
+    "publish": "¿Organizás?",
     "navAria": "Enlaces del pie de página",
-    "madeFor": "Hecha para que disfrutes de un evento inolvidable.",
+    "madeFor": "Hecha para que disfrutes de una noche inolvidable.",
     "rights": "© {year} {appName}",
     "social": {
       "title": "Seguinos",
