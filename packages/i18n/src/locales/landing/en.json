@@ -13,7 +13,9 @@
     "tickets": "Tickets",
     "accountAria": "Account for {name}",
     "openMenu": "Open menu",
-    "mobileAriaLabel": "Navigation menu"
+    "closeMenu": "Close menu",
+    "mobileAriaLabel": "Navigation menu",
+    "ticketsSoon": "Tickets (coming soon)"
   },
   "hero": {
     "headline": "The night, before it starts.",

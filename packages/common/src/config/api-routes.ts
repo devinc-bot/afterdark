@@ -86,6 +86,8 @@ export const API_ROUTES = {
   events: {
     prefix: API_EVENTS_PREFIX,
     path: {
+      /** Anonymous published-events catalog (GET). */
+      listPublic: () => '/' as const,
       list: () => '/my-events' as const,
       get: (documentId: string) => `/${documentId}` as const,
       create: () => '/' as const,

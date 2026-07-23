@@ -1,7 +1,8 @@
 import type { ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import { DASHBOARD_URL } from '@afterdark/common'
-import { AppLogo, cn } from '@afterdark/ui'
+import { AppLogo, Link, cn } from '@afterdark/ui'
+import { WEB_ROUTES } from '~/modules/common/constants/routes'
 import { LANDING_FOCUS_RING, LANDING_SHELL } from '../constants/layout'
 import { handleSectionNavClick } from '../utils/scroll-to-section.utils'
 
@@ -23,8 +24,7 @@ const SOCIAL_LINKS = [
   },
 ] as const
 
-const FOOTER_NAV = [
-  { href: '#eventos', labelKey: 'nav.events' },
+const FOOTER_SECTION_NAV = [
   { href: '#como-funciona', labelKey: 'nav.how' },
   { href: '#claridad', labelKey: 'nav.clarity' },
 ] as const
@@ -100,7 +100,12 @@ export function LandingFooter() {
               {t('footer.explore')}
             </p>
             <ul className="flex flex-col gap-1">
-              {FOOTER_NAV.map((item) => (
+              <li>
+                <Link to={WEB_ROUTES.events()} className={FOOTER_LINK}>
+                  {t('nav.events')}
+                </Link>
+              </li>
+              {FOOTER_SECTION_NAV.map((item) => (
                 <li key={item.href}>
                   <a
                     href={item.href}

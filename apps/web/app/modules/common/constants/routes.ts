@@ -4,6 +4,7 @@ const { resetPassword, authCallback, login } = CLIENT_ROUTES
 
 export const WEB_ROUTES = {
   home: () => '/' as const,
+  events: () => '/events' as const,
   properties: () => '/properties' as const,
   property: (id: string) => `/properties/${id}` as const,
   login,

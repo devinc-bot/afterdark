@@ -44,19 +44,24 @@ const sheetVariants = cva(
 )
 
 type SheetContentProps = React.ComponentPropsWithoutRef<typeof SheetPrimitive.Content> &
-  VariantProps<typeof sheetVariants>
+  VariantProps<typeof sheetVariants> & {
+    /** Accessible name for the dismiss control. */
+    closeLabel?: string
+  }
 
 const SheetContent = React.forwardRef<
   React.ComponentRef<typeof SheetPrimitive.Content>,
   SheetContentProps
->(({ side = 'right', className, children, ...props }, ref) => (
+>(({ side = 'right', className, children, closeLabel = 'Close', ...props }, ref) => (
   <SheetPortal>
     <SheetOverlay />
     <SheetPrimitive.Content ref={ref} className={cn(sheetVariants({ side }), className)} {...props}>
       {children}
-      <SheetPrimitive.Close className="absolute top-3 right-3 flex size-11 items-center justify-center rounded-full text-ink-muted opacity-80 ring-offset-background transition-[color,opacity,background-color] hover:bg-surface-strong hover:text-ink hover:opacity-100 focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:outline-none disabled:pointer-events-none">
-        <X className="size-6" strokeWidth={2} aria-hidden />
-        <span className="sr-only">Cerrar</span>
+      <SheetPrimitive.Close
+        aria-label={closeLabel}
+        className="absolute top-3 right-3 flex size-10 cursor-pointer items-center justify-center rounded-control text-ink-muted opacity-80 ring-offset-background transition-[color,opacity,background-color] duration-(--duration-instant) ease-emphasized hover:bg-surface-strong hover:text-ink hover:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink disabled:pointer-events-none motion-reduce:transition-none"
+      >
+        <X className="size-5" strokeWidth={2} aria-hidden />
       </SheetPrimitive.Close>
     </SheetPrimitive.Content>
   </SheetPortal>

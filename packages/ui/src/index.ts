@@ -217,6 +217,7 @@ export {
   MapControls,
   MapMarker,
   MarkerContent,
+  MarkerPopup,
   useMap,
   type MapRef,
 } from './components/ui/map.tsx'

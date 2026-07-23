@@ -13,7 +13,9 @@
     "tickets": "Entradas",
     "accountAria": "Cuenta de {name}",
     "openMenu": "Abrir menú",
-    "mobileAriaLabel": "Menú de navegación"
+    "closeMenu": "Cerrar menú",
+    "mobileAriaLabel": "Menú de navegación",
+    "ticketsSoon": "Entradas (próximamente)"
   },
   "hero": {
     "headline": "La noche, antes de que empiece.",

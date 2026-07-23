@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import { EVENT_STATUS } from '@afterdark/types'
-import { paginationSchema, uuidSchema } from './common.ts'
+import { optionalCoercedDateSchema, paginationSchema, uuidSchema } from './common.ts'
 import { EVENT_IMAGE_MAX_COUNT } from './upload.ts'
 
 function multipartUuidListSchema() {
@@ -119,3 +119,40 @@ export function parseEventFormToUpdateInput(values: EventFormValues): UpdateEven
 export const listEventsQuerySchema = paginationSchema
 
 export type ListEventsQueryInput = z.infer<typeof listEventsQuerySchema>
+
+const optionalTrimmedQueryStringSchema = z.preprocess((value) => {
+  if (value === undefined || value === null) {
+    return undefined
+  }
+
+  if (typeof value === 'string') {
+    const trimmed = value.trim()
+    return trimmed.length === 0 ? undefined : trimmed
+  }
+
+  return value
+}, z.string().max(100).optional())
+
+export const listPublicEventsQuerySchema = paginationSchema
+  .extend({
+    limit: z.coerce.number().int().min(1).max(100).default(5),
+    startsFrom: optionalCoercedDateSchema,
+    startsTo: optionalCoercedDateSchema,
+    city: optionalTrimmedQueryStringSchema,
+    state: optionalTrimmedQueryStringSchema,
+  })
+  .refine(
+    (data) => {
+      if (!data.startsFrom || !data.startsTo) {
+        return true
+      }
+
+      return data.startsTo >= data.startsFrom
+    },
+    {
+      message: 'validation:field.event.endDateAfterStart' as const,
+      path: ['startsTo'],
+    }
+  )
+
+export type ListPublicEventsQueryInput = z.infer<typeof listPublicEventsQuerySchema>

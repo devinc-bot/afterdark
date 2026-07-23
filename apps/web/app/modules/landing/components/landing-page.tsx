@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { getCookieSync } from '@afterdark/common'
 import { Link, cn } from '@afterdark/ui'
 import { useTranslation } from 'react-i18next'
@@ -13,6 +14,7 @@ import {
   LANDING_SECTION_Y,
   LANDING_SHELL,
 } from '../constants/layout'
+import { scrollToSectionFromLocationHash } from '../utils/scroll-to-section.utils'
 import { HowSteps } from './how-steps'
 import { LandingFooter } from './footer'
 import { LandingHeader } from './landing-header'
@@ -30,6 +32,10 @@ export function LandingPage() {
   const hasToken = getCookieSync({ name: COOKIE_KEYS.accessToken }) !== null
   const showAuthChrome = isAuthenticated || (isLoading && hasToken)
   const showAuthCtas = !showAuthChrome
+
+  useEffect(() => {
+    scrollToSectionFromLocationHash()
+  }, [])
 
   return (
     <div className="min-h-dvh bg-background text-on-surface">

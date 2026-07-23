@@ -111,5 +111,58 @@
     "description": "Tenés cambios sin guardar. Si salís ahora, se perderán.",
     "stay": "Seguir editando",
     "leave": "Salir sin guardar"
+  },
+  "discover": {
+    "page": {
+      "title": "Eventos",
+      "description": "Explorá eventos publicados por ciudad, provincia y fecha.",
+      "metaTitle": "Eventos · {appName}"
+    },
+    "filters": {
+      "title": "Filtros",
+      "open": "Filtros",
+      "openWithCount": "Filtros ({count})",
+      "sheetTitle": "Filtros",
+      "startsFrom": "Desde",
+      "startsTo": "Hasta",
+      "city": "Ciudad",
+      "state": "Provincia",
+      "cityPlaceholder": "Ej. Campo Largo",
+      "statePlaceholder": "Ej. Chaco",
+      "apply": "Aplicar filtros",
+      "clear": "Limpiar",
+      "pendingChanges": "Hay cambios sin aplicar",
+      "appliedAria": "Filtros aplicados",
+      "removeChip": "Quitar filtro {label}",
+      "chipFrom": "Desde {date}",
+      "chipTo": "Hasta {date}",
+      "chipCity": "{city}",
+      "chipState": "{state}"
+    },
+    "list": {
+      "emptyTitle": "No hay eventos",
+      "emptyDescription": "Probá otras fechas o una ciudad distinta.",
+      "errorTitle": "No pudimos cargar los eventos",
+      "error": "Intentá de nuevo en unos minutos.",
+      "retry": "Reintentar",
+      "loading": "Cargando eventos…",
+      "loadingMore": "Cargando más eventos…",
+      "resultsCount": "{count, plural, one {# evento} other {# eventos}}",
+      "resultsAria": "Lista de eventos",
+      "sortHint": "Próximos primero",
+      "focusOnMap": "Ver {name} en el mapa",
+      "noMapLocation": "{name} (sin ubicación en el mapa)",
+      "noCoordinatesHint": "Sin coordenadas en el mapa",
+      "noImage": "Sin imagen"
+    },
+    "map": {
+      "ariaLabel": "Mapa de eventos publicados",
+      "loading": "Cargando mapa…"
+    },
+    "selection": {
+      "clear": "Cerrar",
+      "ticketsSoon": "Entradas próximamente",
+      "announced": "Seleccionaste {name}."
+    }
   }
 }

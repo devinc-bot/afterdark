@@ -1,7 +1,11 @@
 import { useTranslation } from 'react-i18next'
 import { Link, cn } from '@afterdark/ui'
 import { WEB_ROUTES } from '~/modules/common/constants/routes'
-import { LANDING_CTA_PRIMARY, LANDING_SHELL } from '../../constants/layout'
+import {
+  LANDING_CTA_GHOST_ON_MEDIA,
+  LANDING_CTA_PRIMARY,
+  LANDING_SHELL,
+} from '../../constants/layout'
 import { Reveal } from '../reveal'
 
 type SectionAreYouReadyProps = {
@@ -47,7 +51,7 @@ export function SectionAreYouReady({ showAuthCtas = true, className }: SectionAr
                 to={WEB_ROUTES.login()}
                 variant="outline"
                 size="lg"
-                className="min-h-11 rounded-lg border-hairline/60 bg-transparent text-on-surface hover:bg-surface-container-low"
+                className={cn('min-h-11', LANDING_CTA_GHOST_ON_MEDIA)}
               >
                 {t('nav.login')}
               </Link>

@@ -8,10 +8,10 @@ export const LANDING_HEADING =
 
 /** Primary ink CTA — brand color lives in photography, not chrome. */
 export const LANDING_CTA_PRIMARY =
-  'min-h-11 rounded-lg bg-on-surface text-on-primary-fixed hover:bg-on-surface/90'
+  'min-h-11 bg-on-surface text-on-primary-fixed hover:bg-on-surface/90'
 
 export const LANDING_CTA_GHOST_ON_MEDIA =
-  'min-h-11 rounded-lg border-white/25 bg-transparent text-on-surface hover:bg-white/10'
+  'min-h-11 border-white/25 bg-transparent text-on-surface hover:bg-white/10'
 
 export const LANDING_FOCUS_RING =
   'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink'

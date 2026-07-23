@@ -1,5 +1,5 @@
-import type { AssetSelect, EventSelect, LocationSelect } from '@afterdark/db'
-import type { EventImageResponse, EventResponse } from '@afterdark/types'
+import type { AssetSelect, EventSelect, LocationSelect, AddressSelect } from '@afterdark/db'
+import type { EventImageResponse, EventResponse, PublicEventResponse } from '@afterdark/types'
 import type { CreateEventInput, UpdateEventInput } from '@afterdark/validators'
 
 export function toEventImageResponse(asset: AssetSelect): EventImageResponse {
@@ -27,6 +27,27 @@ export function toEventResponse(
     images,
     createdAt: event.createdAt,
     updatedAt: event.updatedAt,
+  }
+}
+
+export function toPublicEventResponse(
+  event: EventSelect,
+  location: Pick<LocationSelect, 'name'>,
+  address: Pick<AddressSelect, 'city' | 'state' | 'latitude' | 'longitude'>,
+  images: EventImageResponse[] = []
+): PublicEventResponse {
+  return {
+    documentId: event.documentId,
+    name: event.name,
+    description: event.description,
+    startsAt: event.startsAt,
+    endsAt: event.endsAt,
+    locationName: location.name,
+    city: address.city ?? null,
+    state: address.state ?? null,
+    latitude: address.latitude ?? null,
+    longitude: address.longitude ?? null,
+    images,
   }
 }
 

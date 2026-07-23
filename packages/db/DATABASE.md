@@ -104,6 +104,7 @@ Nota: `staff_invitations.role` solo admite `user`, `owner` y `staff` (no `admin`
 | `user_assets_lnk`     | N:M          | Usuario ↔ asset   |
 | `club_addresses_lnk`  | 1:1          | Club ↔ domicilio  |
 | `club_assets_lnk`     | N:M          | Club ↔ asset      |
+| `location_addresses_lnk` | 1:1       | Location ↔ domicilio |
 
 ---
 
@@ -308,12 +309,23 @@ Regla de negocio (API): solo un usuario con rol `owner` puede crear invitaciones
 
 #### `addresses` — `address.ts`
 
-| Columna (TS)   | SQL             | Tipo | Null |
-| -------------- | --------------- | ---- | ---- |
-| `address`      | `address`       | text | NO   |
-| `streetNumber` | `street_number` | text | NO   |
-| `state`        | `state`         | text | NO   |
-| `city`         | `city`          | text | NO   |
+| Columna (TS)   | SQL             | Tipo | Null | Notas                                      |
+| -------------- | --------------- | ---- | ---- | ------------------------------------------ |
+| `address`      | `address`       | text | NO   | —                                          |
+| `streetNumber` | `street_number` | text | NO   | —                                          |
+| `state`        | `state`         | text | NO   | Provincia / estado                         |
+| `city`         | `city`          | text | NO   | —                                          |
+| `latitude`     | `latitude`      | real | SÍ   | Añadido en `0020`; markers del mapa público |
+| `longitude`    | `longitude`     | real | SÍ   | Añadido en `0020`; markers del mapa público |
+
+Join de discovery pública (`findPublishedEventsPaginated`): `events` → `locations` → `location_addresses_lnk` → `addresses`. **No hace falta migración nueva** para coords; si `latitude`/`longitude` son null, el evento sigue listándose y puede omitir marker.
+
+#### `location_addresses_lnk` — `location-address-lnk.ts`
+
+| Columna (TS)  | SQL           | FK →             | Notas                              |
+| ------------- | ------------- | ---------------- | ---------------------------------- |
+| `locationId`  | `location_id` | `locations.id`   | UNIQUE (1 domicilio por location)  |
+| `addressId`   | `address_id`  | `addresses.id`   | UNIQUE                             |
 
 #### `club_addresses_lnk` — `club-address-lnk.ts`
 
@@ -493,6 +505,7 @@ Historial en `src/migrations/meta/_journal.json`:
 | 0015 | `0015_friendly_kabuki.sql`      | `payments` → `orders`; +`quantity`, `provider`, `metadata`; −`club_id` |
 | 0016 | `0016_bent_stranger.sql`        | Tabla `tickets_sold` (`order_id`, `qr_code`)                           |
 | 0017 | `0017_grey_pixie.sql`           | Tabla `password_reset_tokens`                                          |
+| 0020 | `0020_equal_shaman.sql`         | `addresses`: +`latitude`, +`longitude`                                 |
 
 ### Comandos (desde `packages/db`)
 

@@ -16,16 +16,23 @@ import {
 } from '@nestjs/common'
 import { FilesInterceptor } from '@nestjs/platform-express'
 import { API_ROUTES } from '@afterdark/common'
-import type { EventResponse, JwtPayload, PaginatedResponse } from '@afterdark/types'
+import type {
+  EventResponse,
+  JwtPayload,
+  PaginatedResponse,
+  PublicEventResponse,
+} from '@afterdark/types'
 import { USER_ROLE } from '@afterdark/types'
 import {
   EVENT_IMAGE_MAX_COUNT,
   createEventSchema,
   listEventsQuerySchema,
+  listPublicEventsQuerySchema,
   updateEventMultipartSchema,
   uuidSchema,
   type CreateEventInput,
   type ListEventsQueryInput,
+  type ListPublicEventsQueryInput,
   type UpdateEventMultipartInput,
 } from '@afterdark/validators'
 import { CurrentUser } from '../../common/decorators/current-user.decorator'
@@ -38,11 +45,14 @@ import { CreateEventUseCase } from '../application/create-event.use-case'
 import { DeleteEventUseCase } from '../application/delete-event.use-case'
 import { GetEventByDocumentIdUseCase } from '../application/get-event-by-document-id.use-case'
 import { ListMyEventsUseCase } from '../application/list-my-events.use-case'
+import { ListPublicEventsUseCase } from '../application/list-public-events.use-case'
 import { UpdateEventUseCase } from '../application/update-event.use-case'
 
 @Controller(API_ROUTES.events.prefix)
 export class EventsController {
   constructor(
+    @Inject(ListPublicEventsUseCase)
+    private readonly listPublicEventsUseCase: ListPublicEventsUseCase,
     @Inject(ListMyEventsUseCase) private readonly listMyEventsUseCase: ListMyEventsUseCase,
     @Inject(GetEventByDocumentIdUseCase)
     private readonly getEventByDocumentIdUseCase: GetEventByDocumentIdUseCase,
@@ -50,6 +60,13 @@ export class EventsController {
     @Inject(UpdateEventUseCase) private readonly updateEventUseCase: UpdateEventUseCase,
     @Inject(DeleteEventUseCase) private readonly deleteEventUseCase: DeleteEventUseCase
   ) {}
+
+  @Get(API_ROUTES.events.path.listPublic())
+  listPublic(
+    @Query(new ZodValidationPipe(listPublicEventsQuerySchema)) query: ListPublicEventsQueryInput
+  ): Promise<PaginatedResponse<PublicEventResponse>> {
+    return this.listPublicEventsUseCase.execute(query)
+  }
 
   @Get(API_ROUTES.events.path.list())
   @Roles([USER_ROLE.OWNER])
