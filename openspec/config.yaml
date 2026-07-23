@@ -2,7 +2,7 @@ schema: spec-driven
 
 # Project context — shown to the AI when creating any artifact.
 context: |
-  afterdark — pnpm monorepo for a nightlife events/ticketing platform.
+  afterdark — pnpm monorepo for an events and ticketing platform.
 
   Apps:
     - apps/web (@afterdark/web) — public site, TanStack Start → http://localhost:3001

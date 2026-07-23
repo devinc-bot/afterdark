@@ -6,19 +6,19 @@ brand
 
 ## Users
 
-**Staff / Admin** (dashboard): venue operators and event staff who manage properties (venues), categories, orders, and user accounts. Working in Spanish, in operational contexts — they need clarity and speed, not atmosphere.
+**Staff / Admin** (dashboard): venue operators and event staff who manage locations (venues), events, categories, orders, and user accounts. Working in Spanish, in operational contexts — they need clarity and speed, not atmosphere.
 
-**Attendees / Customers** (web): Spanish-speaking users discovering and booking nightlife events. They arrive with intent or curiosity; the interface should match the energy of what they're booking.
+**Attendees / Customers** (web): Spanish-speaking users discovering and booking events. They arrive with intent or curiosity; the interface should match the energy of what they're booking.
 
 ## Product Purpose
 
-Afterdark is a nightlife and events platform. Staff manage venues, events, categories, and orders through an admin dashboard. Customers discover and purchase event access through the public web. Success looks like: staff spend less time on logistics, customers feel the night before they arrive.
+Afterdark is an events and ticketing platform. Owners and staff manage locations, events, categories, and orders through an admin dashboard. Customers discover and purchase event access through the public web. Success looks like: staff spend less time on logistics, customers feel confident about the experience before they arrive.
 
 ## Brand Personality
 
-Restrained. Nocturnal. Precise.
+Restrained. Editorial. Precise.
 
-Not the nightclub flyer — the venue itself, after the line has cleared and the lighting is right. Premium without announcing it.
+Not the nightclub flyer — the venue itself when the room is ready and the lighting is right. Premium without announcing it. Dark restraint is a visual register, not a claim that the product is nightlife-only.
 
 ## Anti-references
 
