@@ -140,17 +140,41 @@ export {
   SidebarRail,
   SidebarSeparator,
   SidebarTrigger,
-  matchesSidebarNavHref,
   useSidebar,
 } from './components/ui/sidebar.tsx'
 export {
   SidebarNav,
   SidebarNavMenuButton,
+  matchesSidebarNavHref,
   type SidebarNavItem,
   type SidebarNavLinkRenderProps,
   type SidebarNavLogo,
   type SidebarNavProps,
 } from './components/ui/sidebar-nav.tsx'
+export {
+  AppSidebar,
+  type AppSidebarProps,
+  type NavMainItem,
+  type NavSecondaryItem,
+  type NavUserData,
+} from './components/app-sidebar.tsx'
+export { NavMain } from './components/nav-main.tsx'
+export { NavSecondary } from './components/nav-secondary.tsx'
+export { NavUser } from './components/nav-user.tsx'
+export {
+  Breadcrumb,
+  BreadcrumbEllipsis,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from './components/ui/breadcrumb.tsx'
+export {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from './components/ui/collapsible.tsx'
 export { Toaster } from './components/ui/sileo.tsx'
 export {
   toast,

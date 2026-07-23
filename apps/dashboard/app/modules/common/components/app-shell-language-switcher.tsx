@@ -13,7 +13,6 @@ import {
 import { useLanguage } from '@afterdark/i18n/client'
 import { LANGUAGE_NAMES, SUPPORTED_LANGUAGES, type Language } from '@afterdark/i18n/config'
 import { ChevronUp, Languages } from 'lucide-react'
-import { AppShellNavIcon, navMenuButtonClassName } from '~/modules/common/components/app-shell-nav'
 
 export function AppShellLanguageSwitcher() {
   const { t } = useTranslation('dashboard')
@@ -26,14 +25,10 @@ export function AppShellLanguageSwitcher() {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton
-              size="lg"
-              className={cn(
-                navMenuButtonClassName,
-                'group/lang-trigger data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground'
-              )}
+              className="group/lang-trigger data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
               aria-label={`${t('nav.language')}: ${languageName}`}
             >
-              <AppShellNavIcon icon={<Languages aria-hidden="true" />} />
+              <Languages aria-hidden="true" />
               <span className="min-w-0 flex-1 truncate transition-opacity duration-(--duration-instant) motion-reduce:transition-none">
                 {languageName}
               </span>

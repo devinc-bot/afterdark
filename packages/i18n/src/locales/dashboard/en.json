@@ -13,7 +13,8 @@
     "users": "Users",
     "language": "Language",
     "settings": "Settings",
-    "signOut": "Sign out"
+    "signOut": "Sign out",
+    "toggleSidebar": "Toggle sidebar"
   },
   "session": {
     "errorTitle": "We couldn't verify your session",

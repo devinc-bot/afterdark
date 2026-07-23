@@ -467,3 +467,17 @@
     @apply hidden!;
   }
 }
+
+/* The shadcn sidebar is designed for the upstream 4px spacing scale.
+   Restore it inside the sidebar (and its trigger) so sizes match shadcn defaults. */
+[data-sidebar='sidebar'],
+[data-sidebar='trigger'] {
+  --spacing-1: 0.25rem;
+  --spacing-2: 0.5rem;
+  --spacing-3: 0.75rem;
+  --spacing-4: 1rem;
+  --spacing-5: 1.25rem;
+  --spacing-6: 1.5rem;
+  --spacing-7: 1.75rem;
+  --spacing-8: 2rem;
+}
