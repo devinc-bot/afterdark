@@ -120,5 +120,17 @@
       "instagram": "{appName} on Instagram",
       "facebook": "{appName} on Facebook"
     }
+  },
+  "userMenu": {
+    "settings": "Settings",
+    "signOut": "Sign out",
+    "fallbackName": "User",
+    "signOutDialog": {
+      "title": "Sign out",
+      "description": "Do you want to leave? You'll need to sign in again to come back.",
+      "cancel": "Cancel",
+      "confirm": "Sign out",
+      "loading": "Signing out…"
+    }
   }
 }

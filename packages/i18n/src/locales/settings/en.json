@@ -81,5 +81,18 @@
       "emailHint": "To change your email, contact support.",
       "avatarFallback": "User"
     }
+  },
+  "web": {
+    "page": {
+      "title": "Settings",
+      "metaTitle": "Settings · {appName}"
+    },
+    "profile": {
+      "name": "Name",
+      "email": "Email address",
+      "avatarFallback": "User"
+    },
+    "comingSoon": "You'll soon be able to manage your account from here.",
+    "loading": "Loading settings…"
   }
 }

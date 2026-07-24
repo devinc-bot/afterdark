@@ -111,7 +111,7 @@ export function AppShellSidebarFooter({
     <Link
       to={settingsHref}
       className={cn(
-        'flex min-w-0 items-center gap-3 px-2 py-2 transition-colors duration-(--duration-fast) ease-(--ease-emphasized) focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/25 motion-reduce:transition-none',
+        'flex min-w-0 items-center gap-3 px-2 py-2 transition-colors duration-(--duration-fast) ease-emphasized focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/25 motion-reduce:transition-none',
         isSettingsActive ? selectedItemClassName : itemClassName,
         isLoading && 'pointer-events-none opacity-70'
       )}

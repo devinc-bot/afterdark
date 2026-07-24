@@ -4,9 +4,6 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate, useRouterState } from '@tanstack/react-router'
 import { getCookieSync } from '@afterdark/common'
 import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
   Button,
   Link,
   Sheet,
@@ -18,10 +15,10 @@ import {
   AppLogo,
   cn,
 } from '@afterdark/ui'
+import { UserMenu } from '~/modules/common/components/user-menu'
 import { COOKIE_KEYS } from '~/modules/common/constants/cookies'
 import { WEB_ROUTES } from '~/modules/common/constants/routes'
 import { useSession } from '~/modules/common/hooks/use-session'
-import { getUserInitials } from '../utils/user-initials.utils'
 import { LANDING_CTA_PRIMARY, LANDING_FOCUS_RING, LANDING_SHELL } from '../constants/layout'
 import { handleSectionNavClick, sectionIdFromHash } from '../utils/scroll-to-section.utils'
 
@@ -71,7 +68,6 @@ export function LandingHeader() {
   }, [])
 
   const displayName = user ? `${user.name} ${user.lastName}`.trim() || user.email : ''
-  const initials = user ? getUserInitials(user.name, user.lastName) : ''
 
   const onSectionClick = (event: MouseEvent<HTMLAnchorElement>, href: string) => {
     if (isLanding) {
@@ -136,18 +132,11 @@ export function LandingHeader() {
           <div className="flex shrink-0 items-center gap-1 sm:gap-2">
             {showAuthChrome ? (
               isAuthenticated && user ? (
-                <div
-                  className="flex size-11 items-center justify-center"
-                  role="img"
-                  aria-label={t('nav.accountAria', { name: displayName })}
-                >
-                  <Avatar className="size-8 shrink-0" aria-hidden="true">
-                    {user.avatar ? <AvatarImage src={user.avatar} alt="" /> : null}
-                    <AvatarFallback className="bg-surface-container text-xs font-medium text-on-surface">
-                      {initials}
-                    </AvatarFallback>
-                  </Avatar>
-                </div>
+                <UserMenu
+                  user={user}
+                  ariaLabel={t('nav.accountAria', { name: displayName })}
+                  settingsHref={WEB_ROUTES.settings()}
+                />
               ) : (
                 <div
                   className="size-8 animate-pulse rounded-full bg-surface-container"

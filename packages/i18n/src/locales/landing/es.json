@@ -120,5 +120,17 @@
       "instagram": "Instagram de {appName}",
       "facebook": "Facebook de {appName}"
     }
+  },
+  "userMenu": {
+    "settings": "Configuración",
+    "signOut": "Cerrar sesión",
+    "fallbackName": "Usuario",
+    "signOutDialog": {
+      "title": "Cerrar sesión",
+      "description": "¿Querés salir? Vas a tener que iniciar sesión de nuevo para volver.",
+      "cancel": "Cancelar",
+      "confirm": "Cerrar sesión",
+      "loading": "Cerrando sesión…"
+    }
   }
 }

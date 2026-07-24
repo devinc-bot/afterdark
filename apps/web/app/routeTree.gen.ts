@@ -16,6 +16,7 @@ import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as PublicRouteImport } from './routes/_public'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
+import { Route as PublicSettingsRouteImport } from './routes/_public/settings'
 import { Route as PublicEventsRouteImport } from './routes/_public/events'
 
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
@@ -52,6 +53,11 @@ const AuthCallbackRoute = AuthCallbackRouteImport.update({
   path: '/auth/callback',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PublicSettingsRoute = PublicSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => PublicRoute,
+} as any)
 const PublicEventsRoute = PublicEventsRouteImport.update({
   id: '/events',
   path: '/events',
@@ -65,6 +71,7 @@ export interface FileRoutesByFullPath {
   '/register': typeof RegisterRoute
   '/reset-password': typeof ResetPasswordRoute
   '/events': typeof PublicEventsRoute
+  '/settings': typeof PublicSettingsRoute
   '/auth/callback': typeof AuthCallbackRoute
 }
 export interface FileRoutesByTo {
@@ -74,6 +81,7 @@ export interface FileRoutesByTo {
   '/register': typeof RegisterRoute
   '/reset-password': typeof ResetPasswordRoute
   '/events': typeof PublicEventsRoute
+  '/settings': typeof PublicSettingsRoute
   '/auth/callback': typeof AuthCallbackRoute
 }
 export interface FileRoutesById {
@@ -85,6 +93,7 @@ export interface FileRoutesById {
   '/register': typeof RegisterRoute
   '/reset-password': typeof ResetPasswordRoute
   '/_public/events': typeof PublicEventsRoute
+  '/_public/settings': typeof PublicSettingsRoute
   '/auth/callback': typeof AuthCallbackRoute
 }
 export interface FileRouteTypes {
@@ -96,6 +105,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/reset-password'
     | '/events'
+    | '/settings'
     | '/auth/callback'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -105,6 +115,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/reset-password'
     | '/events'
+    | '/settings'
     | '/auth/callback'
   id:
     | '__root__'
@@ -115,6 +126,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/reset-password'
     | '/_public/events'
+    | '/_public/settings'
     | '/auth/callback'
   fileRoutesById: FileRoutesById
 }
@@ -179,6 +191,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthCallbackRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_public/settings': {
+      id: '/_public/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof PublicSettingsRouteImport
+      parentRoute: typeof PublicRoute
+    }
     '/_public/events': {
       id: '/_public/events'
       path: '/events'
@@ -191,10 +210,12 @@ declare module '@tanstack/react-router' {
 
 interface PublicRouteChildren {
   PublicEventsRoute: typeof PublicEventsRoute
+  PublicSettingsRoute: typeof PublicSettingsRoute
 }
 
 const PublicRouteChildren: PublicRouteChildren = {
   PublicEventsRoute: PublicEventsRoute,
+  PublicSettingsRoute: PublicSettingsRoute,
 }
 
 const PublicRouteWithChildren =

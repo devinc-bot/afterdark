@@ -81,5 +81,18 @@
       "emailHint": "Para cambiar el correo, escribinos a soporte.",
       "avatarFallback": "Usuario"
     }
+  },
+  "web": {
+    "page": {
+      "title": "Configuración",
+      "metaTitle": "Configuración · {appName}"
+    },
+    "profile": {
+      "name": "Nombre",
+      "email": "Correo electrónico",
+      "avatarFallback": "Usuario"
+    },
+    "comingSoon": "Pronto vas a poder gestionar tu cuenta desde acá.",
+    "loading": "Cargando configuración…"
   }
 }
