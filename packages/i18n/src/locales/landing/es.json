@@ -122,7 +122,7 @@
     }
   },
   "userMenu": {
-    "settings": "Configuración",
+    "settings": "Perfil",
     "signOut": "Cerrar sesión",
     "fallbackName": "Usuario",
     "signOutDialog": {

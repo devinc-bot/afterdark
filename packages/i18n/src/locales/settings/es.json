@@ -84,15 +84,35 @@
   },
   "web": {
     "page": {
-      "title": "Configuración",
-      "metaTitle": "Configuración · {appName}"
+      "title": "Perfil",
+      "metaTitle": "Perfil · {appName}",
+      "description": "Nombre, teléfono y correo de tu cuenta."
     },
     "profile": {
-      "name": "Nombre",
-      "email": "Correo electrónico",
       "avatarFallback": "Usuario"
     },
-    "comingSoon": "Pronto vas a poder gestionar tu cuenta desde acá.",
-    "loading": "Cargando configuración…"
+    "form": {
+      "name": "Nombre",
+      "lastName": "Apellido",
+      "phone": "Teléfono",
+      "email": "Correo electrónico",
+      "emailHint": "Para cambiar el correo, <supportLink>escribinos a {{supportEmail}}</supportLink>.",
+      "supportEmail": "soporte@eventflow.app",
+      "emailSupportSubject": "Cambio de correo"
+    },
+    "actions": {
+      "save": "Guardar cambios",
+      "saving": "Guardando…",
+      "retry": "Reintentar",
+      "dirty": "Hay cambios sin guardar.",
+      "clean": "No hay cambios"
+    },
+    "messages": {
+      "saveSuccess": "Listo. Tu perfil quedó al día.",
+      "saveError": "No pudimos guardar. Intentá de nuevo.",
+      "loadErrorTitle": "No pudimos cargar tu perfil",
+      "loadError": "No pudimos cargar tu perfil. Intentá de nuevo."
+    },
+    "loading": "Cargando perfil…"
   }
 }

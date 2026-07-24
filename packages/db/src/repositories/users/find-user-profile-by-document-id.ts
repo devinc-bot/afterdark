@@ -13,6 +13,7 @@ export async function findUserProfileByDocumentId(
       documentId: users.documentId,
       name: users.name,
       lastName: users.lastName,
+      phone: users.phone,
       avatar: users.avatar,
       email: accounts.email,
     })

@@ -14,10 +14,11 @@ import { Route as RegisterRouteImport } from './routes/register'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as PublicRouteImport } from './routes/_public'
+import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
-import { Route as PublicSettingsRouteImport } from './routes/_public/settings'
 import { Route as PublicEventsRouteImport } from './routes/_public/events'
+import { Route as AppSettingsRouteImport } from './routes/_app/settings'
 
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
   id: '/reset-password',
@@ -43,6 +44,10 @@ const PublicRoute = PublicRouteImport.update({
   id: '/_public',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppRoute = AppRouteImport.update({
+  id: '/_app',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -53,15 +58,15 @@ const AuthCallbackRoute = AuthCallbackRouteImport.update({
   path: '/auth/callback',
   getParentRoute: () => rootRouteImport,
 } as any)
-const PublicSettingsRoute = PublicSettingsRouteImport.update({
-  id: '/settings',
-  path: '/settings',
-  getParentRoute: () => PublicRoute,
-} as any)
 const PublicEventsRoute = PublicEventsRouteImport.update({
   id: '/events',
   path: '/events',
   getParentRoute: () => PublicRoute,
+} as any)
+const AppSettingsRoute = AppSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AppRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -70,8 +75,8 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/settings': typeof AppSettingsRoute
   '/events': typeof PublicEventsRoute
-  '/settings': typeof PublicSettingsRoute
   '/auth/callback': typeof AuthCallbackRoute
 }
 export interface FileRoutesByTo {
@@ -80,20 +85,21 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/settings': typeof AppSettingsRoute
   '/events': typeof PublicEventsRoute
-  '/settings': typeof PublicSettingsRoute
   '/auth/callback': typeof AuthCallbackRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_app': typeof AppRouteWithChildren
   '/_public': typeof PublicRouteWithChildren
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/_app/settings': typeof AppSettingsRoute
   '/_public/events': typeof PublicEventsRoute
-  '/_public/settings': typeof PublicSettingsRoute
   '/auth/callback': typeof AuthCallbackRoute
 }
 export interface FileRouteTypes {
@@ -104,8 +110,8 @@ export interface FileRouteTypes {
     | '/login'
     | '/register'
     | '/reset-password'
-    | '/events'
     | '/settings'
+    | '/events'
     | '/auth/callback'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -114,24 +120,26 @@ export interface FileRouteTypes {
     | '/login'
     | '/register'
     | '/reset-password'
-    | '/events'
     | '/settings'
+    | '/events'
     | '/auth/callback'
   id:
     | '__root__'
     | '/'
+    | '/_app'
     | '/_public'
     | '/forgot-password'
     | '/login'
     | '/register'
     | '/reset-password'
+    | '/_app/settings'
     | '/_public/events'
-    | '/_public/settings'
     | '/auth/callback'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AppRoute: typeof AppRouteWithChildren
   PublicRoute: typeof PublicRouteWithChildren
   ForgotPasswordRoute: typeof ForgotPasswordRoute
   LoginRoute: typeof LoginRoute
@@ -177,6 +185,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PublicRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_app': {
+      id: '/_app'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AppRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -191,13 +206,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthCallbackRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_public/settings': {
-      id: '/_public/settings'
-      path: '/settings'
-      fullPath: '/settings'
-      preLoaderRoute: typeof PublicSettingsRouteImport
-      parentRoute: typeof PublicRoute
-    }
     '/_public/events': {
       id: '/_public/events'
       path: '/events'
@@ -205,17 +213,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PublicEventsRouteImport
       parentRoute: typeof PublicRoute
     }
+    '/_app/settings': {
+      id: '/_app/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof AppSettingsRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
+interface AppRouteChildren {
+  AppSettingsRoute: typeof AppSettingsRoute
+}
+
+const AppRouteChildren: AppRouteChildren = {
+  AppSettingsRoute: AppSettingsRoute,
+}
+
+const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
+
 interface PublicRouteChildren {
   PublicEventsRoute: typeof PublicEventsRoute
-  PublicSettingsRoute: typeof PublicSettingsRoute
 }
 
 const PublicRouteChildren: PublicRouteChildren = {
   PublicEventsRoute: PublicEventsRoute,
-  PublicSettingsRoute: PublicSettingsRoute,
 }
 
 const PublicRouteWithChildren =
@@ -223,6 +246,7 @@ const PublicRouteWithChildren =
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AppRoute: AppRouteWithChildren,
   PublicRoute: PublicRouteWithChildren,
   ForgotPasswordRoute: ForgotPasswordRoute,
   LoginRoute: LoginRoute,

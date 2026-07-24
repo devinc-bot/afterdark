@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { phoneSchema } from './common.ts'
 
 const optionalDigitsField = (invalidKey: string, pattern: RegExp) =>
   z
@@ -9,11 +10,7 @@ const optionalDigitsField = (invalidKey: string, pattern: RegExp) =>
 export const baseProfileSchema = z.object({
   name: z.string().trim().min(2).max(255),
   lastName: z.string().trim().min(2).max(255),
-  phone: z
-    .string()
-    .trim()
-    .min(8, 'validation:field.phone.invalid')
-    .max(30, 'validation:field.phone.tooLong'),
+  phone: phoneSchema,
 })
 
 export const ownerAddressSchema = z

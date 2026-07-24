@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import { MapPin } from 'lucide-react'
-import { NotImage, cn } from '@afterdark/ui'
+import { Card, NotImage, cn } from '@afterdark/ui'
 import type { PublicEventResponse } from '@afterdark/types'
 import { formatEventPlace, formatEventWhen } from '../utils/events-discover-format'
 
@@ -18,8 +18,8 @@ export function EventsDiscoverListItem({ event, selected, onSelect }: EventsDisc
   const hasCoordinates = event.latitude !== null && event.longitude !== null
 
   return (
-    <button
-      type="button"
+    <Card
+      as="button"
       id={`events-discover-item-${event.documentId}`}
       onClick={onSelect}
       aria-pressed={selected}
@@ -103,6 +103,6 @@ export function EventsDiscoverListItem({ event, selected, onSelect }: EventsDisc
           </p>
         ) : null}
       </div>
-    </button>
+    </Card>
   )
 }

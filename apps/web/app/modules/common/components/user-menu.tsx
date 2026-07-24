@@ -1,5 +1,5 @@
 import { useCallback, useRef, useState } from 'react'
-import { LogOut, Settings } from 'lucide-react'
+import { LogOut, User } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from '@tanstack/react-router'
 import type { SessionResponse } from '@afterdark/types'
@@ -100,7 +100,7 @@ export function UserMenu({ user, ariaLabel, settingsHref }: UserMenuProps) {
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
             <DropdownMenuItem className="focus:bg-card" onClick={handleSettings}>
-              <Settings />
+              <User />
               {t('userMenu.settings')}
             </DropdownMenuItem>
           </DropdownMenuGroup>

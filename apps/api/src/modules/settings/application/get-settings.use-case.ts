@@ -3,13 +3,15 @@ import { USER_ROLE, type JwtPayload, type SettingsResponse } from '@afterdark/ty
 import { TranslationService } from '@afterdark/i18n/server'
 import { GetCurrentOwnerUseCase } from '../../owner'
 import { GetCurrentStaffUseCase } from '../../staff'
+import { GetCurrentUserUseCase } from '../../users'
 
 @Injectable()
 export class GetSettingsUseCase {
   constructor(
     @Inject(TranslationService) private readonly ts: TranslationService,
     @Inject(GetCurrentOwnerUseCase) private readonly getCurrentOwner: GetCurrentOwnerUseCase,
-    @Inject(GetCurrentStaffUseCase) private readonly getCurrentStaff: GetCurrentStaffUseCase
+    @Inject(GetCurrentStaffUseCase) private readonly getCurrentStaff: GetCurrentStaffUseCase,
+    @Inject(GetCurrentUserUseCase) private readonly getCurrentUser: GetCurrentUserUseCase
   ) {}
 
   async execute(user: JwtPayload): Promise<SettingsResponse> {
@@ -19,6 +21,10 @@ export class GetSettingsUseCase {
 
     if (user.role === USER_ROLE.STAFF) {
       return this.getCurrentStaff.execute(user.sub)
+    }
+
+    if (user.role === USER_ROLE.USER) {
+      return this.getCurrentUser.execute(user.sub)
     }
 
     throw new ForbiddenException(this.ts.translateError('forbidden'))

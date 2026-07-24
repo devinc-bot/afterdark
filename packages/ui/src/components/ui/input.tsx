@@ -9,8 +9,9 @@ const inputClassName = cn(
   'placeholder:text-ink-muted-soft',
   'transition-[box-shadow,color,opacity] duration-(--duration-fast) ease-(--ease-emphasized)',
   'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/25',
-  'read-only:cursor-not-allowed read-only:opacity-80',
+  'read-only:cursor-default read-only:opacity-80 read-only:focus-visible:ring-outline-variant/40',
   'aria-invalid:focus-visible:ring-error/40',
+
   'disabled:cursor-not-allowed disabled:text-ink-muted-soft disabled:opacity-60',
   'motion-reduce:transition-none'
 )

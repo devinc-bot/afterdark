@@ -4,8 +4,10 @@ import { USER_ROLE, type JwtPayload, type SettingsResponse } from '@afterdark/ty
 import {
   updateCurrentOwnerSchema,
   updateCurrentStaffSchema,
+  updateCurrentUserProfileSchema,
   type UpdateCurrentOwnerInput,
   type UpdateCurrentStaffInput,
+  type UpdateCurrentUserProfileInput,
 } from '@afterdark/validators'
 import { TranslationService } from '@afterdark/i18n/server'
 import { CurrentUser } from '../../common/decorators/current-user.decorator'
@@ -42,6 +44,13 @@ export class SettingsController {
       const input = new ZodValidationPipe(updateCurrentStaffSchema).transform(
         body
       ) as UpdateCurrentStaffInput
+      return this.updateSettings.execute(user, input)
+    }
+
+    if (user.role === USER_ROLE.USER) {
+      const input = new ZodValidationPipe(updateCurrentUserProfileSchema).transform(
+        body
+      ) as UpdateCurrentUserProfileInput
       return this.updateSettings.execute(user, input)
     }
 
