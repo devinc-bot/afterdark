@@ -10,19 +10,19 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common'
-import { API_ROUTES } from '@afterdark/common'
+import { API_ROUTES } from '@repo/common'
 import type {
   CreateStaffInvitationResponse,
   JwtPayload,
   StaffInvitationPublicResponse,
-} from '@afterdark/types'
+} from '@repo/types'
 import {
   acceptStaffInvitationApiSchema,
   createStaffInvitationSchema,
   uuidSchema,
   type AcceptStaffInvitationApiInput,
   type CreateStaffInvitationInput,
-} from '@afterdark/validators'
+} from '@repo/validators'
 import { CurrentUser } from '../../common/decorators/current-user.decorator'
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard'
 import { ZodValidationPipe } from '../../common/pipes/zod-validation.pipe'

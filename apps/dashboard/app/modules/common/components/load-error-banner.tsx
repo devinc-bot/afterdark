@@ -1,5 +1,5 @@
 import { AlertTriangle, RefreshCw, X } from 'lucide-react'
-import { Button, cn } from '@afterdark/ui'
+import { Button, cn } from '@repo/ui'
 
 type LoadErrorBannerVariant = 'error' | 'warning'
 

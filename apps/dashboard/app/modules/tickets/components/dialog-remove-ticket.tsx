@@ -7,7 +7,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@afterdark/ui'
+} from '@repo/ui'
 import type { TicketRecordItem } from '~/modules/tickets/components/ticket-record'
 
 export type TicketRemoveDialogProps = {

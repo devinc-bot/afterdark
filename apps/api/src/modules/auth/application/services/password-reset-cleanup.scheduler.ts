@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common'
 import { Cron, CronExpression } from '@nestjs/schedule'
-import { deleteExpiredPasswordResetTokens } from '@afterdark/db'
+import { deleteExpiredPasswordResetTokens } from '@repo/db'
 
 @Injectable()
 export class PasswordResetCleanupScheduler {

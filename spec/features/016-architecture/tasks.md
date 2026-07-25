@@ -9,7 +9,7 @@
 - [x] `plan.md` revisado (fase 6)
 - [x] Entrada en `spec/constitution/roadmap.md`
 
-## Shared packages — `@afterdark/types`
+## Shared packages — `@repo/types`
 
 - [x] Crear `packages/types/src/dto/common.ts`
 - [x] Crear `packages/types/src/dto/auth.ts`

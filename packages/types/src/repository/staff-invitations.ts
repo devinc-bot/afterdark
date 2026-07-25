@@ -1,4 +1,4 @@
-import type { StaffInvitationSelect } from '@afterdark/db/schema'
+import type { StaffInvitationSelect } from '@repo/db/schema'
 
 export type StaffInvitationWithLocationRow = {
   invitation: StaffInvitationSelect

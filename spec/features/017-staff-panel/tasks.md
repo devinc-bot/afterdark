@@ -11,7 +11,7 @@
 
 ## Shared packages
 
-- [ ] Agregar `role: UserRole` a `SessionResponse` en `@afterdark/types`
+- [ ] Agregar `role: UserRole` a `SessionResponse` en `@repo/types`
 - [ ] Copy i18n: `pages.panel.staff.*`, tabla, estados, descripción staff (`es.json` + `en.json`)
 
 ## API

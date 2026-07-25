@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { STAFF_STATUS, USER_ROLE } from '@afterdark/types'
+import { STAFF_STATUS, USER_ROLE } from '@repo/types'
 import { phoneSchema } from './common.ts'
 import { baseProfileSchema } from './owner.ts'
 

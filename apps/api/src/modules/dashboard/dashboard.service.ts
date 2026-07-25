@@ -3,7 +3,7 @@ import {
   findDashboardKpiByOwnerDocumentId,
   findDashboardTicketsSoldSeriesByOwnerDocumentId,
   findOwnerSalesPaginated,
-} from '@afterdark/db'
+} from '@repo/db'
 import type {
   DashboardKpiResponse,
   DashboardSalesAnalyticsResponse,
@@ -11,13 +11,13 @@ import type {
   PaginatedResponse,
   PaymentStatus,
   TicketType,
-} from '@afterdark/types'
+} from '@repo/types'
 import type {
   DashboardKpiQueryInput,
   DashboardSalesAnalyticsQueryInput,
   ListOwnerSalesQueryInput,
-} from '@afterdark/validators'
-import { TranslationService } from '@afterdark/i18n/server'
+} from '@repo/validators'
+import { TranslationService } from '@repo/i18n/server'
 import { resolveDashboardRevenueDateRange } from './utils/dashboard-date-range'
 import {
   fillDashboardTicketsSoldSeries,

@@ -1,4 +1,4 @@
-import { Loader } from '@afterdark/ui'
+import { Loader } from '@repo/ui'
 import { useTranslation } from 'react-i18next'
 
 export function SessionLoading() {

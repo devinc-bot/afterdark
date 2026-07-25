@@ -6,7 +6,7 @@ import {
   MODE,
   mailEnvSchema,
   uploadEnvSchema,
-} from '@afterdark/validators'
+} from '@repo/validators'
 import { z } from 'zod'
 
 config({ path: resolve(__dirname, '../../../../.env') })
@@ -17,7 +17,7 @@ const envSchema = databaseEnvSchema
   .extend(googleOauthEnvSchema.shape)
   .extend({
     PORT: z.coerce.number().default(3000),
-    JWT_SECRET: z.string().default('afterdark-dev-secret'),
+    JWT_SECRET: z.string().default('repo-dev-secret'),
     DASHBOARD_URL: z.url().default('http://localhost:3002'),
     WEB_URL: z.url().default('http://localhost:3001'),
     CORS_ALLOWED_ORIGINS: z

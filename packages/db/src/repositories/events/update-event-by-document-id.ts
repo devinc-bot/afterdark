@@ -2,7 +2,7 @@ import { eq } from 'drizzle-orm'
 import { db } from '../../client.ts'
 import { events } from '../../schema/event.ts'
 import { eventsByOwnerQuery } from './events-by-owner-query.ts'
-import type { EventUpsertInput, EventWithLocation } from '@afterdark/types'
+import type { EventUpsertInput, EventWithLocation } from '@repo/types'
 
 export async function updateEventByDocumentId(
   documentId: string,

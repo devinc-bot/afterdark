@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from '@tanstack/react-router'
-import type { EventResponse } from '@afterdark/types'
+import type { EventResponse } from '@repo/types'
 import { EventFormPage } from '~/modules/events/components/event-form-page'
 import { EVENT_FORM_MODE } from '~/modules/events/utils/event-form.types'
 import { DASHBOARD_ROUTES } from '~/modules/common/constants/routes'

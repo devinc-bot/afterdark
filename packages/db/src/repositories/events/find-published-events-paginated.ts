@@ -1,6 +1,6 @@
 import { and, asc, count, eq, gte, lte, sql, type SQL } from 'drizzle-orm'
-import { EVENT_STATUS } from '@afterdark/types/enums'
-import type { ListPublishedEventsParams, PaginatedPublishedEventsResult } from '@afterdark/types'
+import { EVENT_STATUS } from '@repo/types/enums'
+import type { ListPublishedEventsParams, PaginatedPublishedEventsResult } from '@repo/types'
 import { db } from '../../client.ts'
 import { addresses } from '../../schema/address.ts'
 import { events } from '../../schema/event.ts'

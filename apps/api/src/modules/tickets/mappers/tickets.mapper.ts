@@ -1,6 +1,6 @@
-import type { LocationSelect, EventSelect, TicketSelect } from '@afterdark/db'
-import type { TicketResponse } from '@afterdark/types'
-import type { CreateTicketInput, UpdateTicketInput } from '@afterdark/validators'
+import type { LocationSelect, EventSelect, TicketSelect } from '@repo/db'
+import type { TicketResponse } from '@repo/types'
+import type { CreateTicketInput, UpdateTicketInput } from '@repo/validators'
 
 type TicketSalesStats = {
   totalSold: number

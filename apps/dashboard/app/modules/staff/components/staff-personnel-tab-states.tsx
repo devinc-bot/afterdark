@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { Card, Skeleton } from '@afterdark/ui'
+import { Card, Skeleton } from '@repo/ui'
 
 export function StaffPersonnelTabSkeleton() {
   const { t } = useTranslation('staff')

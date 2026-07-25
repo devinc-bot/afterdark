@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 import { ArrowLeft } from 'lucide-react'
-import { Button, cn, useSidebar } from '@afterdark/ui'
+import { Button, cn, useSidebar } from '@repo/ui'
 
 type FormPageLayoutProps = {
   title: string

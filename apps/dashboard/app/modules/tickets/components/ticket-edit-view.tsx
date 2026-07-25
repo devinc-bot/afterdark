@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from '@tanstack/react-router'
-import type { TicketResponse } from '@afterdark/types'
+import type { TicketResponse } from '@repo/types'
 import { FormPageActions } from '~/modules/common/components/form-page-actions'
 import { DASHBOARD_ROUTES } from '~/modules/common/constants/routes'
 import { FormPageLayout } from '~/modules/common/components/form-page-layout'

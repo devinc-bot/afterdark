@@ -3,7 +3,7 @@ import { db } from '../../client.ts'
 import { accounts } from '../../schema/account.ts'
 import { accountRolesLnk } from '../../schema/account-role-lnk.ts'
 import { roles } from '../../schema/role.ts'
-import type { AccountWithRole } from '@afterdark/types'
+import type { AccountWithRole } from '@repo/types'
 
 export async function findAccountWithRoleByEmail(email: string): Promise<AccountWithRole | null> {
   const [row] = await db

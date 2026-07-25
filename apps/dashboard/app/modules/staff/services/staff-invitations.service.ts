@@ -1,8 +1,8 @@
-import type { CreateStaffInvitationResponse, StaffInvitationPublicResponse } from '@afterdark/types'
-import type { AcceptStaffInvitationInput, CreateStaffInvitationInput } from '@afterdark/validators'
-import { i18n } from '@afterdark/i18n/client'
+import type { CreateStaffInvitationResponse, StaffInvitationPublicResponse } from '@repo/types'
+import type { AcceptStaffInvitationInput, CreateStaffInvitationInput } from '@repo/validators'
+import { i18n } from '@repo/i18n/client'
 import { api, API_ROUTES } from '~/config/api'
-import { buildApiPath, QueryFactoryError, toApiServiceError } from '@afterdark/common'
+import { buildApiPath, QueryFactoryError, toApiServiceError } from '@repo/common'
 
 export async function fetchStaffInvitations(): Promise<CreateStaffInvitationResponse[]> {
   try {

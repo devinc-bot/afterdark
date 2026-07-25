@@ -1,6 +1,6 @@
 import { Controller, Get, Inject, UseGuards } from '@nestjs/common'
-import { API_ROUTES } from '@afterdark/common'
-import type { JwtPayload, SessionResponse } from '@afterdark/types'
+import { API_ROUTES } from '@repo/common'
+import type { JwtPayload, SessionResponse } from '@repo/types'
 import { CurrentUser } from '../../common/decorators/current-user.decorator'
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard'
 import { GetCurrentSessionUseCase } from '../application/get-current-session.use-case'

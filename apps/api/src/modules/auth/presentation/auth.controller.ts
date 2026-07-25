@@ -10,7 +10,7 @@ import {
   Res,
 } from '@nestjs/common'
 import type { Response } from 'express'
-import { API_ROUTES } from '@afterdark/common'
+import { API_ROUTES } from '@repo/common'
 import {
   forgotPasswordSchema,
   googleOauthStartSchema,
@@ -24,7 +24,7 @@ import {
   type RegisterOwnerInput,
   type RegisterUserInput,
   type ResetPasswordInput,
-} from '@afterdark/validators'
+} from '@repo/validators'
 import { ZodValidationPipe } from '../../common/pipes/zod-validation.pipe'
 import { ForgotPasswordUseCase } from '../application/forgot-password.use-case'
 import { GoogleOauthCallbackUseCase } from '../application/google-oauth-callback.use-case'
@@ -35,7 +35,7 @@ import { RegisterUserUseCase } from '../application/register-user.use-case'
 import { ResetPasswordUseCase } from '../application/reset-password.use-case'
 import { GOOGLE_OAUTH_ERROR } from '../auth.constants'
 import { buildAppLoginErrorUrl } from '../utils/google-oauth.utils'
-import { AUTH_OAUTH_APP } from '@afterdark/types'
+import { AUTH_OAUTH_APP } from '@repo/types'
 
 @Controller(API_ROUTES.auth.prefix)
 export class AuthController {

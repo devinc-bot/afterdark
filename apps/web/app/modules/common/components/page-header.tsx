@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { cn } from '@afterdark/ui'
+import { cn } from '@repo/ui'
 
 export const PAGE_HEADER_HEADING =
   'font-display text-[clamp(1.75rem,3.5vw,2.75rem)] font-bold leading-[1.15] tracking-[-0.02em] text-balance'

@@ -7,7 +7,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@afterdark/ui'
+} from '@repo/ui'
 import type { StaffUserRecord } from '~/modules/staff/types/staff-user-record'
 
 export type StaffUserDeleteDialogProps = {

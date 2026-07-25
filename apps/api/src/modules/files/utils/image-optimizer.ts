@@ -3,7 +3,7 @@ import {
   ALLOWED_IMAGE_MIME_TYPE,
   IMAGE_EXTENSION_BY_MIME_TYPE,
   type AllowedImageMimeType,
-} from '@afterdark/validators'
+} from '@repo/validators'
 
 export type OptimizedImage = {
   buffer: Buffer

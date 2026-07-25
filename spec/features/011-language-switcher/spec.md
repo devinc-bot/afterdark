@@ -16,16 +16,16 @@ Desde Configuración → Preferencias, el usuario cambia el idioma del panel (es
 
 ## Por qué
 
-`@afterdark/i18n` ya soporta `es`/`en` (namespaces, cookie `afterdark_lang`, SSR), pero no tiene punto de entrada funcional: el select "Idioma del panel" en Preferencias existe hoy solo como mock local (`settings.mock.ts`), sin conectar a `setLanguage()` real. Cumple el principio de misión "UI en español, código en inglés" dándole al usuario control real del idioma.
+`@repo/i18n` ya soporta `es`/`en` (namespaces, cookie `repo_lang`, SSR), pero no tiene punto de entrada funcional: el select "Idioma del panel" en Preferencias existe hoy solo como mock local (`settings.mock.ts`), sin conectar a `setLanguage()` real. Cumple el principio de misión "UI en español, código en inglés" dándole al usuario control real del idioma.
 
 ## Alcance
 
 ### Incluye
 
-- Conectar el select "Idioma del panel" (`preferences-settings-section.tsx`) a `setLanguage()` de `@afterdark/i18n/client`.
+- Conectar el select "Idioma del panel" (`preferences-settings-section.tsx`) a `setLanguage()` de `@repo/i18n/client`.
 - Valor inicial del select = idioma real actual (`useLanguage().language`), no el mock de `localStorage` de settings.
 - Cambio de idioma inmediato (sin recargar página) vía `i18next.changeLanguage`.
-- Persistencia en cookie `afterdark_lang` (ya la escribe `setLanguage()`) para que el `LanguageMiddleware` sirva el idioma correcto en el próximo request SSR.
+- Persistencia en cookie `repo_lang` (ya la escribe `setLanguage()`) para que el `LanguageMiddleware` sirva el idioma correcto en el próximo request SSR.
 
 ### No incluye
 
@@ -56,7 +56,7 @@ Desde Configuración → Preferencias, el usuario cambia el idioma del panel (es
 
 ### API
 
-No aplica — cambio 100% cliente. `setLanguage()` de `@afterdark/i18n/client` ya persiste en `localStorage` + cookie `afterdark_lang`; no hay endpoint de preferencias de idioma en `api`.
+No aplica — cambio 100% cliente. `setLanguage()` de `@repo/i18n/client` ya persiste en `localStorage` + cookie `repo_lang`; no hay endpoint de preferencias de idioma en `api`.
 
 ### Datos
 
@@ -70,12 +70,12 @@ No aplica — sin tablas/columnas nuevas. El idioma no se guarda en `owners` ví
 
 **Cambios de implementación (no nueva UI, conecta lo existente):**
 
-| Archivo                                                          | Cambio                                                                                                                                                                                                                                       |
-| ---------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `apps/dashboard/.../constants/settings.mock.ts`                  | `LANGUAGE_OPTIONS`: sacar entrada `de` (Deutsch); dejar solo `es`/`en`.                                                                                                                                                                      |
-| `apps/dashboard/.../hooks/settings-form-context.tsx`             | Dentro de `save()`, tras `updateCurrentOwner`/`saveStoredSettings` exitosos: si `validation.data.preferences.language` cambió respecto al idioma real actual (`useLanguage().language`), llamar `setLanguage()` de `@afterdark/i18n/client`. |
-| `apps/dashboard/.../utils/settings-storage.utils.ts`             | `createSettingsFormValues`: valor inicial de `preferences.language` = idioma real actual (`getCurrentLanguage()`), no el guardado en `localStorage` de settings.                                                                             |
-| `apps/dashboard/.../components/preferences-settings-section.tsx` | Sin cambios de estructura; sigue leyendo `LANGUAGE_OPTIONS` (ahora sin `de`).                                                                                                                                                                |
+| Archivo                                                          | Cambio                                                                                                                                                                                                                                  |
+| ---------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `apps/dashboard/.../constants/settings.mock.ts`                  | `LANGUAGE_OPTIONS`: sacar entrada `de` (Deutsch); dejar solo `es`/`en`.                                                                                                                                                                 |
+| `apps/dashboard/.../hooks/settings-form-context.tsx`             | Dentro de `save()`, tras `updateCurrentOwner`/`saveStoredSettings` exitosos: si `validation.data.preferences.language` cambió respecto al idioma real actual (`useLanguage().language`), llamar `setLanguage()` de `@repo/i18n/client`. |
+| `apps/dashboard/.../utils/settings-storage.utils.ts`             | `createSettingsFormValues`: valor inicial de `preferences.language` = idioma real actual (`getCurrentLanguage()`), no el guardado en `localStorage` de settings.                                                                        |
+| `apps/dashboard/.../components/preferences-settings-section.tsx` | Sin cambios de estructura; sigue leyendo `LANGUAGE_OPTIONS` (ahora sin `de`).                                                                                                                                                           |
 
 **Copy (español)** — sin copy nueva; se reusa `SETTINGS_COPY.preferences.language` / `.languagePlaceholder` ya existentes.
 

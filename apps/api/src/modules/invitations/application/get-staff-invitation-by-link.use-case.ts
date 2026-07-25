@@ -7,9 +7,9 @@ import {
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common'
-import { findStaffInvitationByTokenWithLocation } from '@afterdark/db'
-import { TranslationService } from '@afterdark/i18n/server'
-import { STAFF_INVITATION_STATUS, type StaffInvitationPublicResponse } from '@afterdark/types'
+import { findStaffInvitationByTokenWithLocation } from '@repo/db'
+import { TranslationService } from '@repo/i18n/server'
+import { STAFF_INVITATION_STATUS, type StaffInvitationPublicResponse } from '@repo/types'
 import { JwtService } from '@nestjs/jwt'
 import type { StaffInvitationPayload } from '../utils/staff-invitation.utils'
 

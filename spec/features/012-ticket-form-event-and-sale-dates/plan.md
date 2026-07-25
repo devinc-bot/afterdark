@@ -5,7 +5,7 @@
 ## Orden de capas
 
 ```text
-1. @afterdark/validators   → eventId required; mensajes saleEndAfterStart
+1. @repo/validators   → eventId required; mensajes saleEndAfterStart
 2. packages/i18n           → validation + tickets/es|en.json
 3. apps/api                → sin cambio de rutas; Zod ya rechaza body inválido
 4. apps/dashboard          → query eventos, TicketForm, mapper

@@ -1,7 +1,7 @@
 import { eq } from 'drizzle-orm'
 import { db } from '../../client.ts'
 import { staff } from '../../schema/staff.ts'
-import type { StaffProfileUpdateInput } from '@afterdark/types'
+import type { StaffProfileUpdateInput } from '@repo/types'
 
 export async function updateStaffProfileByDocumentId(
   documentId: string,

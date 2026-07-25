@@ -10,14 +10,10 @@ import {
   Patch,
   UseGuards,
 } from '@nestjs/common'
-import { API_ROUTES } from '@afterdark/common'
-import type { JwtPayload, StaffPersonnelItem } from '@afterdark/types'
-import { USER_ROLE } from '@afterdark/types'
-import {
-  updateStaffStatusSchema,
-  uuidSchema,
-  type UpdateStaffStatusInput,
-} from '@afterdark/validators'
+import { API_ROUTES } from '@repo/common'
+import type { JwtPayload, StaffPersonnelItem } from '@repo/types'
+import { USER_ROLE } from '@repo/types'
+import { updateStaffStatusSchema, uuidSchema, type UpdateStaffStatusInput } from '@repo/validators'
 import { CurrentUser } from '../../common/decorators/current-user.decorator'
 import { Roles } from '../../common/decorators/roles.decorator'
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard'

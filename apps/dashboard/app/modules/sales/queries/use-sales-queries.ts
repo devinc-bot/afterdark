@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import type { ListOwnerSalesQueryInput } from '@afterdark/validators'
+import type { ListOwnerSalesQueryInput } from '@repo/validators'
 import { QUERY_KEYS } from '~/modules/common/constants/query-keys'
 import {
   fetchOwnerSales,

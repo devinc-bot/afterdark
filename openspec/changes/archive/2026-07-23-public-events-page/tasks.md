@@ -1,8 +1,8 @@
 ## 1. Shared contracts
 
-- [x] 1.1 Add public discovery DTO types in `@afterdark/types` (list item with location name, city/state, coords, optional distance; paginated response shape)
-- [x] 1.2 Add `listPublicEventsQuerySchema` in `@afterdark/validators` (pagination + optional date range, city/state, lat/lng; default-friendly `limit=5`)
-- [x] 1.3 Register public list route constant in `@afterdark/common` API routes (keep owner routes unchanged)
+- [x] 1.1 Add public discovery DTO types in `@repo/types` (list item with location name, city/state, coords, optional distance; paginated response shape)
+- [x] 1.2 Add `listPublicEventsQuerySchema` in `@repo/validators` (pagination + optional date range, city/state, lat/lng; default-friendly `limit=5`)
+- [x] 1.3 Register public list route constant in `@repo/common` API routes (keep owner routes unchanged)
 
 ## 2. Database
 
@@ -29,4 +29,4 @@
 - [x] 6.1 Implement events service/client calling public catalog (page size 5; pass date/city/state filters)
 - [x] 6.2 Build filters panel (date range + city/state) left of list; changing filters resets to page 1
 - [x] 6.3 Build infinite-scroll list (5 per page) with Spanish empty/error/loading states
-- [x] 6.4 Render MapLibre map (`@afterdark/ui`) above the filters/list; markers from accumulated loaded pages; center on loaded markers / sensible default
+- [x] 6.4 Render MapLibre map (`@repo/ui`) above the filters/list; markers from accumulated loaded pages; center on loaded markers / sensible default

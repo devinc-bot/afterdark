@@ -1,5 +1,5 @@
-import type { CurrentOwnerResponse } from '@afterdark/types'
-import { settingsFormSchema, type SettingsFormValues } from '@afterdark/validators'
+import type { CurrentOwnerResponse } from '@repo/types'
+import { settingsFormSchema, type SettingsFormValues } from '@repo/validators'
 import { createSettingsFormProvider } from '~/modules/settings/hooks/settings-form-context'
 import { toOwnerFormValues } from '~/modules/owner/utils/settings-form-values.formatter'
 

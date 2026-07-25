@@ -1,5 +1,5 @@
 import { sqliteTable, text } from 'drizzle-orm/sqlite-core'
-import { STAFF_STATUS } from '@afterdark/types/enums'
+import { STAFF_STATUS } from '@repo/types/enums'
 import { createBaseColumns } from './base.ts'
 
 export const staff = sqliteTable('staff', {

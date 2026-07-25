@@ -12,7 +12,7 @@ import {
   SheetTrigger,
   AppLogo,
   cn,
-} from '@afterdark/ui'
+} from '@repo/ui'
 import { DASHBOARD_ROUTES } from '~/modules/common/constants/routes'
 import { handleSectionNavClick } from '../utils/scroll-to-section.utils'
 

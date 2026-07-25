@@ -22,7 +22,7 @@
 
 ## Decisions
 
-1. **Web-local components, dashboard as blueprint.** Build `UserMenu` (dropdown) and `SignOutDialog` in `apps/web/app/modules/common/components/`, modeled on `NavUser` and `AppShellSignOutDialog` rather than reusing them. `NavUser` is coupled to `SidebarMenuButton`/`useSidebar` (requires `SidebarProvider`), which the web shell doesn't have. All primitives (`DropdownMenu*`, `Dialog*`, `Avatar*`, `Button`) come from `@afterdark/ui`.
+1. **Web-local components, dashboard as blueprint.** Build `UserMenu` (dropdown) and `SignOutDialog` in `apps/web/app/modules/common/components/`, modeled on `NavUser` and `AppShellSignOutDialog` rather than reusing them. `NavUser` is coupled to `SidebarMenuButton`/`useSidebar` (requires `SidebarProvider`), which the web shell doesn't have. All primitives (`DropdownMenu*`, `Dialog*`, `Avatar*`, `Button`) come from `@repo/ui`.
 2. **Trigger = existing avatar.** Replace the `role="img"` wrapper in `LandingHeader` with a `DropdownMenuTrigger asChild` button keeping the current visual (size-11 hit area, size-8 avatar) and the loading skeleton branch untouched. `aria-label` keeps the `nav.accountAria` copy; `aria-expanded` comes from Radix.
 3. **Same dropdown on mobile.** No changes to the Sheet menu. Radix `DropdownMenu` already works with touch; content aligned `end` under the trigger.
 4. **Sign-out flow copied from dashboard `handleSignOut`.** Local `useState` for dialog open + in-flight ref guard; on confirm: `clearAuthSession()` → `clearSession()` → close → `navigate({ to: WEB_ROUTES.home() })`. Web navigates home (not to login) because the site is public.

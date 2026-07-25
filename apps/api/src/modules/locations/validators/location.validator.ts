@@ -1,5 +1,5 @@
 import { BadRequestException } from '@nestjs/common'
-import { LOCATION_IMAGE_MAX_COUNT } from '@afterdark/validators'
+import { LOCATION_IMAGE_MAX_COUNT } from '@repo/validators'
 
 export function assertValidKeepImageIds(
   currentImageDocumentIds: Iterable<string>,

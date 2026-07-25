@@ -9,10 +9,10 @@ import {
   accountExistsByEmail,
   createStaffInvitation as insertStaffInvitation,
   findLocationByDocumentId,
-} from '@afterdark/db'
-import { TranslationService } from '@afterdark/i18n/server'
-import { CreateStaffInvitationResponse, STAFF_INVITATION_STATUS, USER_ROLE } from '@afterdark/types'
-import type { CreateStaffInvitationInput } from '@afterdark/validators'
+} from '@repo/db'
+import { TranslationService } from '@repo/i18n/server'
+import { CreateStaffInvitationResponse, STAFF_INVITATION_STATUS, USER_ROLE } from '@repo/types'
+import type { CreateStaffInvitationInput } from '@repo/validators'
 import { JwtService } from '@nestjs/jwt'
 import { toStaffInvitationResponse } from '../mappers/invitation.mapper'
 import { buildStaffInvitationPayload } from '../utils/staff-invitation.utils'

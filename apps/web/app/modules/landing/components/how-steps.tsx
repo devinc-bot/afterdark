@@ -1,7 +1,7 @@
 import type { LucideIcon } from 'lucide-react'
 import { CalendarCheck, Ticket, UserRound } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
-import { cn } from '@afterdark/ui'
+import { cn } from '@repo/ui'
 
 const HOW_STEPS = [
   { id: '1', Icon: UserRound },

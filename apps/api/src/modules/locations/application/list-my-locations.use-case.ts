@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common'
 import {
   findLocationImageAssetsByLocationIds,
   findLocationsWithAddressesByOwnerDocumentId,
-} from '@afterdark/db'
-import type { LocationResponse } from '@afterdark/types'
+} from '@repo/db'
+import type { LocationResponse } from '@repo/types'
 import { groupLocationImagesByLocationId, toLocationResponse } from '../mappers/location.mapper'
 
 @Injectable()

@@ -1,5 +1,5 @@
 import { AlertCircle } from 'lucide-react'
-import { cn } from '@afterdark/ui'
+import { cn } from '@repo/ui'
 
 type EventFormErrorAlertProps = {
   message: string

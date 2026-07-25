@@ -1,4 +1,4 @@
-import type { LocationResponse } from '@afterdark/types'
+import type { LocationResponse } from '@repo/types'
 import type { LocationFormValues } from '~/modules/locations/components/location-form'
 import type { RegisteredLocation } from '~/modules/locations/components/registered-location-records'
 

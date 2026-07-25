@@ -1,7 +1,7 @@
-import type { SettingsResponse } from '@afterdark/types'
-import { i18n } from '@afterdark/i18n/client'
+import type { SettingsResponse } from '@repo/types'
+import { i18n } from '@repo/i18n/client'
 import { api, API_ROUTES } from '~/config/api'
-import { buildApiPath, toApiServiceError } from '@afterdark/common'
+import { buildApiPath, toApiServiceError } from '@repo/common'
 
 export function getSettings() {
   return api.get<SettingsResponse>(

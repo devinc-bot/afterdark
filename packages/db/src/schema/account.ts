@@ -1,5 +1,5 @@
 import { sqliteTable, text } from 'drizzle-orm/sqlite-core'
-import { AUTH_PROVIDER } from '@afterdark/types'
+import { AUTH_PROVIDER } from '@repo/types'
 import { createBaseColumns } from './base.ts'
 
 export const accounts = sqliteTable('accounts', {

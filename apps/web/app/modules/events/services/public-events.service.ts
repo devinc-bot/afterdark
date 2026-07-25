@@ -1,6 +1,6 @@
-import { buildApiPath, toApiServiceError } from '@afterdark/common'
-import type { PublicEventsPaginatedResponse } from '@afterdark/types'
-import { i18n } from '@afterdark/i18n/client'
+import { buildApiPath, toApiServiceError } from '@repo/common'
+import type { PublicEventsPaginatedResponse } from '@repo/types'
+import { i18n } from '@repo/i18n/client'
 import { api, API_ROUTES } from '~/config/api'
 
 export const PUBLIC_EVENTS_PAGE_SIZE = 5

@@ -2,7 +2,7 @@ import { and, eq } from 'drizzle-orm'
 import { events } from '../../schema/event.ts'
 import { owners } from '../../schema/owner.ts'
 import { eventsByOwnerQuery } from './events-by-owner-query.ts'
-import type { EventWithLocation } from '@afterdark/types'
+import type { EventWithLocation } from '@repo/types'
 
 export async function findEventWithLocationOwnedByOwnerDocumentId(
   eventDocumentId: string,

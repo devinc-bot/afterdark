@@ -1,5 +1,5 @@
 import { AlertCircle, Check, Loader2 } from 'lucide-react'
-import { cn } from '@afterdark/ui'
+import { cn } from '@repo/ui'
 import {
   SETTINGS_SAVE_STATUS,
   SETTINGS_STATUS_BANNER_ARIA_LIVE,

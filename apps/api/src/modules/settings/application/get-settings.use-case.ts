@@ -1,6 +1,6 @@
 import { ForbiddenException, Inject, Injectable } from '@nestjs/common'
-import { USER_ROLE, type JwtPayload, type SettingsResponse } from '@afterdark/types'
-import { TranslationService } from '@afterdark/i18n/server'
+import { USER_ROLE, type JwtPayload, type SettingsResponse } from '@repo/types'
+import { TranslationService } from '@repo/i18n/server'
 import { GetCurrentOwnerUseCase } from '../../owner'
 import { GetCurrentStaffUseCase } from '../../staff'
 import { GetCurrentUserUseCase } from '../../users'

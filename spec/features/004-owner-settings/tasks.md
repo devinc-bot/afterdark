@@ -13,7 +13,7 @@
 
 - [x] `packages/types/src/api.ts`: `SessionResponse` **sin cambios** (no lleva `role`)
 - [x] `packages/types/src/api.ts`: `CurrentOwnerResponse` agrega `role: typeof USER_ROLE.OWNER`; nuevo `StaffSettingsResponse` + `SettingsResponse` union
-- [x] Sin cambios en `@afterdark/validators` (se reusa `updateCurrentOwnerSchema`)
+- [x] Sin cambios en `@repo/validators` (se reusa `updateCurrentOwnerSchema`)
 - [x] Sin cambios en `packages/db` (sin schema/migración nueva)
 
 ## API
@@ -77,7 +77,7 @@
 - [x] Eliminar `packages/db/src/schema/user-address-lnk.ts`
 - [x] `packages/db/src/schema/index.ts`: swap export
 - [x] `packages/db/DATABASE.md`: catálogo de tablas, diagrama, índices únicos actualizados
-- [ ] `pnpm --filter @afterdark/db db:generate` (migración) — **bloqueado**: falta `src/migrations/meta/0010_snapshot.json` en el repo (pre-existente, no relacionado a esta feature; confirmado con `git log` que nunca se commiteó). `drizzle-kit generate` no corre para ninguna migración nueva hasta que se resuelva. Usuario decidió arreglarlo aparte, fuera de esta sesión.
+- [ ] `pnpm --filter @repo/db db:generate` (migración) — **bloqueado**: falta `src/migrations/meta/0010_snapshot.json` en el repo (pre-existente, no relacionado a esta feature; confirmado con `git log` que nunca se commiteó). `drizzle-kit generate` no corre para ninguna migración nueva hasta que se resuelva. Usuario decidió arreglarlo aparte, fuera de esta sesión.
 - [x] `owners.repository.ts`: `findCurrentOwnerByDocumentId` suma `address`; nueva `upsertOwnerAddress`
 
 ### Shared packages

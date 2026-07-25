@@ -84,7 +84,7 @@ A competent, restrained staff-admin surface that matches the dashboard's emergin
 
 **Sam (Accessibility):** Table horizontal scroll traps keyboard focus in a scroll region. Role icons are `aria-hidden` with text beside them — OK, but club badge + 6 columns is a long row announcement. Form validation errors may not announce on submit without live region (verify with screen reader).
 
-**María (Owner Operator — afterdark staff):** "Rol operativo" doesn't say what each role can access. Deactivating Marco has no "¿Estás seguro?" — she'll hesitate or mis-click under pressure. KPI shows total headcount but not "quién está afuera ahora" (inactive count is buried in subtext math).
+**María (Owner Operator — repo staff):** "Rol operativo" doesn't say what each role can access. Deactivating Marco has no "¿Estás seguro?" — she'll hesitate or mis-click under pressure. KPI shows total headcount but not "quién está afuera ahora" (inactive count is buried in subtext math).
 
 ## Minor Observations
 

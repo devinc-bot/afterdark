@@ -5,10 +5,10 @@ import {
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common'
-import { createEvent, findLocationOwnedByOwnerDocumentId } from '@afterdark/db'
-import { TranslationService } from '@afterdark/i18n/server'
-import type { EventResponse } from '@afterdark/types'
-import { EVENT_IMAGE_MAX_COUNT, type CreateEventInput } from '@afterdark/validators'
+import { createEvent, findLocationOwnedByOwnerDocumentId } from '@repo/db'
+import { TranslationService } from '@repo/i18n/server'
+import type { EventResponse } from '@repo/types'
+import { EVENT_IMAGE_MAX_COUNT, type CreateEventInput } from '@repo/validators'
 import { toEventResponse, toEventUpsertInput } from '../mappers/events.mapper'
 import { validateEventImageLimit } from '../validators/event.validator'
 import { EventImagesService } from './services/event-images.service'

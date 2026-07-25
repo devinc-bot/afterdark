@@ -4,10 +4,10 @@ import {
   findValidPasswordResetToken,
   markPasswordResetTokenUsed,
   updateAccountPassword,
-} from '@afterdark/db'
-import { AUTH_ERROR_CODE } from '@afterdark/i18n'
-import { TranslationService } from '@afterdark/i18n/server'
-import type { ResetPasswordInput } from '@afterdark/validators'
+} from '@repo/db'
+import { AUTH_ERROR_CODE } from '@repo/i18n'
+import { TranslationService } from '@repo/i18n/server'
+import type { ResetPasswordInput } from '@repo/validators'
 import { hashValue } from '../../common'
 import { PASSWORD_RESET_PURPOSE, type PasswordResetPayload } from '../utils/password-reset.utils'
 

@@ -1,4 +1,4 @@
-import { CLIENT_ROUTES } from '@afterdark/common'
+import { CLIENT_ROUTES } from '@repo/common'
 
 const { resetPassword, authCallback, login } = CLIENT_ROUTES
 

@@ -1,11 +1,11 @@
 import { ForbiddenException, Inject, Injectable } from '@nestjs/common'
-import { USER_ROLE, type JwtPayload, type SettingsResponse } from '@afterdark/types'
+import { USER_ROLE, type JwtPayload, type SettingsResponse } from '@repo/types'
 import type {
   UpdateCurrentOwnerInput,
   UpdateCurrentStaffInput,
   UpdateCurrentUserProfileInput,
-} from '@afterdark/validators'
-import { TranslationService } from '@afterdark/i18n/server'
+} from '@repo/validators'
+import { TranslationService } from '@repo/i18n/server'
 import { UpdateCurrentOwnerUseCase } from '../../owner'
 import { UpdateCurrentStaffUseCase } from '../../staff'
 import { UpdateCurrentUserUseCase } from '../../users'

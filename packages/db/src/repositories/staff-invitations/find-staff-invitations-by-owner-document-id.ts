@@ -3,7 +3,7 @@ import { db } from '../../client.ts'
 import { locations } from '../../schema/location.ts'
 import { owners } from '../../schema/owner.ts'
 import { staffInvitations } from '../../schema/staff-invitation.ts'
-import type { StaffInvitationWithLocationRow } from '@afterdark/types'
+import type { StaffInvitationWithLocationRow } from '@repo/types'
 
 export async function findStaffInvitationsByOwnerDocumentId(
   ownerDocumentId: string

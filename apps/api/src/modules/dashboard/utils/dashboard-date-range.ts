@@ -1,4 +1,4 @@
-import type { DashboardKpiQueryInput } from '@afterdark/validators'
+import type { DashboardKpiQueryInput } from '@repo/validators'
 
 function endOfDay(date: Date): Date {
   return new Date(date.getFullYear(), date.getMonth(), date.getDate(), 23, 59, 59, 999)

@@ -1,5 +1,5 @@
-import type { UserProfileRow } from '@afterdark/types'
-import { USER_ROLE, type CurrentUserResponse } from '@afterdark/types'
+import type { UserProfileRow } from '@repo/types'
+import { USER_ROLE, type CurrentUserResponse } from '@repo/types'
 
 export function toCurrentUserResponse(row: UserProfileRow): CurrentUserResponse {
   return {

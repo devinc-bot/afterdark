@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import type { ListEventsQueryInput } from '@afterdark/validators'
+import type { ListEventsQueryInput } from '@repo/validators'
 import { QUERY_KEYS } from '~/modules/common/constants/query-keys'
 import { fetchEvent, fetchEvents } from '~/modules/events/service/events.service'
 

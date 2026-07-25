@@ -1,5 +1,5 @@
 import { integer, real, sqliteTable, text } from 'drizzle-orm/sqlite-core'
-import { PAYMENT_PROVIDER, PAYMENT_STATUS } from '@afterdark/types/enums'
+import { PAYMENT_PROVIDER, PAYMENT_STATUS } from '@repo/types/enums'
 import { createBaseColumns } from './base.ts'
 import { tickets } from './ticket.ts'
 import { users } from './user.ts'

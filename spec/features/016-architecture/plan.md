@@ -48,10 +48,10 @@ Sin cambios previstos. Verificar con `pnpm type-check`.
 
 ## Riesgos / edge cases
 
-| Caso                      | Comportamiento esperado                                         |
-| ------------------------- | --------------------------------------------------------------- |
-| Import directo `./api.ts` | No hay consumidores internos; solo barrel público               |
-| `Property` usado en web   | Sigue disponible vía `@afterdark/types` hasta retiro del módulo |
+| Caso                      | Comportamiento esperado                                    |
+| ------------------------- | ---------------------------------------------------------- |
+| Import directo `./api.ts` | No hay consumidores internos; solo barrel público          |
+| `Property` usado en web   | Sigue disponible vía `@repo/types` hasta retiro del módulo |
 
 ## Verificación manual
 

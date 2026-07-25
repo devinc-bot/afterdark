@@ -3,7 +3,7 @@ import { db } from '../../client.ts'
 import { accounts } from '../../schema/account.ts'
 import { staff } from '../../schema/staff.ts'
 import { staffAccountsLnk } from '../../schema/staff-account-lnk.ts'
-import type { CurrentStaffRow } from '@afterdark/types'
+import type { CurrentStaffRow } from '@repo/types'
 
 export async function findCurrentStaffByDocumentId(
   documentId: string

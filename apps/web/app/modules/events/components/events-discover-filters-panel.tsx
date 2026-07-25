@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { Button, DateInput, Field, Input } from '@afterdark/ui'
+import { Button, DateInput, Field, Input } from '@repo/ui'
 import type { EventsDiscoverFiltersValue } from '../utils/events-discover-filters'
 
 type EventsDiscoverFiltersPanelProps = {

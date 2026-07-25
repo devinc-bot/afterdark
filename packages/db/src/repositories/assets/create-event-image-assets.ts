@@ -1,5 +1,5 @@
-import { ASSET_TYPE } from '@afterdark/types'
-import type { EventImageAssetInput } from '@afterdark/types'
+import { ASSET_TYPE } from '@repo/types'
+import type { EventImageAssetInput } from '@repo/types'
 import { db, type Transaction } from '../../client.ts'
 import { eventAssetsLnk } from '../../schema/event-asset-lnk.ts'
 import { assets, type AssetSelect } from '../../schema/asset.ts'

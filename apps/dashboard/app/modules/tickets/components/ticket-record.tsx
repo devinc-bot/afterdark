@@ -23,8 +23,8 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@afterdark/ui'
-import { TICKET_STATUS, TICKET_TYPE, type TicketStatus, type TicketType } from '@afterdark/types'
+} from '@repo/ui'
+import { TICKET_STATUS, TICKET_TYPE, type TicketStatus, type TicketType } from '@repo/types'
 import type { TFunction } from 'i18next'
 import { EllipsisVertical, Eye, Pencil, Trash2 } from 'lucide-react'
 import { TicketViewDialog } from '~/modules/tickets/components/dialog-view-ticket'

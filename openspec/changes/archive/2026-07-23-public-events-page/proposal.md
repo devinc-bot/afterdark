@@ -17,7 +17,7 @@ Visitors on the public site can only jump to a marketing `#eventos` anchor; ther
 - Categories/tags filters (not in the domain yet).
 - Changing owner dashboard event CRUD (`event-authoring`).
 - Authenticated-only discovery or personalized recommendations.
-- Offline maps or a new map library (reuse MapLibre from `@afterdark/ui`).
+- Offline maps or a new map library (reuse MapLibre from `@repo/ui`).
 - Distance / Haversine sorting or geolocation-based catalog ordering.
 
 ## Capabilities

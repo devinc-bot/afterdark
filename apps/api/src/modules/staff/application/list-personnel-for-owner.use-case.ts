@@ -1,7 +1,7 @@
 import { Inject, Injectable, InternalServerErrorException } from '@nestjs/common'
-import { findPersonnelByOwnerDocumentId } from '@afterdark/db'
-import type { StaffPersonnelItem } from '@afterdark/types'
-import { TranslationService } from '@afterdark/i18n/server'
+import { findPersonnelByOwnerDocumentId } from '@repo/db'
+import type { StaffPersonnelItem } from '@repo/types'
+import { TranslationService } from '@repo/i18n/server'
 import { toStaffPersonnelItem } from '../mappers/staff.mapper'
 
 @Injectable()

@@ -1,5 +1,5 @@
-import type { LocationImageResponse } from '@afterdark/types'
-import { LOCATION_IMAGE_MAX_COUNT } from '@afterdark/validators'
+import type { LocationImageResponse } from '@repo/types'
+import { LOCATION_IMAGE_MAX_COUNT } from '@repo/validators'
 import { useTranslation } from 'react-i18next'
 import { ImageUploadField } from '~/modules/common/components/image-upload-field'
 

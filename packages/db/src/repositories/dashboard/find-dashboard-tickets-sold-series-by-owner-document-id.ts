@@ -1,9 +1,9 @@
 import { and, count, eq, gte, lte, sql } from 'drizzle-orm'
-import { PAYMENT_STATUS } from '@afterdark/types/enums'
+import { PAYMENT_STATUS } from '@repo/types/enums'
 import type {
   DashboardTicketsSoldSeriesPoint,
   FindDashboardTicketsSoldSeriesParams,
-} from '@afterdark/types'
+} from '@repo/types'
 import { db } from '../../client.ts'
 import { locations } from '../../schema/location.ts'
 import { events } from '../../schema/event.ts'

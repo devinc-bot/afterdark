@@ -1,12 +1,12 @@
 import { useForm } from '@tanstack/react-form'
 import { Trans, useTranslation } from 'react-i18next'
 import { AlertCircle, Check } from 'lucide-react'
-import type { CurrentUserResponse } from '@afterdark/types'
+import type { CurrentUserResponse } from '@repo/types'
 import {
   updateCurrentUserProfileSchema,
   type UpdateCurrentUserProfileInput,
-} from '@afterdark/validators'
-import { useResolveFieldError } from '@afterdark/i18n/client'
+} from '@repo/validators'
+import { useResolveFieldError } from '@repo/i18n/client'
 import {
   Avatar,
   AvatarFallback,
@@ -17,7 +17,7 @@ import {
   Label,
   cn,
   useUnsavedChangesGuard,
-} from '@afterdark/ui'
+} from '@repo/ui'
 import { getUserInitials } from '~/modules/common/utils/user-initials.utils'
 import { useUpdateProfile } from '~/modules/settings/queries/use-update-profile'
 

@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { usePageTitle } from '@afterdark/ui'
+import { usePageTitle } from '@repo/ui'
 import { SettingsPage } from '~/modules/settings/components/settings-page'
 
 export const Route = createFileRoute('/_app/settings')({

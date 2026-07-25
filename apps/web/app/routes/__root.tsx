@@ -2,11 +2,11 @@ import { useEffect } from 'react'
 import { HeadContent, Outlet, Scripts, createRootRouteWithContext } from '@tanstack/react-router'
 import { QueryClientProvider, type QueryClient } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
-import { installZodI18n } from '@afterdark/i18n'
-import { I18nProvider } from '@afterdark/i18n/client'
-import commonEs from '@afterdark/i18n/locales/common/es.json'
-import { APP_LOGO_SRC, Toaster } from '@afterdark/ui'
-import globalsCssUrl from '@afterdark/ui/globals.css?url'
+import { installZodI18n } from '@repo/i18n'
+import { I18nProvider } from '@repo/i18n/client'
+import commonEs from '@repo/i18n/locales/common/es.json'
+import { APP_LOGO_SRC, Toaster } from '@repo/ui'
+import globalsCssUrl from '@repo/ui/globals.css?url'
 
 interface RouterContext {
   queryClient: QueryClient

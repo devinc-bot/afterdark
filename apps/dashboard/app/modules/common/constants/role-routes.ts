@@ -1,4 +1,4 @@
-import { USER_ROLE, type UserRole } from '@afterdark/types'
+import { USER_ROLE, type UserRole } from '@repo/types'
 import { DASHBOARD_ROUTES } from './routes'
 
 /** Rutas accesibles por staff (prefijos; incluye subrutas). */

@@ -1,7 +1,7 @@
 import { Inject, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common'
-import { updateStaffStatusByDocumentId } from '@afterdark/db'
-import type { StaffStatus } from '@afterdark/types'
-import { TranslationService } from '@afterdark/i18n/server'
+import { updateStaffStatusByDocumentId } from '@repo/db'
+import type { StaffStatus } from '@repo/types'
+import { TranslationService } from '@repo/i18n/server'
 
 @Injectable()
 export class UpdateStaffStatusUseCase {

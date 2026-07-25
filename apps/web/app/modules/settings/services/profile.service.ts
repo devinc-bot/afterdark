@@ -1,7 +1,7 @@
-import type { CurrentUserResponse } from '@afterdark/types'
-import type { UpdateCurrentUserProfileInput } from '@afterdark/validators'
-import { buildApiPath, toApiServiceError } from '@afterdark/common'
-import { i18n } from '@afterdark/i18n/client'
+import type { CurrentUserResponse } from '@repo/types'
+import type { UpdateCurrentUserProfileInput } from '@repo/validators'
+import { buildApiPath, toApiServiceError } from '@repo/common'
+import { i18n } from '@repo/i18n/client'
 import { api, API_ROUTES } from '~/config/api'
 
 export async function getMyProfile(): Promise<CurrentUserResponse> {

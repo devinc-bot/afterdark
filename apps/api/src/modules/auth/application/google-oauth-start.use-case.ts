@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
-import type { GoogleOauthStartInput } from '@afterdark/validators'
+import type { GoogleOauthStartInput } from '@repo/validators'
 import {
   GOOGLE_OAUTH_ERROR,
   GOOGLE_OAUTH_STATE_PURPOSE,

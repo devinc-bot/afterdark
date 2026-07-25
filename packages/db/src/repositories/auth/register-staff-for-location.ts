@@ -1,4 +1,4 @@
-import { AUTH_PROVIDER, type RegisterStaffForLocationInput } from '@afterdark/types'
+import { AUTH_PROVIDER, type RegisterStaffForLocationInput } from '@repo/types'
 import { db, type Transaction } from '../../client.ts'
 import { accounts } from '../../schema/account.ts'
 import { accountRolesLnk } from '../../schema/account-role-lnk.ts'

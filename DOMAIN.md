@@ -1,4 +1,4 @@
-# DOMAIN.md — afterdark
+# DOMAIN.md — Repo
 
 Business context and product rules. Schema detail → `packages/db/DATABASE.md`. Layout → `ARCHITECTURE.md`.
 
@@ -6,7 +6,7 @@ Business context and product rules. Schema detail → `packages/db/DATABASE.md`.
 
 ## Product
 
-**afterdark** — plataforma de eventos (ubicaciones, eventos, entradas).
+**Repo** — plataforma de eventos (ubicaciones, eventos, entradas).
 
 | Audience | App         | Role                                           |
 | -------- | ----------- | ---------------------------------------------- |
@@ -22,12 +22,12 @@ Misma DB Turso; tipos/validators compartidos.
 
 ## Roles
 
-| Role    | Quién               | Alta                                   |
-| ------- | ------------------- | -------------------------------------- |
-| `user`  | Cliente             | `web` → `/register`                    |
-| `owner` | Dueño de ubicación  | `dashboard` → `/register`              |
-| `staff` | Personal            | Invitación del dueño (`/$name/$token`) |
-| `admin` | Plataforma          | Fuera de alcance UI actual             |
+| Role    | Quién              | Alta                                   |
+| ------- | ------------------ | -------------------------------------- |
+| `user`  | Cliente            | `web` → `/register`                    |
+| `owner` | Dueño de ubicación | `dashboard` → `/register`              |
+| `staff` | Personal           | Invitación del dueño (`/$name/$token`) |
+| `admin` | Plataforma         | Fuera de alcance UI actual             |
 
 ---
 
@@ -45,14 +45,14 @@ Misma DB Turso; tipos/validators compartidos.
 
 IDs: `documentId` (UUID) en API/JWT; `id` (int) solo para FKs internas.
 
-Enums/DTOs → `@afterdark/types`. Validación → `@afterdark/validators`. No redefinir en apps.
+Enums/DTOs → `@repo/types`. Validación → `@repo/validators`. No redefinir en apps.
 
 ---
 
 ## Product rules
 
-- **UI copy en español** (vía `@afterdark/i18n`). Identifiers/código en **inglés**.
-- Validar con Zod de `@afterdark/validators` antes de persistir.
+- **UI copy en español** (vía `@repo/i18n`). Identifiers/código en **inglés**.
+- Validar con Zod de `@repo/validators` antes de persistir.
 - Dueño gestiona sus ubicaciones/eventos/tickets/staff; cliente no administra inventario.
 - Staff entra solo por invitación del dueño (no registro libre de staff).
 - Auth: JWT + refresh; sesión vía `GET /session/me`.

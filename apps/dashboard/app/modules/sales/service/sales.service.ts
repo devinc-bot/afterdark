@@ -3,11 +3,11 @@ import type {
   EventResponse,
   OwnerSaleResponse,
   PaginatedResponse,
-} from '@afterdark/types'
-import type { ListOwnerSalesQueryInput } from '@afterdark/validators'
-import { i18n } from '@afterdark/i18n/client'
+} from '@repo/types'
+import type { ListOwnerSalesQueryInput } from '@repo/validators'
+import { i18n } from '@repo/i18n/client'
 import { api, API_ROUTES } from '~/config/api'
-import { buildApiPath, toApiServiceError } from '@afterdark/common'
+import { buildApiPath, toApiServiceError } from '@repo/common'
 
 function toSalesSearchParams(params: ListOwnerSalesQueryInput): string {
   const searchParams = new URLSearchParams({

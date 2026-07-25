@@ -15,14 +15,9 @@ import {
   UseInterceptors,
 } from '@nestjs/common'
 import { FilesInterceptor } from '@nestjs/platform-express'
-import { API_ROUTES } from '@afterdark/common'
-import type {
-  EventResponse,
-  JwtPayload,
-  PaginatedResponse,
-  PublicEventResponse,
-} from '@afterdark/types'
-import { USER_ROLE } from '@afterdark/types'
+import { API_ROUTES } from '@repo/common'
+import type { EventResponse, JwtPayload, PaginatedResponse, PublicEventResponse } from '@repo/types'
+import { USER_ROLE } from '@repo/types'
 import {
   EVENT_IMAGE_MAX_COUNT,
   createEventSchema,
@@ -34,7 +29,7 @@ import {
   type ListEventsQueryInput,
   type ListPublicEventsQueryInput,
   type UpdateEventMultipartInput,
-} from '@afterdark/validators'
+} from '@repo/validators'
 import { CurrentUser } from '../../common/decorators/current-user.decorator'
 import { Roles } from '../../common/decorators/roles.decorator'
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard'

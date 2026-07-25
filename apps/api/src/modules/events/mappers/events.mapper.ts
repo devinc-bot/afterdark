@@ -1,6 +1,6 @@
-import type { AssetSelect, EventSelect, LocationSelect, AddressSelect } from '@afterdark/db'
-import type { EventImageResponse, EventResponse, PublicEventResponse } from '@afterdark/types'
-import type { CreateEventInput, UpdateEventInput } from '@afterdark/validators'
+import type { AssetSelect, EventSelect, LocationSelect, AddressSelect } from '@repo/db'
+import type { EventImageResponse, EventResponse, PublicEventResponse } from '@repo/types'
+import type { CreateEventInput, UpdateEventInput } from '@repo/validators'
 
 export function toEventImageResponse(asset: AssetSelect): EventImageResponse {
   return {

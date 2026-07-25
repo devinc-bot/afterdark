@@ -3,7 +3,7 @@ import { db } from '../../client.ts'
 import { addresses } from '../../schema/address.ts'
 import { locationAddressesLnk } from '../../schema/location-address-lnk.ts'
 import { locations } from '../../schema/location.ts'
-import type { LocationWithAddress } from '@afterdark/types'
+import type { LocationWithAddress } from '@repo/types'
 
 export async function findLocationsWithAddresses(): Promise<LocationWithAddress[]> {
   return db

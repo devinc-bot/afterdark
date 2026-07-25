@@ -3,7 +3,7 @@ import { db } from '../../client.ts'
 import { locations } from '../../schema/location.ts'
 import { events } from '../../schema/event.ts'
 import { tickets } from '../../schema/ticket.ts'
-import type { TicketWithRelations } from '@afterdark/types'
+import type { TicketWithRelations } from '@repo/types'
 
 export async function findTicketRelationsByTicketId(
   ticketId: number

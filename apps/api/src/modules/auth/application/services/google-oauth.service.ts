@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common'
-import { API_ROUTES, buildApiPath } from '@afterdark/common'
+import { API_ROUTES, buildApiPath } from '@repo/common'
 import { ENV } from '../../../common/config/env'
 import { GOOGLE_OAUTH_SCOPES } from '../../auth.constants'
 

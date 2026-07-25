@@ -1,7 +1,7 @@
 import { Link } from '@tanstack/react-router'
 import type { ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
-import { AppLogo } from '@afterdark/ui'
+import { AppLogo } from '@repo/ui'
 import { WEB_ROUTES } from '~/modules/common/constants/routes'
 
 export function AuthPageLayout({ children }: { children: ReactNode }) {

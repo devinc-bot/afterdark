@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import type { DashboardSalesAnalyticsResponse, DashboardSeriesGranularity } from '@afterdark/types'
-import { BarChart, Skeleton } from '@afterdark/ui'
+import type { DashboardSalesAnalyticsResponse, DashboardSeriesGranularity } from '@repo/types'
+import { BarChart, Skeleton } from '@repo/ui'
 import { DASHBOARD_PERIOD, type DashboardPeriod } from '~/modules/owner/constants/dashboard-period'
 
 type OwnerPanelChartProps = {

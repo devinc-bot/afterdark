@@ -17,7 +17,7 @@ Expone un servicio interno en `api` para enviar emails transaccionales. El domin
 
 ## Por qué
 
-Hoy hay copy de emails en `@afterdark/i18n` (`staffInvitation`, `passwordReset`, `welcome`) pero no hay capa de envío. Sin un puerto único, cada feature (invitaciones, reset, welcome) acoplaría Resend o HTML a mano. Centralizar envío + templates permite reutilizar i18n, rotar vendor y mantener maquetación moderna (React Email) en un solo lugar. Alinea con [mission.md](../../constitution/mission.md) (onboarding de staff, cuentas confiables) y el patrón de infra de `015-files-module`.
+Hoy hay copy de emails en `@repo/i18n` (`staffInvitation`, `passwordReset`, `welcome`) pero no hay capa de envío. Sin un puerto único, cada feature (invitaciones, reset, welcome) acoplaría Resend o HTML a mano. Centralizar envío + templates permite reutilizar i18n, rotar vendor y mantener maquetación moderna (React Email) en un solo lugar. Alinea con [mission.md](../../constitution/mission.md) (onboarding de staff, cuentas confiables) y el patrón de infra de `015-files-module`.
 
 ## Alcance
 
@@ -65,7 +65,7 @@ Hoy hay copy de emails en `@afterdark/i18n` (`staffInvitation`, `passwordReset`,
 **Criterios de aceptación**
 
 - [ ] **Dado** props y locale, **Cuando** renderizo un template React Email, **Entonces** obtengo HTML (y texto plano si se define) listo para el puerto de envío.
-- [ ] **Dado** locale `es`, **Cuando** renderizo, **Entonces** subject/body usan las claves del namespace `emails` en `@afterdark/i18n`.
+- [ ] **Dado** locale `es`, **Cuando** renderizo, **Entonces** subject/body usan las claves del namespace `emails` en `@repo/i18n`.
 
 ### US-3: Verificación de humo en desarrollo
 

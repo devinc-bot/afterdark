@@ -24,7 +24,7 @@ Confirmado por el usuario:
 - Feature nueva, no existía en el roadmap.
 - Título: **Panel del staff (rol staff)**; slug `staff-panel`; ID `017`.
 - Apps: foco en `dashboard` (datos de la tabla mockeados, sin API de usuarios por ahora).
-- Fuente del rol: el usuario prefiere que `role` viaje en `SessionResponse` (`GET /session/me`) y usar `useSession()` en el front, **en vez** de leerlo desde `GET /settings`. Esto implica un cambio menor transversal en `api` + `@afterdark/types` para exponer `role` en la sesión.
+- Fuente del rol: el usuario prefiere que `role` viaje en `SessionResponse` (`GET /session/me`) y usar `useSession()` en el front, **en vez** de leerlo desde `GET /settings`. Esto implica un cambio menor transversal en `api` + `@repo/types` para exponer `role` en la sesión.
 - Dependencias: `001-auth-sessions` (agregar `role` a la sesión/JWT).
 
 ### Fase 2 — Comportamiento y alcance

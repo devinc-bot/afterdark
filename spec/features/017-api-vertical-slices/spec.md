@@ -28,7 +28,7 @@ Los archivos `*.repository.ts` monolíticos y los `*.service.ts` con toda la ló
 
 - `packages/db/src/repositories/<entity>/` con un archivo kebab-case por función y `index.ts` que re-exporta.
 - `packages/types/src/repository/<entity>.ts` para tipos usados por repositorios (joins, rows).
-- Subpath `@afterdark/db/schema` y `@afterdark/types/enums` para romper dependencias circulares.
+- Subpath `@repo/db/schema` y `@repo/types/enums` para romper dependencias circulares.
 - Módulo `apps/api/src/modules/clubs/` refactorizado:
   - `presentation/clubs.controller.ts`
   - `application/*-club.use-case.ts` + `application/services/`
@@ -54,18 +54,18 @@ Los archivos `*.repository.ts` monolíticos y los `*.service.ts` con toda la ló
 **Criterios de aceptación**
 
 - [x] **Dado** `findClubIdByDocumentId`, **cuando** busco su implementación, **entonces** está en `packages/db/src/repositories/clubs/find-club-id-by-document-id.ts`.
-- [x] **Dado** un import desde `@afterdark/db`, **cuando** consumo la función, **entonces** no cambia la firma pública.
+- [x] **Dado** un import desde `@repo/db`, **cuando** consumo la función, **entonces** no cambia la firma pública.
 
 ### US-2: Tipos de fila centralizados
 
 **Como** desarrollador  
-**Quiero** tipos de join/row de repositorio en `@afterdark/types`  
+**Quiero** tipos de join/row de repositorio en `@repo/types`  
 **Para** reutilizarlos en API formatters sin duplicar shapes
 
 **Criterios de aceptación**
 
-- [x] **Dado** `OwnerStaffPersonnelRow`, **cuando** lo importo en API, **entonces** sale de `@afterdark/types`.
-- [x] **Dado** un schema Drizzle, **cuando** un tipo de repositorio lo necesita, **entonces** importa `*Select` desde `@afterdark/db/schema`.
+- [x] **Dado** `OwnerStaffPersonnelRow`, **cuando** lo importo en API, **entonces** sale de `@repo/types`.
+- [x] **Dado** un schema Drizzle, **cuando** un tipo de repositorio lo necesita, **entonces** importa `*Select` desde `@repo/db/schema`.
 
 ### US-3: Clubs como vertical slice
 
@@ -122,7 +122,7 @@ packages/db/src/repositories/clubs/
 ### Reglas
 
 - **DB:** sin NestJS ni excepciones HTTP en repositorios; retornar `null` cuando falte fila.
-- **API use cases:** orquestan `@afterdark/db`, `FilesService` y `TranslationService`; mapean errores a HTTP.
+- **API use cases:** orquestan `@repo/db`, `FilesService` y `TranslationService`; mapean errores a HTTP.
 - **Controller:** solo validación de entrada y delegación a `execute()`.
 - **Mappers** en `mappers/`; **validators** en `validators/` (funciones puras). Servicios NestJS solo cuando hay dependencias inyectadas (`application/services/`).
 

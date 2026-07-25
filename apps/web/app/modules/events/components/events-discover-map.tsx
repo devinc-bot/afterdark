@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { MapPin } from 'lucide-react'
-import { cn, Map, MapControls, MapMarker, MarkerContent, MarkerPopup, useMap } from '@afterdark/ui'
-import type { PublicEventResponse } from '@afterdark/types'
+import { cn, Map, MapControls, MapMarker, MarkerContent, MarkerPopup, useMap } from '@repo/ui'
+import type { PublicEventResponse } from '@repo/types'
 import {
   DEFAULT_EVENTS_DISCOVER_MAP_CENTER,
   DEFAULT_EVENTS_DISCOVER_MAP_ZOOM,

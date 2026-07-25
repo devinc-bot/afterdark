@@ -11,8 +11,8 @@
 
 ## Shared packages
 
-- [ ] Schemas en `@afterdark/validators`
-- [ ] Tipos en `@afterdark/types`
+- [ ] Schemas en `@repo/validators`
+- [ ] Tipos en `@repo/types`
 - [ ] Schema Drizzle
 - [ ] Migración generada y aplicada
 - [ ] Repository + export en `repositories/index.ts`

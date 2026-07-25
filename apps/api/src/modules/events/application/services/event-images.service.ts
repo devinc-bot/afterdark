@@ -4,9 +4,9 @@ import {
   deleteEventImageAssetsByIds,
   findEventImageAssetsByEventIds,
   findEventImageAssetsNotInKeepList,
-} from '@afterdark/db'
-import type { EventImageResponse } from '@afterdark/types'
-import { TranslationService } from '@afterdark/i18n/server'
+} from '@repo/db'
+import type { EventImageResponse } from '@repo/types'
+import { TranslationService } from '@repo/i18n/server'
 import { FilesService } from '../../../files/application/services/files.service'
 import { toEventImageResponse } from '../../mappers/events.mapper'
 import type { UploadedEventImage } from '../../types'

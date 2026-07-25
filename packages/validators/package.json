@@ -1,5 +1,5 @@
 {
-  "name": "@afterdark/validators",
+  "name": "@repo/validators",
   "version": "0.0.1",
   "private": true,
   "type": "module",
@@ -14,7 +14,7 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@afterdark/types": "workspace:*",
+    "@repo/types": "workspace:*",
     "zod": "4.4.3"
   }
 }

@@ -3,7 +3,7 @@ import { db } from '../../client.ts'
 import { accounts } from '../../schema/account.ts'
 import { userAccountsLnk } from '../../schema/user-account-lnk.ts'
 import { users } from '../../schema/user.ts'
-import type { UserProfileRow } from '@afterdark/types'
+import type { UserProfileRow } from '@repo/types'
 
 export async function findUserProfileByDocumentId(
   documentId: string

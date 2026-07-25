@@ -1,9 +1,9 @@
 import { createElement, type ReactElement } from 'react'
 import { Inject, Injectable, InternalServerErrorException } from '@nestjs/common'
 import { render } from 'react-email'
-import { DEFAULT_LANGUAGE, type Language } from '@afterdark/i18n'
-import { MAIL_ERROR_CODE } from '@afterdark/i18n/constants'
-import { TranslationService } from '@afterdark/i18n/server'
+import { DEFAULT_LANGUAGE, type Language } from '@repo/i18n'
+import { MAIL_ERROR_CODE } from '@repo/i18n/constants'
+import { TranslationService } from '@repo/i18n/server'
 import type {
   PasswordResetRenderInput,
   RenderedMail,

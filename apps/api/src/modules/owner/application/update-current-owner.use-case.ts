@@ -4,10 +4,10 @@ import {
   findOwnerIdByDocumentId,
   updateOwnerByDocumentId,
   upsertOwnerAddress,
-} from '@afterdark/db'
-import type { CurrentOwnerResponse } from '@afterdark/types'
-import type { UpdateCurrentOwnerInput } from '@afterdark/validators'
-import { TranslationService } from '@afterdark/i18n/server'
+} from '@repo/db'
+import type { CurrentOwnerResponse } from '@repo/types'
+import type { UpdateCurrentOwnerInput } from '@repo/validators'
+import { TranslationService } from '@repo/i18n/server'
 import { GetCurrentOwnerUseCase } from './get-current-owner.use-case'
 
 @Injectable()

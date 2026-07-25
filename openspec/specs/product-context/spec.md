@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Canonical product and domain framing for agents and humans: afterdark is a
+Canonical product and domain framing for agents and humans: Repo is a
 general events and ticketing platform. Active harness docs use location
 language and must not lock the product to nightlife-only.
 
@@ -10,7 +10,7 @@ language and must not lock the product to nightlife-only.
 
 ### Requirement: Harness docs describe a general events platform
 
-Active product-context documents that agents and OpenSpec inject as project context SHALL describe afterdark as a **general events and ticketing platform** (discovery, purchase, owner operations), not as a nightlife-only or nightclub-only product.
+Active product-context documents that agents and OpenSpec inject as project context SHALL describe Repo as a **general events and ticketing platform** (discovery, purchase, owner operations), not as a nightlife-only or nightclub-only product.
 
 #### Scenario: Domain one-liner is category-neutral
 
@@ -53,7 +53,7 @@ Active harness docs (`DOMAIN.md`, mission, and related product context) SHALL us
 #### Scenario: Purpose statement is events-first
 
 - **WHEN** `PRODUCT.md` states product purpose
-- **THEN** afterdark is an events platform for venues/locations and ticketed experiences, not “a nightlife and events platform” as the primary identity
+- **THEN** Repo is an events platform for venues/locations and ticketed experiences, not “a nightlife and events platform” as the primary identity
 
 ### Requirement: Legacy feature specs stay historical
 

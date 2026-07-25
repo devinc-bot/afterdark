@@ -64,7 +64,7 @@ Estados: `pending` · `in_progress` · `done`
 
 - Módulo Nest `mail/` en api: puerto `MailSender` + `ResendMailSender` + templates React Email + `MailService`.
 - Env Zod opcional al boot; `NOT_CONFIGURED` al enviar.
-- Sin package `@afterdark/emails` en v1 (todo en api, como `files`).
+- Sin package `@repo/emails` en v1 (todo en api, como `files`).
 - Humo vía script dev.
 - **Confirmación:** “sigue” (borrador escrito; usuario puede corregir).
 

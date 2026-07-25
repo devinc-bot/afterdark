@@ -17,7 +17,7 @@ En login y registro de `web` (cliente) y `dashboard` (dueño), el usuario puede 
 
 ## Por qué
 
-Bajar la fricción de alta e inicio de sesión: el usuario no necesita inventar ni recordar una contraseña para entrar a afterdark (`mission.md`: clientes en `web`, dueños en `dashboard`).
+Bajar la fricción de alta e inicio de sesión: el usuario no necesita inventar ni recordar una contraseña para entrar a Repo (`mission.md`: clientes en `web`, dueños en `dashboard`).
 
 ## Alcance
 

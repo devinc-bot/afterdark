@@ -1,4 +1,4 @@
-import { cn } from '@afterdark/ui'
+import { cn } from '@repo/ui'
 import { Home, Ticket, User } from 'lucide-react'
 import QRCode from 'react-qr-code'
 

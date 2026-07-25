@@ -5,8 +5,8 @@ import {
   IMAGE_UPLOAD_MAX_BYTES,
   IMAGE_UPLOAD_MAX_MEGABYTES,
   isAllowedImageMimeType,
-} from '@afterdark/validators'
-import { Button, Dropzone, DropzoneEmptyState, FilePreview, toast } from '@afterdark/ui'
+} from '@repo/validators'
+import { Button, Dropzone, DropzoneEmptyState, FilePreview, toast } from '@repo/ui'
 
 const IMAGE_ACCEPT = ALLOWED_IMAGE_MIME_TYPES.join(',')
 

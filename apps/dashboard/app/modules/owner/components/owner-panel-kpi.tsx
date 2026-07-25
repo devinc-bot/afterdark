@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next'
-import type { DashboardKpiResponse } from '@afterdark/types'
-import { KpiInformation as KpiCard, Skeleton } from '@afterdark/ui'
+import type { DashboardKpiResponse } from '@repo/types'
+import { KpiInformation as KpiCard, Skeleton } from '@repo/ui'
 import { Banknote, CalendarCheck, Ticket } from 'lucide-react'
 
 type OwnerPanelKpiProps = {

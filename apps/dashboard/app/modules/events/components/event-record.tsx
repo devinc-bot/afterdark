@@ -24,8 +24,8 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@afterdark/ui'
-import { EVENT_STATUS, type EventStatus } from '@afterdark/types'
+} from '@repo/ui'
+import { EVENT_STATUS, type EventStatus } from '@repo/types'
 import type { TFunction } from 'i18next'
 import { EllipsisVertical, Pencil, Trash2 } from 'lucide-react'
 

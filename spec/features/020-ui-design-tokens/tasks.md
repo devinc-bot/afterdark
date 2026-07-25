@@ -12,7 +12,7 @@
 ## Shared packages — 1ª entrega (border-radius)
 
 - [x] Token `--radius-control` + clase `.rounded-control` en `globals.css`
-- [x] Reemplazar `rounded-xl` en componentes de `@afterdark/ui`
+- [x] Reemplazar `rounded-xl` en componentes de `@repo/ui`
 - [x] Actualizar story wrapper con `rounded-xl` en alcance
 
 ## Client

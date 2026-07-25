@@ -7,7 +7,7 @@ import {
   LocationEditView,
 } from '~/modules/locations/components/location-edit-view'
 import { useLocations } from '~/modules/locations/queries/use-locations-queries'
-import { usePageTitle } from '@afterdark/ui'
+import { usePageTitle } from '@repo/ui'
 
 export const Route = createFileRoute('/_app/locations/$documentId/edit')({
   component: LocationEditPage,

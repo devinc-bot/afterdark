@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useNavigate } from '@tanstack/react-router'
-import { Button, toast } from '@afterdark/ui'
+import { Button, toast } from '@repo/ui'
 import { CalendarPlus } from 'lucide-react'
 import { EventRemoveDialog } from '~/modules/events/components/dialog-remove-event'
 import {

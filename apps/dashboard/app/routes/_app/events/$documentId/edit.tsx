@@ -7,7 +7,7 @@ import {
   EventEditView,
 } from '~/modules/events/components/event-edit-view'
 import { useEvent } from '~/modules/events/queries/use-event-queries'
-import { usePageTitle } from '@afterdark/ui'
+import { usePageTitle } from '@repo/ui'
 
 export const Route = createFileRoute('/_app/events/$documentId/edit')({
   component: EventEditPage,

@@ -1,6 +1,6 @@
 import { Ticket, ShieldCheck, Clock3 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
-import { cn } from '@afterdark/ui'
+import { cn } from '@repo/ui'
 import { LANDING_HEADING, LANDING_SECTION_Y, LANDING_SHELL } from '../../constants/layout'
 import { Reveal } from '../reveal'
 

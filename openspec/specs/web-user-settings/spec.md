@@ -25,7 +25,7 @@ The public site SHALL expose a `/settings` route (registered as `WEB_ROUTES.sett
 
 ### Requirement: Settings page shows basic profile read-only
 
-The settings page SHALL display the user's profile loaded from `GET /settings` and let them edit name, lastName, and phone through a form validated with `updateCurrentUserProfileSchema` from `@afterdark/validators`. Email SHALL remain visible but read-only. The avatar (or initials fallback) SHALL remain display-only, with no upload capability in this change.
+The settings page SHALL display the user's profile loaded from `GET /settings` and let them edit name, lastName, and phone through a form validated with `updateCurrentUserProfileSchema` from `@repo/validators`. Email SHALL remain visible but read-only. The avatar (or initials fallback) SHALL remain display-only, with no upload capability in this change.
 
 #### Scenario: Profile form rendered
 

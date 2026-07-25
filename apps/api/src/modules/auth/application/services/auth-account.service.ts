@@ -6,15 +6,15 @@ import {
   findAuthAccountByEmail,
   findRoleByName,
   registerAccount,
-} from '@afterdark/db'
+} from '@repo/db'
 import {
   AUTH_PROVIDER,
   type LoginResponse,
   type RegisterResponse,
   type UserRole,
-} from '@afterdark/types'
-import type { RegisterUserInput } from '@afterdark/validators'
-import { TranslationService } from '@afterdark/i18n/server'
+} from '@repo/types'
+import type { RegisterUserInput } from '@repo/validators'
+import { TranslationService } from '@repo/i18n/server'
 
 type AuthAccountRow = NonNullable<Awaited<ReturnType<typeof findAuthAccountByEmail>>>
 

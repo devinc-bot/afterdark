@@ -1,12 +1,12 @@
 import { useForm } from '@tanstack/react-form'
 import { useTranslation } from 'react-i18next'
 import { Link, useNavigate } from '@tanstack/react-router'
-import type { StaffInvitationPublicResponse } from '@afterdark/types'
+import type { StaffInvitationPublicResponse } from '@repo/types'
 import {
   acceptStaffInvitationBaseSchema,
   acceptStaffInvitationSchema,
   verifyStaffInvitationSecurityWordSchema,
-} from '@afterdark/validators'
+} from '@repo/validators'
 import {
   Badge,
   Button,
@@ -18,7 +18,7 @@ import {
   fieldErrorMessage,
   Input,
   toast,
-} from '@afterdark/ui'
+} from '@repo/ui'
 import { DASHBOARD_ROUTES } from '~/modules/common/constants/routes'
 import { acceptStaffInvitation } from '~/modules/staff/services/staff-invitations.service'
 

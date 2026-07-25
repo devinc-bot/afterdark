@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { z } from 'zod'
-import { usePageTitle } from '@afterdark/ui'
+import { usePageTitle } from '@repo/ui'
 import { AuthPageLayout } from '~/modules/auth/components/auth-page-layout'
 import { ResetPasswordForm } from '~/modules/auth/components/reset-password-form'
 import { RequireGuest } from '~/modules/common/components/require-guest'

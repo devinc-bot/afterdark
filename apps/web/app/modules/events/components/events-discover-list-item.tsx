@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import { MapPin } from 'lucide-react'
-import { Card, NotImage, cn } from '@afterdark/ui'
-import type { PublicEventResponse } from '@afterdark/types'
+import { Card, NotImage, cn } from '@repo/ui'
+import type { PublicEventResponse } from '@repo/types'
 import { formatEventPlace, formatEventWhen } from '../utils/events-discover-format'
 
 type EventsDiscoverListItemProps = {

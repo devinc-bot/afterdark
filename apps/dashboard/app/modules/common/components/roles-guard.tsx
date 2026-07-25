@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { Link } from '@afterdark/ui'
+import { Link } from '@repo/ui'
 import { useRouterState } from '@tanstack/react-router'
 import { isRouteAllowedForRole } from '~/modules/common/constants/role-routes'
 import { DASHBOARD_ROUTES } from '~/modules/common/constants/routes'

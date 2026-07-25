@@ -1,8 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common'
-import type { GeoIpLocateResult } from '@afterdark/types'
+import type { GeoIpLocateResult } from '@repo/types'
 
 const IPQUERY_BASE_URL = 'https://api.ipquery.io'
-const USER_AGENT = 'afterdark/1.0 (location; contact=ops@afterdark.local)'
+const USER_AGENT = 'repo/1.0 (location; contact=ops@repo.local)'
 
 type IpQueryLocationPayload = {
   location?: {

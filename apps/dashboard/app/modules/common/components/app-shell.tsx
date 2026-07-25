@@ -14,11 +14,11 @@ import {
   SidebarProvider,
   SidebarTrigger,
   useSidebar,
-} from '@afterdark/ui'
+} from '@repo/ui'
 import { useNavigate, useRouterState } from '@tanstack/react-router'
 import { useCallback, useMemo, useRef, useState } from 'react'
 import { CalendarDays, LayoutGrid, MapPin, ShoppingBag, Ticket, Users } from 'lucide-react'
-import { USER_ROLE, type UserRole } from '@afterdark/types'
+import { USER_ROLE, type UserRole } from '@repo/types'
 import { clearAuthSession } from '~/modules/auth/utils/auth-storage.utils'
 import { AppShellLanguageSwitcher } from '~/modules/common/components/app-shell-language-switcher'
 import { AppShellSidebarFooter } from '~/modules/common/components/app-shell-sidebar-footer'

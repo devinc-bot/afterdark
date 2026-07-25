@@ -1,4 +1,4 @@
-# OpenSpec en afterdark
+# OpenSpec en Repo
 
 Guía práctica de cómo trabajamos con **OpenSpec**: desarrollo spec-driven (SDD) donde acordamos
 **qué** vamos a construir antes de escribir código. OpenSpec es el flujo por defecto para toda
@@ -144,13 +144,13 @@ Al **archivar**: los `ADDED` se agregan a la spec principal, los `MODIFIED` la r
 
 ---
 
-## Convenciones de afterdark
+## Convenciones de Repo
 
 Estas reglas ya están en [`openspec/config.yaml`](./config.yaml) y se inyectan automáticamente al
 generar cada artefacto:
 
 - **Copy de UI y mensajes de error en español**; identificadores, rutas y texto técnico de requisitos en inglés.
-- **Validación** vía `@afterdark/validators` (Zod v4); no duplicar reglas en prosa.
+- **Validación** vía `@repo/validators` (Zod v4); no duplicar reglas en prosa.
 - **Acceso a DB desde la API** siempre por un repository en `packages/db/src/repositories/` (nunca `db` directo).
 - **Migraciones** con `drizzle-kit`, prefijo timestamp; no renombrar migraciones ya commiteadas.
 - **Lint/format**: oxlint + oxfmt; cada tarea debe pasar ambos.

@@ -9,9 +9,9 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from '@afterdark/ui'
-import { useLanguage } from '@afterdark/i18n/client'
-import { LANGUAGE_NAMES, SUPPORTED_LANGUAGES, type Language } from '@afterdark/i18n/config'
+} from '@repo/ui'
+import { useLanguage } from '@repo/i18n/client'
+import { LANGUAGE_NAMES, SUPPORTED_LANGUAGES, type Language } from '@repo/i18n/config'
 import { ChevronUp, Languages } from 'lucide-react'
 
 export function AppShellLanguageSwitcher() {

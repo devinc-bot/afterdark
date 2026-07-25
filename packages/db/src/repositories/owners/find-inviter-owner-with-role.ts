@@ -4,7 +4,7 @@ import { accountRolesLnk } from '../../schema/account-role-lnk.ts'
 import { ownerAccountsLnk } from '../../schema/owner-account-lnk.ts'
 import { owners } from '../../schema/owner.ts'
 import { roles } from '../../schema/role.ts'
-import type { InviterOwnerRow } from '@afterdark/types'
+import type { InviterOwnerRow } from '@repo/types'
 
 export async function findInviterOwnerWithRole(
   documentId: string

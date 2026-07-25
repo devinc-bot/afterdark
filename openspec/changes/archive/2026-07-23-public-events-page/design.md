@@ -1,6 +1,6 @@
 ## Context
 
-Owner event APIs today are JWT + OWNER only (`/api/events/my-events`, CRUD). Coordinates live on `address` (via location links), not on the event row. `apps/web` has no `/events` route; landing “Eventos” is `#eventos`. MapLibre already exists in `@afterdark/ui` and is used in the dashboard location form. Visitors need an anonymous discovery surface: map + filters + infinite list.
+Owner event APIs today are JWT + OWNER only (`/api/events/my-events`, CRUD). Coordinates live on `address` (via location links), not on the event row. `apps/web` has no `/events` route; landing “Eventos” is `#eventos`. MapLibre already exists in `@repo/ui` and is used in the dashboard location form. Visitors need an anonymous discovery surface: map + filters + infinite list.
 
 Decisions locked with the product owner for this change:
 
@@ -14,7 +14,7 @@ Decisions locked with the product owner for this change:
 
 - Public catalog API + `/events` UX (map, left filters, infinite list of 5).
 - Wire landing nav to `/events`.
-- Reuse MapLibre from `@afterdark/ui`; repository-layer queries in `@afterdark/db`.
+- Reuse MapLibre from `@repo/ui`; repository-layer queries in `@repo/db`.
 
 **Non-Goals:**
 
@@ -33,7 +33,7 @@ Decisions locked with the product owner for this change:
 
 ### 2. Query contract (validators)
 
-- **Decision:** New `listPublicEventsQuerySchema` in `@afterdark/validators` extending `paginationSchema` with optional `startsFrom`/`startsTo`, optional `city`/`state`. Web default `limit=5`.
+- **Decision:** New `listPublicEventsQuerySchema` in `@repo/validators` extending `paginationSchema` with optional `startsFrom`/`startsTo`, optional `city`/`state`. Web default `limit=5`.
 - **Rationale:** Single source of truth; place discovery is city/state filters, not lat/lng query params.
 - **Alternatives:** Lat/lng + Haversine — dropped for simpler city/state filtering.
 
@@ -61,16 +61,16 @@ Decisions locked with the product owner for this change:
 
 ### 7. Packages touched
 
-| Package / app   | Change |
-|-----------------|--------|
-| validators      | Public list query schema |
-| types           | Public event list item DTO |
-| common          | API route helper |
-| db              | `find-published-events-paginated` (+ filters, startsAt order) |
-| api             | Public list use-case + controller method (no JWT) |
-| web             | Route, module UI, nav link |
-| i18n            | Spanish keys for filters, empty, errors |
-| ui              | Reuse map only |
+| Package / app | Change                                                        |
+| ------------- | ------------------------------------------------------------- |
+| validators    | Public list query schema                                      |
+| types         | Public event list item DTO                                    |
+| common        | API route helper                                              |
+| db            | `find-published-events-paginated` (+ filters, startsAt order) |
+| api           | Public list use-case + controller method (no JWT)             |
+| web           | Route, module UI, nav link                                    |
+| i18n          | Spanish keys for filters, empty, errors                       |
+| ui            | Reuse map only                                                |
 
 **Migrations:** None expected (coords already on `address` for map markers). Confirm join path in `DATABASE.md` during apply.
 

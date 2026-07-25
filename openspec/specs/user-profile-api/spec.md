@@ -25,7 +25,7 @@ The API SHALL allow an authenticated user with role `USER` to call `GET /setting
 
 ### Requirement: Authenticated user can update own basic profile via settings
 
-The API SHALL allow an authenticated `USER` to call `PATCH /settings` to update name, lastName, and phone. Request bodies MUST be validated with `updateCurrentUserProfileSchema` from `@afterdark/validators`. Email, avatar, role, and status MUST NOT be updatable through this endpoint. The update SHALL be persisted via a repository function in `@afterdark/db`. OWNER and STAFF `PATCH /settings` behavior MUST remain unchanged.
+The API SHALL allow an authenticated `USER` to call `PATCH /settings` to update name, lastName, and phone. Request bodies MUST be validated with `updateCurrentUserProfileSchema` from `@repo/validators`. Email, avatar, role, and status MUST NOT be updatable through this endpoint. The update SHALL be persisted via a repository function in `@repo/db`. OWNER and STAFF `PATCH /settings` behavior MUST remain unchanged.
 
 #### Scenario: Successful update
 

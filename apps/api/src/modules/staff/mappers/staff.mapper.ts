@@ -1,5 +1,5 @@
-import type { CurrentStaffRow, OwnerStaffPersonnelRow } from '@afterdark/types'
-import { USER_ROLE, type CurrentStaffResponse, type StaffPersonnelItem } from '@afterdark/types'
+import type { CurrentStaffRow, OwnerStaffPersonnelRow } from '@repo/types'
+import { USER_ROLE, type CurrentStaffResponse, type StaffPersonnelItem } from '@repo/types'
 
 export function toStaffPersonnelItem(row: OwnerStaffPersonnelRow): StaffPersonnelItem {
   return {

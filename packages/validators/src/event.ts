@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { EVENT_STATUS } from '@afterdark/types'
+import { EVENT_STATUS } from '@repo/types'
 import { optionalCoercedDateSchema, paginationSchema, uuidSchema } from './common.ts'
 import { EVENT_IMAGE_MAX_COUNT } from './upload.ts'
 

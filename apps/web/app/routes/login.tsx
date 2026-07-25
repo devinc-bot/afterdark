@@ -2,7 +2,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { LoginForm } from '~/modules/auth/components/login-form'
 import { AuthPageLayout } from '~/modules/auth/components/auth-page-layout'
 import { RequireGuest } from '~/modules/common/components/require-guest'
-import { usePageTitle } from '@afterdark/ui'
+import { usePageTitle } from '@repo/ui'
 
 type LoginSearch = {
   error?: string

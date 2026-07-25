@@ -6,7 +6,7 @@ description: >-
   SDD, o escribir spec.md/plan.md/tasks.md desde cero.
 ---
 
-# Spec interview (afterdark)
+# Spec interview (repo)
 
 ## Antes de escribir
 

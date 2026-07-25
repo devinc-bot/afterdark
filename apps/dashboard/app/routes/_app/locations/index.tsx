@@ -2,7 +2,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
 import { RegisteredLocations } from '~/modules/locations/components/registered-locations'
 import { PageLayout } from '~/modules/common/components/page-layout'
-import { usePageTitle } from '@afterdark/ui'
+import { usePageTitle } from '@repo/ui'
 
 export const Route = createFileRoute('/_app/locations/')({
   component: LocationsPage,

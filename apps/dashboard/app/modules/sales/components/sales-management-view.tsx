@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { TICKET_TYPE, type TicketType } from '@afterdark/types'
+import { TICKET_TYPE, type TicketType } from '@repo/types'
 import {
   Button,
   DateInput,
@@ -10,7 +10,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@afterdark/ui'
+} from '@repo/ui'
 import { PageLayout } from '~/modules/common/components/page-layout'
 import { SalesRecords, type SalesRecordsPagination } from '~/modules/sales/components/sales-records'
 import {

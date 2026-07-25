@@ -5,7 +5,7 @@ export function detectBrowserLanguage(): Language {
   if (typeof navigator === 'undefined') return DEFAULT_LANGUAGE
 
   const candidates = [
-    localStorage.getItem('afterdark:language'),
+    localStorage.getItem('repo:language'),
     navigator.language.split('-')[0],
     ...navigator.languages.map((l) => l.split('-')[0]),
   ]

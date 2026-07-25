@@ -1,6 +1,6 @@
 import { and, eq, exists, not, sql, type SQL } from 'drizzle-orm'
-import { PAYMENT_STATUS } from '@afterdark/types/enums'
-import { TICKET_SALES_FILTER, type ListTicketsByOwnerParams } from '@afterdark/types'
+import { PAYMENT_STATUS } from '@repo/types/enums'
+import { TICKET_SALES_FILTER, type ListTicketsByOwnerParams } from '@repo/types'
 import { db } from '../../client.ts'
 import { locations } from '../../schema/location.ts'
 import { orders } from '../../schema/orders.ts'

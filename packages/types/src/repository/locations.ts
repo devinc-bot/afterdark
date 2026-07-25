@@ -1,4 +1,4 @@
-import type { AddressSelect, LocationSelect } from '@afterdark/db/schema'
+import type { AddressSelect, LocationSelect } from '@repo/db/schema'
 
 export type LocationWithAddress = {
   location: LocationSelect

@@ -19,7 +19,7 @@
 6. apps/dashboard — StaffManagementView + StaffUserRecords (deshabilitar toggle)
 ```
 
-Sin cambios en `@afterdark/validators`, `@afterdark/types`, `packages/db` ni `apps/api`.
+Sin cambios en `@repo/validators`, `@repo/types`, `packages/db` ni `apps/api`.
 
 ## Archivos a crear / modificar
 

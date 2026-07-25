@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common'
 import type { Response } from 'express'
 import { MulterError } from 'multer'
-import { FILE_ERROR_CODE } from '@afterdark/i18n/constants'
+import { FILE_ERROR_CODE } from '@repo/i18n/constants'
 
 const MULTER_ERROR_CODE = {
   limitPartCount: 'LIMIT_PART_COUNT',

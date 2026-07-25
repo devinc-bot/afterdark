@@ -1,5 +1,5 @@
 import { queryOptions, useQuery } from '@tanstack/react-query'
-import { getCookieSync } from '@afterdark/common'
+import { getCookieSync } from '@repo/common'
 import { COOKIE_KEYS } from '~/modules/common/constants/cookies'
 import { getMyProfile } from '~/modules/settings/services/profile.service'
 

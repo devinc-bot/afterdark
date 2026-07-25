@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import type { CreateTicketInput, UpdateTicketInput } from '@afterdark/validators'
+import type { CreateTicketInput, UpdateTicketInput } from '@repo/validators'
 import { createTicket, deleteTicket, updateTicket } from '~/modules/tickets/service/tickets.service'
 
 export function useCreateTicket() {

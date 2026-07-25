@@ -1,4 +1,4 @@
-import { STAFF_INVITATION_EXPIRY_OPTIONS } from '@afterdark/validators'
+import { STAFF_INVITATION_EXPIRY_OPTIONS } from '@repo/validators'
 import { hashValue } from '../../common'
 
 export const STAFF_INVITATION_PAYLOAD_VERSION = 1.1 as const
@@ -34,12 +34,12 @@ function slugifySegment(value: string): string {
 }
 
 export function slugifyStaffInvitationEmail(email: string): string {
-  // example: 'juan@afterdark.com' -> 'juan-afterdark-com'
+  // example: 'juan@repo.com' -> 'juan-repo-com'
   const [localPart = '', domain = ''] = email.trim().toLowerCase().split('@')
   const localSlug = slugifySegment(localPart)
   if (localSlug) return localSlug
 
-  // example: 'afterdark.com' -> 'afterdark-com'
+  // example: 'repo.com' -> 'repo-com'
   const domainSlug = slugifySegment(domain.replace(/\./g, '-'))
   return domainSlug
 }
@@ -52,7 +52,7 @@ export function buildStaffInvitationPath(slug: string, token: string): string {
  * Builds a staff invitation URL.
  *
  * @example
- * buildStaffInvitationUrl('https://dashboard.afterdark.com', 'example-afterdark-com', '1234567890') // -> 'https://dashboard.afterdark.com/example-afterdark-com/1234567890'
+ * buildStaffInvitationUrl('https://dashboard.repo.com', 'example-repo-com', '1234567890') // -> 'https://dashboard.repo.com/example-repo-com/1234567890'
  */
 export function buildStaffInvitationUrl(origin: string, slug: string, token: string): string {
   const normalizedOrigin = origin.replace(/\/$/, '')

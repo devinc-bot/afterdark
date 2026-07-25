@@ -28,8 +28,8 @@ Centralizar almacenamiento de medios (R2, validación MIME, límites de tamaño,
 
 - `FilesService` (`uploadImage`, `deleteImages`, `buildImageKey`)
 - Adaptador R2 vía `files-sdk`
-- Validación de tipo MIME y tamaño (`@afterdark/validators`, `ENV.UPLOAD_MAX_BYTES`)
-- Mensajes de error vía `@afterdark/i18n` (`FILE_ERROR_CODE`)
+- Validación de tipo MIME y tamaño (`@repo/validators`, `ENV.UPLOAD_MAX_BYTES`)
+- Mensajes de error vía `@repo/i18n` (`FILE_ERROR_CODE`)
 - Opciones Multer compartidas (`imageUploadOptions`)
 
 ### No incluye

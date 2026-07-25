@@ -1,6 +1,6 @@
 import { and, count, eq, gte, lte, sum } from 'drizzle-orm'
-import { EVENT_STATUS, PAYMENT_STATUS } from '@afterdark/types/enums'
-import type { DashboardKpiRow, FindDashboardKpiParams } from '@afterdark/types'
+import { EVENT_STATUS, PAYMENT_STATUS } from '@repo/types/enums'
+import type { DashboardKpiRow, FindDashboardKpiParams } from '@repo/types'
 import { db } from '../../client.ts'
 import { locations } from '../../schema/location.ts'
 import { events } from '../../schema/event.ts'

@@ -1,4 +1,4 @@
-import type { LocationSelect, EventSelect, TicketSelect } from '@afterdark/db/schema'
+import type { LocationSelect, EventSelect, TicketSelect } from '@repo/db/schema'
 import type { TicketSalesFilter, TicketStatus, TicketType } from '../enums/ticket.ts'
 
 export type TicketWithRelations = {

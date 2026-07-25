@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import { Link } from '@tanstack/react-router'
-import { Button, Card } from '@afterdark/ui'
+import { Button, Card } from '@repo/ui'
 import { DASHBOARD_ROUTES } from '~/modules/common/constants/routes'
 
 type StaffInvitationErrorViewProps = {
@@ -18,7 +18,7 @@ export function StaffInvitationErrorView({ title, description }: StaffInvitation
           to={DASHBOARD_ROUTES.login()}
           className="text-lg tracking-tight text-ink transition-colors duration-150 hover:text-primary"
         >
-          afterdark
+          Repo
         </Link>
       </header>
 

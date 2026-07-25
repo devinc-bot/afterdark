@@ -1,11 +1,11 @@
-import type { UserRole } from '@afterdark/types'
-import { USER_ROLE } from '@afterdark/types'
+import type { UserRole } from '@repo/types'
+import { USER_ROLE } from '@repo/types'
 import { findAccountDocumentIdById } from '../accounts/find-account-document-id-by-id.ts'
 import { findAccountWithRoleByEmail } from '../accounts/find-account-with-role-by-email.ts'
 import { findOwnerDocumentIdByAccountId } from '../owners/find-owner-document-id-by-account-id.ts'
 import { findStaffDocumentIdByAccountId } from '../staff/find-staff-document-id-by-account-id.ts'
 import { findUserDocumentIdByAccountId } from '../users/find-user-document-id-by-account-id.ts'
-import type { AuthAccountRow } from '@afterdark/types'
+import type { AuthAccountRow } from '@repo/types'
 
 export async function findAuthAccountByEmail(email: string): Promise<AuthAccountRow | null> {
   const row = await findAccountWithRoleByEmail(email)

@@ -9,7 +9,7 @@ catalog API, filters, map markers, and the `/events` infinite-scroll list.
 
 ### Requirement: Public published-events catalog API
 
-The system SHALL expose an anonymous HTTP endpoint that returns only events with status `published`, validated via `@afterdark/validators` (public list query schema). Draft and finished events MUST NOT appear. The response MUST include fields needed for discovery: event identity and schedule, location name, city/state (from the location address when present), coordinates when present, and optional images.
+The system SHALL expose an anonymous HTTP endpoint that returns only events with status `published`, validated via `@repo/validators` (public list query schema). Draft and finished events MUST NOT appear. The response MUST include fields needed for discovery: event identity and schedule, location name, city/state (from the location address when present), coordinates when present, and optional images.
 
 #### Scenario: Anonymous list of published events
 
@@ -21,7 +21,7 @@ The system SHALL expose an anonymous HTTP endpoint that returns only events with
 
 - **GIVEN** a client sends query params outside the public list schema
 - **WHEN** the request is processed
-- **THEN** the API rejects the request according to `@afterdark/validators` without inventing ad-hoc validation messages in the handler
+- **THEN** the API rejects the request according to `@repo/validators` without inventing ad-hoc validation messages in the handler
 
 ### Requirement: Catalog filters by date and place
 
@@ -57,7 +57,7 @@ The public catalog SHALL order results by ascending `startsAt`. Default page siz
 
 ### Requirement: Public events page route and navigation
 
-`apps/web` SHALL provide a route at `/events`. The landing header “Eventos” control MUST navigate to `/events` (not `#eventos`). UI copy for the page MUST be Spanish via `@afterdark/i18n`.
+`apps/web` SHALL provide a route at `/events`. The landing header “Eventos” control MUST navigate to `/events` (not `#eventos`). UI copy for the page MUST be Spanish via `@repo/i18n`.
 
 #### Scenario: Navigate from landing header
 
@@ -73,7 +73,7 @@ The public catalog SHALL order results by ascending `startsAt`. Default page siz
 
 ### Requirement: Map of filtered events
 
-The `/events` page SHALL show a map (MapLibre via `@afterdark/ui`) with markers for published events returned for the current discovery query (using address coordinates when present). The map SHOULD center on the loaded markers (or a sensible default). Catalog results MUST NOT depend on browser geolocation.
+The `/events` page SHALL show a map (MapLibre via `@repo/ui`) with markers for published events returned for the current discovery query (using address coordinates when present). The map SHOULD center on the loaded markers (or a sensible default). Catalog results MUST NOT depend on browser geolocation.
 
 #### Scenario: Markers from loaded results
 

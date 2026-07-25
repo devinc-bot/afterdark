@@ -1,9 +1,9 @@
-import { AUTH_PROVIDER } from '@afterdark/types'
+import { AUTH_PROVIDER } from '@repo/types'
 import { db, type Transaction } from '../../client.ts'
 import { accounts } from '../../schema/account.ts'
 import { accountRolesLnk } from '../../schema/account-role-lnk.ts'
 import { createProfileForRole } from './create-profile-for-role.ts'
-import type { RegisterAccountInput } from '@afterdark/types'
+import type { RegisterAccountInput } from '@repo/types'
 
 export async function registerAccount(input: RegisterAccountInput): Promise<void> {
   await db.transaction(async (tx: Transaction) => {

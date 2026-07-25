@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { Button, cn } from '@afterdark/ui'
+import { Button, cn } from '@repo/ui'
 
 type FormPageActionsProps = {
   isDirty: boolean

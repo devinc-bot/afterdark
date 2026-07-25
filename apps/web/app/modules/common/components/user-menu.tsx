@@ -2,7 +2,7 @@ import { useCallback, useRef, useState } from 'react'
 import { LogOut, User } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from '@tanstack/react-router'
-import type { SessionResponse } from '@afterdark/types'
+import type { SessionResponse } from '@repo/types'
 import {
   Avatar,
   AvatarFallback,
@@ -15,7 +15,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
   cn,
-} from '@afterdark/ui'
+} from '@repo/ui'
 import { clearAuthSession } from '~/modules/auth/utils/auth-storage.utils'
 import { SignOutDialog } from '~/modules/common/components/sign-out-dialog'
 import { WEB_ROUTES } from '~/modules/common/constants/routes'

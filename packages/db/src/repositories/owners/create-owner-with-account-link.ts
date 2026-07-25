@@ -1,7 +1,7 @@
 import type { Transaction } from '../../client.ts'
 import { ownerAccountsLnk } from '../../schema/owner-account-lnk.ts'
 import { owners } from '../../schema/owner.ts'
-import type { OwnerProfileSeed } from '@afterdark/types'
+import type { OwnerProfileSeed } from '@repo/types'
 
 export async function createOwnerWithAccountLink(
   tx: Transaction,

@@ -1,8 +1,8 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common'
-import { findUserProfileByDocumentId } from '@afterdark/db'
-import type { CurrentUserResponse } from '@afterdark/types'
-import { AUTH_ERROR_CODE } from '@afterdark/i18n/constants'
-import { TranslationService } from '@afterdark/i18n/server'
+import { findUserProfileByDocumentId } from '@repo/db'
+import type { CurrentUserResponse } from '@repo/types'
+import { AUTH_ERROR_CODE } from '@repo/i18n/constants'
+import { TranslationService } from '@repo/i18n/server'
 import { toCurrentUserResponse } from '../mappers/user.mapper'
 
 @Injectable()

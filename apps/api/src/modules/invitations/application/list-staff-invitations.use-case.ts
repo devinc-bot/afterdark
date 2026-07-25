@@ -1,7 +1,7 @@
 import { Inject, Injectable, InternalServerErrorException } from '@nestjs/common'
-import { findStaffInvitationsByOwnerDocumentId } from '@afterdark/db'
-import { TranslationService } from '@afterdark/i18n/server'
-import type { CreateStaffInvitationResponse } from '@afterdark/types'
+import { findStaffInvitationsByOwnerDocumentId } from '@repo/db'
+import { TranslationService } from '@repo/i18n/server'
+import type { CreateStaffInvitationResponse } from '@repo/types'
 import { toStaffInvitationResponse } from '../mappers/invitation.mapper'
 import { InvitationOwnerService } from './services/invitation-owner.service'
 

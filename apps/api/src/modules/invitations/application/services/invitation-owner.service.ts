@@ -1,7 +1,7 @@
 import { ForbiddenException, Inject, Injectable, NotFoundException } from '@nestjs/common'
-import { findInviterOwnerWithRole } from '@afterdark/db'
-import { TranslationService } from '@afterdark/i18n/server'
-import { USER_ROLE } from '@afterdark/types'
+import { findInviterOwnerWithRole } from '@repo/db'
+import { TranslationService } from '@repo/i18n/server'
+import { USER_ROLE } from '@repo/types'
 
 @Injectable()
 export class InvitationOwnerService {

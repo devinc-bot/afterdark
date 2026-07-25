@@ -1,4 +1,4 @@
-import { AUTH_OAUTH_APP, USER_ROLE } from '@afterdark/types'
+import { AUTH_OAUTH_APP, USER_ROLE } from '@repo/types'
 import { z } from 'zod'
 
 export const loginSchema = z.object({

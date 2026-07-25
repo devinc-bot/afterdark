@@ -34,8 +34,8 @@ Hoy `/` del dashboard está detrás del guard `_app` y redirige directo a `/dash
   - **FAQ** (preguntas frecuentes).
   - **Cierre** con CTA final.
   - **Footer** (links, legal, contacto).
-- Diseño propio sobrio con componentes de `@afterdark/ui` (sin video ni animaciones pesadas tipo hero de `web`).
-- Copy i18n **ES + EN** vía `@afterdark/i18n`.
+- Diseño propio sobrio con componentes de `@repo/ui` (sin video ni animaciones pesadas tipo hero de `web`).
+- Copy i18n **ES + EN** vía `@repo/i18n`.
 - Reutilizar sesión existente del dashboard (`useSessionStore` / `GET /session/me`) para decidir guest vs redirect.
 
 ### No incluye
@@ -60,7 +60,7 @@ Roles: **visitante sin sesión** (dueño potencial) y **dueño autenticado** (`o
 
 - [ ] **Dado** que no hay sesión **Cuando** entro a `/` **Entonces** veo el hero, beneficios, cómo funciona, métricas, FAQ, cierre y footer
 - [ ] **Dado** que estoy en la landing **Cuando** leo la sección de beneficios **Entonces** veo capacidades del panel (eventos, entradas, staff, ventas) en copy orientado al dueño
-- [ ] **Dado** el idioma activo del dashboard **Cuando** veo la landing **Entonces** el copy aparece en ES o EN según `@afterdark/i18n`
+- [ ] **Dado** el idioma activo del dashboard **Cuando** veo la landing **Entonces** el copy aparece en ES o EN según `@repo/i18n`
 
 ### US-2: Registrarme / iniciar sesión
 
@@ -116,7 +116,7 @@ Sin cambios de esquema.
 | 7   | Cierre        | CTA final a "Crear cuenta"                                                          |
 | 8   | Footer        | Marca + links placeholder (legal, contacto, redes)                                  |
 
-**Copy (ES / EN)** — namespace i18n propuesto `dashboardLanding` en `@afterdark/i18n`. Texto final se redacta en implementación; ejemplos:
+**Copy (ES / EN)** — namespace i18n propuesto `dashboardLanding` en `@repo/i18n`. Texto final se redacta en implementación; ejemplos:
 
 | Contexto               | ES                                   | EN                                         |
 | ---------------------- | ------------------------------------ | ------------------------------------------ |
@@ -136,7 +136,7 @@ Sin cambios de esquema.
 - **Loading de sesión:** si hay token en cookie, no mostrar la landing hasta resolver la sesión (evitar flash antes de redirigir); si no hay token, mostrar landing directamente.
 - **Error de red al resolver sesión:** tratar como visitante (mostrar landing); no bloquear la página.
 - CTAs de la landing apuntan solo a rutas existentes: `/register` y `/login`. No se crean rutas nuevas.
-- Todo el copy visible pasa por `@afterdark/i18n` (ES+EN); no hardcodear texto.
+- Todo el copy visible pasa por `@repo/i18n` (ES+EN); no hardcodear texto.
 - No se modifican pantallas del panel autenticado (`/dashboard` y demás `_app`).
 - El home autenticado sigue en `/dashboard`; `_app/index.tsx` puede eliminarse si `/` deja de vivir bajo `_app` (a confirmar en plan técnico).
 

@@ -25,7 +25,7 @@ const demoUsers: DemoUser[] = [
   {
     id: '1',
     name: 'Aiko Tanaka',
-    email: 'aiko.t@afterdark.io',
+    email: 'aiko.t@repo.io',
     registeredAt: 'Oct 12, 2023',
     venue: 'Neon District',
     tickets: 142,

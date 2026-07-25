@@ -11,7 +11,7 @@
 
 ## Shared packages
 
-- [x] `@afterdark/validators`: sacar `de` de `SETTINGS_LANGUAGE` / `settingsLanguageSchema`
+- [x] `@repo/validators`: sacar `de` de `SETTINGS_LANGUAGE` / `settingsLanguageSchema`
 
 ## Client (dashboard)
 

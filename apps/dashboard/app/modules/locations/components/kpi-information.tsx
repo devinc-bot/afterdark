@@ -1,4 +1,4 @@
-import { KpiInformation as KpiCard } from '@afterdark/ui'
+import { KpiInformation as KpiCard } from '@repo/ui'
 import { Banknote, CalendarCheck, CircleAlert, TrendingUp } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 

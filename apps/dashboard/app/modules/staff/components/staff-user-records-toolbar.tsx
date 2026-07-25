@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { Button, Input, Label } from '@afterdark/ui'
+import { Button, Input, Label } from '@repo/ui'
 import { Search, X } from 'lucide-react'
 
 const STAFF_USER_RECORDS_SEARCH_ID = 'staff-user-records-search'

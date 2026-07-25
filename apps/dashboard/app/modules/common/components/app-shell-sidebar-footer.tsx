@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next'
-import type { SessionResponse } from '@afterdark/types'
-import { Avatar, AvatarFallback, AvatarImage, Button, cn } from '@afterdark/ui'
+import type { SessionResponse } from '@repo/types'
+import { Avatar, AvatarFallback, AvatarImage, Button, cn } from '@repo/ui'
 import { Link } from '@tanstack/react-router'
 import {
   buildProfileLinkAriaLabel,

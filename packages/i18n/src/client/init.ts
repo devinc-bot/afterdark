@@ -34,7 +34,7 @@ function detectLanguage(): Language {
 
   // Explicit user choice only. Product is Spanish-first; do not follow
   // browser locale (would flip the public web to English without a switcher).
-  const stored = localStorage.getItem('afterdark:language')
+  const stored = localStorage.getItem('repo:language')
   if (stored === LANGUAGE.ES || stored === LANGUAGE.EN) return stored as Language
 
   return DEFAULT_LANGUAGE

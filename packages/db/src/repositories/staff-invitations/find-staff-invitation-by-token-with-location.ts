@@ -2,7 +2,7 @@ import { eq } from 'drizzle-orm'
 import { db } from '../../client.ts'
 import { locations } from '../../schema/location.ts'
 import { staffInvitations } from '../../schema/staff-invitation.ts'
-import type { StaffInvitationWithLocationRow } from '@afterdark/types'
+import type { StaffInvitationWithLocationRow } from '@repo/types'
 
 export async function findStaffInvitationByTokenWithLocation(
   token: string

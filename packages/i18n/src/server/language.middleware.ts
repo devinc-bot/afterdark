@@ -5,7 +5,7 @@ import { SUPPORTED_LANGUAGES, DEFAULT_LANGUAGE } from '../config/languages.ts'
 import { runWithLanguage } from './language.context.ts'
 import type { Language } from '../config/languages.ts'
 
-const LANGUAGE_COOKIE = 'afterdark_lang'
+const LANGUAGE_COOKIE = 'repo_lang'
 
 @Injectable()
 export class LanguageMiddleware implements NestMiddleware {

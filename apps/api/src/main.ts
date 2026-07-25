@@ -3,7 +3,7 @@ import { NestFactory } from '@nestjs/core'
 import { AppModule } from './app.module'
 import { ENV } from './modules/common/config/env'
 import { HttpExceptionFilter } from './modules/common/filters/http-exception.filter'
-import { API_PREFIX } from '@afterdark/common'
+import { API_PREFIX } from '@repo/common'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)

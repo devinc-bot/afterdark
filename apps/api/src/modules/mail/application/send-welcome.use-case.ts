@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common'
-import { DEFAULT_LANGUAGE, type Language } from '@afterdark/i18n'
+import { DEFAULT_LANGUAGE, type Language } from '@repo/i18n'
 import type { SendMailResult, WelcomeRenderInput } from '../types'
 import { MailTemplatesService } from './services/mail-templates.service'
 import { SendMailUseCase } from './send-mail.use-case'

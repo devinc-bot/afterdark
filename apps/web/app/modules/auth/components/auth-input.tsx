@@ -1,4 +1,4 @@
-import { Input, cn } from '@afterdark/ui'
+import { Input, cn } from '@repo/ui'
 import type { InputHTMLAttributes } from 'react'
 
 interface AuthInputProps extends InputHTMLAttributes<HTMLInputElement> {

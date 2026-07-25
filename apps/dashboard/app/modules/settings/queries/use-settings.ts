@@ -1,7 +1,7 @@
 import { queryOptions, useQuery, useSuspenseQuery } from '@tanstack/react-query'
 import { COOKIE_KEYS } from '~/modules/common/constants/cookies'
 import { QUERY_KEYS } from '~/modules/common/constants/query-keys'
-import { getCookieSync } from '@afterdark/common'
+import { getCookieSync } from '@repo/common'
 import { fetchSettings } from '~/modules/settings/services/settings.service'
 
 export const settingsQueryOptions = () =>

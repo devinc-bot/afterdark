@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import { X } from 'lucide-react'
-import { Button } from '@afterdark/ui'
-import type { PublicEventResponse } from '@afterdark/types'
+import { Button } from '@repo/ui'
+import type { PublicEventResponse } from '@repo/types'
 import { formatEventPlace, formatEventWhen } from '../utils/events-discover-format'
 
 type EventsDiscoverSelectionProps = {

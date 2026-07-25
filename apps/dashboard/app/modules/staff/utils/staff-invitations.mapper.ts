@@ -1,4 +1,4 @@
-import type { CreateStaffInvitationResponse } from '@afterdark/types'
+import type { CreateStaffInvitationResponse } from '@repo/types'
 import type { StaffInvitationRecord } from '~/modules/staff/types/staff-invitation-record'
 
 export function mapStaffInvitationToRecord(

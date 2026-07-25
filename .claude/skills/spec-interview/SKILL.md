@@ -7,7 +7,7 @@ description: >-
   Regla persistente: .claude/rules/spec-interview-before-changes.md
 ---
 
-# Spec interview (afterdark)
+# Spec interview (repo)
 
 ## Antes de escribir
 

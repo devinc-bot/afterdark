@@ -1,6 +1,6 @@
-import { API_ROUTES, buildApiPath, QueryFactoryError, toApiServiceError } from '@afterdark/common'
-import type { SessionResponse } from '@afterdark/types'
-import { i18n } from '@afterdark/i18n/client'
+import { API_ROUTES, buildApiPath, QueryFactoryError, toApiServiceError } from '@repo/common'
+import type { SessionResponse } from '@repo/types'
+import { i18n } from '@repo/i18n/client'
 import { api } from '~/config/api'
 import { clearAuthSession } from '~/modules/auth/utils/auth-storage.utils'
 

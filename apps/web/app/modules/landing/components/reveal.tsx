@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type ElementType, type ReactNode } from 'react'
-import { cn } from '@afterdark/ui'
+import { cn } from '@repo/ui'
 
 type RevealProps = {
   children: ReactNode

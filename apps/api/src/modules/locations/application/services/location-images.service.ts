@@ -4,9 +4,9 @@ import {
   deleteLocationImageAssetsByIds,
   findLocationImageAssetsByLocationIds,
   findLocationImageAssetsNotInKeepList,
-} from '@afterdark/db'
-import type { LocationImageResponse } from '@afterdark/types'
-import { TranslationService } from '@afterdark/i18n/server'
+} from '@repo/db'
+import type { LocationImageResponse } from '@repo/types'
+import { TranslationService } from '@repo/i18n/server'
 import { FilesService } from '../../../files/application/services/files.service'
 import { toLocationImageResponse } from '../../mappers/location.mapper'
 import type { UploadedLocationImage } from '../../types'

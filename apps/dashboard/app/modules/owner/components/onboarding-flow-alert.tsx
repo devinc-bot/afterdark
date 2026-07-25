@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from '@tanstack/react-router'
 import { Info, MapPin, X } from 'lucide-react'
-import { Button } from '@afterdark/ui'
+import { Button } from '@repo/ui'
 import { DASHBOARD_ROUTES } from '~/modules/common/constants/routes'
 import {
   readOnboardingAlertDismissed,

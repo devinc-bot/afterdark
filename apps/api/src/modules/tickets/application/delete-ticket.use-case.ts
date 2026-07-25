@@ -9,8 +9,8 @@ import {
   countPaymentsByTicketId,
   deleteTicketByDocumentId,
   findTicketWithRelationsOwnedByOwner,
-} from '@afterdark/db'
-import { TranslationService } from '@afterdark/i18n/server'
+} from '@repo/db'
+import { TranslationService } from '@repo/i18n/server'
 
 @Injectable()
 export class DeleteTicketUseCase {

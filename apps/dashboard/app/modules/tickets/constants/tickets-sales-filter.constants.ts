@@ -1,4 +1,4 @@
-import { TICKET_SALES_FILTER } from '@afterdark/types'
+import { TICKET_SALES_FILTER } from '@repo/types'
 
 export const TICKET_SALES_FILTER_OPTION = {
   ALL: 'all',

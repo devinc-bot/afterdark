@@ -9,7 +9,7 @@
 2. apps/web               — session infra → auth services → UI → routes
 ```
 
-No hay cambios en `@afterdark/validators`, `@afterdark/types`, `packages/db` ni `apps/api`.
+No hay cambios en `@repo/validators`, `@repo/types`, `packages/db` ni `apps/api`.
 
 ## Sesión en `web` (decisión técnica)
 
@@ -49,7 +49,7 @@ Hoy `web` solo guarda `LoginResponse` en `localStorage`; no hay `GET /session/me
 | `app/modules/common/hooks/use-session.ts`           | **Nuevo**                                                      |
 | `app/modules/common/components/require-guest.tsx`   | **Nuevo**                                                      |
 | `app/modules/common/components/session-loading.tsx` | **Nuevo** (o skeleton mínimo)                                  |
-| `app/routes/__root.tsx`                             | `Toaster` de `@afterdark/ui`                                   |
+| `app/routes/__root.tsx`                             | `Toaster` de `@repo/ui`                                        |
 
 ### Web — auth
 

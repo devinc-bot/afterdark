@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import { X } from 'lucide-react'
-import { Button, cn } from '@afterdark/ui'
+import { Button, cn } from '@repo/ui'
 import {
   formatDiscoverFilterDate,
   type EventsDiscoverFilterField,

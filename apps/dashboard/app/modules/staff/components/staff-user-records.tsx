@@ -18,8 +18,8 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@afterdark/ui'
-import { STAFF_STATUS, type StaffStatus, type UserRole } from '@afterdark/types'
+} from '@repo/ui'
+import { STAFF_STATUS, type StaffStatus, type UserRole } from '@repo/types'
 import { EllipsisVertical, Loader2, Power, PowerOff, Trash2 } from 'lucide-react'
 import { StaffUserDeactivateDialog } from '~/modules/staff/components/staff-user-deactivate-dialog'
 import { StaffUserDeleteDialog } from '~/modules/staff/components/staff-user-delete-dialog'

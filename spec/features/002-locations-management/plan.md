@@ -6,11 +6,11 @@
 ## Orden de capas
 
 ```text
-1. @afterdark/types (LOCATION_TYPE; DTOs Location*)
-2. @afterdark/validators (location schemas; sin status)
+1. @repo/types (LOCATION_TYPE; DTOs Location*)
+2. @repo/validators (location schemas; sin status)
 3. packages/db (schema rename → migration → repositories)
-4. @afterdark/common (API_ROUTES.locations)
-5. @afterdark/i18n (namespace locations + copy)
+4. @repo/common (API_ROUTES.locations)
+5. @repo/i18n (namespace locations + copy)
 6. apps/api (módulo locations; set type=permanent en create)
 7. apps/dashboard (módulo/routes /locations; sin status/type UI)
 8. Consumidores cruzados (events, staff, tickets, sales) — clubId → locationId

@@ -12,16 +12,16 @@
 
 ## Packages compartidos
 
-| Package                 | Responsabilidad                                          |
-| ----------------------- | -------------------------------------------------------- |
-| `@afterdark/db`         | Schema Drizzle, repositories, migraciones (Turso/libSQL) |
-| `@afterdark/types`      | Tipos de dominio e interfaces API                        |
-| `@afterdark/validators` | Schemas Zod (v4)                                         |
-| `@afterdark/ui`         | Componentes ShadCN compartidos                           |
+| Package            | Responsabilidad                                          |
+| ------------------ | -------------------------------------------------------- |
+| `@repo/db`         | Schema Drizzle, repositories, migraciones (Turso/libSQL) |
+| `@repo/types`      | Tipos de dominio e interfaces API                        |
+| `@repo/validators` | Schemas Zod (v4)                                         |
+| `@repo/ui`         | Componentes ShadCN compartidos                           |
 
 ## Convenciones obligatorias
 
-- **Validación:** Zod en `@afterdark/validators`; pipes `ZodValidationPipe` en API.
+- **Validación:** Zod en `@repo/validators`; pipes `ZodValidationPipe` en API.
 - **DB:** queries solo en `packages/db/src/repositories/`; servicios NestJS no importan `db` directo.
 - **Constantes:** maps `SCREAMING_SNAKE_CASE` con `as const`; sin magic strings.
 - **Lint / format:** oxlint + oxfmt; pre-commit en archivos staged.
@@ -38,7 +38,7 @@
 - Puerto `MailSender` + adaptador Resend (`apps/api/src/modules/mail/`).
 - Templates: React Email (`react-email`); copy en namespace i18n `emails`.
 - Variables: `RESEND_API_KEY`, `MAIL_FROM`, `MAIL_SMOKE_TO` (opcional; ver `packages/validators/src/mail.ts`).
-- Humo: `pnpm --filter @afterdark/api mail:smoke` (solo development).
+- Humo: `pnpm --filter @repo/api mail:smoke` (solo development).
 
 ## Comandos habituales
 

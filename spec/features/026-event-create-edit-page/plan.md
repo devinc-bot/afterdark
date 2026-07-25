@@ -5,8 +5,8 @@
 ## Orden de capas
 
 ```text
-1. @afterdark/validators     — EVENT_IMAGE_MAX_COUNT=2; LOCATION_IMAGE_MAX_COUNT 5→4
-2. @afterdark/types          — EventImageResponse; EventResponse.images
+1. @repo/validators     — EVENT_IMAGE_MAX_COUNT=2; LOCATION_IMAGE_MAX_COUNT 5→4
+2. @repo/types          — EventImageResponse; EventResponse.images
 3. packages/db               — event_assets_lnk + migración + repos
 4. apps/api events           — multipart create/update; GET :documentId; EventImagesService
 5. packages/common           — API_ROUTES.events.get(documentId) si falta

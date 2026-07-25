@@ -15,10 +15,10 @@ import {
   findRoleByName,
   findStaffInvitationByTokenWithLocation,
   registerStaffForLocation,
-} from '@afterdark/db'
-import { TranslationService } from '@afterdark/i18n/server'
-import { STAFF_INVITATION_STATUS, USER_ROLE } from '@afterdark/types'
-import type { AcceptStaffInvitationApiInput } from '@afterdark/validators'
+} from '@repo/db'
+import { TranslationService } from '@repo/i18n/server'
+import { STAFF_INVITATION_STATUS, USER_ROLE } from '@repo/types'
+import type { AcceptStaffInvitationApiInput } from '@repo/validators'
 import { JwtService } from '@nestjs/jwt'
 import { hashValue, verifyValue } from '../../common'
 import type { StaffInvitationPayload } from '../utils/staff-invitation.utils'

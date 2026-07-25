@@ -1,8 +1,8 @@
 import { ForbiddenException, Inject, Injectable, NotFoundException } from '@nestjs/common'
-import { findCurrentStaffByDocumentId, updateStaffProfileByDocumentId } from '@afterdark/db'
-import { STAFF_STATUS, type CurrentStaffResponse } from '@afterdark/types'
-import type { UpdateCurrentStaffInput } from '@afterdark/validators'
-import { TranslationService } from '@afterdark/i18n/server'
+import { findCurrentStaffByDocumentId, updateStaffProfileByDocumentId } from '@repo/db'
+import { STAFF_STATUS, type CurrentStaffResponse } from '@repo/types'
+import type { UpdateCurrentStaffInput } from '@repo/validators'
+import { TranslationService } from '@repo/i18n/server'
 import { GetCurrentStaffUseCase } from './get-current-staff.use-case'
 
 @Injectable()

@@ -1,4 +1,4 @@
-import { cn } from '@afterdark/ui'
+import { cn } from '@repo/ui'
 
 type PageAtmosphereWashProps = {
   className?: string

@@ -1,7 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { StaffManagementView } from '~/modules/staff/components/staff-management-view'
 import { staffPersonnelQueryOptions } from '~/modules/staff/queries/use-staff-personnel'
-import { usePageTitle } from '@afterdark/ui'
+import { usePageTitle } from '@repo/ui'
 
 export const Route = createFileRoute('/_app/staff')({
   loader: ({ context: { queryClient } }) => queryClient.prefetchQuery(staffPersonnelQueryOptions()),

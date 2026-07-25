@@ -6,9 +6,9 @@ import {
   Injectable,
 } from '@nestjs/common'
 import { Reflector } from '@nestjs/core'
-import type { JwtPayload } from '@afterdark/types'
-import { GUARD_ERROR_CODE } from '@afterdark/i18n/constants'
-import { TranslationService } from '@afterdark/i18n/server'
+import type { JwtPayload } from '@repo/types'
+import { GUARD_ERROR_CODE } from '@repo/i18n/constants'
+import { TranslationService } from '@repo/i18n/server'
 import { Roles } from '../decorators/roles.decorator'
 
 @Injectable()

@@ -1,6 +1,6 @@
 import { count, desc, eq, sql } from 'drizzle-orm'
-import { PAYMENT_STATUS } from '@afterdark/types/enums'
-import type { ListTicketsByOwnerParams, PaginatedTicketsResult } from '@afterdark/types'
+import { PAYMENT_STATUS } from '@repo/types/enums'
+import type { ListTicketsByOwnerParams, PaginatedTicketsResult } from '@repo/types'
 import { db } from '../../client.ts'
 import { locations } from '../../schema/location.ts'
 import { events } from '../../schema/event.ts'

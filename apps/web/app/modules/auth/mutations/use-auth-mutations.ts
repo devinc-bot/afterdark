@@ -1,13 +1,13 @@
 import { useMutation } from '@tanstack/react-query'
 import { useNavigate } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
-import { toast } from '@afterdark/ui'
+import { toast } from '@repo/ui'
 import type {
   ForgotPasswordInput,
   LoginInput,
   RegisterUserInput,
   ResetPasswordInput,
-} from '@afterdark/validators'
+} from '@repo/validators'
 import { WEB_ROUTES } from '../../common/constants/routes'
 import { useSessionStore } from '../../common/stores/session.store'
 import {

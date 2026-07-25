@@ -2,7 +2,7 @@
 
 ### Requirement: Single-form event authoring
 
-The dashboard SHALL provide a single-page form for creating and editing an event, presenting the location selector and all event detail fields (name, description, start date, end date, status, images) together without a multi-step wizard. Field validation SHALL use the event schemas from `@afterdark/validators`.
+The dashboard SHALL provide a single-page form for creating and editing an event, presenting the location selector and all event detail fields (name, description, start date, end date, status, images) together without a multi-step wizard. Field validation SHALL use the event schemas from `@repo/validators`.
 
 #### Scenario: Create form renders all fields on one page
 

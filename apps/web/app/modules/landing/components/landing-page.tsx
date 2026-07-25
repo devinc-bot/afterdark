@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
-import { getCookieSync } from '@afterdark/common'
-import { Link, cn } from '@afterdark/ui'
+import { getCookieSync } from '@repo/common'
+import { Link, cn } from '@repo/ui'
 import { useTranslation } from 'react-i18next'
 import { COOKIE_KEYS } from '~/modules/common/constants/cookies'
 import { WEB_ROUTES } from '~/modules/common/constants/routes'

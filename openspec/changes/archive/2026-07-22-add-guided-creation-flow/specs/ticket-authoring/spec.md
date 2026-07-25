@@ -2,7 +2,7 @@
 
 ### Requirement: Full-page ticket authoring route
 
-The dashboard SHALL provide a full-page route at `/tickets/new` for creating a ticket. The page SHALL present the same fields as the ticket create modal — event selector (`eventId`), name, type, status, price, quantity, sale start (`saleStartsAt`), sale end (`saleEndsAt`), and description — and SHALL validate them using the ticket schema from `@afterdark/validators`. All UI copy SHALL be in Spanish.
+The dashboard SHALL provide a full-page route at `/tickets/new` for creating a ticket. The page SHALL present the same fields as the ticket create modal — event selector (`eventId`), name, type, status, price, quantity, sale start (`saleStartsAt`), sale end (`saleEndsAt`), and description — and SHALL validate them using the ticket schema from `@repo/validators`. All UI copy SHALL be in Spanish.
 
 #### Scenario: Ticket create page renders all fields
 

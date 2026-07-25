@@ -9,7 +9,7 @@ authoring routes (aligned with locations and events).
 
 ### Requirement: Full-page ticket authoring route
 
-The dashboard SHALL provide a full-page route at `/tickets/new` for creating a ticket. The page SHALL present the ticket fields — event selector (`eventId`), name, type, status, price, quantity, sale start (`saleStartsAt`), sale end (`saleEndsAt`), and description — and SHALL validate them using the ticket schema from `@afterdark/validators`. All UI copy SHALL be in Spanish. The tickets management list create action SHALL navigate to this route (not open a modal).
+The dashboard SHALL provide a full-page route at `/tickets/new` for creating a ticket. The page SHALL present the ticket fields — event selector (`eventId`), name, type, status, price, quantity, sale start (`saleStartsAt`), sale end (`saleEndsAt`), and description — and SHALL validate them using the ticket schema from `@repo/validators`. All UI copy SHALL be in Spanish. The tickets management list create action SHALL navigate to this route (not open a modal).
 
 #### Scenario: Ticket create page renders all fields
 
@@ -33,7 +33,7 @@ The dashboard SHALL provide a full-page route at `/tickets/new` for creating a t
 
 ### Requirement: Full-page ticket edit route
 
-The dashboard SHALL provide a full-page route at `/tickets/$documentId/edit` for editing an existing ticket owned by the current owner. The page SHALL reuse the same shared ticket form fields and `@afterdark/validators` validation as create. The tickets management list edit action SHALL navigate to this route (not open an edit modal). On success, the app SHALL return to the tickets list. All UI copy SHALL be in Spanish.
+The dashboard SHALL provide a full-page route at `/tickets/$documentId/edit` for editing an existing ticket owned by the current owner. The page SHALL reuse the same shared ticket form fields and `@repo/validators` validation as create. The tickets management list edit action SHALL navigate to this route (not open an edit modal). On success, the app SHALL return to the tickets list. All UI copy SHALL be in Spanish.
 
 #### Scenario: Edit from the tickets list goes to the page
 

@@ -53,7 +53,7 @@ El tab _Invitaciones_ hoy acumula solo invitaciones creadas en la sesión actual
 
 - Nuevo endpoint `GET` en `apps/api` (invitaciones del dueño autenticado).
 - Repository `findStaffInvitationsByOwnerDocumentId` (o equivalente) en `packages/db`.
-- Tipo de respuesta en `@afterdark/types` (reutilizar o extender `CreateStaffInvitationResponse`).
+- Tipo de respuesta en `@repo/types` (reutilizar o extender `CreateStaffInvitationResponse`).
 - Service + hook + query en `dashboard`; carga lazy al activar tab _Invitaciones_.
 - Reemplazar `useState<StaffInvitationRecord[]>` en `StaffManagementView` por datos de API.
 - Invalidar query tras `POST /invitations/staff` exitoso.
@@ -215,7 +215,7 @@ El tab _Invitaciones_ hoy acumula solo invitaciones creadas en la sesión actual
 | ------ | ------------------------- | ---------------------------------------------------- |
 | `GET`  | `/api/staff/my-personnel` | JWT + rol `owner` (`JwtAuthGuard`, `OwnerRoleGuard`) |
 
-**Response:** `StaffPersonnelItem[]` (`@afterdark/types`)
+**Response:** `StaffPersonnelItem[]` (`@repo/types`)
 
 ```ts
 {
@@ -554,7 +554,7 @@ En el tab _Personal_ de `/staff`, el dueño elimina o desactiva/activa personal 
 - Menú de acciones: quitar "Editar" (disabled). Agregar:
   - Toggle "Desactivar usuario" / "Activar usuario" según `record.status` — desactivar abre `StaffUserDeactivateDialog` (existente); activar es directo.
   - "Eliminar usuario" — abre nuevo `StaffUserDeleteDialog`; hard delete irreversible.
-- `STAFF_STATUS` en `@afterdark/types`: quitar `PENDING` (sin uso). Queda `{ ACTIVE, INACTIVE }`.
+- `STAFF_STATUS` en `@repo/types`: quitar `PENDING` (sin uso). Queda `{ ACTIVE, INACTIVE }`.
 - `packages/db/src/schema/staff.ts`: actualizar el array `enum` del campo `status` (sin migración — SQLite no genera `CHECK` para `text enum` en Drizzle).
 - Nuevos endpoints `apps/api` (módulo `staff`): `DELETE /staff/:documentId`, `PATCH /staff/:documentId/status`.
 - Nuevas funciones `packages/db`: `deleteStaffByDocumentId`, `updateStaffStatusByDocumentId` (ambas verifican pertenencia al dueño autenticado).
@@ -647,10 +647,10 @@ En el tab _Personal_ de `/staff`, el dueño elimina o desactiva/activa personal 
 
 ### Datos
 
-| Tabla / campo     | Cambio                                                                                                                                    |
-| ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| `staff.status`    | `STAFF_STATUS` sin `PENDING` en `@afterdark/types` y en el `enum` de `packages/db/src/schema/staff.ts`. Sin migración SQL (solo tipo TS). |
-| Delete en cascada | Transacción: `staff_club_lnk` (por `staffId`) → `staff_account_lnk` (por `staffId`) → `staff` → `accounts` (por `accountId` resuelto).    |
+| Tabla / campo     | Cambio                                                                                                                                 |
+| ----------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| `staff.status`    | `STAFF_STATUS` sin `PENDING` en `@repo/types` y en el `enum` de `packages/db/src/schema/staff.ts`. Sin migración SQL (solo tipo TS).   |
+| Delete en cascada | Transacción: `staff_club_lnk` (por `staffId`) → `staff_account_lnk` (por `staffId`) → `staff` → `accounts` (por `accountId` resuelto). |
 
 ### UI (`dashboard`)
 

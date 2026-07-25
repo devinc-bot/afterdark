@@ -10,10 +10,10 @@ import {
   findEventWithLocationOwnedByOwnerDocumentId,
   findLocationOwnedByOwnerDocumentId,
   updateEventByDocumentId,
-} from '@afterdark/db'
-import { TranslationService } from '@afterdark/i18n/server'
-import type { EventResponse } from '@afterdark/types'
-import { EVENT_IMAGE_MAX_COUNT, type UpdateEventInput } from '@afterdark/validators'
+} from '@repo/db'
+import { TranslationService } from '@repo/i18n/server'
+import type { EventResponse } from '@repo/types'
+import { EVENT_IMAGE_MAX_COUNT, type UpdateEventInput } from '@repo/validators'
 import { toEventResponse, toEventUpsertInput } from '../mappers/events.mapper'
 import { assertValidKeepImageIds, validateEventImageLimit } from '../validators/event.validator'
 import { EventImagesService } from './services/event-images.service'

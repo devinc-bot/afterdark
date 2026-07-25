@@ -1,5 +1,5 @@
 import type { Config } from 'drizzle-kit'
-import { MODE } from '@afterdark/validators/database'
+import { MODE } from '@repo/validators/database'
 import { serverEnv } from './src/config/env.server.ts'
 
 type DrizzleDbCredentials = { url: string; authToken: string | undefined } | { url: string }

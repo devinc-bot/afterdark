@@ -1,9 +1,6 @@
-import type { DashboardKpiResponse, DashboardSalesAnalyticsResponse } from '@afterdark/types'
-import type {
-  DashboardKpiQueryInput,
-  DashboardSalesAnalyticsQueryInput,
-} from '@afterdark/validators'
-import { buildApiPath, toApiServiceError } from '@afterdark/common'
+import type { DashboardKpiResponse, DashboardSalesAnalyticsResponse } from '@repo/types'
+import type { DashboardKpiQueryInput, DashboardSalesAnalyticsQueryInput } from '@repo/validators'
+import { buildApiPath, toApiServiceError } from '@repo/common'
 import { api, API_ROUTES } from '~/config/api'
 
 const DASHBOARD_KPI_ERROR =

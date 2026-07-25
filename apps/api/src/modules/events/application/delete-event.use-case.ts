@@ -9,8 +9,8 @@ import {
   countTicketsByEventId,
   deleteEventByDocumentId,
   findEventWithLocationOwnedByOwnerDocumentId,
-} from '@afterdark/db'
-import { TranslationService } from '@afterdark/i18n/server'
+} from '@repo/db'
+import { TranslationService } from '@repo/i18n/server'
 import { EventImagesService } from './services/event-images.service'
 
 @Injectable()

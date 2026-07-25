@@ -1,4 +1,4 @@
-import { usePageTitle } from '@afterdark/ui'
+import { usePageTitle } from '@repo/ui'
 import { LandingHeader } from './landing-header'
 import { SectionHero } from './section-hero'
 import { SectionFeatures } from './section-features'

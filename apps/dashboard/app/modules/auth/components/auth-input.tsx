@@ -1,4 +1,4 @@
-import { Input } from '@afterdark/ui'
+import { Input } from '@repo/ui'
 import type { InputHTMLAttributes } from 'react'
 
 type AuthInputProps = InputHTMLAttributes<HTMLInputElement>

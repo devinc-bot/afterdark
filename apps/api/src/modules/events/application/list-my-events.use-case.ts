@@ -1,8 +1,8 @@
 import { Inject, Injectable, InternalServerErrorException } from '@nestjs/common'
-import { findEventImageAssetsByEventIds, findEventsPaginatedByOwner } from '@afterdark/db'
-import { TranslationService } from '@afterdark/i18n/server'
-import type { EventResponse, PaginatedResponse } from '@afterdark/types'
-import type { ListEventsQueryInput } from '@afterdark/validators'
+import { findEventImageAssetsByEventIds, findEventsPaginatedByOwner } from '@repo/db'
+import { TranslationService } from '@repo/i18n/server'
+import type { EventResponse, PaginatedResponse } from '@repo/types'
+import type { ListEventsQueryInput } from '@repo/validators'
 import { groupEventImagesByEventId, toEventResponse } from '../mappers/events.mapper'
 
 @Injectable()

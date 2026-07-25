@@ -5,7 +5,7 @@ import { addresses } from '../../schema/address.ts'
 import { ownerAccountsLnk } from '../../schema/owner-account-lnk.ts'
 import { ownerAddressesLnk } from '../../schema/owner-address-lnk.ts'
 import { owners } from '../../schema/owner.ts'
-import type { CurrentOwnerRow } from '@afterdark/types'
+import type { CurrentOwnerRow } from '@repo/types'
 
 export async function findCurrentOwnerByDocumentId(
   documentId: string

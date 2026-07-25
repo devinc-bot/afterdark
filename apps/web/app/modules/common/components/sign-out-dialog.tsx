@@ -7,7 +7,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@afterdark/ui'
+} from '@repo/ui'
 
 export type SignOutDialogProps = {
   open: boolean

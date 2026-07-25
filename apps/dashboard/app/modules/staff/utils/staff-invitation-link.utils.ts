@@ -1,4 +1,4 @@
-import { QueryFactoryError } from '@afterdark/common'
+import { QueryFactoryError } from '@repo/common'
 import {
   STAFF_INVITATION_VALIDATION_REASON,
   type StaffInvitationValidationReason,

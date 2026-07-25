@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
-import { DASHBOARD_URL } from '@afterdark/common'
-import { AppLogo, Link, cn } from '@afterdark/ui'
+import { DASHBOARD_URL } from '@repo/common'
+import { AppLogo, Link, cn } from '@repo/ui'
 import { WEB_ROUTES } from '~/modules/common/constants/routes'
 import { LANDING_FOCUS_RING, LANDING_SHELL } from '../constants/layout'
 import { handleSectionNavClick } from '../utils/scroll-to-section.utils'
@@ -14,12 +14,12 @@ const FOOTER_LINK = cn(
 const SOCIAL_LINKS = [
   {
     key: 'instagram',
-    href: 'https://www.instagram.com/afterdark',
+    href: 'https://www.instagram.com/repo',
     labelKey: 'footer.social.instagram',
   },
   {
     key: 'facebook',
-    href: 'https://www.facebook.com/afterdark',
+    href: 'https://www.facebook.com/repo',
     labelKey: 'footer.social.facebook',
   },
 ] as const

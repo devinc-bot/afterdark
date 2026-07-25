@@ -1,5 +1,5 @@
 import { desc, eq } from 'drizzle-orm'
-import { USER_ROLE } from '@afterdark/types'
+import { USER_ROLE } from '@repo/types'
 import { db } from '../../client.ts'
 import { accounts } from '../../schema/account.ts'
 import { locations } from '../../schema/location.ts'
@@ -7,7 +7,7 @@ import { owners } from '../../schema/owner.ts'
 import { staff } from '../../schema/staff.ts'
 import { staffAccountsLnk } from '../../schema/staff-account-lnk.ts'
 import { staffLocationsLnk } from '../../schema/staff-location-lnk.ts'
-import type { OwnerStaffPersonnelRow } from '@afterdark/types'
+import type { OwnerStaffPersonnelRow } from '@repo/types'
 
 export async function findPersonnelByOwnerDocumentId(
   ownerDocumentId: string

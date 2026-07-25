@@ -1,5 +1,5 @@
 import type { Config } from 'tailwindcss'
-import sharedConfig from '@afterdark/ui/tailwind.config'
+import sharedConfig from '@repo/ui/tailwind.config'
 
 export default {
   ...sharedConfig,

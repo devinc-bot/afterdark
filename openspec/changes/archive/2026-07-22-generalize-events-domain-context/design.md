@@ -2,12 +2,12 @@
 
 Product direction moved from nightlife-centric (“eventos nocturnos”, clubs) to **general events**, with venues already migrating toward **locations**. Harness docs still inject the old framing:
 
-| File | Current bias |
-| ---- | ------------ |
-| `openspec/config.yaml` | “nightlife events/ticketing platform” |
-| `DOMAIN.md` | “eventos nocturnos”; entity `Club`; “Clubes” for owners |
-| `PRODUCT.md` | “nightlife events”; “Nocturnal” personality; “feel the night” |
-| `spec/constitution/mission.md` | “eventos nocturnos”; “la noche”; “dueños de clubes” |
+| File                           | Current bias                                                  |
+| ------------------------------ | ------------------------------------------------------------- |
+| `openspec/config.yaml`         | “nightlife events/ticketing platform”                         |
+| `DOMAIN.md`                    | “eventos nocturnos”; entity `Club`; “Clubes” for owners       |
+| `PRODUCT.md`                   | “nightlife events”; “Nocturnal” personality; “feel the night” |
+| `spec/constitution/mission.md` | “eventos nocturnos”; “la noche”; “dueños de clubes”           |
 
 Agents, OpenSpec proposals, and design skills (Impeccable via `PRODUCT.md`) inherit that bias.
 
@@ -19,7 +19,7 @@ No runtime code path depends on these strings; this is documentation-only.
 
 - One coherent, events-first product story across the files agents read first.
 - Prefer **location** language in those files so it matches the domain rename already underway.
-- Keep brand name **afterdark** and allow a dark/restrained aesthetic without claiming nightlife is the product category.
+- Keep brand name **Repo** and allow a dark/restrained aesthetic without claiming nightlife is the product category.
 
 **Non-Goals:**
 
@@ -49,13 +49,13 @@ No runtime code path depends on these strings; this is documentation-only.
 
 **Choice:** Replace “Nocturnal” / “feel the night” with events-first, editorial restraint. Keep anti-reference to nightclub-flyer aesthetics as a **ban**, not as the product thesis.
 
-**Why:** afterdark can stay dark/premium without being a nightclub app. Daytime concerts, conferences, pop-ups, etc. must feel in-scope.
+**Why:** Repo can stay dark/premium without being a nightclub app. Daytime concerts, conferences, pop-ups, etc. must feel in-scope.
 
 **Alternative considered:** Force a bright “daytime events” redesign in PRODUCT.md → out of scope (visual redesign not requested).
 
 ### 4. OpenSpec `context` one-liner
 
-**Choice:** `afterdark — pnpm monorepo for an events and ticketing platform.`
+**Choice:** `Repo — pnpm monorepo for an events and ticketing platform.`
 
 **Why:** Short, category-neutral, matches proposal; rest of config (apps/packages) stays as-is.
 
@@ -65,11 +65,11 @@ No runtime code path depends on these strings; this is documentation-only.
 
 ## Risks / Trade-offs
 
-| Risk | Mitigation |
-| ---- | ---------- |
+| Risk                                                      | Mitigation                                                                                                                                              |
+| --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Agents still cite old nightlife wording from legacy specs | Leave historical; AGENTS.md already says migrate on touch; optionally add a one-line note in mission/DOMAIN that legacy specs may say “club/nightlife”. |
-| Brand name “afterdark” still reads nocturnal | Accept; rename is out of scope. Docs clarify category = events in general. |
-| PRODUCT.md vs live landing still nightlife-flavored | Landing/UI not in this change; follow-up if copy drifts. |
+| Brand name “Repo” still reads nocturnal                   | Accept; rename is out of scope. Docs clarify category = events in general.                                                                              |
+| PRODUCT.md vs live landing still nightlife-flavored       | Landing/UI not in this change; follow-up if copy drifts.                                                                                                |
 
 ## Migration Plan
 

@@ -12,7 +12,7 @@ New owners land on the dashboard panel without a clear sense of what to do first
 
 ### Non-goals
 
-- No changes to the ticket data model, validators (`@afterdark/validators`), API, or database.
+- No changes to the ticket data model, validators (`@repo/validators`), API, or database.
 - No removal of the existing ticket create/edit modals on the tickets list.
 - No changes to the event or location form fields themselves (only their post-success navigation).
 - No multi-tenant onboarding state persistence (the alert is not dismissible-with-memory in this change unless trivial); no analytics/telemetry.

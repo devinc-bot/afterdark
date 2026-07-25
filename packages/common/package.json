@@ -1,5 +1,5 @@
 {
-  "name": "@afterdark/common",
+  "name": "@repo/common",
   "version": "0.0.1",
   "private": true,
   "type": "module",
@@ -12,8 +12,8 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@afterdark/types": "workspace:*",
-    "@afterdark/validators": "workspace:*"
+    "@repo/types": "workspace:*",
+    "@repo/validators": "workspace:*"
   },
   "devDependencies": {
     "typescript": "6.0.3"

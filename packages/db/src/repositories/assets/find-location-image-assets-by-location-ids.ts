@@ -1,9 +1,9 @@
 import { and, eq, inArray } from 'drizzle-orm'
-import { ASSET_TYPE } from '@afterdark/types'
+import { ASSET_TYPE } from '@repo/types'
 import { db } from '../../client.ts'
 import { locationAssetsLnk } from '../../schema/location-asset-lnk.ts'
 import { assets } from '../../schema/asset.ts'
-import type { LocationImageAsset } from '@afterdark/types'
+import type { LocationImageAsset } from '@repo/types'
 
 export async function findLocationImageAssetsByLocationIds(
   locationIds: number[]

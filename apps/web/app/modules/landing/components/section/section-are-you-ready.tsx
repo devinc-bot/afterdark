@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { Link, cn } from '@afterdark/ui'
+import { Link, cn } from '@repo/ui'
 import { WEB_ROUTES } from '~/modules/common/constants/routes'
 import {
   LANDING_CTA_GHOST_ON_MEDIA,

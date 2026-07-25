@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useQueryClient } from '@tanstack/react-query'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@afterdark/ui'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@repo/ui'
 import { QUERY_KEYS } from '~/modules/common/constants/query-keys'
 import { StaffInvitationsTab } from '~/modules/staff/components/staff-invitations-tab'
 import { StaffPersonnelTab } from '~/modules/staff/components/staff-personnel-tab'

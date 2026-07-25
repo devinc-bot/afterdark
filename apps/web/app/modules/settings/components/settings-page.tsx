@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import { AlertTriangle, RefreshCw } from 'lucide-react'
-import { Button, Skeleton } from '@afterdark/ui'
+import { Button, Skeleton } from '@repo/ui'
 import { PageAtmosphereWash } from '~/modules/common/components/page-atmosphere-wash'
 import { PageHeader } from '~/modules/common/components/page-header'
 import { LANDING_SHELL } from '~/modules/landing/constants/layout'

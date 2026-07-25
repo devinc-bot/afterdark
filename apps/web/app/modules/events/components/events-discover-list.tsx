@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Button, Skeleton } from '@afterdark/ui'
-import type { PublicEventResponse } from '@afterdark/types'
+import { Button, Skeleton } from '@repo/ui'
+import type { PublicEventResponse } from '@repo/types'
 import { EventsDiscoverListItem } from './events-discover-list-item'
 
 type EventsDiscoverListProps = {

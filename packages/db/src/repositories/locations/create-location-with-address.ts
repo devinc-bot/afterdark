@@ -2,7 +2,7 @@ import { db, type Transaction } from '../../client.ts'
 import { addresses } from '../../schema/address.ts'
 import { locationAddressesLnk } from '../../schema/location-address-lnk.ts'
 import { locations } from '../../schema/location.ts'
-import type { LocationUpsertInput, LocationWithAddress } from '@afterdark/types'
+import type { LocationUpsertInput, LocationWithAddress } from '@repo/types'
 
 export async function createLocationWithAddress(
   ownerId: number,

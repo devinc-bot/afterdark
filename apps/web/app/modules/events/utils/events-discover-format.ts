@@ -1,4 +1,4 @@
-import type { PublicEventResponse } from '@afterdark/types'
+import type { PublicEventResponse } from '@repo/types'
 
 export function formatEventWhen(value: Date | string): string {
   const date = value instanceof Date ? value : new Date(value)

@@ -1,6 +1,6 @@
 import { and, count, desc, eq, gte, lte, sql, type SQL } from 'drizzle-orm'
-import { PAYMENT_STATUS } from '@afterdark/types/enums'
-import type { ListOwnerSalesParams, PaginatedOwnerSalesResult } from '@afterdark/types'
+import { PAYMENT_STATUS } from '@repo/types/enums'
+import type { ListOwnerSalesParams, PaginatedOwnerSalesResult } from '@repo/types'
 import { db } from '../../client.ts'
 import { accounts } from '../../schema/account.ts'
 import { locations } from '../../schema/location.ts'

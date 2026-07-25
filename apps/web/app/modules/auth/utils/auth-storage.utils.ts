@@ -1,5 +1,5 @@
-import type { LoginResponse } from '@afterdark/types'
-import { deleteCookie, getCookieSync, setCookie } from '@afterdark/common'
+import type { LoginResponse } from '@repo/types'
+import { deleteCookie, getCookieSync, setCookie } from '@repo/common'
 import { SESSION_DURATION_MS } from '~/modules/common/constants/auth-storage'
 import { COOKIE_KEYS } from '~/modules/common/constants/cookies'
 

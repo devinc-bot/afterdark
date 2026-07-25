@@ -4,12 +4,12 @@ import {
   loginSchema,
   registerUserSchema,
   resetPasswordSchema,
-} from '@afterdark/validators'
-import { translateSync } from '@afterdark/i18n'
-import { throwApiServiceError, buildApiPath } from '@afterdark/common'
+} from '@repo/validators'
+import { translateSync } from '@repo/i18n'
+import { throwApiServiceError, buildApiPath } from '@repo/common'
 import { api } from '~/config/api'
 import { API_ROUTES } from '~/config/api'
-import type { LoginResponse, RegisterResponse } from '@afterdark/types'
+import type { LoginResponse, RegisterResponse } from '@repo/types'
 
 async function postAuth<T>(path: string, data: unknown, fallback: string): Promise<T> {
   try {

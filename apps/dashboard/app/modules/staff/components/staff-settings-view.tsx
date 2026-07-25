@@ -1,4 +1,4 @@
-import type { CurrentStaffResponse } from '@afterdark/types'
+import type { CurrentStaffResponse } from '@repo/types'
 import { useTranslation } from 'react-i18next'
 import { PageLayout } from '~/modules/common/components/page-layout'
 import { StaffProfileSettingsSection } from '~/modules/staff/components/staff-profile-settings-section'

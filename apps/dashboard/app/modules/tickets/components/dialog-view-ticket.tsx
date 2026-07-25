@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { Button, Dialog, DialogClose, DialogContent } from '@afterdark/ui'
+import { Button, Dialog, DialogClose, DialogContent } from '@repo/ui'
 import { X } from 'lucide-react'
 import {
   getTicketTypeLabel,

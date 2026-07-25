@@ -2,7 +2,7 @@ import { startTransition, useEffect, useState, type MouseEvent } from 'react'
 import { Menu } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate, useRouterState } from '@tanstack/react-router'
-import { getCookieSync } from '@afterdark/common'
+import { getCookieSync } from '@repo/common'
 import {
   Button,
   Link,
@@ -14,7 +14,7 @@ import {
   SheetTrigger,
   AppLogo,
   cn,
-} from '@afterdark/ui'
+} from '@repo/ui'
 import { UserMenu } from '~/modules/common/components/user-menu'
 import { COOKIE_KEYS } from '~/modules/common/constants/cookies'
 import { WEB_ROUTES } from '~/modules/common/constants/routes'

@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { cn } from '@afterdark/ui'
+import { cn } from '@repo/ui'
 import { LANDING_IMAGES } from '../../constants/images'
 import { LANDING_SHELL } from '../../constants/layout'
 import { Reveal } from '../reveal'

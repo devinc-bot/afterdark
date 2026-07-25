@@ -1,5 +1,5 @@
-import type { CurrentStaffResponse } from '@afterdark/types'
-import { staffSettingsFormSchema, type StaffSettingsFormValues } from '@afterdark/validators'
+import type { CurrentStaffResponse } from '@repo/types'
+import { staffSettingsFormSchema, type StaffSettingsFormValues } from '@repo/validators'
 import { createSettingsFormProvider } from '~/modules/settings/hooks/settings-form-context'
 
 function toStaffFormValues(staff: CurrentStaffResponse): StaffSettingsFormValues {

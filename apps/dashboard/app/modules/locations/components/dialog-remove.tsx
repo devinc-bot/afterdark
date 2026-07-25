@@ -7,7 +7,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@afterdark/ui'
+} from '@repo/ui'
 import type { RegisteredLocation } from '~/modules/locations/components/registered-location-records'
 
 export type LocationRemoveDialogProps = {

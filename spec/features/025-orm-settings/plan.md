@@ -36,8 +36,8 @@ No hace falta migración ni cambio de schema para activar el prefijo.
 
 ## Verificación manual
 
-| Paso                                                                              | Resultado esperado                                                                                 |
-| --------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
-| 1. Revisar `drizzle.config.ts`                                                    | Contiene `migrations.prefix: 'timestamp'`                                                          |
-| 2. Listar `src/migrations/*.sql`                                                  | Siguen existiendo `0000`…`0020` sin renombrar                                                      |
-| 3. (Opcional) Cambio mínimo de schema + `pnpm --filter @afterdark/db db:generate` | Archivo nuevo con prefijo timestamp; luego descartar el cambio de prueba si no se quiere commitear |
+| Paso                                                                         | Resultado esperado                                                                                 |
+| ---------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| 1. Revisar `drizzle.config.ts`                                               | Contiene `migrations.prefix: 'timestamp'`                                                          |
+| 2. Listar `src/migrations/*.sql`                                             | Siguen existiendo `0000`…`0020` sin renombrar                                                      |
+| 3. (Opcional) Cambio mínimo de schema + `pnpm --filter @repo/db db:generate` | Archivo nuevo con prefijo timestamp; luego descartar el cambio de prueba si no se quiere commitear |

@@ -137,7 +137,7 @@ En panel e inventario solo ve agregados. Necesita el detalle de cada venta para 
 
 **Errores:** `401` no auth · `403` no owner · `400` query inválida (p. ej. `from` > `to`, ids mal formados) — mensajes i18n en español.
 
-**Contratos compartidos:** Zod en `@afterdark/validators` · DTO en `@afterdark/types` · `API_ROUTES.dashboard.path.sales()`.
+**Contratos compartidos:** Zod en `@repo/validators` · DTO en `@repo/types` · `API_ROUTES.dashboard.path.sales()`.
 
 ### Datos
 

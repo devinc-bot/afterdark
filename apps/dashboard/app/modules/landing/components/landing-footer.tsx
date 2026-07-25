@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { AppLogo } from '@afterdark/ui'
+import { AppLogo } from '@repo/ui'
 import { handleSectionNavClick } from '../utils/scroll-to-section.utils'
 
 const FOOTER_GROUPS = [

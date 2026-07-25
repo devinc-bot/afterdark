@@ -6,7 +6,7 @@ The web `/settings` page (introduced by the `add-web-user-menu` change) shows th
 
 ## What Changes
 
-- Extend the existing `GET/PATCH /settings` API so the authenticated `USER` role can read and update their basic profile (name, lastName, phone). Validation uses `updateCurrentUserProfileSchema` from `@afterdark/validators`. OWNER/STAFF behavior on the same endpoints stays unchanged.
+- Extend the existing `GET/PATCH /settings` API so the authenticated `USER` role can read and update their basic profile (name, lastName, phone). Validation uses `updateCurrentUserProfileSchema` from `@repo/validators`. OWNER/STAFF behavior on the same endpoints stays unchanged.
 - Replace the read-only profile section on `apps/web` `/settings` with an editable form: name, lastName, and phone become editable inputs; email stays read-only; avatar keeps the current display (no upload).
 - Wire the form with the web app's existing patterns: `QueryFactory` service + React Query (`useQuery` for `GET /settings`, `useMutation` for `PATCH`), with success/error feedback in Spanish.
 - After a successful save, refresh the session store so the header user menu reflects the updated name.

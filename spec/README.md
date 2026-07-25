@@ -53,7 +53,7 @@ Disparadores útiles: _“creá la spec de …”_, _“nueva feature”_, _“c
 | Carpetas de feature     | `001-upload-avatar`, `002-staff-invite` (número + kebab-case)                 |
 | UI copy en specs        | Español                                                                       |
 | Identificadores / rutas | Inglés                                                                        |
-| Validación              | `@afterdark/validators` — no duplicar reglas en prosa                         |
+| Validación              | `@repo/validators` — no duplicar reglas en prosa                              |
 | DB                      | Repositories en `packages/db` — ver [DATABASE.md](../packages/db/DATABASE.md) |
 | Entrevista              | Una fase por turno; ver [INTERVIEW.md](./INTERVIEW.md)                        |
 

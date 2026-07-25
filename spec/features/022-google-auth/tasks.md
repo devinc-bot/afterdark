@@ -11,11 +11,11 @@
 
 ## Shared packages
 
-- [x] Schemas Zod start OAuth (`role` + `app`) en `@afterdark/validators`
+- [x] Schemas Zod start OAuth (`role` + `app`) en `@repo/validators`
 - [x] Env API: `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `API_PUBLIC_URL`
-- [x] `API_ROUTES.auth.path.google` / `googleCallback` en `@afterdark/common`
+- [x] `API_ROUTES.auth.path.google` / `googleCallback` en `@repo/common`
 - [x] Ruta cliente bridge (`authCallback`) en constants de rutas
-- [x] Tipos: password opcional en registro / `AUTH_PROVIDER` en `@afterdark/types`
+- [x] Tipos: password opcional en registro / `AUTH_PROVIDER` en `@repo/types`
 - [x] i18n `auth.google.*` (es + en)
 - [x] Schema `accounts.provider` (`local` \| `google`, default `local`)
 - [x] Schema `accounts.provider_account_id` nullable + unique

@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
-import { cn } from '@afterdark/ui'
+import { cn } from '@repo/ui'
 import { LandingFooter } from '~/modules/landing/components/footer'
 import { LandingHeader } from '~/modules/landing/components/landing-header'
 import { LANDING_FOCUS_RING } from '~/modules/landing/constants/layout'

@@ -1,7 +1,7 @@
 import { useNavigate } from '@tanstack/react-router'
 import { useEffect, useState } from 'react'
 import { DASHBOARD_ROUTES } from '~/modules/common/constants/routes'
-import { SESSION_STATUS } from '@afterdark/common'
+import { SESSION_STATUS } from '@repo/common'
 import { SessionError } from '~/modules/common/components/session-error'
 import { SessionLoading } from '~/modules/common/components/session-loading'
 import { useSession } from '~/modules/common/hooks/use-session'

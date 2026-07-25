@@ -1,5 +1,5 @@
-import type { EventImageResponse } from '@afterdark/types'
-import { EVENT_IMAGE_MAX_COUNT } from '@afterdark/validators'
+import type { EventImageResponse } from '@repo/types'
+import { EVENT_IMAGE_MAX_COUNT } from '@repo/validators'
 import { useTranslation } from 'react-i18next'
 import { ImageUploadField } from '~/modules/common/components/image-upload-field'
 

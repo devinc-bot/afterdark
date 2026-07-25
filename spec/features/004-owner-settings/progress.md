@@ -68,7 +68,7 @@ Borrador propuesto por el asistente en `plan.md` + `tasks.md`, leyendo `ARCHITEC
 - Nuevo módulo API `apps/api/src/modules/settings/` (controller + service) que reusa `OwnerService` vía DI; `owner.controller.ts` se elimina.
 - Dashboard: `modules/owner/` → `modules/settings/owner/`; nuevo `modules/settings/staff/`; dispatcher `modules/settings/components/settings-view.tsx` decide por `role` de la respuesta de `GET /settings`.
 - i18n namespace `settings` se reestructura: contenido actual bajo `owner.*`, nuevo `staff.*`.
-- Sin cambios en `@afterdark/validators` ni `packages/db`.
+- Sin cambios en `@repo/validators` ni `packages/db`.
 
 **Corrección durante la implementación (mismo hilo, ya con "hacé la implementación"):** el usuario frenó el primer intento — había agregado `role` a `SessionResponse` (`GET /session/me`). Indicó explícitamente **no** poner el rol ahí: esos datos los debe dar el endpoint `/settings`. Motivo real encontrado en el código: `apps/dashboard/app/modules/common/services/owner.service.ts:25-35` (`toSessionUser`) reconstruye `SessionResponse` a partir de un `Pick` de campos de owner sin `role`, usado para actualizar el store de sesión tras guardar el perfil (optimistic update) — agregar `role` ahí habría roto ese mapeo o forzado un valor hardcodeado falso. Se revirtió `SessionResponse` y en su lugar `CurrentOwnerResponse` y `StaffSettingsResponse` llevan cada una su propio `role` como discriminante de la unión `SettingsResponse`. El dispatcher del dashboard ahora resuelve qué vista mostrar en base a la respuesta de `GET /settings`, no de la sesión. `spec.md` y `plan.md` actualizados para reflejar esto.
 

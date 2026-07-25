@@ -1,7 +1,7 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common'
-import { findCurrentStaffByDocumentId } from '@afterdark/db'
-import type { CurrentStaffResponse } from '@afterdark/types'
-import { TranslationService } from '@afterdark/i18n/server'
+import { findCurrentStaffByDocumentId } from '@repo/db'
+import type { CurrentStaffResponse } from '@repo/types'
+import { TranslationService } from '@repo/i18n/server'
 import { toCurrentStaffResponse } from '../mappers/staff.mapper'
 
 @Injectable()

@@ -51,7 +51,7 @@
 | ------ | ---------- | ---- |
 |        | `/api/...` |      |
 
-**Request / Response** — sketch o nombre de schema Zod / tipo en `@afterdark/types`.
+**Request / Response** — sketch o nombre de schema Zod / tipo en `@repo/types`.
 
 **Errores (mensaje al usuario en español)**
 
