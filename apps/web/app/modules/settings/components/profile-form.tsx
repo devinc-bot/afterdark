@@ -307,8 +307,8 @@ export function ProfileForm({ profile }: ProfileFormProps) {
             return (
               <div
                 className={cn(
-                  'sticky bottom-0 z-10 -mx-1 mt-1 border-t border-outline-variant/35 bg-background/80 px-1 pt-5 pb-[max(0.25rem,env(safe-area-inset-bottom))] shadow-(--shadow-glass) backdrop-blur-xl backdrop-saturate-150 supports-[backdrop-filter]:bg-background/65',
-                  'motion-reduce:backdrop-blur-none motion-reduce:bg-background motion-reduce:shadow-none'
+                  'sticky bottom-0 z-10 -mx-1 mt-1 border-t border-outline-variant/35 bg-background/80 px-1 pt-5 pb-[max(0.25rem,env(safe-area-inset-bottom))] backdrop-blur-xl backdrop-saturate-150 supports-backdrop-filter:bg-background/65',
+                  'motion-reduce:backdrop-blur-none motion-reduce:bg-background'
                 )}
               >
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
