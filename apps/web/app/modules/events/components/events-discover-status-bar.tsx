@@ -15,7 +15,6 @@ type Chip = {
 type EventsDiscoverStatusBarProps = {
   appliedFilters: EventsDiscoverFiltersValue
   total: number | null
-  isDirty: boolean
   onRemoveFilter: (field: EventsDiscoverFilterField) => void
   onClearAll: () => void
   className?: string
@@ -24,7 +23,6 @@ type EventsDiscoverStatusBarProps = {
 export function EventsDiscoverStatusBar({
   appliedFilters,
   total,
-  isDirty,
   onRemoveFilter,
   onClearAll,
   className,
@@ -63,20 +61,13 @@ export function EventsDiscoverStatusBar({
 
   return (
     <div className={cn('flex flex-col gap-3', className)}>
-      <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
-        <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
-          {total !== null ? (
-            <p className="font-label text-sm text-on-surface" aria-live="polite">
-              {t('discover.list.resultsCount', { count: total })}
-            </p>
-          ) : null}
-          <p className="font-label text-xs text-on-surface-variant">
-            {t('discover.list.sortHint')}
+      <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+        {total !== null ? (
+          <p className="font-label text-sm text-on-surface" aria-live="polite">
+            {t('discover.list.resultsCount', { count: total })}
           </p>
-        </div>
-        {isDirty ? (
-          <p className="font-label text-xs text-primary">{t('discover.filters.pendingChanges')}</p>
         ) : null}
+        <p className="font-label text-xs text-on-surface-variant">{t('discover.list.sortHint')}</p>
       </div>
 
       {chips.length > 0 ? (

@@ -22,6 +22,7 @@ import { USER_ROLE, type UserRole } from '@repo/types'
 import { clearAuthSession } from '~/modules/auth/utils/auth-storage.utils'
 import { AppShellLanguageSwitcher } from '~/modules/common/components/app-shell-language-switcher'
 import { AppShellSidebarFooter } from '~/modules/common/components/app-shell-sidebar-footer'
+import { AppShellThemeSwitcher } from '~/modules/common/components/app-shell-theme-switcher'
 import { AppShellSignOutDialog } from '~/modules/common/components/app-shell-sign-out-dialog'
 import { useSession } from '~/modules/common/hooks/use-session'
 import { DASHBOARD_ROUTES } from '~/modules/common/constants/routes'
@@ -167,6 +168,7 @@ function AppShellLayout({ children }: { children: React.ReactNode }) {
         navMain={navMain}
         footerExtra={
           <>
+            <AppShellThemeSwitcher />
             <AppShellLanguageSwitcher />
             {!navUser ? (
               <AppShellSidebarFooter

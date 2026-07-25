@@ -46,5 +46,11 @@
   "formActions": {
     "dirty": "Hay cambios sin guardar.",
     "clean": "No hay cambios"
+  },
+  "theme": {
+    "dark": "Oscuro",
+    "light": "Claro",
+    "switchToDark": "Cambiar a tema oscuro",
+    "switchToLight": "Cambiar a tema claro"
   }
 }

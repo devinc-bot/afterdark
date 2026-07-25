@@ -12,6 +12,9 @@
     "sales": "Ventas",
     "users": "Usuarios",
     "language": "Idioma",
+    "theme": "Tema",
+    "themeDark": "Oscuro",
+    "themeLight": "Claro",
     "settings": "Configuración",
     "signOut": "Cerrar sesión"
   },

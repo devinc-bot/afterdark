@@ -1,11 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import { Link, cn } from '@repo/ui'
 import { WEB_ROUTES } from '~/modules/common/constants/routes'
-import {
-  LANDING_CTA_GHOST_ON_MEDIA,
-  LANDING_CTA_PRIMARY,
-  LANDING_SHELL,
-} from '../../constants/layout'
+import { LANDING_CTA_GHOST, LANDING_CTA_PRIMARY, LANDING_SHELL } from '../../constants/layout'
 import { Reveal } from '../reveal'
 
 type SectionAreYouReadyProps = {
@@ -51,7 +47,7 @@ export function SectionAreYouReady({ showAuthCtas = true, className }: SectionAr
                 to={WEB_ROUTES.login()}
                 variant="outline"
                 size="lg"
-                className={cn('min-h-11', LANDING_CTA_GHOST_ON_MEDIA)}
+                className={cn('min-h-11', LANDING_CTA_GHOST)}
               >
                 {t('nav.login')}
               </Link>

@@ -33,7 +33,7 @@ export function SectionAtmosphere({ className }: SectionAtmosphereProps) {
         />
         <div
           aria-hidden
-          className="absolute inset-0 bg-linear-to-b from-background/75 via-background/55 to-background/90"
+          className="absolute inset-0 bg-linear-to-b from-black/50 via-black/30 to-background"
         />
       </div>
 
@@ -47,12 +47,12 @@ export function SectionAtmosphere({ className }: SectionAtmosphereProps) {
           <blockquote className="max-w-[22ch]">
             <p
               id="atmosphere-heading"
-              className="font-display text-[clamp(2rem,5.5vw,3.75rem)] font-bold leading-[1.12] tracking-[-0.02em] text-balance text-on-surface"
+              className="font-display text-[clamp(2rem,5.5vw,3.75rem)] font-bold leading-[1.12] tracking-[-0.02em] text-balance text-white"
             >
               {t('atmosphere.quote')}
             </p>
           </blockquote>
-          <p className="mt-6 max-w-[40ch] text-base leading-relaxed text-pretty text-on-surface-variant sm:text-lg">
+          <p className="mt-6 max-w-[40ch] text-base leading-relaxed text-pretty text-white/85 sm:text-lg">
             {t('atmosphere.support')}
           </p>
         </Reveal>

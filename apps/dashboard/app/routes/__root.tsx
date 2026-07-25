@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { HeadContent, Outlet, Scripts, createRootRouteWithContext } from '@tanstack/react-router'
 import { QueryClientProvider, type QueryClient } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
-import { APP_LOGO_SRC, Link, Toaster } from '@repo/ui'
+import { APP_LOGO_SRC, Link, THEME_BOOT_SCRIPT, ThemeProvider, Toaster } from '@repo/ui'
 import { I18nProvider } from '@repo/i18n/client'
 import { installZodI18n } from '@repo/i18n'
 import commonEs from '@repo/i18n/locales/common/es.json'
@@ -26,17 +26,26 @@ export const Route = createRootRouteWithContext<RouterContext>()({
       { rel: 'apple-touch-icon', href: APP_LOGO_SRC },
       { rel: 'stylesheet', href: globalsCssUrl },
     ],
+    scripts: [{ children: THEME_BOOT_SCRIPT }],
   }),
   errorComponent: RootErrorBoundary,
   notFoundComponent: RootNotFound,
   component: RootComponent,
 })
 
+function DocumentLang() {
+  const { i18n } = useTranslation()
+  useEffect(() => {
+    document.documentElement.lang = i18n.language || 'es'
+  }, [i18n.language])
+  return null
+}
+
 function RootErrorBoundary({ error, reset }: { error: Error; reset: () => void }) {
   const { t } = useTranslation('dashboard')
 
   return (
-    <html lang="es">
+    <html lang="es" data-theme="dark">
       <head>
         <HeadContent />
       </head>
@@ -61,7 +70,7 @@ function RootErrorBoundary({ error, reset }: { error: Error; reset: () => void }
 function RootNotFound() {
   const { t } = useTranslation('dashboard')
   return (
-    <html lang="es">
+    <html lang="es" data-theme="dark">
       <head>
         <HeadContent />
       </head>
@@ -99,19 +108,22 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext()
   return (
     <I18nProvider>
-      <QueryClientProvider client={queryClient}>
-        <ZodI18nBridge />
-        <html lang="es">
-          <head>
-            <HeadContent />
-          </head>
-          <body>
-            <Outlet />
-            <Toaster position="top-right" />
-            <Scripts />
-          </body>
-        </html>
-      </QueryClientProvider>
+      <ThemeProvider>
+        <QueryClientProvider client={queryClient}>
+          <ZodI18nBridge />
+          <DocumentLang />
+          <html lang="es" data-theme="dark">
+            <head>
+              <HeadContent />
+            </head>
+            <body>
+              <Outlet />
+              <Toaster position="top-right" />
+              <Scripts />
+            </body>
+          </html>
+        </QueryClientProvider>
+      </ThemeProvider>
     </I18nProvider>
   )
 }

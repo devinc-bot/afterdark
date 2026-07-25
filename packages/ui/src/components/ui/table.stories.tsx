@@ -133,7 +133,7 @@ function UsersTable({ variant }: { variant?: 'default' | 'compact' }) {
               </div>
             </TableCell>
             <TableCell>
-              <span className="font-heading text-lg font-bold text-primary shadow-primary-glow">
+              <span className="font-heading text-lg font-bold text-primary">
                 {user.tickets.toLocaleString('es-AR')}
               </span>
             </TableCell>

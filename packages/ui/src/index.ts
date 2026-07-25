@@ -237,6 +237,21 @@ export { useAutoDismiss } from './hooks/use-auto-dismiss.ts'
 export { usePageTitle } from './hooks/use-page-title.ts'
 export { useUnsavedChangesGuard } from './hooks/use-unsaved-changes-guard.ts'
 export {
+  DEFAULT_THEME,
+  THEME,
+  THEMES,
+  THEME_BOOT_SCRIPT,
+  THEME_STORAGE_KEY,
+  applyTheme,
+  isTheme,
+  persistTheme,
+  readStoredTheme,
+  setTheme,
+  type Theme,
+} from './theme/theme.ts'
+export { ThemeProvider, useTheme } from './theme/theme-provider.tsx'
+export { ThemeToggle } from './theme/theme-toggle.tsx'
+export {
   Map,
   MapControls,
   MapMarker,

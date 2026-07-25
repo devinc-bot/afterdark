@@ -61,9 +61,11 @@ function mergeHoverPaint<T extends Record<string, unknown>>(
 
 type Theme = 'light' | 'dark'
 
-// Check document class for theme (works with next-themes, etc.)
+// Prefer data-theme (Repo ThemeProvider); fall back to class (next-themes, etc.)
 function getDocumentTheme(): Theme | null {
   if (typeof document === 'undefined') return null
+  const dataTheme = document.documentElement.getAttribute('data-theme')
+  if (dataTheme === 'dark' || dataTheme === 'light') return dataTheme
   if (document.documentElement.classList.contains('dark')) return 'dark'
   if (document.documentElement.classList.contains('light')) return 'light'
   return null
@@ -83,7 +85,7 @@ function useResolvedTheme(themeProp?: 'light' | 'dark'): Theme {
   useEffect(() => {
     if (themeProp) return // Skip detection if theme is provided via prop
 
-    // Watch for document class changes (e.g., next-themes toggling dark class)
+    // Watch data-theme / class changes (ThemeProvider + next-themes)
     const observer = new MutationObserver(() => {
       const docTheme = getDocumentTheme()
       if (docTheme) {
@@ -92,7 +94,7 @@ function useResolvedTheme(themeProp?: 'light' | 'dark'): Theme {
     })
     observer.observe(document.documentElement, {
       attributes: true,
-      attributeFilter: ['class'],
+      attributeFilter: ['class', 'data-theme'],
     })
 
     // Also watch for system preference changes

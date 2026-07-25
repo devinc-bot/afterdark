@@ -1,7 +1,16 @@
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { MapPin } from 'lucide-react'
-import { cn, Map, MapControls, MapMarker, MarkerContent, MarkerPopup, useMap } from '@repo/ui'
+import {
+  cn,
+  Map,
+  MapControls,
+  MapMarker,
+  MarkerContent,
+  MarkerPopup,
+  useMap,
+  useTheme,
+} from '@repo/ui'
 import type { PublicEventResponse } from '@repo/types'
 import {
   DEFAULT_EVENTS_DISCOVER_MAP_CENTER,
@@ -138,6 +147,7 @@ export function EventsDiscoverMap({
   onSelectEventId,
 }: EventsDiscoverMapProps) {
   const { t } = useTranslation('events')
+  const { theme } = useTheme()
   const [mounted, setMounted] = useState(false)
   const markers = toMarkerPoints(events)
 
@@ -159,6 +169,7 @@ export function EventsDiscoverMap({
   return (
     <div id="events-discover-map" className="relative h-72 overflow-hidden sm:h-72 lg:h-80">
       <Map
+        theme={theme}
         center={[
           DEFAULT_EVENTS_DISCOVER_MAP_CENTER.longitude,
           DEFAULT_EVENTS_DISCOVER_MAP_CENTER.latitude,
@@ -195,7 +206,10 @@ export function EventsDiscoverMap({
                       : 'scale-100'
                   )}
                 >
-                  <MapPin className="size-7 fill-primary stroke-white drop-shadow" aria-hidden />
+                  <MapPin
+                    className="size-7 fill-primary stroke-background drop-shadow"
+                    aria-hidden
+                  />
                 </button>
               </MarkerContent>
               <MarkerPopup closeButton offset={28} className="min-w-44 border-hairline/50 p-3">

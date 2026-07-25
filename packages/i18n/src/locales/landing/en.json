@@ -1,5 +1,5 @@
 {
-  "metaTitle": "{appName} · nightlife events",
+  "metaTitle": "{appName} · events and tickets",
   "skipToContent": "Skip to content",
   "nav": {
     "brand": "{appName}",
@@ -15,36 +15,37 @@
     "openMenu": "Open menu",
     "closeMenu": "Close menu",
     "mobileAriaLabel": "Navigation menu",
-    "ticketsSoon": "Tickets (coming soon)"
+    "ticketsSoon": "Tickets (coming soon)",
+    "language": "Language"
   },
   "hero": {
-    "headline": "The night, before it starts.",
-    "support": "Discover events, secure your ticket, and arrive with everything settled.",
+    "headline": "Your ticket, ready before you arrive.",
+    "support": "Discover events, reserve your spot, and show up with everything sorted.",
     "ctaPrimary": "Create account",
     "ctaSecondary": "Sign in",
-    "imageAlt": "Crowd under lights at a nightlife event"
+    "imageAlt": "Crowd enjoying a live event"
   },
   "about": {
-    "headline": "The platform that makes the night clear.",
-    "body": "{appNameDisplay} connects clubs and audiences in one experience: real events, unambiguous tickets, and an interface that feels the night without dressing it up as a flyer.",
+    "headline": "Clear events. Tickets without the fuss.",
+    "body": "{appNameDisplay} brings venues and audiences together: real dates, understandable tickets, and a clean interface so you can decide with confidence.",
     "imageAlt": "Lit stage during a live show"
   },
   "atmosphere": {
-    "eyebrow": "The night, undisguised",
-    "quote": "Less flyer. More certainty.",
-    "support": "Clear tickets, real dates, and a schedule you can read in seconds — before the first drop hits.",
-    "imageAlt": "Crowd with hands in the air at a night show"
+    "eyebrow": "No extra noise",
+    "quote": "Less confusion. More reason to go.",
+    "support": "Clear tickets, real dates, and a schedule you can read in seconds — before you leave home.",
+    "imageAlt": "Crowd with hands in the air at a show"
   },
   "how": {
     "headline": "Three steps. No noise.",
     "steps": {
       "1": {
         "title": "Create your account",
-        "body": "Register once. After that, every night is one tap away."
+        "body": "Register once. After that, every event is one tap away."
       },
       "2": {
-        "title": "Choose the night",
-        "body": "Browse dates, clubs, and tickets with the information that matters."
+        "title": "Pick the event",
+        "body": "Browse dates, venues, and tickets with the information that matters."
       },
       "3": {
         "title": "Ticket ready",
@@ -66,19 +67,19 @@
       },
       "time": {
         "title": "Dates you can scan fast",
-        "body": "Times and clubs in view — while there’s still room."
+        "body": "Times and venues in view — while there’s still room."
       }
     }
   },
   "pulse": {
-    "eyebrow": "The platform’s pulse",
-    "headline": "Built for the night that’s already moving.",
-    "body": "{appNameDisplay} doesn’t invent the scene — it organizes it. Discover, choose, and secure your place without losing the mood.",
+    "eyebrow": "Built to go",
+    "headline": "For the event you want to live.",
+    "body": "{appNameDisplay} doesn’t invent the experience — it organizes it. Discover, choose, and secure your place without losing the rhythm.",
     "imageAlt": "Crowd hands raised in front of the stage",
     "stats": {
       "nights": {
         "label": "Focus",
-        "value": "Real nights"
+        "value": "Real events"
       },
       "focus": {
         "label": "Promise",
@@ -88,9 +89,9 @@
   },
   "events": {
     "headline": "The schedule isn’t open yet",
-    "support": "When nights go live, they’ll live here. Create your account so you’re ready the day the first date drops.",
+    "support": "When events go live, they’ll live here. Create your account so you’re ready the day the first date drops.",
     "cta": "Create account",
-    "previewAria": "Live-night atmosphere — no published dates yet",
+    "previewAria": "Live-event atmosphere — no published dates yet",
     "items": {
       "1": {
         "imageAlt": "Stage with strong lights at a live show"
@@ -104,16 +105,26 @@
     }
   },
   "closing": {
-    "headline": "This night already has a name.",
+    "headline": "Your next event starts here.",
     "support": "Create your account and come back when the full schedule opens.",
     "cta": "Create account"
   },
+  "organizers": {
+    "kicker": "For organizers",
+    "headline": "Publish venues, events, and tickets.",
+    "support": "Repo’s panel is for owners and staff: create venues, build the schedule, and sell tickets without the noise.",
+    "cta": "Open the panel",
+    "hint": "Opens the organizer panel in another tab."
+  },
   "footer": {
-    "tagline": "Nightlife events, with precision.",
+    "tagline": "Events and tickets, with clarity.",
     "explore": "Explore",
     "publish": "Organizers",
+    "publishTitle": "Organizers",
+    "publishBody": "Manage venues, events, and tickets from the panel.",
+    "publishCta": "Open panel",
     "navAria": "Footer links",
-    "madeFor": "Made so you can enjoy an unforgettable night.",
+    "madeFor": "Made so you can enjoy every event with peace of mind.",
     "rights": "© {year} {appName}",
     "social": {
       "title": "Follow us",

@@ -24,6 +24,7 @@ import { SectionAreYouReady } from './section/section-are-you-ready'
 import { SectionAtmosphere } from './section/section-atmosphere'
 import { SectionClarity } from './section/section-clarity'
 import { SectionHero } from './section/section-hero'
+import { SectionOrganizers } from './section/section-organizers'
 import { SectionPulse } from './section/section-pulse'
 
 export function LandingPage() {
@@ -42,7 +43,7 @@ export function LandingPage() {
       <a
         href="#contenido"
         className={cn(
-          'absolute top-4 left-4 z-50 -translate-y-16 rounded-lg bg-on-surface px-4 py-2.5 font-label text-sm font-medium text-on-primary-fixed transition-transform duration-(--duration-fast) ease-emphasized focus:translate-y-0 motion-reduce:transition-none',
+          'absolute top-4 left-4 z-50 -translate-y-16 rounded-lg bg-on-surface px-4 py-2.5 font-label text-sm font-medium text-background transition-transform duration-(--duration-fast) ease-emphasized focus:translate-y-0 motion-reduce:transition-none',
           LANDING_FOCUS_RING
         )}
       >
@@ -185,6 +186,8 @@ export function LandingPage() {
         </section>
 
         <SectionAreYouReady showAuthCtas={showAuthCtas} />
+
+        <SectionOrganizers />
       </main>
 
       <LandingFooter />

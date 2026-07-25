@@ -46,5 +46,11 @@
   "formActions": {
     "dirty": "You have unsaved changes.",
     "clean": "No changes"
+  },
+  "theme": {
+    "dark": "Dark",
+    "light": "Light",
+    "switchToDark": "Switch to dark theme",
+    "switchToLight": "Switch to light theme"
   }
 }

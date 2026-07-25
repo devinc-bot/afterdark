@@ -51,7 +51,7 @@ Enums/DTOs → `@repo/types`. Validación → `@repo/validators`. No redefinir e
 
 ## Product rules
 
-- **UI copy en español** (vía `@repo/i18n`). Identifiers/código en **inglés**.
+- **UI copy en español e inglés** (vía `@repo/i18n`). Identifiers/código en **inglés**. Dark y light mode son first-class.
 - Validar con Zod de `@repo/validators` antes de persistir.
 - Dueño gestiona sus ubicaciones/eventos/tickets/staff; cliente no administra inventario.
 - Staff entra solo por invitación del dueño (no registro libre de staff).

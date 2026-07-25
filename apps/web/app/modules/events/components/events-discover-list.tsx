@@ -4,6 +4,8 @@ import { Button, Skeleton } from '@repo/ui'
 import type { PublicEventResponse } from '@repo/types'
 import { EventsDiscoverListItem } from './events-discover-list-item'
 
+const EVENTS_DISCOVER_GRID = 'grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4'
+
 type EventsDiscoverListProps = {
   events: PublicEventResponse[]
   selectedEventId: string | null
@@ -61,18 +63,19 @@ export function EventsDiscoverList({
 
   if (isLoading) {
     return (
-      <div className="flex flex-col gap-3" aria-busy="true" aria-live="polite">
+      <div className={EVENTS_DISCOVER_GRID} aria-busy="true" aria-live="polite">
         <p className="sr-only">{t('discover.list.loading')}</p>
-        {Array.from({ length: 3 }, (_, index) => (
+        {Array.from({ length: 8 }, (_, index) => (
           <div
             key={index}
-            className="flex gap-4 rounded-lg border border-primary/15 bg-surface-container-low/40 p-4 sm:gap-5 sm:p-5"
+            className="overflow-hidden rounded-control border border-primary/15 bg-surface-container-low/40"
           >
-            <Skeleton className="size-20 shrink-0 rounded-md bg-primary/10 sm:size-24" />
-            <div className="flex min-w-0 flex-1 flex-col justify-center gap-2">
+            <Skeleton className="aspect-video w-full rounded-none bg-primary/10" />
+            <div className="flex flex-col gap-2 p-4 sm:p-5">
               <Skeleton className="h-6 w-3/4 bg-primary/12" />
-              <Skeleton className="h-4 w-2/5 bg-primary/10" />
+              <Skeleton className="h-4 w-full bg-primary/10" />
               <Skeleton className="h-3.5 w-1/2 bg-primary/8" />
+              <Skeleton className="mt-2 h-10 w-full bg-primary/10" />
             </div>
           </div>
         ))}
@@ -108,7 +111,7 @@ export function EventsDiscoverList({
         className="rounded-lg border border-primary/25 bg-primary/8 px-5 py-12 sm:px-6"
         role="status"
       >
-        <p className="font-display text-2xl font-bold tracking-[-0.03em] text-balance text-primary-fixed sm:text-3xl">
+        <p className="font-display text-2xl font-bold tracking-[-0.03em] text-balance text-primary sm:text-3xl">
           {t('discover.list.emptyTitle')}
         </p>
         <p className="mt-3 max-w-prose text-base text-pretty text-on-surface-variant">
@@ -120,11 +123,14 @@ export function EventsDiscoverList({
 
   return (
     <div>
-      <ul className="flex list-none flex-col gap-3 p-0" aria-label={t('discover.list.resultsAria')}>
+      <ul
+        className={`${EVENTS_DISCOVER_GRID} list-none p-0`}
+        aria-label={t('discover.list.resultsAria')}
+      >
         {events.map((event) => (
           <li
             key={event.documentId}
-            className="min-w-0 [content-visibility:auto] [contain-intrinsic-size:0_8rem]"
+            className="min-w-0 [content-visibility:auto] [contain-intrinsic-size:0_22rem]"
           >
             <EventsDiscoverListItem
               event={event}

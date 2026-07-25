@@ -10,7 +10,7 @@ export function PageAtmosphereWash({ className }: PageAtmosphereWashProps) {
     <div
       aria-hidden="true"
       className={cn(
-        'pointer-events-none absolute -inset-x-6 -top-8 h-36 bg-[radial-gradient(ellipse_at_top,oklch(0.72_0.08_320/0.06),transparent_70%)] sm:-inset-x-10',
+        'pointer-events-none absolute -inset-x-6 -top-9 h-36 bg-[radial-gradient(ellipse_at_top,color-mix(in_oklab,var(--color-primary)_14%,transparent),transparent_70%)] sm:-inset-x-10',
         className
       )}
     />

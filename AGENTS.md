@@ -17,6 +17,15 @@ Read the relevant doc before making changes:
 | [STYLEGUIDE.md](./STYLEGUIDE.md)                                                                     | Naming, constants, dependencies, lint/format                         |
 | [DOMAIN.md](./DOMAIN.md)                                                                             | Business context, entities, validation, UI language                  |
 | [packages/db/DATABASE.md](./packages/db/DATABASE.md)                                                 | Schema, migrations, repositories                                     |
+| [PRODUCT.md](./PRODUCT.md)                                                                           | Brand register, users, personality, anti-references, principles      |
+| [DESIGN.md](./DESIGN.md)                                                                             | Visual tokens, themes, typography, component guidance                |
+
+### Design Context
+
+- **Register:** `brand` (public web leads; dashboard stays operational).
+- **Personality:** Alegre · Original · Minimalista — product-as-hero, soft depth, airy type, cheerful tone ([dock.cool](https://www.dock.cool/#hero) as reference).
+- **Themes & locales:** Dark + light are first-class; UI copy EN + ES via `@repo/i18n`.
+- **Do not:** neon/glow costume, dense airless layouts, stiff editorial formality, generic stock marketing.
 
 ---
 
@@ -47,7 +56,7 @@ change, create and align an OpenSpec change first:
 
 1. **Follow existing patterns** — match the module layout, layer conventions, and import rules described in [ARCHITECTURE.md](./ARCHITECTURE.md).
 2. **Respect conventions** — naming, no magic strings, pinned deps, and pre-commit hooks per [STYLEGUIDE.md](./STYLEGUIDE.md).
-3. **Honor business rules** — Spanish UI copy, English identifiers, shared validators/types per [DOMAIN.md](./DOMAIN.md).
+3. **Honor business rules** — UI copy in Spanish and English via i18n, English identifiers, shared validators/types per [DOMAIN.md](./DOMAIN.md).
 4. **Minimize scope** — change only what the task requires; do not refactor unrelated code.
 5. **Never edit generated files** — `routeTree.gen.ts` is auto-generated on `pnpm dev` and is in `.gitignore`.
 6. **Lint and format** — all TS/JS must pass **oxlint** and **oxfmt** before committing; pre-commit runs both on staged files.
