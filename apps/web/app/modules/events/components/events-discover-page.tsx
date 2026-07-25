@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { PublicEventResponse } from '@repo/types'
-import { cn } from '@repo/ui'
+import { Card } from '@repo/ui'
 import { PageAtmosphereWash } from '~/modules/common/components/page-atmosphere-wash'
 import { PageHeader } from '~/modules/common/components/page-header'
 import { LANDING_SHELL } from '~/modules/landing/constants/layout'
@@ -172,15 +172,7 @@ export function EventsDiscoverPage() {
             </p>
           </section>
 
-          <section
-            aria-label={t('discover.filters.title')}
-            className={cn(
-              'rounded-control border bg-surface-card p-4 sm:p-5',
-              'transition-colors duration-(--duration-fast) ease-emphasized',
-              'motion-reduce:transition-none',
-              isDirty ? 'border-primary/35' : 'border-hairline/60'
-            )}
-          >
+          <Card variant="gradient" aria-label={t('discover.filters.title')} className="p-4 sm:p-5">
             <EventsDiscoverFiltersPanel
               value={draftFilters}
               onChange={handleDraftChange}
@@ -195,7 +187,7 @@ export function EventsDiscoverPage() {
               showHeading={false}
               showPendingHint
             />
-          </section>
+          </Card>
 
           <EventsDiscoverStatusBar
             appliedFilters={appliedFilters}
