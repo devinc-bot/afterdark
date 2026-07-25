@@ -103,10 +103,10 @@ export function LandingHeader() {
       <div className={LANDING_SHELL}>
         <div
           className={cn(
-            'pointer-events-auto flex h-14 w-full items-center justify-between gap-2 rounded-2xl px-2 transition-[background-color,border-color,box-shadow,backdrop-filter] duration-(--duration-normal) ease-emphasized motion-reduce:transition-none sm:gap-3 sm:px-3',
+            'pointer-events-auto flex h-15 w-full items-center justify-between gap-2 rounded-app-xl px-2 transition-[background-color,border-color,box-shadow,backdrop-filter] duration-(--duration-normal) ease-emphasized motion-reduce:transition-none sm:gap-3 sm:px-4',
             chromeSolid
-              ? 'border border-hairline/40 bg-surface-container-low/70 shadow-(--shadow-glass) backdrop-blur-xl backdrop-saturate-150 supports-[backdrop-filter]:bg-surface-container-low/55'
-              : 'border border-white/15 bg-black/25 shadow-none backdrop-blur-md backdrop-saturate-125 supports-[backdrop-filter]:bg-black/15'
+              ? 'border border-hairline/40 bg-surface-container-low/70 shadow-(--shadow-glass) backdrop-blur-xl backdrop-saturate-150 supports-backdrop-filter:bg-surface-container-low/55'
+              : 'border border-white/15 bg-black/25 shadow-none backdrop-blur-md backdrop-saturate-125 supports-backdrop-filter:bg-black/15'
           )}
         >
           <Link

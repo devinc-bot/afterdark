@@ -68,14 +68,21 @@
   --spacing-margin-desktop: 32px;
 
   /* ── Radius ────────────────────────────────────────────────────── */
-  --radius-xs: 2px;
-  --radius-sm: 4px;
-  --radius: 6px;
-  --radius-md: 6px;
-  --radius-lg: 8px;
-  --radius-xl: 12px;
-  /* Control surfaces (button, input, card, dialog, …). Change here to update all. */
-  --radius-control: var(--radius-xl);
+  /* App radius knob: edit --radius-app and every derived step follows. */
+  --radius-app: 16px;
+  --radius-app-xs: calc(var(--radius-app) - 8px);
+  --radius-app-sm: calc(var(--radius-app) - 4px);
+  --radius-app-lg: calc(var(--radius-app) + 4px);
+  --radius-app-xl: calc(var(--radius-app) + 8px);
+
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius: 8px;
+  --radius-md: var(--radius-app-xs);
+  --radius-lg: var(--radius-app-sm);
+  --radius-xl: var(--radius-app);
+  /* Control surfaces (button, input, card, dialog, …) follow the app knob. */
+  --radius-control: var(--radius-app);
   --radius-pill: 9999px;
   --radius-full: 9999px;
 
@@ -110,7 +117,7 @@
   --color-outline-variant: #44473c;
   --color-surface-tint: #d4e85a;
 
-  --color-primary: #d4e85a;
+  --color-primary: #dcff02;
   --color-on-primary: #2a3208;
   --color-primary-container: #d4e85a;
   --color-on-primary-container: #3d4810;
@@ -293,8 +300,8 @@ html[data-theme='light'] {
   color-scheme: light;
 
   --shadow-glass: 0 8px 28px rgba(28, 27, 30, 0.08);
-  --shadow-primary-glow: 0 0 10px rgba(90, 107, 18, 0.08);
-  --shadow-inner-glow: inset 0 0 6px rgba(90, 107, 18, 0.04);
+  --shadow-primary-glow: 0 0 10px rgba(101, 163, 13, 0.08);
+  --shadow-inner-glow: inset 0 0 6px rgba(101, 163, 13, 0.04);
 
   --color-surface: #f4f5f2;
   --color-surface-dim: #f4f5f2;
@@ -311,11 +318,11 @@ html[data-theme='light'] {
   --color-inverse-on-surface: #e6e7e2;
   --color-outline: #6f7364;
   --color-outline-variant: #c5c8b8;
-  --color-surface-tint: #5a6b12;
+  --color-surface-tint: #65a30d;
 
-  --color-primary: #5a6b12;
+  --color-primary: #65a30d;
   --color-on-primary: #ffffff;
-  --color-primary-container: #eef6a8;
+  --color-primary-container: #84cc16;
   --color-on-primary-container: #1a2004;
   --color-inverse-primary: #d4e85a;
   --color-primary-fixed: #eef6a8;
@@ -355,7 +362,7 @@ html[data-theme='light'] {
   --color-surface-raised: #ffffff;
   --color-surface-strong: rgba(26, 27, 24, 0.04);
   --color-border-default: #c5c9b8;
-  --color-border-strong: #5a6b12;
+  --color-border-strong: #65a30d;
   --color-accent: #c43d18;
 
   --color-background: #f4f5f2;
@@ -365,7 +372,7 @@ html[data-theme='light'] {
   --color-popover: #ffffff;
   --color-popover-foreground: #1a1b18;
   --color-primary-foreground: #ffffff;
-  --color-primary-hover: #4a5514;
+  --color-primary-hover: #4d7c0f;
   --color-secondary-foreground: #5a5b56;
   --color-muted: #eceee8;
   --color-muted-foreground: #55584c;
@@ -374,9 +381,9 @@ html[data-theme='light'] {
   --color-destructive-foreground: #ffffff;
   --color-border: #c5c9b8;
   --color-input: #c5c9b8;
-  --color-ring: #5a6b12;
+  --color-ring: #65a30d;
 
-  --color-chart-1: #5a6b12;
+  --color-chart-1: #84cc16;
   --color-chart-2: #c43d18;
   --color-chart-3: #5a5b56;
   --color-chart-4: #d4e85a;
