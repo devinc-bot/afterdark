@@ -3,7 +3,9 @@ import { useTranslation } from 'react-i18next'
 import { SlidersHorizontal } from 'lucide-react'
 import { Button, Sheet, SheetContent, SheetHeader, SheetTitle } from '@afterdark/ui'
 import type { PublicEventResponse } from '@afterdark/types'
-import { LANDING_HEADING, LANDING_SHELL } from '~/modules/landing/constants/layout'
+import { PageAtmosphereWash } from '~/modules/common/components/page-atmosphere-wash'
+import { PageHeader } from '~/modules/common/components/page-header'
+import { LANDING_SHELL } from '~/modules/landing/constants/layout'
 import { usePublicEventsInfiniteQuery } from '../queries/use-public-events-infinite-query'
 import {
   appliedFiltersKey,
@@ -166,13 +168,9 @@ export function EventsDiscoverPage() {
 
   return (
     <div className={LANDING_SHELL}>
-      <div>
-        <header className="mb-6 max-w-2xl sm:mb-8">
-          <h1 className={LANDING_HEADING}>{t('discover.page.title')}</h1>
-          <p className="mt-2 max-w-prose font-body text-base text-pretty text-on-surface-variant sm:mt-3 sm:text-lg">
-            {t('discover.page.description')}
-          </p>
-        </header>
+      <div className="relative">
+        <PageAtmosphereWash />
+        <PageHeader title={t('discover.page.title')} description={t('discover.page.description')} />
 
         <div className="flex flex-col gap-6 lg:gap-8">
           <section aria-label={t('discover.map.ariaLabel')} className="w-full">
@@ -234,7 +232,7 @@ export function EventsDiscoverPage() {
               </div>
 
               {selectedEvent ? (
-                <div className="mb-6 overflow-hidden rounded-control border border-hairline/50 sm:mb-7">
+                <div className="mb-6 sm:mb-7">
                   <EventsDiscoverSelection event={selectedEvent} onClear={clearMapSelection} />
                 </div>
               ) : null}

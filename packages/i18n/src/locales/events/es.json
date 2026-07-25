@@ -160,7 +160,7 @@
       "loading": "Cargando mapa…"
     },
     "selection": {
-      "clear": "Cerrar",
+      "clear": "Quitar selección",
       "ticketsSoon": "Entradas próximamente",
       "announced": "Seleccionaste {name}."
     }

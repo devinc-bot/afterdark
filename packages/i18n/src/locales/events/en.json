@@ -160,7 +160,7 @@
       "loading": "Loading map…"
     },
     "selection": {
-      "clear": "Close",
+      "clear": "Clear selection",
       "ticketsSoon": "Tickets coming soon",
       "announced": "You selected {name}."
     }

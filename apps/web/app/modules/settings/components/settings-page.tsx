@@ -1,12 +1,11 @@
 import { useTranslation } from 'react-i18next'
 import { AlertTriangle, RefreshCw } from 'lucide-react'
 import { Button, Skeleton } from '@afterdark/ui'
+import { PageAtmosphereWash } from '~/modules/common/components/page-atmosphere-wash'
+import { PageHeader } from '~/modules/common/components/page-header'
 import { LANDING_SHELL } from '~/modules/landing/constants/layout'
 import { ProfileForm } from '~/modules/settings/components/profile-form'
 import { useProfile } from '~/modules/settings/queries/use-profile'
-
-const SETTINGS_HEADING =
-  'font-display text-2xl font-semibold leading-8 tracking-[-0.02em] text-balance sm:text-[1.75rem] sm:leading-9'
 
 function SettingsFormSkeleton() {
   const { t } = useTranslation('settings')
@@ -97,17 +96,9 @@ export function SettingsPage() {
   return (
     <div className={LANDING_SHELL}>
       <div className="relative mx-auto w-full max-w-xl">
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute -inset-x-6 -top-8 h-40 bg-[radial-gradient(ellipse_at_top,oklch(0.72_0.08_320_/_0.07),transparent_70%)] sm:-inset-x-10"
-        />
+        <PageAtmosphereWash className="h-40" />
 
-        <header className="relative mb-8 max-w-prose border-b border-outline-variant/35 pb-6 sm:mb-10 sm:pb-8">
-          <h1 className={SETTINGS_HEADING}>{t('web.page.title')}</h1>
-          <p className="mt-2 max-w-[42ch] text-pretty font-body text-base leading-relaxed text-on-surface-variant sm:mt-3">
-            {t('web.page.description')}
-          </p>
-        </header>
+        <PageHeader title={t('web.page.title')} description={t('web.page.description')} />
 
         <div className="relative">
           {profileQuery.isLoading ? <SettingsFormSkeleton /> : null}
