@@ -65,12 +65,17 @@ typography:
     fontSize: 12px
     fontWeight: '400'
 rounded:
-  xs: 2px
-  sm: 4px
-  md: 6px
-  lg: 8px
-  xl: 12px
-  control: 12px
+  app: 16px
+  app-xs: calc(app - 8px)
+  app-sm: calc(app - 4px)
+  app-lg: calc(app + 4px)
+  app-xl: calc(app + 8px)
+  xs: 4px
+  sm: 6px
+  md: calc(app - 8px)
+  lg: calc(app - 4px)
+  xl: app
+  control: app
   full: 9999px
 spacing:
   '1': 2px
@@ -151,7 +156,7 @@ Error text `#ffb4ab`, error container `#93000a`. Focus ring matches primary.
 
 ### Light mode
 
-`[data-theme="light"]` mirrors the dark surface ramp toward near-white with low chroma on the citrus hue (`#f4f5f2` canvas, white raised surfaces). Primary deepens to `#5a6b12` for contrast on light fills. Prefer surface steps over borders for hierarchy.
+`[data-theme="light"]` mirrors the dark surface ramp toward near-white with low chroma on the citrus hue (`#f4f5f2` canvas, white raised surfaces). Primary fill is `#65a30d` with white on-primary; soft lime `#84cc16` stays on primary-container / chart. Hover deepens to `#4d7c0f`. Prefer surface steps over borders for hierarchy.
 
 ## Typography
 
