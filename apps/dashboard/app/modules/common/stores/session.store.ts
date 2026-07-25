@@ -1,7 +1,7 @@
-import type { SessionResponse } from '@afterdark/types'
+import type { SessionResponse } from '@repo/types'
 import { create } from 'zustand'
-import { i18n } from '@afterdark/i18n/client'
-import { getCookieSync, SESSION_STATUS, type SessionStatus } from '@afterdark/common'
+import { i18n } from '@repo/i18n/client'
+import { getCookieSync, SESSION_STATUS, type SessionStatus } from '@repo/common'
 import { COOKIE_KEYS } from '~/modules/common/constants/cookies'
 import { fetchSession } from '~/modules/common/services/session.service'
 

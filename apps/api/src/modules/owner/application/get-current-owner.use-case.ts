@@ -1,7 +1,7 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common'
-import { findCurrentOwnerByDocumentId } from '@afterdark/db'
-import { USER_ROLE, type CurrentOwnerResponse } from '@afterdark/types'
-import { TranslationService } from '@afterdark/i18n/server'
+import { findCurrentOwnerByDocumentId } from '@repo/db'
+import { USER_ROLE, type CurrentOwnerResponse } from '@repo/types'
+import { TranslationService } from '@repo/i18n/server'
 
 @Injectable()
 export class GetCurrentOwnerUseCase {

@@ -10,7 +10,7 @@
 
 ## Qué hace
 
-`@afterdark/i18n` provee la infraestructura de traducciones compartida para el monorepo: entrega strings localizados a las apps React (`dashboard`, `web`) en cliente y SSR, y al servidor NestJS (`api`) resolviendo el idioma por pedido. Se integra con Zod 4 para que los errores de validación de schemas aparezcan en el idioma activo sin componer mensajes a mano en cada campo.
+`@repo/i18n` provee la infraestructura de traducciones compartida para el monorepo: entrega strings localizados a las apps React (`dashboard`, `web`) en cliente y SSR, y al servidor NestJS (`api`) resolviendo el idioma por pedido. Se integra con Zod 4 para que los errores de validación de schemas aparezcan en el idioma activo sin componer mensajes a mano en cada campo.
 
 ## Por qué
 
@@ -32,7 +32,7 @@ Sin una capa i18n centralizada cada app mantendría su propia lógica de traducc
 ### No incluye
 
 - Traducción de contenido generado por el usuario.
-- Detección de idioma por `Accept-Language` header (se usa cookie `afterdark_lang`).
+- Detección de idioma por `Accept-Language` header (se usa cookie `repo_lang`).
 - Carga de namespaces adicionales por feature (los 5 namespaces cubren todo el alcance actual).
 - Plurales en inglés más allá de `one`/`other`.
 
@@ -42,14 +42,14 @@ Sin una capa i18n centralizada cada app mantendría su propia lógica de traducc
 
 ### Package — sub-path exports
 
-| Sub-path                    | Contenido                                                                                     |
-| --------------------------- | --------------------------------------------------------------------------------------------- |
-| `@afterdark/i18n`           | config, constantes, tipos, utils (zod, language-detector)                                     |
-| `@afterdark/i18n/client`    | `I18nProvider`, `initI18n`, `useTranslation` re-export, `setLanguage`                         |
-| `@afterdark/i18n/server`    | `TranslationService`, `LanguageMiddleware`, `@Language()`, `I18nModule`                       |
-| `@afterdark/i18n/config`    | `LANGUAGE`, `NAMESPACE`, `BASE_I18N_OPTIONS`                                                  |
-| `@afterdark/i18n/constants` | `AUTH_ERROR_CODE`, `INVITATION_ERROR_CODE`, `CLUB_ERROR_CODE`, `VALIDATION_KEY`, `COMMON_KEY` |
-| `@afterdark/i18n/utils/zod` | `installZodI18n`, `createZodErrorMap`                                                         |
+| Sub-path               | Contenido                                                                                     |
+| ---------------------- | --------------------------------------------------------------------------------------------- |
+| `@repo/i18n`           | config, constantes, tipos, utils (zod, language-detector)                                     |
+| `@repo/i18n/client`    | `I18nProvider`, `initI18n`, `useTranslation` re-export, `setLanguage`                         |
+| `@repo/i18n/server`    | `TranslationService`, `LanguageMiddleware`, `@Language()`, `I18nModule`                       |
+| `@repo/i18n/config`    | `LANGUAGE`, `NAMESPACE`, `BASE_I18N_OPTIONS`                                                  |
+| `@repo/i18n/constants` | `AUTH_ERROR_CODE`, `INVITATION_ERROR_CODE`, `CLUB_ERROR_CODE`, `VALIDATION_KEY`, `COMMON_KEY` |
+| `@repo/i18n/utils/zod` | `installZodI18n`, `createZodErrorMap`                                                         |
 
 ### Convención de claves en validators
 
@@ -81,11 +81,11 @@ Cada namespace tiene `es.json` y `en.json`. El script `check:i18n` verifica pari
 
 ```ts
 // Instalar globalmente (en root de cada app)
-import { installZodI18n } from '@afterdark/i18n/utils/zod'
+import { installZodI18n } from '@repo/i18n/utils/zod'
 installZodI18n(t) // t = useTranslation('validation').t
 
 // O por instancia de schema
-import { createZodErrorMap } from '@afterdark/i18n/utils/zod'
+import { createZodErrorMap } from '@repo/i18n/utils/zod'
 schema.parse(data, { errorMap: createZodErrorMap(t) })
 ```
 

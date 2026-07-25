@@ -1,6 +1,6 @@
 import { Link } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
-import { Button } from '@afterdark/ui'
+import { Button } from '@repo/ui'
 import { DASHBOARD_ROUTES } from '../../common/constants/routes'
 
 export function ForgotPasswordUnavailable() {

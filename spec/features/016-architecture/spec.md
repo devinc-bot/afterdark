@@ -12,7 +12,7 @@
 
 ## Qué hace
 
-Reorganiza `@afterdark/types` separando **enums y constantes de dominio** (`domain.ts`) de **interfaces y tipos de transferencia** (`src/dto/`), organizados por dominio de negocio.
+Reorganiza `@repo/types` separando **enums y constantes de dominio** (`domain.ts`) de **interfaces y tipos de transferencia** (`src/dto/`), organizados por dominio de negocio.
 
 ## Por qué
 
@@ -33,7 +33,7 @@ Hoy `api.ts` concentra todos los response types y `domain.ts` mezcla enums con e
 ### No incluye
 
 - Cambios en `apps/api`, `apps/dashboard` ni `apps/web` (salvo fallo de `type-check`).
-- Refactor de `@afterdark/validators`, `@afterdark/db` o formatters.
+- Refactor de `@repo/validators`, `@repo/db` o formatters.
 - Otras iniciativas de arquitectura del monorepo (features separadas).
 
 ---
@@ -53,13 +53,13 @@ Hoy `api.ts` concentra todos los response types y `domain.ts` mezcla enums con e
 
 ### US-2: Sin breaking change en consumidores
 
-**Como** consumidor de `@afterdark/types` en API o apps  
+**Como** consumidor de `@repo/types` en API o apps  
 **Quiero** seguir importando tipos desde el barrel del paquete  
 **Para** no tocar decenas de archivos en esta entrega
 
 **Criterios de aceptación**
 
-- [ ] **Dado** un import existente `import { ClubResponse } from '@afterdark/types'`, **cuando** corro `pnpm type-check`, **entonces** compila sin cambios en el archivo consumidor.
+- [ ] **Dado** un import existente `import { ClubResponse } from '@repo/types'`, **cuando** corro `pnpm type-check`, **entonces** compila sin cambios en el archivo consumidor.
 - [ ] **Dado** la migración completa, **cuando** ejecuto `pnpm type-check` en la raíz, **entonces** no hay errores de tipos.
 
 ### US-3: Limpieza de legacy
@@ -115,7 +115,7 @@ Sin cambios de endpoints, pantallas ni esquema de base de datos.
 ## Reglas de negocio
 
 - **Separación domain vs dto:** si es un `interface` o type alias de shape de datos → `dto/`; si es enum/const de dominio → `domain.ts`.
-- **Barrel público:** `packages/types/src/index.ts` re-exporta todo; no se expone path `@afterdark/types/dto/...` a consumidores en esta entrega.
+- **Barrel público:** `packages/types/src/index.ts` re-exporta todo; no se expone path `@repo/types/dto/...` a consumidores en esta entrega.
 - **Imports internos en dto:** los archivos `dto/*.ts` importan enums desde `../domain.ts`.
 - **Legacy `Property`:** se mantiene temporalmente en `dto/user.ts` con comentario `@deprecated` o nota JSDoc; eliminación cuando se retire el módulo `properties` de `web`.
 - **Sin `CurrentUserResponse`:** usar `SessionResponse` directamente.

@@ -5,8 +5,8 @@ import type {
   JwtPayload,
   OwnerSaleResponse,
   PaginatedResponse,
-} from '@afterdark/types'
-import { USER_ROLE } from '@afterdark/types'
+} from '@repo/types'
+import { USER_ROLE } from '@repo/types'
 import {
   dashboardKpiQuerySchema,
   dashboardSalesAnalyticsQuerySchema,
@@ -14,7 +14,7 @@ import {
   type DashboardKpiQueryInput,
   type DashboardSalesAnalyticsQueryInput,
   type ListOwnerSalesQueryInput,
-} from '@afterdark/validators'
+} from '@repo/validators'
 import { CurrentUser } from '../common/decorators/current-user.decorator'
 import { Roles } from '../common/decorators/roles.decorator'
 import { JwtAuthGuard } from '../common/guards/jwt-auth.guard'

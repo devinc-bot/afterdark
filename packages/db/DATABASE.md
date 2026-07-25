@@ -1,6 +1,6 @@
-# DATABASE.md — afterdark
+# DATABASE.md — Repo
 
-Documentación del esquema y la capa de acceso a datos del monorepo **afterdark**, alineada con `packages/db/src/schema/` y `packages/db/src/repositories/`.
+Documentación del esquema y la capa de acceso a datos del monorepo **Repo**, alineada con `packages/db/src/schema/` y `packages/db/src/repositories/`.
 
 ---
 
@@ -11,13 +11,13 @@ Documentación del esquema y la capa de acceso a datos del monorepo **afterdark*
 | Motor        | SQLite (libSQL)                                                         |
 | Hosting      | [Turso](https://turso.tech/) en producción; archivo local en desarrollo |
 | ORM          | [Drizzle ORM](https://orm.drizzle.team/)                                |
-| Paquete      | `@afterdark/db`                                                         |
+| Paquete      | `@repo/db`                                                              |
 | Schemas      | `packages/db/src/schema/`                                               |
 | Repositorios | `packages/db/src/repositories/`                                         |
 | Migraciones  | `packages/db/src/migrations/`                                           |
 | Tablas       | 23                                                                      |
 
-La API (`apps/api`) importa **repositorios**, tipos y el cliente desde `@afterdark/db`. Las consultas Drizzle viven en `repositories/`; los servicios NestJS solo orquestan reglas de negocio y excepciones HTTP. No hay TypeORM ni entidades con decoradores.
+La API (`apps/api`) importa **repositorios**, tipos y el cliente desde `@repo/db`. Las consultas Drizzle viven en `repositories/`; los servicios NestJS solo orquestan reglas de negocio y excepciones HTTP. No hay TypeORM ni entidades con decoradores.
 
 ---
 
@@ -94,16 +94,17 @@ Nota: `staff_invitations.role` solo admite `user`, `owner` y `staff` (no `admin`
 
 ### Tablas de enlace (`*_lnk`)
 
-| Tabla                 | Cardinalidad | Descripción       |
-| --------------------- | ------------ | ----------------- |
-| `user_accounts_lnk`   | N:1 por lado | Usuario ↔ cuenta  |
-| `owner_account_lnk`   | N:1 por lado | Owner ↔ cuenta    |
-| `staff_account_lnk`   | N:1 por lado | Staff ↔ cuenta    |
-| `account_role_lnk`    | 1:1          | Cuenta ↔ rol      |
-| `owner_addresses_lnk` | 1:1          | Owner ↔ domicilio |
-| `user_assets_lnk`     | N:M          | Usuario ↔ asset   |
-| `club_addresses_lnk`  | 1:1          | Club ↔ domicilio  |
-| `club_assets_lnk`     | N:M          | Club ↔ asset      |
+| Tabla                    | Cardinalidad | Descripción          |
+| ------------------------ | ------------ | -------------------- |
+| `user_accounts_lnk`      | N:1 por lado | Usuario ↔ cuenta     |
+| `owner_account_lnk`      | N:1 por lado | Owner ↔ cuenta       |
+| `staff_account_lnk`      | N:1 por lado | Staff ↔ cuenta       |
+| `account_role_lnk`       | 1:1          | Cuenta ↔ rol         |
+| `owner_addresses_lnk`    | 1:1          | Owner ↔ domicilio    |
+| `user_assets_lnk`        | N:M          | Usuario ↔ asset      |
+| `club_addresses_lnk`     | 1:1          | Club ↔ domicilio     |
+| `club_assets_lnk`        | N:M          | Club ↔ asset         |
+| `location_addresses_lnk` | 1:1          | Location ↔ domicilio |
 
 ---
 
@@ -308,12 +309,23 @@ Regla de negocio (API): solo un usuario con rol `owner` puede crear invitaciones
 
 #### `addresses` — `address.ts`
 
-| Columna (TS)   | SQL             | Tipo | Null |
-| -------------- | --------------- | ---- | ---- |
-| `address`      | `address`       | text | NO   |
-| `streetNumber` | `street_number` | text | NO   |
-| `state`        | `state`         | text | NO   |
-| `city`         | `city`          | text | NO   |
+| Columna (TS)   | SQL             | Tipo | Null | Notas                                       |
+| -------------- | --------------- | ---- | ---- | ------------------------------------------- |
+| `address`      | `address`       | text | NO   | —                                           |
+| `streetNumber` | `street_number` | text | NO   | —                                           |
+| `state`        | `state`         | text | NO   | Provincia / estado                          |
+| `city`         | `city`          | text | NO   | —                                           |
+| `latitude`     | `latitude`      | real | SÍ   | Añadido en `0020`; markers del mapa público |
+| `longitude`    | `longitude`     | real | SÍ   | Añadido en `0020`; markers del mapa público |
+
+Join de discovery pública (`findPublishedEventsPaginated`): `events` → `locations` → `location_addresses_lnk` → `addresses`. **No hace falta migración nueva** para coords; si `latitude`/`longitude` son null, el evento sigue listándose y puede omitir marker.
+
+#### `location_addresses_lnk` — `location-address-lnk.ts`
+
+| Columna (TS) | SQL           | FK →           | Notas                             |
+| ------------ | ------------- | -------------- | --------------------------------- |
+| `locationId` | `location_id` | `locations.id` | UNIQUE (1 domicilio por location) |
+| `addressId`  | `address_id`  | `addresses.id` | UNIQUE                            |
 
 #### `club_addresses_lnk` — `club-address-lnk.ts`
 
@@ -493,6 +505,7 @@ Historial en `src/migrations/meta/_journal.json`:
 | 0015 | `0015_friendly_kabuki.sql`      | `payments` → `orders`; +`quantity`, `provider`, `metadata`; −`club_id` |
 | 0016 | `0016_bent_stranger.sql`        | Tabla `tickets_sold` (`order_id`, `qr_code`)                           |
 | 0017 | `0017_grey_pixie.sql`           | Tabla `password_reset_tokens`                                          |
+| 0020 | `0020_equal_shaman.sql`         | `addresses`: +`latitude`, +`longitude`                                 |
 
 ### Comandos (desde `packages/db`)
 
@@ -549,7 +562,7 @@ Capa de acceso a datos en `src/repositories/`. Cada archivo agrupa las operacion
 ### API (`apps/api`) — preferir repositorios
 
 ```ts
-import { findClubByDocumentId, createClubWithAddress } from '@afterdark/db'
+import { findClubByDocumentId, createClubWithAddress } from '@repo/db'
 
 const club = await findClubByDocumentId(documentId)
 if (!club) throw new NotFoundException(CLUB_MESSAGE.NOT_FOUND)
@@ -560,7 +573,7 @@ const row = await createClubWithAddress(ownerId, input)
 ### Acceso directo a `db` (seeds, scripts, casos excepcionales)
 
 ```ts
-import { db, users, clubs, staffInvitations } from '@afterdark/db'
+import { db, users, clubs, staffInvitations } from '@repo/db'
 import { eq, and } from 'drizzle-orm'
 
 // Buscar por documentId (API / JWT)
@@ -574,7 +587,7 @@ const [club] = await db
   .limit(1)
 ```
 
-Transacciones: tipo `Transaction` exportado desde `@afterdark/db`. Los repositorios que componen varias escrituras encapsulan `db.transaction()` internamente o aceptan `tx: Transaction` como parámetro.
+Transacciones: tipo `Transaction` exportado desde `@repo/db`. Los repositorios que componen varias escrituras encapsulan `db.transaction()` internamente o aceptan `tx: Transaction` como parámetro.
 
 ---
 

@@ -1,4 +1,4 @@
-import { cn } from '@afterdark/ui'
+import { cn } from '@repo/ui'
 import { Home, Ticket, User } from 'lucide-react'
 import QRCode from 'react-qr-code'
 
@@ -230,7 +230,7 @@ function MobileBottomNav() {
         </button>
         <button
           type="button"
-          className="rounded-full border border-primary/50 bg-primary/10 p-3 text-primary shadow-primary-glow"
+          className="rounded-full border border-primary/40 bg-primary/10 p-3 text-primary"
           aria-label="Tickets"
           aria-current="page"
           tabIndex={-1}

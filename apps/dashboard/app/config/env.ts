@@ -1,4 +1,4 @@
-import { clientApiEnvSchema } from '@afterdark/validators'
+import { clientApiEnvSchema } from '@repo/validators'
 
 const envResult = clientApiEnvSchema.safeParse(import.meta.env)
 

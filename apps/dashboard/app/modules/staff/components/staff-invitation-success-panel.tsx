@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Button, Input, toast } from '@afterdark/ui'
+import { Button, Input, toast } from '@repo/ui'
 import { Check, Copy } from 'lucide-react'
-import { STAFF_INVITATION_EXPIRY_OPTIONS } from '@afterdark/validators'
+import { STAFF_INVITATION_EXPIRY_OPTIONS } from '@repo/validators'
 import type { StaffInvitationSuccess } from '~/modules/staff/components/staff-user-form'
 import { formatInvitationTimeRemaining } from '~/modules/staff/utils/staff-invitation.utils'
 

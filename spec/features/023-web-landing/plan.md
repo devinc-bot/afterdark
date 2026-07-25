@@ -37,7 +37,7 @@ Sin cambios en validators, types, db ni api.
 3. Detectar token con `getCookieSync({ name: COOKIE_KEYS.accessToken })` (mismo patrón que el store).
 4. Header:
    - Guest: Cómo funciona / Noches + Login / Register
-   - Auth: Eventos / Tickets (span/`aria-disabled`) + `Avatar` de `@afterdark/ui` (imagen o iniciales)
+   - Auth: Eventos / Tickets (span/`aria-disabled`) + `Avatar` de `@repo/ui` (imagen o iniciales)
 5. Hero + closing: renderizar CTAs solo si `showAuthCtas`.
 6. Patrón de avatar alineado al dashboard (`Avatar` / `AvatarImage` / `AvatarFallback`).
 

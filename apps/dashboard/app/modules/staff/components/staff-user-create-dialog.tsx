@@ -7,7 +7,7 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from '@afterdark/ui'
+} from '@repo/ui'
 import { UserPlus } from 'lucide-react'
 import { StaffInvitationSuccessPanel } from '~/modules/staff/components/staff-invitation-success-panel'
 import {

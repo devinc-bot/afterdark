@@ -35,7 +35,12 @@ export interface CurrentStaffResponse extends BaseProfileResponse {
   status: StaffStatus
 }
 
-export type SettingsResponse = CurrentOwnerResponse | CurrentStaffResponse
+export interface CurrentUserResponse extends BaseProfileResponse {
+  role: typeof USER_ROLE.USER
+  phone: string
+}
+
+export type SettingsResponse = CurrentOwnerResponse | CurrentStaffResponse | CurrentUserResponse
 
 export interface CurrentUserAddress {
   address: string

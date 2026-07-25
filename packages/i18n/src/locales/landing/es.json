@@ -1,5 +1,5 @@
 {
-  "metaTitle": "{appName} · eventos nocturnos",
+  "metaTitle": "{appName} · eventos y entradas",
   "skipToContent": "Ir al contenido",
   "nav": {
     "brand": "{appName}",
@@ -7,41 +7,45 @@
     "login": "Iniciar sesión",
     "register": "Crear cuenta",
     "how": "Cómo funciona",
-    "clarity": "Claridad",
+    "clarity": "Entradas",
     "events": "Eventos",
-    "tickets": "Tickets",
+    "publish": "¿Organizás?",
+    "tickets": "Entradas",
     "accountAria": "Cuenta de {name}",
     "openMenu": "Abrir menú",
-    "mobileAriaLabel": "Menú de navegación"
+    "closeMenu": "Cerrar menú",
+    "mobileAriaLabel": "Menú de navegación",
+    "ticketsSoon": "Entradas (próximamente)",
+    "language": "Idioma"
   },
   "hero": {
-    "headline": "La noche, antes de que empiece.",
-    "support": "Descubrí eventos, asegurá tu entrada y llegá con todo resuelto.",
+    "headline": "Tu entrada, lista antes de llegar.",
+    "support": "Descubrí eventos, reservá tu lugar y llegá con todo resuelto.",
     "ctaPrimary": "Crear cuenta",
     "ctaSecondary": "Iniciar sesión",
-    "imageAlt": "Público bajo luces en un evento nocturno"
+    "imageAlt": "Público disfrutando de un evento en vivo"
   },
   "about": {
-    "headline": "La plataforma que deja la noche en claro.",
-    "body": "{appNameDisplay} une clubes y público en una sola experiencia: eventos reales, entradas sin ambigüedad y una interfaz que siente la noche sin disfrazarla de flyer.",
+    "headline": "Eventos claros. Entradas sin vueltas.",
+    "body": "{appNameDisplay} une ubicaciones y público en una sola experiencia: fechas reales, entradas entendibles y una interfaz limpia para decidir con confianza.",
     "imageAlt": "Escenario iluminado durante un show en vivo"
   },
   "atmosphere": {
-    "eyebrow": "La noche, sin disfraz",
-    "quote": "Menos flyer. Más certeza.",
-    "support": "Entradas claras, fechas reales y una agenda que se lee en segundos — antes de que suene el primer drop.",
-    "imageAlt": "Público con las manos en el aire en un show nocturno"
+    "eyebrow": "Sin ruido de más",
+    "quote": "Menos confusión. Más ganas de ir.",
+    "support": "Entradas claras, fechas reales y una agenda que se lee en segundos — antes de salir de casa.",
+    "imageAlt": "Público con las manos en el aire en un show"
   },
   "how": {
     "headline": "Tres pasos. Sin ruido.",
     "steps": {
       "1": {
         "title": "Creá tu cuenta",
-        "body": "Registrate una vez. Después, cada noche queda a un toque."
+        "body": "Registrate una vez. Después, cada evento queda a un toque."
       },
       "2": {
-        "title": "Elegí la noche",
-        "body": "Mirás fechas, clubes y entradas con la información que importa."
+        "title": "Elegí el evento",
+        "body": "Mirás fechas, ubicaciones y entradas con la información que importa."
       },
       "3": {
         "title": "Entrada lista",
@@ -50,32 +54,32 @@
     }
   },
   "clarity": {
-    "headline": "Lo que importa, al frente.",
-    "support": "Sin ruido visual. Solo lo que necesitás para decidir y llegar.",
+    "headline": "Entrada, puerta y agenda — sin letra chica.",
+    "support": "Lo que necesitás para decidir y llegar, al frente.",
     "items": {
       "ticket": {
-        "title": "Entrada inequívoca",
-        "body": "Tipo, precio y disponibilidad en un solo lugar. Sin letras chicas escondidas."
+        "title": "Entrada clara",
+        "body": "Tipo, precio y disponibilidad en un solo lugar. Sin sorpresas en la fila."
       },
       "secure": {
-        "title": "Acceso con respaldo",
-        "body": "Confirmación clara y QR listo para la puerta. Menos fricción en la fila."
+        "title": "QR listo para la puerta",
+        "body": "Confirmación clara y código listo cuando llegás. Menos fricción al entrar."
       },
       "time": {
-        "title": "Agenda a tiempo",
-        "body": "Fechas, horarios y clubes que se leen rápido — cuando todavía hay lugar."
+        "title": "Fechas que se leen rápido",
+        "body": "Horarios y ubicaciones a la vista — mientras todavía hay lugar."
       }
     }
   },
   "pulse": {
-    "eyebrow": "El ritmo de la plataforma",
-    "headline": "Hecha para la noche que ya está en marcha.",
-    "body": "Afterdark no inventa la escena: la ordena. Descubrís, elegís y asegurás tu lugar sin perder el clima.",
+    "eyebrow": "Hecha para ir",
+    "headline": "Para el evento que querés vivir.",
+    "body": "{appNameDisplay} no inventa la experiencia: la ordena. Descubrís, elegís y asegurás tu lugar sin perder el ritmo.",
     "imageAlt": "Manos del público levantadas frente al escenario",
     "stats": {
       "nights": {
         "label": "Enfoque",
-        "value": "Noches reales"
+        "value": "Eventos reales"
       },
       "focus": {
         "label": "Promesa",
@@ -84,44 +88,60 @@
     }
   },
   "events": {
-    "headline": "Próximos eventos",
-    "support": "Una muestra editorial. Pronto: agenda real desde la plataforma.",
+    "headline": "La agenda aún no abrió",
+    "support": "Cuando haya eventos publicados, van a vivir acá. Creá tu cuenta para estar listo el día que salga la primera fecha.",
+    "cta": "Crear cuenta",
+    "previewAria": "Ambiente de eventos en vivo — sin fechas publicadas todavía",
     "items": {
       "1": {
-        "date": "Vie 18 jul",
-        "title": "Pulso",
-        "venue": "Club Nómina",
         "imageAlt": "Escenario con luces fuertes en un show en vivo"
       },
       "2": {
-        "date": "Sáb 19 jul",
-        "title": "Bajo la línea",
-        "venue": "Mármol",
         "imageAlt": "Público en un festival bajo luces de color"
       },
       "3": {
-        "date": "Jue 24 jul",
-        "title": "Residencia",
-        "venue": "Casa Norte",
         "imageAlt": "Concierto con multitud frente al escenario"
       }
     }
   },
   "closing": {
-    "headline": "Esta noche ya tiene nombre.",
+    "headline": "Tu próximo evento empieza acá.",
     "support": "Creá tu cuenta y entrá cuando la agenda abra del todo.",
     "cta": "Crear cuenta"
   },
+  "organizers": {
+    "kicker": "Para quien organiza",
+    "headline": "Publicá ubicaciones, eventos y entradas.",
+    "support": "El panel de Repo es para dueños y staff: crear ubicaciones, armar la agenda y vender entradas sin ruido.",
+    "cta": "Ir al panel",
+    "hint": "Se abre el panel de organización en otra pestaña."
+  },
   "footer": {
-    "tagline": "Eventos nocturnos, con precisión.",
+    "tagline": "Eventos y entradas, con claridad.",
     "explore": "Explorar",
+    "publish": "¿Organizás?",
+    "publishTitle": "Organizadores",
+    "publishBody": "Gestioná ubicaciones, eventos y entradas desde el panel.",
+    "publishCta": "Abrir panel",
     "navAria": "Enlaces del pie de página",
-    "madeFor": "Hecha para que disfrutes de un evento inolvidable.",
+    "madeFor": "Hecha para que disfrutes cada evento con tranquilidad.",
     "rights": "© {year} {appName}",
     "social": {
       "title": "Seguinos",
       "instagram": "Instagram de {appName}",
       "facebook": "Facebook de {appName}"
+    }
+  },
+  "userMenu": {
+    "settings": "Perfil",
+    "signOut": "Cerrar sesión",
+    "fallbackName": "Usuario",
+    "signOutDialog": {
+      "title": "Cerrar sesión",
+      "description": "¿Querés salir? Vas a tener que iniciar sesión de nuevo para volver.",
+      "cancel": "Cancelar",
+      "confirm": "Cerrar sesión",
+      "loading": "Cerrando sesión…"
     }
   }
 }

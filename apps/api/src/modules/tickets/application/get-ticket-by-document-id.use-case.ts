@@ -1,7 +1,7 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common'
-import { findTicketWithRelationsOwnedByOwner } from '@afterdark/db'
-import { TranslationService } from '@afterdark/i18n/server'
-import type { TicketResponse } from '@afterdark/types'
+import { findTicketWithRelationsOwnedByOwner } from '@repo/db'
+import { TranslationService } from '@repo/i18n/server'
+import type { TicketResponse } from '@repo/types'
 import { toTicketResponse } from '../mappers/tickets.mapper'
 
 @Injectable()

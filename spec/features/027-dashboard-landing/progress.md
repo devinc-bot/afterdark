@@ -21,15 +21,15 @@ Estados: `pending` · `in_progress` · `done`
 
 - **Tipo:** landing pública de marketing para dueños de clubes (pre-login). Explica el producto e invita a crear cuenta / iniciar sesión. Vive en la ruta pública `/` del dashboard, estilo `023-web-landing` pero orientada al negocio.
 - **Título / slug:** "Landing del dashboard" / `dashboard-landing` (fila 026 del roadmap).
-- **Apps:** solo `dashboard` (+ copy en `@afterdark/i18n`).
+- **Apps:** solo `dashboard` (+ copy en `@repo/i18n`).
 - **Depende de:** `001-auth-sessions` (CTAs login/registro + estado de sesión). Referencia de estilo: `023-web-landing`.
 
 ### Fase 2 — Comportamiento y alcance
 
 - **Dueño autenticado en `/`:** redirige a `/dashboard`; la landing es solo para visitantes sin sesión.
 - **Secciones:** hero, beneficios/features, cómo funciona, métricas/prueba social, FAQ, cierre con CTA final, footer.
-- **Estilo:** diseño propio sobrio con `@afterdark/ui`; sin video/animaciones pesadas.
-- **i18n:** ES + EN vía `@afterdark/i18n`.
+- **Estilo:** diseño propio sobrio con `@repo/ui`; sin video/animaciones pesadas.
+- **i18n:** ES + EN vía `@repo/i18n`.
 - **Fuera de alcance:** datos reales, video pesado, blog/precios reales, rutas nuevas más allá de `/`, cambios en el panel autenticado.
 
 ### Fase 3 — User stories

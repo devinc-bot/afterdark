@@ -1,8 +1,8 @@
 import { useTranslation } from 'react-i18next'
-import { Button } from '@afterdark/ui'
+import { Button } from '@repo/ui'
 import { ScanLine } from 'lucide-react'
 import { PageLayout } from '~/modules/common/components/page-layout'
-import { usePageTitle } from '@afterdark/ui'
+import { usePageTitle } from '@repo/ui'
 import { AttendeeRecords } from '~/modules/staff-panel/components/attendee-records'
 import { ATTENDEE_RECORDS_MOCK } from '~/modules/staff-panel/constants/attendees.mock'
 

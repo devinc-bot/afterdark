@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next'
+import { AppLogo } from '@repo/ui'
 import { handleSectionNavClick } from '../utils/scroll-to-section.utils'
 
 const FOOTER_GROUPS = [
@@ -32,12 +33,7 @@ export function LandingFooter() {
       <div className="mx-auto grid w-full max-w-6xl gap-10 px-margin-mobile py-[clamp(3rem,6vw,4.5rem)] md:grid-cols-12 md:px-margin-desktop">
         <div className="md:col-span-4">
           <div className="flex items-center gap-2">
-            <img
-              src="/landing/logo.png"
-              alt=""
-              aria-hidden="true"
-              className="size-12 object-contain"
-            />
+            <AppLogo size="xl" />
             <span className="font-display text-lg font-bold tracking-tight text-on-surface">
               {t('header.brand')}
             </span>

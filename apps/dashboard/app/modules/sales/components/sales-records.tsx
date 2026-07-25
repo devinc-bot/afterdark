@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
-import { TICKET_TYPE, type OwnerSaleResponse } from '@afterdark/types'
+import { TICKET_TYPE, type OwnerSaleResponse } from '@repo/types'
 import {
   Button,
   Card,
@@ -19,7 +19,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@afterdark/ui'
+} from '@repo/ui'
 import { formatSaleAmount, formatSaleDateTime } from '~/modules/sales/utils/sales.formatter'
 
 export type SalesRecordsPagination = {

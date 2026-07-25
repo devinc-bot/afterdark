@@ -5,11 +5,11 @@
 ## Orden de capas
 
 ```text
-1. @afterdark/validators (+ types DTO)
-2. @afterdark/types
+1. @repo/validators (+ types DTO)
+2. @repo/types
 3. packages/db (repository nuevos; schema orders ya existe)
 4. apps/api dashboard (controller + service method o use case)
-5. @afterdark/common API_ROUTES
+5. @repo/common API_ROUTES
 6. apps/dashboard (module sales → route → sidebar + role-routes + i18n)
 ```
 

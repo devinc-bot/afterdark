@@ -7,7 +7,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@afterdark/ui'
+} from '@repo/ui'
 import type { EventRecordItem } from '~/modules/events/components/event-record'
 
 export type EventRemoveDialogProps = {

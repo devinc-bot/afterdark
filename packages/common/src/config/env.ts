@@ -1,4 +1,4 @@
-import { clientApiEnvSchema } from '@afterdark/validators'
+import { clientApiEnvSchema } from '@repo/validators'
 
 function getImportMetaEnv(): Record<string, unknown> {
   return (import.meta as { env?: Record<string, unknown> }).env ?? {}

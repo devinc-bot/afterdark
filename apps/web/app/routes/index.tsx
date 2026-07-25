@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { usePageTitle } from '@afterdark/ui'
+import { usePageTitle } from '@repo/ui'
 import { LandingPage } from '~/modules/landing/components/landing-page'
 
 export const Route = createFileRoute('/')({

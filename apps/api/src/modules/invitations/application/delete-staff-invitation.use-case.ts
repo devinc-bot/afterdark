@@ -5,9 +5,9 @@ import {
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common'
-import { deleteStaffInvitationById, findStaffInvitationByDocumentIdForOwner } from '@afterdark/db'
-import { TranslationService } from '@afterdark/i18n/server'
-import { STAFF_INVITATION_STATUS } from '@afterdark/types'
+import { deleteStaffInvitationById, findStaffInvitationByDocumentIdForOwner } from '@repo/db'
+import { TranslationService } from '@repo/i18n/server'
+import { STAFF_INVITATION_STATUS } from '@repo/types'
 import { InvitationOwnerService } from './services/invitation-owner.service'
 
 @Injectable()

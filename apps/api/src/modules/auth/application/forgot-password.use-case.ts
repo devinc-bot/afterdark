@@ -5,11 +5,11 @@ import {
   createPasswordResetToken,
   findAuthAccountByEmail,
   invalidatePendingPasswordResetTokensForAccount,
-} from '@afterdark/db'
-import { AUTH_ERROR_CODE } from '@afterdark/i18n'
-import { TranslationService } from '@afterdark/i18n/server'
-import { USER_ROLE, type UserRole } from '@afterdark/types'
-import type { ForgotPasswordInput } from '@afterdark/validators'
+} from '@repo/db'
+import { AUTH_ERROR_CODE } from '@repo/i18n'
+import { TranslationService } from '@repo/i18n/server'
+import { USER_ROLE, type UserRole } from '@repo/types'
+import type { ForgotPasswordInput } from '@repo/validators'
 import { SendPasswordResetUseCase } from '../../mail'
 import { ENV } from '../../common/config/env'
 import {
@@ -17,7 +17,7 @@ import {
   PASSWORD_RESET_TOKEN_TTL_MINUTES,
 } from '../auth.constants'
 import { buildPasswordResetPayload } from '../utils/password-reset.utils'
-import { CLIENT_ROUTES } from '@afterdark/common'
+import { CLIENT_ROUTES } from '@repo/common'
 
 const PASSWORD_RESET_ROLES = new Set<UserRole>([USER_ROLE.USER, USER_ROLE.OWNER, USER_ROLE.STAFF])
 

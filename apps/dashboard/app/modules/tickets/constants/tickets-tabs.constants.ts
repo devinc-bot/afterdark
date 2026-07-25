@@ -1,4 +1,4 @@
-import { TICKET_STATUS } from '@afterdark/types'
+import { TICKET_STATUS } from '@repo/types'
 
 export const TICKET_TAB = {
   ACTIVE: TICKET_STATUS.ACTIVE,

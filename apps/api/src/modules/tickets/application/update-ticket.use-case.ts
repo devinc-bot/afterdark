@@ -3,10 +3,10 @@ import {
   findEventOwnedByOwnerDocumentId,
   findTicketWithRelationsOwnedByOwner,
   updateTicketByDocumentId,
-} from '@afterdark/db'
-import { TranslationService } from '@afterdark/i18n/server'
-import type { TicketResponse } from '@afterdark/types'
-import type { UpdateTicketInput } from '@afterdark/validators'
+} from '@repo/db'
+import { TranslationService } from '@repo/i18n/server'
+import type { TicketResponse } from '@repo/types'
+import type { UpdateTicketInput } from '@repo/validators'
 import { toTicketResponse, toTicketUpsertInput } from '../mappers/tickets.mapper'
 
 @Injectable()

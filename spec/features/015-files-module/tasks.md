@@ -11,8 +11,8 @@
 
 ## Shared packages
 
-- [ ] Schemas en `@afterdark/validators` (si aplica)
-- [ ] Códigos/mensajes en `@afterdark/i18n` (si aplica)
+- [ ] Schemas en `@repo/validators` (si aplica)
+- [ ] Códigos/mensajes en `@repo/i18n` (si aplica)
 
 ## API
 

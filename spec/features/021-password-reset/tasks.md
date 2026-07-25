@@ -11,8 +11,8 @@
 
 ## Shared packages
 
-- [x] `forgotPasswordSchema` + `resetPasswordSchema` en `@afterdark/validators`
-- [x] Rutas en `API_ROUTES.auth` (`@afterdark/common`)
+- [x] `forgotPasswordSchema` + `resetPasswordSchema` en `@repo/validators`
+- [x] Rutas en `API_ROUTES.auth` (`@repo/common`)
 - [x] Copy i18n `auth` (es/en) + error token inválido
 - [x] Schema Drizzle `password_reset_tokens`
 - [x] Migración generada y aplicada

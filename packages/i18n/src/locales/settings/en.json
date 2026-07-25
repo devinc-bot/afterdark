@@ -38,7 +38,7 @@
       "address": "Address",
       "addressDescription": "Where you live. Optional.",
       "account": "Account",
-      "accountDescription": "How you sign in to Afterdark."
+      "accountDescription": "How you sign in to {appNameDisplay}."
     },
     "profile": {
       "changePhoto": "Change photo",
@@ -71,7 +71,7 @@
       "profile": "Profile",
       "profileDescription": "Your personal and contact information.",
       "account": "Account",
-      "accountDescription": "How you sign in to Afterdark."
+      "accountDescription": "How you sign in to {appNameDisplay}."
     },
     "profile": {
       "name": "First name",
@@ -81,5 +81,38 @@
       "emailHint": "To change your email, contact support.",
       "avatarFallback": "User"
     }
+  },
+  "web": {
+    "page": {
+      "title": "Profile",
+      "metaTitle": "Profile · {appName}",
+      "description": "Your name, phone, and account email."
+    },
+    "profile": {
+      "avatarFallback": "User"
+    },
+    "form": {
+      "name": "First name",
+      "lastName": "Last name",
+      "phone": "Phone",
+      "email": "Email address",
+      "emailHint": "To change your email, <supportLink>write to {{supportEmail}}</supportLink>.",
+      "supportEmail": "soporte@eventflow.app",
+      "emailSupportSubject": "Email change request"
+    },
+    "actions": {
+      "save": "Save changes",
+      "saving": "Saving…",
+      "retry": "Retry",
+      "dirty": "You have unsaved changes.",
+      "clean": "No changes"
+    },
+    "messages": {
+      "saveSuccess": "Done. Your profile is up to date.",
+      "saveError": "We couldn't save. Please try again.",
+      "loadErrorTitle": "We couldn't load your profile",
+      "loadError": "We couldn't load your profile. Try again."
+    },
+    "loading": "Loading profile…"
   }
 }

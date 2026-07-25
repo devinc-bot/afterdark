@@ -1,7 +1,7 @@
 import type { Transaction } from '../../client.ts'
 import { userAccountsLnk } from '../../schema/user-account-lnk.ts'
 import { users } from '../../schema/user.ts'
-import type { UserProfileSeed } from '@afterdark/types'
+import type { UserProfileSeed } from '@repo/types'
 
 export async function createUserWithAccountLink(
   tx: Transaction,

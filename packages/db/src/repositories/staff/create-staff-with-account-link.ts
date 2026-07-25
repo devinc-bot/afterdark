@@ -1,7 +1,7 @@
 import type { Transaction } from '../../client.ts'
 import { staff } from '../../schema/staff.ts'
 import { staffAccountsLnk } from '../../schema/staff-account-lnk.ts'
-import type { StaffProfileSeed } from '@afterdark/types'
+import type { StaffProfileSeed } from '@repo/types'
 
 export async function createStaffWithAccountLink(
   tx: Transaction,

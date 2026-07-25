@@ -17,7 +17,7 @@ Relevant existing code:
 - Make the first-run setup path obvious via a panel tutorial alert with a CTA.
 - Chain the creation flow: location create → `/events/new`, event create → `/tickets/new`.
 - Add a `/tickets/new` full-page route reusing the existing ticket form fields/validation.
-- Keep all new copy in Spanish and sourced from `@afterdark/i18n`.
+- Keep all new copy in Spanish and sourced from `@repo/i18n`.
 
 **Non-Goals:**
 

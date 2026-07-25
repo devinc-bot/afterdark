@@ -1,5 +1,5 @@
 import { Controller, Get } from '@nestjs/common'
-import { API_ROUTES } from '@afterdark/common'
+import { API_ROUTES } from '@repo/common'
 
 @Controller(API_ROUTES.health.prefix)
 export class HealthController {

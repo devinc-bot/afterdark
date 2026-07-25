@@ -1,10 +1,10 @@
 import { useEffect, useImperativeHandle, useRef } from 'react'
 import { useForm } from '@tanstack/react-form'
 import { useTranslation } from 'react-i18next'
-import type { EventImageResponse } from '@afterdark/types'
-import { EVENT_STATUS, type EventStatus } from '@afterdark/types'
-import { eventFieldSchemas, type EventDetailsFormValues } from '@afterdark/validators'
-import { useResolveFieldError } from '@afterdark/i18n/client'
+import type { EventImageResponse } from '@repo/types'
+import { EVENT_STATUS, type EventStatus } from '@repo/types'
+import { eventFieldSchemas, type EventDetailsFormValues } from '@repo/validators'
+import { useResolveFieldError } from '@repo/i18n/client'
 import {
   DateTimeInput,
   Field,
@@ -13,7 +13,7 @@ import {
   SelectField,
   SelectItem,
   Textarea,
-} from '@afterdark/ui'
+} from '@repo/ui'
 import { FormSection } from '~/modules/common/components/form-section'
 import { ImagesEventForm } from '~/modules/events/components/images-event-form'
 

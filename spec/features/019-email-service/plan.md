@@ -6,9 +6,9 @@
 ## Orden de capas
 
 ```text
-1. @afterdark/validators  → mailEnvSchema
-2. @afterdark/i18n        → MAIL_ERROR_CODE + claves errors (es/en)
-3. @afterdark/types       → tipos del puerto / SendMailInput (opcional; puede vivir en api si no se exporta)
+1. @repo/validators  → mailEnvSchema
+2. @repo/i18n        → MAIL_ERROR_CODE + claves errors (es/en)
+3. @repo/types       → tipos del puerto / SendMailInput (opcional; puede vivir en api si no se exporta)
 4. apps/api mail module   → puerto + ResendAdapter + templates React Email + MailService
 5. app.module.ts          → import MailModule
 6. Humo                   → script/comando dev (sin HTTP de producto)
@@ -96,7 +96,7 @@ Cambiar de vendor: nuevo `*MailSender` + rebind en `MailModule`. Templates y cal
 ### Package compartido
 
 **v1:** todo en `apps/api/src/modules/mail/` (como `files`).  
-Un `@afterdark/emails` solo si más adelante hace falta preview CLI / consumo fuera de Nest — fuera de esta entrega.
+Un `@repo/emails` solo si más adelante hace falta preview CLI / consumo fuera de Nest — fuera de esta entrega.
 
 ## Riesgos / edge cases
 

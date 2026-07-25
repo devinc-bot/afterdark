@@ -12,7 +12,7 @@
 
 ## Qué hace
 
-Centraliza estilos de componentes en tokens/clases CSS en `@afterdark/ui`, de modo que un cambio en un solo lugar actualice todos los controles que lo usen. La primera entrega es el border-radius de controles/superficies principales.
+Centraliza estilos de componentes en tokens/clases CSS en `@repo/ui`, de modo que un cambio en un solo lugar actualice todos los controles que lo usen. La primera entrega es el border-radius de controles/superficies principales.
 
 ## Por qué
 
@@ -25,7 +25,7 @@ Hoy el radius (y a futuro otros estilos) está hardcodeado por componente (`roun
 - Convención de tokens/clases CSS extensible en `packages/ui` (design system).
 - **1ª entrega — border-radius:**
   - Clase `rounded-control` con valor por defecto equivalente a `rounded-xl` (12px / `--radius-xl`).
-  - Migrar en `@afterdark/ui` los usos de `rounded-xl` en componentes de producto (button, input, card, dialog, select content, etc.) a `rounded-control`.
+  - Migrar en `@repo/ui` los usos de `rounded-xl` en componentes de producto (button, input, card, dialog, select content, etc.) a `rounded-control`.
 - Consumo automático en `web` / `dashboard` vía `globals.css` compartido.
 
 ### No incluye
@@ -47,7 +47,7 @@ Hoy el radius (y a futuro otros estilos) está hardcodeado por componente (`roun
 
 **Criterios de aceptación**
 
-- [ ] **Dado** componentes de `@afterdark/ui` que usan `rounded-control`, **cuando** cambio el valor del token en `globals.css`, **entonces** todos esos componentes reflejan el nuevo radius.
+- [ ] **Dado** componentes de `@repo/ui` que usan `rounded-control`, **cuando** cambio el valor del token en `globals.css`, **entonces** todos esos componentes reflejan el nuevo radius.
 - [ ] **Dado** el valor por defecto del token, **cuando** no lo modifico, **entonces** el radius se ve igual que `rounded-xl` (12px / `--radius-xl`).
 - [ ] **Dado** componentes con forma circular/pill (`rounded-full`: avatar, switch, dots), **cuando** cambio `rounded-control`, **entonces** esos componentes no cambian.
 
@@ -76,14 +76,14 @@ N/A
 
 ### UI (si aplica)
 
-| Pieza                       | Contrato                                                                                            |
-| --------------------------- | --------------------------------------------------------------------------------------------------- |
-| Variable CSS                | `--radius-control: var(--radius-xl)` en `@theme` (default 12px)                                     |
-| Clase                       | `.rounded-control { border-radius: var(--radius-control); }` en `@layer utilities`                  |
-| Componentes `@afterdark/ui` | Reemplazar `rounded-xl` de controles/superficies por `rounded-control`                              |
-| Apps `web` / `dashboard`    | No migrar `rounded-xl` locales en esta entrega (heredan el CSS; migración de apps = follow-up)      |
-| Stories                     | Actualizar wrappers/demos en `@afterdark/ui` que hardcodean `rounded-xl` en el mismo alcance        |
-| Futuros tokens              | Prefijo `*-control` (ej. `shadow-control`, `border-control`): variable + clase + uso en componentes |
+| Pieza                    | Contrato                                                                                            |
+| ------------------------ | --------------------------------------------------------------------------------------------------- |
+| Variable CSS             | `--radius-control: var(--radius-xl)` en `@theme` (default 12px)                                     |
+| Clase                    | `.rounded-control { border-radius: var(--radius-control); }` en `@layer utilities`                  |
+| Componentes `@repo/ui`   | Reemplazar `rounded-xl` de controles/superficies por `rounded-control`                              |
+| Apps `web` / `dashboard` | No migrar `rounded-xl` locales en esta entrega (heredan el CSS; migración de apps = follow-up)      |
+| Stories                  | Actualizar wrappers/demos en `@repo/ui` que hardcodean `rounded-xl` en el mismo alcance             |
+| Futuros tokens           | Prefijo `*-control` (ej. `shadow-control`, `border-control`): variable + clase + uso en componentes |
 
 **Componentes a migrar (1ª entrega, lista orientativa)**
 
@@ -97,11 +97,11 @@ N/A
 
 ## Reglas de negocio
 
-1. El radius de control de producto se define solo vía `--radius-control` / `rounded-control`; no reintroducir `rounded-xl` en componentes de producto de `@afterdark/ui`.
+1. El radius de control de producto se define solo vía `--radius-control` / `rounded-control`; no reintroducir `rounded-xl` en componentes de producto de `@repo/ui`.
 2. Excepciones permitidas: `rounded-full` (y pills) donde la forma lo exige; radii menores (`sm`/`md`/`lg`) en piezas internas hasta una entrega futura.
 3. Tokens nuevos siguen el patrón: variable CSS + clase `*-control` + uso en componentes (sin hardcodear el valor en cada archivo).
 4. Cambiar `--radius-control` no debe romper overflow/clip de cards, dialogs ni selects — verificar visualmente.
 
 ## Preguntas abiertas
 
-- Migración de `rounded-xl` en apps `web`/`dashboard` (fuera de `@afterdark/ui`): follow-up opcional, no bloquea esta entrega.
+- Migración de `rounded-xl` en apps `web`/`dashboard` (fuera de `@repo/ui`): follow-up opcional, no bloquea esta entrega.

@@ -16,8 +16,8 @@ import {
   TableHeader,
   TableRow,
   toast,
-} from '@afterdark/ui'
-import { STAFF_INVITATION_STATUS } from '@afterdark/types'
+} from '@repo/ui'
+import { STAFF_INVITATION_STATUS } from '@repo/types'
 import { Copy, EllipsisVertical, Trash2 } from 'lucide-react'
 import type { StaffInvitationRecord } from '~/modules/staff/types/staff-invitation-record'
 import {

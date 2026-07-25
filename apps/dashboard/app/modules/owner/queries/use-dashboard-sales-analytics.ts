@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import type { DashboardSalesAnalyticsQueryInput } from '@afterdark/validators'
+import type { DashboardSalesAnalyticsQueryInput } from '@repo/validators'
 import { QUERY_KEYS } from '~/modules/common/constants/query-keys'
 import { fetchDashboardSalesAnalytics } from '~/modules/owner/service/dashboard.service'
 

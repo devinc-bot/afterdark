@@ -5,7 +5,7 @@
 ## Orden de capas
 
 ```text
-1. @afterdark/i18n  (namespace nuevo: dashboardLanding)
+1. @repo/i18n  (namespace nuevo: dashboardLanding)
 2. apps/dashboard   (módulo landing → componentes → ruta pública /)
 ```
 
@@ -45,7 +45,7 @@ Sin cambios en `validators`, `types`, `db` ni `api` (feature 100% UI + copy).
 
 - **Gate de sesión:** reutilizar `RequireGuest` (`modules/common`). Ya hace exactamente lo pedido: mientras carga → `SessionLoading`; autenticado → redirect a `DASHBOARD_ROUTES.home()`; guest → renderiza children (la landing). Cumple US-3 y las reglas de loading/error (error de red se resuelve como guest en `use-session`).
 - **Ruta:** `routes/index.tsx` vive fuera de `_app`, por lo que es pública (sin `RequireSession`/`AppShell`). Se elimina `_app/index.tsx` para no duplicar el path `/`.
-- **UI:** componentes de `@afterdark/ui` (`Button`, `Link`) + tokens CSS existentes (`bg-background`, `text-on-surface`, `text-on-surface-variant`, `border-hairline`, `primary`, etc.), consistentes con `auth-shell`. Sin video ni scroll-scrub.
+- **UI:** componentes de `@repo/ui` (`Button`, `Link`) + tokens CSS existentes (`bg-background`, `text-on-surface`, `text-on-surface-variant`, `border-hairline`, `primary`, etc.), consistentes con `auth-shell`. Sin video ni scroll-scrub.
 - **Copy:** namespace `dashboardLanding`; `useTranslation('dashboardLanding')`. `usePageTitle('dashboardLanding', 'metaTitle')` para el título.
 - **Composición:** `LandingPage` compone secciones explícitas (sin props booleanas). Listas (features/steps/faq/testimonios) se iteran desde constantes con claves i18n.
 - **Accesibilidad:** landmarks (`header`/`main`/`section` con `aria-labelledby`/`footer`), foco visible, `prefers-reduced-motion` respetado en cualquier animación de entrada.

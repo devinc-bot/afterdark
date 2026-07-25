@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { Skeleton } from '@afterdark/ui'
+import { Skeleton } from '@repo/ui'
 import { LoadErrorBanner } from '~/modules/common/components/load-error-banner'
 import { PageLayout } from '~/modules/common/components/page-layout'
 

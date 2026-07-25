@@ -6,10 +6,10 @@
 ## Orden de capas
 
 ```text
-1. @afterdark/validators / env     — query role+app; GOOGLE_* en API env
-2. @afterdark/common               — API_ROUTES.auth.path.google / googleCallback
-3. @afterdark/types                — RegisterAccountInput password opcional; tipos oauth
-4. @afterdark/i18n                 — auth.google.* (+ errors si aplica)
+1. @repo/validators / env     — query role+app; GOOGLE_* en API env
+2. @repo/common               — API_ROUTES.auth.path.google / googleCallback
+3. @repo/types                — RegisterAccountInput password opcional; tipos oauth
+4. @repo/i18n                 — auth.google.* (+ errors si aplica)
 5. packages/db                     — accounts.provider + provider_account_id + password nullable → migration → repos
 6. apps/api auth                   — GoogleOAuth service + start/callback use cases
 7. apps/web + apps/dashboard       — botón + bridge callback → saveAuthSession → home

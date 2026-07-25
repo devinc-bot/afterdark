@@ -1,4 +1,4 @@
-# STYLEGUIDE.md — afterdark Monorepo
+# STYLEGUIDE.md — Repo Monorepo
 
 Code conventions, naming rules, dependency policy, and quality toolchain.
 
@@ -30,7 +30,7 @@ Do not repeat string literals in application logic (env modes, statuses, roles, 
 | Scope    | Location                                                   |
 | -------- | ---------------------------------------------------------- |
 | App-wide | `app/config/constants/` or `app/modules/common/constants/` |
-| Domain   | `@afterdark/types` or `@afterdark/validators`              |
+| Domain   | `@repo/types` or `@repo/validators`                        |
 
 Define constant maps with `as const`. Derive TypeScript types from the map when needed.
 

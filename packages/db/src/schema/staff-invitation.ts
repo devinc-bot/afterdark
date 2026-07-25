@@ -1,5 +1,5 @@
 import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core'
-import { STAFF_INVITATION_STATUS, USER_ROLE } from '@afterdark/types/enums'
+import { STAFF_INVITATION_STATUS, USER_ROLE } from '@repo/types/enums'
 import { createBaseColumns } from './base.ts'
 import { locations } from './location.ts'
 import { owners } from './owner.ts'

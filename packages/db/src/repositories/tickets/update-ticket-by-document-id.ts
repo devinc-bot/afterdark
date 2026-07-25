@@ -2,7 +2,7 @@ import { eq } from 'drizzle-orm'
 import { db } from '../../client.ts'
 import { tickets } from '../../schema/ticket.ts'
 import { findTicketRelationsByTicketId } from './find-ticket-relations-by-ticket-id.ts'
-import type { TicketUpsertInput, TicketWithRelations } from '@afterdark/types'
+import type { TicketUpsertInput, TicketWithRelations } from '@repo/types'
 
 export async function updateTicketByDocumentId(
   documentId: string,

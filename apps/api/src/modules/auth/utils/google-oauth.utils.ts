@@ -1,5 +1,5 @@
-import { AUTH_OAUTH_APP, type AuthOauthApp } from '@afterdark/types'
-import { CLIENT_ROUTES } from '@afterdark/common'
+import { AUTH_OAUTH_APP, type AuthOauthApp } from '@repo/types'
+import { CLIENT_ROUTES } from '@repo/common'
 import { ENV } from '../../common/config/env'
 import type { GoogleOauthErrorCode } from '../auth.constants'
 

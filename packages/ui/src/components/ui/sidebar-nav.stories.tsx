@@ -57,7 +57,7 @@ const secondaryNav: SidebarNavItem[] = [
 ]
 
 const navArgs = {
-  logo: 'AFTERDARK',
+  logo: 'REPO',
   title: 'Panel operativo',
   activeHref: '/dashboard',
   primary: primaryNav,
@@ -90,8 +90,8 @@ export const WithImageLogo: Story = {
   args: {
     ...navArgs,
     logo: {
-      src: 'https://placehold.co/160x32/ECB1FF/4A1A5E?text=AFTERDARK',
-      alt: 'Afterdark',
+      src: 'https://placehold.co/160x32/ECB1FF/4A1A5E?text=REPO',
+      alt: 'Repo',
     },
     activeHref: '/clubs',
   },

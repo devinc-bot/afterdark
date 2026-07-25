@@ -31,9 +31,13 @@ function animateScrollTo(top: number) {
   activeScrollFrame = requestAnimationFrame(step)
 }
 
+export function sectionIdFromHash(hash: string) {
+  return hash.startsWith('#') ? hash.slice(1) : hash
+}
+
 /** Smooth scroll to a landing section by hash (`#como-funciona`) or id. */
 export function scrollToSection(hash: string) {
-  const id = hash.startsWith('#') ? hash.slice(1) : hash
+  const id = sectionIdFromHash(hash)
   const el = document.getElementById(id)
   if (!el) return
 
@@ -45,6 +49,14 @@ export function scrollToSection(hash: string) {
   const scrollMarginTop = Number.parseFloat(getComputedStyle(el).scrollMarginTop) || 0
   const top = el.getBoundingClientRect().top + window.scrollY - scrollMarginTop
   animateScrollTo(top)
+}
+
+/** Scroll when the landing page mounts with a hash (e.g. `/#como-funciona`). */
+export function scrollToSectionFromLocationHash() {
+  const { hash } = window.location
+  if (!hash) return
+  // Wait a frame so section layout (incl. scroll-margin) is settled.
+  requestAnimationFrame(() => scrollToSection(hash))
 }
 
 export function handleSectionNavClick(event: { preventDefault: () => void }, hash: string) {

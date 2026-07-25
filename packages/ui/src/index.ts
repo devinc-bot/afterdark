@@ -83,6 +83,12 @@ export { Loader, type LoaderProps } from './components/ui/loader.tsx'
 export { Link, type LinkProps } from './components/ui/link.tsx'
 export { NotImage, notImageVariants, type NotImageProps } from './components/ui/not-image.tsx'
 export {
+  AppLogo,
+  APP_LOGO_SRC,
+  appLogoVariants,
+  type AppLogoProps,
+} from './components/ui/app-logo.tsx'
+export {
   Select,
   SelectContent,
   SelectField,
@@ -134,17 +140,41 @@ export {
   SidebarRail,
   SidebarSeparator,
   SidebarTrigger,
-  matchesSidebarNavHref,
   useSidebar,
 } from './components/ui/sidebar.tsx'
 export {
   SidebarNav,
   SidebarNavMenuButton,
+  matchesSidebarNavHref,
   type SidebarNavItem,
   type SidebarNavLinkRenderProps,
   type SidebarNavLogo,
   type SidebarNavProps,
 } from './components/ui/sidebar-nav.tsx'
+export {
+  AppSidebar,
+  type AppSidebarProps,
+  type NavMainItem,
+  type NavSecondaryItem,
+  type NavUserData,
+} from './components/app-sidebar.tsx'
+export { NavMain } from './components/nav-main.tsx'
+export { NavSecondary } from './components/nav-secondary.tsx'
+export { NavUser } from './components/nav-user.tsx'
+export {
+  Breadcrumb,
+  BreadcrumbEllipsis,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from './components/ui/breadcrumb.tsx'
+export {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from './components/ui/collapsible.tsx'
 export { Toaster } from './components/ui/sileo.tsx'
 export {
   toast,
@@ -207,10 +237,26 @@ export { useAutoDismiss } from './hooks/use-auto-dismiss.ts'
 export { usePageTitle } from './hooks/use-page-title.ts'
 export { useUnsavedChangesGuard } from './hooks/use-unsaved-changes-guard.ts'
 export {
+  DEFAULT_THEME,
+  THEME,
+  THEMES,
+  THEME_BOOT_SCRIPT,
+  THEME_STORAGE_KEY,
+  applyTheme,
+  isTheme,
+  persistTheme,
+  readStoredTheme,
+  setTheme,
+  type Theme,
+} from './theme/theme.ts'
+export { ThemeProvider, useTheme } from './theme/theme-provider.tsx'
+export { ThemeToggle } from './theme/theme-toggle.tsx'
+export {
   Map,
   MapControls,
   MapMarker,
   MarkerContent,
+  MarkerPopup,
   useMap,
   type MapRef,
 } from './components/ui/map.tsx'

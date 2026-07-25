@@ -1,5 +1,5 @@
 {
-  "name": "@afterdark/db",
+  "name": "@repo/db",
   "version": "0.0.1",
   "private": true,
   "type": "module",
@@ -20,9 +20,9 @@
     "db:seed": "tsx src/seed/index.ts"
   },
   "dependencies": {
-    "@afterdark/types": "workspace:*",
-    "@afterdark/validators": "workspace:*",
     "@libsql/client": "0.17.3",
+    "@repo/types": "workspace:*",
+    "@repo/validators": "workspace:*",
     "bcryptjs": "3.0.3",
     "dotenv": "17.4.2",
     "drizzle-orm": "0.43.1",

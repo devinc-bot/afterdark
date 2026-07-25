@@ -1,12 +1,8 @@
-import type { EventResponse, PaginatedResponse } from '@afterdark/types'
-import type {
-  CreateEventInput,
-  ListEventsQueryInput,
-  UpdateEventInput,
-} from '@afterdark/validators'
-import { i18n } from '@afterdark/i18n/client'
+import type { EventResponse, PaginatedResponse } from '@repo/types'
+import type { CreateEventInput, ListEventsQueryInput, UpdateEventInput } from '@repo/validators'
+import { i18n } from '@repo/i18n/client'
 import { api, API_ROUTES } from '~/config/api'
-import { buildApiPath, toApiServiceError } from '@afterdark/common'
+import { buildApiPath, toApiServiceError } from '@repo/common'
 
 function appendEventFields(formData: FormData, input: CreateEventInput | UpdateEventInput): void {
   formData.append('locationId', input.locationId)

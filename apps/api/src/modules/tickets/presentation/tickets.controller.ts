@@ -12,9 +12,9 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common'
-import { API_ROUTES } from '@afterdark/common'
-import type { JwtPayload, PaginatedResponse, TicketResponse } from '@afterdark/types'
-import { USER_ROLE } from '@afterdark/types'
+import { API_ROUTES } from '@repo/common'
+import type { JwtPayload, PaginatedResponse, TicketResponse } from '@repo/types'
+import { USER_ROLE } from '@repo/types'
 import {
   createTicketSchema,
   listTicketsQuerySchema,
@@ -23,7 +23,7 @@ import {
   type CreateTicketInput,
   type ListTicketsQueryInput,
   type UpdateTicketInput,
-} from '@afterdark/validators'
+} from '@repo/validators'
 import { CurrentUser } from '../../common/decorators/current-user.decorator'
 import { Roles } from '../../common/decorators/roles.decorator'
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard'

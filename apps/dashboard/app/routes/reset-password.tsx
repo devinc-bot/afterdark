@@ -3,7 +3,7 @@ import { z } from 'zod'
 import { AuthShell } from '~/modules/auth/components/auth-shell'
 import { ResetPasswordForm } from '~/modules/auth/components/reset-password-form'
 import { RequireGuest } from '~/modules/common/components/require-guest'
-import { usePageTitle } from '@afterdark/ui'
+import { usePageTitle } from '@repo/ui'
 
 const resetPasswordSearchSchema = z.object({
   token: z.string().optional().catch(undefined),

@@ -6,9 +6,9 @@
 ## Orden de capas
 
 ```text
-1. @afterdark/validators     — forgotPasswordSchema, resetPasswordSchema
-2. @afterdark/common         — API_ROUTES.auth.path.forgotPassword / resetPassword
-3. @afterdark/i18n           — auth.forgotPassword.* / auth.resetPassword.* (+ error token)
+1. @repo/validators     — forgotPasswordSchema, resetPasswordSchema
+2. @repo/common         — API_ROUTES.auth.path.forgotPassword / resetPassword
+3. @repo/i18n           — auth.forgotPassword.* / auth.resetPassword.* (+ error token)
 4. packages/db               — schema password_reset_tokens → migration → repositories
 5. apps/api auth             — use cases + controller; cablear SendPasswordResetUseCase
 6. apps/dashboard            — server fns → mutations → forms → routes

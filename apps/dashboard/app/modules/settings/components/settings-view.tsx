@@ -1,4 +1,4 @@
-import { USER_ROLE } from '@afterdark/types'
+import { USER_ROLE } from '@repo/types'
 import {
   SettingsFormSkeleton,
   SettingsLoadError,

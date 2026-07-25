@@ -5,7 +5,7 @@ import {
   STAFF_INVITATION_EXPIRY_OPTIONS,
   type CreateStaffInvitationInput,
   type StaffInvitationExpiryMs,
-} from '@afterdark/validators'
+} from '@repo/validators'
 import {
   Button,
   DialogClose,
@@ -15,9 +15,9 @@ import {
   SelectField,
   SelectItem,
   toast,
-} from '@afterdark/ui'
+} from '@repo/ui'
 import type { TFunction } from 'i18next'
-import { useResolveFieldError } from '@afterdark/i18n/client'
+import { useResolveFieldError } from '@repo/i18n/client'
 import { useLocations } from '~/modules/locations/queries/use-locations-queries'
 import { postStaffInvitation } from '~/modules/staff/services/staff-invitations.service'
 

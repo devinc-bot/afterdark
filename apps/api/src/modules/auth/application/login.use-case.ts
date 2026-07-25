@@ -1,8 +1,8 @@
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common'
-import { findAuthAccountByEmail } from '@afterdark/db'
-import type { LoginResponse } from '@afterdark/types'
-import type { LoginInput } from '@afterdark/validators'
-import { TranslationService } from '@afterdark/i18n/server'
+import { findAuthAccountByEmail } from '@repo/db'
+import type { LoginResponse } from '@repo/types'
+import type { LoginInput } from '@repo/validators'
+import { TranslationService } from '@repo/i18n/server'
 import { verifyValue } from '../../common'
 import { AuthAccountService } from './services/auth-account.service'
 

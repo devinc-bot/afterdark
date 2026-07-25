@@ -5,7 +5,7 @@ import type {
   LoginInput,
   RegisterOwnerInput,
   ResetPasswordInput,
-} from '@afterdark/validators'
+} from '@repo/validators'
 import { useSessionStore } from '~/modules/common/stores/session.store'
 import { DASHBOARD_ROUTES } from '../../common/constants/routes'
 import {

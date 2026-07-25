@@ -1,10 +1,9 @@
 import { useEffect, useState, type ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
-import { cn } from '@afterdark/ui'
+import { cn } from '@repo/ui'
 import { LANDING_IMAGES } from '../../constants/images'
+import { LANDING_SHELL } from '../../constants/layout'
 import { LANDING_VIDEOS } from '../../constants/videos'
-
-const SHELL = 'mx-auto max-w-7xl px-margin-mobile sm:px-8 lg:px-margin-desktop'
 
 type SectionHeroProps = {
   showAuthCtas?: boolean
@@ -58,31 +57,31 @@ export function SectionHero({ showAuthCtas = true, children, className }: Sectio
         )}
         <div
           aria-hidden
-          className="absolute inset-0 bg-linear-to-b from-background/55 via-background/20 to-background/95"
+          className="absolute inset-0 bg-linear-to-b from-black/55 via-black/35 to-background"
         />
         <div
           aria-hidden
-          className="absolute inset-0 bg-linear-to-r from-background/70 via-background/25 to-transparent"
+          className="absolute inset-0 bg-linear-to-r from-black/45 via-black/15 to-transparent"
         />
       </div>
 
       <div
         className={cn(
-          SHELL,
+          LANDING_SHELL,
           'relative z-10 flex min-h-dvh flex-col justify-end pb-[max(4rem,8vh)] pt-28 sm:pb-[max(5rem,10vh)]'
         )}
       >
         <div className="max-w-3xl">
           <p
             id="landing-brand"
-            className="font-display text-[clamp(2.75rem,12vw,5.5rem)] font-bold leading-[0.95] tracking-[-0.03em] text-balance text-on-surface"
+            className="font-display text-[clamp(2.75rem,12vw,5.5rem)] font-bold leading-[0.95] tracking-[-0.03em] text-balance text-white"
           >
             {t('nav.brand')}
           </p>
-          <h1 className="mt-6 max-w-[18ch] font-display text-[clamp(1.5rem,4.2vw,2.5rem)] font-semibold leading-tight tracking-[-0.02em] text-pretty text-on-surface">
+          <h1 className="mt-6 max-w-[18ch] font-display text-[clamp(1.5rem,4.2vw,2.5rem)] font-semibold leading-tight tracking-[-0.02em] text-pretty text-white">
             {t('hero.headline')}
           </h1>
-          <p className="mt-4 max-w-[38ch] text-base leading-relaxed text-pretty text-on-surface-variant sm:text-lg">
+          <p className="mt-4 max-w-[38ch] text-base leading-relaxed text-pretty text-white/85 sm:text-lg">
             {t('hero.support')}
           </p>
           {showAuthCtas ? children : null}

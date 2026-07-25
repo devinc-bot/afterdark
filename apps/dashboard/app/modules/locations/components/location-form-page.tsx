@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from '@tanstack/react-router'
-import { Button } from '@afterdark/ui'
+import { Button } from '@repo/ui'
 import { FormPageActions } from '~/modules/common/components/form-page-actions'
 import {
   LOCATION_FORM_ID,

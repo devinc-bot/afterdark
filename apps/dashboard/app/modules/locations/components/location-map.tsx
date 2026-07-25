@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { MapPin } from 'lucide-react'
-import { Map, MapControls, MapMarker, MarkerContent, useMap } from '@afterdark/ui'
+import { Map, MapControls, MapMarker, MarkerContent, useMap } from '@repo/ui'
 import {
   LOCATION_MAP_SELECTED_ZOOM,
   DEFAULT_LOCATION_MAP_CENTER,

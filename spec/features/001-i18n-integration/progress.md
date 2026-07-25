@@ -26,7 +26,7 @@
 
 - **Loader cliente:** Vite `import()` dinámico por namespace.
 - **Loader servidor:** JSON estáticos, sin FS en prod.
-- **Idiomas:** español e inglés; 5 namespaces; cookie `afterdark_lang`.
+- **Idiomas:** español e inglés; 5 namespaces; cookie `repo_lang`.
 - **Fuera de alcance:** contenido de usuario, `Accept-Language`, namespaces por feature.
 
 ### Fase 3 — User stories

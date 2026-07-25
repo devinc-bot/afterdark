@@ -5,8 +5,8 @@ import {
   ServiceUnavailableException,
 } from '@nestjs/common'
 import { Resend } from 'resend'
-import { MAIL_ERROR_CODE } from '@afterdark/i18n/constants'
-import { TranslationService } from '@afterdark/i18n/server'
+import { MAIL_ERROR_CODE } from '@repo/i18n/constants'
+import { TranslationService } from '@repo/i18n/server'
 import { ENV } from '../../common/config/env'
 import type { MailSender } from '../mail-sender.port'
 import type { SendMailInput, SendMailResult } from '../types'

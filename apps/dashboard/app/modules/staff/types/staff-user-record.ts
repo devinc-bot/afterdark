@@ -1,4 +1,4 @@
-import type { StaffStatus, UserRole } from '@afterdark/types'
+import type { StaffStatus, UserRole } from '@repo/types'
 
 export type StaffUserRecord = {
   id: string

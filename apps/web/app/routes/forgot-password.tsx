@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { usePageTitle } from '@afterdark/ui'
+import { usePageTitle } from '@repo/ui'
 import { AuthPageLayout } from '~/modules/auth/components/auth-page-layout'
 import { ForgotPasswordForm } from '~/modules/auth/components/forgot-password-form'
 import { RequireGuest } from '~/modules/common/components/require-guest'

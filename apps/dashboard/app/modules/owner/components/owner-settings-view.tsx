@@ -1,4 +1,4 @@
-import type { CurrentOwnerResponse } from '@afterdark/types'
+import type { CurrentOwnerResponse } from '@repo/types'
 import { useTranslation } from 'react-i18next'
 import { PageLayout } from '~/modules/common/components/page-layout'
 import { ProfileSettingsSection } from '~/modules/owner/components/profile-settings-section'

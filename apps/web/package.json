@@ -1,5 +1,5 @@
 {
-  "name": "@afterdark/web",
+  "name": "@repo/web",
   "version": "0.0.1",
   "private": true,
   "type": "module",
@@ -10,12 +10,12 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@afterdark/common": "workspace:*",
-    "@afterdark/db": "workspace:*",
-    "@afterdark/i18n": "workspace:*",
-    "@afterdark/types": "workspace:*",
-    "@afterdark/ui": "workspace:*",
-    "@afterdark/validators": "workspace:*",
+    "@repo/common": "workspace:*",
+    "@repo/db": "workspace:*",
+    "@repo/i18n": "workspace:*",
+    "@repo/types": "workspace:*",
+    "@repo/ui": "workspace:*",
+    "@repo/validators": "workspace:*",
     "@tanstack/react-form": "1.32.0",
     "@tanstack/react-query": "5.100.14",
     "@tanstack/react-router": "1.170.8",

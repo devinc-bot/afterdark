@@ -1,9 +1,9 @@
 import { createElement, type ReactElement } from 'react'
 import { Inject, Injectable, InternalServerErrorException } from '@nestjs/common'
 import { render } from 'react-email'
-import { DEFAULT_LANGUAGE, type Language } from '@afterdark/i18n'
-import { MAIL_ERROR_CODE } from '@afterdark/i18n/constants'
-import { TranslationService } from '@afterdark/i18n/server'
+import { DEFAULT_LANGUAGE, type Language } from '@repo/i18n'
+import { MAIL_ERROR_CODE } from '@repo/i18n/constants'
+import { TranslationService } from '@repo/i18n/server'
 import type {
   PasswordResetRenderInput,
   RenderedMail,
@@ -27,6 +27,7 @@ export class MailTemplatesService {
 
     const subject = t('staffInvitation.subject', { clubName: input.clubName })
     const title = t('staffInvitation.title')
+    const brand = t('common.brand')
     const body = t('staffInvitation.body', {
       inviterName: input.inviterName,
       clubName: input.clubName,
@@ -45,6 +46,7 @@ export class MailTemplatesService {
       createElement(StaffInvitationEmail, {
         preview: subject,
         title,
+        brand,
         body,
         cta,
         url: input.url,
@@ -70,6 +72,7 @@ export class MailTemplatesService {
 
     const subject = t('passwordReset.subject')
     const title = t('passwordReset.title')
+    const brand = t('common.brand')
     const body = t('passwordReset.body')
     const cta = t('passwordReset.cta')
     const ignore = t('passwordReset.ignore')
@@ -84,6 +87,7 @@ export class MailTemplatesService {
       createElement(PasswordResetEmail, {
         preview: subject,
         title,
+        brand,
         body,
         cta,
         url: input.url,
@@ -106,6 +110,7 @@ export class MailTemplatesService {
 
     const subject = t('welcome.subject')
     const title = t('welcome.title', { name: input.name })
+    const brand = t('common.brand')
     const body = t('welcome.body')
     const cta = t('welcome.cta')
     const footer = t('common.footer')
@@ -115,6 +120,7 @@ export class MailTemplatesService {
       createElement(WelcomeEmail, {
         preview: subject,
         title,
+        brand,
         body,
         cta,
         ctaUrl: input.ctaUrl,

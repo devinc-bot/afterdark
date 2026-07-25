@@ -112,7 +112,7 @@ Los clientes necesitan una cuenta propia para comprar entradas y gestionar su pe
 | `POST` | `/api/auth/register/user` | Pública                                   |
 | `GET`  | `/api/session/me`         | JWT (para `RequireGuest` / sesión en web) |
 
-**Request** — `registerUserSchema` (`@afterdark/validators`): `name`, `lastName`, `email`, `password`.
+**Request** — `registerUserSchema` (`@repo/validators`): `name`, `lastName`, `email`, `password`.
 
 **Response** — `RegisterResponse`: `{ message: string }` (el cliente **no** usa este mensaje para el toast; usa i18n local).
 

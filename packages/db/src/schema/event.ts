@@ -1,5 +1,5 @@
 import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core'
-import { EVENT_STATUS } from '@afterdark/types/enums'
+import { EVENT_STATUS } from '@repo/types/enums'
 import { createBaseColumns } from './base.ts'
 import { locations } from './location.ts'
 

@@ -29,7 +29,7 @@ Estados: `pending` · `in_progress` · `done`
 
 - **Archivos dto:** auth, club, event, ticket, staff, user, common + index
 - **`CurrentUserResponse`:** eliminar
-- **Alcance spec:** solo `@afterdark/types`
+- **Alcance spec:** solo `@repo/types`
 - **`Property`:** legacy en dto; marcar para eliminación futura
 
 ### Fase 3 — User stories

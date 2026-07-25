@@ -1,8 +1,8 @@
-import { ASSET_TYPE } from '@afterdark/types'
+import { ASSET_TYPE } from '@repo/types'
 import { db, type Transaction } from '../../client.ts'
 import { locationAssetsLnk } from '../../schema/location-asset-lnk.ts'
 import { assets, type AssetSelect } from '../../schema/asset.ts'
-import type { LocationImageAssetInput } from '@afterdark/types'
+import type { LocationImageAssetInput } from '@repo/types'
 
 export async function createLocationImageAssets(
   locationId: number,

@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from '@tanstack/react-router'
-import type { LocationResponse } from '@afterdark/types'
+import type { LocationResponse } from '@repo/types'
 import { LOCATION_FORM_MODE } from '~/modules/locations/components/location-form'
 import { LocationFormPage } from '~/modules/locations/components/location-form-page'
 import { locationResponseToFormValues } from '~/modules/locations/utils/location-form.formatter'

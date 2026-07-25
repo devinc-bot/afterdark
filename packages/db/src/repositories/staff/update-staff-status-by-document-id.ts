@@ -1,7 +1,7 @@
 import { eq } from 'drizzle-orm'
 import { db } from '../../client.ts'
 import { staff } from '../../schema/staff.ts'
-import type { StaffStatus } from '@afterdark/types'
+import type { StaffStatus } from '@repo/types'
 import { findStaffOwnershipByDocumentId } from './find-staff-ownership-by-document-id.ts'
 
 export async function updateStaffStatusByDocumentId(

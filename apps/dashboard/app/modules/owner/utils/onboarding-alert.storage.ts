@@ -1,4 +1,4 @@
-const ONBOARDING_ALERT_DISMISSED_KEY = 'afterdark:dashboard:onboarding-alert:dismissed:v1'
+const ONBOARDING_ALERT_DISMISSED_KEY = 'repo:dashboard:onboarding-alert:dismissed:v1'
 
 export function readOnboardingAlertDismissed(): boolean {
   try {

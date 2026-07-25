@@ -1,4 +1,4 @@
-import type { StaffPersonnelItem } from '@afterdark/types'
+import type { StaffPersonnelItem } from '@repo/types'
 import {
   STAFF_USER_AVATAR_TONE,
   type StaffUserRecord,

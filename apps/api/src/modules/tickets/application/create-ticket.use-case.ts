@@ -1,8 +1,8 @@
 import { Inject, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common'
-import { createTicket, findEventOwnedByOwnerDocumentId } from '@afterdark/db'
-import { TranslationService } from '@afterdark/i18n/server'
-import type { TicketResponse } from '@afterdark/types'
-import type { CreateTicketInput } from '@afterdark/validators'
+import { createTicket, findEventOwnedByOwnerDocumentId } from '@repo/db'
+import { TranslationService } from '@repo/i18n/server'
+import type { TicketResponse } from '@repo/types'
+import type { CreateTicketInput } from '@repo/validators'
 import { toTicketResponse, toTicketUpsertInput } from '../mappers/tickets.mapper'
 
 @Injectable()

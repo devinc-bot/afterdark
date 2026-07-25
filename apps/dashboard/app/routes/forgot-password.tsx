@@ -2,7 +2,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { AuthShell } from '~/modules/auth/components/auth-shell'
 import { ForgotPasswordForm } from '~/modules/auth/components/forgot-password-form'
 import { RequireGuest } from '~/modules/common/components/require-guest'
-import { usePageTitle } from '@afterdark/ui'
+import { usePageTitle } from '@repo/ui'
 
 export const Route = createFileRoute('/forgot-password')({
   component: ForgotPasswordPage,

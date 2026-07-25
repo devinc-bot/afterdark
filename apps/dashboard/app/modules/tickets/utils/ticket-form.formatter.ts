@@ -1,5 +1,5 @@
-import { TICKET_STATUS, TICKET_TYPE, type TicketResponse } from '@afterdark/types'
-import type { TicketFormValues } from '@afterdark/validators'
+import { TICKET_STATUS, TICKET_TYPE, type TicketResponse } from '@repo/types'
+import type { TicketFormValues } from '@repo/validators'
 import type { TicketRecordItem } from '~/modules/tickets/components/ticket-record'
 
 export const EMPTY_TICKET_FORM_VALUES: TicketFormValues = {

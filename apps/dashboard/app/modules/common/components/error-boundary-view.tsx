@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Button } from '@afterdark/ui'
+import { Button } from '@repo/ui'
 import { ChevronDown, ChevronUp } from 'lucide-react'
 import { DASHBOARD_ROUTES } from '~/modules/common/constants/routes'
 
@@ -19,12 +19,13 @@ type ErrorBoundaryViewProps = {
 }
 
 export function ErrorBoundaryView({ error, reset, strings }: ErrorBoundaryViewProps) {
+  const { t } = useTranslation('common')
   const [showDetails, setShowDetails] = useState(false)
 
   return (
     <div className="flex min-h-dvh flex-col items-center justify-center bg-background px-6 text-center">
       <p className="font-mono text-xs font-semibold tracking-widest text-ink-muted uppercase">
-        EVENTFLOW
+        {t('appNameUpper')}
       </p>
 
       <div className="mt-6 max-w-sm space-y-2">

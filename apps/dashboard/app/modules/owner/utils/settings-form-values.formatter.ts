@@ -1,5 +1,5 @@
-import type { CurrentOwnerResponse } from '@afterdark/types'
-import type { SettingsFormValues } from '@afterdark/validators'
+import type { CurrentOwnerResponse } from '@repo/types'
+import type { SettingsFormValues } from '@repo/validators'
 
 export function toOwnerFormValues(owner: CurrentOwnerResponse): SettingsFormValues {
   return {

@@ -1,8 +1,8 @@
 import { useTranslation } from 'react-i18next'
 import { Clock } from 'lucide-react'
 import { Link } from '@tanstack/react-router'
-import type { LocationResponse } from '@afterdark/types'
-import { Button, requiredFieldLabel, SelectField, SelectItem } from '@afterdark/ui'
+import type { LocationResponse } from '@repo/types'
+import { Button, requiredFieldLabel, SelectField, SelectItem } from '@repo/ui'
 import { DASHBOARD_ROUTES } from '~/modules/common/constants/routes'
 import { FormSection } from '~/modules/common/components/form-section'
 

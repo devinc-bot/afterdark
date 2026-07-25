@@ -1,5 +1,5 @@
 import { inArray, lt, or } from 'drizzle-orm'
-import { STAFF_INVITATION_STATUS } from '@afterdark/types'
+import { STAFF_INVITATION_STATUS } from '@repo/types'
 import { db } from '../../client.ts'
 import { staffInvitations } from '../../schema/staff-invitation.ts'
 

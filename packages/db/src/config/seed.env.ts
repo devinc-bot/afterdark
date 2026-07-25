@@ -1,7 +1,7 @@
 import { resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { config } from 'dotenv'
-import { seedEnvSchema } from '@afterdark/validators'
+import { seedEnvSchema } from '@repo/validators'
 
 config({ path: resolve(fileURLToPath(new URL('.', import.meta.url)), '../../../.env') })
 

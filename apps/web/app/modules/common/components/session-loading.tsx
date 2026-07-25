@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { Loader } from '@afterdark/ui'
+import { Loader } from '@repo/ui'
 
 export function SessionLoading() {
   const { t } = useTranslation('common', { useSuspense: false })

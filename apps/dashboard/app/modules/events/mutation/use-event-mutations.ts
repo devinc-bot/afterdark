@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import type { CreateEventInput, UpdateEventInput } from '@afterdark/validators'
+import type { CreateEventInput, UpdateEventInput } from '@repo/validators'
 import { QUERY_KEYS } from '~/modules/common/constants/query-keys'
 import { createEvent, deleteEvent, updateEvent } from '~/modules/events/service/events.service'
 

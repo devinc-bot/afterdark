@@ -2,14 +2,14 @@ import { useEffect } from 'react'
 import { useForm } from '@tanstack/react-form'
 import { useTranslation } from 'react-i18next'
 import type { TFunction } from 'i18next'
-import { TICKET_STATUS, TICKET_TYPE, type TicketStatus, type TicketType } from '@afterdark/types'
+import { TICKET_STATUS, TICKET_TYPE, type TicketStatus, type TicketType } from '@repo/types'
 import {
   parseTicketFormToCreateInput,
   parseTicketFormToUpdateInput,
   ticketFormSchema,
   type TicketFormValues,
-} from '@afterdark/validators'
-import { useResolveFieldError } from '@afterdark/i18n/client'
+} from '@repo/validators'
+import { useResolveFieldError } from '@repo/i18n/client'
 import {
   Button,
   cn,
@@ -24,7 +24,7 @@ import {
   SelectItem,
   Textarea,
   toast,
-} from '@afterdark/ui'
+} from '@repo/ui'
 import { FormSection } from '~/modules/common/components/form-section'
 import { useCreateTicket, useUpdateTicket } from '~/modules/tickets/mutation/use-ticket-mutations'
 import { useOwnerEventsForSelect } from '~/modules/tickets/queries/use-owner-events'

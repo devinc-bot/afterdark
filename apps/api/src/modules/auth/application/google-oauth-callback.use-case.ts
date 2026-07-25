@@ -6,8 +6,8 @@ import {
   findAuthAccountByProviderAccount,
   findRoleByName,
   registerAccount,
-} from '@afterdark/db'
-import { AUTH_PROVIDER, AUTH_OAUTH_APP, type AuthOauthApp, type UserRole } from '@afterdark/types'
+} from '@repo/db'
+import { AUTH_PROVIDER, AUTH_OAUTH_APP, type AuthOauthApp, type UserRole } from '@repo/types'
 import {
   GOOGLE_OAUTH_ERROR,
   GOOGLE_OAUTH_STATE_PURPOSE,

@@ -1,6 +1,6 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common'
-import { findLocationIdByDocumentId, findOwnerIdByDocumentId } from '@afterdark/db'
-import { TranslationService } from '@afterdark/i18n/server'
+import { findLocationIdByDocumentId, findOwnerIdByDocumentId } from '@repo/db'
+import { TranslationService } from '@repo/i18n/server'
 
 @Injectable()
 export class LocationLookupService {

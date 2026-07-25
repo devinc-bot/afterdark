@@ -1,7 +1,7 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common'
-import { findEventWithLocationOwnedByOwnerDocumentId } from '@afterdark/db'
-import { TranslationService } from '@afterdark/i18n/server'
-import type { EventResponse } from '@afterdark/types'
+import { findEventWithLocationOwnedByOwnerDocumentId } from '@repo/db'
+import { TranslationService } from '@repo/i18n/server'
+import type { EventResponse } from '@repo/types'
 import { toEventResponse } from '../mappers/events.mapper'
 import { EventImagesService } from './services/event-images.service'
 

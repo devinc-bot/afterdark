@@ -63,7 +63,7 @@ La pantalla `/settings` del dashboard, cuando el usuario logueado es `staff`, de
 
 Sin rutas nuevas — mismos endpoints de `004-owner-settings`, `SettingsController`/`SettingsService` reciben lógica real para `role === staff`.
 
-**Tipos (`@afterdark/types`, base compartida + extend)**
+**Tipos (`@repo/types`, base compartida + extend)**
 
 ```ts
 interface BaseProfileResponse {
@@ -95,7 +95,7 @@ type SettingsResponse = CurrentOwnerResponse | CurrentStaffResponse
 
 Reemplaza el `StaffSettingsResponse` actual (`{ role: 'staff' }`) por `CurrentStaffResponse` con datos reales. `SettingsResponse` sigue discriminada por `role`.
 
-**Schemas (`@afterdark/validators`, base compartida + extend)**
+**Schemas (`@repo/validators`, base compartida + extend)**
 
 ```ts
 const baseProfileSchema = z.object({

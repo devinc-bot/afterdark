@@ -1,5 +1,5 @@
-import { EVENT_STATUS, type EventResponse } from '@afterdark/types'
-import type { EventFormValues } from '@afterdark/validators'
+import { EVENT_STATUS, type EventResponse } from '@repo/types'
+import type { EventFormValues } from '@repo/validators'
 import type { EventRecordItem } from '~/modules/events/components/event-record'
 
 export const EMPTY_EVENT_FORM_VALUES: EventFormValues = {

@@ -95,11 +95,11 @@ Hoy `/forgot-password` es un placeholder: si olvidan la contraseña, no hay form
 
 **Errores (mensaje al usuario en español)**
 
-| HTTP | Cuándo                                                    | Mensaje                                                 |
-| ---- | --------------------------------------------------------- | ------------------------------------------------------- |
-| 400  | Validación Zod (email, password, match)                   | Mensajes de `@afterdark/validators` / i18n `validation` |
-| 400  | Token inválido, expirado o ya usado                       | `El enlace no es válido o ya expiró.`                   |
-| 429  | ≥10 forgot-password el mismo día UTC (cuenta owner/staff) | `Demasiados intentos. Probá de nuevo más tarde.`        |
+| HTTP | Cuándo                                                    | Mensaje                                            |
+| ---- | --------------------------------------------------------- | -------------------------------------------------- |
+| 400  | Validación Zod (email, password, match)                   | Mensajes de `@repo/validators` / i18n `validation` |
+| 400  | Token inválido, expirado o ya usado                       | `El enlace no es válido o ya expiró.`              |
+| 429  | ≥10 forgot-password el mismo día UTC (cuenta owner/staff) | `Demasiados intentos. Probá de nuevo más tarde.`   |
 
 ### Datos
 

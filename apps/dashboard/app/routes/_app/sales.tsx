@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { usePageTitle } from '@afterdark/ui'
+import { usePageTitle } from '@repo/ui'
 import { SalesManagementView } from '~/modules/sales/components/sales-management-view'
 
 export const Route = createFileRoute('/_app/sales')({

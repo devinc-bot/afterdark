@@ -7,7 +7,7 @@ import {
   TicketEditView,
 } from '~/modules/tickets/components/ticket-edit-view'
 import { useTicket } from '~/modules/tickets/queries/use-ticket-queries'
-import { usePageTitle } from '@afterdark/ui'
+import { usePageTitle } from '@repo/ui'
 
 export const Route = createFileRoute('/_app/tickets/$documentId/edit')({
   component: TicketEditPage,

@@ -14,9 +14,9 @@ import {
   UseInterceptors,
 } from '@nestjs/common'
 import { FilesInterceptor } from '@nestjs/platform-express'
-import { API_ROUTES } from '@afterdark/common'
-import type { JwtPayload } from '@afterdark/types'
-import { USER_ROLE } from '@afterdark/types'
+import { API_ROUTES } from '@repo/common'
+import type { JwtPayload } from '@repo/types'
+import { USER_ROLE } from '@repo/types'
 import {
   LOCATION_IMAGE_MAX_COUNT,
   createLocationSchema,
@@ -24,7 +24,7 @@ import {
   uuidSchema,
   type CreateLocationInput,
   type UpdateLocationMultipartInput,
-} from '@afterdark/validators'
+} from '@repo/validators'
 import { CurrentUser } from '../../common/decorators/current-user.decorator'
 import { Roles } from '../../common/decorators/roles.decorator'
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard'

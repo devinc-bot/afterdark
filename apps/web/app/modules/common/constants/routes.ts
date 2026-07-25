@@ -1,9 +1,11 @@
-import { CLIENT_ROUTES } from '@afterdark/common'
+import { CLIENT_ROUTES } from '@repo/common'
 
 const { resetPassword, authCallback, login } = CLIENT_ROUTES
 
 export const WEB_ROUTES = {
   home: () => '/' as const,
+  events: () => '/events' as const,
+  settings: () => '/settings' as const,
   properties: () => '/properties' as const,
   property: (id: string) => `/properties/${id}` as const,
   login,

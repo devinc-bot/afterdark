@@ -11,11 +11,11 @@
 
 ## Shared packages
 
-- [x] `EVENT_IMAGE_MAX_COUNT = 2` y `LOCATION_IMAGE_MAX_COUNT = 4` en `@afterdark/validators`
-- [x] `EventResponse.images` (+ tipo imagen) en `@afterdark/types`
+- [x] `EVENT_IMAGE_MAX_COUNT = 2` y `LOCATION_IMAGE_MAX_COUNT = 4` en `@repo/validators`
+- [x] `EventResponse.images` (+ tipo imagen) en `@repo/types`
 - [x] Schema `event_assets_lnk` + migración Drizzle
 - [x] Repository: find event by documentId (owner) + CRUD links de imágenes
-- [x] `API_ROUTES.events` get por `documentId` en `@afterdark/common`
+- [x] `API_ROUTES.events` get por `documentId` en `@repo/common`
 - [x] i18n: wizard step 2 imágenes evento (copy restante)
 
 ## API

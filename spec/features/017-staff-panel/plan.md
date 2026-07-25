@@ -5,7 +5,7 @@
 ## Orden de capas
 
 ```text
-1. @afterdark/types          → SessionResponse + role
+1. @repo/types          → SessionResponse + role
 2. apps/api                  → SessionService retorna role
 3. apps/dashboard            → session store, nav por rol, panel staff, guards 404
 4. packages/i18n             → copy nuevo (tabla, estados, descripción staff)
@@ -116,7 +116,7 @@ En `beforeLoad` de rutas del dueño (o en `_app` layout): si no permitido → `t
 | Usada     | `secondary`                     |
 | Expirada  | `destructive` o `outline` muted |
 
-Usar `Badge` de `@afterdark/ui`.
+Usar `Badge` de `@repo/ui`.
 
 ## Riesgos / edge cases
 

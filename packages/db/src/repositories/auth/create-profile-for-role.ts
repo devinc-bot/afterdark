@@ -1,12 +1,12 @@
-import type { UserRole } from '@afterdark/types'
-import { USER_ROLE } from '@afterdark/types'
+import type { UserRole } from '@repo/types'
+import { USER_ROLE } from '@repo/types'
 import type { Transaction } from '../../client.ts'
 import { createOwnerWithAccountLink } from '../owners/create-owner-with-account-link.ts'
-import type { OwnerProfileSeed } from '@afterdark/types'
+import type { OwnerProfileSeed } from '@repo/types'
 import { createStaffWithAccountLink } from '../staff/create-staff-with-account-link.ts'
-import type { StaffProfileSeed } from '@afterdark/types'
+import type { StaffProfileSeed } from '@repo/types'
 import { createUserWithAccountLink } from '../users/create-user-with-account-link.ts'
-import type { UserProfileSeed } from '@afterdark/types'
+import type { UserProfileSeed } from '@repo/types'
 
 export async function createProfileForRole(
   tx: Transaction,

@@ -2,8 +2,8 @@ import i18next from 'i18next'
 import { SUPPORTED_LANGUAGES, DEFAULT_LANGUAGE, LANGUAGE } from '../config/index.ts'
 import type { Language } from '../config/languages.ts'
 
-const LANGUAGE_STORAGE_KEY = 'afterdark:language'
-const LANGUAGE_COOKIE = 'afterdark_lang'
+const LANGUAGE_STORAGE_KEY = 'repo:language'
+const LANGUAGE_COOKIE = 'repo_lang'
 
 export function getCurrentLanguage(): Language {
   return (i18next.language as Language) ?? DEFAULT_LANGUAGE

@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { TicketsManagementView } from '~/modules/tickets/components/tickets-management-view'
-import { usePageTitle } from '@afterdark/ui'
+import { usePageTitle } from '@repo/ui'
 
 export const Route = createFileRoute('/_app/tickets/')({
   component: TicketsPage,

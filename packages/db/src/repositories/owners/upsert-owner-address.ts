@@ -2,7 +2,7 @@ import { eq } from 'drizzle-orm'
 import { db, type Transaction } from '../../client.ts'
 import { addresses } from '../../schema/address.ts'
 import { ownerAddressesLnk } from '../../schema/owner-address-lnk.ts'
-import type { OwnerAddressRow } from '@afterdark/types'
+import type { OwnerAddressRow } from '@repo/types'
 
 export async function upsertOwnerAddress(ownerId: number, input: OwnerAddressRow): Promise<void> {
   await db.transaction(async (tx: Transaction) => {

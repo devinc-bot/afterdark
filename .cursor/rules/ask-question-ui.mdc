@@ -1,0 +1,21 @@
+---
+description: Usar AskQuestion (UI nativo) para decisiones; no listas A/B/C en el chat
+alwaysApply: true
+---
+
+# Preguntas con UI nativo (AskQuestion)
+
+Cuando haga falta una decisión del usuario (alcance, opciones, confirmación, ambigüedad):
+
+1. **Llamar la tool `AskQuestion`** de Cursor — es lo que muestra el alert / multiple choice clickeable.
+2. **No** sustituir eso con listas `1. A) B) C)` en el mensaje de chat (eso fuerza respuesta manual).
+3. En skills OpenSpec, “AskUserQuestion” = la misma intención; en Cursor el nombre de la tool es **`AskQuestion`**.
+
+## Si `AskQuestion` no está disponible
+
+Conocido: modelos **Composer** / **Auto→Composer** en **Agent mode** a menudo no exponen `AskQuestion` (falla o no aparece en el toolset). Workarounds:
+
+- Cambiar a **Plan mode** (Shift+Tab) para las preguntas de alcance, o
+- Usar un modelo third-party (Claude / GPT) en Agent mode.
+
+Si la tool falla o no existe en el turno: **decirlo explícitamente** y recién ahí pedir respuesta por texto. No fingir que el UI salió.

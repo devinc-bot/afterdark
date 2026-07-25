@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import type { StaffStatus } from '@afterdark/types'
+import type { StaffStatus } from '@repo/types'
 import { QUERY_KEYS } from '~/modules/common/constants/query-keys'
 import {
   deleteStaffUser,

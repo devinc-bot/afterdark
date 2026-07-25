@@ -1,5 +1,6 @@
 import { z } from 'zod'
-import { STAFF_STATUS, USER_ROLE } from '@afterdark/types'
+import { STAFF_STATUS, USER_ROLE } from '@repo/types'
+import { phoneSchema } from './common.ts'
 import { baseProfileSchema } from './owner.ts'
 
 const optionalDigitsField = (invalidKey: string, pattern: RegExp) =>
@@ -32,11 +33,7 @@ export const userAddressSchema = z
 export const updateCurrentUserSchema = z.object({
   name: z.string().trim().min(2).max(255),
   lastName: z.string().trim().min(2).max(255),
-  phone: z
-    .string()
-    .trim()
-    .min(8, 'validation:field.phone.invalid')
-    .max(30, 'validation:field.phone.tooLong'),
+  phone: phoneSchema,
   birthday: z
     .string()
     .trim()
@@ -46,6 +43,13 @@ export const updateCurrentUserSchema = z.object({
     ),
   nationalId: optionalDigitsField('validation:field.nationalId.invalid', /^\d{7,11}$/),
   address: userAddressSchema,
+})
+
+/** Web profile edit: name, lastName, phone only (no birthday/nationalId/address). */
+export const updateCurrentUserProfileSchema = updateCurrentUserSchema.pick({
+  name: true,
+  lastName: true,
+  phone: true,
 })
 
 export const createUserSchema = z.object({
@@ -95,11 +99,7 @@ export const verifyStaffInvitationSecurityWordSchema = z.object({
 export const acceptStaffInvitationBaseSchema = z.object({
   name: z.string().trim().min(2).max(255),
   lastName: z.string().trim().min(2).max(255),
-  phone: z
-    .string()
-    .trim()
-    .min(8, 'validation:field.phone.invalid')
-    .max(30, 'validation:field.phone.tooLong'),
+  phone: phoneSchema,
   securityWord: z.string().trim(),
   password: z.string().min(8),
   confirmPassword: z.string().min(8),
@@ -134,4 +134,5 @@ export type UpdateStaffStatusInput = z.infer<typeof updateStaffStatusSchema>
 export type UpdateCurrentStaffInput = z.infer<typeof updateCurrentStaffSchema>
 export type UpdateUserInput = z.infer<typeof updateUserSchema>
 export type UpdateCurrentUserInput = z.infer<typeof updateCurrentUserSchema>
+export type UpdateCurrentUserProfileInput = z.infer<typeof updateCurrentUserProfileSchema>
 export type UserAddressInput = z.infer<typeof userAddressSchema>

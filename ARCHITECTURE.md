@@ -1,4 +1,4 @@
-# ARCHITECTURE.md — afterdark Monorepo
+# ARCHITECTURE.md — Repo Monorepo
 
 Apps, packages, and data-flow conventions.
 
@@ -6,11 +6,11 @@ Apps, packages, and data-flow conventions.
 
 ## Apps
 
-| App         | Role                                        | Port |
-| ----------- | ------------------------------------------- | ---- |
-| `web`       | Public client (auth, discover / buy)        | 3001 |
-| `dashboard` | Owner/staff panel (clubs, events, …)        | 3002 |
-| `api`       | NestJS REST API + Drizzle (`@afterdark/db`) | 3000 |
+| App         | Role                                   | Port |
+| ----------- | -------------------------------------- | ---- |
+| `web`       | Public client (auth, discover / buy)   | 3001 |
+| `dashboard` | Owner/staff panel (clubs, events, …)   | 3002 |
+| `api`       | NestJS REST API + Drizzle (`@repo/db`) | 3000 |
 
 ```
 apps/
@@ -38,9 +38,9 @@ UI → queries/mutations → services → QueryFactory → Nest API → reposito
 1. `app/config/api.ts` creates `QueryFactory(API_URL)` (`API_URL = VITE_API_URL + /` + `API_PREFIX`).
 2. Services call `api.*` with `buildApiPath(API_ROUTES.*, path)` — never hardcode `/api/...`.
 3. Auth may wrap the same calls in `createServerFn`.
-4. Nest `main.ts` uses `app.setGlobalPrefix(API_PREFIX)` from `@afterdark/common` (same constant).
-5. API services use `@afterdark/db` repositories only — no direct `db` queries in Nest services.
-6. Contracts from `@afterdark/types` / `@afterdark/validators`; copy from `@afterdark/i18n`.
+4. Nest `main.ts` uses `app.setGlobalPrefix(API_PREFIX)` from `@repo/common` (same constant).
+5. API services use `@repo/db` repositories only — no direct `db` queries in Nest services.
+6. Contracts from `@repo/types` / `@repo/validators`; copy from `@repo/i18n`.
 
 Session: Zustand store + `GET /session/me`. Guards: `RequireGuest`, `RequireSession`, `RolesGuard`.
 
@@ -49,7 +49,7 @@ Session: Zustand store + `GET /session/me`. Guards: `RequireGuest`, `RequireSess
 ## API modules (NestJS)
 
 - NestJS 11 (`@nestjs/*`)
-- Drizzle ORM + Turso (`@afterdark/db`, `@libsql/client`)
+- Drizzle ORM + Turso (`@repo/db`, `@libsql/client`)
 - Validation: Zod (via shared schemas) + custom `ZodValidationPipe`
 - Auth: JWT + refresh sessions persisted in DB
 - Email: Resend + React Email templates (`modules/mail/`)
@@ -95,24 +95,24 @@ apps/api/src/modules/mail/
 
 `files/` keeps `application/services/files.service.ts` as shared infra (consumed by clubs); stubs like `health/`, `categories/`, `orders/` only need `presentation/` until they grow use cases.
 
-- Controllers (when present) delegate to use cases; they do not call `@afterdark/db` directly.
+- Controllers (when present) delegate to use cases; they do not call `@repo/db` directly.
 - Use cases orchestrate repositories, module services (`FilesService`, mail adapters, etc.), and map errors via `TranslationService`.
-- Keep **database access** in `@afterdark/db` only — not in use cases as raw SQL, and not duplicated in a local repository layer.
+- Keep **database access** in `@repo/db` only — not in use cases as raw SQL, and not duplicated in a local repository layer.
 - Vendor SDKs (e.g. Resend) stay behind a port + adapter; domain modules must not import the vendor package.
 
 ### Database conventions
 
 - Schemas live in `packages/db/src/schema/` (`sqliteTable`) — table definitions and `*Select` / `*Insert` types.
 - **Repositories** live in `packages/db/src/repositories/` — one folder per entity, one file per function; all Drizzle queries/writes used by `apps/api` belong here.
-- The API imports repositories from `@afterdark/db`; use cases orchestrate business rules and HTTP exceptions.
+- The API imports repositories from `@repo/db`; use cases orchestrate business rules and HTTP exceptions.
 - In development, `drizzle-kit push` may sync schema changes; for production prefer migrations.
 
 ### API conventions
 
-- Use contracts from `@afterdark/types` and `@afterdark/validators`, never duplicate request/response shapes locally.
+- Use contracts from `@repo/types` and `@repo/validators`, never duplicate request/response shapes locally.
 - Keep validation at controller boundary with Zod schemas.
 - Keep business logic in use cases (and `application/services/` for shared module helpers), not controllers.
-- Keep **database access** in `@afterdark/db` repositories, not API layer.
+- Keep **database access** in `@repo/db` repositories, not API layer.
 - Avoid logging secrets/tokens/plain passwords.
 
 ---
@@ -136,14 +136,14 @@ apps/api/src/modules/mail/
 
 ## Packages (rules)
 
-| Package                 | Rule                                                                                                                                                                                            |
-| ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `@afterdark/common`     | Single source for `API_PREFIX`, `API_URL`, `API_ROUTES`, `QueryFactory`                                                                                                                         |
-| `@afterdark/db`         | `schema/` + `repositories/<domain>/` (one fn per file); migrations in prod                                                                                                                      |
-| `@afterdark/validators` | All Zod schemas; do not redefine in apps. Env schemas live in `src/env/` (`database`, `mail`, `client`, `upload`); domain/form schemas stay at `src/*.ts`. Subpaths: `.`, `./database`, `./env` |
-| `@afterdark/types`      | `enums/` + `dto/` + `repository/`; import only from package barrel                                                                                                                              |
-| `@afterdark/ui`         | ShadCN in `packages/ui`; export from package index                                                                                                                                              |
-| `@afterdark/i18n`       | Shared locales / i18next                                                                                                                                                                        |
+| Package            | Rule                                                                                                                                                                                            |
+| ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `@repo/common`     | Single source for `API_PREFIX`, `API_URL`, `API_ROUTES`, `QueryFactory`                                                                                                                         |
+| `@repo/db`         | `schema/` + `repositories/<domain>/` (one fn per file); migrations in prod                                                                                                                      |
+| `@repo/validators` | All Zod schemas; do not redefine in apps. Env schemas live in `src/env/` (`database`, `mail`, `client`, `upload`); domain/form schemas stay at `src/*.ts`. Subpaths: `.`, `./database`, `./env` |
+| `@repo/types`      | `enums/` + `dto/` + `repository/`; import only from package barrel                                                                                                                              |
+| `@repo/ui`         | ShadCN in `packages/ui`; export from package index                                                                                                                                              |
+| `@repo/i18n`       | Shared locales / i18next                                                                                                                                                                        |
 
 ---
 

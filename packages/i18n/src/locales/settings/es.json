@@ -38,7 +38,7 @@
       "address": "Domicilio",
       "addressDescription": "Dónde vivís. Es opcional.",
       "account": "Cuenta",
-      "accountDescription": "Cómo iniciás sesión en Afterdark."
+      "accountDescription": "Cómo iniciás sesión en {appNameDisplay}."
     },
     "profile": {
       "changePhoto": "Cambiar foto",
@@ -71,7 +71,7 @@
       "profile": "Perfil",
       "profileDescription": "Tu información personal y de contacto.",
       "account": "Cuenta",
-      "accountDescription": "Cómo iniciás sesión en Afterdark."
+      "accountDescription": "Cómo iniciás sesión en {appNameDisplay}."
     },
     "profile": {
       "name": "Nombre",
@@ -81,5 +81,38 @@
       "emailHint": "Para cambiar el correo, escribinos a soporte.",
       "avatarFallback": "Usuario"
     }
+  },
+  "web": {
+    "page": {
+      "title": "Perfil",
+      "metaTitle": "Perfil · {appName}",
+      "description": "Nombre, teléfono y correo de tu cuenta."
+    },
+    "profile": {
+      "avatarFallback": "Usuario"
+    },
+    "form": {
+      "name": "Nombre",
+      "lastName": "Apellido",
+      "phone": "Teléfono",
+      "email": "Correo electrónico",
+      "emailHint": "Para cambiar el correo, <supportLink>escribinos a {{supportEmail}}</supportLink>.",
+      "supportEmail": "soporte@eventflow.app",
+      "emailSupportSubject": "Cambio de correo"
+    },
+    "actions": {
+      "save": "Guardar cambios",
+      "saving": "Guardando…",
+      "retry": "Reintentar",
+      "dirty": "Hay cambios sin guardar.",
+      "clean": "No hay cambios"
+    },
+    "messages": {
+      "saveSuccess": "Listo. Tu perfil quedó al día.",
+      "saveError": "No pudimos guardar. Intentá de nuevo.",
+      "loadErrorTitle": "No pudimos cargar tu perfil",
+      "loadError": "No pudimos cargar tu perfil. Intentá de nuevo."
+    },
+    "loading": "Cargando perfil…"
   }
 }

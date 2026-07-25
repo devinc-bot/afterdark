@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { Badge, cn } from '@afterdark/ui'
+import { Badge, cn } from '@repo/ui'
 import {
   ATTENDEE_ENTRY_STATUS,
   type AttendeeEntryStatus,

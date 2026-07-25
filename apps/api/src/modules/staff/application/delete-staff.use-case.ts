@@ -1,6 +1,6 @@
 import { Inject, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common'
-import { deleteStaffByDocumentId } from '@afterdark/db'
-import { TranslationService } from '@afterdark/i18n/server'
+import { deleteStaffByDocumentId } from '@repo/db'
+import { TranslationService } from '@repo/i18n/server'
 
 @Injectable()
 export class DeleteStaffUseCase {

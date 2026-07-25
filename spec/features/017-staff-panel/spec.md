@@ -97,7 +97,7 @@ Enlaza con `mission.md`: staff opera con permisos acotados según el club asigna
 | ------ | ----------------- | ---- | --------------------------------------------- |
 | `GET`  | `/api/session/me` | JWT  | Agregar campo `role: UserRole` a la respuesta |
 
-**Response** — extender `SessionResponse` en `@afterdark/types`:
+**Response** — extender `SessionResponse` en `@repo/types`:
 
 ```typescript
 export interface SessionResponse {

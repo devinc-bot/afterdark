@@ -3,10 +3,10 @@ import {
   findLocationByDocumentId,
   findLocationImageAssetsByLocationIds,
   updateLocationWithAddress,
-} from '@afterdark/db'
-import type { LocationResponse } from '@afterdark/types'
-import { LOCATION_IMAGE_MAX_COUNT, type UpdateLocationInput } from '@afterdark/validators'
-import { TranslationService } from '@afterdark/i18n/server'
+} from '@repo/db'
+import type { LocationResponse } from '@repo/types'
+import { LOCATION_IMAGE_MAX_COUNT, type UpdateLocationInput } from '@repo/validators'
+import { TranslationService } from '@repo/i18n/server'
 import { toLocationResponse, toLocationUpsertInput } from '../mappers/location.mapper'
 import { assertValidKeepImageIds, validateImageLimit } from '../validators/location.validator'
 import { LocationImagesService } from './services/location-images.service'

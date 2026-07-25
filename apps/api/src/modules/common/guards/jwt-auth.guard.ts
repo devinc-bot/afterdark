@@ -6,7 +6,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
-import type { JwtPayload } from '@afterdark/types'
+import type { JwtPayload } from '@repo/types'
 import { extractBearerToken } from '../utils/extract-bearer-token'
 
 @Injectable()

@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { Card, CardContent } from '@afterdark/ui'
+import { Card, CardContent } from '@repo/ui'
 import { LANDING_SOCIAL_KEYS } from '../constants/landing-content'
 
 export function SectionSocial() {

@@ -1,13 +1,15 @@
 import { Body, Controller, ForbiddenException, Get, Inject, Patch, UseGuards } from '@nestjs/common'
-import { API_ROUTES } from '@afterdark/common'
-import { USER_ROLE, type JwtPayload, type SettingsResponse } from '@afterdark/types'
+import { API_ROUTES } from '@repo/common'
+import { USER_ROLE, type JwtPayload, type SettingsResponse } from '@repo/types'
 import {
   updateCurrentOwnerSchema,
   updateCurrentStaffSchema,
+  updateCurrentUserProfileSchema,
   type UpdateCurrentOwnerInput,
   type UpdateCurrentStaffInput,
-} from '@afterdark/validators'
-import { TranslationService } from '@afterdark/i18n/server'
+  type UpdateCurrentUserProfileInput,
+} from '@repo/validators'
+import { TranslationService } from '@repo/i18n/server'
 import { CurrentUser } from '../../common/decorators/current-user.decorator'
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard'
 import { ZodValidationPipe } from '../../common/pipes/zod-validation.pipe'
@@ -42,6 +44,13 @@ export class SettingsController {
       const input = new ZodValidationPipe(updateCurrentStaffSchema).transform(
         body
       ) as UpdateCurrentStaffInput
+      return this.updateSettings.execute(user, input)
+    }
+
+    if (user.role === USER_ROLE.USER) {
+      const input = new ZodValidationPipe(updateCurrentUserProfileSchema).transform(
+        body
+      ) as UpdateCurrentUserProfileInput
       return this.updateSettings.execute(user, input)
     }
 

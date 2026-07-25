@@ -1,17 +1,17 @@
 # Tasks — Arquitectura de capas (repositorios + API vertical slice)
 
-## Shared packages — `@afterdark/db`
+## Shared packages — `@repo/db`
 
 - [x] Carpeta por entidad bajo `repositories/`
 - [x] Un archivo kebab-case por función exportada
 - [x] `index.ts` por carpeta + barrel raíz
 - [x] Eliminar `*.repository.ts` monolíticos
 
-## Shared packages — `@afterdark/types`
+## Shared packages — `@repo/types`
 
 - [x] Crear `src/repository/` por dominio
 - [x] Exportar desde barrel público
-- [x] Subpaths `enums` y consumo de `@afterdark/db/schema` donde aplica
+- [x] Subpaths `enums` y consumo de `@repo/db/schema` donde aplica
 
 ## API — módulo `clubs` (piloto)
 
@@ -30,5 +30,5 @@
 
 ## Calidad
 
-- [x] `pnpm --filter @afterdark/api type-check`
+- [x] `pnpm --filter @repo/api type-check`
 - [x] `pnpm lint`

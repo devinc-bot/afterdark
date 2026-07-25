@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
-import { toast } from '@afterdark/ui'
+import { toast } from '@repo/ui'
 import { StaffInvitations } from '~/modules/staff/components/staff-invitations'
 import {
   StaffInvitationsEmptyState,

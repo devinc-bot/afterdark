@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { EventCreateView } from '~/modules/events/components/event-create-view'
-import { usePageTitle } from '@afterdark/ui'
+import { usePageTitle } from '@repo/ui'
 
 export const Route = createFileRoute('/_app/events/new')({
   component: EventCreatePage,

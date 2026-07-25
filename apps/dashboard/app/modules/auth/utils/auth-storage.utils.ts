@@ -1,7 +1,7 @@
-import type { LoginResponse } from '@afterdark/types'
+import type { LoginResponse } from '@repo/types'
 import { SESSION_DURATION_MS } from '~/modules/common/constants/auth-storage'
 import { COOKIE_KEYS } from '~/modules/common/constants/cookies'
-import { deleteCookie, getCookieSync, setCookie } from '@afterdark/common'
+import { deleteCookie, getCookieSync, setCookie } from '@repo/common'
 
 const accessTokenCookie = { name: COOKIE_KEYS.accessToken } as const
 

@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next'
-import { Button } from '@afterdark/ui'
-import { buildGoogleOauthStartUrl } from '@afterdark/common'
-import { AUTH_OAUTH_APP, USER_ROLE } from '@afterdark/types'
+import { Button } from '@repo/ui'
+import { buildGoogleOauthStartUrl } from '@repo/common'
+import { AUTH_OAUTH_APP, USER_ROLE } from '@repo/types'
 
 function GoogleMark({ className }: { className?: string }) {
   return (

@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { Button } from '@afterdark/ui'
+import { Button } from '@repo/ui'
 import { FormPageActions } from '~/modules/common/components/form-page-actions'
 import { SETTINGS_FORM_ID } from '~/modules/settings/constants/settings-form'
 

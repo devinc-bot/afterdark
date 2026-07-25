@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { Avatar, AvatarFallback, AvatarImage, Field, Input } from '@afterdark/ui'
+import { Avatar, AvatarFallback, AvatarImage, Field, Input } from '@repo/ui'
 import { FormSection } from '~/modules/common/components/form-section'
 import { useStaffSettingsForm } from '~/modules/staff/hooks/settings-form-context'
 

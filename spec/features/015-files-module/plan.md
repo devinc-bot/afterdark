@@ -5,8 +5,8 @@
 ## Orden de capas
 
 ```text
-1. @afterdark/validators (si cambian reglas MIME/tamaño)
-2. @afterdark/i18n (si hay mensajes nuevos)
+1. @repo/validators (si cambian reglas MIME/tamaño)
+2. @repo/i18n (si hay mensajes nuevos)
 3. apps/api/src/modules/files/
 4. Consumidores (p. ej. clubs) — solo si el contrato público de FilesService cambia
 ```

@@ -5,13 +5,13 @@
 ## Orden de capas
 
 ```text
-1. @afterdark/types      (SettingsResponse discriminado por role)
+1. @repo/types      (SettingsResponse discriminado por role)
 2. apps/api              (nuevo módulo settings, consolida owner)
 3. apps/dashboard        (config/api.ts, modules/owner/ top-level, placeholder en modules/staff/, dispatcher en modules/settings/)
-4. @afterdark/i18n       (namespace settings: owner.* / staff.*)
+4. @repo/i18n       (namespace settings: owner.* / staff.*)
 ```
 
-No hay cambios en `@afterdark/validators` ni en `packages/db` — se reutiliza `updateCurrentOwnerSchema` y las tablas existentes.
+No hay cambios en `@repo/validators` ni en `packages/db` — se reutiliza `updateCurrentOwnerSchema` y las tablas existentes.
 
 ## Archivos a crear / modificar
 
@@ -93,9 +93,9 @@ No hay cambios en `@afterdark/validators` ni en `packages/db` — se reutiliza `
 
 ```text
 1. packages/db           (repurpose user_addresses_lnk -> owner_addresses_lnk, migración)
-2. @afterdark/types       (CurrentOwnerResponse.address)
-3. @afterdark/validators  (ownerAddressSchema en owner.ts)
-4. @afterdark/i18n        (nueva clave de error "cannotClear"; copy de address ya existía en settings/*.json)
+2. @repo/types       (CurrentOwnerResponse.address)
+3. @repo/validators  (ownerAddressSchema en owner.ts)
+4. @repo/i18n        (nueva clave de error "cannotClear"; copy de address ya existía en settings/*.json)
 5. apps/api               (owners.repository + OwnerService)
 6. apps/dashboard         (settings-form-context genérico + UI del owner)
 ```
@@ -105,7 +105,7 @@ No hay cambios en `@afterdark/validators` ni en `packages/db` — se reutiliza `
 - `packages/db/src/schema/user-address-lnk.ts` — eliminar. Reemplazado por `owner-address-lnk.ts`.
 - `packages/db/src/schema/owner-address-lnk.ts` (nuevo) — copia el patrón de `club-address-lnk.ts`: `ownerAddressesLnk` con `ownerId` (FK `owners.id`, unique) y `addressId` (FK `addresses.id`, unique).
 - `packages/db/src/schema/index.ts` — quitar export de `user-address-lnk.ts`, agregar `owner-address-lnk.ts`.
-- `packages/db/src/migrations/*` (generado) — `pnpm --filter @afterdark/db db:generate`: drop `user_addresses_lnk`, create `owner_addresses_lnk`.
+- `packages/db/src/migrations/*` (generado) — `pnpm --filter @repo/db db:generate`: drop `user_addresses_lnk`, create `owner_addresses_lnk`.
 - `packages/db/src/repositories/owners.repository.ts` — `findCurrentOwnerByDocumentId` suma `address` (LEFT JOIN `owner_addresses_lnk` + `addresses`, puede ser `null`); nueva `upsertOwnerAddress(ownerId, addressInput | null)` (transacción, mismo patrón select-lnk-then-update/insert que `updateClubWithAddress`).
 - `packages/validators/src/owner.ts` — nuevo `ownerAddressSchema` (`{ address, streetNumber, state, city }` + `superRefine` todo-o-nada, mensaje `validation:field.address.allOrNone`). `updateCurrentOwnerSchema` suma `address: ownerAddressSchema`.
 - `packages/types/src/api.ts` — `CurrentOwnerResponse` suma `address: CurrentUserAddress | null`.

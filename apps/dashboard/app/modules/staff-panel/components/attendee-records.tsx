@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { Card, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@afterdark/ui'
+import { Card, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@repo/ui'
 import type { AttendeeRecord } from '~/modules/staff-panel/constants/attendees.mock'
 import { EntryStatusBadge } from '~/modules/staff-panel/components/entry-status-badge'
 

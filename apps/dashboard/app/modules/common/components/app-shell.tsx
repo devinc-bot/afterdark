@@ -1,96 +1,79 @@
 import { useTranslation } from 'react-i18next'
 import type { TFunction } from 'i18next'
+import type { LucideIcon } from 'lucide-react'
 import {
+  AppLogo,
+  AppSidebar,
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbList,
+  BreadcrumbPage,
   matchesSidebarNavHref,
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarHeader,
+  Separator,
   SidebarInset,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
   SidebarProvider,
   SidebarTrigger,
   useSidebar,
-} from '@afterdark/ui'
-import { Link, useNavigate, useRouterState } from '@tanstack/react-router'
-import { useCallback, useMemo, useRef, useState, type ReactNode } from 'react'
-import { LayoutGrid, LogOut, MapPin, Ticket, Users, CalendarDays, ShoppingBag } from 'lucide-react'
-import { USER_ROLE, type UserRole } from '@afterdark/types'
+} from '@repo/ui'
+import { useNavigate, useRouterState } from '@tanstack/react-router'
+import { useCallback, useMemo, useRef, useState } from 'react'
+import { CalendarDays, LayoutGrid, MapPin, ShoppingBag, Ticket, Users } from 'lucide-react'
+import { USER_ROLE, type UserRole } from '@repo/types'
 import { clearAuthSession } from '~/modules/auth/utils/auth-storage.utils'
 import { AppShellLanguageSwitcher } from '~/modules/common/components/app-shell-language-switcher'
-import { AppShellNavIcon, navMenuButtonClassName } from '~/modules/common/components/app-shell-nav'
 import { AppShellSidebarFooter } from '~/modules/common/components/app-shell-sidebar-footer'
+import { AppShellThemeSwitcher } from '~/modules/common/components/app-shell-theme-switcher'
 import { AppShellSignOutDialog } from '~/modules/common/components/app-shell-sign-out-dialog'
 import { useSession } from '~/modules/common/hooks/use-session'
 import { DASHBOARD_ROUTES } from '~/modules/common/constants/routes'
 import { isRouteAllowedForRole } from '../constants/role-routes'
+import { getUserDisplayName, getUserInitials } from '~/modules/common/utils/app-shell-user.utils'
 
 type AppShellNavItem = {
-  label: string
-  icon: ReactNode
-  href?: string
-  onClick?: () => void
-  disabled?: boolean
-  title?: string
+  title: string
+  url: string
+  icon: LucideIcon
 }
 
 function buildPrimaryNav(t: TFunction<'dashboard'>, role?: UserRole): AppShellNavItem[] {
   const items: AppShellNavItem[] = [
     {
-      label: t('nav.panel'),
-      href: DASHBOARD_ROUTES.home(),
-      icon: <LayoutGrid aria-hidden="true" />,
+      title: t('nav.panel'),
+      url: DASHBOARD_ROUTES.home(),
+      icon: LayoutGrid,
     },
     {
-      label: t('nav.locations'),
-      href: DASHBOARD_ROUTES.locations(),
-      icon: <MapPin aria-hidden="true" />,
+      title: t('nav.locations'),
+      url: DASHBOARD_ROUTES.locations(),
+      icon: MapPin,
     },
     {
-      label: t('nav.tickets'),
-      href: DASHBOARD_ROUTES.tickets(),
-      icon: <Ticket aria-hidden="true" />,
+      title: t('nav.tickets'),
+      url: DASHBOARD_ROUTES.tickets(),
+      icon: Ticket,
     },
     {
-      label: t('nav.events'),
-      href: DASHBOARD_ROUTES.events(),
-      icon: <CalendarDays aria-hidden="true" />,
+      title: t('nav.events'),
+      url: DASHBOARD_ROUTES.events(),
+      icon: CalendarDays,
     },
     {
-      label: t('nav.sales'),
-      href: DASHBOARD_ROUTES.sales(),
-      icon: <ShoppingBag aria-hidden="true" />,
+      title: t('nav.sales'),
+      url: DASHBOARD_ROUTES.sales(),
+      icon: ShoppingBag,
     },
     {
-      label: t('nav.users'),
-      icon: <Users aria-hidden="true" />,
-      href: DASHBOARD_ROUTES.staff(),
+      title: t('nav.users'),
+      url: DASHBOARD_ROUTES.staff(),
+      icon: Users,
     },
   ]
 
-  if (role === USER_ROLE.STAFF) {
-    return items.filter((item) => item.href !== undefined && isRouteAllowedForRole(role, item.href))
-  }
-
-  if (role === USER_ROLE.OWNER) {
-    return items.filter((item) => item.href !== undefined && isRouteAllowedForRole(role, item.href))
+  if (role === USER_ROLE.STAFF || role === USER_ROLE.OWNER) {
+    return items.filter((item) => isRouteAllowedForRole(role, item.url))
   }
 
   return []
-}
-
-function buildSecondaryNav(t: TFunction<'dashboard'>, onSignOut: () => void): AppShellNavItem[] {
-  return [
-    {
-      label: t('nav.signOut'),
-      icon: <LogOut aria-hidden="true" />,
-      onClick: onSignOut,
-    },
-  ]
 }
 
 function resolveMobileHeaderTitle(
@@ -98,94 +81,11 @@ function resolveMobileHeaderTitle(
   items: AppShellNavItem[],
   fallback: string
 ): string {
-  const withHref = items.filter(
-    (item): item is AppShellNavItem & { href: string } =>
-      typeof item.href === 'string' && !item.disabled
-  )
+  const match = items
+    .filter((item) => matchesSidebarNavHref(item.url, pathname))
+    .sort((left, right) => right.url.length - left.url.length)[0]
 
-  const match = withHref
-    .filter((item) => matchesSidebarNavHref(item.href, pathname))
-    .sort((left, right) => right.href.length - left.href.length)[0]
-
-  return match?.label ?? fallback
-}
-
-function AppShellNavMenu({
-  items,
-  pathname,
-  onNavigate,
-}: {
-  items: AppShellNavItem[]
-  pathname: string
-  onNavigate?: () => void
-}) {
-  return (
-    <SidebarMenu>
-      {items.map((item) => {
-        if (item.onClick) {
-          return (
-            <SidebarMenuItem key={item.label}>
-              <SidebarMenuButton
-                size="lg"
-                className={navMenuButtonClassName}
-                onClick={() => {
-                  onNavigate?.()
-                  item.onClick?.()
-                }}
-              >
-                {item.icon ? <AppShellNavIcon icon={item.icon} /> : null}
-                <span className="transition-opacity duration-(--duration-instant) motion-reduce:transition-none">
-                  {item.label}
-                </span>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          )
-        }
-
-        if (item.disabled || !item.href) {
-          return (
-            <SidebarMenuItem key={item.label}>
-              <SidebarMenuButton
-                size="lg"
-                className={navMenuButtonClassName}
-                disabled
-                tooltip={item.title}
-                aria-disabled
-              >
-                {item.icon ? <AppShellNavIcon icon={item.icon} /> : null}
-                <span>{item.label}</span>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          )
-        }
-
-        const isActive = matchesSidebarNavHref(item.href, pathname)
-
-        return (
-          <SidebarMenuItem key={item.label}>
-            <SidebarMenuButton
-              asChild
-              size="lg"
-              className={navMenuButtonClassName}
-              isActive={isActive}
-              tooltip={item.title}
-            >
-              <Link
-                to={item.href}
-                onClick={onNavigate}
-                aria-current={isActive ? 'page' : undefined}
-              >
-                {item.icon ? <AppShellNavIcon icon={item.icon} /> : null}
-                <span className="transition-opacity duration-(--duration-instant) motion-reduce:transition-none">
-                  {item.label}
-                </span>
-              </Link>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        )
-      })}
-    </SidebarMenu>
-  )
+  return match?.title ?? fallback
 }
 
 function AppShellLayout({ children }: { children: React.ReactNode }) {
@@ -198,8 +98,18 @@ function AppShellLayout({ children }: { children: React.ReactNode }) {
   const { setOpenMobile } = useSidebar()
   const { user, isLoading, error, refresh, clearSession } = useSession()
   const settingsHref = DASHBOARD_ROUTES.settings()
+  const isSettingsActive = matchesSidebarNavHref(settingsHref, pathname)
 
   const primaryNav = useMemo(() => buildPrimaryNav(t, user?.role), [t, user?.role])
+
+  const navMain = useMemo(
+    () =>
+      primaryNav.map((item) => ({
+        ...item,
+        isActive: matchesSidebarNavHref(item.url, pathname),
+      })),
+    [pathname, primaryNav]
+  )
 
   const handleSignOut = useCallback(async () => {
     if (signOutInFlight.current) return
@@ -227,77 +137,80 @@ function AppShellLayout({ children }: { children: React.ReactNode }) {
     setSignOutOpen(true)
   }, [closeMobileSidebar])
 
-  const secondaryNav = useMemo(
-    () => buildSecondaryNav(t, openSignOutDialog),
-    [t, openSignOutDialog]
-  )
+  const goToSettings = useCallback(() => {
+    closeMobileSidebar()
+    void navigate({ to: settingsHref })
+  }, [closeMobileSidebar, navigate, settingsHref])
 
   const mobileHeaderTitle = useMemo(
-    () => resolveMobileHeaderTitle(pathname, [...primaryNav, ...secondaryNav], t('nav.panel')),
-    [pathname, primaryNav, secondaryNav, t]
+    () => resolveMobileHeaderTitle(pathname, primaryNav, t('nav.panel')),
+    [pathname, primaryNav, t]
   )
 
-  const isSettingsActive = matchesSidebarNavHref(settingsHref, pathname)
+  const navUser = user
+    ? {
+        name: getUserDisplayName(user, t('user.fallbackName')),
+        email: user.email,
+        avatar: user.avatar,
+        initials: getUserInitials(user.name, user.lastName),
+      }
+    : null
 
   return (
     <>
-      <Sidebar collapsible="offcanvas">
-        <SidebarHeader className="px-4 pt-5 pb-3">
-          <div className="flex items-center gap-2">
-            <img
-              src="/landing/logo.png"
-              alt=""
-              aria-hidden="true"
-              className="h-11 w-11 shrink-0 object-contain"
-            />
-            <span className="font-heading text-base font-semibold tracking-[0.04em] text-sidebar-foreground transition-colors duration-(--duration-fast) ease-emphasized motion-reduce:transition-none">
-              {t('brand.logo')}
-            </span>
-          </div>
-          <p className="text-sm text-sidebar-foreground/70">{t('brand.subtitle')}</p>
-        </SidebarHeader>
-
-        <SidebarContent>
-          <SidebarGroup className="px-0">
-            <SidebarGroupContent>
-              <AppShellNavMenu
-                items={primaryNav}
-                pathname={pathname}
+      <AppSidebar
+        brand={{
+          name: t('brand.logo'),
+          subtitle: t('brand.subtitle'),
+          href: DASHBOARD_ROUTES.home(),
+          icon: <AppLogo size="sm" />,
+        }}
+        navMain={navMain}
+        footerExtra={
+          <>
+            <AppShellThemeSwitcher />
+            <AppShellLanguageSwitcher />
+            {!navUser ? (
+              <AppShellSidebarFooter
+                user={user}
+                isLoading={isLoading}
+                error={error}
+                settingsHref={settingsHref}
+                isSettingsActive={isSettingsActive}
                 onNavigate={closeMobileSidebar}
+                onRetry={() => void refresh()}
+                isRetrying={isLoading}
               />
-            </SidebarGroupContent>
-          </SidebarGroup>
-        </SidebarContent>
-
-        <SidebarFooter className="gap-4 px-0">
-          <AppShellLanguageSwitcher />
-          <AppShellSidebarFooter
-            user={user}
-            isLoading={isLoading}
-            error={error}
-            settingsHref={settingsHref}
-            isSettingsActive={isSettingsActive}
-            onNavigate={closeMobileSidebar}
-            onRetry={() => void refresh()}
-            isRetrying={isLoading}
-          />
-          <AppShellNavMenu
-            items={secondaryNav}
-            pathname={pathname}
-            onNavigate={closeMobileSidebar}
-          />
-        </SidebarFooter>
-      </Sidebar>
+            ) : null}
+          </>
+        }
+        onNavigate={closeMobileSidebar}
+        user={navUser}
+        userMenu={
+          navUser
+            ? {
+                accountLabel: t('nav.settings'),
+                signOutLabel: t('nav.signOut'),
+                onAccount: goToSettings,
+                onSignOut: openSignOutDialog,
+              }
+            : undefined
+        }
+      />
 
       <SidebarInset className="min-h-0">
-        <header className="sticky top-0 z-30 flex items-center gap-3 border-b border-hairline bg-surface-container-lowest px-4 py-3 md:hidden">
-          <SidebarTrigger />
-          <p
-            key={mobileHeaderTitle}
-            className="min-w-0 truncate text-sm font-medium text-ink motion-reduce:animate-none animate-[app-shell-title-in_var(--duration-fast)_cubic-bezier(0.22,1,0.36,1)_both]"
-          >
-            {mobileHeaderTitle}
-          </p>
+        <header className="flex h-16 shrink-0 items-center gap-2">
+          <div className="flex items-center gap-2 px-4">
+            <SidebarTrigger className="-ml-1" />
+            <Separator orientation="vertical" className="mr-2 h-[16px]" />
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem>
+                  <BreadcrumbPage>{mobileHeaderTitle}</BreadcrumbPage>
+                </BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
+          </div>
         </header>
         <div className="min-h-0 flex-1 overflow-auto">{children}</div>
       </SidebarInset>

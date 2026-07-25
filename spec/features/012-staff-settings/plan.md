@@ -5,11 +5,11 @@
 ## Orden de capas
 
 ```text
-1. @afterdark/types       (BaseProfileResponse compartida, CurrentStaffResponse real)
-2. @afterdark/validators  (baseProfileSchema + updateCurrentOwnerSchema/updateCurrentStaffSchema)
+1. @repo/types       (BaseProfileResponse compartida, CurrentStaffResponse real)
+2. @repo/validators  (baseProfileSchema + updateCurrentOwnerSchema/updateCurrentStaffSchema)
 3. packages/db            (repositorios: findCurrentStaffByDocumentId, updateStaffProfileByDocumentId)
 4. apps/api               (settings.controller.ts dispatch de schema por rol, settings.service.ts lógica real, error staff.INACTIVE)
-5. @afterdark/i18n        (settings.shared.*, settings.staff.*, error staff.INACTIVE)
+5. @repo/i18n        (settings.shared.*, settings.staff.*, error staff.INACTIVE)
 6. apps/dashboard         (mover building blocks a modules/settings/, genericizar, instanciar en modules/owner/ y modules/staff/)
 ```
 
@@ -76,7 +76,7 @@ Sin cambios de schema Drizzle — `staff.name/lastName/phone/avatar/status` ya e
 - **Generics reales, no solo "compartir componentes".** `createSettingsFormProvider<TUser extends BaseProfileResponse, TProfile>()` es una factory de contexto: cada rol la invoca una vez con su propio tipo de usuario, tipo de valores de formulario y función de guardado (`updateSettings` sigue siendo un solo endpoint `PATCH /settings`, pero el schema/campos que arma el body cambian por instancia). Evita un único provider gigante con if-role-then-branch adentro.
 - **Validación de rol en dos lugares, igual que 004**: el controller elige el schema Zod por `user.role` (seguridad — no confía en qué campos manda el cliente), el service elige la lógica de persistencia por `user.role` (ya existía). No se unifica en un único "mega-schema opcional" porque eso permitiría a un owner mandar body de staff incompleto y viceversa sin error 400 claro.
 - **`status === INACTIVE` se chequea en `SettingsService`, no en un guard HTTP genérico** — es una regla específica del recurso "perfil propio de staff", no una regla transversal de autenticación (`JwtAuthGuard` ya cubre "sesión válida"). Mismo criterio que otros chequeos de `status` existentes en `staff.service.ts` (ahí es el owner gestionando a su staff; acá es el propio staff).
-- **`BaseProfileResponse` vive en `@afterdark/types`, no como generic parametrizado en runtime** — es composición de interfaces TypeScript, sin lógica de runtime. El generic con lógica real vive en el frontend (`createSettingsFormProvider`) y en el schema Zod (`baseProfileSchema.extend(...)`).
+- **`BaseProfileResponse` vive en `@repo/types`, no como generic parametrizado en runtime** — es composición de interfaces TypeScript, sin lógica de runtime. El generic con lógica real vive en el frontend (`createSettingsFormProvider`) y en el schema Zod (`baseProfileSchema.extend(...)`).
 
 ## Riesgos / edge cases
 

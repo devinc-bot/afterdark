@@ -1,5 +1,6 @@
 {
   "common": {
+    "brand": "{appNameDisplay}",
     "greeting": "Hi {name}",
     "footer": "This email was sent by {appNameDisplay}.",
     "unsubscribe": "To unsubscribe from these emails, click here.",

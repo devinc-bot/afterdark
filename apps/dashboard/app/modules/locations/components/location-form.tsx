@@ -2,8 +2,8 @@ import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useForm } from '@tanstack/react-form'
 import { Crosshair } from 'lucide-react'
-import type { LocationImageResponse } from '@afterdark/types'
-import { createLocationSchema, type CreateLocationInput } from '@afterdark/validators'
+import type { LocationImageResponse } from '@repo/types'
+import { createLocationSchema, type CreateLocationInput } from '@repo/validators'
 import {
   Button,
   cn,
@@ -14,7 +14,7 @@ import {
   requiredFieldLabel,
   Textarea,
   toast,
-} from '@afterdark/ui'
+} from '@repo/ui'
 import { FormSection } from '~/modules/common/components/form-section'
 import { ImagesLocationForm } from '~/modules/locations/components/images-location-form'
 import { LocationMap } from '~/modules/locations/components/location-map'

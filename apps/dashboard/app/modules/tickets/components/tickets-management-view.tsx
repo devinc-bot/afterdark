@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useNavigate } from '@tanstack/react-router'
-import { TICKET_SALES_FILTER, type TicketSalesFilter } from '@afterdark/types'
+import { TICKET_SALES_FILTER, type TicketSalesFilter } from '@repo/types'
 import {
   Button,
   Select,
@@ -14,7 +14,7 @@ import {
   TabsList,
   TabsTrigger,
   toast,
-} from '@afterdark/ui'
+} from '@repo/ui'
 import { TicketPlus } from 'lucide-react'
 import { TicketRemoveDialog } from '~/modules/tickets/components/dialog-remove-ticket'
 import {

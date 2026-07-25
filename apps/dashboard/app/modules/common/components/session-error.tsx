@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { Button } from '@afterdark/ui'
+import { Button } from '@repo/ui'
 
 type SessionErrorProps = {
   message: string | null

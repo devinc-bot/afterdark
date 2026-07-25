@@ -7,7 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
   usePageTitle,
-} from '@afterdark/ui'
+} from '@repo/ui'
 import { PageLayout } from '~/modules/common/components/page-layout'
 import { OnboardingFlowAlert } from '~/modules/owner/components/onboarding-flow-alert'
 import { OwnerPanelChart } from '~/modules/owner/components/owner-panel-chart'

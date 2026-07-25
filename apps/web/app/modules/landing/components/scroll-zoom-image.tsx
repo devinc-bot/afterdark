@@ -1,5 +1,5 @@
 import { useEffect, useRef, type ImgHTMLAttributes } from 'react'
-import { cn } from '@afterdark/ui'
+import { cn } from '@repo/ui'
 
 type ScrollZoomImageProps = ImgHTMLAttributes<HTMLImageElement> & {
   /** Wrapper classes (must include overflow-hidden for the zoom). */

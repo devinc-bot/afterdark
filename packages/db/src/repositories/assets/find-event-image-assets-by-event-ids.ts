@@ -1,6 +1,6 @@
 import { and, eq, inArray } from 'drizzle-orm'
-import { ASSET_TYPE } from '@afterdark/types'
-import type { EventImageAsset } from '@afterdark/types'
+import { ASSET_TYPE } from '@repo/types'
+import type { EventImageAsset } from '@repo/types'
 import { db } from '../../client.ts'
 import { eventAssetsLnk } from '../../schema/event-asset-lnk.ts'
 import { assets } from '../../schema/asset.ts'

@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { TICKET_SALES_FILTER, TICKET_STATUS, TICKET_TYPE } from '@afterdark/types'
+import { TICKET_SALES_FILTER, TICKET_STATUS, TICKET_TYPE } from '@repo/types'
 import { paginationSchema, optionalCoercedDateSchema, uuidSchema } from './common.ts'
 
 export const ticketStatusSchema = z.enum([TICKET_STATUS.ACTIVE, TICKET_STATUS.INACTIVE])

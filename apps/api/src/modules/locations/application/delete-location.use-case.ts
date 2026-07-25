@@ -1,6 +1,6 @@
 import { Inject, Injectable, InternalServerErrorException } from '@nestjs/common'
-import { deleteLocationById } from '@afterdark/db'
-import { TranslationService } from '@afterdark/i18n/server'
+import { deleteLocationById } from '@repo/db'
+import { TranslationService } from '@repo/i18n/server'
 import { LocationImagesService } from './services/location-images.service'
 import { LocationLookupService } from './services/location-lookup.service'
 

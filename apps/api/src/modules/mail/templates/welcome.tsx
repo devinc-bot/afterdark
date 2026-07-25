@@ -5,6 +5,7 @@ import { CtaButton, MailLayout } from './mail-layout'
 export type WelcomeEmailProps = {
   preview: string
   title: string
+  brand: string
   body: string
   cta: string
   ctaUrl: string
@@ -15,6 +16,7 @@ export type WelcomeEmailProps = {
 export function WelcomeEmail({
   preview,
   title,
+  brand,
   body,
   cta,
   ctaUrl,
@@ -22,7 +24,7 @@ export function WelcomeEmail({
   copyright,
 }: WelcomeEmailProps) {
   return (
-    <MailLayout preview={preview} title={title} footer={footer} copyright={copyright}>
+    <MailLayout preview={preview} title={title} brand={brand} footer={footer} copyright={copyright}>
       <Text style={bodyTextStyle}>{body}</Text>
       <CtaButton href={ctaUrl} label={cta} />
     </MailLayout>

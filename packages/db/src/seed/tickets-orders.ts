@@ -1,13 +1,13 @@
 import { hash } from 'bcryptjs'
 import { eq } from 'drizzle-orm'
-import { USER_ROLE } from '@afterdark/types'
+import { USER_ROLE } from '@repo/types'
 import {
   EVENT_STATUS,
   PAYMENT_PROVIDER,
   PAYMENT_STATUS,
   TICKET_STATUS,
   TICKET_TYPE,
-} from '@afterdark/types/enums'
+} from '@repo/types/enums'
 import { db } from '../client.ts'
 import { seedEnv } from '../config/seed.env.ts'
 import { accounts } from '../schema/account.ts'

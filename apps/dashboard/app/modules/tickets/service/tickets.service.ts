@@ -1,12 +1,8 @@
-import type { PaginatedResponse, TicketResponse } from '@afterdark/types'
-import type {
-  CreateTicketInput,
-  ListTicketsQueryInput,
-  UpdateTicketInput,
-} from '@afterdark/validators'
-import { i18n } from '@afterdark/i18n/client'
+import type { PaginatedResponse, TicketResponse } from '@repo/types'
+import type { CreateTicketInput, ListTicketsQueryInput, UpdateTicketInput } from '@repo/validators'
+import { i18n } from '@repo/i18n/client'
 import { api, API_ROUTES } from '~/config/api'
-import { buildApiPath, toApiServiceError } from '@afterdark/common'
+import { buildApiPath, toApiServiceError } from '@repo/common'
 
 export async function fetchTickets(
   params: ListTicketsQueryInput

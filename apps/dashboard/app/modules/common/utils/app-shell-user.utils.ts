@@ -1,4 +1,4 @@
-import type { SessionResponse } from '@afterdark/types'
+import type { SessionResponse } from '@repo/types'
 
 function getFirstGrapheme(value: string): string {
   const trimmed = value.trim()

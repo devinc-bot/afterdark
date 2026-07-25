@@ -2,6 +2,23 @@ import { z } from 'zod'
 
 export const uuidSchema = z.uuid()
 
+/**
+ * Phone: optional leading `+`, digits with spaces/dashes/parens.
+ * Requires 8–15 digits (E.164 upper bound); rejects letters/emoji.
+ */
+export const phoneSchema = z
+  .string()
+  .trim()
+  .max(30, 'validation:field.phone.tooLong')
+  .refine((value) => {
+    if (!/^\+?[\d\s()-]+$/.test(value)) {
+      return false
+    }
+
+    const digits = value.replace(/\D/g, '')
+    return digits.length >= 8 && digits.length <= 15
+  }, 'validation:field.phone.invalid')
+
 /** Accepts empty string / null and coerces valid date strings; yields `undefined` when absent. */
 export const optionalCoercedDateSchema = z.preprocess((value) => {
   if (value === undefined || value === null) {

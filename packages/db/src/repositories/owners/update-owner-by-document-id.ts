@@ -1,7 +1,7 @@
 import { eq } from 'drizzle-orm'
 import { db } from '../../client.ts'
 import { owners } from '../../schema/owner.ts'
-import type { OwnerUpdateInput } from '@afterdark/types'
+import type { OwnerUpdateInput } from '@repo/types'
 
 export async function updateOwnerByDocumentId(
   documentId: string,

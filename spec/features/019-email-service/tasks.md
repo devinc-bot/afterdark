@@ -11,8 +11,8 @@
 
 ## Shared packages
 
-- [x] `mailEnvSchema` en `@afterdark/validators` + export
-- [x] `MAIL_ERROR_CODE` + mensajes `mail.*` en `@afterdark/i18n` (es/en)
+- [x] `mailEnvSchema` en `@repo/validators` + export
+- [x] `MAIL_ERROR_CODE` + mensajes `mail.*` en `@repo/i18n` (es/en)
 - [x] Tipos `SendMailInput` / `RenderedMail` (locales al módulo api)
 
 ## API — mail module

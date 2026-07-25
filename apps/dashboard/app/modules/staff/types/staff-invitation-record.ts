@@ -1,4 +1,4 @@
-import { STAFF_INVITATION_STATUS, type StaffInvitationStatus } from '@afterdark/types'
+import { STAFF_INVITATION_STATUS, type StaffInvitationStatus } from '@repo/types'
 
 export type StaffInvitationRecord = {
   id: string

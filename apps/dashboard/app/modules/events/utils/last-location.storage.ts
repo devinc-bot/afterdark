@@ -1,4 +1,4 @@
-const LAST_LOCATION_KEY = 'afterdark:events:last-location:v1'
+const LAST_LOCATION_KEY = 'repo:events:last-location:v1'
 
 export function readLastEventLocationId(): string | null {
   try {

@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common'
-import { GEO_ERROR_CODE } from '@afterdark/i18n'
-import { TranslationService } from '@afterdark/i18n/server'
-import type { GeoIpLocateResult } from '@afterdark/types'
+import { GEO_ERROR_CODE } from '@repo/i18n'
+import { TranslationService } from '@repo/i18n/server'
+import type { GeoIpLocateResult } from '@repo/types'
 import { IpQueryLocatorAdapter } from '../adapters/ipquery.locator'
 import { GeoRateLimitService } from './services/geo-rate-limit.service'
 

@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { USER_ROLE } from '@afterdark/types'
-import { Loader } from '@afterdark/ui'
+import { USER_ROLE } from '@repo/types'
+import { Loader } from '@repo/ui'
 import { useSession } from '~/modules/common/hooks/use-session'
 import { OwnerPanelView } from '~/modules/owner'
 import { StaffPanelView } from '~/modules/staff-panel'

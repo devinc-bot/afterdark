@@ -4,7 +4,7 @@ import { locations } from '../../schema/location.ts'
 import { events } from '../../schema/event.ts'
 import { owners } from '../../schema/owner.ts'
 import { eventsByOwnerQuery } from './events-by-owner-query.ts'
-import type { ListEventsByOwnerParams, PaginatedEventsResult } from '@afterdark/types'
+import type { ListEventsByOwnerParams, PaginatedEventsResult } from '@repo/types'
 
 export async function findEventsPaginatedByOwner(
   params: ListEventsByOwnerParams

@@ -1,5 +1,5 @@
 {
-  "metaTitle": "EventFlow · Panel for club owners",
+  "metaTitle": "{appNameDisplay} · Panel for club owners",
   "header": {
     "brand": "{appName}",
     "login": "Log in",
@@ -63,7 +63,7 @@
   "audiences": {
     "eyebrow": "Who it's for",
     "headline": "Made for the people who build the night.",
-    "support": "If you run events or manage a nightlife venue, EventFlow organizes your operation no matter the size.",
+    "support": "If you run events or manage a nightlife venue, {appNameDisplay} organizes your operation no matter the size.",
     "imageAlt": "Crowd enjoying a nightlife event",
     "items": {
       "1": {
@@ -83,7 +83,7 @@
   "value": {
     "eyebrow": "Value proposition",
     "headline": "Fewer scattered tools. More control.",
-    "support": "EventFlow brings together what you solve today with spreadsheets, chats, and separate apps into one place built for the night.",
+    "support": "{appNameDisplay} brings together what you solve today with spreadsheets, chats, and separate apps into one place built for the night.",
     "imageAlt": "Club lights during a live event",
     "items": {
       "1": {
@@ -101,7 +101,7 @@
     }
   },
   "social": {
-    "eyebrow": "Why EventFlow",
+    "eyebrow": "Why {appNameDisplay}",
     "headline": "Built for the real operation of a club.",
     "items": {
       "1": {

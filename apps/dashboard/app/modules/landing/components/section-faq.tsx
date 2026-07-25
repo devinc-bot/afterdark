@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@afterdark/ui'
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@repo/ui'
 import { LANDING_FAQ_KEYS } from '../constants/landing-content'
 
 export function SectionFaq() {

@@ -1,4 +1,4 @@
-import type { AssetSelect } from '@afterdark/db/schema'
+import type { AssetSelect } from '@repo/db/schema'
 
 export type LocationImageAssetInput = {
   name: string

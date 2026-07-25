@@ -12,8 +12,12 @@
     "sales": "Sales",
     "users": "Users",
     "language": "Language",
+    "theme": "Theme",
+    "themeDark": "Dark",
+    "themeLight": "Light",
     "settings": "Settings",
-    "signOut": "Sign out"
+    "signOut": "Sign out",
+    "toggleSidebar": "Toggle sidebar"
   },
   "session": {
     "errorTitle": "We couldn't verify your session",

@@ -1,4 +1,4 @@
-import type { BaseProfileResponse, SessionResponse } from '@afterdark/types'
+import type { BaseProfileResponse, SessionResponse } from '@repo/types'
 
 export function toSessionUser(
   user: Pick<BaseProfileResponse, 'sub' | 'name' | 'lastName' | 'email' | 'avatar' | 'role'>

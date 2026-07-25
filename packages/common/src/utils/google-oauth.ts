@@ -1,5 +1,5 @@
-import type { AuthOauthApp } from '@afterdark/types'
-import { USER_ROLE } from '@afterdark/types'
+import type { AuthOauthApp } from '@repo/types'
+import { USER_ROLE } from '@repo/types'
 import { API_ROUTES, buildApiPath } from '../config/api-routes.ts'
 import { API_URL } from '../constants/api.ts'
 

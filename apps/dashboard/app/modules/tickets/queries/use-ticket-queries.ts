@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
-import { TICKET_STATUS } from '@afterdark/types'
-import type { ListTicketsQueryInput } from '@afterdark/validators'
+import { TICKET_STATUS } from '@repo/types'
+import type { ListTicketsQueryInput } from '@repo/validators'
 import { QUERY_KEYS } from '~/modules/common/constants/query-keys'
 import { fetchTicket, fetchTickets } from '~/modules/tickets/service/tickets.service'
 

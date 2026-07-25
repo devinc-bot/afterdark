@@ -1,8 +1,8 @@
 import { Inject, Injectable, InternalServerErrorException } from '@nestjs/common'
-import { findTicketsPaginatedByOwner } from '@afterdark/db'
-import { TranslationService } from '@afterdark/i18n/server'
-import type { PaginatedResponse, TicketResponse } from '@afterdark/types'
-import type { ListTicketsQueryInput } from '@afterdark/validators'
+import { findTicketsPaginatedByOwner } from '@repo/db'
+import { TranslationService } from '@repo/i18n/server'
+import type { PaginatedResponse, TicketResponse } from '@repo/types'
+import type { ListTicketsQueryInput } from '@repo/validators'
 import { toTicketResponse } from '../mappers/tickets.mapper'
 
 @Injectable()

@@ -6,34 +6,39 @@ brand
 
 ## Users
 
-**Staff / Admin** (dashboard): venue operators and event staff who manage properties (venues), categories, orders, and user accounts. Working in Spanish, in operational contexts — they need clarity and speed, not atmosphere.
+**Staff / Admin** (dashboard): venue operators and event staff who manage locations (venues), events, categories, orders, and user accounts. Working in operational contexts — they need clarity and speed, not atmosphere.
 
-**Attendees / Customers** (web): Spanish-speaking users discovering and booking nightlife events. They arrive with intent or curiosity; the interface should match the energy of what they're booking.
+**Attendees / Customers** (web): users discovering and booking events. They arrive with intent or curiosity; the interface should feel welcoming and easy to trust before they buy.
 
 ## Product Purpose
 
-Afterdark is a nightlife and events platform. Staff manage venues, events, categories, and orders through an admin dashboard. Customers discover and purchase event access through the public web. Success looks like: staff spend less time on logistics, customers feel the night before they arrive.
+**Repo** is an events and ticketing platform. Owners and staff manage locations, events, categories, and orders through an admin dashboard. Customers discover and purchase event access through the public web. Success looks like: staff spend less time on logistics, customers feel confident about the experience before they arrive.
 
 ## Brand Personality
 
-Restrained. Nocturnal. Precise.
+Alegre. Original. Minimalista.
 
-Not the nightclub flyer — the venue itself, after the line has cleared and the lighting is right. Premium without announcing it.
+Reference feel: [Cooldock / dock.cool](https://www.dock.cool/#hero) — product UI as the hero, clean dark surfaces with soft depth (not neon), large type and short copy with generous air, and a cheerful accessible tone. Premium without stiffness. Dark restraint is a visual option, not a claim that the product is nightlife-only.
 
 ## Anti-references
 
-- **Nightclub flyer aesthetic**: neon on black, aggressive glow effects, gradient text, zero hierarchy. That's the costume, not the identity.
-- **Generic SaaS (Stripe / Notion aesthetic)**: neutral whites, system-font everything, no character. Afterdark is not a productivity tool.
-- **Instagram-influencer commerce**: pastel gradients, aspirational lifestyle copy, beauty-brand softness. Wrong register entirely.
+Derived from the dock.cool direction (product-hero, soft depth, airy type, cheerful tone) and the opposite of Alegre / Original / Minimalista:
+
+- **Neon / glow costume**: aggressive purple halos, gradient text, nightclub-flyer energy. Soft depth yes; lit-from-within no.
+- **Dense, airless layouts**: packed cards, long blocks, tiny type. Minimal means room to breathe.
+- **Stiff editorial formality**: magazine-caption seriousness that kills warmth. Cheerful and clear beats “premium by austerity.”
+- **Generic stock marketing**: lifestyle photography and empty SaaS grids with no product in sight. Show the real UI / real event surfaces.
+- **Maximal decoration**: glass stacks, competing accents, visual noise. One idea per section.
 
 ## Design Principles
 
-1. **Dark is the natural state** — darkness is not a mode or a feature. It is the environment everything lives in. Light elements are the exception; they carry weight when they appear.
-2. **Editorial restraint** — hierarchy through space and scale, not decoration. The brand lives in what is not said as much as what is.
-3. **Texture over glow** — depth comes from shadow, surface quality, and contrast; not from neon, blur halos, or lit-from-within effects.
-4. **Staff tools stay invisible** — the dashboard serves operations. It should be precise and fast. Atmosphere is for the public surface.
-5. **Spanish, first and always** — every word is written in Spanish. No anglicisms in copy. No lorem ipsum. Labels say exactly what they mean.
+1. **Product is the hero** — prefer real UI, event imagery, and concrete surfaces over abstract decoration or stock filler.
+2. **Soft depth, not glow** — darkness (or light) gets presence from shadow, surface steps, and contrast; not from neon or blur halos.
+3. **Air and short copy** — hierarchy through scale and space. Headlines can be big; body stays brief and scannable.
+4. **Cheerful clarity** — tone is approachable and original; never cold corporate or flyer-loud.
+5. **Staff tools stay invisible** — the dashboard serves operations: precise and fast. Atmosphere belongs on the public surface.
+6. **Bilingual and dual theme** — UI supports **English and Spanish**; **dark and light** modes are first-class (not afterthoughts).
 
 ## Accessibility & Inclusion
 
-WCAG AA. Spanish language only. Reduced motion support required for all animations.
+WCAG AA. UI copy in **English and Spanish** (via i18n). Dark and light themes both must meet contrast. Reduced motion support required for all animations.

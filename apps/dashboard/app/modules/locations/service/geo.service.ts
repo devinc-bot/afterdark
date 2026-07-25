@@ -1,7 +1,7 @@
-import type { GeoIpLocateResult } from '@afterdark/types'
-import { i18n } from '@afterdark/i18n/client'
+import type { GeoIpLocateResult } from '@repo/types'
+import { i18n } from '@repo/i18n/client'
 import { api, API_ROUTES } from '~/config/api'
-import { buildApiPath, toApiServiceError } from '@afterdark/common'
+import { buildApiPath, toApiServiceError } from '@repo/common'
 
 export async function fetchIpLocation(): Promise<GeoIpLocateResult> {
   try {

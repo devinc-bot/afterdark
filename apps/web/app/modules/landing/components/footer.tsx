@@ -1,28 +1,32 @@
 import type { ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
-import { DASHBOARD_URL } from '@afterdark/common'
-import { cn } from '@afterdark/ui'
+import { DASHBOARD_URL } from '@repo/common'
+import { AppLogo, Link, cn } from '@repo/ui'
+import { WEB_ROUTES } from '~/modules/common/constants/routes'
+import { LANDING_CTA_PRIMARY, LANDING_FOCUS_RING, LANDING_SHELL } from '../constants/layout'
 import { handleSectionNavClick } from '../utils/scroll-to-section.utils'
 
-const SHELL = 'mx-auto max-w-7xl px-margin-mobile sm:px-8 lg:px-margin-desktop'
+const FOOTER_LINK = cn(
+  'inline-flex min-h-10 items-center rounded-lg px-0 font-label text-sm text-on-surface-variant transition-colors duration-(--duration-fast) ease-emphasized hover:text-on-surface',
+  LANDING_FOCUS_RING
+)
 
 const SOCIAL_LINKS = [
   {
     key: 'instagram',
-    href: 'https://www.instagram.com/afterdark',
+    href: 'https://www.instagram.com/repo',
     labelKey: 'footer.social.instagram',
   },
   {
     key: 'facebook',
-    href: 'https://www.facebook.com/afterdark',
+    href: 'https://www.facebook.com/repo',
     labelKey: 'footer.social.facebook',
   },
 ] as const
 
-const FOOTER_NAV = [
+const FOOTER_SECTION_NAV = [
   { href: '#como-funciona', labelKey: 'nav.how' },
   { href: '#claridad', labelKey: 'nav.clarity' },
-  { href: '#eventos', labelKey: 'nav.events' },
 ] as const
 
 const SOCIAL_ICON_CLASS = 'h-8 w-8 shrink-0'
@@ -74,16 +78,11 @@ export function LandingFooter() {
 
   return (
     <footer className="border-t border-hairline/40">
-      <div className={cn(SHELL, 'py-12 sm:py-14')}>
+      <div className={cn(LANDING_SHELL, 'py-12 sm:py-14')}>
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-12 lg:gap-12">
-          <div className="lg:col-span-5">
+          <div className="lg:col-span-4">
             <div className="flex items-center gap-2">
-              <img
-                src="/landing/logo.png"
-                alt=""
-                aria-hidden="true"
-                className="size-12 object-contain"
-              />
+              <AppLogo size="xl" />
               <span className="font-display text-lg font-bold tracking-tight">
                 {t('nav.brand')}
               </span>
@@ -95,28 +94,30 @@ export function LandingFooter() {
 
           <nav
             aria-label={t('footer.navAria')}
-            className="flex flex-col gap-4 lg:col-span-3 lg:col-start-7"
+            className="flex flex-col gap-4 lg:col-span-3 lg:col-start-6"
           >
             <p className="font-display text-base font-semibold tracking-tight text-on-surface sm:text-lg">
               {t('footer.explore')}
             </p>
             <ul className="flex flex-col gap-1">
-              {FOOTER_NAV.map((item) => (
+              <li>
+                <Link to={WEB_ROUTES.events()} className={FOOTER_LINK}>
+                  {t('nav.events')}
+                </Link>
+              </li>
+              {FOOTER_SECTION_NAV.map((item) => (
                 <li key={item.href}>
                   <a
                     href={item.href}
                     onClick={(event) => handleSectionNavClick(event, item.href)}
-                    className="inline-flex min-h-10 items-center font-label text-sm text-on-surface-variant transition-colors duration-(--duration-fast) ease-emphasized hover:text-on-surface focus-visible:rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink"
+                    className={FOOTER_LINK}
                   >
                     {t(item.labelKey)}
                   </a>
                 </li>
               ))}
               <li>
-                <a
-                  href={DASHBOARD_URL}
-                  className="inline-flex min-h-10 items-center font-label text-sm text-on-surface-variant transition-colors duration-(--duration-fast) ease-emphasized hover:text-on-surface focus-visible:rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink"
-                >
+                <a href="#organizadores" className={FOOTER_LINK}>
                   {t('footer.publish')}
                 </a>
               </li>
@@ -124,6 +125,27 @@ export function LandingFooter() {
           </nav>
 
           <div className="lg:col-span-3">
+            <p className="font-display text-base font-semibold tracking-tight text-on-surface sm:text-lg">
+              {t('footer.publishTitle')}
+            </p>
+            <p className="mt-3 max-w-[28ch] text-sm leading-relaxed text-on-surface-variant">
+              {t('footer.publishBody')}
+            </p>
+            <a
+              href={DASHBOARD_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={cn(
+                'mt-5 inline-flex h-10 min-h-10 cursor-pointer items-center justify-center rounded-control px-5 text-sm font-medium',
+                LANDING_CTA_PRIMARY,
+                LANDING_FOCUS_RING
+              )}
+            >
+              {t('footer.publishCta')}
+            </a>
+          </div>
+
+          <div className="sm:col-span-2 lg:col-span-2">
             <p className="font-display text-base font-semibold tracking-tight text-on-surface sm:text-lg">
               {t('footer.social.title')}
             </p>
@@ -134,7 +156,7 @@ export function LandingFooter() {
                     href={item.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex size-14 items-center justify-center rounded-full border border-hairline/50 text-on-surface transition-colors duration-(--duration-fast) ease-emphasized hover:border-primary/50 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink"
+                    className="inline-flex size-10 items-center justify-center rounded-full border border-hairline/50 text-on-surface-variant transition-colors duration-(--duration-fast) ease-emphasized hover:border-hairline hover:text-on-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink"
                     aria-label={t(item.labelKey)}
                   >
                     {SOCIAL_ICONS[item.key]}

@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { PROPERTY_STATUS } from '@afterdark/types'
+import { PROPERTY_STATUS } from '@repo/types'
 
 export const createPropertySchema = z.object({
   name: z.string().min(1).max(255),

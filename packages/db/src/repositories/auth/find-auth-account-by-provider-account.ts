@@ -1,5 +1,5 @@
 import { and, eq } from 'drizzle-orm'
-import type { AuthAccountRow, AuthProvider, UserRole } from '@afterdark/types'
+import type { AuthAccountRow, AuthProvider, UserRole } from '@repo/types'
 import { db } from '../../client.ts'
 import { accounts } from '../../schema/account.ts'
 import { accountRolesLnk } from '../../schema/account-role-lnk.ts'

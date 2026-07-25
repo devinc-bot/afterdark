@@ -1,4 +1,4 @@
-import type { ApiError } from '@afterdark/types'
+import type { ApiError } from '@repo/types'
 
 export type QueryFactoryOptions = {
   getAccessToken?: () => string | null

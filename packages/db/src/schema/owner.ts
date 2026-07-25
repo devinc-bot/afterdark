@@ -1,5 +1,5 @@
 import { sqliteTable, text } from 'drizzle-orm/sqlite-core'
-import { OWNER_STATUS } from '@afterdark/types/enums'
+import { OWNER_STATUS } from '@repo/types/enums'
 import { createBaseColumns } from './base.ts'
 
 export const owners = sqliteTable('owners', {

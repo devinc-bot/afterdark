@@ -25,7 +25,7 @@ const demoUsers: DemoUser[] = [
   {
     id: '1',
     name: 'Aiko Tanaka',
-    email: 'aiko.t@afterdark.io',
+    email: 'aiko.t@repo.io',
     registeredAt: 'Oct 12, 2023',
     venue: 'Neon District',
     tickets: 142,
@@ -133,7 +133,7 @@ function UsersTable({ variant }: { variant?: 'default' | 'compact' }) {
               </div>
             </TableCell>
             <TableCell>
-              <span className="font-heading text-lg font-bold text-primary shadow-primary-glow">
+              <span className="font-heading text-lg font-bold text-primary">
                 {user.tickets.toLocaleString('es-AR')}
               </span>
             </TableCell>

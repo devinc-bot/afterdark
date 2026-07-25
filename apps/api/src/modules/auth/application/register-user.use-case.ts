@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common'
-import { USER_ROLE, type RegisterResponse } from '@afterdark/types'
-import type { RegisterUserInput } from '@afterdark/validators'
+import { USER_ROLE, type RegisterResponse } from '@repo/types'
+import type { RegisterUserInput } from '@repo/validators'
 import { AuthAccountService } from './services/auth-account.service'
 
 @Injectable()

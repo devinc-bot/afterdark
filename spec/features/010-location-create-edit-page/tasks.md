@@ -36,7 +36,7 @@
 ## packages/ui — mapcn
 
 - [x] `@mapcn/map` en `packages/ui`
-- [x] Exportar Map / Marker desde `@afterdark/ui`
+- [x] Exportar Map / Marker desde `@repo/ui`
 
 ## apps/dashboard
 

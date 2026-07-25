@@ -1,4 +1,4 @@
-import type { LocationImageResponse } from '@afterdark/types'
+import type { LocationImageResponse } from '@repo/types'
 import {
   Button,
   Card,
@@ -15,7 +15,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@afterdark/ui'
+} from '@repo/ui'
 import { EllipsisVertical, MapPin, Pencil, Trash2, Users } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 

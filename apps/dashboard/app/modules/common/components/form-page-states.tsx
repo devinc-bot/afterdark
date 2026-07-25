@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { Button, Skeleton } from '@afterdark/ui'
+import { Button, Skeleton } from '@repo/ui'
 import { LoadErrorBanner } from '~/modules/common/components/load-error-banner'
 import { FormPageLayout } from '~/modules/common/components/form-page-layout'
 

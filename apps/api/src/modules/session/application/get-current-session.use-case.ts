@@ -4,9 +4,9 @@ import {
   findOwnerProfileByDocumentId,
   findStaffProfileByDocumentId,
   findUserProfileByDocumentId,
-} from '@afterdark/db'
-import { USER_ROLE, type JwtPayload, type SessionResponse } from '@afterdark/types'
-import { TranslationService } from '@afterdark/i18n/server'
+} from '@repo/db'
+import { USER_ROLE, type JwtPayload, type SessionResponse } from '@repo/types'
+import { TranslationService } from '@repo/i18n/server'
 
 @Injectable()
 export class GetCurrentSessionUseCase {

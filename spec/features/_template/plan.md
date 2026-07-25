@@ -6,8 +6,8 @@
 ## Orden de capas
 
 ```text
-1. @afterdark/validators
-2. @afterdark/types
+1. @repo/validators
+2. @repo/types
 3. packages/db (schema → migration → repository)
 4. apps/api (module → service → controller)
 5. apps/web | apps/dashboard (service → query/mutation → UI → route)

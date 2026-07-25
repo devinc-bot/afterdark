@@ -10,8 +10,9 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
+  AppLogo,
   cn,
-} from '@afterdark/ui'
+} from '@repo/ui'
 import { DASHBOARD_ROUTES } from '~/modules/common/constants/routes'
 import { handleSectionNavClick } from '../utils/scroll-to-section.utils'
 
@@ -43,12 +44,7 @@ export function LandingHeader() {
         className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between gap-4 px-margin-mobile md:px-margin-desktop"
       >
         <Link to={DASHBOARD_ROUTES.home()} className="flex shrink-0 items-center gap-2">
-          <img
-            src="/landing/logo.png"
-            alt=""
-            aria-hidden="true"
-            className="size-11 object-contain"
-          />
+          <AppLogo size="lg" />
           <span className="font-display text-lg font-bold tracking-tight text-on-surface">
             {t('header.brand')}
           </span>
@@ -94,12 +90,7 @@ export function LandingHeader() {
           >
             <SheetHeader className="border-b border-hairline/60 px-5 py-5 text-left">
               <SheetTitle className="flex items-center gap-2 font-display text-lg font-bold tracking-tight">
-                <img
-                  src="/landing/logo.png"
-                  alt=""
-                  aria-hidden="true"
-                  className="size-11 object-contain"
-                />
+                <AppLogo size="lg" />
                 {t('header.brand')}
               </SheetTitle>
             </SheetHeader>

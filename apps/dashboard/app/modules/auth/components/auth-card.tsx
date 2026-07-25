@@ -1,6 +1,6 @@
 import { useNavigate, useRouterState } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@afterdark/ui'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@repo/ui'
 import { DASHBOARD_ROUTES } from '../../common/constants/routes'
 import { LoginForm } from './login-form'
 import { RegisterForm } from './register-form'

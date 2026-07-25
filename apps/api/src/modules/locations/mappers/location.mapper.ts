@@ -1,6 +1,6 @@
-import type { AddressSelect, AssetSelect, LocationSelect } from '@afterdark/db'
-import type { LocationImageResponse, LocationResponse } from '@afterdark/types'
-import type { CreateLocationInput, UpdateLocationInput } from '@afterdark/validators'
+import type { AddressSelect, AssetSelect, LocationSelect } from '@repo/db'
+import type { LocationImageResponse, LocationResponse } from '@repo/types'
+import type { CreateLocationInput, UpdateLocationInput } from '@repo/validators'
 
 export function toLocationImageResponse(asset: AssetSelect): LocationImageResponse {
   return {
