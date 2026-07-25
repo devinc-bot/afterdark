@@ -1,33 +1,33 @@
 ---
-name: Repo Soft Depth
-description: Cheerful, original, minimal events brand — product-hero surfaces with soft depth, dual theme, bilingual UI.
+name: Repo Citrus Soft
+description: Cheerful, original, minimal events brand — Citrus Soft palette A/B variant.
 colors:
-  background: '#131314'
-  foreground: '#e5e2e3'
-  surface: '#131314'
-  surface-muted: '#1c1b1c'
-  surface-raised: '#201f20'
-  surface-high: '#2a2a2b'
-  surface-highest: '#353436'
-  surface-lowest: '#0e0e0f'
-  primary: '#ecb1ff'
-  on-primary: '#4a1a5e'
-  primary-hover: '#7d4a90'
-  accent: '#e8006e'
-  secondary: '#c8c6c7'
-  muted-foreground: '#d0c3cf'
-  ink-muted: '#d5c0d7'
-  outline: '#998d99'
-  border: '#514254'
-  hairline: '#4d444e'
+  background: '#121311'
+  foreground: '#e6e7e2'
+  surface: '#121311'
+  surface-muted: '#1a1b18'
+  surface-raised: '#1e1f1c'
+  surface-high: '#282a26'
+  surface-highest: '#33352f'
+  surface-lowest: '#0d0e0c'
+  primary: '#d4e85a'
+  on-primary: '#2a3208'
+  primary-hover: '#6b7a1a'
+  accent: '#ff6b3d'
+  secondary: '#c6c7c2'
+  muted-foreground: '#c5c8b8'
+  ink-muted: '#b8bcab'
+  outline: '#8e9280'
+  border: '#4a4e42'
+  hairline: '#44473c'
   error: '#ffb4ab'
   error-container: '#93000a'
-  ring: '#ecb1ff'
-  chart-1: '#ecb1ff'
-  chart-2: '#ffb1c3'
-  chart-3: '#c8c6c7'
-  chart-4: '#7d4a90'
-  chart-5: '#e8006e'
+  ring: '#d4e85a'
+  chart-1: '#d4e85a'
+  chart-2: '#ffb399'
+  chart-3: '#c6c7c2'
+  chart-4: '#6b7a1a'
+  chart-5: '#ff6b3d'
 typography:
   display:
     fontFamily: Montserrat, sans-serif
@@ -113,7 +113,7 @@ Repo’s visual system lives in `packages/ui/src/globals.css` (Tailwind v4 `@the
 
 **Personality:** Alegre · Original · Minimalista — aligned with [dock.cool](https://www.dock.cool/#hero): product as hero, soft depth on dark (and soon light), large type, short copy, generous air.
 
-**Color strategy:** Restrained accent on tinted neutrals. Primary lilac (`#ecb1ff`) and magenta accent (`#e8006e`) are sparingly used; surfaces carry most of the UI.
+**Color strategy:** Restrained accent on olive-tinted neutrals. Primary citrus (`#d4e85a`) and coral accent (`#ff6b3d`) are sparingly used; surfaces carry most of the UI.
 
 **Themes:** Dark is the default (`data-theme="dark"`). Light is first-class via `[data-theme="light"]` overrides in `globals.css` and `ThemeProvider` / `ThemeToggle` in `@repo/ui`. Persist key: `repo:theme`.
 
@@ -127,23 +127,23 @@ Repo’s visual system lives in `packages/ui/src/globals.css` (Tailwind v4 `@the
 
 | Role | Hex | Use |
 | --- | --- | --- |
-| Background / surface | `#131314` | Page canvas |
-| Surface muted / low | `#1c1b1c` | Recessed panels, inputs |
-| Surface raised / card | `#201f20` | Cards, elevated blocks |
-| Surface high | `#2a2a2b` | Popovers, hover lifts |
-| Surface highest | `#353436` | Strongest fill step |
-| Foreground / ink | `#e5e2e3` | Primary text |
-| Muted foreground | `#d0c3cf` / `#d5c0d7` | Secondary text |
-| Border / hairline | `#514254` / `#4d444e` | Dividers, control edges |
+| Background / surface | `#121311` | Page canvas |
+| Surface muted / low | `#1a1b18` | Recessed panels, inputs |
+| Surface raised / card | `#1e1f1c` | Cards, elevated blocks |
+| Surface high | `#282a26` | Popovers, hover lifts |
+| Surface highest | `#33352f` | Strongest fill step |
+| Foreground / ink | `#e6e7e2` | Primary text |
+| Muted foreground | `#c5c8b8` / `#b8bcab` | Secondary text |
+| Border / hairline | `#4a4e42` / `#44473c` | Dividers, control edges |
 
 ### Brand
 
 | Role | Hex | Use |
 | --- | --- | --- |
-| Primary | `#ecb1ff` | CTAs, focus ring, charts |
-| On-primary | `#4a1a5e` | Text on primary fills |
-| Primary hover | `#7d4a90` | Hover / inverse primary |
-| Accent | `#e8006e` | Rare emphasis (not default chrome) |
+| Primary | `#d4e85a` | CTAs, focus ring, charts |
+| On-primary | `#2a3208` | Text on primary fills |
+| Primary hover | `#6b7a1a` | Hover / inverse primary |
+| Accent | `#ff6b3d` | Rare emphasis (not default chrome) |
 
 ### Feedback
 
@@ -151,7 +151,7 @@ Error text `#ffb4ab`, error container `#93000a`. Focus ring matches primary.
 
 ### Light mode
 
-`[data-theme="light"]` mirrors the dark surface ramp toward near-white with low chroma on the primary hue (`#f5f3f7` canvas, white raised surfaces). Primary deepens to `#7d4a90` for contrast on light fills. Prefer surface steps over borders for hierarchy.
+`[data-theme="light"]` mirrors the dark surface ramp toward near-white with low chroma on the citrus hue (`#f4f5f2` canvas, white raised surfaces). Primary deepens to `#5a6b12` for contrast on light fills. Prefer surface steps over borders for hierarchy.
 
 ## Typography
 
