@@ -1,16 +1,19 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { Link } from '@tanstack/react-router'
 import { useForm } from '@tanstack/react-form'
 import { z } from 'zod'
 import { registerOwnerSchema } from '@repo/validators'
 import { Button, Field, fieldErrorMessage } from '@repo/ui'
-import { useRegister } from '../mutations/use-auth-mutations'
+import { DASHBOARD_ROUTES } from '../../common/constants/routes'
+import { useRequestRegister } from '../mutations/use-auth-mutations'
 import { AuthInput } from './auth-input'
 import { AuthMethodSeparator, GoogleContinueButton } from './google-continue-button'
 
 export function RegisterForm() {
   const { t } = useTranslation('auth')
-  const register = useRegister()
+  const register = useRequestRegister()
+  const [submittedEmail, setSubmittedEmail] = useState<string | null>(null)
 
   const registerFieldsSchema = useMemo(
     () =>
@@ -41,8 +44,27 @@ export function RegisterForm() {
         email: value.email,
         password: value.password,
       })
+      setSubmittedEmail(value.email)
     },
   })
+
+  if (submittedEmail) {
+    return (
+      <div className="space-y-7">
+        <div>
+          <h2 className="font-display text-2xl font-bold tracking-tight text-balance text-on-surface">
+            {t('register.checkEmail.title')}
+          </h2>
+          <p className="mt-3 text-sm leading-relaxed text-on-surface-variant">
+            {t('register.checkEmail.description', { email: submittedEmail })}
+          </p>
+        </div>
+        <Button asChild size="lg" className="w-full">
+          <Link to={DASHBOARD_ROUTES.login()}>{t('register.checkEmail.backToLogin')}</Link>
+        </Button>
+      </div>
+    )
+  }
 
   return (
     <form

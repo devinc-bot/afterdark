@@ -57,16 +57,14 @@ function deleteCookieLegacy({ name }: CookieNameOptions): void {
 export function setCookie(options: SetCookieOptions): void {
   if (!isBrowser()) return
 
-  const store = getCookieStore()
-
-  if (store) {
-    void store.set(buildCookieInit(options)).catch(() => {
-      setCookieLegacy(options)
-    })
-    return
-  }
-
+  // Always write document.cookie first so getCookieSync / Bearer headers see the
+  // token immediately (Cookie Store API set() is async and races with loadSession).
   setCookieLegacy(options)
+
+  const store = getCookieStore()
+  if (store) {
+    void store.set(buildCookieInit(options)).catch(() => {})
+  }
 }
 
 export async function getCookie(options: CookieNameOptions): Promise<string | null> {
@@ -94,14 +92,10 @@ export function getCookieSync(options: CookieNameOptions): string | null {
 export function deleteCookie(options: CookieNameOptions): void {
   if (!isBrowser()) return
 
-  const store = getCookieStore()
-
-  if (store) {
-    void store.delete(options.name).catch(() => {
-      deleteCookieLegacy(options)
-    })
-    return
-  }
-
   deleteCookieLegacy(options)
+
+  const store = getCookieStore()
+  if (store) {
+    void store.delete(options.name).catch(() => {})
+  }
 }

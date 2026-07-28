@@ -11,6 +11,11 @@ export type PasswordResetRenderInput = {
   minutes?: number
 }
 
+export type UserRegistrationRenderInput = {
+  url: string
+  minutes?: number
+}
+
 export type WelcomeRenderInput = {
   name: string
   ctaUrl: string

@@ -43,6 +43,8 @@ Cada tabla incluye las columnas base (`id`, `document_id`, `created_at`, `update
 | `messages`              | `messages`            | `messages.ts`             | Entidad |
 | `staff_invitations`     | `staffInvitations`    | `staff-invitation.ts`     | Entidad |
 | `password_reset_tokens` | `passwordResetTokens` | `password-reset-token.ts` | Entidad |
+| `user_registration_tokens` | `userRegistrationTokens` | `user-registration-token.ts` | Entidad |
+| `owner_registration_tokens` | `ownerRegistrationTokens` | `owner-registration-token.ts` | Entidad |
 | `account_role_lnk`      | `accountRolesLnk`     | `account-role-lnk.ts`     | Enlace  |
 | `user_accounts_lnk`     | `userAccountsLnk`     | `user-account-lnk.ts`     | Enlace  |
 | `owner_account_lnk`     | `ownerAccountsLnk`    | `owner-account-lnk.ts`    | Enlace  |
@@ -373,6 +375,38 @@ Join de discovery pública (`findPublishedEventsPaginated`): `events` → `locat
 
 **Endpoints:** `POST /api/auth/forgot-password`, `POST /api/auth/reset-password`
 
+#### `user_registration_tokens` — `user-registration-token.ts`
+
+Registro manual pendiente de verificación de email (sin `account` aún).
+
+| Columna (TS)   | SQL             | Tipo      | Null | Default |
+| -------------- | --------------- | --------- | ---- | ------- |
+| `token`        | `token`         | text      | NO   | UNIQUE  |
+| `email`        | `email`         | text      | NO   | —       |
+| `name`         | `name`          | text      | NO   | —       |
+| `lastName`     | `last_name`     | text      | NO   | —       |
+| `passwordHash` | `password_hash` | text      | NO   | —       |
+| `expiresAt`    | `expires_at`    | timestamp | NO   | —       |
+| `usedAt`       | `used_at`       | timestamp | SÍ   | —       |
+
+**Endpoints:** `POST /api/auth/register/user/request`, `POST /api/auth/register/user/confirm` (`028`)
+
+#### `owner_registration_tokens` — `owner-registration-token.ts`
+
+Registro manual de dueño pendiente de verificación de email (sin `account` aún).
+
+| Columna (TS)   | SQL             | Tipo      | Null | Default |
+| -------------- | --------------- | --------- | ---- | ------- |
+| `token`        | `token`         | text      | NO   | UNIQUE  |
+| `email`        | `email`         | text      | NO   | —       |
+| `name`         | `name`          | text      | NO   | —       |
+| `lastName`     | `last_name`     | text      | NO   | —       |
+| `passwordHash` | `password_hash` | text      | NO   | —       |
+| `expiresAt`    | `expires_at`    | timestamp | NO   | —       |
+| `usedAt`       | `used_at`       | timestamp | SÍ   | —       |
+
+**Endpoints:** `POST /api/auth/register/owner/request`, `POST /api/auth/register/owner/confirm` (`028`)
+
 ---
 
 ### Tickets y pagos
@@ -478,6 +512,8 @@ Export Drizzle: `chats`. Solo columnas base; sin campos adicionales.
 | `accounts`              | `email`                                      |
 | `staff_invitations`     | `token`                                      |
 | `password_reset_tokens` | `token`                                      |
+| `user_registration_tokens` | `token`                                   |
+| `owner_registration_tokens` | `token`                                  |
 | `owner_addresses_lnk`   | `owner_id`, `address_id`                     |
 | `club_addresses_lnk`    | `club_id`, `address_id`                      |
 | `tickets_sold`          | `qr_code`                                    |

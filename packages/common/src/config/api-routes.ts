@@ -19,7 +19,11 @@ export const API_ROUTES = {
     path: {
       login: () => '/login' as const,
       registerUser: () => '/register/user' as const,
+      registerUserRequest: () => '/register/user/request' as const,
+      registerUserConfirm: () => '/register/user/confirm' as const,
       registerOwner: () => '/register/owner' as const,
+      registerOwnerRequest: () => '/register/owner/request' as const,
+      registerOwnerConfirm: () => '/register/owner/confirm' as const,
       refreshToken: () => '/refresh' as const,
       forgotPassword: () => '/forgot-password' as const,
       resetPassword: () => '/reset-password' as const,
