@@ -7,7 +7,9 @@ import {
   CarouselNext,
   CarouselPrevious,
   NotImage,
+  VT,
   cn,
+  vtStyle,
   type CarouselApi,
 } from '@repo/ui'
 import type { EventImageResponse } from '@repo/types'
@@ -211,6 +213,7 @@ export function EventDetailCarousel({
                   ? 'aspect-video rounded-none sm:aspect-19/9 sm:rounded-app-lg'
                   : 'aspect-4/3 rounded-app'
               )}
+              style={isHero && index === 0 ? vtStyle(VT.eventHero) : undefined}
             >
               <div
                 data-parallax-layer

@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { getCookieSync } from '@repo/common'
-import { Link, cn } from '@repo/ui'
+import { Link, VT, cn, vtStyle } from '@repo/ui'
 import { useTranslation } from 'react-i18next'
 import { Container } from '~/modules/common/components/container'
 import { COOKIE_KEYS } from '~/modules/common/constants/cookies'
@@ -52,7 +52,7 @@ export function LandingPage() {
 
       <LandingHeader />
 
-      <main id="contenido">
+      <main id="contenido" style={vtStyle(VT.mainContent)}>
         <SectionHero showAuthCtas={showAuthCtas}>
           <div className="mt-8 flex flex-wrap items-center gap-3">
             <Link to={WEB_ROUTES.register()} size="lg" className={cn('px-8', LANDING_CTA_PRIMARY)}>

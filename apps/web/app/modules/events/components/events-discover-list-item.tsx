@@ -1,3 +1,4 @@
+import { Link as RouterLink } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
 import { MapPin } from 'lucide-react'
 import {
@@ -7,8 +8,10 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-  Link,
   NotImage,
+  VT,
+  armEventHero,
+  buttonVariants,
   cn,
 } from '@repo/ui'
 import type { PublicEventResponse } from '@repo/types'
@@ -23,33 +26,33 @@ export function EventsDiscoverListItem({ event }: EventsDiscoverListItemProps) {
   const image = event.images[0]
   const when = formatEventWhen(event.startsAt, i18n.language)
   const place = formatEventPlace(event)
-  const hasCoordinates = event.latitude !== null && event.longitude !== null
 
   return (
     <Card
+      data-vt-scope={VT.eventHero}
       id={`events-discover-item-${event.documentId}`}
       className={cn(
-        'group relative flex h-full w-full flex-col border-hairline/10',
+        'group relative flex h-full w-full flex-col border-hairline/15',
         'bg-surface-card',
         'transition-[border-color,box-shadow,background-color] duration-(--duration-fast) ease-emphasized',
         'motion-reduce:transition-none',
-        'hover:shadow-(--shadow-glass)'
+        'hover:border-hairline/40 hover:bg-surface-high/40'
       )}
     >
-      <div className="flex overflow-hidden rounded-app m-4">
+      <RouterLink
+        to="/events/$documentId"
+        params={{ documentId: event.documentId }}
+        className="absolute inset-0 z-10 rounded-control focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+        aria-label={t('discover.list.viewEventAria', { name: event.name })}
+        onClick={armEventHero}
+      />
+
+      <div
+        data-vt-source={VT.eventHero}
+        className="relative z-0 m-4 flex overflow-hidden rounded-app"
+      >
         {image ? (
-          <>
-            <img
-              src={image.url}
-              alt={event.name}
-              className={cn(
-                'aspect-video w-full object-cover',
-                'transition-transform duration-(--duration-normal) ease-emphasized',
-                'motion-reduce:transition-none',
-                'group-hover:scale-[1.02] motion-reduce:group-hover:scale-100'
-              )}
-            />
-          </>
+          <img src={image.url} alt="" className="aspect-video w-full object-cover" />
         ) : (
           <NotImage
             size="full"
@@ -59,8 +62,8 @@ export function EventsDiscoverListItem({ event }: EventsDiscoverListItemProps) {
         )}
       </div>
 
-      <CardHeader className="flex flex-1 flex-col gap-2 space-y-0 p-4 sm:gap-2.5 sm:p-5">
-        <CardTitle className="truncate font-display text-lg font-semibold tracking-tight text-on-surface sm:text-xl">
+      <CardHeader className="relative z-0 flex flex-1 flex-col gap-2 space-y-0 p-4 sm:gap-2.5 sm:p-5">
+        <CardTitle className="line-clamp-2 font-display text-lg font-semibold tracking-tight text-balance text-on-surface sm:text-xl">
           {event.name}
         </CardTitle>
 
@@ -71,7 +74,7 @@ export function EventsDiscoverListItem({ event }: EventsDiscoverListItemProps) {
         ) : null}
 
         {place ? (
-          <p className="mt-auto flex items-start gap-1.5 font-label text-sm text-on-surface-variant">
+          <p className="mt-auto flex items-start gap-1.5 text-sm text-on-surface-variant">
             <MapPin
               className="mt-0.5 size-3.5 shrink-0 opacity-70"
               aria-hidden
@@ -86,25 +89,19 @@ export function EventsDiscoverListItem({ event }: EventsDiscoverListItemProps) {
             {when}
           </Badge>
         ) : null}
-
-        {!hasCoordinates ? (
-          <p className="font-label text-sm text-on-surface-variant">
-            {t('discover.list.noCoordinatesHint')}
-          </p>
-        ) : null}
       </CardHeader>
 
-      <CardFooter className="mt-auto p-4 pt-0 sm:p-5 sm:pt-0">
-        <Link
-          to="/events/$documentId"
-          params={{ documentId: event.documentId }}
-          className="min-h-11 w-full bg-background/50"
-          variant="ghost"
-          size="lg"
-          aria-label={t('discover.list.viewEvent')}
+      <CardFooter className="relative z-0 mt-auto p-4 pt-0 sm:p-5 sm:pt-0">
+        <span
+          className={cn(
+            buttonVariants({ variant: 'default', size: 'lg' }),
+            'pointer-events-none w-full',
+            'group-hover:bg-primary/90'
+          )}
+          aria-hidden
         >
           {t('discover.list.viewEvent')}
-        </Link>
+        </span>
       </CardFooter>
     </Card>
   )

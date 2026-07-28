@@ -4,7 +4,9 @@ import { Button, LoadErrorBanner, Skeleton } from '@repo/ui'
 import type { PublicEventResponse } from '@repo/types'
 import { EventsDiscoverListItem } from './events-discover-list-item'
 
-const EVENTS_DISCOVER_GRID = 'grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4'
+/** Editorial rhythm: never 4 equal columns with sparse results. */
+const EVENTS_DISCOVER_GRID =
+  'grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 lg:gap-6'
 
 type EventsDiscoverListProps = {
   events: PublicEventResponse[]
@@ -61,17 +63,17 @@ export function EventsDiscoverList({
     return (
       <div className={EVENTS_DISCOVER_GRID} aria-busy="true" aria-live="polite">
         <p className="sr-only">{t('discover.list.loading')}</p>
-        {Array.from({ length: 8 }, (_, index) => (
+        {Array.from({ length: 6 }, (_, index) => (
           <div
             key={index}
-            className="overflow-hidden rounded-control border border-primary/15 bg-surface-container-low/40"
+            className="overflow-hidden rounded-control border border-hairline/20 bg-surface-container-low/50"
           >
-            <Skeleton className="aspect-video w-full rounded-none bg-primary/10" />
+            <Skeleton className="aspect-video w-full rounded-none bg-surface-high/80" />
             <div className="flex flex-col gap-2 p-4 sm:p-5">
-              <Skeleton className="h-6 w-3/4 bg-primary/12" />
-              <Skeleton className="h-4 w-full bg-primary/10" />
-              <Skeleton className="h-3.5 w-1/2 bg-primary/8" />
-              <Skeleton className="mt-2 h-10 w-full bg-primary/10" />
+              <Skeleton className="h-6 w-3/4 bg-surface-high/70" />
+              <Skeleton className="h-4 w-full bg-surface-high/50" />
+              <Skeleton className="h-3.5 w-1/2 bg-surface-high/40" />
+              <Skeleton className="mt-2 h-10 w-full bg-surface-high/60" />
             </div>
           </div>
         ))}
@@ -124,7 +126,7 @@ export function EventsDiscoverList({
 
       {isFetchingNextPage ? (
         <p
-          className="border-t border-hairline/40 py-6 text-center font-label text-sm text-primary/70"
+          className="border-t border-hairline/40 py-6 text-center text-sm text-on-surface-variant"
           aria-live="polite"
         >
           {t('discover.list.loadingMore')}
@@ -133,14 +135,27 @@ export function EventsDiscoverList({
 
       {isFetchNextPageError ? (
         <div className="border-t border-hairline/40 py-6 text-center" role="alert">
-          <p className="text-sm text-error">{t('discover.list.error')}</p>
+          <p className="text-sm text-error">{t('discover.list.loadMoreError')}</p>
           <Button
             type="button"
             variant="outline"
-            className="mt-3 min-h-10 rounded-lg"
+            className="mt-3 min-h-11 rounded-lg"
             onClick={onFetchNextPage}
           >
             {t('discover.list.retry')}
+          </Button>
+        </div>
+      ) : null}
+
+      {hasNextPage && !isFetchingNextPage && !isFetchNextPageError ? (
+        <div className="border-t border-hairline/40 py-6 text-center">
+          <Button
+            type="button"
+            variant="outline"
+            className="min-h-11 rounded-lg"
+            onClick={onFetchNextPage}
+          >
+            {t('discover.list.loadMore')}
           </Button>
         </div>
       ) : null}

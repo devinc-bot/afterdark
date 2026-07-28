@@ -14,6 +14,8 @@ import {
   SidebarProvider,
   SidebarTrigger,
   useSidebar,
+  VT,
+  vtStyle,
 } from '@repo/ui'
 import { useNavigate, useRouterState } from '@tanstack/react-router'
 import { useCallback, useMemo, useRef, useState } from 'react'
@@ -199,7 +201,7 @@ function AppShellLayout({ children }: { children: React.ReactNode }) {
       />
 
       <SidebarInset className="min-h-0">
-        <header className="flex h-16 shrink-0 items-center gap-2">
+        <header className="flex h-16 shrink-0 items-center gap-2" style={vtStyle(VT.siteHeader)}>
           <div className="flex items-center gap-2 px-4">
             <SidebarTrigger className="-ml-1" />
             <Separator orientation="vertical" className="mr-2 h-[16px]" />
@@ -212,7 +214,9 @@ function AppShellLayout({ children }: { children: React.ReactNode }) {
             </Breadcrumb>
           </div>
         </header>
-        <div className="min-h-0 flex-1 overflow-auto">{children}</div>
+        <div className="min-h-0 flex-1 overflow-auto" style={vtStyle(VT.mainContent)}>
+          {children}
+        </div>
       </SidebarInset>
 
       <AppShellSignOutDialog

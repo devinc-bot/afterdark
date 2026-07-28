@@ -115,13 +115,13 @@
   "discover": {
     "page": {
       "title": "Events",
-      "description": "Browse published events by city, state, and date.",
+      "description": "Find a night out — browse highlights, then filter the full list.",
       "metaTitle": "Events · {appName}"
     },
     "filters": {
       "title": "Filters",
-      "open": "Filters",
-      "openWithCount": "Filters ({count})",
+      "open": "Filter",
+      "openWithCount": "Filter ({count})",
       "sheetTitle": "Filters",
       "when": "When",
       "where": "Where",
@@ -133,7 +133,8 @@
       "statePlaceholder": "E.g. Chaco",
       "apply": "Apply",
       "clear": "Clear",
-      "pendingChanges": "Unapplied changes",
+      "pendingChanges": "Apply to update results",
+      "applyIdleHint": "Change a filter, then apply",
       "appliedAria": "Applied filters",
       "removeChip": "Remove filter {label}",
       "chipFrom": "From {date}",
@@ -142,6 +143,7 @@
       "chipState": "{state}"
     },
     "list": {
+      "heading": "All events",
       "emptyTitle": "No events",
       "emptyDescription": "Try different dates or another city.",
       "errorTitle": "We could not load events",
@@ -149,15 +151,22 @@
       "retry": "Retry",
       "loading": "Loading events…",
       "loadingMore": "Loading more events…",
+      "loadMore": "Load more",
+      "loadMoreError": "We could not load more events. Try again.",
       "resultsCount": "{count, plural, one {# event} other {# events}}",
       "resultsAria": "Event list",
-      "sortHint": "Soonest first",
       "noCoordinatesHint": "No coordinates on the map",
       "noImage": "No image",
-      "viewEvent": "View event"
+      "viewEvent": "I want to go",
+      "viewEventAria": "View {name}"
     },
     "coverflow": {
-      "ariaLabel": "Event image carousel",
+      "heading": "Featured",
+      "hint": "Tap a highlight to open it",
+      "ariaLabel": "Featured event images",
+      "activateAria": "{title}. {meta}",
+      "dotsAria": "Featured slides",
+      "dotAria": "Slide {index} of {total}: {title}",
       "prev": "Previous event",
       "next": "Next event"
     },

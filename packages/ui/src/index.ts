@@ -277,3 +277,14 @@ export {
   useMap,
   type MapRef,
 } from './components/ui/map.tsx'
+export {
+  VT,
+  VIEW_TRANSITION_TYPE,
+  armEventHero,
+  armViewTransition,
+  defaultViewTransitionOptions,
+  prefersReducedMotion,
+  vtStyle,
+  type ViewTransitionName,
+  type ViewTransitionType,
+} from './view-transitions/index.ts'

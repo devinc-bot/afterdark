@@ -6,6 +6,7 @@ import { installZodI18n } from '@repo/i18n'
 import { I18nProvider } from '@repo/i18n/client'
 import { APP_LOGO_SRC, THEME_BOOT_SCRIPT, ThemeProvider, Toaster } from '@repo/ui'
 import globalsCssUrl from '@repo/ui/globals.css?url'
+import viewTransitionsCssUrl from '@repo/ui/view-transitions.css?url'
 import {
   WebErrorBoundaryView,
   WebNotFoundView,
@@ -25,6 +26,7 @@ export const Route = createRootRouteWithContext<RouterContext>()({
       { rel: 'icon', type: 'image/png', href: APP_LOGO_SRC },
       { rel: 'apple-touch-icon', href: APP_LOGO_SRC },
       { rel: 'stylesheet', href: globalsCssUrl },
+      { rel: 'stylesheet', href: viewTransitionsCssUrl },
     ],
     scripts: [{ children: THEME_BOOT_SCRIPT }],
   }),

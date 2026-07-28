@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { Button, DateInput, Field, Input, cn } from '@repo/ui'
+import { Button, DateInput, Input, Label, cn } from '@repo/ui'
 import {
   countActiveDiscoverFilters,
   type EventsDiscoverFiltersValue,
@@ -41,6 +41,7 @@ export function EventsDiscoverFiltersPanel({
   const stateId = `${idPrefix}-state`
   const whenLegendId = `${idPrefix}-when`
   const whereLegendId = `${idPrefix}-where`
+  const applyHintId = `${idPrefix}-apply-hint`
   const isBar = layout === 'bar'
   const canClear = countActiveDiscoverFilters(value) > 0 || isDirty
   const showPending = showPendingHint && isDirty
@@ -54,14 +55,14 @@ export function EventsDiscoverFiltersPanel({
       }}
     >
       {showHeading ? (
-        <h2
+        <h3
           className={cn(
-            'font-display text-lg font-semibold tracking-tight text-balance text-on-surface',
+            'font-display text-base font-semibold tracking-tight text-balance text-on-surface',
             isBar && 'lg:sr-only'
           )}
         >
           {t('discover.filters.title')}
-        </h2>
+        </h3>
       ) : null}
 
       <div
@@ -73,45 +74,56 @@ export function EventsDiscoverFiltersPanel({
         <fieldset className="min-w-0 border-0 p-0">
           <legend
             id={whenLegendId}
-            className="mb-2.5 w-full px-0 font-label text-xs text-on-surface-variant"
+            className="mb-2.5 w-full px-0 text-sm font-medium text-on-surface"
           >
             {t('discover.filters.when')}
           </legend>
           <div className={cn('grid gap-3', isBar ? 'grid-cols-1 sm:grid-cols-2' : 'grid-cols-1')}>
-            <Field label={t('discover.filters.startsFrom')} htmlFor={startsFromId}>
+            <div className="flex flex-col gap-2">
+              <Label htmlFor={startsFromId} variant="default">
+                {t('discover.filters.startsFrom')}
+              </Label>
               <DateInput
                 id={startsFromId}
                 name="startsFrom"
                 value={value.startsFrom}
                 onChange={(event) => onChange({ ...value, startsFrom: event.target.value })}
               />
-            </Field>
+            </div>
 
-            <Field
-              label={t('discover.filters.startsTo')}
-              htmlFor={startsToId}
-              error={dateRangeError}
-            >
+            <div className="flex flex-col gap-2">
+              <Label htmlFor={startsToId} variant="default">
+                {t('discover.filters.startsTo')}
+              </Label>
               <DateInput
                 id={startsToId}
                 name="startsTo"
                 value={value.startsTo}
                 onChange={(event) => onChange({ ...value, startsTo: event.target.value })}
                 aria-invalid={dateRangeError ? true : undefined}
+                aria-describedby={dateRangeError ? `${startsToId}-error` : undefined}
               />
-            </Field>
+              {dateRangeError ? (
+                <p id={`${startsToId}-error`} role="alert" className="text-xs text-error">
+                  {dateRangeError}
+                </p>
+              ) : null}
+            </div>
           </div>
         </fieldset>
 
         <fieldset className="min-w-0 border-0 p-0">
           <legend
             id={whereLegendId}
-            className="mb-2.5 w-full px-0 font-label text-xs text-on-surface-variant"
+            className="mb-2.5 w-full px-0 text-sm font-medium text-on-surface"
           >
             {t('discover.filters.where')}
           </legend>
           <div className={cn('grid gap-3', isBar ? 'grid-cols-1 sm:grid-cols-2' : 'grid-cols-1')}>
-            <Field label={t('discover.filters.city')} htmlFor={cityId}>
+            <div className="flex flex-col gap-2">
+              <Label htmlFor={cityId} variant="default">
+                {t('discover.filters.city')}
+              </Label>
               <Input
                 id={cityId}
                 name="city"
@@ -120,9 +132,12 @@ export function EventsDiscoverFiltersPanel({
                 onChange={(event) => onChange({ ...value, city: event.target.value })}
                 autoComplete="address-level2"
               />
-            </Field>
+            </div>
 
-            <Field label={t('discover.filters.state')} htmlFor={stateId}>
+            <div className="flex flex-col gap-2">
+              <Label htmlFor={stateId} variant="default">
+                {t('discover.filters.state')}
+              </Label>
               <Input
                 id={stateId}
                 name="state"
@@ -131,7 +146,7 @@ export function EventsDiscoverFiltersPanel({
                 onChange={(event) => onChange({ ...value, state: event.target.value })}
                 autoComplete="address-level1"
               />
-            </Field>
+            </div>
           </div>
         </fieldset>
       </div>
@@ -144,14 +159,15 @@ export function EventsDiscoverFiltersPanel({
       >
         {showPendingHint ? (
           <p
-            className={cn(
-              'font-label text-xs text-on-surface-variant',
-              !showPending && 'invisible'
-            )}
+            id={applyHintId}
+            className="min-h-4 text-xs text-on-surface-variant"
             aria-live="polite"
-            aria-hidden={!showPending}
           >
-            <span className="text-primary/80">{t('discover.filters.pendingChanges')}</span>
+            {showPending ? (
+              <span className="text-primary">{t('discover.filters.pendingChanges')}</span>
+            ) : (
+              <span>{t('discover.filters.applyIdleHint')}</span>
+            )}
           </p>
         ) : null}
 
@@ -160,6 +176,7 @@ export function EventsDiscoverFiltersPanel({
             type="submit"
             className={cn('min-h-11 whitespace-nowrap', isBar ? 'sm:min-w-28 sm:flex-1' : 'w-full')}
             disabled={!isDirty}
+            aria-describedby={showPendingHint ? applyHintId : undefined}
           >
             {t('discover.filters.apply')}
           </Button>

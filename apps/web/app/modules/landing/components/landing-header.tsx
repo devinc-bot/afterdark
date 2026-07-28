@@ -99,6 +99,7 @@ export function LandingHeader() {
   }
 
   return (
+    // No VT name: it isolates stacking and breaks backdrop-blur on the glass bar.
     <header className="pointer-events-none fixed inset-x-0 top-0 z-40 pt-4 sm:pt-5">
       <Container>
         <div

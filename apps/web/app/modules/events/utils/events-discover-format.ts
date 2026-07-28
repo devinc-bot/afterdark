@@ -6,9 +6,12 @@ export function formatEventWhen(value: Date | string, locale = 'es-AR'): string 
     return ''
   }
 
+  // Midnight often means "date only" in published events — hide noisy 0:00.
+  const includeTime = date.getHours() !== 0 || date.getMinutes() !== 0
+
   return new Intl.DateTimeFormat(locale, {
     dateStyle: 'medium',
-    timeStyle: 'short',
+    ...(includeTime ? { timeStyle: 'short' as const } : {}),
   }).format(date)
 }
 

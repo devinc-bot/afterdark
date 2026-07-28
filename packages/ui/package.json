@@ -6,6 +6,7 @@
   "exports": {
     ".": "./src/index.ts",
     "./globals.css": "./src/globals.css",
+    "./view-transitions.css": "./src/view-transitions/styles.css",
     "./tailwind.config": "./tailwind.config.ts"
   },
   "scripts": {

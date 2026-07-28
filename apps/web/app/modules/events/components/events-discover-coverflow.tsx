@@ -5,11 +5,12 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
+  VT,
+  armEventHero,
   cn,
   type CarouselApi,
 } from '@repo/ui'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 import type { EventsDiscoverCoverflowSlide } from '../utils/events-discover-coverflow'
 
 const TWEEN_FACTOR_BASE = 0.2
@@ -211,99 +212,149 @@ export function EventsDiscoverCoverflow({
   const showControls = slides.length > 1
 
   return (
-    <Carousel
-      setApi={setApi}
-      opts={{
-        align: showControls ? 'center' : 'start',
-        loop: showControls,
-      }}
-      plugins={showControls ? [autoplay.current] : undefined}
-      className={cn('relative w-full', className)}
-      aria-label={t('discover.coverflow.ariaLabel')}
+    <section
+      className={cn('flex flex-col gap-3', className)}
+      aria-labelledby="events-featured-heading"
     >
-      <CarouselContent className={showControls ? '-ml-3' : 'ml-0'}>
-        {slides.map((slide, index) => {
-          const isLoaded = loadedIndexes.has(index)
+      <div className="flex items-baseline justify-between gap-3 px-0.5">
+        <h2
+          id="events-featured-heading"
+          className="font-display text-lg font-semibold tracking-tight text-balance text-on-surface sm:text-xl"
+        >
+          {t('discover.coverflow.heading')}
+        </h2>
+        <p className="max-w-[28ch] text-right text-sm text-pretty text-on-surface-variant">
+          {t('discover.coverflow.hint')}
+        </p>
+      </div>
 
-          return (
-            <CarouselItem
-              key={slide.documentId}
-              className={showControls ? 'basis-[86%] pl-3 sm:basis-[88%]' : 'basis-full pl-0'}
-            >
+      <Carousel
+        setApi={setApi}
+        opts={{
+          align: showControls ? 'center' : 'start',
+          loop: showControls,
+        }}
+        plugins={showControls ? [autoplay.current] : undefined}
+        className="relative w-full"
+        aria-label={t('discover.coverflow.ariaLabel')}
+      >
+        <CarouselContent className={showControls ? '-ml-3' : 'ml-0'}>
+          {slides.map((slide, index) => {
+            const isLoaded = loadedIndexes.has(index)
+            const metaParts = [slide.when, slide.place].filter(Boolean)
+            const activateLabel = metaParts.length
+              ? t('discover.coverflow.activateAria', {
+                  title: slide.title,
+                  meta: metaParts.join(' · '),
+                })
+              : slide.title
+
+            return (
+              <CarouselItem
+                key={slide.documentId}
+                className={showControls ? 'basis-[86%] pl-3 sm:basis-[88%]' : 'basis-full pl-0'}
+              >
+                <button
+                  type="button"
+                  className="relative aspect-19/9 w-full cursor-pointer overflow-hidden rounded-app-lg border-0 bg-transparent p-0"
+                  onClick={(clickEvent) => {
+                    armEventHero(clickEvent)
+                    onActivate(slide.documentId)
+                  }}
+                  aria-label={activateLabel}
+                >
+                  <div
+                    data-vt-source={VT.eventHero}
+                    data-parallax-layer
+                    className="relative flex h-full w-full items-center justify-center will-change-transform"
+                  >
+                    {isLoaded ? (
+                      <img
+                        src={slide.src}
+                        alt=""
+                        className={cn(
+                          'h-full object-cover',
+                          reduceMotion ? 'w-full' : 'max-w-none flex-[0_0_115%]'
+                        )}
+                        draggable={false}
+                        loading={index === 0 ? 'eager' : 'lazy'}
+                        fetchPriority={index === 0 ? 'high' : undefined}
+                      />
+                    ) : (
+                      <div className="h-full w-full bg-surface-strong" aria-hidden />
+                    )}
+                    <div
+                      className="pointer-events-none absolute inset-0 rounded-app-lg bg-linear-to-t from-black/75 via-black/20 to-transparent"
+                      aria-hidden
+                    />
+                  </div>
+                  <span className="pointer-events-none absolute bottom-3 left-3 right-3 flex w-fit max-w-[min(100%-1.5rem,42rem)] flex-col gap-1 rounded-app bg-surface-lowest/90 px-4 py-3 text-left sm:bottom-6 sm:left-6 sm:px-5 sm:py-3.5">
+                    <span className="font-display text-lg font-semibold text-balance text-on-surface sm:text-2xl">
+                      {slide.title}
+                    </span>
+                    {metaParts.length > 0 ? (
+                      <span className="text-sm text-pretty text-on-surface-variant sm:text-base">
+                        {metaParts.join(' · ')}
+                      </span>
+                    ) : null}
+                  </span>
+                </button>
+              </CarouselItem>
+            )
+          })}
+        </CarouselContent>
+
+        {showControls ? (
+          <div className="flex flex-col items-center gap-3 p-4 text-center sm:p-5">
+            <div className="relative flex w-full items-center justify-center gap-1 rounded-full bg-surface-strong p-2 sm:w-auto">
               <button
                 type="button"
-                className="relative aspect-19/9 w-full cursor-pointer overflow-hidden rounded-app-lg border-0 bg-transparent p-0"
-                onClick={() => onActivate(slide.documentId)}
-                aria-label={slide.title}
+                onClick={() => api?.scrollPrev()}
+                aria-label={t('discover.coverflow.prev')}
+                className="inline-flex size-10 cursor-pointer items-center justify-center rounded-full border-0 bg-transparent text-on-surface transition-colors hover:bg-on-surface/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink"
               >
-                <div
-                  data-parallax-layer
-                  className="relative flex h-full w-full items-center justify-center will-change-transform"
-                >
-                  {isLoaded ? (
-                    <img
-                      src={slide.src}
-                      alt={slide.title}
-                      className={cn(
-                        'h-full object-cover',
-                        reduceMotion ? 'w-full' : 'max-w-none flex-[0_0_115%]'
-                      )}
-                      draggable={false}
-                      loading={index === 0 ? 'eager' : 'lazy'}
-                      fetchPriority={index === 0 ? 'high' : undefined}
-                    />
-                  ) : (
-                    <div className="h-full w-full bg-surface-strong" aria-hidden />
-                  )}
-                  <div
-                    className="pointer-events-none absolute inset-0 rounded-app-lg bg-linear-to-t from-black/70 via-black/10 to-transparent"
-                    aria-hidden
-                  />
-                </div>
-                <span className="pointer-events-none absolute bottom-3 left-3 right-3 w-fit max-w-[min(100%-1.5rem,42rem)] rounded-app bg-background/5 px-5 py-3 text-left font-display text-lg font-semibold text-balance text-white drop-shadow backdrop-blur-sm sm:bottom-6 sm:left-6 sm:right-6 sm:text-2xl">
-                  {slide.title}
-                </span>
+                <ChevronLeft className="size-5" aria-hidden />
               </button>
-            </CarouselItem>
-          )
-        })}
-      </CarouselContent>
 
-      {showControls ? (
-        <div className="flex flex-col items-center gap-3 p-4 text-center sm:p-5">
-          <div className="relative flex w-full items-center justify-center gap-1 p-2 rounded-full bg-surface-strong sm:w-auto">
-            <CarouselPrevious
-              variant="ghost"
-              className="static top-auto left-auto size-10 translate-x-0 translate-y-0 rounded-full border-0 shadow-none"
-              aria-label={t('discover.coverflow.prev')}
-            />
+              <div
+                className="flex items-center gap-1.5 px-1"
+                role="tablist"
+                aria-label={t('discover.coverflow.dotsAria')}
+              >
+                {slides.map((slide, i) => (
+                  <button
+                    key={slide.documentId}
+                    type="button"
+                    role="tab"
+                    onClick={() => api?.scrollTo(i)}
+                    aria-label={t('discover.coverflow.dotAria', {
+                      index: i + 1,
+                      total: slides.length,
+                      title: slide.title,
+                    })}
+                    aria-selected={selectedIndex === i}
+                    className={cn(
+                      'h-1.5 cursor-pointer rounded-full border-0 transition-all duration-300',
+                      selectedIndex === i
+                        ? 'w-5 bg-on-surface'
+                        : 'w-1.5 bg-on-surface/30 hover:bg-on-surface/50'
+                    )}
+                  />
+                ))}
+              </div>
 
-            <div className="flex items-center gap-1.5 px-1">
-              {slides.map((slide, i) => (
-                <button
-                  key={slide.documentId}
-                  type="button"
-                  onClick={() => api?.scrollTo(i)}
-                  aria-label={slide.title}
-                  aria-current={selectedIndex === i ? 'true' : undefined}
-                  className={cn(
-                    'h-1.5 cursor-pointer rounded-full border-0 transition-all duration-300',
-                    selectedIndex === i
-                      ? 'w-5 bg-on-surface'
-                      : 'w-1.5 bg-on-surface/30 hover:bg-on-surface/50'
-                  )}
-                />
-              ))}
+              <button
+                type="button"
+                onClick={() => api?.scrollNext()}
+                aria-label={t('discover.coverflow.next')}
+                className="inline-flex size-10 cursor-pointer items-center justify-center rounded-full border-0 bg-transparent text-on-surface transition-colors hover:bg-on-surface/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink"
+              >
+                <ChevronRight className="size-5" aria-hidden />
+              </button>
             </div>
-
-            <CarouselNext
-              variant="ghost"
-              className="static top-auto right-auto size-10 translate-x-0 translate-y-0 rounded-full border-0 shadow-none"
-              aria-label={t('discover.coverflow.next')}
-            />
           </div>
-        </div>
-      ) : null}
-    </Carousel>
+        ) : null}
+      </Carousel>
+    </section>
   )
 }

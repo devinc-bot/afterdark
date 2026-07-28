@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useNavigate } from '@tanstack/react-router'
-import { Card } from '@repo/ui'
+import { useNavigate, useSearch } from '@tanstack/react-router'
+import { Button, Collapsible, CollapsibleContent, CollapsibleTrigger, cn } from '@repo/ui'
+import { ChevronDown } from 'lucide-react'
 import { PageAtmosphereWash } from '~/modules/common/components/page-atmosphere-wash'
 import { Container } from '~/modules/common/components/container'
 import { PageHeader } from '~/modules/common/components/page-header'
@@ -11,7 +12,9 @@ import {
   appliedFiltersKey,
   areDiscoverFiltersEqual,
   clearDiscoverFilterField,
-  EMPTY_EVENTS_DISCOVER_FILTERS,
+  countActiveDiscoverFilters,
+  filtersFromSearch,
+  searchFromFilters,
   type EventsDiscoverFilterField,
   type EventsDiscoverFiltersValue,
 } from '../utils/events-discover-filters'
@@ -29,14 +32,31 @@ function isInvalidDateRange(filters: EventsDiscoverFiltersValue): boolean {
 }
 
 export function EventsDiscoverPage() {
-  const { t } = useTranslation('events')
+  const { t, i18n } = useTranslation('events')
   const navigate = useNavigate()
-  const [draftFilters, setDraftFilters] = useState(EMPTY_EVENTS_DISCOVER_FILTERS)
-  const [appliedFilters, setAppliedFilters] = useState(EMPTY_EVENTS_DISCOVER_FILTERS)
+  const search = useSearch({ from: '/_public/events/' })
+  const urlFilters = filtersFromSearch(search)
+
+  const [draftFilters, setDraftFilters] = useState(urlFilters)
+  const [appliedFilters, setAppliedFilters] = useState(urlFilters)
   const [dateRangeError, setDateRangeError] = useState<string | null>(null)
+  const [filtersOpen, setFiltersOpen] = useState(() => countActiveDiscoverFilters(urlFilters) > 0)
+
+  const urlKey = appliedFiltersKey(urlFilters)
+
+  useEffect(() => {
+    const next = filtersFromSearch(search)
+    setDraftFilters(next)
+    setAppliedFilters(next)
+    setDateRangeError(null)
+    if (countActiveDiscoverFilters(next) > 0) {
+      setFiltersOpen(true)
+    }
+  }, [urlKey, search])
 
   const filtersKey = appliedFiltersKey(appliedFilters)
   const isDirty = !areDiscoverFiltersEqual(draftFilters, appliedFilters)
+  const activeFilterCount = countActiveDiscoverFilters(appliedFilters)
   const {
     data,
     isLoading,
@@ -51,7 +71,15 @@ export function EventsDiscoverPage() {
 
   const events = data?.pages.flatMap((page) => page.data) ?? []
   const resultTotal = data?.pages[0]?.total ?? null
-  const coverflowSlides = buildEventsDiscoverCoverflowSlides(events)
+  const coverflowSlides = buildEventsDiscoverCoverflowSlides(events, i18n.language)
+
+  const persistFilters = (next: EventsDiscoverFiltersValue) => {
+    void navigate({
+      to: '/events',
+      search: () => searchFromFilters(next),
+      replace: true,
+    })
+  }
 
   const handleDraftChange = (next: EventsDiscoverFiltersValue) => {
     setDraftFilters(next)
@@ -68,13 +96,15 @@ export function EventsDiscoverPage() {
 
     setDateRangeError(null)
     setAppliedFilters(draftFilters)
+    persistFilters(draftFilters)
     return true
   }
 
   const handleClear = () => {
-    setDraftFilters(EMPTY_EVENTS_DISCOVER_FILTERS)
-    setAppliedFilters(EMPTY_EVENTS_DISCOVER_FILTERS)
+    setDraftFilters(filtersFromSearch({}))
+    setAppliedFilters(filtersFromSearch({}))
     setDateRangeError(null)
+    persistFilters(filtersFromSearch({}))
   }
 
   const handleRemoveFilter = (field: EventsDiscoverFilterField) => {
@@ -82,6 +112,7 @@ export function EventsDiscoverPage() {
     setDraftFilters(next)
     setAppliedFilters(next)
     setDateRangeError(null)
+    persistFilters(next)
   }
 
   const handleCoverflowActivate = (documentId: string) => {
@@ -97,7 +128,7 @@ export function EventsDiscoverPage() {
         <PageAtmosphereWash />
         <PageHeader title={t('discover.page.title')} description={t('discover.page.description')} />
 
-        <div className="flex flex-col gap-6 lg:gap-8">
+        <div className="flex flex-col gap-10 lg:gap-12">
           {coverflowSlides.length > 0 ? (
             <EventsDiscoverCoverflow
               key={filtersKey}
@@ -106,43 +137,78 @@ export function EventsDiscoverPage() {
             />
           ) : null}
 
-          <Card variant="gradient" aria-label={t('discover.filters.title')} className="p-4 sm:p-5">
-            <EventsDiscoverFiltersPanel
-              value={draftFilters}
-              onChange={handleDraftChange}
-              onClear={handleClear}
-              onApply={() => {
-                handleApply()
-              }}
-              dateRangeError={dateRangeError}
-              isDirty={isDirty}
-              idPrefix="events-filter"
-              layout="bar"
-              showHeading={false}
-              showPendingHint
-            />
-          </Card>
+          <section className="flex flex-col gap-4" aria-labelledby="events-catalog-heading">
+            <Collapsible open={filtersOpen} onOpenChange={setFiltersOpen}>
+              <div className="flex flex-wrap items-end justify-between gap-3">
+                <h2
+                  id="events-catalog-heading"
+                  className="font-display text-lg font-semibold tracking-tight text-balance text-on-surface sm:text-xl"
+                >
+                  {t('discover.list.heading')}
+                </h2>
 
-          <EventsDiscoverStatusBar
-            appliedFilters={appliedFilters}
-            total={resultTotal}
-            onRemoveFilter={handleRemoveFilter}
-            onClearAll={handleClear}
-          />
+                <CollapsibleTrigger asChild>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="min-h-11 gap-2"
+                    aria-expanded={filtersOpen}
+                  >
+                    {activeFilterCount > 0
+                      ? t('discover.filters.openWithCount', { count: activeFilterCount })
+                      : t('discover.filters.open')}
+                    <ChevronDown
+                      className={cn(
+                        'size-4 transition-transform duration-(--duration-fast)',
+                        filtersOpen && 'rotate-180'
+                      )}
+                      aria-hidden
+                    />
+                  </Button>
+                </CollapsibleTrigger>
+              </div>
 
-          <section className="min-h-48 min-w-0" aria-label={t('discover.page.title')}>
-            <EventsDiscoverList
-              key={filtersKey}
-              events={events}
-              isLoading={isLoading}
-              isSuccess={isSuccess}
-              isError={isError}
-              hasNextPage={Boolean(hasNextPage)}
-              isFetchingNextPage={isFetchingNextPage}
-              isFetchNextPageError={isFetchNextPageError}
-              onFetchNextPage={() => void fetchNextPage()}
-              onRetry={() => void refetch()}
+              <CollapsibleContent className="data-[state=closed]:animate-none">
+                <div className="mt-4 rounded-app border border-hairline/30 bg-surface-muted/60 p-4 sm:p-5">
+                  <EventsDiscoverFiltersPanel
+                    value={draftFilters}
+                    onChange={handleDraftChange}
+                    onClear={handleClear}
+                    onApply={() => {
+                      handleApply()
+                    }}
+                    dateRangeError={dateRangeError}
+                    isDirty={isDirty}
+                    idPrefix="events-filter"
+                    layout="bar"
+                    showHeading={false}
+                    showPendingHint
+                  />
+                </div>
+              </CollapsibleContent>
+            </Collapsible>
+
+            <EventsDiscoverStatusBar
+              appliedFilters={appliedFilters}
+              total={resultTotal}
+              onRemoveFilter={handleRemoveFilter}
+              onClearAll={handleClear}
             />
+
+            <div className="min-h-48 min-w-0">
+              <EventsDiscoverList
+                key={filtersKey}
+                events={events}
+                isLoading={isLoading}
+                isSuccess={isSuccess}
+                isError={isError}
+                hasNextPage={Boolean(hasNextPage)}
+                isFetchingNextPage={isFetchingNextPage}
+                isFetchNextPageError={isFetchNextPageError}
+                onFetchNextPage={() => void fetchNextPage()}
+                onRetry={() => void refetch()}
+              />
+            </div>
           </section>
         </div>
       </div>

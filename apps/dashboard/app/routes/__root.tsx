@@ -14,6 +14,7 @@ import { I18nProvider } from '@repo/i18n/client'
 import { installZodI18n } from '@repo/i18n'
 import commonEs from '@repo/i18n/locales/common/es.json'
 import globalsCssUrl from '@repo/ui/globals.css?url'
+import viewTransitionsCssUrl from '@repo/ui/view-transitions.css?url'
 import { DASHBOARD_ROUTES } from '~/modules/common/constants/routes'
 
 interface RouterContext {
@@ -31,6 +32,7 @@ export const Route = createRootRouteWithContext<RouterContext>()({
       { rel: 'icon', type: 'image/png', href: APP_LOGO_SRC },
       { rel: 'apple-touch-icon', href: APP_LOGO_SRC },
       { rel: 'stylesheet', href: globalsCssUrl },
+      { rel: 'stylesheet', href: viewTransitionsCssUrl },
     ],
     scripts: [{ children: THEME_BOOT_SCRIPT }],
   }),
