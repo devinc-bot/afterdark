@@ -169,6 +169,20 @@
       "when": 1784666717251,
       "tag": "1784666717251_drop_location_type",
       "breakpoints": true
+    },
+    {
+      "idx": 24,
+      "version": "6",
+      "when": 1785183953676,
+      "tag": "20260727202553_loving_supernaut",
+      "breakpoints": true
+    },
+    {
+      "idx": 25,
+      "version": "6",
+      "when": 1785276680619,
+      "tag": "20260728221120_skinny_bucky",
+      "breakpoints": true
     }
   ]
 }

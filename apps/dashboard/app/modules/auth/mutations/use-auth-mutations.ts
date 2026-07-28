@@ -1,6 +1,7 @@
 import { useMutation } from '@tanstack/react-query'
 import { useNavigate } from '@tanstack/react-router'
 import type {
+  ConfirmUserRegistrationInput,
   ForgotPasswordInput,
   LoginInput,
   RegisterOwnerInput,
@@ -9,9 +10,10 @@ import type {
 import { useSessionStore } from '~/modules/common/stores/session.store'
 import { DASHBOARD_ROUTES } from '../../common/constants/routes'
 import {
+  confirmOwnerRegistrationFn,
   forgotPasswordFn,
   loginFn,
-  registerOwnerFn,
+  requestRegisterOwnerFn,
   resetPasswordFn,
 } from '../services/auth.service'
 import { saveAuthSession } from '../utils/auth-storage.utils'
@@ -29,13 +31,22 @@ export function useLogin() {
   })
 }
 
-export function useRegister() {
+export function useRequestRegister() {
+  return useMutation({
+    mutationFn: (input: RegisterOwnerInput) => requestRegisterOwnerFn({ data: input }),
+  })
+}
+
+export function useConfirmOwnerRegistration() {
   const navigate = useNavigate()
 
   return useMutation({
-    mutationFn: (input: RegisterOwnerInput) => registerOwnerFn({ data: input }),
-    onSuccess: async () => {
-      await navigate({ to: DASHBOARD_ROUTES.login() })
+    mutationFn: (input: ConfirmUserRegistrationInput) =>
+      confirmOwnerRegistrationFn({ data: input }),
+    onSuccess: async (session) => {
+      saveAuthSession(session)
+      await useSessionStore.getState().loadSession()
+      await navigate({ to: DASHBOARD_ROUTES.home() })
     },
   })
 }

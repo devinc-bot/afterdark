@@ -82,6 +82,26 @@
     "submit": "Crear cuenta",
     "submitting": "Creando…",
     "alreadyHaveAccount": "¿Ya tenés cuenta?",
+    "checkEmail": {
+      "title": "Revisá tu correo",
+      "description": "Te enviamos un enlace a {email} para confirmar tu cuenta. El enlace vence en 60 minutos.",
+      "backToLogin": "Volver a iniciar sesión"
+    },
+    "confirm": {
+      "metaTitle": "Confirmar cuenta · {appName}",
+      "title": "Confirmando tu cuenta",
+      "loading": "Estamos creando tu cuenta…",
+      "invalidToken": "El enlace no es válido o ya expiró.",
+      "expiredTitle": "El enlace expiró",
+      "expiredDescription": "Pedí un nuevo registro para recibir otro correo de verificación.",
+      "alreadyVerifiedTitle": "Tu correo ya está verificado",
+      "alreadyVerifiedDescription": "Esta cuenta ya fue confirmada. Podés iniciar sesión.",
+      "goToLogin": "Iniciar sesión",
+      "backToRegister": "Volver al registro",
+      "error": {
+        "fallback": "No pudimos confirmar tu cuenta. Intentá de nuevo en unos minutos."
+      }
+    },
     "error": {
       "emailTaken": "Este correo ya está registrado.",
       "generic": "No se pudo crear la cuenta. Intentá de nuevo.",

@@ -1,17 +1,18 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { useForm } from '@tanstack/react-form'
 import { Link } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
 import { z } from 'zod'
 import { Button, Field, fieldErrorMessage } from '@repo/ui'
 import { WEB_ROUTES } from '../../common/constants/routes'
-import { useRegister } from '../mutations/use-auth-mutations'
+import { useRequestRegister } from '../mutations/use-auth-mutations'
 import { AuthInput } from './auth-input'
 import { AuthMethodSeparator, GoogleContinueButton } from './google-continue-button'
 
 export function RegisterForm() {
   const { t } = useTranslation('auth')
-  const register = useRegister()
+  const register = useRequestRegister()
+  const [submittedEmail, setSubmittedEmail] = useState<string | null>(null)
 
   const registerFormSchema = useMemo(
     () =>
@@ -46,10 +47,27 @@ export function RegisterForm() {
         email: value.email,
         password: value.password,
       })
+      setSubmittedEmail(value.email)
     },
   })
 
   const isBusy = register.isPending
+
+  if (submittedEmail) {
+    return (
+      <div className="w-full">
+        <h1 className="font-display text-3xl font-bold tracking-tight text-balance text-on-surface md:text-4xl">
+          {t('register.checkEmail.title')}
+        </h1>
+        <p className="mt-3 text-sm leading-relaxed text-on-surface-variant">
+          {t('register.checkEmail.description', { email: submittedEmail })}
+        </p>
+        <Button asChild size="lg" className="mt-10 w-full">
+          <Link to={WEB_ROUTES.login()}>{t('register.checkEmail.backToLogin')}</Link>
+        </Button>
+      </div>
+    )
+  }
 
   return (
     <form

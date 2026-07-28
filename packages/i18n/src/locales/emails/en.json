@@ -23,6 +23,14 @@
     "expires": "This link expires in {minutes} minutes.",
     "ignore": "If you didn't request this change, ignore this email."
   },
+  "userRegistration": {
+    "subject": "Confirm your account",
+    "title": "Confirm your email",
+    "body": "To finish creating your account, confirm your email with the link below.",
+    "cta": "Confirm account",
+    "expires": "This link expires in {minutes} minutes.",
+    "ignore": "If you didn't create an account, ignore this email."
+  },
   "welcome": {
     "subject": "Welcome to {appNameDisplay}",
     "title": "Welcome, {name}!",

@@ -8,10 +8,12 @@ import type {
   PasswordResetRenderInput,
   RenderedMail,
   StaffInvitationRenderInput,
+  UserRegistrationRenderInput,
   WelcomeRenderInput,
 } from '../../types'
 import { PasswordResetEmail } from '../../templates/password-reset'
 import { StaffInvitationEmail } from '../../templates/staff-invitation'
+import { UserRegistrationEmail } from '../../templates/user-registration'
 import { WelcomeEmail } from '../../templates/welcome'
 
 @Injectable()
@@ -85,6 +87,44 @@ export class MailTemplatesService {
 
     return this.renderEmail(
       createElement(PasswordResetEmail, {
+        preview: subject,
+        title,
+        brand,
+        body,
+        cta,
+        url: input.url,
+        expires,
+        ignore,
+        footer,
+        copyright,
+      }),
+      subject,
+      [body, expires, `${cta}: ${input.url}`, ignore, footer].filter(Boolean).join('\n\n')
+    )
+  }
+
+  async renderUserRegistration(
+    input: UserRegistrationRenderInput,
+    language: Language = DEFAULT_LANGUAGE
+  ): Promise<RenderedMail> {
+    const t = (key: string, vars?: Record<string, unknown>) =>
+      this.ts.translateEmail(key, vars, language)
+
+    const subject = t('userRegistration.subject')
+    const title = t('userRegistration.title')
+    const brand = t('common.brand')
+    const body = t('userRegistration.body')
+    const cta = t('userRegistration.cta')
+    const ignore = t('userRegistration.ignore')
+    const footer = t('common.footer')
+    const copyright = t('common.copyright', { year: new Date().getFullYear() })
+    const expires =
+      input.minutes !== undefined
+        ? t('userRegistration.expires', { minutes: input.minutes })
+        : undefined
+
+    return this.renderEmail(
+      createElement(UserRegistrationEmail, {
         preview: subject,
         title,
         brand,

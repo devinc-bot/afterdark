@@ -15,6 +15,7 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as RegisterConfirmRouteImport } from './routes/register_.confirm'
 import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
 import { Route as AppStaffRouteImport } from './routes/_app/staff'
 import { Route as AppSettingsRouteImport } from './routes/_app/settings'
@@ -58,6 +59,11 @@ const AppRoute = AppRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RegisterConfirmRoute = RegisterConfirmRouteImport.update({
+  id: '/register_/confirm',
+  path: '/register/confirm',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthCallbackRoute = AuthCallbackRouteImport.update({
@@ -150,6 +156,7 @@ export interface FileRoutesByFullPath {
   '/settings': typeof AppSettingsRoute
   '/staff': typeof AppStaffRoute
   '/auth/callback': typeof AuthCallbackRoute
+  '/register/confirm': typeof RegisterConfirmRoute
   '/events/new': typeof AppEventsNewRoute
   '/locations/new': typeof AppLocationsNewRoute
   '/tickets/new': typeof AppTicketsNewRoute
@@ -172,6 +179,7 @@ export interface FileRoutesByTo {
   '/settings': typeof AppSettingsRoute
   '/staff': typeof AppStaffRoute
   '/auth/callback': typeof AuthCallbackRoute
+  '/register/confirm': typeof RegisterConfirmRoute
   '/events/new': typeof AppEventsNewRoute
   '/locations/new': typeof AppLocationsNewRoute
   '/tickets/new': typeof AppTicketsNewRoute
@@ -196,6 +204,7 @@ export interface FileRoutesById {
   '/_app/settings': typeof AppSettingsRoute
   '/_app/staff': typeof AppStaffRoute
   '/auth/callback': typeof AuthCallbackRoute
+  '/register_/confirm': typeof RegisterConfirmRoute
   '/_app/events/new': typeof AppEventsNewRoute
   '/_app/locations/new': typeof AppLocationsNewRoute
   '/_app/tickets/new': typeof AppTicketsNewRoute
@@ -220,6 +229,7 @@ export interface FileRouteTypes {
     | '/settings'
     | '/staff'
     | '/auth/callback'
+    | '/register/confirm'
     | '/events/new'
     | '/locations/new'
     | '/tickets/new'
@@ -242,6 +252,7 @@ export interface FileRouteTypes {
     | '/settings'
     | '/staff'
     | '/auth/callback'
+    | '/register/confirm'
     | '/events/new'
     | '/locations/new'
     | '/tickets/new'
@@ -265,6 +276,7 @@ export interface FileRouteTypes {
     | '/_app/settings'
     | '/_app/staff'
     | '/auth/callback'
+    | '/register_/confirm'
     | '/_app/events/new'
     | '/_app/locations/new'
     | '/_app/tickets/new'
@@ -285,6 +297,7 @@ export interface RootRouteChildren {
   ResetPasswordRoute: typeof ResetPasswordRoute
   NameTokenRoute: typeof NameTokenRoute
   AuthCallbackRoute: typeof AuthCallbackRoute
+  RegisterConfirmRoute: typeof RegisterConfirmRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -329,6 +342,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/register_/confirm': {
+      id: '/register_/confirm'
+      path: '/register/confirm'
+      fullPath: '/register/confirm'
+      preLoaderRoute: typeof RegisterConfirmRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth/callback': {
@@ -482,6 +502,7 @@ const rootRouteChildren: RootRouteChildren = {
   ResetPasswordRoute: ResetPasswordRoute,
   NameTokenRoute: NameTokenRoute,
   AuthCallbackRoute: AuthCallbackRoute,
+  RegisterConfirmRoute: RegisterConfirmRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

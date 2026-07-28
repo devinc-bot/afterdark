@@ -30,6 +30,10 @@ const registerProfileSchema = z.object({
 export const registerUserSchema = registerProfileSchema
 export const registerOwnerSchema = registerProfileSchema
 
+export const confirmUserRegistrationSchema = z.object({
+  token: z.string().min(1),
+})
+
 export const forgotPasswordSchema = z.object({
   email: z.email(),
 })
@@ -51,5 +55,6 @@ export const resetPasswordSchema = resetPasswordBaseSchema.refine(
 export type LoginInput = z.infer<typeof loginSchema>
 export type RegisterUserInput = z.infer<typeof registerUserSchema>
 export type RegisterOwnerInput = z.infer<typeof registerOwnerSchema>
+export type ConfirmUserRegistrationInput = z.infer<typeof confirmUserRegistrationSchema>
 export type ForgotPasswordInput = z.infer<typeof forgotPasswordSchema>
 export type ResetPasswordInput = z.infer<typeof resetPasswordSchema>

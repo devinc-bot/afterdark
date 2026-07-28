@@ -12,12 +12,14 @@ import {
 import type { Response } from 'express'
 import { API_ROUTES } from '@repo/common'
 import {
+  confirmUserRegistrationSchema,
   forgotPasswordSchema,
   googleOauthStartSchema,
   loginSchema,
   registerOwnerSchema,
   registerUserSchema,
   resetPasswordSchema,
+  type ConfirmUserRegistrationInput,
   type ForgotPasswordInput,
   type GoogleOauthStartInput,
   type LoginInput,
@@ -26,12 +28,16 @@ import {
   type ResetPasswordInput,
 } from '@repo/validators'
 import { ZodValidationPipe } from '../../common/pipes/zod-validation.pipe'
+import { ConfirmUserRegistrationUseCase } from '../application/confirm-user-registration.use-case'
+import { ConfirmOwnerRegistrationUseCase } from '../application/confirm-owner-registration.use-case'
 import { ForgotPasswordUseCase } from '../application/forgot-password.use-case'
 import { GoogleOauthCallbackUseCase } from '../application/google-oauth-callback.use-case'
 import { GoogleOauthStartUseCase } from '../application/google-oauth-start.use-case'
 import { LoginUseCase } from '../application/login.use-case'
 import { RegisterOwnerUseCase } from '../application/register-owner.use-case'
 import { RegisterUserUseCase } from '../application/register-user.use-case'
+import { RequestUserRegistrationUseCase } from '../application/request-user-registration.use-case'
+import { RequestOwnerRegistrationUseCase } from '../application/request-owner-registration.use-case'
 import { ResetPasswordUseCase } from '../application/reset-password.use-case'
 import { GOOGLE_OAUTH_ERROR } from '../auth.constants'
 import { buildAppLoginErrorUrl } from '../utils/google-oauth.utils'
@@ -43,6 +49,14 @@ export class AuthController {
     @Inject(LoginUseCase) private readonly loginUseCase: LoginUseCase,
     @Inject(RegisterUserUseCase) private readonly registerUserUseCase: RegisterUserUseCase,
     @Inject(RegisterOwnerUseCase) private readonly registerOwnerUseCase: RegisterOwnerUseCase,
+    @Inject(RequestUserRegistrationUseCase)
+    private readonly requestUserRegistrationUseCase: RequestUserRegistrationUseCase,
+    @Inject(ConfirmUserRegistrationUseCase)
+    private readonly confirmUserRegistrationUseCase: ConfirmUserRegistrationUseCase,
+    @Inject(RequestOwnerRegistrationUseCase)
+    private readonly requestOwnerRegistrationUseCase: RequestOwnerRegistrationUseCase,
+    @Inject(ConfirmOwnerRegistrationUseCase)
+    private readonly confirmOwnerRegistrationUseCase: ConfirmOwnerRegistrationUseCase,
     @Inject(ForgotPasswordUseCase) private readonly forgotPasswordUseCase: ForgotPasswordUseCase,
     @Inject(ResetPasswordUseCase) private readonly resetPasswordUseCase: ResetPasswordUseCase,
     @Inject(GoogleOauthStartUseCase)
@@ -63,10 +77,42 @@ export class AuthController {
     return this.registerUserUseCase.execute(body)
   }
 
+  @Post(API_ROUTES.auth.path.registerUserRequest())
+  @HttpCode(HttpStatus.NO_CONTENT)
+  requestUserRegistration(
+    @Body(new ZodValidationPipe(registerUserSchema)) body: RegisterUserInput
+  ) {
+    return this.requestUserRegistrationUseCase.execute(body)
+  }
+
+  @Post(API_ROUTES.auth.path.registerUserConfirm())
+  @HttpCode(HttpStatus.OK)
+  confirmUserRegistration(
+    @Body(new ZodValidationPipe(confirmUserRegistrationSchema)) body: ConfirmUserRegistrationInput
+  ) {
+    return this.confirmUserRegistrationUseCase.execute(body)
+  }
+
   @Post(API_ROUTES.auth.path.registerOwner())
   @HttpCode(HttpStatus.CREATED)
   registerOwner(@Body(new ZodValidationPipe(registerOwnerSchema)) body: RegisterOwnerInput) {
     return this.registerOwnerUseCase.execute(body)
+  }
+
+  @Post(API_ROUTES.auth.path.registerOwnerRequest())
+  @HttpCode(HttpStatus.NO_CONTENT)
+  requestOwnerRegistration(
+    @Body(new ZodValidationPipe(registerOwnerSchema)) body: RegisterOwnerInput
+  ) {
+    return this.requestOwnerRegistrationUseCase.execute(body)
+  }
+
+  @Post(API_ROUTES.auth.path.registerOwnerConfirm())
+  @HttpCode(HttpStatus.OK)
+  confirmOwnerRegistration(
+    @Body(new ZodValidationPipe(confirmUserRegistrationSchema)) body: ConfirmUserRegistrationInput
+  ) {
+    return this.confirmOwnerRegistrationUseCase.execute(body)
   }
 
   @Post(API_ROUTES.auth.path.forgotPassword())
