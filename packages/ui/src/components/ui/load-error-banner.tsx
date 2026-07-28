@@ -1,9 +1,10 @@
 import { AlertTriangle, RefreshCw, X } from 'lucide-react'
-import { Button, cn } from '@repo/ui'
+import { Button } from './button'
+import { cn } from '../../lib/utils'
 
 type LoadErrorBannerVariant = 'error' | 'warning'
 
-type LoadErrorBannerProps = {
+export type LoadErrorBannerProps = {
   title?: string
   message: string | Error
   variant?: LoadErrorBannerVariant
@@ -12,6 +13,7 @@ type LoadErrorBannerProps = {
   onRetry?: () => void
   isRetrying?: boolean
   onDismiss?: () => void
+  dismissLabel?: string
   className?: string
 }
 
@@ -31,6 +33,7 @@ const variantStyles: Record<
   },
 }
 
+/** Presentational load-failure banner. Callers own i18n for title / retry / message. */
 export function LoadErrorBanner({
   title,
   message,
@@ -40,17 +43,19 @@ export function LoadErrorBanner({
   onRetry,
   isRetrying = false,
   onDismiss,
+  dismissLabel = 'Cerrar',
   className,
 }: LoadErrorBannerProps) {
   const styles = variantStyles[variant]
   const description = message instanceof Error ? message.message : message
+  const showRetry = Boolean(onRetry && retryLabel)
 
   return (
     <div
       role="alert"
       aria-live="assertive"
       className={cn(
-        'my-6 flex w-full items-start gap-3 rounded-lg border p-4',
+        'mx-auto my-20 flex w-lg items-start gap-3 rounded-lg border p-4',
         styles.container,
         className
       )}
@@ -61,26 +66,26 @@ export function LoadErrorBanner({
       />
 
       <div className="min-w-0 flex-1 space-y-2">
-        {title !== null && (
+        {title ? (
           <div className="flex items-center gap-2">
-            <p className={cn('text-sm font-semibold leading-none', styles.title)}>{title}</p>
-            {code !== null && (
+            <p className={cn('text-sm leading-none font-semibold', styles.title)}>{title}</p>
+            {code !== undefined ? (
               <span className="rounded border border-hairline bg-surface-container-lowest px-2 py-1 font-mono text-xs text-ink-muted-soft">
                 {code}
               </span>
-            )}
+            ) : null}
           </div>
-        )}
+        ) : null}
         <p
           className={cn(
             'text-pretty text-sm',
-            title !== null ? 'leading-relaxed text-ink-muted' : 'font-medium leading-snug text-ink'
+            title ? 'leading-relaxed text-ink-muted' : 'leading-snug font-medium text-ink'
           )}
         >
           {description}
         </p>
 
-        {onRetry !== null && retryLabel !== null && (
+        {showRetry ? (
           <div className="pt-2">
             <Button
               type="button"
@@ -93,21 +98,21 @@ export function LoadErrorBanner({
               {retryLabel}
             </Button>
           </div>
-        )}
+        ) : null}
       </div>
 
-      {onDismiss !== null && (
+      {onDismiss ? (
         <Button
           type="button"
           variant="ghost"
           size="icon"
-          className="-mr-1 -mt-1 shrink-0 text-ink-muted hover:text-ink"
+          className="-mt-1 -mr-1 shrink-0 text-ink-muted hover:text-ink"
           onClick={onDismiss}
-          aria-label="Cerrar"
+          aria-label={dismissLabel}
         >
           <X aria-hidden="true" />
         </Button>
-      )}
+      ) : null}
     </div>
   )
 }

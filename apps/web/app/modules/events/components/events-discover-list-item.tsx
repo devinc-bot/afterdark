@@ -2,12 +2,12 @@ import { useTranslation } from 'react-i18next'
 import { MapPin } from 'lucide-react'
 import {
   Badge,
-  Button,
   Card,
   CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
+  Link,
   NotImage,
   cn,
 } from '@repo/ui'
@@ -16,36 +16,27 @@ import { formatEventPlace, formatEventWhen } from '../utils/events-discover-form
 
 type EventsDiscoverListItemProps = {
   event: PublicEventResponse
-  selected: boolean
-  onSelect: () => void
 }
 
-export function EventsDiscoverListItem({ event, selected, onSelect }: EventsDiscoverListItemProps) {
-  const { t } = useTranslation('events')
+export function EventsDiscoverListItem({ event }: EventsDiscoverListItemProps) {
+  const { t, i18n } = useTranslation('events')
   const image = event.images[0]
-  const when = formatEventWhen(event.startsAt)
+  const when = formatEventWhen(event.startsAt, i18n.language)
   const place = formatEventPlace(event)
   const hasCoordinates = event.latitude !== null && event.longitude !== null
-  const selectLabel = hasCoordinates
-    ? t('discover.list.focusOnMap', { name: event.name })
-    : t('discover.list.noMapLocation', { name: event.name })
 
   return (
     <Card
       id={`events-discover-item-${event.documentId}`}
-      aria-current={selected ? 'true' : undefined}
-      variant="gradient"
       className={cn(
-        'group relative flex h-full w-full flex-col overflow-hidden pt-0',
+        'group relative flex h-full w-full flex-col border-hairline/10',
         'bg-surface-card',
         'transition-[border-color,box-shadow,background-color] duration-(--duration-fast) ease-emphasized',
         'motion-reduce:transition-none',
-        selected
-          ? 'bg-primary/8 shadow-(--shadow-glass)'
-          : 'border-hairline/60 hover:border-hairline hover:shadow-(--shadow-glass)'
+        'hover:shadow-(--shadow-glass)'
       )}
     >
-      <div className="relative overflow-hidden">
+      <div className="flex overflow-hidden rounded-app m-4">
         {image ? (
           <>
             <img
@@ -58,10 +49,6 @@ export function EventsDiscoverListItem({ event, selected, onSelect }: EventsDisc
                 'group-hover:scale-[1.02] motion-reduce:group-hover:scale-100'
               )}
             />
-            <div
-              className="pointer-events-none absolute inset-0 bg-linear-to-t from-black/55 via-black/15 to-transparent"
-              aria-hidden
-            />
           </>
         ) : (
           <NotImage
@@ -70,23 +57,10 @@ export function EventsDiscoverListItem({ event, selected, onSelect }: EventsDisc
             className="aspect-video min-h-0 w-full rounded-none border-0 border-b border-hairline/40"
           />
         )}
-
-        {when ? (
-          <div className="absolute top-3 left-3 z-20 max-w-[calc(100%-1.5rem)]">
-            <Badge variant="outline" size="sm">
-              {when}
-            </Badge>
-          </div>
-        ) : null}
       </div>
 
       <CardHeader className="flex flex-1 flex-col gap-2 space-y-0 p-4 sm:gap-2.5 sm:p-5">
-        <CardTitle
-          className={cn(
-            'font-display text-lg font-semibold leading-snug tracking-tight text-balance sm:text-xl',
-            selected ? 'text-primary' : 'text-on-surface'
-          )}
-        >
+        <CardTitle className="truncate font-display text-lg font-semibold tracking-tight text-on-surface sm:text-xl">
           {event.name}
         </CardTitle>
 
@@ -107,6 +81,12 @@ export function EventsDiscoverListItem({ event, selected, onSelect }: EventsDisc
           </p>
         ) : null}
 
+        {when ? (
+          <Badge variant="outline" size="sm" className="w-fit border-hairline/30">
+            {when}
+          </Badge>
+        ) : null}
+
         {!hasCoordinates ? (
           <p className="font-label text-sm text-on-surface-variant">
             {t('discover.list.noCoordinatesHint')}
@@ -115,16 +95,16 @@ export function EventsDiscoverListItem({ event, selected, onSelect }: EventsDisc
       </CardHeader>
 
       <CardFooter className="mt-auto p-4 pt-0 sm:p-5 sm:pt-0">
-        <Button
-          type="button"
-          className="min-h-11 w-full"
-          variant={selected ? 'default' : 'ghost'}
-          aria-pressed={selected}
-          aria-label={selectLabel}
-          onClick={onSelect}
+        <Link
+          to="/events/$documentId"
+          params={{ documentId: event.documentId }}
+          className="min-h-11 w-full bg-background/50"
+          variant="ghost"
+          size="lg"
+          aria-label={t('discover.list.viewEvent')}
         >
           {t('discover.list.viewEvent')}
-        </Button>
+        </Link>
       </CardFooter>
     </Card>
   )

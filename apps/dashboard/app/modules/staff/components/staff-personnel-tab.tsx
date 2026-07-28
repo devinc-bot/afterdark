@@ -8,7 +8,7 @@ import {
   useDeleteStaffUser,
   useUpdateStaffUserStatus,
 } from '~/modules/staff/mutations/use-staff-personnel-mutations'
-import { LoadErrorBanner } from '~/modules/common/components/load-error-banner'
+import { LoadErrorBanner } from '@repo/ui'
 import { useTranslation } from 'react-i18next'
 
 export function StaffPersonnelTab() {

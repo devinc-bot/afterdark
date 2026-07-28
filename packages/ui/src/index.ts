@@ -11,6 +11,16 @@ export {
 export { Badge, badgeVariants, type BadgeProps } from './components/ui/badge.tsx'
 export { Avatar, AvatarFallback, AvatarImage } from './components/ui/avatar.tsx'
 export { Button, buttonVariants, type ButtonProps } from './components/ui/button.tsx'
+export {
+  type CarouselApi,
+  Autoplay,
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+  useCarousel,
+} from './components/ui/carousel.tsx'
 export { Checkbox } from './components/ui/checkbox.tsx'
 export {
   Card,
@@ -81,6 +91,13 @@ export { BarChart, type BarChartDataPoint, type BarChartProps } from './componen
 export { Label } from './components/ui/label.tsx'
 export { Loader, type LoaderProps } from './components/ui/loader.tsx'
 export { Link, type LinkProps } from './components/ui/link.tsx'
+export { LoadErrorBanner, type LoadErrorBannerProps } from './components/ui/load-error-banner.tsx'
+export {
+  ErrorBoundaryView,
+  type ErrorBoundaryStrings,
+  type ErrorBoundaryViewProps,
+} from './components/ui/error-boundary-view.tsx'
+export { NotFoundView, type NotFoundViewProps } from './components/ui/not-found-view.tsx'
 export { NotImage, notImageVariants, type NotImageProps } from './components/ui/not-image.tsx'
 export {
   AppLogo,

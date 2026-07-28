@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import { cn } from '@repo/ui'
+import { Container } from '~/modules/common/components/container'
 import { LANDING_IMAGES } from '../../constants/images'
-import { LANDING_SHELL } from '../../constants/layout'
 import { Reveal } from '../reveal'
 import { ScrollZoomImage } from '../scroll-zoom-image'
 
@@ -37,12 +37,7 @@ export function SectionAtmosphere({ className }: SectionAtmosphereProps) {
         />
       </div>
 
-      <div
-        className={cn(
-          LANDING_SHELL,
-          'relative flex min-h-[min(72vh,44rem)] flex-col justify-end py-[clamp(4rem,10vw,7rem)]'
-        )}
-      >
+      <Container className="relative flex min-h-[min(72vh,44rem)] flex-col justify-end py-[clamp(4rem,10vw,7rem)]">
         <Reveal>
           <blockquote className="max-w-[22ch]">
             <p
@@ -56,7 +51,7 @@ export function SectionAtmosphere({ className }: SectionAtmosphereProps) {
             {t('atmosphere.support')}
           </p>
         </Reveal>
-      </div>
+      </Container>
     </section>
   )
 }

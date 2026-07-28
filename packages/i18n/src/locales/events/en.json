@@ -152,20 +152,54 @@
       "resultsCount": "{count, plural, one {# event} other {# events}}",
       "resultsAria": "Event list",
       "sortHint": "Soonest first",
-      "focusOnMap": "Show {name} on the map",
-      "noMapLocation": "{name} (no map location)",
       "noCoordinatesHint": "No coordinates on the map",
       "noImage": "No image",
       "viewEvent": "View event"
     },
-    "map": {
-      "ariaLabel": "Map of published events",
-      "loading": "Loading map…"
+    "coverflow": {
+      "ariaLabel": "Event image carousel",
+      "prev": "Previous event",
+      "next": "Next event"
     },
-    "selection": {
-      "clear": "Clear selection",
+    "detail": {
+      "error": "We could not load the event. Try again in a few minutes.",
+      "errorTitle": "We could not load the event",
+      "retry": "Retry",
+      "loading": "Loading event…",
+      "metaTitle": "{name} · {appName}",
+      "metaTitleFallback": "Event · {appName}",
+      "notFoundTitle": "Event not found",
+      "notFoundDescription": "The event does not exist, is not published, or the link is invalid.",
+      "backToEvents": "Back to events",
+      "carouselAriaLabel": "Event image carousel",
+      "carouselAlt": "Image of {name}",
+      "carouselDotAlt": "Image {index} of {name}",
+      "carouselPrev": "Previous image",
+      "carouselNext": "Next image",
+      "description": "Description",
+      "schedule": "When",
+      "startsAt": "Starts",
+      "endsAt": "Ends",
+      "address": "Where",
+      "noAddress": "No address available",
+      "locationGallery": "The venue",
+      "locationGalleryHint": "A closer look at the place before you go.",
+      "locationCarouselAriaLabel": "Venue image carousel",
+      "locationCarouselAlt": "Image of the venue {name}",
+      "map": "Map",
+      "mapAriaLabel": "Map of the event location",
+      "mapLoading": "Loading map…",
+      "share": "Share",
+      "shareCopied": "Link copied",
+      "shareShared": "Link shared",
+      "shareError": "We could not share the link. Try again.",
       "ticketsSoon": "Tickets coming soon",
-      "announced": "You selected {name}."
+      "ticketsReady": "Tickets",
+      "ticketsUnavailableHint": "Sales aren’t open yet — check back soon.",
+      "buyTickets": "Buy tickets",
+      "buyTicketsUnavailable": "Coming soon",
+      "buyTicketsDisabled": "Ticket purchase is not available yet",
+      "purchasePanelAriaLabel": "Event booking"
     }
   }
 }

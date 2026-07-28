@@ -1,7 +1,8 @@
 import { useTranslation } from 'react-i18next'
 import { Link, cn } from '@repo/ui'
+import { Container } from '~/modules/common/components/container'
 import { WEB_ROUTES } from '~/modules/common/constants/routes'
-import { LANDING_CTA_GHOST, LANDING_CTA_PRIMARY, LANDING_SHELL } from '../../constants/layout'
+import { LANDING_CTA_GHOST, LANDING_CTA_PRIMARY } from '../../constants/layout'
 import { Reveal } from '../reveal'
 
 type SectionAreYouReadyProps = {
@@ -17,12 +18,7 @@ export function SectionAreYouReady({ showAuthCtas = true, className }: SectionAr
       aria-labelledby="closing-heading"
       className={cn('border-t border-hairline/40', className)}
     >
-      <div
-        className={cn(
-          LANDING_SHELL,
-          'relative flex flex-col items-center py-[clamp(4.5rem,12vw,8rem)] text-center'
-        )}
-      >
+      <Container className="relative flex flex-col items-center py-[clamp(4.5rem,12vw,8rem)] text-center">
         <Reveal className="mx-auto flex w-full max-w-3xl flex-col items-center">
           <h2
             id="closing-heading"
@@ -54,7 +50,7 @@ export function SectionAreYouReady({ showAuthCtas = true, className }: SectionAr
             </div>
           ) : null}
         </Reveal>
-      </div>
+      </Container>
     </section>
   )
 }

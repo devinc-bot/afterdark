@@ -1,5 +1,5 @@
-import { buildApiPath, toApiServiceError } from '@repo/common'
-import type { PublicEventsPaginatedResponse } from '@repo/types'
+import { buildApiPath, QueryFactoryError, toApiServiceError } from '@repo/common'
+import type { PublicEventDetailResponse, PublicEventsPaginatedResponse } from '@repo/types'
 import { i18n } from '@repo/i18n/client'
 import { api, API_ROUTES } from '~/config/api'
 
@@ -65,5 +65,21 @@ export async function fetchPublicEvents(
     return await api.get<PublicEventsPaginatedResponse>(`${path}?${searchParams.toString()}`)
   } catch (error) {
     throw toApiServiceError(error, i18n.t('events:discover.list.error'))
+  }
+}
+
+export async function fetchPublicEventDetail(
+  documentId: string
+): Promise<PublicEventDetailResponse | null> {
+  const path = buildApiPath(API_ROUTES.events, API_ROUTES.events.path.getPublic(documentId))
+
+  try {
+    return await api.get<PublicEventDetailResponse>(path)
+  } catch (error) {
+    if (error instanceof QueryFactoryError && error.status === 404) {
+      return null
+    }
+
+    throw toApiServiceError(error, i18n.t('events:discover.detail.error'))
   }
 }

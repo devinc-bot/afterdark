@@ -1,8 +1,8 @@
 import { useEffect, useState, type ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import { cn } from '@repo/ui'
+import { Container } from '~/modules/common/components/container'
 import { LANDING_IMAGES } from '../../constants/images'
-import { LANDING_SHELL } from '../../constants/layout'
 import { LANDING_VIDEOS } from '../../constants/videos'
 
 type SectionHeroProps = {
@@ -65,12 +65,7 @@ export function SectionHero({ showAuthCtas = true, children, className }: Sectio
         />
       </div>
 
-      <div
-        className={cn(
-          LANDING_SHELL,
-          'relative z-10 flex min-h-dvh flex-col justify-end pb-[max(4rem,8vh)] pt-28 sm:pb-[max(5rem,10vh)]'
-        )}
-      >
+      <Container className="relative z-10 flex min-h-dvh flex-col justify-end pb-[max(4rem,8vh)] pt-28 sm:pb-[max(5rem,10vh)]">
         <div className="max-w-3xl">
           <p
             id="landing-brand"
@@ -86,7 +81,7 @@ export function SectionHero({ showAuthCtas = true, children, className }: Sectio
           </p>
           {showAuthCtas ? children : null}
         </div>
-      </div>
+      </Container>
     </section>
   )
 }

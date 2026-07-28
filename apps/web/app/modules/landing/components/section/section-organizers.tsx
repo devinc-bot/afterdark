@@ -1,12 +1,8 @@
 import { useTranslation } from 'react-i18next'
 import { DASHBOARD_URL } from '@repo/common'
 import { cn } from '@repo/ui'
-import {
-  LANDING_CTA_PRIMARY,
-  LANDING_FOCUS_RING,
-  LANDING_HEADING,
-  LANDING_SHELL,
-} from '../../constants/layout'
+import { Container } from '~/modules/common/components/container'
+import { LANDING_CTA_PRIMARY, LANDING_FOCUS_RING, LANDING_HEADING } from '../../constants/layout'
 import { Reveal } from '../reveal'
 
 type SectionOrganizersProps = {
@@ -25,12 +21,7 @@ export function SectionOrganizers({ className }: SectionOrganizersProps) {
         className
       )}
     >
-      <div
-        className={cn(
-          LANDING_SHELL,
-          'grid gap-8 py-[clamp(3.5rem,9vw,6rem)] lg:grid-cols-12 lg:items-end lg:gap-12'
-        )}
-      >
+      <Container className="grid gap-8 py-[clamp(3.5rem,9vw,6rem)] lg:grid-cols-12 lg:items-end lg:gap-12">
         <Reveal className="lg:col-span-7">
           <p className="text-sm font-medium text-on-surface-variant">{t('organizers.kicker')}</p>
           <h2 id="organizers-heading" className={cn(LANDING_HEADING, 'mt-3 text-on-surface')}>
@@ -58,7 +49,7 @@ export function SectionOrganizers({ className }: SectionOrganizersProps) {
             {t('organizers.hint')}
           </p>
         </Reveal>
-      </div>
+      </Container>
     </section>
   )
 }

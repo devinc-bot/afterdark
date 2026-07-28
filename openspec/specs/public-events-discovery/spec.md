@@ -3,7 +3,8 @@
 ## Purpose
 
 Define how anonymous visitors discover published events on the public web:
-catalog API, filters, map markers, and the `/events` infinite-scroll list.
+catalog API, filters, image cover-flow, the `/events` infinite-scroll list, and
+the public event detail page at `/events/$documentId`.
 
 ## Requirements
 
@@ -25,7 +26,7 @@ The system SHALL expose an anonymous HTTP endpoint that returns only events with
 
 ### Requirement: Catalog filters by date and place
 
-The public catalog SHALL support optional filters for date range (`startsAt` / date window as defined in validators) and place (`city` and/or `state` matching the location address). Applying filters MUST narrow both list and map-oriented result sets consistently for the same query.
+The public catalog SHALL support optional filters for date range (`startsAt` / date window as defined in validators) and place (`city` and/or `state` matching the location address). Applying filters MUST narrow both the list and the cover-flow source set consistently for the same query.
 
 #### Scenario: Filter by city
 
@@ -71,38 +72,37 @@ The public catalog SHALL order results by ascending `startsAt`. Default page siz
 - **WHEN** the page loads
 - **THEN** the public events discovery UI is shown without requiring login
 
-### Requirement: Map of filtered events
+### Requirement: Event image cover-flow on discovery
 
-The `/events` page SHALL show a map (MapLibre via `@repo/ui`) with markers for published events returned for the current discovery query (using address coordinates when present). The map SHOULD center on the loaded markers (or a sensible default). Catalog results MUST NOT depend on browser geolocation.
+The `/events` page SHALL show a cover-flow carousel above the filters and list. Slides MUST be built from the **first image** of each loaded catalog event that has at least one image (same filtered infinite-scroll result set as the list). Events without images MUST be omitted from the carousel. Activating a slide (click / keyboard equivalent) MUST navigate to `/events/$documentId` for that event. UI copy MUST be Spanish via `@repo/i18n`.
 
-#### Scenario: Markers from loaded results
+#### Scenario: Slides from first images of loaded events
 
-- **GIVEN** published events with coordinates match the current filters
-- **WHEN** `/events` loads (or filters change)
-- **THEN** the map shows markers for loaded list items that have coordinates
+- **GIVEN** published events matching the current filters are loaded and some have images
+- **WHEN** `/events` renders the cover-flow
+- **THEN** the carousel shows one slide per event that has images, using that event’s first image and a title derived from the event name
 
-#### Scenario: Markers accumulate with infinite scroll
+#### Scenario: Cover-flow grows with infinite scroll
 
-- **GIVEN** the visitor has loaded the first page of results with coordinates
-- **WHEN** they scroll and additional pages append to the list
-- **THEN** the map adds markers for newly loaded items that have coordinates without removing prior markers
+- **GIVEN** the visitor has loaded the first page and later pages append events with images
+- **WHEN** new pages are fetched
+- **THEN** the carousel includes slides for newly loaded events that have a first image, without requiring a full page reload
 
-#### Scenario: List click focuses map marker
+#### Scenario: Slide navigates to event detail
 
-- **GIVEN** a listed event has address coordinates
-- **WHEN** the visitor selects that event in the list
-- **THEN** the map pans/zooms to that event’s marker and highlights the selection
+- **GIVEN** a cover-flow slide for an event with `documentId`
+- **WHEN** the visitor activates that slide
+- **THEN** the app navigates to `/events/$documentId`
 
-#### Scenario: Events without coordinates still list
+#### Scenario: No images among loaded events
 
-- **GIVEN** a published event matches filters but has no address coordinates
-- **WHEN** the list loads
-- **THEN** the event appears in the list and may omit a map marker
-- **AND** selecting it does not move the map camera
+- **GIVEN** the loaded result set has no events with images (or is empty)
+- **WHEN** `/events` renders
+- **THEN** the cover-flow section is hidden (or omitted) and filters/list still work
 
 ### Requirement: Filtered infinite list beside filters
 
-Below the map, the page SHALL show a filters panel to the **left** of an event list. Filters in v1 are date range and city/state. The list SHALL load **5** events per page and support infinite scroll to fetch subsequent pages with the same filters. Changing filters MUST reset the list to the first page. Empty and error states MUST use Spanish copy.
+Below the cover-flow, the page SHALL show a filters panel and an event list. Filters in v1 are date range and city/state. The list SHALL load **5** events per page and support infinite scroll to fetch subsequent pages with the same filters. Changing filters MUST reset the list to the first page and rebuild the cover-flow from the new loaded results. Empty and error states MUST use Spanish copy.
 
 #### Scenario: Infinite scroll loads next page
 
@@ -115,9 +115,192 @@ Below the map, the page SHALL show a filters panel to the **left** of an event l
 - **GIVEN** the visitor has scrolled past the first page
 - **WHEN** they change a filter (date or city/state) and apply it
 - **THEN** the list resets and shows the first page of matching results
+- **AND** the cover-flow reflects images from the newly loaded first page
 
 #### Scenario: Empty results
 
-- **GIVEN** no published events match the filters
+- **GIVEN** no published events match the applied filters
 - **WHEN** the list finishes loading
-- **THEN** the UI shows an empty state in Spanish and does not invent results
+- **THEN** the visitor sees an empty state in Spanish and the cover-flow is omitted
+
+### Requirement: Public single-event detail API
+
+The system SHALL expose an anonymous HTTP endpoint that returns a single event by
+`documentId` only when its status is `published`; unpublished (`draft`, `finished`) or
+non-existent events MUST respond as not found. The `documentId` path param MUST be
+validated as a UUID via `@repo/validators`. The response MUST include the event's full
+description, schedule, location name, complete address (street, street number, city,
+state, coordinates when present), and **all** event images (not only the first).
+
+#### Scenario: Anonymous detail lookup for a published event
+
+- **GIVEN** a published event with two images and a linked address
+- **WHEN** an unauthenticated client requests the public detail endpoint with that
+  event's `documentId`
+- **THEN** the response includes the event's full description, schedule, location name,
+  full address, and both images
+
+#### Scenario: Draft or finished event is not found
+
+- **GIVEN** an event exists with status `draft` or `finished`
+- **WHEN** an unauthenticated client requests the public detail endpoint with that
+  event's `documentId`
+- **THEN** the API responds as not found
+
+#### Scenario: Invalid documentId rejected by validators
+
+- **GIVEN** a client requests the public detail endpoint with a path param that is not a
+  valid UUID
+- **WHEN** the request is processed
+- **THEN** the API rejects the request according to `@repo/validators` without inventing
+  ad-hoc validation messages in the handler
+
+### Requirement: Public event detail includes location images
+
+The anonymous public single-event detail response MUST include `locationImages`: the
+image assets linked to the event’s location via the existing location–asset link table.
+Each item MUST use the same public image shape as event images (`documentId`, `name`,
+`url`). When the location has no images, the field MUST be an empty array. Location
+images MUST NOT replace or be merged into the event `images` field.
+
+#### Scenario: Published event with venue photos
+
+- **GIVEN** a published event whose location has one or more linked image assets
+- **WHEN** an unauthenticated client requests the public detail endpoint for that event
+- **THEN** the response includes those assets in `locationImages` and still returns
+  event-only assets in `images`
+
+#### Scenario: Location with no photos
+
+- **GIVEN** a published event whose location has no linked image assets
+- **WHEN** an unauthenticated client requests the public detail endpoint for that event
+- **THEN** `locationImages` is an empty array and the request still succeeds
+
+### Requirement: Event detail page route
+
+`apps/web` SHALL provide a route at `/events/$documentId` that renders the full detail
+of one published event in this order: a full-width image carousel of all event images,
+the title with a share/copy-link action, the schedule, the full description, the full
+address (street and number, city, state), the existing "Entradas próximamente" placeholder,
+venue gallery when `locationImages` is non-empty, and — as the last element on the page —
+an embedded map centered on the event's coordinates when present. UI copy MUST be Spanish
+via `@repo/i18n`. Selecting an event from the discovery list (via its "Ver evento" action)
+MUST navigate to that event's detail page at `/events/$documentId`.
+
+#### Scenario: Direct URL access to a published event
+
+- **GIVEN** a visitor opens `/events/$documentId` directly for a published event
+- **WHEN** the page loads
+- **THEN** the event detail UI is shown without requiring login, including all of its
+  images in the top carousel, full description, schedule, full address, and the "Entradas
+  próximamente" placeholder
+
+#### Scenario: Image carousel shows all event images
+
+- **GIVEN** a published event has two or more images
+- **WHEN** the detail page loads
+- **THEN** a full-width carousel at the top of the page cycles through all of the event's
+  images via chevrons, dot pagination, or clicking a dot
+- **AND** it does not navigate away from the detail page when interacted with
+
+#### Scenario: Single image or no image renders without carousel controls
+
+- **GIVEN** a published event has zero or one image
+- **WHEN** the detail page loads
+- **THEN** the carousel area shows that single image (or an empty-state placeholder when
+  there are no images) without prev/next or dot controls
+
+#### Scenario: Map renders last, after all other event data
+
+- **GIVEN** the event has address coordinates
+- **WHEN** the detail page loads
+- **THEN** the embedded map centers on those coordinates with a single marker for the
+  event, and it is the last element rendered on the page (after schedule, description,
+  address text, tickets placeholder, and venue gallery when present)
+
+#### Scenario: Event without coordinates omits the map
+
+- **GIVEN** the event has no address coordinates
+- **WHEN** the detail page loads
+- **THEN** the page shows the address text without an embedded map, consistent with the
+  "no coordinates" handling already used in the discovery list
+
+#### Scenario: Share action copies the event link
+
+- **GIVEN** a visitor is viewing an event's detail page
+- **WHEN** they activate the share/copy-link action
+- **THEN** the current page URL is copied (or shared via the platform share sheet when
+  available) and the UI confirms the action in Spanish
+
+#### Scenario: List "Ver evento" navigates to the detail page
+
+- **GIVEN** an event is shown in the discovery list
+- **WHEN** the visitor activates that item's "Ver evento" action
+- **THEN** the app navigates to `/events/$documentId` for that event
+
+### Requirement: Event detail image carousel with parallax
+
+The public event detail page (`/events/$documentId`) SHALL show a full-width image
+carousel of all event images at the top of the detail content. The carousel MUST be
+implemented with the shared shadcn Carousel in `@repo/ui` (Embla) and MUST apply the
+Embla parallax tween pattern to slide media while scrolling. Interaction MUST NOT
+navigate away from the detail page. UI copy (aria labels, prev/next) MUST be Spanish
+via `@repo/i18n`.
+
+#### Scenario: Multiple images use Embla carousel with parallax
+
+- **GIVEN** a published event has two or more images
+- **WHEN** the visitor opens the event detail page
+- **THEN** a full-width carousel shows all event images
+- **AND** dragging or using prev/next advances slides with a parallax motion on the
+  image layer
+- **AND** the visitor remains on the same detail route
+
+#### Scenario: Single image or empty gallery
+
+- **GIVEN** a published event has zero or one image
+- **WHEN** the detail page loads
+- **THEN** the carousel area shows that single image, or an empty-state placeholder
+  when there are no images, without prev/next controls
+
+#### Scenario: Prefers-reduced-motion
+
+- **GIVEN** the visitor has prefers-reduced-motion enabled
+- **WHEN** they change slides
+- **THEN** slide changes still work, and parallax tweening is reduced or disabled so
+  motion does not rely on continuous translate parallax
+
+### Requirement: Venue gallery on the event detail page
+
+The `/events/$documentId` page SHALL show a venue image gallery in a section distinct
+from the event hero carousel, placed with the address content and before the map when
+the map is shown. The section MUST appear only when `locationImages` is non-empty. UI
+copy for the section heading and accessibility labels MUST be Spanish via `@repo/i18n`
+(with EN parity). Venue images MUST NOT be mixed into the hero event carousel.
+
+#### Scenario: Venue gallery when location has images
+
+- **GIVEN** the public detail payload includes one or more `locationImages`
+- **WHEN** the visitor views the event detail page
+- **THEN** a venue gallery section is shown near the address (before the map when
+  present), separate from the event hero carousel
+
+#### Scenario: No venue gallery when empty
+
+- **GIVEN** the public detail payload has an empty `locationImages` array
+- **WHEN** the visitor views the event detail page
+- **THEN** no venue gallery section is rendered
+- **AND** the event hero carousel behavior is unchanged
+
+### Requirement: Not-found handling for the detail route
+
+When `/events/$documentId` is requested for an event that does not exist, is not
+published, or when `documentId` is not a valid UUID, `apps/web` SHALL show a "Evento no
+encontrado" state (Spanish copy) with a link back to `/events`, instead of a generic
+error or a blank page.
+
+#### Scenario: Unknown or unpublished event shows not-found state
+
+- **GIVEN** the requested `documentId` does not correspond to a published event
+- **WHEN** `/events/$documentId` loads
+- **THEN** the page shows a "Evento no encontrado" state with a link back to `/events`

@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { getCookieSync } from '@repo/common'
 import { Link, cn } from '@repo/ui'
 import { useTranslation } from 'react-i18next'
+import { Container } from '~/modules/common/components/container'
 import { COOKIE_KEYS } from '~/modules/common/constants/cookies'
 import { WEB_ROUTES } from '~/modules/common/constants/routes'
 import { useSession } from '~/modules/common/hooks/use-session'
@@ -12,7 +13,6 @@ import {
   LANDING_FOCUS_RING,
   LANDING_HEADING,
   LANDING_SECTION_Y,
-  LANDING_SHELL,
 } from '../constants/layout'
 import { scrollToSectionFromLocationHash } from '../utils/scroll-to-section.utils'
 import { HowSteps } from './how-steps'
@@ -73,13 +73,7 @@ export function LandingPage() {
           aria-labelledby="about-heading"
           className="relative overflow-hidden border-t border-hairline/40"
         >
-          <div
-            className={cn(
-              LANDING_SHELL,
-              LANDING_SECTION_Y,
-              'grid gap-12 lg:grid-cols-12 lg:gap-16'
-            )}
-          >
+          <Container className={cn(LANDING_SECTION_Y, 'grid gap-12 lg:grid-cols-12 lg:gap-16')}>
             <Reveal className="lg:col-span-5">
               <h2 id="about-heading" className={cn(LANDING_HEADING, 'text-on-surface')}>
                 {t('about.headline')}
@@ -90,7 +84,7 @@ export function LandingPage() {
                 {t('about.body')}
               </p>
             </Reveal>
-          </div>
+          </Container>
 
           <div className="relative aspect-21/9 sm:aspect-[2.4/1]">
             <ScrollZoomImage
@@ -115,14 +109,11 @@ export function LandingPage() {
 
         <SectionAtmosphere />
 
-        <section
+        <Container
+          as="section"
           id="como-funciona"
           aria-labelledby="how-heading"
-          className={cn(
-            LANDING_SHELL,
-            LANDING_SECTION_Y,
-            'scroll-mt-24 border-t border-hairline/40'
-          )}
+          className={cn(LANDING_SECTION_Y, 'scroll-mt-24 border-t border-hairline/40')}
         >
           <Reveal>
             <h2 id="how-heading" className={cn(LANDING_HEADING, 'text-on-surface')}>
@@ -130,7 +121,7 @@ export function LandingPage() {
             </h2>
             <HowSteps />
           </Reveal>
-        </section>
+        </Container>
 
         <SectionClarity />
 
@@ -141,7 +132,7 @@ export function LandingPage() {
           aria-labelledby="events-heading"
           className="scroll-mt-24 border-t border-hairline/40"
         >
-          <div className={cn(LANDING_SHELL, LANDING_SECTION_Y)}>
+          <Container className={LANDING_SECTION_Y}>
             <Reveal className="mx-auto max-w-2xl min-w-0 text-center">
               <h2 id="events-heading" className={cn(LANDING_HEADING, 'text-on-surface')}>
                 {t('events.headline')}
@@ -182,7 +173,7 @@ export function LandingPage() {
                 </li>
               ))}
             </ul>
-          </div>
+          </Container>
         </section>
 
         <SectionAreYouReady showAuthCtas={showAuthCtas} />
