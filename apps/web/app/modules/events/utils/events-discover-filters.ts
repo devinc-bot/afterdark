@@ -70,3 +70,43 @@ export function toPublicEventsFilterParams(filters: EventsDiscoverFiltersValue):
     state: state.length > 0 ? state : undefined,
   }
 }
+
+/** URL search ↔ filter draft (empty strings omitted from the URL). */
+export type EventsDiscoverSearchParams = {
+  startsFrom?: string
+  startsTo?: string
+  city?: string
+  state?: string
+}
+
+export function filtersFromSearch(search: EventsDiscoverSearchParams): EventsDiscoverFiltersValue {
+  return {
+    startsFrom: typeof search.startsFrom === 'string' ? search.startsFrom : '',
+    startsTo: typeof search.startsTo === 'string' ? search.startsTo : '',
+    city: typeof search.city === 'string' ? search.city : '',
+    state: typeof search.state === 'string' ? search.state : '',
+  }
+}
+
+export function searchFromFilters(filters: EventsDiscoverFiltersValue): EventsDiscoverSearchParams {
+  const city = filters.city.trim()
+  const state = filters.state.trim()
+
+  return {
+    ...(filters.startsFrom ? { startsFrom: filters.startsFrom } : {}),
+    ...(filters.startsTo ? { startsTo: filters.startsTo } : {}),
+    ...(city ? { city } : {}),
+    ...(state ? { state } : {}),
+  }
+}
+
+export function parseEventsDiscoverSearch(
+  search: Record<string, unknown>
+): EventsDiscoverSearchParams {
+  return {
+    startsFrom: typeof search.startsFrom === 'string' ? search.startsFrom : undefined,
+    startsTo: typeof search.startsTo === 'string' ? search.startsTo : undefined,
+    city: typeof search.city === 'string' ? search.city : undefined,
+    state: typeof search.state === 'string' ? search.state : undefined,
+  }
+}

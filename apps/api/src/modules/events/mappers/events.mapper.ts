@@ -1,5 +1,10 @@
 import type { AssetSelect, EventSelect, LocationSelect, AddressSelect } from '@repo/db'
-import type { EventImageResponse, EventResponse, PublicEventResponse } from '@repo/types'
+import type {
+  EventImageResponse,
+  EventResponse,
+  PublicEventDetailResponse,
+  PublicEventResponse,
+} from '@repo/types'
 import type { CreateEventInput, UpdateEventInput } from '@repo/validators'
 
 export function toEventImageResponse(asset: AssetSelect): EventImageResponse {
@@ -48,6 +53,38 @@ export function toPublicEventResponse(
     latitude: address.latitude ?? null,
     longitude: address.longitude ?? null,
     images,
+  }
+}
+
+export function toPublicEventDetailResponse(
+  event: EventSelect,
+  location: Pick<LocationSelect, 'name'>,
+  address: Pick<
+    AddressSelect,
+    'address' | 'streetNumber' | 'city' | 'state' | 'latitude' | 'longitude'
+  > | null,
+  images: EventImageResponse[] = [],
+  locationImages: EventImageResponse[] = []
+): PublicEventDetailResponse {
+  return {
+    documentId: event.documentId,
+    name: event.name,
+    description: event.description,
+    startsAt: event.startsAt,
+    endsAt: event.endsAt,
+    locationName: location.name,
+    address: address
+      ? {
+          street: address.address,
+          streetNumber: address.streetNumber,
+          city: address.city,
+          state: address.state,
+          latitude: address.latitude ?? null,
+          longitude: address.longitude ?? null,
+        }
+      : null,
+    images,
+    locationImages,
   }
 }
 

@@ -1,5 +1,6 @@
 import { createRouter as createTanStackRouter } from '@tanstack/react-router'
 import { QueryClient } from '@tanstack/react-query'
+import { defaultViewTransitionOptions } from '@repo/ui'
 import { routeTree } from './routeTree.gen'
 
 export function getRouter() {
@@ -16,6 +17,7 @@ export function getRouter() {
     context: { queryClient },
     defaultPreload: 'intent',
     scrollRestoration: true,
+    defaultViewTransition: defaultViewTransitionOptions,
   })
 }
 

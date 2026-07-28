@@ -52,5 +52,17 @@
     "light": "Light",
     "switchToDark": "Switch to dark theme",
     "switchToLight": "Switch to light theme"
+  },
+  "pageError": {
+    "title": "Something went wrong",
+    "description": "An unexpected error occurred. You can try reloading the page or go back home.",
+    "retry": "Try again",
+    "goHome": "Go home",
+    "details": "Error details"
+  },
+  "pageNotFound": {
+    "title": "Page not found",
+    "description": "The page you’re looking for doesn’t exist or was moved.",
+    "goHome": "Go home"
   }
 }

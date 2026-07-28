@@ -1,9 +1,8 @@
 import { useTranslation } from 'react-i18next'
-import { AlertTriangle, RefreshCw } from 'lucide-react'
-import { Button, Skeleton } from '@repo/ui'
+import { LoadErrorBanner, Skeleton } from '@repo/ui'
 import { PageAtmosphereWash } from '~/modules/common/components/page-atmosphere-wash'
+import { Container } from '~/modules/common/components/container'
 import { PageHeader } from '~/modules/common/components/page-header'
-import { LANDING_SHELL } from '~/modules/landing/constants/layout'
 import { ProfileForm } from '~/modules/settings/components/profile-form'
 import { useProfile } from '~/modules/settings/queries/use-profile'
 
@@ -11,7 +10,7 @@ function SettingsFormSkeleton() {
   const { t } = useTranslation('settings')
 
   return (
-    <div className="space-y-8" aria-busy="true">
+    <div className="flex flex-col gap-8" aria-busy="true">
       <span className="sr-only">{t('web.loading')}</span>
       <div className="flex items-center gap-4 border-b border-outline-variant/35 pb-8 sm:gap-5">
         <Skeleton className="size-16 shrink-0 rounded-full sm:size-20" />
@@ -49,52 +48,12 @@ function SettingsFormSkeleton() {
   )
 }
 
-function SettingsLoadError({
-  message,
-  onRetry,
-  isRetrying,
-}: {
-  message: string
-  onRetry: () => void
-  isRetrying: boolean
-}) {
-  const { t } = useTranslation('settings')
-
-  return (
-    <div
-      role="alert"
-      aria-live="assertive"
-      className="flex w-full items-start gap-3 border border-error/40 bg-error-container/15 px-4 py-4"
-    >
-      <AlertTriangle className="mt-0.5 size-4 shrink-0 text-error" aria-hidden="true" />
-      <div className="min-w-0 flex-1 space-y-2">
-        <p className="text-sm font-semibold leading-none text-error">
-          {t('web.messages.loadErrorTitle')}
-        </p>
-        <p className="text-pretty text-sm leading-relaxed text-on-surface-variant">{message}</p>
-        <div className="pt-2">
-          <Button
-            type="button"
-            size="sm"
-            variant="outline"
-            onClick={onRetry}
-            loading={isRetrying}
-            iconLeft={!isRetrying ? <RefreshCw aria-hidden="true" /> : undefined}
-          >
-            {t('web.actions.retry')}
-          </Button>
-        </div>
-      </div>
-    </div>
-  )
-}
-
 export function SettingsPage() {
   const { t } = useTranslation('settings')
   const profileQuery = useProfile()
 
   return (
-    <div className={LANDING_SHELL}>
+    <Container>
       <div className="relative mx-auto w-full max-w-xl">
         <PageAtmosphereWash className="h-40" />
 
@@ -104,8 +63,11 @@ export function SettingsPage() {
           {profileQuery.isLoading ? <SettingsFormSkeleton /> : null}
 
           {profileQuery.isError ? (
-            <SettingsLoadError
+            <LoadErrorBanner
+              className="my-0 w-full max-w-none"
+              title={t('web.messages.loadErrorTitle')}
               message={profileQuery.error.message || t('web.messages.loadError')}
+              retryLabel={t('web.actions.retry')}
               onRetry={() => void profileQuery.refetch()}
               isRetrying={profileQuery.isFetching}
             />
@@ -116,6 +78,6 @@ export function SettingsPage() {
           ) : null}
         </div>
       </div>
-    </div>
+    </Container>
   )
 }

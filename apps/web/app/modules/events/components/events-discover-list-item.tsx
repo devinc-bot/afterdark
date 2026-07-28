@@ -1,14 +1,17 @@
+import { Link as RouterLink } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
 import { MapPin } from 'lucide-react'
 import {
   Badge,
-  Button,
   Card,
   CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
   NotImage,
+  VT,
+  armEventHero,
+  buttonVariants,
   cn,
 } from '@repo/ui'
 import type { PublicEventResponse } from '@repo/types'
@@ -16,53 +19,40 @@ import { formatEventPlace, formatEventWhen } from '../utils/events-discover-form
 
 type EventsDiscoverListItemProps = {
   event: PublicEventResponse
-  selected: boolean
-  onSelect: () => void
 }
 
-export function EventsDiscoverListItem({ event, selected, onSelect }: EventsDiscoverListItemProps) {
-  const { t } = useTranslation('events')
+export function EventsDiscoverListItem({ event }: EventsDiscoverListItemProps) {
+  const { t, i18n } = useTranslation('events')
   const image = event.images[0]
-  const when = formatEventWhen(event.startsAt)
+  const when = formatEventWhen(event.startsAt, i18n.language)
   const place = formatEventPlace(event)
-  const hasCoordinates = event.latitude !== null && event.longitude !== null
-  const selectLabel = hasCoordinates
-    ? t('discover.list.focusOnMap', { name: event.name })
-    : t('discover.list.noMapLocation', { name: event.name })
 
   return (
     <Card
+      data-vt-scope={VT.eventHero}
       id={`events-discover-item-${event.documentId}`}
-      aria-current={selected ? 'true' : undefined}
-      variant="gradient"
       className={cn(
-        'group relative flex h-full w-full flex-col overflow-hidden pt-0',
+        'group relative flex h-full w-full flex-col border-hairline/15',
         'bg-surface-card',
         'transition-[border-color,box-shadow,background-color] duration-(--duration-fast) ease-emphasized',
         'motion-reduce:transition-none',
-        selected
-          ? 'bg-primary/8 shadow-(--shadow-glass)'
-          : 'border-hairline/60 hover:border-hairline hover:shadow-(--shadow-glass)'
+        'hover:border-hairline/40 hover:bg-surface-high/40'
       )}
     >
-      <div className="relative overflow-hidden">
+      <RouterLink
+        to="/events/$documentId"
+        params={{ documentId: event.documentId }}
+        className="absolute inset-0 z-10 rounded-control focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+        aria-label={t('discover.list.viewEventAria', { name: event.name })}
+        onClick={armEventHero}
+      />
+
+      <div
+        data-vt-source={VT.eventHero}
+        className="relative z-0 m-4 flex overflow-hidden rounded-app"
+      >
         {image ? (
-          <>
-            <img
-              src={image.url}
-              alt={event.name}
-              className={cn(
-                'aspect-video w-full object-cover',
-                'transition-transform duration-(--duration-normal) ease-emphasized',
-                'motion-reduce:transition-none',
-                'group-hover:scale-[1.02] motion-reduce:group-hover:scale-100'
-              )}
-            />
-            <div
-              className="pointer-events-none absolute inset-0 bg-linear-to-t from-black/55 via-black/15 to-transparent"
-              aria-hidden
-            />
-          </>
+          <img src={image.url} alt="" className="aspect-video w-full object-cover" />
         ) : (
           <NotImage
             size="full"
@@ -70,23 +60,10 @@ export function EventsDiscoverListItem({ event, selected, onSelect }: EventsDisc
             className="aspect-video min-h-0 w-full rounded-none border-0 border-b border-hairline/40"
           />
         )}
-
-        {when ? (
-          <div className="absolute top-3 left-3 z-20 max-w-[calc(100%-1.5rem)]">
-            <Badge variant="outline" size="sm">
-              {when}
-            </Badge>
-          </div>
-        ) : null}
       </div>
 
-      <CardHeader className="flex flex-1 flex-col gap-2 space-y-0 p-4 sm:gap-2.5 sm:p-5">
-        <CardTitle
-          className={cn(
-            'font-display text-lg font-semibold leading-snug tracking-tight text-balance sm:text-xl',
-            selected ? 'text-primary' : 'text-on-surface'
-          )}
-        >
+      <CardHeader className="relative z-0 flex flex-1 flex-col gap-2 space-y-0 p-4 sm:gap-2.5 sm:p-5">
+        <CardTitle className="line-clamp-2 font-display text-lg font-semibold tracking-tight text-balance text-on-surface sm:text-xl">
           {event.name}
         </CardTitle>
 
@@ -97,7 +74,7 @@ export function EventsDiscoverListItem({ event, selected, onSelect }: EventsDisc
         ) : null}
 
         {place ? (
-          <p className="mt-auto flex items-start gap-1.5 font-label text-sm text-on-surface-variant">
+          <p className="mt-auto flex items-start gap-1.5 text-sm text-on-surface-variant">
             <MapPin
               className="mt-0.5 size-3.5 shrink-0 opacity-70"
               aria-hidden
@@ -107,24 +84,24 @@ export function EventsDiscoverListItem({ event, selected, onSelect }: EventsDisc
           </p>
         ) : null}
 
-        {!hasCoordinates ? (
-          <p className="font-label text-sm text-on-surface-variant">
-            {t('discover.list.noCoordinatesHint')}
-          </p>
+        {when ? (
+          <Badge variant="outline" size="sm" className="w-fit border-hairline/30">
+            {when}
+          </Badge>
         ) : null}
       </CardHeader>
 
-      <CardFooter className="mt-auto p-4 pt-0 sm:p-5 sm:pt-0">
-        <Button
-          type="button"
-          className="min-h-11 w-full"
-          variant={selected ? 'default' : 'ghost'}
-          aria-pressed={selected}
-          aria-label={selectLabel}
-          onClick={onSelect}
+      <CardFooter className="relative z-0 mt-auto p-4 pt-0 sm:p-5 sm:pt-0">
+        <span
+          className={cn(
+            buttonVariants({ variant: 'default', size: 'lg' }),
+            'pointer-events-none w-full',
+            'group-hover:bg-primary/90'
+          )}
+          aria-hidden
         >
           {t('discover.list.viewEvent')}
-        </Button>
+        </span>
       </CardFooter>
     </Card>
   )

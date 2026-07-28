@@ -16,7 +16,13 @@ import {
 } from '@nestjs/common'
 import { FilesInterceptor } from '@nestjs/platform-express'
 import { API_ROUTES } from '@repo/common'
-import type { EventResponse, JwtPayload, PaginatedResponse, PublicEventResponse } from '@repo/types'
+import type {
+  EventResponse,
+  JwtPayload,
+  PaginatedResponse,
+  PublicEventDetailResponse,
+  PublicEventResponse,
+} from '@repo/types'
 import { USER_ROLE } from '@repo/types'
 import {
   EVENT_IMAGE_MAX_COUNT,
@@ -39,6 +45,7 @@ import { imageUploadOptions } from '../../files/image-upload.options'
 import { CreateEventUseCase } from '../application/create-event.use-case'
 import { DeleteEventUseCase } from '../application/delete-event.use-case'
 import { GetEventByDocumentIdUseCase } from '../application/get-event-by-document-id.use-case'
+import { GetPublicEventByDocumentIdUseCase } from '../application/get-public-event-by-document-id.use-case'
 import { ListMyEventsUseCase } from '../application/list-my-events.use-case'
 import { ListPublicEventsUseCase } from '../application/list-public-events.use-case'
 import { UpdateEventUseCase } from '../application/update-event.use-case'
@@ -48,6 +55,8 @@ export class EventsController {
   constructor(
     @Inject(ListPublicEventsUseCase)
     private readonly listPublicEventsUseCase: ListPublicEventsUseCase,
+    @Inject(GetPublicEventByDocumentIdUseCase)
+    private readonly getPublicEventByDocumentIdUseCase: GetPublicEventByDocumentIdUseCase,
     @Inject(ListMyEventsUseCase) private readonly listMyEventsUseCase: ListMyEventsUseCase,
     @Inject(GetEventByDocumentIdUseCase)
     private readonly getEventByDocumentIdUseCase: GetEventByDocumentIdUseCase,
@@ -61,6 +70,13 @@ export class EventsController {
     @Query(new ZodValidationPipe(listPublicEventsQuerySchema)) query: ListPublicEventsQueryInput
   ): Promise<PaginatedResponse<PublicEventResponse>> {
     return this.listPublicEventsUseCase.execute(query)
+  }
+
+  @Get(API_ROUTES.events.path.getPublic(':documentId'))
+  getPublicByDocumentId(
+    @Param('documentId', new ZodValidationPipe(uuidSchema)) documentId: string
+  ): Promise<PublicEventDetailResponse> {
+    return this.getPublicEventByDocumentIdUseCase.execute(documentId)
   }
 
   @Get(API_ROUTES.events.path.list())

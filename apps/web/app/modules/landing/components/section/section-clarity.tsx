@@ -1,7 +1,8 @@
 import { Ticket, ShieldCheck, Clock3 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { cn } from '@repo/ui'
-import { LANDING_HEADING, LANDING_SECTION_Y, LANDING_SHELL } from '../../constants/layout'
+import { Container } from '~/modules/common/components/container'
+import { LANDING_HEADING, LANDING_SECTION_Y } from '../../constants/layout'
 import { Reveal } from '../reveal'
 
 const CLARITY_ITEMS = [
@@ -23,7 +24,7 @@ export function SectionClarity({ className }: SectionClarityProps) {
       aria-labelledby="clarity-heading"
       className={cn('scroll-mt-24 border-t border-hairline/40', className)}
     >
-      <div className={cn(LANDING_SHELL, LANDING_SECTION_Y)}>
+      <Container className={LANDING_SECTION_Y}>
         <Reveal>
           <div className="max-w-2xl">
             <h2 id="clarity-heading" className={cn(LANDING_HEADING, 'text-on-surface')}>
@@ -61,7 +62,7 @@ export function SectionClarity({ className }: SectionClarityProps) {
             ))}
           </ul>
         </Reveal>
-      </div>
+      </Container>
     </section>
   )
 }

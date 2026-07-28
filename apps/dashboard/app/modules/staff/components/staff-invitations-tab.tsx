@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
-import { toast } from '@repo/ui'
+import { LoadErrorBanner, toast } from '@repo/ui'
 import { StaffInvitations } from '~/modules/staff/components/staff-invitations'
 import {
   StaffInvitationsEmptyState,
@@ -8,7 +8,6 @@ import {
 } from '~/modules/staff/components/staff-invitations-tab-states'
 import { useDeleteStaffInvitation } from '~/modules/staff/mutations/use-staff-invitations-mutations'
 import { useStaffInvitations } from '~/modules/staff/queries/use-staff-invitations'
-import { LoadErrorBanner } from '~/modules/common/components/load-error-banner'
 
 type StaffInvitationsTabProps = {
   enabled: boolean

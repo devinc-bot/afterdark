@@ -2,8 +2,9 @@ import type { ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import { DASHBOARD_URL } from '@repo/common'
 import { AppLogo, Link, cn } from '@repo/ui'
+import { Container } from '~/modules/common/components/container'
 import { WEB_ROUTES } from '~/modules/common/constants/routes'
-import { LANDING_CTA_PRIMARY, LANDING_FOCUS_RING, LANDING_SHELL } from '../constants/layout'
+import { LANDING_CTA_PRIMARY, LANDING_FOCUS_RING } from '../constants/layout'
 import { handleSectionNavClick } from '../utils/scroll-to-section.utils'
 
 const FOOTER_LINK = cn(
@@ -78,7 +79,7 @@ export function LandingFooter() {
 
   return (
     <footer className="border-t border-hairline/40">
-      <div className={cn(LANDING_SHELL, 'py-12 sm:py-14')}>
+      <Container className="py-12 sm:py-14">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-12 lg:gap-12">
           <div className="lg:col-span-4">
             <div className="flex items-center gap-2">
@@ -173,7 +174,7 @@ export function LandingFooter() {
             {t('footer.madeFor')}
           </p>
         </div>
-      </div>
+      </Container>
     </footer>
   )
 }

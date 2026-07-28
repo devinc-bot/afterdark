@@ -2,12 +2,19 @@ import { useEffect } from 'react'
 import { HeadContent, Outlet, Scripts, createRootRouteWithContext } from '@tanstack/react-router'
 import { QueryClientProvider, type QueryClient } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
-import { APP_LOGO_SRC, Link, THEME_BOOT_SCRIPT, ThemeProvider, Toaster } from '@repo/ui'
+import {
+  APP_LOGO_SRC,
+  ErrorBoundaryView,
+  NotFoundView,
+  THEME_BOOT_SCRIPT,
+  ThemeProvider,
+  Toaster,
+} from '@repo/ui'
 import { I18nProvider } from '@repo/i18n/client'
 import { installZodI18n } from '@repo/i18n'
 import commonEs from '@repo/i18n/locales/common/es.json'
-import { ErrorBoundaryView } from '~/modules/common/components/error-boundary-view'
 import globalsCssUrl from '@repo/ui/globals.css?url'
+import viewTransitionsCssUrl from '@repo/ui/view-transitions.css?url'
 import { DASHBOARD_ROUTES } from '~/modules/common/constants/routes'
 
 interface RouterContext {
@@ -25,6 +32,7 @@ export const Route = createRootRouteWithContext<RouterContext>()({
       { rel: 'icon', type: 'image/png', href: APP_LOGO_SRC },
       { rel: 'apple-touch-icon', href: APP_LOGO_SRC },
       { rel: 'stylesheet', href: globalsCssUrl },
+      { rel: 'stylesheet', href: viewTransitionsCssUrl },
     ],
     scripts: [{ children: THEME_BOOT_SCRIPT }],
   }),
@@ -53,6 +61,9 @@ function RootErrorBoundary({ error, reset }: { error: Error; reset: () => void }
         <ErrorBoundaryView
           error={error}
           reset={reset}
+          brandLabel={commonEs.appNameUpper}
+          homeTo={DASHBOARD_ROUTES.home()}
+          showErrorDetails={import.meta.env.DEV}
           strings={{
             title: t('error.title'),
             description: t('error.description'),
@@ -74,22 +85,14 @@ function RootNotFound() {
       <head>
         <HeadContent />
       </head>
-      <body className="flex min-h-dvh flex-col items-center justify-center bg-background px-6 text-center">
-        <p className="font-mono text-xs font-semibold tracking-widest text-ink-muted uppercase">
-          {commonEs.appNameUpper}
-        </p>
-        <div className="mt-6 max-w-sm space-y-2">
-          <p className="font-heading text-xl font-semibold text-ink">{t('notFound.title')}</p>
-          <p className="text-sm text-ink-muted">{t('notFound.description')}</p>
-        </div>
-        <div className="mt-8">
-          <Link
-            to={DASHBOARD_ROUTES.home()}
-            className="inline-flex h-10 cursor-pointer items-center rounded-lg bg-primary px-5 text-[15px] font-medium text-primary-foreground shadow-sm hover:bg-primary/90"
-          >
-            {t('notFound.goHome')}
-          </Link>
-        </div>
+      <body>
+        <NotFoundView
+          brandLabel={commonEs.appNameUpper}
+          title={t('notFound.title')}
+          description={t('notFound.description')}
+          actionLabel={t('notFound.goHome')}
+          actionTo={DASHBOARD_ROUTES.home()}
+        />
         <Scripts />
       </body>
     </html>

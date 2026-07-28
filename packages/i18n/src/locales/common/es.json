@@ -52,5 +52,17 @@
     "light": "Claro",
     "switchToDark": "Cambiar a tema oscuro",
     "switchToLight": "Cambiar a tema claro"
+  },
+  "pageError": {
+    "title": "Algo salió mal",
+    "description": "Ocurrió un error inesperado. Podés intentar recargar la página o volver al inicio.",
+    "retry": "Reintentar",
+    "goHome": "Ir al inicio",
+    "details": "Detalles del error"
+  },
+  "pageNotFound": {
+    "title": "Página no encontrada",
+    "description": "La página que buscás no existe o fue movida.",
+    "goHome": "Ir al inicio"
   }
 }
