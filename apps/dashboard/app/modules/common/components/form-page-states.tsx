@@ -1,6 +1,5 @@
 import type { ReactNode } from 'react'
-import { Button, Skeleton } from '@repo/ui'
-import { LoadErrorBanner } from '~/modules/common/components/load-error-banner'
+import { Button, LoadErrorBanner, Skeleton } from '@repo/ui'
 import { FormPageLayout } from '~/modules/common/components/form-page-layout'
 
 type FormPageChromeProps = {
@@ -123,7 +122,6 @@ export function FormPageErrorState({
   return (
     <FormPageLayout title={title} description={description} backLabel={backLabel} onBack={onBack}>
       <LoadErrorBanner
-        className="my-0"
         title={errorTitle}
         message={message}
         retryLabel={retryLabel}

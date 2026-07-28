@@ -20,6 +20,8 @@ import { Route as RegisterConfirmRouteImport } from './routes/register_.confirm'
 import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
 import { Route as PublicEventsRouteImport } from './routes/_public/events'
 import { Route as AppSettingsRouteImport } from './routes/_app/settings'
+import { Route as PublicEventsIndexRouteImport } from './routes/_public/events.index'
+import { Route as PublicEventsDocumentIdRouteImport } from './routes/_public/events.$documentId'
 
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
   id: '/reset-password',
@@ -74,6 +76,16 @@ const AppSettingsRoute = AppSettingsRouteImport.update({
   path: '/settings',
   getParentRoute: () => AppRoute,
 } as any)
+const PublicEventsIndexRoute = PublicEventsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => PublicEventsRoute,
+} as any)
+const PublicEventsDocumentIdRoute = PublicEventsDocumentIdRouteImport.update({
+  id: '/$documentId',
+  path: '/$documentId',
+  getParentRoute: () => PublicEventsRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -82,9 +94,11 @@ export interface FileRoutesByFullPath {
   '/register': typeof RegisterRoute
   '/reset-password': typeof ResetPasswordRoute
   '/settings': typeof AppSettingsRoute
-  '/events': typeof PublicEventsRoute
+  '/events': typeof PublicEventsRouteWithChildren
   '/auth/callback': typeof AuthCallbackRoute
   '/register/confirm': typeof RegisterConfirmRoute
+  '/events/$documentId': typeof PublicEventsDocumentIdRoute
+  '/events/': typeof PublicEventsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -93,9 +107,10 @@ export interface FileRoutesByTo {
   '/register': typeof RegisterRoute
   '/reset-password': typeof ResetPasswordRoute
   '/settings': typeof AppSettingsRoute
-  '/events': typeof PublicEventsRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/register/confirm': typeof RegisterConfirmRoute
+  '/events/$documentId': typeof PublicEventsDocumentIdRoute
+  '/events': typeof PublicEventsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -107,9 +122,11 @@ export interface FileRoutesById {
   '/register': typeof RegisterRoute
   '/reset-password': typeof ResetPasswordRoute
   '/_app/settings': typeof AppSettingsRoute
-  '/_public/events': typeof PublicEventsRoute
+  '/_public/events': typeof PublicEventsRouteWithChildren
   '/auth/callback': typeof AuthCallbackRoute
   '/register_/confirm': typeof RegisterConfirmRoute
+  '/_public/events/$documentId': typeof PublicEventsDocumentIdRoute
+  '/_public/events/': typeof PublicEventsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -123,6 +140,8 @@ export interface FileRouteTypes {
     | '/events'
     | '/auth/callback'
     | '/register/confirm'
+    | '/events/$documentId'
+    | '/events/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -131,9 +150,10 @@ export interface FileRouteTypes {
     | '/register'
     | '/reset-password'
     | '/settings'
-    | '/events'
     | '/auth/callback'
     | '/register/confirm'
+    | '/events/$documentId'
+    | '/events'
   id:
     | '__root__'
     | '/'
@@ -147,6 +167,8 @@ export interface FileRouteTypes {
     | '/_public/events'
     | '/auth/callback'
     | '/register_/confirm'
+    | '/_public/events/$documentId'
+    | '/_public/events/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -240,6 +262,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppSettingsRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_public/events/': {
+      id: '/_public/events/'
+      path: '/'
+      fullPath: '/events/'
+      preLoaderRoute: typeof PublicEventsIndexRouteImport
+      parentRoute: typeof PublicEventsRoute
+    }
+    '/_public/events/$documentId': {
+      id: '/_public/events/$documentId'
+      path: '/$documentId'
+      fullPath: '/events/$documentId'
+      preLoaderRoute: typeof PublicEventsDocumentIdRouteImport
+      parentRoute: typeof PublicEventsRoute
+    }
   }
 }
 
@@ -253,12 +289,26 @@ const AppRouteChildren: AppRouteChildren = {
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
 
+interface PublicEventsRouteChildren {
+  PublicEventsDocumentIdRoute: typeof PublicEventsDocumentIdRoute
+  PublicEventsIndexRoute: typeof PublicEventsIndexRoute
+}
+
+const PublicEventsRouteChildren: PublicEventsRouteChildren = {
+  PublicEventsDocumentIdRoute: PublicEventsDocumentIdRoute,
+  PublicEventsIndexRoute: PublicEventsIndexRoute,
+}
+
+const PublicEventsRouteWithChildren = PublicEventsRoute._addFileChildren(
+  PublicEventsRouteChildren,
+)
+
 interface PublicRouteChildren {
-  PublicEventsRoute: typeof PublicEventsRoute
+  PublicEventsRoute: typeof PublicEventsRouteWithChildren
 }
 
 const PublicRouteChildren: PublicRouteChildren = {
-  PublicEventsRoute: PublicEventsRoute,
+  PublicEventsRoute: PublicEventsRouteWithChildren,
 }
 
 const PublicRouteWithChildren =

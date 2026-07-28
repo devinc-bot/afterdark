@@ -4,9 +4,13 @@ import { QueryClientProvider, type QueryClient } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 import { installZodI18n } from '@repo/i18n'
 import { I18nProvider } from '@repo/i18n/client'
-import commonEs from '@repo/i18n/locales/common/es.json'
 import { APP_LOGO_SRC, THEME_BOOT_SCRIPT, ThemeProvider, Toaster } from '@repo/ui'
 import globalsCssUrl from '@repo/ui/globals.css?url'
+import viewTransitionsCssUrl from '@repo/ui/view-transitions.css?url'
+import {
+  WebErrorBoundaryView,
+  WebNotFoundView,
+} from '~/modules/common/components/route-error-views'
 
 interface RouterContext {
   queryClient: QueryClient
@@ -17,15 +21,17 @@ export const Route = createRootRouteWithContext<RouterContext>()({
     meta: [
       { charSet: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { title: commonEs.appName },
     ],
     links: [
       { rel: 'icon', type: 'image/png', href: APP_LOGO_SRC },
       { rel: 'apple-touch-icon', href: APP_LOGO_SRC },
       { rel: 'stylesheet', href: globalsCssUrl },
+      { rel: 'stylesheet', href: viewTransitionsCssUrl },
     ],
     scripts: [{ children: THEME_BOOT_SCRIPT }],
   }),
+  errorComponent: RootErrorBoundary,
+  notFoundComponent: RootNotFound,
   component: RootComponent,
 })
 
@@ -43,6 +49,42 @@ function DocumentLang() {
     document.documentElement.lang = i18n.language || 'es'
   }, [i18n.language])
   return null
+}
+
+function RootErrorBoundary({ error, reset }: { error: Error; reset: () => void }) {
+  return (
+    <html lang="es" data-theme="dark">
+      <head>
+        <HeadContent />
+      </head>
+      <body>
+        <I18nProvider>
+          <ThemeProvider>
+            <WebErrorBoundaryView error={error} reset={reset} />
+          </ThemeProvider>
+        </I18nProvider>
+        <Scripts />
+      </body>
+    </html>
+  )
+}
+
+function RootNotFound() {
+  return (
+    <html lang="es" data-theme="dark">
+      <head>
+        <HeadContent />
+      </head>
+      <body>
+        <I18nProvider>
+          <ThemeProvider>
+            <WebNotFoundView />
+          </ThemeProvider>
+        </I18nProvider>
+        <Scripts />
+      </body>
+    </html>
+  )
 }
 
 function RootComponent() {

@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
-import { cn } from '@repo/ui'
+import { VT, cn, vtStyle } from '@repo/ui'
 import { LandingFooter } from '~/modules/landing/components/footer'
 import { LandingHeader } from '~/modules/landing/components/landing-header'
 import { LANDING_FOCUS_RING } from '~/modules/landing/constants/layout'
@@ -28,7 +28,7 @@ export function PublicAppShell({ children }: PublicAppShellProps) {
       <LandingHeader />
 
       {/* pt clears the fixed landing header (h-14 + top padding) */}
-      <main id="contenido" className="flex-1 pt-24 pb-10">
+      <main id="contenido" className="flex-1 pt-24 pb-10" style={vtStyle(VT.mainContent)}>
         {children}
       </main>
 

@@ -18,6 +18,7 @@ import {
 } from '@repo/ui'
 import { UserMenu } from '~/modules/common/components/user-menu'
 import { LanguageToggle } from '~/modules/common/components/language-toggle'
+import { Container } from '~/modules/common/components/container'
 import { COOKIE_KEYS } from '~/modules/common/constants/cookies'
 import { WEB_ROUTES } from '~/modules/common/constants/routes'
 import { useSession } from '~/modules/common/hooks/use-session'
@@ -25,7 +26,6 @@ import {
   LANDING_CTA_PRIMARY,
   LANDING_FOCUS_RING,
   LANDING_FOCUS_RING_ON_MEDIA,
-  LANDING_SHELL,
 } from '../constants/layout'
 import { handleSectionNavClick, sectionIdFromHash } from '../utils/scroll-to-section.utils'
 
@@ -99,14 +99,15 @@ export function LandingHeader() {
   }
 
   return (
+    // No VT name: it isolates stacking and breaks backdrop-blur on the glass bar.
     <header className="pointer-events-none fixed inset-x-0 top-0 z-40 pt-4 sm:pt-5">
-      <div className={LANDING_SHELL}>
+      <Container>
         <div
           className={cn(
             'pointer-events-auto flex h-15 w-full items-center justify-between gap-2 rounded-app-xl px-2 transition-[background-color,border-color,box-shadow,backdrop-filter] duration-(--duration-normal) ease-emphasized motion-reduce:transition-none sm:gap-3 sm:px-4',
             chromeSolid
-              ? 'border border-hairline/40 bg-surface-container-low/70 shadow-(--shadow-glass) backdrop-blur-xl backdrop-saturate-150 supports-backdrop-filter:bg-surface-container-low/55'
-              : 'border border-white/15 bg-black/25 shadow-none backdrop-blur-md backdrop-saturate-125 supports-backdrop-filter:bg-black/15'
+              ? 'border border-hairline/20 bg-surface-container-low/70 shadow-(--shadow-glass) backdrop-blur-xl backdrop-saturate-150 supports-backdrop-filter:bg-surface-container-low/55'
+              : 'border border-white/10 bg-black/25 shadow-none backdrop-blur-md backdrop-saturate-125 supports-backdrop-filter:bg-black/15'
           )}
         >
           <Link
@@ -271,7 +272,7 @@ export function LandingHeader() {
             </Sheet>
           </div>
         </div>
-      </div>
+      </Container>
     </header>
   )
 }

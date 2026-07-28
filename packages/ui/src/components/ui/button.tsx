@@ -20,8 +20,7 @@ const buttonVariants = cva(
       variant: {
         default: 'bg-primary text-primary-foreground shadow-sm hover:bg-primary/90',
         destructive: 'bg-destructive text-white hover:bg-destructive/90',
-        outline:
-          'border border-hairline-strong bg-surface-card text-ink shadow-sm hover:bg-surface-strong',
+        outline: 'border border-hairline-strong bg-surface-card text-ink hover:bg-surface-strong',
         gradient:
           'cn-gradient-border cn-gradient-border--field text-ink shadow-sm hover:opacity-90 focus-visible:ring-primary/25 disabled:opacity-60',
         inverse: 'border border-white/20 bg-surface-card text-ink shadow-sm hover:bg-white',

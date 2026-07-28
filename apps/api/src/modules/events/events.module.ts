@@ -6,6 +6,7 @@ import { RolesGuard } from '../common/guards/roles.guard'
 import { CreateEventUseCase } from './application/create-event.use-case'
 import { DeleteEventUseCase } from './application/delete-event.use-case'
 import { GetEventByDocumentIdUseCase } from './application/get-event-by-document-id.use-case'
+import { GetPublicEventByDocumentIdUseCase } from './application/get-public-event-by-document-id.use-case'
 import { ListMyEventsUseCase } from './application/list-my-events.use-case'
 import { ListPublicEventsUseCase } from './application/list-public-events.use-case'
 import { UpdateEventUseCase } from './application/update-event.use-case'
@@ -18,6 +19,7 @@ import { EventsController } from './presentation/events.controller'
   providers: [
     EventImagesService,
     ListPublicEventsUseCase,
+    GetPublicEventByDocumentIdUseCase,
     ListMyEventsUseCase,
     GetEventByDocumentIdUseCase,
     CreateEventUseCase,

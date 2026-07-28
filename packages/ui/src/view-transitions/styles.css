@@ -1,0 +1,48 @@
+/**
+ * SPA view transitions (TanStack Router `defaultViewTransition`).
+ * Named groups must match `VT` in ./names.ts.
+ * Import via `@repo/ui/view-transitions.css`.
+ */
+
+@keyframes vt-main-out {
+  to {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes vt-main-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+html:active-view-transition-type(route-change),
+html:active-view-transition {
+  &::view-transition-old(main-content) {
+    animation: var(--duration-normal) var(--ease-emphasized) both vt-main-out;
+  }
+
+  &::view-transition-new(main-content) {
+    animation: var(--duration-normal) var(--ease-emphasized) both vt-main-in;
+  }
+
+  &::view-transition-group(site-header) {
+    animation-duration: var(--duration-fast);
+    animation-timing-function: var(--ease-emphasized);
+  }
+
+  &::view-transition-group(event-hero) {
+    animation-duration: var(--duration-slow);
+    animation-timing-function: var(--ease-emphasized);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}

@@ -61,14 +61,11 @@ export function EventsDiscoverStatusBar({
 
   return (
     <div className={cn('flex flex-col gap-3', className)}>
-      <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
-        {total !== null ? (
-          <p className="font-label text-sm text-on-surface" aria-live="polite">
-            {t('discover.list.resultsCount', { count: total })}
-          </p>
-        ) : null}
-        <p className="font-label text-xs text-on-surface-variant">{t('discover.list.sortHint')}</p>
-      </div>
+      {total !== null ? (
+        <p className="text-sm text-on-surface" aria-live="polite">
+          {t('discover.list.resultsCount', { count: total })}
+        </p>
+      ) : null}
 
       {chips.length > 0 ? (
         <div
@@ -78,13 +75,13 @@ export function EventsDiscoverStatusBar({
           {chips.map((chip) => (
             <div
               key={chip.field}
-              className="inline-flex px-5 items-center gap-1.5 rounded-full border border-hairline/60 bg-surface-container-low py-1.5 font-label text-xs text-on-surface transition-colors hover:bg-on-surface/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink"
+              className="inline-flex items-center gap-1.5 rounded-full border border-hairline/60 bg-surface-container-low px-4 py-1.5 text-xs text-on-surface transition-colors hover:bg-on-surface/5"
             >
               <span>{chip.label}</span>
               <button
                 type="button"
                 onClick={() => onRemoveFilter(chip.field)}
-                className="opacity-70 cursor-pointer hover:opacity-100 rounded-full hover:text-primary hover:bg-background p-1"
+                className="cursor-pointer rounded-full p-1 opacity-70 hover:bg-background hover:text-primary hover:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink"
               >
                 <X className="size-3.5" aria-hidden />
                 <span className="sr-only">
@@ -96,7 +93,7 @@ export function EventsDiscoverStatusBar({
           <Button
             type="button"
             variant="ghost"
-            className="h-9 font-label text-xs text-on-surface-variant"
+            className="h-9 text-xs text-on-surface-variant"
             onClick={onClearAll}
           >
             {t('discover.filters.clear')}

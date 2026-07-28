@@ -1,23 +1,26 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import type { PublicEventResponse } from '@repo/types'
-import { Card } from '@repo/ui'
+import { useNavigate, useSearch } from '@tanstack/react-router'
+import { Button, Collapsible, CollapsibleContent, CollapsibleTrigger, cn } from '@repo/ui'
+import { ChevronDown } from 'lucide-react'
 import { PageAtmosphereWash } from '~/modules/common/components/page-atmosphere-wash'
+import { Container } from '~/modules/common/components/container'
 import { PageHeader } from '~/modules/common/components/page-header'
-import { LANDING_SHELL } from '~/modules/landing/constants/layout'
 import { usePublicEventsInfiniteQuery } from '../queries/use-public-events-infinite-query'
+import { buildEventsDiscoverCoverflowSlides } from '../utils/events-discover-coverflow'
 import {
   appliedFiltersKey,
   areDiscoverFiltersEqual,
   clearDiscoverFilterField,
-  EMPTY_EVENTS_DISCOVER_FILTERS,
+  countActiveDiscoverFilters,
+  filtersFromSearch,
+  searchFromFilters,
   type EventsDiscoverFilterField,
   type EventsDiscoverFiltersValue,
 } from '../utils/events-discover-filters'
+import { EventsDiscoverCoverflow } from './events-discover-coverflow'
 import { EventsDiscoverFiltersPanel } from './events-discover-filters-panel'
 import { EventsDiscoverList } from './events-discover-list'
-import { EventsDiscoverMap, type EventsDiscoverMapFocus } from './events-discover-map'
-import { EventsDiscoverSelection } from './events-discover-selection'
 import { EventsDiscoverStatusBar } from './events-discover-status-bar'
 
 function isInvalidDateRange(filters: EventsDiscoverFiltersValue): boolean {
@@ -28,23 +31,32 @@ function isInvalidDateRange(filters: EventsDiscoverFiltersValue): boolean {
   return filters.startsTo < filters.startsFrom
 }
 
-function shouldScrollListSelectionToMap(): boolean {
-  if (typeof window === 'undefined') {
-    return true
-  }
-  return window.matchMedia('(min-width: 1024px)').matches
-}
-
 export function EventsDiscoverPage() {
-  const { t } = useTranslation('events')
-  const [draftFilters, setDraftFilters] = useState(EMPTY_EVENTS_DISCOVER_FILTERS)
-  const [appliedFilters, setAppliedFilters] = useState(EMPTY_EVENTS_DISCOVER_FILTERS)
+  const { t, i18n } = useTranslation('events')
+  const navigate = useNavigate()
+  const search = useSearch({ from: '/_public/events/' })
+  const urlFilters = filtersFromSearch(search)
+
+  const [draftFilters, setDraftFilters] = useState(urlFilters)
+  const [appliedFilters, setAppliedFilters] = useState(urlFilters)
   const [dateRangeError, setDateRangeError] = useState<string | null>(null)
-  const [selectedEventId, setSelectedEventId] = useState<string | null>(null)
-  const [mapFocus, setMapFocus] = useState<EventsDiscoverMapFocus | null>(null)
+  const [filtersOpen, setFiltersOpen] = useState(() => countActiveDiscoverFilters(urlFilters) > 0)
+
+  const urlKey = appliedFiltersKey(urlFilters)
+
+  useEffect(() => {
+    const next = filtersFromSearch(search)
+    setDraftFilters(next)
+    setAppliedFilters(next)
+    setDateRangeError(null)
+    if (countActiveDiscoverFilters(next) > 0) {
+      setFiltersOpen(true)
+    }
+  }, [urlKey, search])
 
   const filtersKey = appliedFiltersKey(appliedFilters)
   const isDirty = !areDiscoverFiltersEqual(draftFilters, appliedFilters)
+  const activeFilterCount = countActiveDiscoverFilters(appliedFilters)
   const {
     data,
     isLoading,
@@ -59,11 +71,14 @@ export function EventsDiscoverPage() {
 
   const events = data?.pages.flatMap((page) => page.data) ?? []
   const resultTotal = data?.pages[0]?.total ?? null
-  const selectedEvent = events.find((event) => event.documentId === selectedEventId) ?? null
+  const coverflowSlides = buildEventsDiscoverCoverflowSlides(events, i18n.language)
 
-  const clearMapSelection = () => {
-    setSelectedEventId(null)
-    setMapFocus(null)
+  const persistFilters = (next: EventsDiscoverFiltersValue) => {
+    void navigate({
+      to: '/events',
+      search: () => searchFromFilters(next),
+      replace: true,
+    })
   }
 
   const handleDraftChange = (next: EventsDiscoverFiltersValue) => {
@@ -80,16 +95,16 @@ export function EventsDiscoverPage() {
     }
 
     setDateRangeError(null)
-    clearMapSelection()
     setAppliedFilters(draftFilters)
+    persistFilters(draftFilters)
     return true
   }
 
   const handleClear = () => {
-    setDraftFilters(EMPTY_EVENTS_DISCOVER_FILTERS)
-    setAppliedFilters(EMPTY_EVENTS_DISCOVER_FILTERS)
+    setDraftFilters(filtersFromSearch({}))
+    setAppliedFilters(filtersFromSearch({}))
     setDateRangeError(null)
-    clearMapSelection()
+    persistFilters(filtersFromSearch({}))
   }
 
   const handleRemoveFilter = (field: EventsDiscoverFilterField) => {
@@ -97,129 +112,106 @@ export function EventsDiscoverPage() {
     setDraftFilters(next)
     setAppliedFilters(next)
     setDateRangeError(null)
-    clearMapSelection()
+    persistFilters(next)
   }
 
-  const scrollListItemIntoView = (documentId: string) => {
-    document.getElementById(`events-discover-item-${documentId}`)?.scrollIntoView({
-      behavior: 'smooth',
-      block: 'nearest',
+  const handleCoverflowActivate = (documentId: string) => {
+    void navigate({
+      to: '/events/$documentId',
+      params: { documentId },
     })
-  }
-
-  const handleSelectEvent = (
-    event: PublicEventResponse,
-    options?: { scrollToMap?: boolean; scrollListIntoView?: boolean }
-  ) => {
-    setSelectedEventId(event.documentId)
-
-    if (options?.scrollListIntoView) {
-      scrollListItemIntoView(event.documentId)
-    }
-
-    if (event.latitude === null || event.longitude === null) {
-      setMapFocus(null)
-      return
-    }
-
-    setMapFocus((prev) => ({
-      eventId: event.documentId,
-      latitude: event.latitude!,
-      longitude: event.longitude!,
-      token: (prev?.token ?? 0) + 1,
-    }))
-
-    const scrollToMap = options?.scrollToMap ?? shouldScrollListSelectionToMap()
-    if (!scrollToMap) {
-      return
-    }
-
-    document.getElementById('events-discover-map')?.scrollIntoView({
-      behavior: 'smooth',
-      block: 'nearest',
-    })
-  }
-
-  const handleSelectEventById = (documentId: string) => {
-    const event = events.find((item) => item.documentId === documentId)
-    if (!event) {
-      return
-    }
-    handleSelectEvent(event, { scrollToMap: false, scrollListIntoView: true })
   }
 
   return (
-    <div className={LANDING_SHELL}>
+    <Container>
       <div className="relative">
         <PageAtmosphereWash />
         <PageHeader title={t('discover.page.title')} description={t('discover.page.description')} />
 
-        <div className="flex flex-col gap-6 lg:gap-8">
-          <section aria-label={t('discover.map.ariaLabel')} className="w-full">
-            <div className="overflow-hidden rounded-control border border-hairline/50 bg-surface-container-lowest/40">
-              <EventsDiscoverMap
+        <div className="flex flex-col gap-10 lg:gap-12">
+          {coverflowSlides.length > 0 ? (
+            <EventsDiscoverCoverflow
+              key={filtersKey}
+              slides={coverflowSlides}
+              onActivate={handleCoverflowActivate}
+            />
+          ) : null}
+
+          <section className="flex flex-col gap-4" aria-labelledby="events-catalog-heading">
+            <Collapsible open={filtersOpen} onOpenChange={setFiltersOpen}>
+              <div className="flex flex-wrap items-end justify-between gap-3">
+                <h2
+                  id="events-catalog-heading"
+                  className="font-display text-lg font-semibold tracking-tight text-balance text-on-surface sm:text-xl"
+                >
+                  {t('discover.list.heading')}
+                </h2>
+
+                <CollapsibleTrigger asChild>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="min-h-11 gap-2"
+                    aria-expanded={filtersOpen}
+                  >
+                    {activeFilterCount > 0
+                      ? t('discover.filters.openWithCount', { count: activeFilterCount })
+                      : t('discover.filters.open')}
+                    <ChevronDown
+                      className={cn(
+                        'size-4 transition-transform duration-(--duration-fast)',
+                        filtersOpen && 'rotate-180'
+                      )}
+                      aria-hidden
+                    />
+                  </Button>
+                </CollapsibleTrigger>
+              </div>
+
+              <CollapsibleContent className="data-[state=closed]:animate-none">
+                <div className="mt-4 rounded-app border border-hairline/30 bg-surface-muted/60 p-4 sm:p-5">
+                  <EventsDiscoverFiltersPanel
+                    value={draftFilters}
+                    onChange={handleDraftChange}
+                    onClear={handleClear}
+                    onApply={() => {
+                      handleApply()
+                    }}
+                    dateRangeError={dateRangeError}
+                    isDirty={isDirty}
+                    idPrefix="events-filter"
+                    layout="bar"
+                    showHeading={false}
+                    showPendingHint
+                  />
+                </div>
+              </CollapsibleContent>
+            </Collapsible>
+
+            <EventsDiscoverStatusBar
+              appliedFilters={appliedFilters}
+              total={resultTotal}
+              onRemoveFilter={handleRemoveFilter}
+              onClearAll={handleClear}
+            />
+
+            <div className="min-h-48 min-w-0">
+              <EventsDiscoverList
                 key={filtersKey}
                 events={events}
-                focus={mapFocus}
-                selectedEventId={selectedEventId}
-                onSelectEventId={handleSelectEventById}
+                isLoading={isLoading}
+                isSuccess={isSuccess}
+                isError={isError}
+                hasNextPage={Boolean(hasNextPage)}
+                isFetchingNextPage={isFetchingNextPage}
+                isFetchNextPageError={isFetchNextPageError}
+                onFetchNextPage={() => void fetchNextPage()}
+                onRetry={() => void refetch()}
               />
             </div>
-            <p className="sr-only" aria-live="polite">
-              {selectedEvent
-                ? t('discover.selection.announced', { name: selectedEvent.name })
-                : null}
-            </p>
-          </section>
-
-          <Card variant="gradient" aria-label={t('discover.filters.title')} className="p-4 sm:p-5">
-            <EventsDiscoverFiltersPanel
-              value={draftFilters}
-              onChange={handleDraftChange}
-              onClear={handleClear}
-              onApply={() => {
-                handleApply()
-              }}
-              dateRangeError={dateRangeError}
-              isDirty={isDirty}
-              idPrefix="events-filter"
-              layout="bar"
-              showHeading={false}
-              showPendingHint
-            />
-          </Card>
-
-          <EventsDiscoverStatusBar
-            appliedFilters={appliedFilters}
-            total={resultTotal}
-            onRemoveFilter={handleRemoveFilter}
-            onClearAll={handleClear}
-          />
-
-          <section className="min-h-48 min-w-0" aria-label={t('discover.page.title')}>
-            {selectedEvent ? (
-              <div className="mb-6 sm:mb-7">
-                <EventsDiscoverSelection event={selectedEvent} onClear={clearMapSelection} />
-              </div>
-            ) : null}
-
-            <EventsDiscoverList
-              key={filtersKey}
-              events={events}
-              selectedEventId={selectedEventId}
-              isLoading={isLoading}
-              isSuccess={isSuccess}
-              isError={isError}
-              hasNextPage={Boolean(hasNextPage)}
-              isFetchingNextPage={isFetchingNextPage}
-              isFetchNextPageError={isFetchNextPageError}
-              onFetchNextPage={() => void fetchNextPage()}
-              onRetry={() => void refetch()}
-              onSelectEvent={handleSelectEvent}
-            />
           </section>
         </div>
       </div>
-    </div>
+    </Container>
   )
 }

@@ -1,6 +1,3 @@
-/** Shared landing surface layout — keep section chrome on one scale. */
-export const LANDING_SHELL = 'mx-auto max-w-7xl px-margin-mobile sm:px-8 lg:px-margin-desktop'
-
 export const LANDING_SECTION_Y = 'py-[clamp(4rem,10vw,7.5rem)]'
 
 export const LANDING_HEADING =

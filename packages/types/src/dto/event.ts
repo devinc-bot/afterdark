@@ -37,3 +37,25 @@ export interface PublicEventResponse {
 }
 
 export type PublicEventsPaginatedResponse = PaginatedResponse<PublicEventResponse>
+
+/** Anonymous single-event detail (published events only). */
+export interface PublicEventDetailAddress {
+  street: string
+  streetNumber: string
+  city: string
+  state: string
+  latitude: number | null
+  longitude: number | null
+}
+
+export interface PublicEventDetailResponse {
+  documentId: string
+  name: string
+  description: string
+  startsAt: Date
+  endsAt: Date
+  locationName: string
+  address: PublicEventDetailAddress | null
+  images: EventImageResponse[]
+  locationImages: EventImageResponse[]
+}

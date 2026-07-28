@@ -1,14 +1,15 @@
 import { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Button, Skeleton } from '@repo/ui'
+import { Button, LoadErrorBanner, Skeleton } from '@repo/ui'
 import type { PublicEventResponse } from '@repo/types'
 import { EventsDiscoverListItem } from './events-discover-list-item'
 
-const EVENTS_DISCOVER_GRID = 'grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4'
+/** Editorial rhythm: never 4 equal columns with sparse results. */
+const EVENTS_DISCOVER_GRID =
+  'grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 lg:gap-6'
 
 type EventsDiscoverListProps = {
   events: PublicEventResponse[]
-  selectedEventId: string | null
   isLoading: boolean
   isSuccess: boolean
   isError: boolean
@@ -17,12 +18,10 @@ type EventsDiscoverListProps = {
   isFetchNextPageError: boolean
   onFetchNextPage: () => void
   onRetry: () => void
-  onSelectEvent: (event: PublicEventResponse) => void
 }
 
 export function EventsDiscoverList({
   events,
-  selectedEventId,
   isLoading,
   isSuccess,
   isError,
@@ -31,7 +30,6 @@ export function EventsDiscoverList({
   isFetchNextPageError,
   onFetchNextPage,
   onRetry,
-  onSelectEvent,
 }: EventsDiscoverListProps) {
   const { t } = useTranslation('events')
   const loadMoreRef = useRef<HTMLDivElement>(null)
@@ -65,17 +63,17 @@ export function EventsDiscoverList({
     return (
       <div className={EVENTS_DISCOVER_GRID} aria-busy="true" aria-live="polite">
         <p className="sr-only">{t('discover.list.loading')}</p>
-        {Array.from({ length: 8 }, (_, index) => (
+        {Array.from({ length: 6 }, (_, index) => (
           <div
             key={index}
-            className="overflow-hidden rounded-control border border-primary/15 bg-surface-container-low/40"
+            className="overflow-hidden rounded-control border border-hairline/20 bg-surface-container-low/50"
           >
-            <Skeleton className="aspect-video w-full rounded-none bg-primary/10" />
+            <Skeleton className="aspect-video w-full rounded-none bg-surface-high/80" />
             <div className="flex flex-col gap-2 p-4 sm:p-5">
-              <Skeleton className="h-6 w-3/4 bg-primary/12" />
-              <Skeleton className="h-4 w-full bg-primary/10" />
-              <Skeleton className="h-3.5 w-1/2 bg-primary/8" />
-              <Skeleton className="mt-2 h-10 w-full bg-primary/10" />
+              <Skeleton className="h-6 w-3/4 bg-surface-high/70" />
+              <Skeleton className="h-4 w-full bg-surface-high/50" />
+              <Skeleton className="h-3.5 w-1/2 bg-surface-high/40" />
+              <Skeleton className="mt-2 h-10 w-full bg-surface-high/60" />
             </div>
           </div>
         ))}
@@ -85,23 +83,13 @@ export function EventsDiscoverList({
 
   if (showError) {
     return (
-      <div
-        className="rounded-lg border border-error/40 bg-error-container/15 px-4 py-5"
-        role="alert"
-      >
-        <p className="font-display text-base font-semibold text-error">
-          {t('discover.list.errorTitle')}
-        </p>
-        <p className="mt-1 text-sm text-on-surface-variant">{t('discover.list.error')}</p>
-        <Button
-          type="button"
-          variant="outline"
-          className="mt-4 min-h-10 rounded-lg"
-          onClick={onRetry}
-        >
-          {t('discover.list.retry')}
-        </Button>
-      </div>
+      <LoadErrorBanner
+        className="my-0 w-full max-w-none"
+        title={t('discover.list.errorTitle')}
+        message={t('discover.list.error')}
+        retryLabel={t('discover.list.retry')}
+        onRetry={onRetry}
+      />
     )
   }
 
@@ -128,15 +116,8 @@ export function EventsDiscoverList({
         aria-label={t('discover.list.resultsAria')}
       >
         {events.map((event) => (
-          <li
-            key={event.documentId}
-            className="min-w-0 [content-visibility:auto] [contain-intrinsic-size:0_22rem]"
-          >
-            <EventsDiscoverListItem
-              event={event}
-              selected={event.documentId === selectedEventId}
-              onSelect={() => onSelectEvent(event)}
-            />
+          <li key={event.documentId} className="min-w-0 [contain-intrinsic-size:0_22rem]">
+            <EventsDiscoverListItem event={event} />
           </li>
         ))}
       </ul>
@@ -145,7 +126,7 @@ export function EventsDiscoverList({
 
       {isFetchingNextPage ? (
         <p
-          className="border-t border-hairline/40 py-6 text-center font-label text-sm text-primary/70"
+          className="border-t border-hairline/40 py-6 text-center text-sm text-on-surface-variant"
           aria-live="polite"
         >
           {t('discover.list.loadingMore')}
@@ -154,14 +135,27 @@ export function EventsDiscoverList({
 
       {isFetchNextPageError ? (
         <div className="border-t border-hairline/40 py-6 text-center" role="alert">
-          <p className="text-sm text-error">{t('discover.list.error')}</p>
+          <p className="text-sm text-error">{t('discover.list.loadMoreError')}</p>
           <Button
             type="button"
             variant="outline"
-            className="mt-3 min-h-10 rounded-lg"
+            className="mt-3 min-h-11 rounded-lg"
             onClick={onFetchNextPage}
           >
             {t('discover.list.retry')}
+          </Button>
+        </div>
+      ) : null}
+
+      {hasNextPage && !isFetchingNextPage && !isFetchNextPageError ? (
+        <div className="border-t border-hairline/40 py-6 text-center">
+          <Button
+            type="button"
+            variant="outline"
+            className="min-h-11 rounded-lg"
+            onClick={onFetchNextPage}
+          >
+            {t('discover.list.loadMore')}
           </Button>
         </div>
       ) : null}

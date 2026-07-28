@@ -115,13 +115,13 @@
   "discover": {
     "page": {
       "title": "Eventos",
-      "description": "Explorá eventos publicados por ciudad, provincia y fecha.",
+      "description": "Encontrá tu noche — mirá destacados y filtrá el listado completo.",
       "metaTitle": "Eventos · {appName}"
     },
     "filters": {
       "title": "Filtros",
-      "open": "Filtros",
-      "openWithCount": "Filtros ({count})",
+      "open": "Filtrar",
+      "openWithCount": "Filtrar ({count})",
       "sheetTitle": "Filtros",
       "when": "Cuándo",
       "where": "Dónde",
@@ -133,7 +133,8 @@
       "statePlaceholder": "Ej. Chaco",
       "apply": "Aplicar",
       "clear": "Limpiar",
-      "pendingChanges": "Cambios sin aplicar",
+      "pendingChanges": "Aplicá para actualizar resultados",
+      "applyIdleHint": "Cambiá un filtro y aplicá",
       "appliedAria": "Filtros aplicados",
       "removeChip": "Quitar filtro {label}",
       "chipFrom": "Desde {date}",
@@ -142,6 +143,7 @@
       "chipState": "{state}"
     },
     "list": {
+      "heading": "Todos los eventos",
       "emptyTitle": "No hay eventos",
       "emptyDescription": "Probá otras fechas o una ciudad distinta.",
       "errorTitle": "No pudimos cargar los eventos",
@@ -149,23 +151,64 @@
       "retry": "Reintentar",
       "loading": "Cargando eventos…",
       "loadingMore": "Cargando más eventos…",
+      "loadMore": "Cargar más",
+      "loadMoreError": "No pudimos cargar más eventos. Intentá de nuevo.",
       "resultsCount": "{count, plural, one {# evento} other {# eventos}}",
       "resultsAria": "Lista de eventos",
-      "sortHint": "Próximos primero",
-      "focusOnMap": "Ver {name} en el mapa",
-      "noMapLocation": "{name} (sin ubicación en el mapa)",
       "noCoordinatesHint": "Sin coordenadas en el mapa",
       "noImage": "Sin imagen",
-      "viewEvent": "Ver evento"
+      "viewEvent": "Quiero ir",
+      "viewEventAria": "Ver {name}"
     },
-    "map": {
-      "ariaLabel": "Mapa de eventos publicados",
-      "loading": "Cargando mapa…"
+    "coverflow": {
+      "heading": "Destacados",
+      "hint": "Tocá un destacado para abrirlo",
+      "ariaLabel": "Imágenes de eventos destacados",
+      "activateAria": "{title}. {meta}",
+      "dotsAria": "Diapositivas destacadas",
+      "dotAria": "Diapositiva {index} de {total}: {title}",
+      "prev": "Evento anterior",
+      "next": "Evento siguiente"
     },
-    "selection": {
-      "clear": "Quitar selección",
+    "detail": {
+      "error": "No pudimos cargar el evento. Intentá de nuevo en unos minutos.",
+      "errorTitle": "No pudimos cargar el evento",
+      "retry": "Reintentar",
+      "loading": "Cargando evento…",
+      "metaTitle": "{name} · {appName}",
+      "metaTitleFallback": "Evento · {appName}",
+      "notFoundTitle": "Evento no encontrado",
+      "notFoundDescription": "El evento no existe, no está publicado o el enlace no es válido.",
+      "backToEvents": "Volver a eventos",
+      "carouselAriaLabel": "Carrusel de imágenes del evento",
+      "carouselAlt": "Imagen de {name}",
+      "carouselDotAlt": "Imagen {index} de {name}",
+      "carouselPrev": "Imagen anterior",
+      "carouselNext": "Imagen siguiente",
+      "description": "Descripción",
+      "schedule": "Cuándo",
+      "startsAt": "Inicio",
+      "endsAt": "Fin",
+      "address": "Dónde",
+      "noAddress": "Sin dirección disponible",
+      "locationGallery": "El lugar",
+      "locationGalleryHint": "Un vistazo al espacio antes de ir.",
+      "locationCarouselAriaLabel": "Carrusel de imágenes del lugar",
+      "locationCarouselAlt": "Imagen del lugar {name}",
+      "map": "Mapa",
+      "mapAriaLabel": "Mapa de la ubicación del evento",
+      "mapLoading": "Cargando mapa…",
+      "share": "Compartir",
+      "shareCopied": "Enlace copiado",
+      "shareShared": "Enlace compartido",
+      "shareError": "No pudimos compartir el enlace. Intentá de nuevo.",
       "ticketsSoon": "Entradas próximamente",
-      "announced": "Seleccionaste {name}."
+      "ticketsReady": "Entradas",
+      "ticketsUnavailableHint": "La venta aún no abrió — volvé pronto.",
+      "buyTickets": "Comprar entradas",
+      "buyTicketsUnavailable": "Próximamente",
+      "buyTicketsDisabled": "La compra de entradas aún no está disponible",
+      "purchasePanelAriaLabel": "Reserva del evento"
     }
   }
 }

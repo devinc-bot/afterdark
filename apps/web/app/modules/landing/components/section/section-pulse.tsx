@@ -1,7 +1,8 @@
 import { useTranslation } from 'react-i18next'
 import { cn } from '@repo/ui'
+import { Container } from '~/modules/common/components/container'
 import { LANDING_IMAGES } from '../../constants/images'
-import { LANDING_HEADING, LANDING_SECTION_Y, LANDING_SHELL } from '../../constants/layout'
+import { LANDING_HEADING, LANDING_SECTION_Y } from '../../constants/layout'
 import { Reveal } from '../reveal'
 
 type SectionPulseProps = {
@@ -16,12 +17,8 @@ export function SectionPulse({ className }: SectionPulseProps) {
       aria-labelledby="pulse-heading"
       className={cn('border-t border-hairline/40', className)}
     >
-      <div
-        className={cn(
-          LANDING_SHELL,
-          LANDING_SECTION_Y,
-          'grid items-center gap-12 lg:grid-cols-12 lg:gap-16'
-        )}
+      <Container
+        className={cn(LANDING_SECTION_Y, 'grid items-center gap-12 lg:grid-cols-12 lg:gap-16')}
       >
         <Reveal className="lg:col-span-5">
           <h2 id="pulse-heading" className={cn(LANDING_HEADING, 'text-on-surface')}>
@@ -67,7 +64,7 @@ export function SectionPulse({ className }: SectionPulseProps) {
             className="pointer-events-none absolute inset-0 bg-linear-to-t from-background/40 via-transparent to-transparent"
           />
         </Reveal>
-      </div>
+      </Container>
     </section>
   )
 }

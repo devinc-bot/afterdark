@@ -92,6 +92,8 @@ export const API_ROUTES = {
     path: {
       /** Anonymous published-events catalog (GET). */
       listPublic: () => '/' as const,
+      /** Anonymous published-event detail (GET). */
+      getPublic: (documentId: string) => `/id/${routeSegment(documentId)}` as const,
       list: () => '/my-events' as const,
       get: (documentId: string) => `/${documentId}` as const,
       create: () => '/' as const,
