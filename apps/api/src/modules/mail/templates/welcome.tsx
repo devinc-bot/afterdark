@@ -1,6 +1,6 @@
-import type { CSSProperties } from 'react'
 import { Text } from 'react-email'
 import { CtaButton, MailLayout } from './mail-layout'
+import { mailBodyTextStyle } from './mail-tokens'
 
 export type WelcomeEmailProps = {
   preview: string
@@ -25,15 +25,8 @@ export function WelcomeEmail({
 }: WelcomeEmailProps) {
   return (
     <MailLayout preview={preview} title={title} brand={brand} footer={footer} copyright={copyright}>
-      <Text style={bodyTextStyle}>{body}</Text>
+      <Text style={mailBodyTextStyle}>{body}</Text>
       <CtaButton href={ctaUrl} label={cta} />
     </MailLayout>
   )
-}
-
-const bodyTextStyle: CSSProperties = {
-  color: '#e5e2e3',
-  fontSize: '15px',
-  lineHeight: '24px',
-  margin: '0 0 12px',
 }
