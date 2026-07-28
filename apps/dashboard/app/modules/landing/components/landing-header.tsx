@@ -11,9 +11,11 @@ import {
   SheetTitle,
   SheetTrigger,
   AppLogo,
+  ThemeToggle,
   cn,
 } from '@repo/ui'
 import { DASHBOARD_ROUTES } from '~/modules/common/constants/routes'
+import { LanguageToggle } from '~/modules/common/components/language-toggle'
 import { handleSectionNavClick } from '../utils/scroll-to-section.utils'
 
 const LANDING_NAV = [
@@ -27,6 +29,7 @@ const NAV_LINK =
   'inline-flex min-h-10 items-center rounded-full px-3 font-label text-sm text-on-surface-variant transition-colors duration-(--duration-instant) ease-emphasized hover:text-on-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/25'
 const MOBILE_LINK =
   'flex min-h-12 w-full items-center rounded-xl px-3 font-label text-base text-on-surface transition-colors duration-(--duration-instant) ease-emphasized hover:bg-surface-container focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/25'
+const ICON_BUTTON = 'size-10 shrink-0'
 
 export function LandingHeader() {
   const { t } = useTranslation('dashboardLanding')
@@ -38,10 +41,10 @@ export function LandingHeader() {
   }
 
   return (
-    <header className="sticky top-0 z-40 border-b border-hairline/60 bg-background/80 backdrop-blur-md">
+    <header className="sticky top-0 z-40 border-b border-hairline/60 bg-background/85 backdrop-blur-md">
       <nav
         aria-label={t('header.navAria')}
-        className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between gap-4 px-margin-mobile md:px-margin-desktop"
+        className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between gap-3 px-margin-mobile md:px-margin-desktop"
       >
         <Link to={DASHBOARD_ROUTES.home()} className="flex shrink-0 items-center gap-2">
           <AppLogo size="lg" />
@@ -50,7 +53,7 @@ export function LandingHeader() {
           </span>
         </Link>
 
-        <div className="hidden items-center gap-0.5 md:flex">
+        <div className="hidden items-center gap-0.5 lg:flex">
           {LANDING_NAV.map((item) => (
             <a
               key={item.hash}
@@ -63,7 +66,9 @@ export function LandingHeader() {
           ))}
         </div>
 
-        <div className="hidden shrink-0 items-center gap-2 md:flex lg:gap-3">
+        <div className="hidden shrink-0 items-center gap-1 lg:flex lg:gap-2">
+          <LanguageToggle className={ICON_BUTTON} />
+          <ThemeToggle className={ICON_BUTTON} />
           <Button asChild variant="ghost" size="sm">
             <Link to={DASHBOARD_ROUTES.login()}>{t('header.login')}</Link>
           </Button>
@@ -72,56 +77,63 @@ export function LandingHeader() {
           </Button>
         </div>
 
-        <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
-          <SheetTrigger asChild>
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon"
-              className="size-10 shrink-0 md:hidden"
-              aria-label={t('header.openMenu')}
+        <div className="flex items-center gap-1 lg:hidden">
+          <LanguageToggle className={ICON_BUTTON} />
+          <ThemeToggle className={ICON_BUTTON} />
+          <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
+            <SheetTrigger asChild>
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                className="size-10 shrink-0"
+                aria-label={t('header.openMenu')}
+              >
+                <Menu className="size-5" aria-hidden />
+              </Button>
+            </SheetTrigger>
+            <SheetContent
+              side="right"
+              className="flex h-full w-[min(100%,20rem)] flex-col border-hairline/60 bg-background p-0 text-on-surface"
             >
-              <Menu className="size-5" aria-hidden />
-            </Button>
-          </SheetTrigger>
-          <SheetContent
-            side="right"
-            className="flex h-full w-[min(100%,20rem)] flex-col border-hairline/60 bg-background p-0 text-on-surface"
-          >
-            <SheetHeader className="border-b border-hairline/60 px-5 py-5 text-left">
-              <SheetTitle className="flex items-center gap-2 font-display text-lg font-bold tracking-tight">
-                <AppLogo size="lg" />
-                {t('header.brand')}
-              </SheetTitle>
-            </SheetHeader>
+              <SheetHeader className="border-b border-hairline/60 px-5 py-5 text-left">
+                <SheetTitle className="flex items-center gap-2 font-display text-lg font-bold tracking-tight">
+                  <AppLogo size="lg" />
+                  {t('header.brand')}
+                </SheetTitle>
+              </SheetHeader>
 
-            <nav aria-label={t('header.mobileAriaLabel')} className="flex flex-col gap-1 px-3 py-4">
-              {LANDING_NAV.map((item) => (
-                <a
-                  key={item.hash}
-                  href={item.hash}
-                  onClick={(event) => onMobileNavClick(event, item.hash)}
-                  className={MOBILE_LINK}
-                >
-                  {t(item.labelKey)}
-                </a>
-              ))}
-            </nav>
+              <nav
+                aria-label={t('header.mobileAriaLabel')}
+                className="flex flex-col gap-1 px-3 py-4"
+              >
+                {LANDING_NAV.map((item) => (
+                  <a
+                    key={item.hash}
+                    href={item.hash}
+                    onClick={(event) => onMobileNavClick(event, item.hash)}
+                    className={MOBILE_LINK}
+                  >
+                    {t(item.labelKey)}
+                  </a>
+                ))}
+              </nav>
 
-            <div className="mt-auto flex flex-col gap-2 border-t border-hairline/60 px-5 py-5">
-              <SheetClose asChild>
-                <Button asChild variant="outline" size="lg" className="w-full">
-                  <Link to={DASHBOARD_ROUTES.login()}>{t('header.login')}</Link>
-                </Button>
-              </SheetClose>
-              <SheetClose asChild>
-                <Button asChild size="lg" className="w-full">
-                  <Link to={DASHBOARD_ROUTES.register()}>{t('header.register')}</Link>
-                </Button>
-              </SheetClose>
-            </div>
-          </SheetContent>
-        </Sheet>
+              <div className="mt-auto flex flex-col gap-2 border-t border-hairline/60 px-5 py-5">
+                <SheetClose asChild>
+                  <Button asChild variant="outline" size="lg" className="w-full">
+                    <Link to={DASHBOARD_ROUTES.login()}>{t('header.login')}</Link>
+                  </Button>
+                </SheetClose>
+                <SheetClose asChild>
+                  <Button asChild size="lg" className="w-full">
+                    <Link to={DASHBOARD_ROUTES.register()}>{t('header.register')}</Link>
+                  </Button>
+                </SheetClose>
+              </div>
+            </SheetContent>
+          </Sheet>
+        </div>
       </nav>
     </header>
   )
