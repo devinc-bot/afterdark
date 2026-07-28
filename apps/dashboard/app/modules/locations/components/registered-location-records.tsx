@@ -62,11 +62,22 @@ function LocationIdentityCell({ location }: { location: RegisteredLocation }) {
   )
 }
 
-function LocationAddressCell({ address }: { address: string }) {
+function formatLocationAddress(location: RegisteredLocation): string {
+  const streetLine = [location.address, location.street_number]
+    .map((part) => part?.trim())
+    .filter(Boolean)
+    .join(' ')
+
+  return [streetLine, location.city?.trim(), location.state?.trim()].filter(Boolean).join(' · ')
+}
+
+function LocationAddressCell({ location }: { location: RegisteredLocation }) {
+  const label = formatLocationAddress(location)
+
   return (
     <div className="flex min-w-0 items-center gap-1.5 text-sm text-ink-muted">
       <MapPin aria-hidden="true" className="size-3.5 shrink-0" />
-      <span className="truncate">{address}</span>
+      <span className="truncate">{label || '—'}</span>
     </div>
   )
 }
@@ -143,7 +154,7 @@ function LocationRecordRow({
         <LocationIdentityCell location={location} />
       </TableCell>
       <TableCell className="p-6">
-        <LocationAddressCell address={location.address} />
+        <LocationAddressCell location={location} />
       </TableCell>
       <TableCell className="p-6">
         <LocationCapacityCell capacity={location.capacity} />
