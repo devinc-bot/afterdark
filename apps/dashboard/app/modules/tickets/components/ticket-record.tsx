@@ -1,6 +1,9 @@
 import { useState, type ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
   Badge,
   Button,
   Card,
@@ -24,7 +27,7 @@ import {
   TableHeader,
   TableRow,
 } from '@repo/ui'
-import { TICKET_STATUS, TICKET_TYPE, type TicketStatus, type TicketType } from '@repo/types'
+import { TICKET_TYPE, type TicketStatus, type TicketType } from '@repo/types'
 import type { TFunction } from 'i18next'
 import { EllipsisVertical, Eye, Pencil, Trash2 } from 'lucide-react'
 import { TicketViewDialog } from '~/modules/tickets/components/dialog-view-ticket'
@@ -37,8 +40,8 @@ export type TicketRecordItem = {
   id: string
   name: string
   clubName: string
-  clubInitials: string
-  clubAvatarClassName: string
+  eventName: string
+  eventImageUrl: string | null
   ticketType: TicketType
   ticketTypeTone?: 'default' | 'primary' | 'tertiary'
   price: number
@@ -47,76 +50,6 @@ export type TicketRecordItem = {
   revenue: number
   status: TicketStatus
 }
-
-export const TICKET_RECORDS_MOCK: TicketRecordItem[] = [
-  {
-    id: '1',
-    name: 'Ultra VIP Pass',
-    clubName: 'Neon Vault',
-    clubInitials: 'NV',
-    clubAvatarClassName: 'border-primary/40 bg-primary/20 text-primary',
-    ticketType: TICKET_TYPE.VIP,
-    ticketTypeTone: 'primary',
-    price: 450,
-    quantity: 12,
-    totalSold: 1402,
-    revenue: 630_900,
-    status: TICKET_STATUS.ACTIVE,
-  },
-  {
-    id: '2',
-    name: 'General Entry',
-    clubName: 'Cyber Pulse',
-    clubInitials: 'CP',
-    clubAvatarClassName: 'border-hairline-strong bg-surface-container-high text-ink-muted',
-    ticketType: TICKET_TYPE.GENERAL,
-    price: 45,
-    quantity: 500,
-    totalSold: 850,
-    revenue: 38_250,
-    status: TICKET_STATUS.ACTIVE,
-  },
-  {
-    id: '3',
-    name: 'Bottle Service',
-    clubName: 'The Underworld',
-    clubInitials: 'UW',
-    clubAvatarClassName: 'border-tertiary/40 bg-tertiary/15 text-tertiary',
-    ticketType: TICKET_TYPE.VIP,
-    ticketTypeTone: 'primary',
-    price: 1200,
-    quantity: 80,
-    totalSold: 312,
-    revenue: 374_400,
-    status: TICKET_STATUS.ACTIVE,
-  },
-  {
-    id: '4',
-    name: 'Early Bird',
-    clubName: 'Echo Chamber',
-    clubInitials: 'EC',
-    clubAvatarClassName: 'border-outline-variant/60 bg-surface-container text-ink-muted',
-    ticketType: TICKET_TYPE.GENERAL,
-    price: 25,
-    quantity: 0,
-    totalSold: 500,
-    revenue: 12_500,
-    status: TICKET_STATUS.ACTIVE,
-  },
-  {
-    id: '5',
-    name: 'VIP Backstage',
-    clubName: 'Velvet Room',
-    clubInitials: 'VR',
-    clubAvatarClassName: 'border-secondary/50 bg-secondary/20 text-secondary',
-    ticketType: TICKET_TYPE.VIP,
-    price: 150,
-    quantity: 200,
-    totalSold: 145,
-    revenue: 21_750,
-    status: TICKET_STATUS.INACTIVE,
-  },
-]
 
 function formatCurrency(value: number): string {
   return new Intl.NumberFormat('es-AR', {
@@ -140,23 +73,26 @@ function formatSoldCount(value: number): string {
   return value.toLocaleString('es-AR')
 }
 
-function ClubIdentityCell({
-  clubName,
-  clubInitials,
-  clubAvatarClassName,
-}: Pick<TicketRecordItem, 'clubName' | 'clubInitials' | 'clubAvatarClassName'>) {
+function getEventInitials(eventName: string): string {
+  const parts = eventName.trim().split(/\s+/).filter(Boolean)
+  if (parts.length === 0) return '?'
+  if (parts.length === 1) return parts[0]!.slice(0, 2).toUpperCase()
+  return `${parts[0]![0] ?? ''}${parts[1]![0] ?? ''}`.toUpperCase()
+}
+
+function EventIdentityCell({
+  eventName,
+  eventImageUrl,
+}: Pick<TicketRecordItem, 'eventName' | 'eventImageUrl'>) {
   return (
     <div className="flex items-center gap-3">
-      <div
-        className={cn(
-          'flex size-9 shrink-0 items-center justify-center rounded-md border text-xs font-bold uppercase',
-          clubAvatarClassName
-        )}
-        aria-hidden="true"
-      >
-        {clubInitials}
-      </div>
-      <p className="truncate font-semibold text-ink">{clubName}</p>
+      <Avatar className="size-9 shrink-0 rounded-lg" aria-hidden="true">
+        {eventImageUrl ? <AvatarImage src={eventImageUrl} alt="" className="object-cover" /> : null}
+        <AvatarFallback className="rounded-lg bg-surface-container text-xs font-semibold uppercase text-ink-muted">
+          {getEventInitials(eventName)}
+        </AvatarFallback>
+      </Avatar>
+      <p className="min-w-0 truncate font-semibold text-ink">{eventName}</p>
     </div>
   )
 }
@@ -204,12 +140,9 @@ function TicketRecordRow({
   return (
     <TableRow className="border-0">
       <TableCell className="p-6">
-        <ClubIdentityCell
-          clubName={record.clubName}
-          clubInitials={record.clubInitials}
-          clubAvatarClassName={record.clubAvatarClassName}
-        />
+        <EventIdentityCell eventName={record.eventName} eventImageUrl={record.eventImageUrl} />
       </TableCell>
+      <TableCell className="p-6 font-semibold text-ink">{record.clubName}</TableCell>
       <TableCell className="p-6 font-semibold text-ink">{record.name}</TableCell>
       <TableCell className="p-6">
         <TicketTypeBadge
@@ -273,28 +206,28 @@ export type TicketRecordsPagination = {
   onPageChange: (page: number) => void
 }
 
-function TicketRecordsPaginationBar({
-  pagination,
-  previousLabel,
-  nextLabel,
-}: {
-  pagination: TicketRecordsPagination
-  previousLabel: string
-  nextLabel: string
-}) {
+function TicketRecordsPaginationBar({ pagination }: { pagination: TicketRecordsPagination }) {
+  const { t } = useTranslation('tickets')
   const { page, totalPages, onPageChange } = pagination
 
-  if (totalPages < 1) return null
+  if (totalPages <= 1) return null
 
-  const items = getPaginationItems(page, Math.max(totalPages, 1))
+  const items = getPaginationItems(page, totalPages)
 
   return (
-    <div className="border-t border-hairline px-4 py-4 sm:px-6">
-      <Pagination aria-label="Paginación de tickets">
-        <PaginationContent>
+    <div className="flex flex-col gap-3 border-t border-hairline px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:gap-4 sm:px-6">
+      <p
+        className="text-center text-sm tabular-nums text-ink-muted sm:text-left"
+        aria-live="polite"
+      >
+        {t('pagination.pageOf', { page, totalPages })}
+      </p>
+      <Pagination aria-label={t('pagination.label')} className="sm:w-auto sm:justify-end">
+        <PaginationContent className="gap-1.5">
           <PaginationItem>
             <PaginationPrevious
-              text={previousLabel}
+              text={t('pagination.previous')}
+              aria-label={t('pagination.previousAria')}
               disabled={page <= 1}
               onClick={() => onPageChange(page - 1)}
             />
@@ -303,11 +236,15 @@ function TicketRecordsPaginationBar({
           {items.map((item, index) =>
             item === 'ellipsis' ? (
               <PaginationItem key={`ellipsis-${index}`}>
-                <PaginationEllipsis />
+                <PaginationEllipsis label={t('pagination.ellipsis')} />
               </PaginationItem>
             ) : (
               <PaginationItem key={item}>
-                <PaginationButton isActive={item === page} onClick={() => onPageChange(item)}>
+                <PaginationButton
+                  isActive={item === page}
+                  aria-label={t('pagination.goToPage', { page: item })}
+                  onClick={() => onPageChange(item)}
+                >
                   {item}
                 </PaginationButton>
               </PaginationItem>
@@ -316,7 +253,8 @@ function TicketRecordsPaginationBar({
 
           <PaginationItem>
             <PaginationNext
-              text={nextLabel}
+              text={t('pagination.next')}
+              aria-label={t('pagination.nextAria')}
               disabled={page >= totalPages}
               onClick={() => onPageChange(page + 1)}
             />
@@ -403,10 +341,11 @@ export function TicketRecords({
           </div>
         ) : (
           <Card variant="gradient">
-            <Table variant="compact" className="min-w-[1080px]">
+            <Table variant="compact" className="min-w-270">
               <TableHeader>
                 <TableRow>
-                  <TableHead className="p-6">{t('table.club')}</TableHead>
+                  <TableHead className="p-6">{t('table.event')}</TableHead>
+                  <TableHead className="p-6">{t('table.location')}</TableHead>
                   <TableHead className="p-6">{t('table.name')}</TableHead>
                   <TableHead className="p-6">{t('table.ticketType')}</TableHead>
                   <TableHead className="p-6">{t('table.price')}</TableHead>
@@ -428,13 +367,7 @@ export function TicketRecords({
                 ))}
               </TableBody>
             </Table>
-            {pagination ? (
-              <TicketRecordsPaginationBar
-                pagination={pagination}
-                previousLabel={t('pagination.previous')}
-                nextLabel={t('pagination.next')}
-              />
-            ) : null}
+            {pagination ? <TicketRecordsPaginationBar pagination={pagination} /> : null}
           </Card>
         )}
       </section>

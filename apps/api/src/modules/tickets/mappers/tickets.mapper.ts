@@ -11,9 +11,10 @@ const EMPTY_SALES: TicketSalesStats = { totalSold: 0, revenue: 0 }
 
 export function toTicketResponse(
   ticket: TicketSelect,
-  event: Pick<EventSelect, 'documentId'> | null,
+  event: Pick<EventSelect, 'documentId' | 'name'> | null,
   location: Pick<LocationSelect, 'documentId' | 'name'> | null,
-  sales: TicketSalesStats = EMPTY_SALES
+  sales: TicketSalesStats = EMPTY_SALES,
+  eventImageUrl: string | null = null
 ): TicketResponse {
   return {
     documentId: ticket.documentId,
@@ -26,6 +27,8 @@ export function toTicketResponse(
     saleStartsAt: ticket.saleStartsAt,
     saleEndsAt: ticket.saleEndsAt,
     eventId: event?.documentId ?? null,
+    eventName: event?.name ?? null,
+    eventImageUrl,
     locationId: location?.documentId ?? null,
     locationName: location?.name ?? null,
     totalSold: sales.totalSold,

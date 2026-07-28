@@ -90,7 +90,8 @@
   "table": {
     "title": "Ticket inventory detail",
     "registryCount": "{count, plural, one {1 ticket registered} other {# tickets registered}}",
-    "club": "Nightclub",
+    "location": "Location",
+    "event": "Event",
     "name": "Name",
     "ticketType": "Ticket type",
     "price": "Price",
@@ -113,7 +114,13 @@
   },
   "pagination": {
     "previous": "Previous",
-    "next": "Next"
+    "next": "Next",
+    "label": "Tickets pagination",
+    "pageOf": "Page {page} of {totalPages}",
+    "previousAria": "Go to previous page",
+    "nextAria": "Go to next page",
+    "goToPage": "Go to page {page}",
+    "ellipsis": "More pages"
   },
   "delete": {
     "title": "Delete ticket",
