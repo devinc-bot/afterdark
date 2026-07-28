@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { AuthCard } from '~/modules/auth/components/auth-card'
 import { AuthShell } from '~/modules/auth/components/auth-shell'
+import { RegisterForm } from '~/modules/auth/components/register-form'
 import { RequireGuest } from '~/modules/common/components/require-guest'
 import { usePageTitle } from '@repo/ui'
 
@@ -14,7 +14,7 @@ function RegisterPage() {
   return (
     <RequireGuest>
       <AuthShell>
-        <AuthCard />
+        <RegisterForm />
       </AuthShell>
     </RequireGuest>
   )

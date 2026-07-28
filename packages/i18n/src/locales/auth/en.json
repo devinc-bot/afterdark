@@ -1,8 +1,4 @@
 {
-  "tabs": {
-    "login": "Sign in",
-    "register": "Register"
-  },
   "login": {
     "metaTitle": "Sign in · {appNameAdmin}",
     "metaTitleWeb": "Sign in · {appName}",

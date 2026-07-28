@@ -53,7 +53,7 @@ function ExistingImagePreview({ image, savedLabel }: { image: UploadedImage; sav
           src={image.url}
         />
       </div>
-      <figcaption className="border-border border-t px-4 py-3">
+      <figcaption className="border-hairline border-t px-4 py-3">
         <p className="truncate font-medium text-sm">{image.name}</p>
         <p className="text-muted-foreground text-xs">{savedLabel}</p>
       </figcaption>

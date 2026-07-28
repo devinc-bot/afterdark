@@ -1,8 +1,4 @@
 {
-  "tabs": {
-    "login": "Entrar",
-    "register": "Registrarse"
-  },
   "login": {
     "metaTitle": "Iniciar sesión · {appNameAdmin}",
     "metaTitleWeb": "Iniciar sesión · {appName}",
