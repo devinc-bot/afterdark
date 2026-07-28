@@ -1,6 +1,9 @@
 import type { ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
   Badge,
   Button,
   Card,
@@ -39,23 +42,23 @@ function formatDateTime(value: Date): string {
   }).format(value)
 }
 
-function ClubIdentityCell({
-  clubName,
-  clubInitials,
-  clubAvatarClassName,
-}: Pick<EventRecordItem, 'clubName' | 'clubInitials' | 'clubAvatarClassName'>) {
+function getEventInitials(eventName: string): string {
+  const parts = eventName.trim().split(/\s+/).filter(Boolean)
+  if (parts.length === 0) return '?'
+  if (parts.length === 1) return parts[0]!.slice(0, 2).toUpperCase()
+  return `${parts[0]![0] ?? ''}${parts[1]![0] ?? ''}`.toUpperCase()
+}
+
+function EventIdentityCell({ name, imageUrl }: Pick<EventRecordItem, 'name' | 'imageUrl'>) {
   return (
     <div className="flex items-center gap-3">
-      <div
-        className={cn(
-          'flex size-9 shrink-0 items-center justify-center rounded-md border text-xs font-bold uppercase',
-          clubAvatarClassName
-        )}
-        aria-hidden="true"
-      >
-        {clubInitials}
-      </div>
-      <p className="truncate font-semibold text-ink">{clubName}</p>
+      <Avatar className="size-9 shrink-0 rounded-lg" aria-hidden="true">
+        {imageUrl ? <AvatarImage src={imageUrl} alt="" className="object-cover" /> : null}
+        <AvatarFallback className="rounded-lg bg-surface-container text-xs font-semibold uppercase text-ink-muted">
+          {getEventInitials(name)}
+        </AvatarFallback>
+      </Avatar>
+      <p className="min-w-0 truncate font-semibold text-ink">{name}</p>
     </div>
   )
 }
@@ -96,13 +99,9 @@ function EventRecordRow({
   return (
     <TableRow className="border-0">
       <TableCell className="p-6">
-        <ClubIdentityCell
-          clubName={record.clubName}
-          clubInitials={record.clubInitials}
-          clubAvatarClassName={record.clubAvatarClassName}
-        />
+        <EventIdentityCell name={record.name} imageUrl={record.imageUrl} />
       </TableCell>
-      <TableCell className="p-6 font-semibold text-ink">{record.name}</TableCell>
+      <TableCell className="p-6 font-semibold text-ink">{record.clubName}</TableCell>
       <TableCell className="p-6 text-ink">{formatDateTime(record.startsAt)}</TableCell>
       <TableCell className="p-6 text-ink">{formatDateTime(record.endsAt)}</TableCell>
       <TableCell className="p-6">
@@ -146,9 +145,8 @@ function EventRecordRow({
 export type EventRecordItem = {
   id: string
   name: string
+  imageUrl: string | null
   clubName: string
-  clubInitials: string
-  clubAvatarClassName: string
   startsAt: Date
   endsAt: Date
   status: EventStatus
@@ -221,8 +219,8 @@ function EventRecordsHead() {
   return (
     <TableHeader>
       <TableRow>
-        <TableHead className="p-6">{t('table.location')}</TableHead>
         <TableHead className="p-6">{t('table.event')}</TableHead>
+        <TableHead className="p-6">{t('table.location')}</TableHead>
         <TableHead className="p-6">{t('table.startsAt')}</TableHead>
         <TableHead className="p-6">{t('table.endsAt')}</TableHead>
         <TableHead className="p-6">{t('table.status')}</TableHead>
@@ -247,12 +245,12 @@ function EventRecordsSkeleton() {
             <TableRow key={rowKey} className="border-0">
               <TableCell className="p-6">
                 <div className="flex items-center gap-3">
-                  <Skeleton className="size-9 shrink-0 rounded-md" />
-                  <Skeleton className="h-4 w-28 max-w-full" />
+                  <Skeleton className="size-9 shrink-0 rounded-lg" />
+                  <Skeleton className="h-4 w-36 max-w-full" />
                 </div>
               </TableCell>
               <TableCell className="p-6">
-                <Skeleton className="h-4 w-36 max-w-full" />
+                <Skeleton className="h-4 w-28 max-w-full" />
               </TableCell>
               <TableCell className="p-6">
                 <Skeleton className="h-4 w-24" />

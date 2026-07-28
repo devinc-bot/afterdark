@@ -45,7 +45,7 @@ function fileKey(file: File, index: number): string {
 
 function ExistingImagePreview({ image, savedLabel }: { image: UploadedImage; savedLabel: string }) {
   return (
-    <figure className="overflow-hidden rounded-lg border border-border bg-card">
+    <figure className="overflow-hidden rounded-lg border border-hairline bg-card">
       <div className="relative aspect-4/3 w-full overflow-hidden bg-muted/30">
         <img
           alt={image.name}
@@ -53,7 +53,7 @@ function ExistingImagePreview({ image, savedLabel }: { image: UploadedImage; sav
           src={image.url}
         />
       </div>
-      <figcaption className="border-border border-t px-3 py-2">
+      <figcaption className="border-border border-t px-4 py-3">
         <p className="truncate font-medium text-sm">{image.name}</p>
         <p className="text-muted-foreground text-xs">{savedLabel}</p>
       </figcaption>
@@ -135,7 +135,7 @@ export function ImageUploadField<T extends UploadedImage>({
               <ExistingImagePreview image={image} savedLabel={texts.saved} />
               <Button
                 aria-label={texts.remove(image.name)}
-                className="absolute top-2 right-2 text-ink-muted hover:text-ink"
+                className="absolute top-2 right-2 text-inverse-surface hover:text-inverse-surface bg-background/20"
                 onClick={() => handleRemoveExisting(image.documentId)}
                 size="icon"
                 type="button"
@@ -151,7 +151,7 @@ export function ImageUploadField<T extends UploadedImage>({
               <FilePreview file={file} />
               <Button
                 aria-label={texts.remove(file.name)}
-                className="absolute top-2 right-2 text-ink-muted hover:text-ink"
+                className="absolute top-2 right-2 text-inverse-surface hover:text-inverse-surface bg-background/20"
                 onClick={() => handleRemoveNew(index)}
                 size="icon"
                 type="button"
