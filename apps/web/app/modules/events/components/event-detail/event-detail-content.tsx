@@ -6,6 +6,7 @@ import { PAGE_HEADER_HEADING } from '~/modules/common/components/page-header'
 import { WEB_ROUTES } from '~/modules/common/constants/routes'
 import { formatEventAddress, formatEventWhen } from '../../utils/events-discover-format'
 import { EventDetailCarousel } from './event-detail-carousel'
+import { EventDetailLocationBento } from './event-detail-location-bento'
 import { EventDetailMap } from './event-detail-map'
 import { EventDetailPurchasePanel } from './event-detail-purchase-panel'
 import { EventDetailShareButton } from './event-detail-share-button'
@@ -38,7 +39,7 @@ export function EventDetailContent({ event }: EventDetailContentProps) {
       </Link>
 
       <div className="relative z-10 mt-6 w-full">
-        <EventDetailCarousel images={event.images} eventName={event.name} variant="hero" />
+        <EventDetailCarousel images={event.images} eventName={event.name} />
       </div>
 
       <header className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between sm:gap-6">
@@ -144,12 +145,9 @@ export function EventDetailContent({ event }: EventDetailContentProps) {
               {t('discover.detail.locationGalleryHint')}
             </p>
           </div>
-          <EventDetailCarousel
+          <EventDetailLocationBento
             images={event.locationImages}
-            eventName={event.locationName}
-            variant="gallery"
-            ariaLabelKey="discover.detail.locationCarouselAriaLabel"
-            altKey="discover.detail.locationCarouselAlt"
+            locationName={event.locationName}
           />
         </section>
       ) : null}
