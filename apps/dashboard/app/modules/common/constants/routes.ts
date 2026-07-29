@@ -1,6 +1,6 @@
 import { CLIENT_ROUTES } from '@repo/common'
 
-const { resetPassword, authCallback, login } = CLIENT_ROUTES
+const { resetPassword, registerConfirm, authCallback, login } = CLIENT_ROUTES
 
 export const DASHBOARD_ROUTES = {
   home: () => '/dashboard' as const,
@@ -18,6 +18,7 @@ export const DASHBOARD_ROUTES = {
   settings: () => '/settings' as const,
   login,
   register: () => '/register' as const,
+  registerConfirm,
   forgotPassword: () => '/forgot-password' as const,
   resetPassword,
   authCallback,
@@ -26,6 +27,7 @@ export const DASHBOARD_ROUTES = {
 export const AUTH_ROUTE_PATHS = new Set<string>([
   DASHBOARD_ROUTES.login(),
   DASHBOARD_ROUTES.register(),
+  DASHBOARD_ROUTES.registerConfirm(),
   DASHBOARD_ROUTES.forgotPassword(),
   DASHBOARD_ROUTES.resetPassword(),
   DASHBOARD_ROUTES.authCallback(),

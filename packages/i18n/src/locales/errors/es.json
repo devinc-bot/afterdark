@@ -19,6 +19,8 @@
     "REFRESH_TOKEN_INVALID": "Token de refresco inválido.",
     "PASSWORD_RESET_TOKEN_INVALID": "El enlace no es válido o ya expiró.",
     "PASSWORD_RESET_RATE_LIMITED": "Demasiados intentos. Probá de nuevo más tarde.",
+    "USER_REGISTRATION_TOKEN_INVALID": "El enlace no es válido o ya expiró.",
+    "USER_REGISTRATION_RATE_LIMITED": "Demasiados intentos. Probá de nuevo más tarde.",
     "ROLE_NOT_CONFIGURED": "No pudimos completar el registro. Contactá al administrador.",
     "REGISTER_SUCCESS": "Cuenta creada correctamente. Ya podés iniciar sesión."
   },

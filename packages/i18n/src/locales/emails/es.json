@@ -23,6 +23,14 @@
     "expires": "Este enlace vence en {minutes} minutos.",
     "ignore": "Si no solicitaste este cambio, ignorá este correo."
   },
+  "userRegistration": {
+    "subject": "Confirmá tu cuenta",
+    "title": "Confirmá tu email",
+    "body": "Para terminar de crear tu cuenta, confirmá tu correo con el enlace de abajo.",
+    "cta": "Confirmar cuenta",
+    "expires": "Este enlace vence en {minutes} minutos.",
+    "ignore": "Si no creaste una cuenta, ignorá este correo."
+  },
   "welcome": {
     "subject": "Bienvenido a {appNameDisplay}",
     "title": "¡Bienvenido, {name}!",

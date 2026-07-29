@@ -1,6 +1,6 @@
-import type { CSSProperties } from 'react'
 import { Text } from 'react-email'
 import { CtaButton, MailLayout } from './mail-layout'
+import { mailBodyTextStyle, mailMutedTextStyle } from './mail-tokens'
 
 export type PasswordResetEmailProps = {
   preview: string
@@ -29,24 +29,10 @@ export function PasswordResetEmail({
 }: PasswordResetEmailProps) {
   return (
     <MailLayout preview={preview} title={title} brand={brand} footer={footer} copyright={copyright}>
-      <Text style={bodyTextStyle}>{body}</Text>
-      {expires ? <Text style={mutedTextStyle}>{expires}</Text> : null}
+      <Text style={mailBodyTextStyle}>{body}</Text>
+      {expires ? <Text style={mailMutedTextStyle}>{expires}</Text> : null}
       <CtaButton href={url} label={cta} />
-      <Text style={mutedTextStyle}>{ignore}</Text>
+      <Text style={mailMutedTextStyle}>{ignore}</Text>
     </MailLayout>
   )
-}
-
-const bodyTextStyle: CSSProperties = {
-  color: '#e5e2e3',
-  fontSize: '15px',
-  lineHeight: '24px',
-  margin: '0 0 12px',
-}
-
-const mutedTextStyle: CSSProperties = {
-  color: '#d0c3cf',
-  fontSize: '13px',
-  lineHeight: '20px',
-  margin: '0 0 8px',
 }

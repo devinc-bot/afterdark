@@ -32,6 +32,7 @@
 | 025 | `orm-settings`                     | Configuración del ORM (Drizzle)           | `done`        | `db`                                                    | Prefijo `timestamp` en migraciones nuevas (`drizzle.config.ts`); existentes `0000`…`0020` intactas. Ver `spec/features/025-orm-settings/`.                                                                                                                                                                                                                                                                                                   |
 | 026 | `event-create-edit-page`           | Crear/editar evento en pantalla (wizard)  | `approved`    | `api`, `dashboard`                                      | Wizard 2 steps (ubicación → datos evento); create + edit; imágenes evento opcionales (máx. 2) y límite 4 en ubicación. Depende de `002`/`010`. Reemplaza `011`.                                                                                                                                                                                                                                                                              |
 | 027 | `dashboard-landing`                | Landing del dashboard                     | `draft`       | `dashboard`                                             | Landing pública de marketing para dueños de clubes (pre-login) en la ruta `/` del dashboard: explica el producto e invita a crear cuenta / iniciar sesión. Estilo `023-web-landing`, orientada al negocio. Depende de `001`. Ver `spec/features/027-dashboard-landing/`.                                                                                                                                                                     |
+| 028 | `user-register-email-verification` | Verificación de email en registro cliente + dueño | `in-progress` | `api`, `web`, `dashboard` | Registro manual user/owner: request → mail con token → confirm crea cuenta + login. Google fuera. Depende de `001`, `018`, `019`. Ver `spec/features/028-user-register-email-verification/`. |
 
 ## Status
 
@@ -74,6 +75,7 @@
 025-orm-settings                     →  (sin deps; infra DX en packages/db)
 026-event-create-edit-page           →  requiere 002, 010
 027-dashboard-landing                →  requiere 001 (auth-sessions); referencia 023 (web-landing)
+028-user-register-email-verification →  requiere 001 (auth), 018 (web-user-registration), 019 (email-service); referencia 021 (password-reset)
 ```
 
 ## Decisiones de prioridad

@@ -1,5 +1,6 @@
 import type { CSSProperties, ReactNode } from 'react'
 import { Body, Container, Head, Heading, Hr, Html, Link, Preview, Section, Text } from 'react-email'
+import { MAIL_COLOR, MAIL_FONT, MAIL_RADIUS } from './mail-tokens'
 
 type MailLayoutProps = {
   preview: string
@@ -20,7 +21,11 @@ export function MailLayout({
 }: MailLayoutProps) {
   return (
     <Html lang="es">
-      <Head />
+      <Head>
+        <style>{`
+          @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Montserrat:wght@600;700&display=swap');
+        `}</style>
+      </Head>
       <Preview>{preview}</Preview>
       <Body style={bodyStyle}>
         <Container style={containerStyle}>
@@ -45,24 +50,24 @@ export function CtaButton({ href, label }: { href: string; label: string }) {
 }
 
 const bodyStyle: CSSProperties = {
-  backgroundColor: '#131314',
-  color: '#e5e2e3',
-  fontFamily:
-    'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
+  backgroundColor: MAIL_COLOR.background,
+  color: MAIL_COLOR.foreground,
+  fontFamily: MAIL_FONT.body,
   margin: 0,
   padding: '32px 16px',
 }
 
 const containerStyle: CSSProperties = {
-  backgroundColor: '#201f20',
-  borderRadius: '8px',
+  backgroundColor: MAIL_COLOR.surfaceRaised,
+  borderRadius: MAIL_RADIUS.control,
   margin: '0 auto',
   maxWidth: '480px',
   padding: '32px 28px',
 }
 
 const brandStyle: CSSProperties = {
-  color: '#ecb1ff',
+  color: MAIL_COLOR.primary,
+  fontFamily: MAIL_FONT.display,
   fontSize: '14px',
   fontWeight: 700,
   letterSpacing: '-0.02em',
@@ -70,31 +75,35 @@ const brandStyle: CSSProperties = {
 }
 
 const headingStyle: CSSProperties = {
-  color: '#e5e2e3',
+  color: MAIL_COLOR.foreground,
+  fontFamily: MAIL_FONT.display,
   fontSize: '24px',
   fontWeight: 700,
   lineHeight: '32px',
+  letterSpacing: '-0.02em',
   margin: '0 0 16px',
 }
 
 const hrStyle: CSSProperties = {
-  borderColor: '#4d444e',
-  borderTop: '1px solid #4d444e',
+  borderColor: MAIL_COLOR.hairline,
+  borderTop: `1px solid ${MAIL_COLOR.hairline}`,
   margin: '28px 0 16px',
 }
 
 const mutedStyle: CSSProperties = {
-  color: '#998d99',
+  color: MAIL_COLOR.inkMuted,
+  fontFamily: MAIL_FONT.body,
   fontSize: '12px',
   lineHeight: '18px',
   margin: '0 0 8px',
 }
 
 const buttonStyle: CSSProperties = {
-  backgroundColor: '#ecb1ff',
-  borderRadius: '8px',
-  color: '#4a1a5e',
+  backgroundColor: MAIL_COLOR.primary,
+  borderRadius: MAIL_RADIUS.control,
+  color: MAIL_COLOR.onPrimary,
   display: 'inline-block',
+  fontFamily: MAIL_FONT.body,
   fontSize: '15px',
   fontWeight: 600,
   marginTop: '20px',

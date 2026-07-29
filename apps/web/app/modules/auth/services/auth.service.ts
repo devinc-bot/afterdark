@@ -1,5 +1,6 @@
 import { createServerFn } from '@tanstack/react-start'
 import {
+  confirmUserRegistrationSchema,
   forgotPasswordSchema,
   loginSchema,
   registerUserSchema,
@@ -9,7 +10,7 @@ import { translateSync } from '@repo/i18n'
 import { throwApiServiceError, buildApiPath } from '@repo/common'
 import { api } from '~/config/api'
 import { API_ROUTES } from '~/config/api'
-import type { LoginResponse, RegisterResponse } from '@repo/types'
+import type { LoginResponse } from '@repo/types'
 
 async function postAuth<T>(path: string, data: unknown, fallback: string): Promise<T> {
   try {
@@ -29,13 +30,23 @@ export const loginFn = createServerFn({ method: 'POST' })
     )
   })
 
-export const registerUserFn = createServerFn({ method: 'POST' })
+export const requestRegisterUserFn = createServerFn({ method: 'POST' })
   .inputValidator(registerUserSchema)
-  .handler(async ({ data }): Promise<RegisterResponse> => {
-    return postAuth<RegisterResponse>(
-      buildApiPath(API_ROUTES.auth, API_ROUTES.auth.path.registerUser()),
+  .handler(async ({ data }): Promise<void> => {
+    return postAuth<void>(
+      buildApiPath(API_ROUTES.auth, API_ROUTES.auth.path.registerUserRequest()),
       data,
       translateSync('auth:register.error.fallback')
+    )
+  })
+
+export const confirmUserRegistrationFn = createServerFn({ method: 'POST' })
+  .inputValidator(confirmUserRegistrationSchema)
+  .handler(async ({ data }): Promise<LoginResponse> => {
+    return postAuth<LoginResponse>(
+      buildApiPath(API_ROUTES.auth, API_ROUTES.auth.path.registerUserConfirm()),
+      data,
+      translateSync('auth:register.confirm.error.fallback')
     )
   })
 

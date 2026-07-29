@@ -210,6 +210,8 @@
       "locationGalleryHint": "A closer look at the place before you go.",
       "locationBentoAriaLabel": "Venue photo gallery",
       "locationBentoAlt": "Image {index} of the venue {name}",
+      "locationCarouselAriaLabel": "Venue image carousel",
+      "locationCarouselAlt": "Image of the venue {name}",
       "map": "Map",
       "mapAriaLabel": "Map of the event location",
       "mapLoading": "Loading map…",

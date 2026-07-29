@@ -210,6 +210,8 @@
       "locationGalleryHint": "Un vistazo al espacio antes de ir.",
       "locationBentoAriaLabel": "Galería de fotos del lugar",
       "locationBentoAlt": "Imagen {index} del lugar {name}",
+      "locationCarouselAriaLabel": "Carrusel de imágenes del lugar",
+      "locationCarouselAlt": "Imagen del lugar {name}",
       "map": "Mapa",
       "mapAriaLabel": "Mapa de la ubicación del evento",
       "mapLoading": "Cargando mapa…",

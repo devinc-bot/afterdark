@@ -78,6 +78,26 @@
     "submit": "Create account",
     "submitting": "Creating…",
     "alreadyHaveAccount": "Already have an account?",
+    "checkEmail": {
+      "title": "Check your email",
+      "description": "We sent a link to {email} to confirm your account. The link expires in 60 minutes.",
+      "backToLogin": "Back to sign in"
+    },
+    "confirm": {
+      "metaTitle": "Confirm account · {appName}",
+      "title": "Confirming your account",
+      "loading": "We're creating your account…",
+      "invalidToken": "This link is invalid or has expired.",
+      "expiredTitle": "This link expired",
+      "expiredDescription": "Start registration again to get a new verification email.",
+      "alreadyVerifiedTitle": "Your email is already verified",
+      "alreadyVerifiedDescription": "This account was already confirmed. You can sign in.",
+      "goToLogin": "Sign in",
+      "backToRegister": "Back to registration",
+      "error": {
+        "fallback": "We couldn't confirm your account. Try again in a few minutes."
+      }
+    },
     "error": {
       "emailTaken": "This email is already registered.",
       "generic": "Could not create account. Please try again.",

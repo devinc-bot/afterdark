@@ -2,6 +2,7 @@ import {
   Inject,
   Injectable,
   InternalServerErrorException,
+  Logger,
   ServiceUnavailableException,
 } from '@nestjs/common'
 import { Resend } from 'resend'
@@ -14,6 +15,7 @@ import type { SendMailInput, SendMailResult } from '../types'
 @Injectable()
 export class ResendMailSender implements MailSender {
   private readonly client: Resend | null
+  private readonly logger = new Logger(ResendMailSender.name)
 
   constructor(@Inject(TranslationService) private readonly ts: TranslationService) {
     this.client = ENV.RESEND_API_KEY ? new Resend(ENV.RESEND_API_KEY) : null
@@ -33,6 +35,7 @@ export class ResendMailSender implements MailSender {
     })
 
     if (error || !data?.id) {
+      this.logger.error(`Resend send failed: ${error?.message ?? 'missing email id'}`, error)
       throw new InternalServerErrorException(this.ts.translateError(MAIL_ERROR_CODE.SEND_FAILED))
     }
 
