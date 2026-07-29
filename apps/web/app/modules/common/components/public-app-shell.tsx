@@ -2,7 +2,7 @@ import type { ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import { VT, cn, vtStyle } from '@repo/ui'
 import { LandingFooter } from '~/modules/landing/components/footer'
-import { LandingHeader } from '~/modules/landing/components/landing-header'
+import { LandingHeader } from '~/modules/common/components/landing-header'
 import { LANDING_FOCUS_RING } from '~/modules/landing/constants/layout'
 
 type PublicAppShellProps = {
@@ -18,7 +18,7 @@ export function PublicAppShell({ children }: PublicAppShellProps) {
       <a
         href="#contenido"
         className={cn(
-          'absolute top-4 left-4 z-50 -translate-y-16 rounded-control bg-on-surface px-4 py-2.5 font-label text-sm font-medium text-background transition-transform duration-(--duration-fast) ease-emphasized focus:translate-y-0 motion-reduce:transition-none',
+          'absolute top-4 left-4 z-50 -translate-y-16 rounded-app bg-on-surface px-4 py-2.5 font-label text-sm font-medium text-background transition-transform duration-(--duration-fast) ease-emphasized focus:translate-y-0 motion-reduce:transition-none',
           LANDING_FOCUS_RING
         )}
       >

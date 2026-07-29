@@ -2,7 +2,6 @@ import type { LocationImageResponse } from '@repo/types'
 import {
   Button,
   Card,
-  cn,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -33,9 +32,6 @@ export type RegisteredLocation = {
   latitude?: number | null
   longitude?: number | null
 }
-
-const locationActionIconClassName = '!size-[20px] shrink-0'
-const locationActionItemClassName = 'gap-3 py-2.5 text-base'
 
 function LocationIdentityCell({ location }: { location: RegisteredLocation }) {
   const { t } = useTranslation('locations')
@@ -119,19 +115,16 @@ function LocationRecordActions({
           <EllipsisVertical aria-hidden="true" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="min-w-44 p-1.5">
-        <DropdownMenuItem
-          className={locationActionItemClassName}
-          onClick={() => onEdit?.(location)}
-        >
-          <Pencil aria-hidden="true" className={locationActionIconClassName} />
+      <DropdownMenuContent align="end" className="min-w-44">
+        <DropdownMenuItem onClick={() => onEdit?.(location)}>
+          <Pencil aria-hidden="true" />
           {t('registry.row.edit')}
         </DropdownMenuItem>
         <DropdownMenuItem
-          className={cn(locationActionItemClassName, 'text-error focus:text-error')}
+          className="text-error focus:text-error"
           onClick={() => onDelete?.(location)}
         >
-          <Trash2 aria-hidden="true" className={cn(locationActionIconClassName, 'text-error')} />
+          <Trash2 aria-hidden="true" className="text-error" />
           {t('registry.row.delete')}
         </DropdownMenuItem>
       </DropdownMenuContent>

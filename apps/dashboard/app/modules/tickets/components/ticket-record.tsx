@@ -34,7 +34,6 @@ import { TicketViewDialog } from '~/modules/tickets/components/dialog-view-ticke
 import { TICKET_TAB, type TicketTab } from '~/modules/tickets/constants/tickets-tabs.constants'
 
 const ticketActionIconClassName = '!size-[20px] shrink-0'
-const ticketActionItemClassName = 'gap-3 py-2.5 text-base'
 
 export type TicketRecordItem = {
   id: string
@@ -171,22 +170,16 @@ function TicketRecordRow({
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="min-w-44 p-1.5">
-            <DropdownMenuItem
-              className={ticketActionItemClassName}
-              onClick={() => onEdit?.(record)}
-            >
+            <DropdownMenuItem onClick={() => onEdit?.(record)}>
               <Pencil aria-hidden="true" className={ticketActionIconClassName} />
               {t('table.actionEdit')}
             </DropdownMenuItem>
-            <DropdownMenuItem
-              className={ticketActionItemClassName}
-              onClick={() => onView?.(record)}
-            >
+            <DropdownMenuItem onClick={() => onView?.(record)}>
               <Eye aria-hidden="true" className={ticketActionIconClassName} />
               {t('table.actionView')}
             </DropdownMenuItem>
             <DropdownMenuItem
-              className={cn(ticketActionItemClassName, 'text-error focus:text-error')}
+              className="text-error focus:text-error"
               onClick={() => onDelete?.(record)}
             >
               <Trash2 aria-hidden="true" className={cn(ticketActionIconClassName, 'text-error')} />

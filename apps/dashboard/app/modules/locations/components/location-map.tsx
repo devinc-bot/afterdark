@@ -130,7 +130,7 @@ export function LocationMap({
   if (!mounted) {
     return (
       <div
-        className={`bg-muted/40 flex h-[280px] items-center justify-center overflow-hidden rounded-control ${className ?? ''}`}
+        className={`bg-muted/40 flex h-70 items-center justify-center overflow-hidden rounded-app ${className ?? ''}`}
       >
         <p className="text-sm text-ink-muted">{t('map.mapLoading')}</p>
       </div>
@@ -139,7 +139,7 @@ export function LocationMap({
 
   return (
     <div className={`flex flex-col gap-2 ${className ?? ''}`}>
-      <div className="relative h-[280px] overflow-hidden rounded-control border border-hairline">
+      <div className="relative h-70 overflow-hidden rounded-app border border-hairline">
         <Map
           center={initialCenter}
           zoom={hasPin ? LOCATION_MAP_SELECTED_ZOOM : DEFAULT_LOCATION_MAP_ZOOM}

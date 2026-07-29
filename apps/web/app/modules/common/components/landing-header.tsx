@@ -26,8 +26,11 @@ import {
   LANDING_CTA_PRIMARY,
   LANDING_FOCUS_RING,
   LANDING_FOCUS_RING_ON_MEDIA,
-} from '../constants/layout'
-import { handleSectionNavClick, sectionIdFromHash } from '../utils/scroll-to-section.utils'
+} from '~/modules/landing/constants/layout'
+import {
+  handleSectionNavClick,
+  sectionIdFromHash,
+} from '~/modules/landing/utils/scroll-to-section.utils'
 
 /** Attendee path first. Organizer path lives in #organizadores + footer. */
 const LANDING_SECTION_NAV = [
@@ -52,14 +55,14 @@ export function LandingHeader() {
   const focusRing = onMedia ? LANDING_FOCUS_RING_ON_MEDIA : LANDING_FOCUS_RING
 
   const navLink = cn(
-    'inline-flex min-h-11 items-center rounded-control px-2.5 font-label text-sm transition-colors duration-(--duration-instant) ease-emphasized',
+    'inline-flex min-h-11 items-center rounded-app px-2.5 font-label text-sm transition-colors duration-(--duration-instant) ease-emphasized',
     onMedia
       ? 'text-white/75 hover:text-white aria-[current=page]:text-white'
       : 'text-on-surface-variant hover:text-on-surface aria-[current=page]:text-on-surface',
     focusRing
   )
   const navLinkStatic = cn(
-    'inline-flex min-h-11 cursor-default items-center rounded-control px-2.5 font-label text-sm',
+    'inline-flex min-h-11 cursor-default items-center rounded-app px-2.5 font-label text-sm',
     onMedia ? 'text-white/60' : 'text-on-surface-variant'
   )
   const authLink = cn(
@@ -68,7 +71,7 @@ export function LandingHeader() {
     focusRing
   )
   const iconButton = cn(
-    'size-11 shrink-0 rounded-control',
+    'size-11 shrink-0 rounded-app',
     onMedia ? 'text-white hover:bg-white/10 hover:text-white' : 'text-on-surface'
   )
 
@@ -113,7 +116,7 @@ export function LandingHeader() {
           <Link
             to={WEB_ROUTES.home()}
             className={cn(
-              'flex shrink-0 items-center gap-2 rounded-control px-0 transition-opacity duration-(--duration-instant) ease-emphasized hover:opacity-80',
+              'flex shrink-0 items-center gap-2 rounded-app px-0 transition-opacity duration-(--duration-instant) ease-emphasized hover:opacity-80',
               onMedia ? 'text-white' : 'text-on-surface',
               focusRing
             )}
@@ -213,7 +216,7 @@ export function LandingHeader() {
                     <Link
                       to={WEB_ROUTES.events()}
                       className={cn(
-                        'flex min-h-12 w-full items-center rounded-control px-3 font-label text-base text-on-surface transition-colors duration-(--duration-instant) ease-emphasized hover:bg-surface-container aria-[current=page]:bg-surface-container',
+                        'flex min-h-12 w-full items-center rounded-app px-3 font-label text-base text-on-surface transition-colors duration-(--duration-instant) ease-emphasized hover:bg-surface-container aria-[current=page]:bg-surface-container',
                         LANDING_FOCUS_RING
                       )}
                     >
@@ -222,7 +225,7 @@ export function LandingHeader() {
                   </SheetClose>
                   {showAuthChrome ? (
                     <span
-                      className="flex min-h-12 w-full cursor-default items-center rounded-control px-3 font-label text-base text-on-surface opacity-60"
+                      className="flex min-h-12 w-full cursor-default items-center rounded-app px-3 font-label text-base text-on-surface opacity-60"
                       aria-disabled="true"
                       title={t('nav.ticketsSoon')}
                     >
@@ -235,7 +238,7 @@ export function LandingHeader() {
                         href={isLanding ? item.href : `${WEB_ROUTES.home()}${item.href}`}
                         onClick={(event) => onMobileSectionClick(event, item.href)}
                         className={cn(
-                          'flex min-h-12 w-full items-center rounded-control px-3 font-label text-base text-on-surface transition-colors duration-(--duration-instant) ease-emphasized hover:bg-surface-container',
+                          'flex min-h-12 w-full items-center rounded-app px-3 font-label text-base text-on-surface transition-colors duration-(--duration-instant) ease-emphasized hover:bg-surface-container',
                           LANDING_FOCUS_RING
                         )}
                       >
@@ -252,7 +255,7 @@ export function LandingHeader() {
                         to={WEB_ROUTES.login()}
                         variant="outline"
                         size="lg"
-                        className="min-h-11 w-full rounded-control hover:text-on-surface"
+                        className="min-h-11 w-full rounded-app hover:text-on-surface"
                       >
                         {t('nav.login')}
                       </Link>

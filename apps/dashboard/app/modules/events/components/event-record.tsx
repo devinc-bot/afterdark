@@ -32,9 +32,6 @@ import { EVENT_STATUS, type EventStatus } from '@repo/types'
 import type { TFunction } from 'i18next'
 import { EllipsisVertical, Pencil, Trash2 } from 'lucide-react'
 
-const eventActionIconClassName = '!size-[20px] shrink-0'
-const eventActionItemClassName = 'gap-3 py-2.5 text-base'
-
 function formatDateTime(value: Date): string {
   return new Intl.DateTimeFormat('es-AR', {
     dateStyle: 'short',
@@ -124,15 +121,15 @@ function EventRecordRow({
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="min-w-44 p-1.5">
-            <DropdownMenuItem className={eventActionItemClassName} onClick={() => onEdit?.(record)}>
-              <Pencil aria-hidden="true" className={eventActionIconClassName} />
+            <DropdownMenuItem onClick={() => onEdit?.(record)}>
+              <Pencil aria-hidden="true" />
               {t('table.actionEdit')}
             </DropdownMenuItem>
             <DropdownMenuItem
-              className={cn(eventActionItemClassName, 'text-error focus:text-error')}
+              className="text-error focus:text-error"
               onClick={() => onDelete?.(record)}
             >
-              <Trash2 aria-hidden="true" className={cn(eventActionIconClassName, 'text-error')} />
+              <Trash2 aria-hidden="true" className="text-error" />
               {t('table.actionDelete')}
             </DropdownMenuItem>
           </DropdownMenuContent>

@@ -59,7 +59,7 @@ const SheetContent = React.forwardRef<
       {children}
       <SheetPrimitive.Close
         aria-label={closeLabel}
-        className="absolute top-3 right-3 flex size-10 cursor-pointer items-center justify-center rounded-control text-ink-muted opacity-80 ring-offset-background transition-[color,opacity,background-color] duration-(--duration-instant) ease-emphasized hover:bg-surface-strong hover:text-ink hover:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink disabled:pointer-events-none motion-reduce:transition-none"
+        className="absolute top-3 right-3 flex size-10 cursor-pointer items-center justify-center rounded-app text-ink-muted opacity-80 ring-offset-background transition-[color,opacity,background-color] duration-(--duration-instant) ease-emphasized hover:bg-surface-strong hover:text-ink hover:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink disabled:pointer-events-none motion-reduce:transition-none"
       >
         <X className="size-5" strokeWidth={2} aria-hidden />
       </SheetPrimitive.Close>

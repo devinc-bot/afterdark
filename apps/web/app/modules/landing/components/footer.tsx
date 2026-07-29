@@ -137,7 +137,7 @@ export function LandingFooter() {
               target="_blank"
               rel="noopener noreferrer"
               className={cn(
-                'mt-5 inline-flex h-10 min-h-10 cursor-pointer items-center justify-center rounded-control px-5 text-sm font-medium',
+                'mt-5 inline-flex h-10 min-h-10 cursor-pointer items-center justify-center rounded-app px-5 text-sm font-medium',
                 LANDING_CTA_PRIMARY,
                 LANDING_FOCUS_RING
               )}

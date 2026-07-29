@@ -42,7 +42,7 @@ export function EventsDiscoverListItem({ event }: EventsDiscoverListItemProps) {
       <RouterLink
         to="/events/$documentId"
         params={{ documentId: event.documentId }}
-        className="absolute inset-0 z-10 rounded-control focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+        className="absolute inset-0 z-10 rounded-app focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2 focus-visible:ring-offset-background"
         aria-label={t('discover.list.viewEventAria', { name: event.name })}
         onClick={armEventHero}
       />

@@ -38,7 +38,7 @@ export function SectionOrganizers({ className }: SectionOrganizersProps) {
             target="_blank"
             rel="noopener noreferrer"
             className={cn(
-              'inline-flex h-11 min-h-11 cursor-pointer items-center justify-center rounded-control px-8 text-[15px] font-medium',
+              'inline-flex h-11 min-h-11 cursor-pointer items-center justify-center rounded-app px-8 text-[15px] font-medium',
               LANDING_CTA_PRIMARY,
               LANDING_FOCUS_RING
             )}
