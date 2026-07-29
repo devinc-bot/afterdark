@@ -15,6 +15,7 @@ import {
   AppLogo,
   cn,
   ThemeToggle,
+  linkVariants,
 } from '@repo/ui'
 import { UserMenu } from '~/modules/common/components/user-menu'
 import { LanguageToggle } from '~/modules/common/components/language-toggle'
@@ -107,7 +108,7 @@ export function LandingHeader() {
       <Container>
         <div
           className={cn(
-            'pointer-events-auto flex h-15 w-full items-center justify-between gap-2 rounded-app-xl px-2 transition-[background-color,border-color,box-shadow,backdrop-filter] duration-(--duration-normal) ease-emphasized motion-reduce:transition-none sm:gap-3 sm:px-4',
+            'pointer-events-auto flex h-15 w-full items-center justify-between gap-2 rounded-app-xl px-4 transition-[background-color,border-color,box-shadow,backdrop-filter] duration-(--duration-normal) ease-emphasized motion-reduce:transition-none sm:gap-3 sm:px-4',
             chromeSolid
               ? 'border border-hairline/20 bg-surface-container-low/70 shadow-(--shadow-glass) backdrop-blur-xl backdrop-saturate-150 supports-backdrop-filter:bg-surface-container-low/55'
               : 'border border-white/10 bg-black/25 shadow-none backdrop-blur-md backdrop-saturate-125 supports-backdrop-filter:bg-black/15'
@@ -199,9 +200,10 @@ export function LandingHeader() {
               <SheetContent
                 side="right"
                 closeLabel={t('nav.closeMenu')}
-                className="flex h-full w-[min(100%,20rem)] flex-col border-hairline/50 bg-background p-0 text-on-surface"
+                overlayClassName="bg-surface-strong/50 backdrop-blur-sm"
+                className="inset-y-3 right-3 flex h-auto max-h-[calc(100dvh-1.5rem)] w-[min(calc(100%-1.5rem),20rem)] flex-col gap-0 overflow-hidden rounded-app-xl border border-hairline/50 bg-background p-0 text-on-surface shadow-(--shadow-glass)"
               >
-                <SheetHeader className="border-b border-hairline/40 px-5 py-5 pr-14 text-left">
+                <SheetHeader className="shrink-0 border-b border-hairline/40 px-5 py-5 pr-14 text-left">
                   <SheetTitle className="flex items-center gap-2 font-display text-lg font-bold tracking-tight">
                     <AppLogo />
                     {t('nav.brand')}
@@ -210,22 +212,20 @@ export function LandingHeader() {
 
                 <nav
                   aria-label={t('nav.mobileAriaLabel')}
-                  className="flex flex-col gap-1 px-3 py-4"
+                  className="flex min-h-0 flex-1 flex-col gap-1 overflow-y-auto px-3 py-4"
                 >
                   <SheetClose asChild>
                     <Link
                       to={WEB_ROUTES.events()}
-                      className={cn(
-                        'flex min-h-12 w-full items-center rounded-app px-3 font-label text-base text-on-surface transition-colors duration-(--duration-instant) ease-emphasized hover:bg-surface-container aria-[current=page]:bg-surface-container',
-                        LANDING_FOCUS_RING
-                      )}
+                      variant="ghost"
+                      className={cn(LANDING_FOCUS_RING)}
                     >
                       {t('nav.events')}
                     </Link>
                   </SheetClose>
                   {showAuthChrome ? (
                     <span
-                      className="flex min-h-12 w-full cursor-default items-center rounded-app px-3 font-label text-base text-on-surface opacity-60"
+                      className="flex w-full cursor-default items-center rounded-app px-5 py-0 font-label text-base text-on-surface opacity-60"
                       aria-disabled="true"
                       title={t('nav.ticketsSoon')}
                     >
@@ -237,10 +237,7 @@ export function LandingHeader() {
                         key={item.href}
                         href={isLanding ? item.href : `${WEB_ROUTES.home()}${item.href}`}
                         onClick={(event) => onMobileSectionClick(event, item.href)}
-                        className={cn(
-                          'flex min-h-12 w-full items-center rounded-app px-3 font-label text-base text-on-surface transition-colors duration-(--duration-instant) ease-emphasized hover:bg-surface-container',
-                          LANDING_FOCUS_RING
-                        )}
+                        className={cn(linkVariants({ variant: 'ghost' }), LANDING_FOCUS_RING)}
                       >
                         {t(item.labelKey)}
                       </a>
@@ -249,13 +246,13 @@ export function LandingHeader() {
                 </nav>
 
                 {showAuthCtas ? (
-                  <div className="mt-auto flex flex-col gap-2 border-t border-hairline/40 px-5 py-5">
+                  <div className="mt-auto flex shrink-0 gap-2 border-t border-hairline/40 px-5 py-5">
                     <SheetClose asChild>
                       <Link
                         to={WEB_ROUTES.login()}
                         variant="outline"
                         size="lg"
-                        className="min-h-11 w-full rounded-app hover:text-on-surface"
+                        className="min-h-11 flex-1 rounded-app hover:text-on-surface"
                       >
                         {t('nav.login')}
                       </Link>
@@ -264,7 +261,7 @@ export function LandingHeader() {
                       <Link
                         to={WEB_ROUTES.register()}
                         size="lg"
-                        className={cn('w-full', LANDING_CTA_PRIMARY)}
+                        className={cn('flex-1', LANDING_CTA_PRIMARY)}
                       >
                         {t('nav.register')}
                       </Link>

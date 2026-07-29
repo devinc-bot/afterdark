@@ -28,7 +28,7 @@ export function LanguageToggle({ className }: LanguageToggleProps) {
           type="button"
           variant="ghost"
           size="icon"
-          className={cn('size-11 shrink-0 rounded-app', className)}
+          className={cn('size-11 shrink-0 rounded-app-sm', className)}
           aria-label={`${t('nav.language')}: ${languageName}`}
           title={languageName}
         >

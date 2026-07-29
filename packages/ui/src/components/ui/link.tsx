@@ -2,7 +2,7 @@ import { Link as RouterLink, type LinkProps as RouterLinkProps } from '@tanstack
 import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '../../lib/utils'
 
-const linkVariants = cva(
+export const linkVariants = cva(
   [
     'inline-flex items-center cursor-pointer justify-center gap-2 whitespace-nowrap rounded-app font-sans text-[15px] font-medium leading-none',
     'transition-[color,background-color,border-color,box-shadow,opacity,transform] duration-(--duration-instant) ease-(--ease-emphasized)',
