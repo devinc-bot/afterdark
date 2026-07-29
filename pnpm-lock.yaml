@@ -407,12 +407,6 @@ importers:
       '@fontsource/geist-sans':
         specifier: 5.2.5
         version: 5.2.5
-      '@fontsource/inter':
-        specifier: 5.2.8
-        version: 5.2.8
-      '@fontsource/montserrat':
-        specifier: 5.2.8
-        version: 5.2.8
       '@radix-ui/react-accordion':
         specifier: 1.2.16
         version: 1.2.16(@types/react-dom@19.1.5(@types/react@19.1.6))(@types/react@19.1.6)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
@@ -1453,12 +1447,6 @@ packages:
 
   '@fontsource/geist-sans@5.2.5':
     resolution: {integrity: sha512-anllOHyJbElRs9fV15TeDRqAeb1IKm4bSknPl6ZMoyPTx1BBy7logudcUwpNjmQLkzn4Q0JGQLRCUKJYoyST6A==}
-
-  '@fontsource/inter@5.2.8':
-    resolution: {integrity: sha512-P6r5WnJoKiNVV+zvW2xM13gNdFhAEpQ9dQJHt3naLvfg+LkF2ldgSLiF4T41lf1SQCM9QmkqPTn4TH568IRagg==}
-
-  '@fontsource/montserrat@5.2.8':
-    resolution: {integrity: sha512-xTjLxSbSfCycDB0pwmNsfNvdfWPaDaRQ2LC6yt/ZI7SdvXG52zHnzNYC/09mzuAuWNJyShkteutfCoDgym56hQ==}
 
   '@formatjs/fast-memoize@3.1.6':
     resolution: {integrity: sha512-H5aexk1Le7T9TPmscacZ+1pR6CTa2n1wq+HDVGXhH8TzUlQQpeXzZs91dRtmFHrbeNbjPFPfQujUqm7MHgVoXQ==}
@@ -7738,10 +7726,6 @@ snapshots:
   '@fontsource/geist-mono@5.2.8': {}
 
   '@fontsource/geist-sans@5.2.5': {}
-
-  '@fontsource/inter@5.2.8': {}
-
-  '@fontsource/montserrat@5.2.8': {}
 
   '@formatjs/fast-memoize@3.1.6': {}
 

@@ -1,11 +1,10 @@
 @import 'tailwindcss';
-@import '@fontsource/montserrat/400.css';
-@import '@fontsource/montserrat/600.css';
-@import '@fontsource/montserrat/700.css';
-@import '@fontsource/inter/400.css';
-@import '@fontsource/inter/500.css';
+/* Option A explore: Satoshi (Fontshare) display + Geist UI */
+@import url('https://api.fontshare.com/v2/css?f[]=satoshi@400,500,600,700&display=swap');
+@import '@fontsource/geist-sans/400.css';
 @import '@fontsource/geist-sans/500.css';
 @import '@fontsource/geist-sans/600.css';
+@import '@fontsource/geist-sans/700.css';
 @import '@fontsource/geist-mono/400.css';
 @import '@fontsource/geist-mono/500.css';
 @import '@fontsource/geist-mono/700.css';
@@ -17,9 +16,9 @@
 
 @theme {
   /* ── Font families ─────────────────────────────────────────────── */
-  --font-display: 'Montserrat', sans-serif;
-  --font-heading: 'Montserrat', sans-serif;
-  --font-sans: 'Inter', sans-serif;
+  --font-display: 'Satoshi', sans-serif;
+  --font-heading: 'Satoshi', sans-serif;
+  --font-sans: 'Geist Sans', sans-serif;
   --font-label: 'Geist Sans', sans-serif;
   --font-mono:
     'Geist Mono', ui-monospace, SFMono-Regular, 'Roboto Mono', Menlo, Monaco, 'Liberation Mono',

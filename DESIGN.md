@@ -30,27 +30,27 @@ colors:
   chart-5: '#ff6b3d'
 typography:
   display:
-    fontFamily: Montserrat, sans-serif
+    fontFamily: Satoshi, sans-serif
     fontSize: 48px
     fontWeight: '700'
     lineHeight: 56px
   headline:
-    fontFamily: Montserrat, sans-serif
+    fontFamily: Satoshi, sans-serif
     fontSize: 32px
     fontWeight: '700'
     lineHeight: 40px
   title:
-    fontFamily: Montserrat, sans-serif
+    fontFamily: Satoshi, sans-serif
     fontSize: 20px
     fontWeight: '600'
     lineHeight: 28px
   body:
-    fontFamily: Inter, sans-serif
+    fontFamily: 'Geist Sans', sans-serif
     fontSize: 14px
     fontWeight: '400'
     lineHeight: 20px
   body-lg:
-    fontFamily: Inter, sans-serif
+    fontFamily: 'Geist Sans', sans-serif
     fontSize: 16px
     fontWeight: '400'
     lineHeight: 24px
@@ -160,16 +160,17 @@ Error text `#ffb4ab`, error container `#93000a`. Focus ring matches primary.
 
 ## Typography
 
+> **Explore branch:** `explore/fonts-option-a-satoshi-geist` — Option A pairing.
+
 | Role | Family | Notes |
 | --- | --- | --- |
-| Display / headings | Montserrat | 600–700; scale 20→48px (+ mobile 28px headline) |
-| Body | Inter | 14px base / 16px large; comfortable line-height |
-| Labels | Geist Sans | Slight tracking on sm/xs labels |
+| Display / headings | Satoshi (Fontshare) | 600–700; scale 20→48px (+ mobile 28px headline) |
+| Body / labels | Geist Sans | Unified UI face; 14px base / 16px large |
 | Mono | Geist Mono | Code, dense metadata |
 
 Scale (px): 10 / 12 / 14 / 16 / 20 / 24 / 32 / 48 (+ 56–60 display extras). Prefer `text-wrap: balance` on headings. Cap display clamp max around 6rem. Public heroes may go large; dashboard stays tighter.
 
-**Reflex note:** Inter is already shipping — preserve it for identity continuity. New decorative pairings should still avoid saturated AI display-serif defaults.
+**Loading:** Satoshi via Fontshare CDN; Geist via `@fontsource`. Avoid saturated AI display-serif defaults.
 
 ## Elevation
 
