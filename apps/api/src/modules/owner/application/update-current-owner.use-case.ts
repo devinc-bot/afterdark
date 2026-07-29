@@ -30,13 +30,17 @@ export class UpdateCurrentOwnerUseCase {
       throw new BadRequestException(this.ts.translateNs('validation', 'field.address.cannotClear'))
     }
 
+    const organizationName = input.organizationName.trim() || null
+    const taxId = organizationName ? input.taxId || null : null
+
     await updateOwnerByDocumentId(documentId, {
       name: input.name,
       lastName: input.lastName,
       phone: input.phone,
       birthday: input.birthday || null,
       nationalId: input.nationalId || null,
-      taxId: input.taxId || null,
+      organizationName,
+      taxId,
     })
 
     if (hasAddressInput) {

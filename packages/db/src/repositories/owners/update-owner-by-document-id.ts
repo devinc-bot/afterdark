@@ -15,6 +15,7 @@ export async function updateOwnerByDocumentId(
       phone: input.phone,
       birthday: input.birthday,
       nationalId: input.nationalId,
+      organizationName: input.organizationName,
       taxId: input.taxId,
       updatedAt: new Date(),
     })

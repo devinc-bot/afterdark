@@ -134,25 +134,6 @@ export function ProfileSettingsSection() {
               aria-invalid={errors.profile?.nationalId ? true : undefined}
             />
           </Field>
-
-          <Field
-            label={t('owner.profile.taxId')}
-            htmlFor="settings-tax-id"
-            error={errors.profile?.taxId ?? null}
-            className="sm:col-span-3"
-          >
-            <Input
-              id="settings-tax-id"
-              name="taxId"
-              type="text"
-              inputMode="numeric"
-              autoComplete="off"
-              maxLength={11}
-              value={values.profile.taxId}
-              onChange={(event) => setProfileField('taxId', event.target.value)}
-              aria-invalid={errors.profile?.taxId ? true : undefined}
-            />
-          </Field>
         </div>
       </FormSection>
 

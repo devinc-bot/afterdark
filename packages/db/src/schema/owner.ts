@@ -10,6 +10,7 @@ export const owners = sqliteTable('owners', {
   avatar: text('avatar'),
   birthday: text('birthday'),
   nationalId: text('national_id'),
+  organizationName: text('organization_name'),
   taxId: text('tax_id'),
   status: text('status', {
     enum: [OWNER_STATUS.ACTIVE, OWNER_STATUS.INACTIVE, OWNER_STATUS.PENDING],

@@ -35,10 +35,19 @@
     "sections": {
       "profile": "Perfil",
       "profileDescription": "Tu información personal y de contacto.",
+      "organization": "Organización",
+      "organizationDescription": "Si operás como empresa u organización.",
       "address": "Domicilio",
       "addressDescription": "Dónde vivís. Es opcional.",
       "account": "Cuenta",
       "accountDescription": "Cómo iniciás sesión en {appNameDisplay}."
+    },
+    "organization": {
+      "isOrganization": "¿Eres una organización?",
+      "yes": "Sí",
+      "no": "No",
+      "name": "Nombre de la organización",
+      "taxId": "CUIT"
     },
     "profile": {
       "changePhoto": "Cambiar foto",
@@ -48,7 +57,6 @@
       "phone": "Teléfono",
       "birthday": "Fecha de nacimiento",
       "nationalId": "DNI",
-      "taxId": "CUIT/CUIL",
       "addressSection": "Domicilio",
       "address": "Calle",
       "streetNumber": "Número",

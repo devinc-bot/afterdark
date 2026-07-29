@@ -19,6 +19,7 @@ export async function findCurrentOwnerByDocumentId(
       phone: owners.phone,
       birthday: owners.birthday,
       nationalId: owners.nationalId,
+      organizationName: owners.organizationName,
       taxId: owners.taxId,
       status: owners.status,
       email: accounts.email,

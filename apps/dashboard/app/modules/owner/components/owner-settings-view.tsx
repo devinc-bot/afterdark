@@ -1,6 +1,7 @@
 import type { CurrentOwnerResponse } from '@repo/types'
 import { useTranslation } from 'react-i18next'
 import { PageLayout } from '~/modules/common/components/page-layout'
+import { OrganizationSettingsSection } from '~/modules/owner/components/organization-settings-section'
 import { ProfileSettingsSection } from '~/modules/owner/components/profile-settings-section'
 import { SettingsFormActions } from '~/modules/settings/components/settings-form-actions'
 import { SettingsStatusBanner } from '~/modules/settings/components/settings-status-banner'
@@ -23,6 +24,7 @@ function SettingsFormContent() {
       <SettingsStatusBanner saveStatus={saveStatus} saveMessage={saveMessage} />
       <div className="flex flex-col gap-12">
         <ProfileSettingsSection />
+        <OrganizationSettingsSection />
       </div>
       <SettingsFormActions
         isDirty={isDirty}

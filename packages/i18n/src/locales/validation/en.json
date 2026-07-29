@@ -38,6 +38,9 @@
     "taxId": {
       "invalid": "Tax ID must be 11 digits with no dashes."
     },
+    "organizationName": {
+      "required": "Enter the organization name."
+    },
     "password": {
       "min": "Password must be at least {min} characters.",
       "noMatch": "Passwords do not match."

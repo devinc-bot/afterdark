@@ -34,7 +34,7 @@ export const ownerAddressSchema = z
     }
   })
 
-export const updateCurrentOwnerSchema = baseProfileSchema.extend({
+const ownerProfileFieldsSchema = baseProfileSchema.extend({
   birthday: z
     .string()
     .trim()
@@ -43,9 +43,44 @@ export const updateCurrentOwnerSchema = baseProfileSchema.extend({
       'validation:field.birthday.format'
     ),
   nationalId: optionalDigitsField('validation:field.nationalId.invalid', /^\d{7,11}$/),
+  organizationName: z.string().trim().max(255),
   taxId: optionalDigitsField('validation:field.taxId.invalid', /^\d{11}$/),
   address: ownerAddressSchema,
 })
 
+function refineOwnerOrganizationName(
+  data: { organizationName: string; taxId: string },
+  ctx: z.RefinementCtx
+) {
+  if (data.taxId.length > 0 && data.organizationName.length === 0) {
+    ctx.addIssue({
+      code: 'custom',
+      message: 'validation:field.organizationName.required',
+      path: ['organizationName'],
+    })
+  }
+}
+
+export const updateCurrentOwnerSchema = ownerProfileFieldsSchema.superRefine(
+  refineOwnerOrganizationName
+)
+
+export const ownerSettingsProfileSchema = ownerProfileFieldsSchema
+  .extend({
+    isOrganization: z.enum(['true', 'false']),
+  })
+  .superRefine((data, ctx) => {
+    refineOwnerOrganizationName(data, ctx)
+
+    if (data.isOrganization === 'true' && data.organizationName.length === 0) {
+      ctx.addIssue({
+        code: 'custom',
+        message: 'validation:field.organizationName.required',
+        path: ['organizationName'],
+      })
+    }
+  })
+
 export type OwnerAddressInput = z.infer<typeof ownerAddressSchema>
 export type UpdateCurrentOwnerInput = z.infer<typeof updateCurrentOwnerSchema>
+export type OwnerSettingsProfileValues = z.infer<typeof ownerSettingsProfileSchema>

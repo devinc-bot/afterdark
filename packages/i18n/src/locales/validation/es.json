@@ -38,6 +38,9 @@
     "taxId": {
       "invalid": "El CUIT/CUIL debe tener 11 dígitos, sin guiones."
     },
+    "organizationName": {
+      "required": "Ingresá el nombre de la organización."
+    },
     "password": {
       "min": "La contraseña debe tener al menos {min} caracteres.",
       "noMatch": "Las contraseñas no coinciden."

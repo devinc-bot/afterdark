@@ -29,6 +29,7 @@ export type CurrentOwnerRow = {
   phone: string
   birthday: string | null
   nationalId: string | null
+  organizationName: string | null
   taxId: string | null
   status: OwnerStatus
   email: string
@@ -41,6 +42,7 @@ export type OwnerUpdateInput = {
   phone: string
   birthday: string | null
   nationalId: string | null
+  organizationName: string | null
   taxId: string | null
 }
 

@@ -1,7 +1,11 @@
 import type { CurrentOwnerResponse } from '@repo/types'
-import type { SettingsFormValues } from '@repo/validators'
+import type { OwnerSettingsFormValues } from '@repo/validators'
 
-export function toOwnerFormValues(owner: CurrentOwnerResponse): SettingsFormValues {
+export function toOwnerFormValues(owner: CurrentOwnerResponse): OwnerSettingsFormValues {
+  const organizationName = owner.organizationName ?? ''
+  const taxId = owner.taxId ?? ''
+  const isOrganization = organizationName.length > 0 || taxId.length > 0
+
   return {
     profile: {
       name: owner.name,
@@ -9,7 +13,9 @@ export function toOwnerFormValues(owner: CurrentOwnerResponse): SettingsFormValu
       phone: owner.phone,
       birthday: owner.birthday ?? '',
       nationalId: owner.nationalId ?? '',
-      taxId: owner.taxId ?? '',
+      organizationName,
+      taxId,
+      isOrganization: isOrganization ? 'true' : 'false',
       address: {
         address: owner.address?.address ?? '',
         streetNumber: owner.address?.streetNumber ?? '',

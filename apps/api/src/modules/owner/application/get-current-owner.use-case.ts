@@ -23,6 +23,7 @@ export class GetCurrentOwnerUseCase {
       phone: row.phone,
       birthday: row.birthday,
       nationalId: row.nationalId,
+      organizationName: row.organizationName,
       taxId: row.taxId,
       status: row.status,
       role: USER_ROLE.OWNER,
