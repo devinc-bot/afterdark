@@ -1,11 +1,10 @@
 @import 'tailwindcss';
-@import '@fontsource/montserrat/400.css';
-@import '@fontsource/montserrat/600.css';
-@import '@fontsource/montserrat/700.css';
-@import '@fontsource/inter/400.css';
-@import '@fontsource/inter/500.css';
-@import '@fontsource/geist-sans/500.css';
-@import '@fontsource/geist-sans/600.css';
+/* Option B explore: Bricolage Grotesque display + Source Sans 3 UI */
+@import '@fontsource-variable/bricolage-grotesque/wght.css';
+@import '@fontsource/source-sans-3/400.css';
+@import '@fontsource/source-sans-3/500.css';
+@import '@fontsource/source-sans-3/600.css';
+@import '@fontsource/source-sans-3/700.css';
 @import '@fontsource/geist-mono/400.css';
 @import '@fontsource/geist-mono/500.css';
 @import '@fontsource/geist-mono/700.css';
@@ -17,10 +16,10 @@
 
 @theme {
   /* ── Font families ─────────────────────────────────────────────── */
-  --font-display: 'Montserrat', sans-serif;
-  --font-heading: 'Montserrat', sans-serif;
-  --font-sans: 'Inter', sans-serif;
-  --font-label: 'Geist Sans', sans-serif;
+  --font-display: 'Bricolage Grotesque Variable', 'Bricolage Grotesque', sans-serif;
+  --font-heading: 'Bricolage Grotesque Variable', 'Bricolage Grotesque', sans-serif;
+  --font-sans: 'Source Sans 3', sans-serif;
+  --font-label: 'Source Sans 3', sans-serif;
   --font-mono:
     'Geist Mono', ui-monospace, SFMono-Regular, 'Roboto Mono', Menlo, Monaco, 'Liberation Mono',
     'DejaVu Sans Mono', 'Courier New', monospace;
