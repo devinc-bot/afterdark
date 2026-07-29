@@ -1,38 +1,54 @@
 import { eq } from 'drizzle-orm'
-import { db } from '../../client.ts'
+import { db, type Transaction } from '../../client.ts'
 import { events } from '../../schema/event.ts'
-import { eventsByOwnerQuery } from './events-by-owner-query.ts'
+import { locations } from '../../schema/location.ts'
+import { replaceEventFaqs } from './replace-event-faqs.ts'
 import type { EventUpsertInput, EventWithLocation } from '@repo/types'
 
 export async function updateEventByDocumentId(
   documentId: string,
   input: EventUpsertInput
 ): Promise<EventWithLocation> {
-  const now = new Date()
+  return db.transaction(async (tx: Transaction) => {
+    const now = new Date()
 
-  const [event] = await db
-    .update(events)
-    .set({
-      locationId: input.locationId,
-      name: input.name,
-      description: input.description,
-      startsAt: input.startsAt,
-      endsAt: input.endsAt,
-      status: input.status,
-      updatedAt: now,
-    })
-    .where(eq(events.documentId, documentId))
-    .returning()
+    const [event] = await tx
+      .update(events)
+      .set({
+        locationId: input.locationId,
+        name: input.name,
+        description: input.description,
+        startsAt: input.startsAt,
+        endsAt: input.endsAt,
+        status: input.status,
+        updatedAt: now,
+      })
+      .where(eq(events.documentId, documentId))
+      .returning()
 
-  if (!event) {
-    throw new Error('Event update returned no row')
-  }
+    if (!event) {
+      throw new Error('Event update returned no row')
+    }
 
-  const [row] = await eventsByOwnerQuery().where(eq(events.id, event.id)).limit(1)
+    const faqs = await replaceEventFaqs(tx, event.id, input.faqs)
 
-  if (!row) {
-    throw new Error('Event not found after update')
-  }
+    const [row] = await tx
+      .select({
+        event: events,
+        location: locations,
+      })
+      .from(events)
+      .innerJoin(locations, eq(locations.id, events.locationId))
+      .where(eq(events.id, event.id))
+      .limit(1)
 
-  return row
+    if (!row) {
+      throw new Error('Event not found after update')
+    }
+
+    return {
+      ...row,
+      faqs,
+    }
+  })
 }

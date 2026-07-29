@@ -7,6 +7,13 @@ export interface EventImageResponse {
   url: string
 }
 
+/** Ordered FAQ item on owner and public event detail responses. */
+export interface EventFaqResponse {
+  documentId: string
+  question: string
+  answer: string
+}
+
 export interface EventResponse {
   documentId: string
   locationId: string
@@ -17,6 +24,7 @@ export interface EventResponse {
   endsAt: Date
   status: EventStatus
   images: EventImageResponse[]
+  faqs: EventFaqResponse[]
   createdAt: Date
   updatedAt: Date
 }
@@ -58,4 +66,5 @@ export interface PublicEventDetailResponse {
   address: PublicEventDetailAddress | null
   images: EventImageResponse[]
   locationImages: EventImageResponse[]
+  faqs: EventFaqResponse[]
 }

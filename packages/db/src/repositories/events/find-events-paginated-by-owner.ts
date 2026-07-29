@@ -4,6 +4,7 @@ import { locations } from '../../schema/location.ts'
 import { events } from '../../schema/event.ts'
 import { owners } from '../../schema/owner.ts'
 import { eventsByOwnerQuery } from './events-by-owner-query.ts'
+import { findEventFaqsByEventIds } from './find-event-faqs-by-event-ids.ts'
 import type { ListEventsByOwnerParams, PaginatedEventsResult } from '@repo/types'
 
 export async function findEventsPaginatedByOwner(
@@ -23,8 +24,13 @@ export async function findEventsPaginatedByOwner(
       .where(where),
   ])
 
+  const faqsByEventId = await findEventFaqsByEventIds(rows.map((row) => row.event.id))
+
   return {
-    rows,
+    rows: rows.map((row) => ({
+      ...row,
+      faqs: faqsByEventId.get(row.event.id) ?? [],
+    })),
     total: totalRows[0]?.total ?? 0,
   }
 }

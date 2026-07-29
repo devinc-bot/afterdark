@@ -1,15 +1,16 @@
 import { and, eq } from 'drizzle-orm'
 import { EVENT_STATUS } from '@repo/types/enums'
-import type { PublishedEventWithLocation } from '@repo/types'
+import type { PublishedEventDetailRow } from '@repo/types'
 import { db } from '../../client.ts'
 import { addresses } from '../../schema/address.ts'
 import { events } from '../../schema/event.ts'
 import { locationAddressesLnk } from '../../schema/location-address-lnk.ts'
 import { locations } from '../../schema/location.ts'
+import { findEventFaqsByEventIds } from './find-event-faqs-by-event-ids.ts'
 
 export async function findPublishedEventByDocumentId(
   documentId: string
-): Promise<PublishedEventWithLocation | null> {
+): Promise<PublishedEventDetailRow | null> {
   const [row] = await db
     .select({
       event: events,
@@ -23,5 +24,14 @@ export async function findPublishedEventByDocumentId(
     .where(and(eq(events.documentId, documentId), eq(events.status, EVENT_STATUS.PUBLISHED)))
     .limit(1)
 
-  return row ?? null
+  if (!row) {
+    return null
+  }
+
+  const faqsByEventId = await findEventFaqsByEventIds([row.event.id])
+
+  return {
+    ...row,
+    faqs: faqsByEventId.get(row.event.id) ?? [],
+  }
 }

@@ -1,5 +1,12 @@
-import type { AssetSelect, EventSelect, LocationSelect, AddressSelect } from '@repo/db'
 import type {
+  AddressSelect,
+  AssetSelect,
+  EventFaqSelect,
+  EventSelect,
+  LocationSelect,
+} from '@repo/db'
+import type {
+  EventFaqResponse,
   EventImageResponse,
   EventResponse,
   PublicEventDetailResponse,
@@ -15,10 +22,19 @@ export function toEventImageResponse(asset: AssetSelect): EventImageResponse {
   }
 }
 
+export function toEventFaqResponse(faq: EventFaqSelect): EventFaqResponse {
+  return {
+    documentId: faq.documentId,
+    question: faq.question,
+    answer: faq.answer,
+  }
+}
+
 export function toEventResponse(
   event: EventSelect,
   location: Pick<LocationSelect, 'documentId' | 'name'>,
-  images: EventImageResponse[] = []
+  images: EventImageResponse[] = [],
+  faqs: EventFaqSelect[] = []
 ): EventResponse {
   return {
     documentId: event.documentId,
@@ -30,6 +46,7 @@ export function toEventResponse(
     endsAt: event.endsAt,
     status: event.status,
     images,
+    faqs: faqs.map(toEventFaqResponse),
     createdAt: event.createdAt,
     updatedAt: event.updatedAt,
   }
@@ -64,7 +81,8 @@ export function toPublicEventDetailResponse(
     'address' | 'streetNumber' | 'city' | 'state' | 'latitude' | 'longitude'
   > | null,
   images: EventImageResponse[] = [],
-  locationImages: EventImageResponse[] = []
+  locationImages: EventImageResponse[] = [],
+  faqs: EventFaqSelect[] = []
 ): PublicEventDetailResponse {
   return {
     documentId: event.documentId,
@@ -85,6 +103,7 @@ export function toPublicEventDetailResponse(
       : null,
     images,
     locationImages,
+    faqs: faqs.map(toEventFaqResponse),
   }
 }
 
@@ -96,6 +115,7 @@ export function toEventUpsertInput(input: CreateEventInput | UpdateEventInput, l
     startsAt: input.startsAt,
     endsAt: input.endsAt,
     status: input.status,
+    faqs: input.faqs ?? [],
   }
 }
 

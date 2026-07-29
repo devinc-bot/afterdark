@@ -9,6 +9,7 @@ export const EMPTY_EVENT_FORM_VALUES: EventFormValues = {
   startsAt: '',
   endsAt: '',
   status: EVENT_STATUS.PUBLISHED,
+  faqs: [],
 }
 
 function formatDateForDatetimeLocal(value: Date): string {
@@ -24,6 +25,7 @@ export function eventResponseToFormValues(event: EventResponse): EventFormValues
     startsAt: formatDateForDatetimeLocal(new Date(event.startsAt)),
     endsAt: formatDateForDatetimeLocal(new Date(event.endsAt)),
     status: event.status,
+    faqs: event.faqs.map(({ question, answer }) => ({ question, answer })),
   }
 }
 

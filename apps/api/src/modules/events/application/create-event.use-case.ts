@@ -42,7 +42,7 @@ export class CreateEventUseCase {
     try {
       const row = await createEvent(toEventUpsertInput(input, location.id))
       const images = await this.eventImages.saveNew(row.event.id, files, uploadedImages)
-      return toEventResponse(row.event, row.location, images)
+      return toEventResponse(row.event, row.location, images, row.faqs)
     } catch (error) {
       await this.eventImages.rollback(uploadedImages)
       if (error instanceof HttpException) {

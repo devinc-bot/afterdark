@@ -17,6 +17,7 @@ function appendEventFields(formData: FormData, input: CreateEventInput | UpdateE
     input.endsAt instanceof Date ? input.endsAt.toISOString() : String(input.endsAt)
   )
   formData.append('status', input.status)
+  formData.append('faqs', JSON.stringify(input.faqs ?? []))
 }
 
 function toCreateEventFormData(input: CreateEventInput, images: File[]): FormData {

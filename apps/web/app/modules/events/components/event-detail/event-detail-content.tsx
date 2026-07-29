@@ -6,6 +6,7 @@ import { PAGE_HEADER_HEADING } from '~/modules/common/components/page-header'
 import { WEB_ROUTES } from '~/modules/common/constants/routes'
 import { formatEventAddress, formatEventWhen } from '../../utils/events-discover-format'
 import { EventDetailCarousel } from './event-detail-carousel'
+import { EventDetailFaq } from './event-detail-faq'
 import { EventDetailLocationBento } from './event-detail-location-bento'
 import { EventDetailMap } from './event-detail-map'
 import { EventDetailPurchasePanel } from './event-detail-purchase-panel'
@@ -103,6 +104,8 @@ export function EventDetailContent({ event }: EventDetailContentProps) {
               </p>
             </section>
           ) : null}
+
+          <EventDetailFaq faqs={event.faqs} />
 
           <section aria-labelledby="event-detail-address">
             <h2 id="event-detail-address" className={SECTION_HEADING}>

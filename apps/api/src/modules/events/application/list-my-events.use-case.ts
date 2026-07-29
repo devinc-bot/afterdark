@@ -27,8 +27,8 @@ export class ListMyEventsUseCase {
       const totalPages = total === 0 ? 0 : Math.ceil(total / query.limit)
 
       return {
-        data: rows.map(({ event, location }) =>
-          toEventResponse(event, location, imagesByEventId.get(event.id) ?? [])
+        data: rows.map(({ event, location, faqs }) =>
+          toEventResponse(event, location, imagesByEventId.get(event.id) ?? [], faqs)
         ),
         total,
         page: query.page,
