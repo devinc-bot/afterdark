@@ -2,6 +2,7 @@ import { eq } from 'drizzle-orm'
 import { db } from '../../client.ts'
 import { accounts } from '../../schema/account.ts'
 import { addresses } from '../../schema/address.ts'
+import { assets } from '../../schema/asset.ts'
 import { ownerAccountsLnk } from '../../schema/owner-account-lnk.ts'
 import { ownerAddressesLnk } from '../../schema/owner-address-lnk.ts'
 import { owners } from '../../schema/owner.ts'
@@ -15,7 +16,7 @@ export async function findCurrentOwnerByDocumentId(
       documentId: owners.documentId,
       name: owners.name,
       lastName: owners.lastName,
-      avatar: owners.avatar,
+      avatar: assets.url,
       phone: owners.phone,
       birthday: owners.birthday,
       nationalId: owners.nationalId,
@@ -31,6 +32,7 @@ export async function findCurrentOwnerByDocumentId(
     .from(owners)
     .innerJoin(ownerAccountsLnk, eq(ownerAccountsLnk.ownerId, owners.id))
     .innerJoin(accounts, eq(accounts.id, ownerAccountsLnk.accountId))
+    .leftJoin(assets, eq(assets.id, owners.avatarId))
     .leftJoin(ownerAddressesLnk, eq(ownerAddressesLnk.ownerId, owners.id))
     .leftJoin(addresses, eq(addresses.id, ownerAddressesLnk.addressId))
     .where(eq(owners.documentId, documentId))

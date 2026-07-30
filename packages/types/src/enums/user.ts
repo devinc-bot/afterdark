@@ -15,13 +15,6 @@ export const USER_STATUS = {
 
 export type UserStatus = (typeof USER_STATUS)[keyof typeof USER_STATUS]
 
-export const USER_ASSET_LINK_TYPE = {
-  POST: 'post',
-  HISTORY: 'history',
-} as const
-
-export type UserAssetLinkType = (typeof USER_ASSET_LINK_TYPE)[keyof typeof USER_ASSET_LINK_TYPE]
-
 export const OWNER_STATUS = {
   ACTIVE: 'active',
   INACTIVE: 'inactive',
