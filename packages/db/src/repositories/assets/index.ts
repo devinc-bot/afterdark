@@ -1,5 +1,6 @@
 export * from './find-location-image-assets-by-location-ids.ts'
 export * from './create-asset.ts'
+export * from './create-external-image-asset.ts'
 export * from './find-asset-by-document-id.ts'
 export * from './find-location-image-assets-not-in-keep-list.ts'
 export * from './delete-location-image-assets-by-ids.ts'

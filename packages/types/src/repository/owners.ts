@@ -19,6 +19,7 @@ export type OwnerProfileSeed = {
   name: string
   lastName: string
   phone: string
+  avatarId?: number | null
 }
 
 export type CurrentOwnerRow = {

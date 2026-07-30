@@ -8,7 +8,15 @@ export async function createUserWithAccountLink(
   accountId: number,
   profile: UserProfileSeed
 ): Promise<string> {
-  const [user] = await tx.insert(users).values(profile).returning()
+  const [user] = await tx
+    .insert(users)
+    .values({
+      name: profile.name,
+      lastName: profile.lastName,
+      phone: profile.phone,
+      avatarId: profile.avatarId ?? null,
+    })
+    .returning()
 
   if (!user) {
     throw new Error('User insert returned no row')
