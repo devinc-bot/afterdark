@@ -27,12 +27,18 @@ export function EventsDiscoverListItem({ event }: EventsDiscoverListItemProps) {
   const when = formatEventWhen(event.startsAt, i18n.language)
   const place = formatEventPlace(event)
 
+  const detailLink = {
+    to: '/events/$documentId' as const,
+    params: { documentId: event.documentId },
+    onClick: armEventHero,
+  }
+
   return (
     <Card
       data-vt-scope={VT.eventHero}
       id={`events-discover-item-${event.documentId}`}
       className={cn(
-        'group relative flex h-full w-full flex-col border-hairline/15',
+        'group flex h-full w-full flex-col border-hairline/15',
         'bg-surface-card',
         'transition-[border-color,box-shadow,background-color] duration-(--duration-fast) ease-emphasized',
         'motion-reduce:transition-none',
@@ -40,16 +46,10 @@ export function EventsDiscoverListItem({ event }: EventsDiscoverListItemProps) {
       )}
     >
       <RouterLink
-        to="/events/$documentId"
-        params={{ documentId: event.documentId }}
-        className="absolute inset-0 z-10 rounded-app focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-        aria-label={t('discover.list.viewEventAria', { name: event.name })}
-        onClick={armEventHero}
-      />
-
-      <div
+        {...detailLink}
         data-vt-source={VT.eventHero}
-        className="relative z-0 m-4 flex overflow-hidden rounded-app"
+        className="m-4 flex overflow-hidden rounded-app focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+        aria-label={t('discover.list.viewEventAria', { name: event.name })}
       >
         {image ? (
           <img src={image.url} alt="" className="aspect-video w-full object-cover" />
@@ -60,11 +60,16 @@ export function EventsDiscoverListItem({ event }: EventsDiscoverListItemProps) {
             className="aspect-video min-h-0 w-full rounded-none border-0 border-b border-hairline/40"
           />
         )}
-      </div>
+      </RouterLink>
 
-      <CardHeader className="relative z-0 flex flex-1 flex-col gap-2 space-y-0 p-4 sm:gap-2.5 sm:p-5">
-        <CardTitle className="line-clamp-2 font-display text-lg font-semibold tracking-tight text-balance text-on-surface sm:text-xl">
-          {event.name}
+      <CardHeader className="flex flex-1 flex-col gap-2 space-y-0 p-4 sm:gap-2.5 sm:p-5">
+        <CardTitle className="font-display text-lg font-semibold tracking-tight text-balance text-on-surface sm:text-xl">
+          <RouterLink
+            {...detailLink}
+            className="line-clamp-2 rounded-sm transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+          >
+            {event.name}
+          </RouterLink>
         </CardTitle>
 
         {event.description ? (
@@ -91,17 +96,17 @@ export function EventsDiscoverListItem({ event }: EventsDiscoverListItemProps) {
         ) : null}
       </CardHeader>
 
-      <CardFooter className="relative z-0 mt-auto p-4 pt-0 sm:p-5 sm:pt-0">
-        <span
+      <CardFooter className="mt-auto p-4 pt-0 sm:p-5 sm:pt-0">
+        <RouterLink
+          {...detailLink}
           className={cn(
             buttonVariants({ variant: 'default', size: 'lg' }),
-            'pointer-events-none w-full',
+            'w-full',
             'group-hover:bg-primary/90'
           )}
-          aria-hidden
         >
           {t('discover.list.viewEvent')}
-        </span>
+        </RouterLink>
       </CardFooter>
     </Card>
   )
