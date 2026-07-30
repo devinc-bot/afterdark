@@ -130,15 +130,23 @@ The system SHALL expose an anonymous HTTP endpoint that returns a single event b
 non-existent events MUST respond as not found. The `documentId` path param MUST be
 validated as a UUID via `@repo/validators`. The response MUST include the event's full
 description, schedule, location name, complete address (street, street number, city,
-state, coordinates when present), and **all** event images (not only the first).
+state, coordinates when present), **all** event images (not only the first), and an
+ordered `faqs` array of question/answer items (empty array when the event has none).
+FAQ shape and limits MUST follow `@repo/validators`.
 
 #### Scenario: Anonymous detail lookup for a published event
 
-- **GIVEN** a published event with two images and a linked address
+- **GIVEN** a published event with two images, a linked address, and two FAQ items
 - **WHEN** an unauthenticated client requests the public detail endpoint with that
   event's `documentId`
 - **THEN** the response includes the event's full description, schedule, location name,
-  full address, and both images
+  full address, both images, and both FAQ items in display order
+
+#### Scenario: Published event with no FAQs
+
+- **GIVEN** a published event with no FAQ rows
+- **WHEN** an unauthenticated client requests the public detail endpoint for that event
+- **THEN** `faqs` is an empty array and the request still succeeds
 
 #### Scenario: Draft or finished event is not found
 
@@ -176,15 +184,40 @@ images MUST NOT replace or be merged into the event `images` field.
 - **WHEN** an unauthenticated client requests the public detail endpoint for that event
 - **THEN** `locationImages` is an empty array and the request still succeeds
 
+### Requirement: FAQ accordion on the public event detail page
+
+The `/events/$documentId` page SHALL show a FAQ section when the public detail payload includes one or more FAQ items. The section MUST use the shared Accordion from `@repo/ui` (`Accordion`, `AccordionItem`, `AccordionTrigger`, `AccordionContent`), listing each question as a trigger and each answer as content, in API display order. The section MUST be omitted when the FAQ list is empty. UI chrome (section heading, accessibility labels) MUST be Spanish via `@repo/i18n` (with EN parity). FAQ question/answer body text MUST render as stored (owner-authored), not through i18n.
+
+#### Scenario: Accordion renders FAQ items in order
+
+- **GIVEN** the public detail payload includes two or more FAQ items
+- **WHEN** the visitor views the event detail page
+- **THEN** a FAQ section shows an Accordion with one item per FAQ in display order
+- **AND** activating a trigger reveals that item’s answer without navigating away
+
+#### Scenario: No FAQ section when empty
+
+- **GIVEN** the public detail payload has an empty FAQ list
+- **WHEN** the visitor views the event detail page
+- **THEN** no FAQ section is rendered
+- **AND** the rest of the detail page is unchanged
+
+#### Scenario: Prefer-reduced-motion still allows expand/collapse
+
+- **GIVEN** the visitor has prefers-reduced-motion enabled and the event has FAQ items
+- **WHEN** they expand or collapse an Accordion item
+- **THEN** the answer still shows or hides correctly
+
 ### Requirement: Event detail page route
 
 `apps/web` SHALL provide a route at `/events/$documentId` that renders the full detail
 of one published event in this order: a full-width image carousel of all event images,
-the title with a share/copy-link action, the schedule, the full description, the full
-address (street and number, city, state), the existing "Entradas próximamente" placeholder,
-venue gallery when `locationImages` is non-empty, and — as the last element on the page —
-an embedded map centered on the event's coordinates when present. UI copy MUST be Spanish
-via `@repo/i18n`. Selecting an event from the discovery list (via its "Ver evento" action)
+the title with a share/copy-link action, the schedule, the full description, an optional
+FAQ Accordion section when `faqs` is non-empty, the full address (street and number,
+city, state), the existing "Entradas próximamente" placeholder, venue gallery when
+`locationImages` is non-empty, and — as the last element on the page — an embedded map
+centered on the event's coordinates when present. UI copy MUST be Spanish via
+`@repo/i18n`. Selecting an event from the discovery list (via its "Ver evento" action)
 MUST navigate to that event's detail page at `/events/$documentId`.
 
 #### Scenario: Direct URL access to a published event
@@ -192,8 +225,8 @@ MUST navigate to that event's detail page at `/events/$documentId`.
 - **GIVEN** a visitor opens `/events/$documentId` directly for a published event
 - **WHEN** the page loads
 - **THEN** the event detail UI is shown without requiring login, including all of its
-  images in the top carousel, full description, schedule, full address, and the "Entradas
-  próximamente" placeholder
+  images in the top carousel, full description, schedule, full address, optional FAQ
+  section when FAQs exist, and the "Entradas próximamente" placeholder
 
 #### Scenario: Image carousel shows all event images
 
@@ -216,7 +249,7 @@ MUST navigate to that event's detail page at `/events/$documentId`.
 - **WHEN** the detail page loads
 - **THEN** the embedded map centers on those coordinates with a single marker for the
   event, and it is the last element rendered on the page (after schedule, description,
-  address text, tickets placeholder, and venue gallery when present)
+  FAQ when present, address text, tickets placeholder, and venue gallery when present)
 
 #### Scenario: Event without coordinates omits the map
 
@@ -291,6 +324,60 @@ copy for the section heading and accessibility labels MUST be Spanish via `@repo
 - **WHEN** the visitor views the event detail page
 - **THEN** no venue gallery section is rendered
 - **AND** the event hero carousel behavior is unchanged
+
+### Requirement: Public event detail includes organizer
+
+The anonymous public single-event detail response MUST include an `organizer` object for the owner of the event’s location. `organizer` MUST expose:
+
+- `name` — display name: when the owner has a non-empty `organizationName`, that value; otherwise the owner’s `name` and `lastName` joined with a single space
+- `avatar` — the owner’s profile avatar asset URL, or `null` when none is set
+- `initialsSource` fields needed for avatar fallback: the owner’s personal `name` and `lastName` (so the UI can compute initials even when the display name is the organization)
+
+The response MUST NOT expose organizer `taxId`, phone, email, or other PII beyond these fields.
+
+#### Scenario: Owner with organization name
+
+- **GIVEN** a published event whose location owner has a non-empty `organizationName` and an avatar URL
+- **WHEN** an unauthenticated client requests the public detail endpoint for that event
+- **THEN** `organizer.name` is the organization name
+- **AND** `organizer.avatar` is that avatar URL
+
+#### Scenario: Owner without organization name
+
+- **GIVEN** a published event whose location owner has no `organizationName` (null or empty) and personal name “Ana” / last name “García”
+- **WHEN** an unauthenticated client requests the public detail endpoint for that event
+- **THEN** `organizer.name` is “Ana García”
+- **AND** `organizer.avatar` is the owner avatar URL or `null`
+
+#### Scenario: Owner without avatar
+
+- **GIVEN** a published event whose location owner has no avatar asset
+- **WHEN** an unauthenticated client requests the public detail endpoint for that event
+- **THEN** `organizer.avatar` is `null`
+- **AND** `organizer.name` is still resolved per the organization-or-personal rule above
+
+### Requirement: Organizer identity on the public event detail page
+
+The `/events/$documentId` page SHALL show the organizer’s avatar and display name **below the event title**, near the location name line (same header block). The UI MUST use the shared Avatar from `@repo/ui`; when `organizer.avatar` is null, it MUST show initials derived from the owner’s personal name/last name. UI chrome (e.g. “Organizado por”) MUST be Spanish via `@repo/i18n` (with EN parity). The organizer block MUST NOT link to a profile page in this change.
+
+#### Scenario: Organizer shown under the title
+
+- **GIVEN** a published event detail payload that includes an organizer with a display name
+- **WHEN** the visitor views `/events/$documentId`
+- **THEN** the organizer avatar and name appear below the event title near the location name
+- **AND** the rest of the detail layout remains unchanged
+
+#### Scenario: Initials fallback when avatar is missing
+
+- **GIVEN** the detail payload has `organizer.avatar` null and personal name/last name present
+- **WHEN** the detail page renders
+- **THEN** the Avatar shows initials instead of an image
+
+#### Scenario: Organization name preferred in the UI
+
+- **GIVEN** the detail payload has `organizer.name` set to an organization name
+- **WHEN** the detail page renders
+- **THEN** that organization name is shown as the organizer label text (not the personal full name)
 
 ### Requirement: Not-found handling for the detail route
 

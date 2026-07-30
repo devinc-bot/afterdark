@@ -17,4 +17,5 @@ export type UserProfileSeed = {
   name: string
   lastName: string
   phone: string
+  avatarId?: number | null
 }

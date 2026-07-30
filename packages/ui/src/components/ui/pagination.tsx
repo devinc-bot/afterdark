@@ -60,12 +60,12 @@ function PaginationButton({
 
 function PaginationPrevious({
   className,
-  text = 'Anterior',
+  text = 'Previous',
   ...props
 }: PaginationButtonProps & { text?: string }) {
   return (
     <PaginationButton
-      aria-label="Ir a la página anterior"
+      aria-label="Go to previous page"
       size="sm"
       className={cn('gap-1 px-3', className)}
       iconLeft={<ChevronLeft aria-hidden="true" />}
@@ -78,12 +78,12 @@ function PaginationPrevious({
 
 function PaginationNext({
   className,
-  text = 'Siguiente',
+  text = 'Next',
   ...props
 }: PaginationButtonProps & { text?: string }) {
   return (
     <PaginationButton
-      aria-label="Ir a la página siguiente"
+      aria-label="Go to next page"
       size="sm"
       className={cn('gap-1 px-3', className)}
       iconRight={<ChevronRight aria-hidden="true" />}
@@ -94,7 +94,11 @@ function PaginationNext({
   )
 }
 
-function PaginationEllipsis({ className, ...props }: React.ComponentProps<'span'>) {
+function PaginationEllipsis({
+  className,
+  label = 'More pages',
+  ...props
+}: React.ComponentProps<'span'> & { label?: string }) {
   return (
     <span
       aria-hidden
@@ -106,7 +110,7 @@ function PaginationEllipsis({ className, ...props }: React.ComponentProps<'span'
       {...props}
     >
       <MoreHorizontal aria-hidden="true" />
-      <span className="sr-only">Más páginas</span>
+      <span className="sr-only">{label}</span>
     </span>
   )
 }

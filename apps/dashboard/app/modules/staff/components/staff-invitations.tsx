@@ -4,7 +4,6 @@ import {
   Badge,
   Button,
   Card,
-  cn,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -33,9 +32,6 @@ type StaffInvitationsProps = {
   onDelete?: (invitationId: string) => void
   deletingInvitationId?: string | null
 }
-
-const staffActionIconClassName = '!size-[20px] shrink-0'
-const staffActionItemClassName = 'gap-3 py-2.5 text-base'
 
 function StaffInvitationStatusBadge({ invitation }: { invitation: StaffInvitationRecord }) {
   const { t } = useTranslation('staff')
@@ -131,21 +127,18 @@ function StaffInvitationRecordActions({
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="min-w-44 p-1.5">
         {showCopyLink ? (
-          <DropdownMenuItem
-            className={staffActionItemClassName}
-            onClick={() => void handleCopyLink()}
-          >
-            <Copy aria-hidden="true" className={staffActionIconClassName} />
+          <DropdownMenuItem onClick={() => void handleCopyLink()}>
+            <Copy aria-hidden="true" />
             {t('invitationsTable.copyLink')}
           </DropdownMenuItem>
         ) : null}
         {showDelete ? (
           <DropdownMenuItem
-            className={cn(staffActionItemClassName, 'text-error focus:text-error')}
+            className="text-error focus:text-error"
             disabled={isDeleting}
             onClick={handleDelete}
           >
-            <Trash2 aria-hidden="true" className={cn(staffActionIconClassName, 'text-error')} />
+            <Trash2 aria-hidden="true" className="text-error" />
             {t('invitationsTable.delete')}
           </DropdownMenuItem>
         ) : null}

@@ -51,7 +51,7 @@ export const AllSizes: Story = {
 
 export const InCardContext: Story = {
   render: () => (
-    <div className="flex items-center gap-4 rounded-control border border-hairline bg-surface-card p-4">
+    <div className="flex items-center gap-4 rounded-app border border-hairline bg-surface-card p-4">
       <NotImage size="sm" className="sm:size-20 sm:[&_svg]:size-8" />
       <div className="flex flex-col gap-1">
         <p className="font-heading text-sm font-bold uppercase text-ink">Cyber Tokyo</p>

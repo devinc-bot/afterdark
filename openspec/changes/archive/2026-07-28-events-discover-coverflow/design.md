@@ -33,7 +33,7 @@
 
 5. **Remove map wiring:** delete `events-discover-map.tsx`; drop `mapFocus` / `selectedEventId` / `handleSelectEvent*` from the page; simplify list props (remove `selected` highlight driven by map selection). Clean unused `discover.map.*` / `focusOnMap` keys if unused after removal. Keep event-detail map keys untouched.
 
-6. **Tokens / styling:** adapt Amicro zinc/white chrome to web design tokens (`surface`, `on-surface`, `hairline`, `rounded-control`) so light/dark themes stay coherent; keep aspect ratio and 3D perspective behavior.
+6. **Tokens / styling:** adapt Amicro zinc/white chrome to web design tokens (`surface`, `on-surface`, `hairline`, `rounded-app`) so light/dark themes stay coherent; keep aspect ratio and 3D perspective behavior.
 
 ## Risks / Trade-offs
 

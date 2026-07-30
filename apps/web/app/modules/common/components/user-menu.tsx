@@ -99,13 +99,16 @@ export function UserMenu({ user, ariaLabel, settingsHref }: UserMenuProps) {
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
-            <DropdownMenuItem className="focus:bg-card" onClick={handleSettings}>
+            <DropdownMenuItem className="rounded-sm" onClick={handleSettings}>
               <User />
               {t('userMenu.settings')}
             </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
-          <DropdownMenuItem className="focus:bg-card" onClick={() => setSignOutOpen(true)}>
+          <DropdownMenuItem
+            className="text-error focus:text-error rounded-t-sm"
+            onClick={() => setSignOutOpen(true)}
+          >
             <LogOut />
             {t('userMenu.signOut')}
           </DropdownMenuItem>

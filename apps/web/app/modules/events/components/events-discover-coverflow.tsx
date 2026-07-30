@@ -273,7 +273,7 @@ export function EventsDiscoverCoverflow({
                         src={slide.src}
                         alt=""
                         className={cn(
-                          'h-full object-cover',
+                          'h-full object-cover hover:scale-105 transition-transform duration-1000 ease-in-out',
                           reduceMotion ? 'w-full' : 'max-w-none flex-[0_0_115%]'
                         )}
                         draggable={false}
@@ -288,12 +288,12 @@ export function EventsDiscoverCoverflow({
                       aria-hidden
                     />
                   </div>
-                  <span className="pointer-events-none absolute bottom-3 left-3 right-3 flex w-fit max-w-[min(100%-1.5rem,42rem)] flex-col gap-1 rounded-app bg-surface-lowest/90 px-4 py-3 text-left sm:bottom-6 sm:left-6 sm:px-5 sm:py-3.5">
-                    <span className="font-display text-lg font-semibold text-balance text-on-surface sm:text-2xl">
+                  <span className="pointer-events-none absolute bottom-3 left-3 right-3 flex w-fit max-w-[min(100%-1.5rem,42rem)] flex-col gap-1 rounded-app bg-black/55 px-4 py-3 text-left shadow-(--shadow-glass) backdrop-blur-md supports-backdrop-filter:bg-black/40 sm:bottom-6 sm:left-6 sm:px-5 sm:py-3.5">
+                    <span className="font-display text-lg font-semibold text-balance text-white sm:text-2xl">
                       {slide.title}
                     </span>
                     {metaParts.length > 0 ? (
-                      <span className="text-sm text-pretty text-on-surface-variant sm:text-base">
+                      <span className="text-sm text-pretty text-white/80 sm:text-base">
                         {metaParts.join(' · ')}
                       </span>
                     ) : null}
@@ -313,7 +313,7 @@ export function EventsDiscoverCoverflow({
                 aria-label={t('discover.coverflow.prev')}
                 className="inline-flex size-10 cursor-pointer items-center justify-center rounded-full border-0 bg-transparent text-on-surface transition-colors hover:bg-on-surface/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink"
               >
-                <ChevronLeft className="size-5" aria-hidden />
+                <ChevronLeft className="size-7" aria-hidden />
               </button>
 
               <div
@@ -349,7 +349,7 @@ export function EventsDiscoverCoverflow({
                 aria-label={t('discover.coverflow.next')}
                 className="inline-flex size-10 cursor-pointer items-center justify-center rounded-full border-0 bg-transparent text-on-surface transition-colors hover:bg-on-surface/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink"
               >
-                <ChevronRight className="size-5" aria-hidden />
+                <ChevronRight className="size-7" aria-hidden />
               </button>
             </div>
           </div>

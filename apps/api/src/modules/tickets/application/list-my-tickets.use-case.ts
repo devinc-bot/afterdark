@@ -1,9 +1,23 @@
 import { Inject, Injectable, InternalServerErrorException } from '@nestjs/common'
-import { findTicketsPaginatedByOwner } from '@repo/db'
+import { findEventImageAssetsByEventIds, findTicketsPaginatedByOwner } from '@repo/db'
 import { TranslationService } from '@repo/i18n/server'
 import type { PaginatedResponse, TicketResponse } from '@repo/types'
 import type { ListTicketsQueryInput } from '@repo/validators'
 import { toTicketResponse } from '../mappers/tickets.mapper'
+
+function firstEventImageUrlByEventId(
+  imageRows: Awaited<ReturnType<typeof findEventImageAssetsByEventIds>>
+): Map<number, string> {
+  const map = new Map<number, string>()
+
+  for (const { eventId, asset } of imageRows) {
+    if (map.has(eventId)) continue
+    const url = asset.url?.trim()
+    if (url) map.set(eventId, url)
+  }
+
+  return map
+}
 
 @Injectable()
 export class ListMyTicketsUseCase {
@@ -23,11 +37,21 @@ export class ListMyTicketsUseCase {
         salesFilter: query.salesFilter,
       })
 
+      const eventImageUrlById = firstEventImageUrlByEventId(
+        await findEventImageAssetsByEventIds(rows.flatMap(({ event }) => (event ? [event.id] : [])))
+      )
+
       const totalPages = total === 0 ? 0 : Math.ceil(total / query.limit)
 
       return {
         data: rows.map(({ ticket, event, location, totalSold, revenue }) =>
-          toTicketResponse(ticket, event, location, { totalSold, revenue })
+          toTicketResponse(
+            ticket,
+            event,
+            location,
+            { totalSold, revenue },
+            event ? (eventImageUrlById.get(event.id) ?? null) : null
+          )
         ),
         total,
         page: query.page,

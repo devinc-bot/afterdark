@@ -65,7 +65,7 @@ export class UpdateEventUseCase {
       await this.eventImages.removeUnwanted(eventId, keepImageIds)
       await this.eventImages.saveNew(eventId, files, uploadedImages)
       const images = await this.eventImages.getByEventId(eventId)
-      return toEventResponse(row.event, row.location, images)
+      return toEventResponse(row.event, row.location, images, row.faqs)
     } catch (error) {
       await this.eventImages.rollback(uploadedImages)
       if (error instanceof HttpException) {

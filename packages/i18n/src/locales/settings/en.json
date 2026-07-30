@@ -23,7 +23,7 @@
       "validationSummary": "Fix the fields with errors before saving.",
       "saving": "Saving…",
       "saveSuccess": "Done. Your profile is up to date.",
-      "saveSuccessNight": "Saved. Have a good night.",
+      "saveSuccessNight": "Changes saved successfully.",
       "saveFallback": "We couldn't save. Check your connection and try again."
     }
   },
@@ -35,10 +35,19 @@
     "sections": {
       "profile": "Profile",
       "profileDescription": "Your personal and contact information.",
+      "organization": "Organization",
+      "organizationDescription": "If you operate as a company or organization.",
       "address": "Address",
       "addressDescription": "Where you live. Optional.",
       "account": "Account",
       "accountDescription": "How you sign in to {appNameDisplay}."
+    },
+    "organization": {
+      "isOrganization": "Are you an organization?",
+      "yes": "Yes",
+      "no": "No",
+      "name": "Organization name",
+      "taxId": "Tax ID (CUIT)"
     },
     "profile": {
       "changePhoto": "Change photo",
@@ -48,7 +57,6 @@
       "phone": "Phone",
       "birthday": "Date of birth",
       "nationalId": "National ID",
-      "taxId": "Tax ID",
       "addressSection": "Address",
       "address": "Street",
       "streetNumber": "Number",

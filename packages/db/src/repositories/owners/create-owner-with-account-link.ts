@@ -8,7 +8,15 @@ export async function createOwnerWithAccountLink(
   accountId: number,
   profile: OwnerProfileSeed
 ): Promise<string> {
-  const [owner] = await tx.insert(owners).values(profile).returning()
+  const [owner] = await tx
+    .insert(owners)
+    .values({
+      name: profile.name,
+      lastName: profile.lastName,
+      phone: profile.phone,
+      avatarId: profile.avatarId ?? null,
+    })
+    .returning()
 
   if (!owner) {
     throw new Error('Owner insert returned no row')

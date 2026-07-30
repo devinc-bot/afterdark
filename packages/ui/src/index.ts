@@ -90,7 +90,7 @@ export {
 export { BarChart, type BarChartDataPoint, type BarChartProps } from './components/ui/bar-chart.tsx'
 export { Label } from './components/ui/label.tsx'
 export { Loader, type LoaderProps } from './components/ui/loader.tsx'
-export { Link, type LinkProps } from './components/ui/link.tsx'
+export { Link, type LinkProps, linkVariants } from './components/ui/link.tsx'
 export { LoadErrorBanner, type LoadErrorBannerProps } from './components/ui/load-error-banner.tsx'
 export {
   ErrorBoundaryView,

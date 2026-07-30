@@ -39,9 +39,6 @@ type StaffUserRecordsProps = {
   onDelete?: (recordId: string) => void
 }
 
-const staffActionIconClassName = '!size-[20px] shrink-0'
-const staffActionItemClassName = 'gap-3 py-2.5 text-base'
-
 function StaffUserIdentityCell({ record }: { record: StaffUserRecord }) {
   const initials = getStaffUserInitials(record.name)
   const [avatarImageFailed, setAvatarImageFailed] = useState(false)
@@ -129,7 +126,7 @@ function StaffUserRecordActions({
           aria-busy={isPending}
         >
           {isPending ? (
-            <Loader2 aria-hidden="true" className={cn(staffActionIconClassName, 'animate-spin')} />
+            <Loader2 aria-hidden="true" className="animate-spin" />
           ) : (
             <EllipsisVertical aria-hidden="true" />
           )}
@@ -137,7 +134,6 @@ function StaffUserRecordActions({
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="min-w-44 p-1.5">
         <DropdownMenuItem
-          className={staffActionItemClassName}
           disabled={statusControlsDisabled}
           onSelect={() => {
             if (isActive) {
@@ -147,19 +143,15 @@ function StaffUserRecordActions({
             onActivate(record.id)
           }}
         >
-          {isActive ? (
-            <PowerOff aria-hidden="true" className={staffActionIconClassName} />
-          ) : (
-            <Power aria-hidden="true" className={staffActionIconClassName} />
-          )}
+          {isActive ? <PowerOff aria-hidden="true" /> : <Power aria-hidden="true" />}
           {isActive ? t('table.deactivateUser') : t('table.activateUser')}
         </DropdownMenuItem>
         <DropdownMenuItem
-          className={cn(staffActionItemClassName, 'text-red-600 focus:text-red-600')}
+          className="text-error focus:text-error"
           disabled={statusControlsDisabled}
           onSelect={() => onDeleteRequest(record)}
         >
-          <Trash2 aria-hidden="true" className={staffActionIconClassName} />
+          <Trash2 aria-hidden="true" className="text-error" />
           {t('table.deleteUser')}
         </DropdownMenuItem>
       </DropdownMenuContent>

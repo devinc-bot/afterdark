@@ -75,7 +75,6 @@ rounded:
   md: calc(app - 8px)
   lg: calc(app - 4px)
   xl: app
-  control: app
   full: 9999px
 spacing:
   '1': 2px
@@ -93,23 +92,23 @@ components:
   button-primary:
     backgroundColor: '{colors.primary}'
     textColor: '{colors.on-primary}'
-    rounded: '{rounded.control}'
+    rounded: '{rounded.app}'
     padding: 0 20px
     height: 40px
   button-outline:
     backgroundColor: '{colors.surface-raised}'
     textColor: '{colors.foreground}'
-    rounded: '{rounded.control}'
+    rounded: '{rounded.app}'
     padding: 0 20px
     height: 40px
   card:
     backgroundColor: '{colors.surface-raised}'
     textColor: '{colors.foreground}'
-    rounded: '{rounded.control}'
+    rounded: '{rounded.app}'
   input:
     backgroundColor: '{colors.surface-muted}'
     textColor: '{colors.foreground}'
-    rounded: '{rounded.control}'
+    rounded: '{rounded.app}'
 ---
 
 ## Overview
@@ -176,10 +175,11 @@ Scale (px): 10 / 12 / 14 / 16 / 20 / 24 / 32 / 48 (+ 56–60 display extras). Pr
 Depth is **tonal surfaces first**, then soft shadow:
 
 - Surface steps (`lowest` → `highest`) for most hierarchy
-- `--shadow-glass`: `0 8px 32px rgba(0,0,0,0.35)` for floating panels when needed
+- `--shadow-glass`: layered soft depth (top highlight + contact + ambient) for floating panels; theme-aware dark/light
+- `.glass-panel`: purposeful glass for menus/popovers (`backdrop-filter` + translucent popover fill); solid fallback without support
 - Primary glow / inner glow / `neon-*` utilities exist in CSS but are **legacy costume** — prefer soft depth; do not lead new UI with glow or `neon-glow-text`
 
-Glass (`backdrop-filter` cards) is rare and purposeful, not default chrome.
+Glass (`backdrop-filter`) is rare and purposeful — floating panels only, not default chrome.
 
 Motion: 150–500ms with standard / emphasized curves; landing fade-up and hero drift exist with `prefers-reduced-motion` cutoffs. Prefer opacity/transform; no bounce.
 
@@ -187,9 +187,9 @@ Motion: 150–500ms with standard / emphasized curves; landing fade-up and hero 
 
 Shared primitives in `@repo/ui` (shadcn-based):
 
-- **Button:** `rounded-control` (12px), primary fill / outline / ghost / gradient-border variants; instant transition; `active:scale-[0.98]` with motion-reduce off.
+- **Button:** `rounded-app` (12px), primary fill / outline / ghost / gradient-border variants; instant transition; `active:scale-[0.98]` with motion-reduce off.
 - **Inputs / fields:** muted surface fill, hairline or gradient-border field treatments, invalid → error border.
-- **Cards:** raised surface, control radius; avoid nested cards.
+- **Cards:** raised surface, app radius; avoid nested cards.
 - **Focus:** 2px ring primary at 25% opacity (buttons) / global `:focus-visible` ring.
 - **App chrome:** sidebar uses lowest surface; web public shell may add atmosphere washes — keep them soft, not neon.
 

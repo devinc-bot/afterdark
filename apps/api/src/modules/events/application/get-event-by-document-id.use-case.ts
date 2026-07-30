@@ -20,6 +20,6 @@ export class GetEventByDocumentIdUseCase {
     }
 
     const images = await this.eventImages.getByEventId(row.event.id)
-    return toEventResponse(row.event, row.location, images)
+    return toEventResponse(row.event, row.location, images, row.faqs)
   }
 }

@@ -19,6 +19,7 @@ export type OwnerProfileSeed = {
   name: string
   lastName: string
   phone: string
+  avatarId?: number | null
 }
 
 export type CurrentOwnerRow = {
@@ -29,6 +30,7 @@ export type CurrentOwnerRow = {
   phone: string
   birthday: string | null
   nationalId: string | null
+  organizationName: string | null
   taxId: string | null
   status: OwnerStatus
   email: string
@@ -41,6 +43,7 @@ export type OwnerUpdateInput = {
   phone: string
   birthday: string | null
   nationalId: string | null
+  organizationName: string | null
   taxId: string | null
 }
 

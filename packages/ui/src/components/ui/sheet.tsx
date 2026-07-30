@@ -47,25 +47,36 @@ type SheetContentProps = React.ComponentPropsWithoutRef<typeof SheetPrimitive.Co
   VariantProps<typeof sheetVariants> & {
     /** Accessible name for the dismiss control. */
     closeLabel?: string
+    /** Extra classes for the dimmed backdrop (e.g. backdrop-blur). */
+    overlayClassName?: string
   }
 
 const SheetContent = React.forwardRef<
   React.ComponentRef<typeof SheetPrimitive.Content>,
   SheetContentProps
->(({ side = 'right', className, children, closeLabel = 'Close', ...props }, ref) => (
-  <SheetPortal>
-    <SheetOverlay />
-    <SheetPrimitive.Content ref={ref} className={cn(sheetVariants({ side }), className)} {...props}>
-      {children}
-      <SheetPrimitive.Close
-        aria-label={closeLabel}
-        className="absolute top-3 right-3 flex size-10 cursor-pointer items-center justify-center rounded-control text-ink-muted opacity-80 ring-offset-background transition-[color,opacity,background-color] duration-(--duration-instant) ease-emphasized hover:bg-surface-strong hover:text-ink hover:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink disabled:pointer-events-none motion-reduce:transition-none"
+>(
+  (
+    { side = 'right', className, children, closeLabel = 'Close', overlayClassName, ...props },
+    ref
+  ) => (
+    <SheetPortal>
+      <SheetOverlay className={overlayClassName} />
+      <SheetPrimitive.Content
+        ref={ref}
+        className={cn(sheetVariants({ side }), className)}
+        {...props}
       >
-        <X className="size-5" strokeWidth={2} aria-hidden />
-      </SheetPrimitive.Close>
-    </SheetPrimitive.Content>
-  </SheetPortal>
-))
+        {children}
+        <SheetPrimitive.Close
+          aria-label={closeLabel}
+          className="absolute top-3 right-3 flex size-10 cursor-pointer items-center justify-center rounded-app text-ink-muted opacity-80 ring-offset-background transition-[color,opacity,background-color] duration-(--duration-instant) ease-emphasized hover:bg-surface-strong hover:text-ink hover:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink disabled:pointer-events-none motion-reduce:transition-none"
+        >
+          <X className="size-7" strokeWidth={2} aria-hidden />
+        </SheetPrimitive.Close>
+      </SheetPrimitive.Content>
+    </SheetPortal>
+  )
+)
 SheetContent.displayName = SheetPrimitive.Content.displayName
 
 function SheetHeader({ className, ...props }: React.ComponentProps<'div'>) {

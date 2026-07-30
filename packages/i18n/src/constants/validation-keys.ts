@@ -6,6 +6,7 @@ export const VALIDATION_KEY = {
   FIELD_BIRTHDAY_FORMAT: 'validation:field.birthday.format',
   FIELD_NATIONAL_ID_INVALID: 'validation:field.nationalId.invalid',
   FIELD_TAX_ID_INVALID: 'validation:field.taxId.invalid',
+  FIELD_ORGANIZATION_NAME_REQUIRED: 'validation:field.organizationName.required',
   FIELD_PASSWORD_MIN: 'validation:field.password.min',
   FIELD_PASSWORD_NO_MATCH: 'validation:field.password.noMatch',
   FIELD_SECURITY_WORD_REQUIRED: 'validation:field.securityWord.required',

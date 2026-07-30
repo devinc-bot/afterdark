@@ -38,6 +38,9 @@
     "taxId": {
       "invalid": "Tax ID must be 11 digits with no dashes."
     },
+    "organizationName": {
+      "required": "Enter the organization name."
+    },
     "password": {
       "min": "Password must be at least {min} characters.",
       "noMatch": "Passwords do not match."
@@ -92,7 +95,14 @@
       "startDate": "Start date and time are required.",
       "endDate": "End date and time are required.",
       "location": "Select a location.",
-      "endDateAfterStart": "Start date and time must be before the end date and time."
+      "endDateAfterStart": "Start date and time must be before the end date and time.",
+      "faq": {
+        "question": "Question is required.",
+        "questionMax": "Question cannot exceed {max} characters.",
+        "answer": "Answer is required.",
+        "answerMax": "Answer cannot exceed {max} characters.",
+        "max": "You can add up to {max} FAQ items."
+      }
     },
     "dashboard": {
       "toDateAfterFrom": "The end date must be on or after the start date."

@@ -90,7 +90,8 @@
   "table": {
     "title": "Detalle del inventario de tickets",
     "registryCount": "{count, plural, one {1 ticket registrado} other {# tickets registrados}}",
-    "club": "Club nocturno",
+    "location": "Ubicación",
+    "event": "Evento",
     "name": "Nombre",
     "ticketType": "Tipo de entrada",
     "price": "Precio",
@@ -113,7 +114,13 @@
   },
   "pagination": {
     "previous": "Anterior",
-    "next": "Siguiente"
+    "next": "Siguiente",
+    "label": "Paginación de tickets",
+    "pageOf": "Página {page} de {totalPages}",
+    "previousAria": "Ir a la página anterior",
+    "nextAria": "Ir a la página siguiente",
+    "goToPage": "Ir a la página {page}",
+    "ellipsis": "Más páginas"
   },
   "delete": {
     "title": "Eliminar ticket",

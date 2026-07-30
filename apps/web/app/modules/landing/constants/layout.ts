@@ -16,7 +16,7 @@ export const LANDING_CTA_GHOST_ON_MEDIA =
   'min-h-11 border-white/35 bg-transparent text-white hover:bg-white/10'
 
 export const LANDING_FOCUS_RING =
-  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink'
+  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink justify-start'
 
 export const LANDING_FOCUS_RING_ON_MEDIA =
   'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white'

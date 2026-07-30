@@ -2,7 +2,6 @@ import type { LocationImageResponse } from '@repo/types'
 import {
   Button,
   Card,
-  cn,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -34,9 +33,6 @@ export type RegisteredLocation = {
   longitude?: number | null
 }
 
-const locationActionIconClassName = '!size-[20px] shrink-0'
-const locationActionItemClassName = 'gap-3 py-2.5 text-base'
-
 function LocationIdentityCell({ location }: { location: RegisteredLocation }) {
   const { t } = useTranslation('locations')
 
@@ -62,11 +58,22 @@ function LocationIdentityCell({ location }: { location: RegisteredLocation }) {
   )
 }
 
-function LocationAddressCell({ address }: { address: string }) {
+function formatLocationAddress(location: RegisteredLocation): string {
+  const streetLine = [location.address, location.street_number]
+    .map((part) => part?.trim())
+    .filter(Boolean)
+    .join(' ')
+
+  return [streetLine, location.city?.trim(), location.state?.trim()].filter(Boolean).join(' · ')
+}
+
+function LocationAddressCell({ location }: { location: RegisteredLocation }) {
+  const label = formatLocationAddress(location)
+
   return (
     <div className="flex min-w-0 items-center gap-1.5 text-sm text-ink-muted">
       <MapPin aria-hidden="true" className="size-3.5 shrink-0" />
-      <span className="truncate">{address}</span>
+      <span className="truncate">{label || '—'}</span>
     </div>
   )
 }
@@ -108,19 +115,16 @@ function LocationRecordActions({
           <EllipsisVertical aria-hidden="true" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="min-w-44 p-1.5">
-        <DropdownMenuItem
-          className={locationActionItemClassName}
-          onClick={() => onEdit?.(location)}
-        >
-          <Pencil aria-hidden="true" className={locationActionIconClassName} />
+      <DropdownMenuContent align="end" className="min-w-44">
+        <DropdownMenuItem onClick={() => onEdit?.(location)}>
+          <Pencil aria-hidden="true" />
           {t('registry.row.edit')}
         </DropdownMenuItem>
         <DropdownMenuItem
-          className={cn(locationActionItemClassName, 'text-error focus:text-error')}
+          className="text-error focus:text-error"
           onClick={() => onDelete?.(location)}
         >
-          <Trash2 aria-hidden="true" className={cn(locationActionIconClassName, 'text-error')} />
+          <Trash2 aria-hidden="true" className="text-error" />
           {t('registry.row.delete')}
         </DropdownMenuItem>
       </DropdownMenuContent>
@@ -143,7 +147,7 @@ function LocationRecordRow({
         <LocationIdentityCell location={location} />
       </TableCell>
       <TableCell className="p-6">
-        <LocationAddressCell address={location.address} />
+        <LocationAddressCell location={location} />
       </TableCell>
       <TableCell className="p-6">
         <LocationCapacityCell capacity={location.capacity} />

@@ -1,11 +1,32 @@
-import type { AssetSelect, EventSelect, LocationSelect, AddressSelect } from '@repo/db'
 import type {
+  AddressSelect,
+  AssetSelect,
+  EventFaqSelect,
+  EventSelect,
+  LocationSelect,
+} from '@repo/db'
+import type {
+  EventFaqResponse,
   EventImageResponse,
   EventResponse,
   PublicEventDetailResponse,
+  PublicEventOrganizer,
   PublicEventResponse,
+  PublishedEventOrganizerRow,
 } from '@repo/types'
 import type { CreateEventInput, UpdateEventInput } from '@repo/validators'
+
+export function toPublicEventOrganizer(row: PublishedEventOrganizerRow): PublicEventOrganizer {
+  const organizationName = row.organizationName?.trim()
+  const personalName = `${row.name} ${row.lastName}`.trim()
+
+  return {
+    name: organizationName && organizationName.length > 0 ? organizationName : personalName,
+    avatar: row.avatar,
+    firstName: row.name,
+    lastName: row.lastName,
+  }
+}
 
 export function toEventImageResponse(asset: AssetSelect): EventImageResponse {
   return {
@@ -15,10 +36,19 @@ export function toEventImageResponse(asset: AssetSelect): EventImageResponse {
   }
 }
 
+export function toEventFaqResponse(faq: EventFaqSelect): EventFaqResponse {
+  return {
+    documentId: faq.documentId,
+    question: faq.question,
+    answer: faq.answer,
+  }
+}
+
 export function toEventResponse(
   event: EventSelect,
   location: Pick<LocationSelect, 'documentId' | 'name'>,
-  images: EventImageResponse[] = []
+  images: EventImageResponse[] = [],
+  faqs: EventFaqSelect[] = []
 ): EventResponse {
   return {
     documentId: event.documentId,
@@ -30,6 +60,7 @@ export function toEventResponse(
     endsAt: event.endsAt,
     status: event.status,
     images,
+    faqs: faqs.map(toEventFaqResponse),
     createdAt: event.createdAt,
     updatedAt: event.updatedAt,
   }
@@ -64,7 +95,9 @@ export function toPublicEventDetailResponse(
     'address' | 'streetNumber' | 'city' | 'state' | 'latitude' | 'longitude'
   > | null,
   images: EventImageResponse[] = [],
-  locationImages: EventImageResponse[] = []
+  locationImages: EventImageResponse[] = [],
+  faqs: EventFaqSelect[] = [],
+  organizer: PublishedEventOrganizerRow
 ): PublicEventDetailResponse {
   return {
     documentId: event.documentId,
@@ -85,6 +118,8 @@ export function toPublicEventDetailResponse(
       : null,
     images,
     locationImages,
+    faqs: faqs.map(toEventFaqResponse),
+    organizer: toPublicEventOrganizer(organizer),
   }
 }
 
@@ -96,6 +131,7 @@ export function toEventUpsertInput(input: CreateEventInput | UpdateEventInput, l
     startsAt: input.startsAt,
     endsAt: input.endsAt,
     status: input.status,
+    faqs: input.faqs ?? [],
   }
 }
 

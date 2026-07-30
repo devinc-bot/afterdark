@@ -1,5 +1,6 @@
 {
   "metaTitle": "{appNameDisplay} · Panel for club owners",
+  "skipToContent": "Skip to content",
   "header": {
     "brand": "{appName}",
     "login": "Log in",
@@ -9,6 +10,7 @@
     "how": "How it works",
     "audiences": "Who it's for",
     "faq": "FAQ",
+    "language": "Language",
     "openMenu": "Open menu",
     "mobileAriaLabel": "Navigation menu"
   },
@@ -147,18 +149,11 @@
   },
   "footer": {
     "tagline": "The panel for event and club owners.",
-    "explore": "Explore",
     "navAria": "Footer links",
-    "product": "Product",
     "features": "Features",
     "how": "How it works",
+    "audiences": "Who it's for",
     "faq": "FAQ",
-    "company": "Company",
-    "about": "About",
-    "contact": "Contact",
-    "legal": "Legal",
-    "terms": "Terms",
-    "privacy": "Privacy",
     "rights": "© {year} {appName}"
   }
 }

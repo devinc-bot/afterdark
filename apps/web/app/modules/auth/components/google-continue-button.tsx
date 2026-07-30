@@ -41,7 +41,7 @@ export function GoogleContinueButton() {
         )
       }}
     >
-      <GoogleMark className="size-[18px]" />
+      <GoogleMark className="size-4.5" />
       {t('google.continue')}
     </Button>
   )

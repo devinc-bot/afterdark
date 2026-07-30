@@ -3,6 +3,10 @@ import { EVENT_STATUS } from '@repo/types'
 import { optionalCoercedDateSchema, paginationSchema, uuidSchema } from './common.ts'
 import { EVENT_IMAGE_MAX_COUNT } from './upload.ts'
 
+export const EVENT_FAQ_MAX_COUNT = 20
+export const EVENT_FAQ_QUESTION_MAX_LENGTH = 200
+export const EVENT_FAQ_ANSWER_MAX_LENGTH = 2000
+
 function multipartUuidListSchema() {
   return z
     .union([z.string(), z.array(z.string())])
@@ -16,6 +20,39 @@ function multipartUuidListSchema() {
     })
     .pipe(z.array(uuidSchema))
 }
+
+export const eventFaqItemSchema = z.object({
+  question: z
+    .string()
+    .trim()
+    .min(1, 'validation:field.event.faq.question')
+    .max(EVENT_FAQ_QUESTION_MAX_LENGTH, 'validation:field.event.faq.questionMax'),
+  answer: z
+    .string()
+    .trim()
+    .min(1, 'validation:field.event.faq.answer')
+    .max(EVENT_FAQ_ANSWER_MAX_LENGTH, 'validation:field.event.faq.answerMax'),
+})
+
+/** Accepts an array (JSON body) or a JSON string (multipart FormData). */
+export const eventFaqsSchema = z.preprocess(
+  (value) => {
+    if (value === undefined || value === null || value === '') {
+      return []
+    }
+
+    if (typeof value === 'string') {
+      try {
+        return JSON.parse(value)
+      } catch {
+        return value
+      }
+    }
+
+    return value
+  },
+  z.array(eventFaqItemSchema).max(EVENT_FAQ_MAX_COUNT, 'validation:field.event.faq.max')
+)
 
 export const eventStatusSchema = z.enum([
   EVENT_STATUS.DRAFT,
@@ -51,6 +88,7 @@ const createEventFieldsSchema = z.object({
   startsAt: z.coerce.date({ message: 'validation:field.event.startDate' }),
   endsAt: z.coerce.date({ message: 'validation:field.event.endDate' }),
   status: eventStatusSchema.default(EVENT_STATUS.PUBLISHED),
+  faqs: eventFaqsSchema.default([]),
 })
 
 export const createEventSchema = createEventFieldsSchema.refine(eventDateRangeRefineApi.refine, {
@@ -84,6 +122,7 @@ export const eventFieldSchemas = {
   startsAt: z.string().trim().min(1, 'validation:field.event.startDate'),
   endsAt: z.string().trim().min(1, 'validation:field.event.endDate'),
   status: eventStatusSchema,
+  faqs: z.array(eventFaqItemSchema).max(EVENT_FAQ_MAX_COUNT, 'validation:field.event.faq.max'),
 }
 
 export const eventFormSchema = z.object(eventFieldSchemas).refine(eventDateRangeRefineForm.refine, {

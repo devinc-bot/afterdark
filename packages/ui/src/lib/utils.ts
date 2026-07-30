@@ -4,7 +4,13 @@ import { extendTailwindMerge } from 'tailwind-merge'
 const twMerge = extendTailwindMerge({
   extend: {
     classGroups: {
-      rounded: ['rounded-control'],
+      rounded: [
+        'rounded-app',
+        'rounded-app-xs',
+        'rounded-app-sm',
+        'rounded-app-lg',
+        'rounded-app-xl',
+      ],
     },
   },
 })

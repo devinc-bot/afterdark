@@ -33,6 +33,7 @@ export type SettingsFormProviderConfig<
   formSchema: ZodType<ProfileValues<TProfile>>
   toFormValues: (user: TUser) => ProfileValues<TProfile>
   fieldOrder: readonly (keyof TProfile & string)[]
+  toApiPayload?: (profile: TProfile) => Record<string, unknown>
 }
 
 export function createSettingsFormProvider<
@@ -140,7 +141,10 @@ export function createSettingsFormProvider<
       setErrors({})
 
       try {
-        const updatedUser = (await updateSettings(validation.data.profile)) as unknown as TUser
+        const profilePayload = config.toApiPayload
+          ? config.toApiPayload(validation.data.profile)
+          : validation.data.profile
+        const updatedUser = (await updateSettings(profilePayload)) as unknown as TUser
 
         commit(config.toFormValues(updatedUser))
         setSaveStatus(SETTINGS_SAVE_STATUS.SUCCESS)

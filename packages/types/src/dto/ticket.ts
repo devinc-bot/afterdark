@@ -11,6 +11,8 @@ export interface TicketResponse {
   saleStartsAt: Date | null
   saleEndsAt: Date | null
   eventId: string | null
+  eventName: string | null
+  eventImageUrl: string | null
   locationId: string | null
   locationName: string | null
   /** Completed unit sales (`tickets_sold` via completed orders). */

@@ -1,7 +1,6 @@
 import { Moon, Sun } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { Button } from '../components/ui/button.tsx'
-import { cn } from '../lib/utils.ts'
 import { THEME } from './theme.ts'
 import { useTheme } from './theme-provider.tsx'
 
@@ -20,7 +19,7 @@ export function ThemeToggle({ className, size = 'icon' }: ThemeToggleProps) {
       type="button"
       variant="ghost"
       size={size}
-      className={cn('rounded-control', className)}
+      className={className}
       onClick={toggleTheme}
       aria-label={isDark ? t('theme.switchToLight') : t('theme.switchToDark')}
       title={isDark ? t('theme.light') : t('theme.dark')}

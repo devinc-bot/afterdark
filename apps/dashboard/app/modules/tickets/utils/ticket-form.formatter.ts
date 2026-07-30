@@ -35,27 +35,18 @@ export function ticketResponseToFormValues(ticket: TicketResponse): TicketFormVa
   }
 }
 
-function clubInitials(clubName: string): string {
-  const parts = clubName.trim().split(/\s+/).filter(Boolean)
-  if (parts.length === 0) return 'CL'
-  if (parts.length === 1) return parts[0]!.slice(0, 2).toUpperCase()
-  return `${parts[0]![0] ?? ''}${parts[1]![0] ?? ''}`.toUpperCase()
-}
-
 function resolveTicketTypeTone(type: TicketResponse['type']): TicketRecordItem['ticketTypeTone'] {
   if (type === TICKET_TYPE.VIP) return 'primary'
   return 'default'
 }
 
 export function ticketResponseToRecordItem(ticket: TicketResponse): TicketRecordItem {
-  const clubName = ticket.locationName ?? '—'
-
   return {
     id: ticket.documentId,
     name: ticket.name,
-    clubName,
-    clubInitials: clubInitials(clubName),
-    clubAvatarClassName: 'border-hairline-strong bg-surface-container-high text-ink-muted',
+    clubName: ticket.locationName ?? '—',
+    eventName: ticket.eventName ?? '—',
+    eventImageUrl: ticket.eventImageUrl,
     ticketType: ticket.type,
     ticketTypeTone: resolveTicketTypeTone(ticket.type),
     price: ticket.price,

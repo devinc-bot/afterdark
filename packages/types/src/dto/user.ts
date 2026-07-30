@@ -24,6 +24,7 @@ export interface CurrentOwnerResponse extends BaseProfileResponse {
   phone: string
   birthday: string | null
   nationalId: string | null
+  organizationName: string | null
   taxId: string | null
   status: OwnerStatus
   address: CurrentUserAddress | null

@@ -59,7 +59,22 @@
   },
   "sections": {
     "imagesTitle": "Images",
-    "imagesDescription": "Photos of the event that will appear on the platform. You can upload up to 2 images."
+    "imagesDescription": "Photos of the event that will appear on the platform. You can upload up to 2 images.",
+    "faqTitle": "Frequently asked questions",
+    "faqDescription": "Answer common questions visitors have about the event. Optional."
+  },
+  "faq": {
+    "emptyHint": "No questions yet. Add the most common ones (dress code, age policy, arrival).",
+    "add": "Add question",
+    "remove": "Remove question",
+    "moveUp": "Move up",
+    "moveDown": "Move down",
+    "question": "Question",
+    "questionPlaceholder": "E.g. Is there a dress code?",
+    "answer": "Answer",
+    "answerPlaceholder": "Write the answer",
+    "itemLabel": "Question {index}",
+    "maxReached": "You've reached the maximum of {max} FAQ items."
   },
   "images": {
     "count": "{current} of {max} images",
@@ -191,8 +206,12 @@
       "endsAt": "Ends",
       "address": "Where",
       "noAddress": "No address available",
+      "organizedBy": "Organized by {name}",
+      "organizedByAriaLabel": "Event organizer",
       "locationGallery": "The venue",
       "locationGalleryHint": "A closer look at the place before you go.",
+      "locationBentoAriaLabel": "Venue photo gallery",
+      "locationBentoAlt": "Image {index} of the venue {name}",
       "locationCarouselAriaLabel": "Venue image carousel",
       "locationCarouselAlt": "Image of the venue {name}",
       "map": "Map",
@@ -208,7 +227,9 @@
       "buyTickets": "Buy tickets",
       "buyTicketsUnavailable": "Coming soon",
       "buyTicketsDisabled": "Ticket purchase is not available yet",
-      "purchasePanelAriaLabel": "Event booking"
+      "purchasePanelAriaLabel": "Event booking",
+      "faq": "Frequently asked questions",
+      "faqAriaLabel": "Event frequently asked questions"
     }
   }
 }

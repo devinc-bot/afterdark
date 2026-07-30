@@ -50,7 +50,6 @@ Cada tabla incluye las columnas base (`id`, `document_id`, `created_at`, `update
 | `owner_account_lnk`     | `ownerAccountsLnk`    | `owner-account-lnk.ts`    | Enlace  |
 | `staff_account_lnk`     | `staffAccountsLnk`    | `staff-account-lnk.ts`    | Enlace  |
 | `owner_addresses_lnk`   | `ownerAddressesLnk`   | `owner-address-lnk.ts`    | Enlace  |
-| `user_assets_lnk`       | `userAssetsLnk`       | `user-asset-lnk.ts`       | Enlace  |
 | `club_addresses_lnk`    | `clubAddressesLnk`    | `club-address-lnk.ts`     | Enlace  |
 | `club_assets_lnk`       | `clubAssetsLnk`       | `club-asset-lnk.ts`       | Enlace  |
 
@@ -90,7 +89,6 @@ Los valores de columnas `text` con enum provienen de `packages/types/src/domain.
 | `PAYMENT_STATUS`          | `completed`, `pending`, `rejected`, `cancelled` |
 | `PAYMENT_PROVIDER`        | `mercado_pago`                                  |
 | `ASSET_TYPE`              | `img`, `video`                                  |
-| `USER_ASSET_LINK_TYPE`    | `post`, `history`                               |
 
 Nota: `staff_invitations.role` solo admite `user`, `owner` y `staff` (no `admin`).
 
@@ -103,7 +101,6 @@ Nota: `staff_invitations.role` solo admite `user`, `owner` y `staff` (no `admin`
 | `staff_account_lnk`      | N:1 por lado | Staff ↔ cuenta       |
 | `account_role_lnk`       | 1:1          | Cuenta ↔ rol         |
 | `owner_addresses_lnk`    | 1:1          | Owner ↔ domicilio    |
-| `user_assets_lnk`        | N:M          | Usuario ↔ asset      |
 | `club_addresses_lnk`     | 1:1          | Club ↔ domicilio     |
 | `club_assets_lnk`        | N:M          | Club ↔ asset         |
 | `location_addresses_lnk` | 1:1          | Location ↔ domicilio |
@@ -124,8 +121,9 @@ erDiagram
   roles ||--o{ account_role_lnk : assigns
   owners ||--o| owner_addresses_lnk : has
   addresses ||--o| owner_addresses_lnk : has
-  users ||--o{ user_assets_lnk : has
-  assets ||--o{ user_assets_lnk : has
+  users }o--o| assets : avatar
+  owners }o--o| assets : avatar
+  staff }o--o| assets : avatar
 
   users ||--o{ clubs : owns
   clubs ||--o| club_addresses_lnk : has
@@ -206,13 +204,13 @@ Perfil de persona (sin credenciales).
 
 | Columna (TS) | SQL           | Tipo | Null | Default                  |
 | ------------ | ------------- | ---- | ---- | ------------------------ |
-| `name`       | `name`        | text | NO   | —                        |
-| `lastName`   | `last_name`   | text | NO   | —                        |
-| `phone`      | `phone`       | text | NO   | —                        |
-| `avatar`     | `avatar`      | text | SÍ   | —                        |
-| `birthday`   | `birthday`    | text | SÍ   | —                        |
-| `nationalId` | `national_id` | text | SÍ   | —                        |
-| `status`     | `status`      | text | NO   | `active` (`USER_STATUS`) |
+| `name`       | `name`        | text    | NO   | —                        |
+| `lastName`   | `last_name`   | text    | NO   | —                        |
+| `phone`      | `phone`       | text    | NO   | —                        |
+| `avatarId`   | `avatar_id`   | integer | SÍ   | FK → `assets.id`         |
+| `birthday`   | `birthday`    | text    | SÍ   | —                        |
+| `nationalId` | `national_id` | text    | SÍ   | —                        |
+| `status`     | `status`      | text    | NO   | `active` (`USER_STATUS`) |
 
 #### `owners` — `owner.ts`
 
@@ -220,14 +218,15 @@ Perfil de propietario (mismas columnas que `users`, sin credenciales).
 
 | Columna (TS) | SQL           | Tipo | Null | Default                   |
 | ------------ | ------------- | ---- | ---- | ------------------------- |
-| `name`       | `name`        | text | NO   | —                         |
-| `lastName`   | `last_name`   | text | NO   | —                         |
-| `phone`      | `phone`       | text | NO   | —                         |
-| `avatar`     | `avatar`      | text | SÍ   | —                         |
-| `birthday`   | `birthday`    | text | SÍ   | —                         |
-| `nationalId` | `national_id` | text | SÍ   | —                         |
-| `taxId`      | `tax_id`      | text | SÍ   | —                         |
-| `status`     | `status`      | text | NO   | `active` (`OWNER_STATUS`) |
+| `name`             | `name`              | text    | NO   | —                         |
+| `lastName`         | `last_name`         | text    | NO   | —                         |
+| `phone`            | `phone`             | text    | NO   | —                         |
+| `avatarId`         | `avatar_id`         | integer | SÍ   | FK → `assets.id`          |
+| `birthday`         | `birthday`          | text    | SÍ   | —                         |
+| `nationalId`       | `national_id`       | text    | SÍ   | —                         |
+| `organizationName` | `organization_name` | text    | SÍ   | —                         |
+| `taxId`            | `tax_id`            | text    | SÍ   | —                         |
+| `status`           | `status`            | text    | NO   | `active` (`OWNER_STATUS`) |
 
 #### `staff` — `staff.ts`
 
@@ -235,11 +234,11 @@ Perfil de staff (nombre, contacto y estado; sin credenciales).
 
 | Columna (TS) | SQL         | Tipo | Null | Default                   |
 | ------------ | ----------- | ---- | ---- | ------------------------- |
-| `name`       | `name`      | text | NO   | —                         |
-| `lastName`   | `last_name` | text | NO   | —                         |
-| `phone`      | `phone`     | text | NO   | —                         |
-| `avatar`     | `avatar`    | text | SÍ   | —                         |
-| `status`     | `status`    | text | NO   | `active` (`STAFF_STATUS`) |
+| `name`     | `name`      | text    | NO   | —                         |
+| `lastName` | `last_name` | text    | NO   | —                         |
+| `phone`    | `phone`     | text    | NO   | —                         |
+| `avatarId` | `avatar_id` | integer | SÍ   | FK → `assets.id`          |
+| `status`   | `status`    | text    | NO   | `active` (`STAFF_STATUS`) |
 
 #### `accounts` — `account.ts`
 
@@ -455,19 +454,12 @@ Columnas base: `createdAt` (creación de la orden / inicio de checkout), `update
 
 #### `assets` — `asset.ts`
 
-| Columna (TS) | SQL    | Tipo | Null |
-| ------------ | ------ | ---- | ---- |
-| `name`       | `name` | text | NO   |
-| `url`        | `url`  | text | SÍ   |
-| `type`       | `type` | text | SÍ   |
-
-#### `user_assets_lnk` — `user-asset-lnk.ts`
-
-| Columna (TS) | SQL        | FK →        | Notas                   |
-| ------------ | ---------- | ----------- | ----------------------- |
-| `userId`     | `user_id`  | `users.id`  | —                       |
-| `assetId`    | `asset_id` | `assets.id` | —                       |
-| `type`       | `type`     | text        | SÍ; `post` \| `history` |
+| Columna (TS) | SQL           | Tipo | Null |
+| ------------ | ------------- | ---- | ---- |
+| `name`       | `name`        | text | NO   |
+| `url`        | `url`         | text | SÍ   |
+| `storageKey` | `storage_key` | text | SÍ   |
+| `type`       | `type`        | text | SÍ   |
 
 #### `club_assets_lnk` — `club-asset-lnk.ts`
 

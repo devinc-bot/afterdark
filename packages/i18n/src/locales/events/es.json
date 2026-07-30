@@ -59,7 +59,22 @@
   },
   "sections": {
     "imagesTitle": "Imágenes",
-    "imagesDescription": "Fotos del evento que se mostrarán en la plataforma. Podés subir hasta 2 imágenes."
+    "imagesDescription": "Fotos del evento que se mostrarán en la plataforma. Podés subir hasta 2 imágenes.",
+    "faqTitle": "Preguntas frecuentes",
+    "faqDescription": "Respondé dudas habituales de quienes miran el evento. Es opcional."
+  },
+  "faq": {
+    "emptyHint": "Todavía no agregaste preguntas. Sumá las dudas más comunes (dress code, edad, llegada).",
+    "add": "Agregar pregunta",
+    "remove": "Quitar pregunta",
+    "moveUp": "Subir",
+    "moveDown": "Bajar",
+    "question": "Pregunta",
+    "questionPlaceholder": "Ej. ¿Hay dress code?",
+    "answer": "Respuesta",
+    "answerPlaceholder": "Escribí la respuesta",
+    "itemLabel": "Pregunta {index}",
+    "maxReached": "Alcanzaste el máximo de {max} preguntas frecuentes."
   },
   "images": {
     "count": "{current} de {max} imágenes",
@@ -191,8 +206,12 @@
       "endsAt": "Fin",
       "address": "Dónde",
       "noAddress": "Sin dirección disponible",
+      "organizedBy": "Organizado por {name}",
+      "organizedByAriaLabel": "Organizador del evento",
       "locationGallery": "El lugar",
       "locationGalleryHint": "Un vistazo al espacio antes de ir.",
+      "locationBentoAriaLabel": "Galería de fotos del lugar",
+      "locationBentoAlt": "Imagen {index} del lugar {name}",
       "locationCarouselAriaLabel": "Carrusel de imágenes del lugar",
       "locationCarouselAlt": "Imagen del lugar {name}",
       "map": "Mapa",
@@ -208,7 +227,9 @@
       "buyTickets": "Comprar entradas",
       "buyTicketsUnavailable": "Próximamente",
       "buyTicketsDisabled": "La compra de entradas aún no está disponible",
-      "purchasePanelAriaLabel": "Reserva del evento"
+      "purchasePanelAriaLabel": "Reserva del evento",
+      "faq": "Preguntas frecuentes",
+      "faqAriaLabel": "Preguntas frecuentes del evento"
     }
   }
 }

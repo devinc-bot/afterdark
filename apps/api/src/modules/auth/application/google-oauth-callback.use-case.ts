@@ -5,7 +5,10 @@ import {
   findAuthAccountByEmail,
   findAuthAccountByProviderAccount,
   findRoleByName,
+  GOOGLE_AVATAR_ASSET_NAME,
+  insertExternalImageAsset,
   registerAccount,
+  setProfileAvatarFromUrlIfEmpty,
 } from '@repo/db'
 import { AUTH_PROVIDER, AUTH_OAUTH_APP, type AuthOauthApp, type UserRole } from '@repo/types'
 import {
@@ -67,6 +70,22 @@ export class GoogleOauthCallbackUseCase {
         if (existingOauth.role.name !== role) {
           return buildAppLoginErrorUrl(app, GOOGLE_OAUTH_ERROR.EMAIL_EXISTS)
         }
+
+        if (profile.pictureUrl) {
+          try {
+            // set profile avatar from url if empty
+            await setProfileAvatarFromUrlIfEmpty({
+              accountId: existingOauth.account.id,
+              roleName: existingOauth.role.name as UserRole,
+              pictureUrl: profile.pictureUrl,
+            })
+          } catch (error) {
+            this.logger.warn(
+              `Google avatar backfill failed: ${error instanceof Error ? error.message : String(error)}`
+            )
+          }
+        }
+
         const session = await this.accounts.createAccessToken(existingOauth)
         return buildAppAuthCallbackUrl(app, session.accessToken)
       }
@@ -81,6 +100,21 @@ export class GoogleOauthCallbackUseCase {
         return buildAppLoginErrorUrl(app, GOOGLE_OAUTH_ERROR.FAILED)
       }
 
+      let avatarId: number | null = null
+      if (profile.pictureUrl) {
+        try {
+          const asset = await insertExternalImageAsset({
+            url: profile.pictureUrl,
+            name: GOOGLE_AVATAR_ASSET_NAME,
+          })
+          avatarId = asset.id
+        } catch (error) {
+          this.logger.warn(
+            `Google avatar asset create failed: ${error instanceof Error ? error.message : String(error)}`
+          )
+        }
+      }
+
       await registerAccount({
         email: profile.email,
         hashedPassword: null,
@@ -92,6 +126,7 @@ export class GoogleOauthCallbackUseCase {
           name: profile.name,
           lastName: profile.lastName,
           phone: '',
+          ...(avatarId !== null ? { avatarId } : {}),
         },
       })
 

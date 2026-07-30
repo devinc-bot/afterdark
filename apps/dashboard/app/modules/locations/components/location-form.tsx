@@ -369,6 +369,7 @@ export function LocationForm({
                       aria-label={t('map.ipLocate')}
                       title={t('map.ipLocate')}
                       disabled={ipLocating}
+                      className="size-9"
                       onClick={() => {
                         void handleIpLocate()
                       }}

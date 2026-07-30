@@ -6,7 +6,10 @@ import { PAGE_HEADER_HEADING } from '~/modules/common/components/page-header'
 import { WEB_ROUTES } from '~/modules/common/constants/routes'
 import { formatEventAddress, formatEventWhen } from '../../utils/events-discover-format'
 import { EventDetailCarousel } from './event-detail-carousel'
+import { EventDetailFaq } from './event-detail-faq'
+import { EventDetailLocationBento } from './event-detail-location-bento'
 import { EventDetailMap } from './event-detail-map'
+import { EventDetailOrganizer } from './event-detail-organizer'
 import { EventDetailPurchasePanel } from './event-detail-purchase-panel'
 import { EventDetailShareButton } from './event-detail-share-button'
 
@@ -38,22 +41,13 @@ export function EventDetailContent({ event }: EventDetailContentProps) {
       </Link>
 
       <div className="relative z-10 mt-6 w-full">
-        <EventDetailCarousel images={event.images} eventName={event.name} variant="hero" />
+        <EventDetailCarousel images={event.images} eventName={event.name} />
       </div>
 
       <header className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between sm:gap-6">
         <div className="min-w-0">
           <h1 className={PAGE_HEADER_HEADING}>{event.name}</h1>
-          {event.locationName ? (
-            <p className="mt-2.5 flex items-start gap-1.5 font-label text-sm text-on-surface-variant sm:mt-3">
-              <MapPin
-                className="mt-0.5 size-3.5 shrink-0 opacity-70"
-                aria-hidden
-                strokeWidth={1.75}
-              />
-              <span className="min-w-0 text-pretty">{event.locationName}</span>
-            </p>
-          ) : null}
+          <EventDetailOrganizer organizer={event.organizer} />
         </div>
         <div className="shrink-0 self-start">
           <EventDetailShareButton eventName={event.name} />
@@ -107,20 +101,46 @@ export function EventDetailContent({ event }: EventDetailContentProps) {
             <h2 id="event-detail-address" className={SECTION_HEADING}>
               {t('discover.detail.address')}
             </h2>
-            {addressText ? (
-              <p className="mt-4 max-w-[65ch] font-body text-base leading-relaxed text-pretty text-on-surface-variant">
-                {addressText}
-              </p>
-            ) : (
-              <p className="mt-4 font-body text-base text-on-surface-variant">
-                {t('discover.detail.noAddress')}
-              </p>
-            )}
-            {!hasCoordinates && addressText ? (
-              <p className="mt-2 font-label text-sm text-on-surface-variant/80">
-                {t('discover.list.noCoordinatesHint')}
-              </p>
-            ) : null}
+            <div className="mt-4 flex max-w-[65ch] items-start gap-2.5">
+              <MapPin
+                className="mt-0.5 size-7 shrink-0 text-on-surface-variant opacity-70"
+                aria-hidden
+                strokeWidth={1.75}
+              />
+              <div className="flex min-w-0 flex-col gap-1">
+                {event.locationName ? (
+                  <p className="font-body text-base font-medium leading-snug text-pretty text-on-surface">
+                    {event.locationName}
+                  </p>
+                ) : null}
+                {addressText ? (
+                  <p
+                    className={
+                      event.locationName
+                        ? 'font-body text-sm leading-relaxed text-pretty text-on-surface-variant'
+                        : 'font-body text-base leading-relaxed text-pretty text-on-surface-variant'
+                    }
+                  >
+                    {addressText}
+                  </p>
+                ) : (
+                  <p
+                    className={
+                      event.locationName
+                        ? 'font-label text-sm text-on-surface-variant/80'
+                        : 'font-body text-base text-on-surface-variant'
+                    }
+                  >
+                    {t('discover.detail.noAddress')}
+                  </p>
+                )}
+                {!hasCoordinates && addressText ? (
+                  <p className="font-label text-sm text-on-surface-variant/80">
+                    {t('discover.list.noCoordinatesHint')}
+                  </p>
+                ) : null}
+              </div>
+            </div>
           </section>
         </div>
 
@@ -131,10 +151,12 @@ export function EventDetailContent({ event }: EventDetailContentProps) {
         </div>
       </div>
 
+      <EventDetailFaq faqs={event.faqs} />
+
       {event.locationImages.length > 0 ? (
         <section
           aria-labelledby="event-detail-location-gallery"
-          className="mt-12 flex flex-col gap-4 border-t border-hairline/20 pt-10 sm:mt-16 sm:pt-12"
+          className="mt-6 flex flex-col gap-4 border-t border-hairline/20 pt-5 sm:mt-8 sm:pt-6"
         >
           <div className="max-w-2xl">
             <h2 id="event-detail-location-gallery" className={SECTION_HEADING}>
@@ -144,18 +166,15 @@ export function EventDetailContent({ event }: EventDetailContentProps) {
               {t('discover.detail.locationGalleryHint')}
             </p>
           </div>
-          <EventDetailCarousel
+          <EventDetailLocationBento
             images={event.locationImages}
-            eventName={event.locationName}
-            variant="gallery"
-            ariaLabelKey="discover.detail.locationCarouselAriaLabel"
-            altKey="discover.detail.locationCarouselAlt"
+            locationName={event.locationName}
           />
         </section>
       ) : null}
 
       {hasCoordinates ? (
-        <section aria-labelledby="event-detail-map" className="mt-12 flex flex-col gap-4 sm:mt-14">
+        <section aria-labelledby="event-detail-map" className="mt-6 flex flex-col gap-4 sm:mt-7">
           <h2 id="event-detail-map" className={SECTION_HEADING}>
             {t('discover.detail.map')}
           </h2>

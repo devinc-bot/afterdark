@@ -66,7 +66,7 @@ export function EventsDiscoverList({
         {Array.from({ length: 6 }, (_, index) => (
           <div
             key={index}
-            className="overflow-hidden rounded-control border border-hairline/20 bg-surface-container-low/50"
+            className="overflow-hidden rounded-app border border-hairline/20 bg-surface-container-low/50"
           >
             <Skeleton className="aspect-video w-full rounded-none bg-surface-high/80" />
             <div className="flex flex-col gap-2 p-4 sm:p-5">

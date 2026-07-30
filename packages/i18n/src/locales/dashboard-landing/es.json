@@ -1,5 +1,6 @@
 {
   "metaTitle": "{appNameDisplay} · Panel para dueños de clubes",
+  "skipToContent": "Saltar al contenido",
   "header": {
     "brand": "{appName}",
     "login": "Iniciar sesión",
@@ -9,6 +10,7 @@
     "how": "Cómo funciona",
     "audiences": "Para quién es",
     "faq": "Preguntas",
+    "language": "Idioma",
     "openMenu": "Abrir menú",
     "mobileAriaLabel": "Menú de navegación"
   },
@@ -147,18 +149,11 @@
   },
   "footer": {
     "tagline": "El panel para dueños de eventos o clubes.",
-    "explore": "Explorar",
     "navAria": "Enlaces del pie de página",
-    "product": "Producto",
     "features": "Funciones",
     "how": "Cómo funciona",
+    "audiences": "Para quién es",
     "faq": "Preguntas frecuentes",
-    "company": "Compañía",
-    "about": "Nosotros",
-    "contact": "Contacto",
-    "legal": "Legal",
-    "terms": "Términos",
-    "privacy": "Privacidad",
     "rights": "© {year} {appName}"
   }
 }

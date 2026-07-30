@@ -14,6 +14,7 @@ import {
   type EventDetailsFormHandle,
   type EventDetailsValues,
 } from '~/modules/events/components/event-details-form'
+import { EventFaqForm, type EventFaqFormHandle } from '~/modules/events/components/event-faq-form'
 import { useCreateEvent, useUpdateEvent } from '~/modules/events/mutation/use-event-mutations'
 import {
   EMPTY_EVENT_FORM_VALUES,
@@ -58,12 +59,14 @@ export function EventFormPage({ mode, title, description, event }: EventFormPage
   const [detailsValues] = useState<EventDetailsValues>(() => buildDetailsDefaults(event))
   const [locationDirty, setLocationDirty] = useState(false)
   const [detailsDirty, setDetailsDirty] = useState(false)
+  const [faqDirty, setFaqDirty] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [unsavedOpen, setUnsavedOpen] = useState(false)
   const [lastUsedLocationId, setLastUsedLocationId] = useState<string | null>(null)
   const [submitError, setSubmitError] = useState<string | null>(null)
 
   const detailsFormRef = useRef<EventDetailsFormHandle | null>(null)
+  const faqFormRef = useRef<EventFaqFormHandle | null>(null)
   const appliedLastLocationRef = useRef(false)
   const keyboardActionRef = useRef<() => void>(() => {})
   const leaveActionRef = useRef<() => void>(() => {
@@ -80,8 +83,11 @@ export function EventFormPage({ mode, title, description, event }: EventFormPage
   } = useLocations()
 
   const initialLocationId = event?.locationId ?? ''
-  const anyDirty = locationDirty || detailsDirty
+  const anyDirty = locationDirty || detailsDirty || faqDirty
   const canSubmit = locations.length > 0 && locationId.length > 0
+  const defaultFaqs = event
+    ? event.faqs.map(({ question, answer }) => ({ question, answer }))
+    : EMPTY_EVENT_FORM_VALUES.faqs
 
   const goToList = useCallback(() => {
     navigate({ to: DASHBOARD_ROUTES.events() })
@@ -134,22 +140,34 @@ export function EventFormPage({ mode, title, description, event }: EventFormPage
     setDetailsDirty(dirty)
   }
 
+  const handleFaqDirty = (dirty: boolean) => {
+    setFaqDirty(dirty)
+  }
+
   const handleSubmit = async () => {
     if (!locationId) {
       setSubmitError(t('form.locationRequiredError'))
       return
     }
 
-    const detailsValid = await detailsFormRef.current?.validate()
-    if (!detailsValid) return
+    const [detailsValid, faqsValid] = await Promise.all([
+      detailsFormRef.current?.validate() ?? false,
+      faqFormRef.current?.validate() ?? false,
+    ])
+    if (!detailsValid || !faqsValid) return
 
     const captured = detailsFormRef.current?.getValues()
+    const faqs = faqFormRef.current?.getValues() ?? []
     if (!captured) return
 
     setIsSubmitting(true)
     setSubmitError(null)
     try {
-      const formFields = { ...captured.details, locationId }
+      const formFields = {
+        ...captured.details,
+        locationId,
+        faqs,
+      }
 
       if (isCreate) {
         await createEventMutation.mutateAsync({
@@ -171,6 +189,7 @@ export function EventFormPage({ mode, title, description, event }: EventFormPage
 
       setLocationDirty(false)
       setDetailsDirty(false)
+      setFaqDirty(false)
 
       if (isCreate) {
         navigate({ to: DASHBOARD_ROUTES.ticketsNew() })
@@ -261,6 +280,7 @@ export function EventFormPage({ mode, title, description, event }: EventFormPage
             defaultValues={detailsValues}
             onDirtyChange={handleDetailsDirty}
           />
+          <EventFaqForm ref={faqFormRef} defaultFaqs={defaultFaqs} onDirtyChange={handleFaqDirty} />
         </div>
       </EventFormPageLayout>
 

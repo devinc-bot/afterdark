@@ -8,6 +8,7 @@ export type GoogleUserProfile = {
   email: string
   name: string
   lastName: string
+  pictureUrl: string | null
 }
 
 type GoogleTokenResponse = {
@@ -23,6 +24,7 @@ type GoogleUserInfoResponse = {
   given_name?: string
   family_name?: string
   name?: string
+  picture?: string
 }
 
 @Injectable()
@@ -89,8 +91,14 @@ export class GoogleOauthService {
         userInfo.name?.split(/\s+/).slice(1).join(' '),
         'Google'
       ),
+      pictureUrl: normalizePictureUrl(userInfo.picture),
     }
   }
+}
+
+function normalizePictureUrl(picture: string | undefined): string | null {
+  const value = picture?.trim()
+  return value ? value : null
 }
 
 function normalizeNamePart(

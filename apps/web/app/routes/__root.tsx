@@ -53,7 +53,7 @@ function DocumentLang() {
 
 function RootErrorBoundary({ error, reset }: { error: Error; reset: () => void }) {
   return (
-    <html lang="es" data-theme="dark">
+    <html lang="es" data-theme="dark" style={{ colorScheme: 'dark' }} suppressHydrationWarning>
       <head>
         <HeadContent />
       </head>
@@ -71,7 +71,7 @@ function RootErrorBoundary({ error, reset }: { error: Error; reset: () => void }
 
 function RootNotFound() {
   return (
-    <html lang="es" data-theme="dark">
+    <html lang="es" data-theme="dark" style={{ colorScheme: 'dark' }} suppressHydrationWarning>
       <head>
         <HeadContent />
       </head>
@@ -95,7 +95,12 @@ function RootComponent() {
         <QueryClientProvider client={queryClient}>
           <ZodI18nBridge />
           <DocumentLang />
-          <html lang="es" data-theme="dark">
+          <html
+            lang="es"
+            data-theme="dark"
+            style={{ colorScheme: 'dark' }}
+            suppressHydrationWarning
+          >
             <head>
               <HeadContent />
             </head>

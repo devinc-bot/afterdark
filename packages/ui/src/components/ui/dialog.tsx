@@ -33,7 +33,7 @@ const dialogOverlayVariants = cva(
 
 const dialogContentVariants = cva(
   [
-    'fixed top-1/2 left-1/2 z-50 grid w-full max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 gap-4 rounded-control border p-6 font-sans text-base text-ink shadow-glass outline-none',
+    'fixed top-1/2 left-1/2 z-50 grid w-full max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 gap-4 rounded-app-lg border p-6 font-sans text-base text-ink glass-panel outline-none',
     'data-[state=open]:animate-in data-[state=closed]:animate-out',
     'data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
     'data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95',
@@ -138,7 +138,7 @@ const DialogContent = React.forwardRef<
               type="button"
               variant="ghost"
               size="icon"
-              className="absolute top-3 right-3 text-ink-muted transition-colors duration-(--duration-instant) ease-(--ease-emphasized) hover:text-ink motion-reduce:transition-none"
+              className="absolute top-3 right-3 text-ink-muted transition-colors duration-(--duration-instant) ease-emphasized hover:text-ink motion-reduce:transition-none"
               aria-label="Cerrar"
             >
               <X aria-hidden="true" />
@@ -152,14 +152,14 @@ const DialogContent = React.forwardRef<
 DialogContent.displayName = DialogPrimitive.Content.displayName
 
 function DialogHeader({ className, ...props }: React.ComponentProps<'div'>) {
-  return <div className={cn('flex flex-col gap-2 pr-8', className)} {...props} />
+  return <div className={cn('flex flex-col gap-2 pr-9', className)} {...props} />
 }
 
 function DialogFooter({ className, ...props }: React.ComponentProps<'div'>) {
   return (
     <div
       className={cn(
-        '-mx-6 -mb-6 mt-2 flex flex-col-reverse gap-2 rounded-b-xl border-t border-hairline bg-surface-container-low p-4 sm:flex-row sm:justify-end',
+        '-mx-6 -mb-6 mt-2 flex flex-col-reverse gap-2 rounded-b-app-lg border-t border-hairline bg-surface-container-low p-4 sm:flex-row sm:justify-end',
         className
       )}
       {...props}

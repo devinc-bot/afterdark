@@ -38,6 +38,9 @@
     "taxId": {
       "invalid": "El CUIT/CUIL debe tener 11 dígitos, sin guiones."
     },
+    "organizationName": {
+      "required": "Ingresá el nombre de la organización."
+    },
     "password": {
       "min": "La contraseña debe tener al menos {min} caracteres.",
       "noMatch": "Las contraseñas no coinciden."
@@ -92,7 +95,14 @@
       "startDate": "La fecha y hora de inicio son requeridas.",
       "endDate": "La fecha y hora de finalización son requeridas.",
       "location": "Seleccioná una ubicación.",
-      "endDateAfterStart": "La fecha y hora de inicio debe ser anterior a la de finalización."
+      "endDateAfterStart": "La fecha y hora de inicio debe ser anterior a la de finalización.",
+      "faq": {
+        "question": "La pregunta es requerida.",
+        "questionMax": "La pregunta admite hasta {max} caracteres.",
+        "answer": "La respuesta es requerida.",
+        "answerMax": "La respuesta admite hasta {max} caracteres.",
+        "max": "Podés agregar hasta {max} preguntas frecuentes."
+      }
     },
     "dashboard": {
       "toDateAfterFrom": "La fecha hasta debe ser posterior o igual a la fecha desde."
