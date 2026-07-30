@@ -49,9 +49,18 @@ export type PublishedEventWithLocation = {
   address: AddressSelect
 }
 
-/** Published single-event detail including ordered FAQs. */
+/** Raw owner fields for public detail organizer mapping (display name resolved in API). */
+export type PublishedEventOrganizerRow = {
+  name: string
+  lastName: string
+  organizationName: string | null
+  avatar: string | null
+}
+
+/** Published single-event detail including ordered FAQs and owner organizer fields. */
 export type PublishedEventDetailRow = PublishedEventWithLocation & {
   faqs: EventFaqSelect[]
+  organizer: PublishedEventOrganizerRow
 }
 
 export type PaginatedPublishedEventsResult = {

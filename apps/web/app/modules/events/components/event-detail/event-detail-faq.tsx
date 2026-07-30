@@ -17,7 +17,10 @@ export function EventDetailFaq({ faqs }: EventDetailFaqProps) {
   }
 
   return (
-    <section aria-labelledby="event-detail-faq">
+    <section
+      aria-labelledby="event-detail-faq"
+      className="mt-6 flex flex-col gap-4 sm:mt-7 max-w-2xl"
+    >
       <h2 id="event-detail-faq" className={SECTION_HEADING}>
         {t('discover.detail.faq')}
       </h2>

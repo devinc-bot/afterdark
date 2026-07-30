@@ -56,6 +56,14 @@ export interface PublicEventDetailAddress {
   longitude: number | null
 }
 
+/** Host identity on anonymous public event detail (resolved display name + avatar). */
+export interface PublicEventOrganizer {
+  name: string
+  avatar: string | null
+  firstName: string
+  lastName: string
+}
+
 export interface PublicEventDetailResponse {
   documentId: string
   name: string
@@ -67,4 +75,5 @@ export interface PublicEventDetailResponse {
   images: EventImageResponse[]
   locationImages: EventImageResponse[]
   faqs: EventFaqResponse[]
+  organizer: PublicEventOrganizer
 }

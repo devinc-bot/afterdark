@@ -206,6 +206,8 @@
       "endsAt": "Fin",
       "address": "Dónde",
       "noAddress": "Sin dirección disponible",
+      "organizedBy": "Organizado por {name}",
+      "organizedByAriaLabel": "Organizador del evento",
       "locationGallery": "El lugar",
       "locationGalleryHint": "Un vistazo al espacio antes de ir.",
       "locationBentoAriaLabel": "Galería de fotos del lugar",

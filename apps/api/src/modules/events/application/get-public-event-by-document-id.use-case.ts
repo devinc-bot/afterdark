@@ -37,7 +37,8 @@ export class GetPublicEventByDocumentIdUseCase {
       row.address,
       imagesByEventId.get(row.event.id) ?? [],
       locationImages,
-      row.faqs
+      row.faqs,
+      row.organizer
     )
   }
 }

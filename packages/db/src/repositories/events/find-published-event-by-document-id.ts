@@ -3,9 +3,11 @@ import { EVENT_STATUS } from '@repo/types/enums'
 import type { PublishedEventDetailRow } from '@repo/types'
 import { db } from '../../client.ts'
 import { addresses } from '../../schema/address.ts'
+import { assets } from '../../schema/asset.ts'
 import { events } from '../../schema/event.ts'
 import { locationAddressesLnk } from '../../schema/location-address-lnk.ts'
 import { locations } from '../../schema/location.ts'
+import { owners } from '../../schema/owner.ts'
 import { findEventFaqsByEventIds } from './find-event-faqs-by-event-ids.ts'
 
 export async function findPublishedEventByDocumentId(
@@ -16,9 +18,17 @@ export async function findPublishedEventByDocumentId(
       event: events,
       location: locations,
       address: addresses,
+      organizer: {
+        name: owners.name,
+        lastName: owners.lastName,
+        organizationName: owners.organizationName,
+        avatar: assets.url,
+      },
     })
     .from(events)
     .innerJoin(locations, eq(locations.id, events.locationId))
+    .innerJoin(owners, eq(owners.id, locations.ownerId))
+    .leftJoin(assets, eq(assets.id, owners.avatarId))
     .innerJoin(locationAddressesLnk, eq(locationAddressesLnk.locationId, locations.id))
     .innerJoin(addresses, eq(addresses.id, locationAddressesLnk.addressId))
     .where(and(eq(events.documentId, documentId), eq(events.status, EVENT_STATUS.PUBLISHED)))
@@ -32,6 +42,12 @@ export async function findPublishedEventByDocumentId(
 
   return {
     ...row,
+    organizer: {
+      name: row.organizer.name,
+      lastName: row.organizer.lastName,
+      organizationName: row.organizer.organizationName,
+      avatar: row.organizer.avatar ?? null,
+    },
     faqs: faqsByEventId.get(row.event.id) ?? [],
   }
 }
