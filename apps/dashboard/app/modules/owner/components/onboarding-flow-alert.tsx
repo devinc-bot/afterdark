@@ -31,7 +31,7 @@ export function OnboardingFlowAlert() {
   return (
     <section
       aria-labelledby="onboarding-flow-title"
-      className="rounded-lg border border-primary/35 bg-primary/8 p-4 sm:p-5"
+      className="rounded-app-lg border border-primary/35 bg-primary/8 p-4 sm:p-5"
     >
       <div className="flex flex-col gap-4">
         <header className="flex justify-between gap-3">

@@ -69,7 +69,7 @@
 
   /* ── Radius ────────────────────────────────────────────────────── */
   /* App radius knob: edit --radius-app and every derived step follows. */
-  --radius-app: 16px;
+  --radius-app: 12px;
   --radius-app-xs: calc(var(--radius-app) - 8px);
   --radius-app-sm: calc(var(--radius-app) - 4px);
   --radius-app-lg: calc(var(--radius-app) + 4px);

@@ -45,7 +45,7 @@ function fileKey(file: File, index: number): string {
 
 function ExistingImagePreview({ image, savedLabel }: { image: UploadedImage; savedLabel: string }) {
   return (
-    <figure className="overflow-hidden rounded-lg border border-hairline bg-card">
+    <figure className="overflow-hidden rounded-app-lg border border-hairline bg-card">
       <div className="relative aspect-4/3 w-full overflow-hidden bg-muted/30">
         <img
           alt={image.name}
@@ -53,7 +53,7 @@ function ExistingImagePreview({ image, savedLabel }: { image: UploadedImage; sav
           src={image.url}
         />
       </div>
-      <figcaption className="border-hairline border-t px-4 py-3">
+      <figcaption className="border-hairline border-t p-5">
         <p className="truncate font-medium text-sm">{image.name}</p>
         <p className="text-muted-foreground text-xs">{savedLabel}</p>
       </figcaption>
