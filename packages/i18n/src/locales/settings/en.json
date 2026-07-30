@@ -23,7 +23,7 @@
       "validationSummary": "Fix the fields with errors before saving.",
       "saving": "Saving…",
       "saveSuccess": "Done. Your profile is up to date.",
-      "saveSuccessNight": "Saved. Have a good night.",
+      "saveSuccessNight": "Changes saved successfully.",
       "saveFallback": "We couldn't save. Check your connection and try again."
     }
   },

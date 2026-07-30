@@ -23,7 +23,7 @@
       "validationSummary": "Revisá los campos con error antes de guardar.",
       "saving": "Guardando…",
       "saveSuccess": "Listo. Tu perfil quedó al día.",
-      "saveSuccessNight": "Guardado. Buena noche.",
+      "saveSuccessNight": "Cambios guardados correctamente.",
       "saveFallback": "No pudimos guardar. Revisá tu conexión e intentá de nuevo."
     }
   },
