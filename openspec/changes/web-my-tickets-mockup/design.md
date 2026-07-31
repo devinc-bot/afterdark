@@ -1,51 +1,50 @@
 ## Context
 
-The web header already shows “Entradas” for authenticated users as a disabled “próximamente” affordance. Settings and other authenticated pages live under `/_app` with `RequireAuth` + `PublicAppShell`. Event discover cards (`Card` from `@repo/ui`) are the closest visual pattern. There is no purchase or ticket-ownership API yet — this change is UI-only mockup.
+The web header shows “Entradas” for authenticated users. Settings and other authenticated pages live under `/_app` with `RequireAuth` + `PublicAppShell`. Ticket cards list mock purchases. Door-entry needs a larger scannable QR with a short lifetime preview.
 
 ## Goals / Non-Goals
 
 **Goals:**
 
 - Authenticated `/tickets` page listing mock purchased tickets as cards.
-- Each card: event cover, name, date/time, venue, ticket type, quantity, status (`válido` / `usado`), and a visible QR.
-- Enable header “Entradas” (desktop + mobile sheet) to navigate to `/tickets`.
-- Spanish + English i18n for page chrome and card labels.
+- Each card: event cover, name, date/time, venue, ticket type, quantity, status, QR visual, and **Abrir QR del ticket**.
+- Dialog on open: scannable QR + countdown; at 0 hide QR and show **Obtener nuevo QR**.
+- Enable header “Entradas” → `/tickets`.
+- Spanish + English i18n.
 
 **Non-Goals:**
 
-- API, DB, validators, purchase, empty state, ticket detail, transfer/refund.
-- Real QR encoding of ticket secrets (mock visual only).
+- API, DB, validators, purchase, empty state, real rotating secrets from the server.
 
 ## Decisions
 
-1. **Route under `/_app/tickets`.** Same pattern as `/_app/settings`: `createFileRoute('/_app/tickets')`, `WEB_ROUTES.tickets() => '/tickets'`. Auth via existing `RequireAuth` layout — no extra guard.
+1. **Route under `/_app/tickets`.** Same pattern as `/_app/settings`.
 
-2. **Module layout.** `apps/web/app/modules/tickets/` with:
-   - `components/my-tickets-page.tsx` — page shell + list
-   - `components/ticket-card.tsx` — single card
-   - `constants/mock-tickets.ts` — static mock data (2–3 tickets covering both statuses)
-   - Types co-located or a small `types.ts` for the mock shape (local only; no `@repo/types` until real API).
+2. **Module layout.** `apps/web/app/modules/tickets/` with page, card, mock data, and `ticket-qr-dialog.tsx`.
 
-3. **Cards.** Compose `@repo/ui` `Card` (and subcomponents as needed), mirroring discover-list card density: cover image on top/side, metadata, status badge, QR block. Status labels via i18n (`tickets.status.valid` / `tickets.status.used`).
+3. **Cards.** `@repo/ui` Card layout with cover, meta, stub QR icon, CTA opening the dialog.
 
-4. **QR mock without new dependency.** Render a fixed SVG (or static asset) that reads as a QR visually, with `alt`/aria describing it as the ticket QR. Payload is decorative. Rationale: mockup only; avoid pinning a QR library until real codes exist. Swap later when API provides codes.
+4. **QR library: `react-qr-code`.** Already pinned in `@repo/dashboard` (`2.0.18`). Add the same dep to `@repo/web` instead of `@lglab/react-qr-code` to avoid two QR stacks. Hardcoded payload per ticket (e.g. `afterdark-mock-ticket:{id}`).
 
-5. **Nav enablement.** Replace disabled `<span>` for tickets with `<Link to={WEB_ROUTES.tickets()}>` in desktop nav and mobile sheet when `showAuthChrome`. Remove reliance on `nav.ticketsSoon` for that control (key can remain unused or be deleted if unused elsewhere).
+5. **Countdown.** Constant `MOCK_QR_TTL_SECONDS = 30` (hardcoded). Timer runs while dialog is open and QR is active; clears on close. Expiry → hide QR, show refresh CTA. Refresh resets timer and shows QR again (same mock value for now).
 
-6. **i18n.** Extend the existing `tickets` namespace (already used by dashboard authoring) with a nested `mine` section for the web my-tickets page (title, heading, card field labels, status). Do not overwrite dashboard `page.*` keys. UI copy Spanish-first; EN parity.
+6. **Dialog.** `@repo/ui` `Dialog` / `DialogContent` (same pattern as sign-out dialog). Title includes event name; countdown visible while QR is shown.
 
-7. **No empty state.** Mock list always has ≥1 ticket; do not implement empty UI.
+7. **i18n.** `tickets.mine` section extended with dialog keys (`openQr`, dialog title, countdown, expired, refresh).
+
+8. **Nav enablement.** Active Entradas links for authenticated chrome.
+
+9. **No empty state.** Mock list always has ≥1 ticket.
 
 ## Risks / Trade-offs
 
-- [Users expect real tickets] → Mitigation: mock data clearly local; non-goals documented; replace with API in a follow-up change.
-- [QR not scannable] → Acceptable for mockup; document in card aria that it is illustrative.
-- [Nav visible while session loading] → Same pattern as settings/user menu (`showAuthChrome`); link works once auth resolves; unauthenticated direct URL hits `RequireAuth` redirect.
+- [Users expect real rotating codes] → Mitigation: mock payload + TTL constant documented; swap when API lands.
+- [Two QR libs if we added @lglab] → Mitigation: reuse `react-qr-code`.
 
 ## Migration Plan
 
-No DB/API migrations. Rollback: remove route + module + revert header links + i18n keys.
+No DB/API migrations. Rollback: remove dialog + dep + i18n keys.
 
 ## Open Questions
 
-- None blocking (scope locked with product answers: auth required, card fields + QR, no empty state, nav on).
+- None blocking (TTL hardcoded at 30s for the mock).

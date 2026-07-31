@@ -150,6 +150,16 @@
       "openQr": "Abrir QR del ticket",
       "noCover": "Sin imagen"
     },
+    "qrDialog": {
+      "title": "QR de entrada",
+      "description": "Mostrá este código en la puerta. Caduca en poco tiempo.",
+      "when": "Fecha y hora",
+      "countdown": "Caduca en {seconds}s",
+      "countdownAria": "El código caduca en {seconds} segundos",
+      "expired": "Este código expiró. Pedí uno nuevo para entrar.",
+      "refresh": "Obtener nuevo QR",
+      "qrAria": "Código QR para escanear"
+    },
     "status": {
       "valid": "Válido",
       "used": "Usado"

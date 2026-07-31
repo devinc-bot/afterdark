@@ -47,3 +47,25 @@ For authenticated users (including session-loading chrome), the header “Entrad
 - **GIVEN** an authenticated user with the mobile nav sheet open
 - **WHEN** they activate the “Entradas” link
 - **THEN** they navigate to `/tickets` and the sheet closes per existing sheet-link behavior
+
+### Requirement: Ticket QR dialog with countdown
+
+Activating **Abrir QR del ticket** on a card SHALL open a modal dialog that shows a scannable QR code generated with `react-qr-code` from a hardcoded mock payload for that ticket, plus a countdown whose initial duration is a hardcoded mock TTL. While the countdown is greater than zero, the QR MUST remain visible. When the countdown reaches zero, the QR MUST be hidden and a control labeled **Obtener nuevo QR** (Spanish UI) MUST appear. Activating that control SHALL show the QR again and restart the countdown. Closing the dialog SHALL stop the timer.
+
+#### Scenario: Open dialog shows QR and countdown
+
+- **GIVEN** an authenticated user on `/tickets`
+- **WHEN** they activate Abrir QR del ticket on a card
+- **THEN** a dialog opens showing a scannable QR and a countdown greater than zero
+
+#### Scenario: Countdown expiry
+
+- **GIVEN** the QR dialog is open with an active countdown
+- **WHEN** the countdown reaches zero
+- **THEN** the QR is no longer shown and Obtener nuevo QR is visible
+
+#### Scenario: Refresh QR
+
+- **GIVEN** the QR dialog is in the expired state
+- **WHEN** the user activates Obtener nuevo QR
+- **THEN** the QR is shown again and the countdown restarts from the mock TTL

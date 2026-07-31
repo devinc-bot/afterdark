@@ -11,3 +11,8 @@
 ## 3. Navigation
 
 - [x] 3.1 Enable header “Entradas” links (desktop + mobile) to `/tickets` for authenticated chrome; remove disabled “próximamente” affordance
+
+## 4. QR dialog
+
+- [x] 4.1 Add `react-qr-code` to `@repo/web` (same version as dashboard) and i18n keys for the QR dialog (title, countdown, expired, refresh)
+- [x] 4.2 Implement `TicketQrDialog` (scannable QR, hardcoded TTL countdown, expiry → Obtener nuevo QR) and wire Abrir QR on `TicketCard`

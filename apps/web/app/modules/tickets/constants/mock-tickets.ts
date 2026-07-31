@@ -11,6 +11,13 @@ export type MockTicket = {
   status: MockTicketStatus
 }
 
+/** Hardcoded mock TTL for the QR dialog countdown (seconds). */
+export const MOCK_QR_TTL_SECONDS = 30
+
+export function mockTicketQrPayload(ticketId: string) {
+  return `afterdark-mock-ticket:${ticketId}`
+}
+
 /** Local mock purchases — replace with API later. Always ≥1 valid and ≥1 used. */
 export const MOCK_TICKETS: readonly MockTicket[] = [
   {

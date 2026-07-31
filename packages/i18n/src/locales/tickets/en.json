@@ -150,6 +150,16 @@
       "openQr": "Open ticket QR",
       "noCover": "No image"
     },
+    "qrDialog": {
+      "title": "Entry QR",
+      "description": "Show this code at the door. It expires shortly.",
+      "when": "Date and time",
+      "countdown": "Expires in {seconds}s",
+      "countdownAria": "Code expires in {seconds} seconds",
+      "expired": "This code expired. Get a new one to enter.",
+      "refresh": "Get new QR",
+      "qrAria": "Scannable QR code"
+    },
     "status": {
       "valid": "Valid",
       "used": "Used"

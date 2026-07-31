@@ -16,7 +16,7 @@ export function MyTicketsPage() {
         <PageHeader title={t('mine.page.title')} description={t('mine.page.description')} />
 
         <ul
-          className="relative grid list-none grid-cols-1 gap-5 p-0 sm:grid-cols-2 sm:gap-6"
+          className="relative grid list-none grid-cols-1 gap-6 p-0 sm:grid-cols-[repeat(auto-fit,minmax(min(100%,20rem),1fr))] sm:gap-7"
           aria-label={t('mine.list.ariaLabel')}
         >
           {MOCK_TICKETS.map((ticket) => (
