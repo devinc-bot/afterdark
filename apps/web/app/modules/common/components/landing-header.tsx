@@ -62,10 +62,6 @@ export function LandingHeader() {
       : 'text-on-surface-variant hover:text-on-surface aria-[current=page]:text-on-surface',
     focusRing
   )
-  const navLinkStatic = cn(
-    'inline-flex min-h-11 cursor-default items-center rounded-app px-2.5 font-label text-sm',
-    onMedia ? 'text-white/60' : 'text-on-surface-variant'
-  )
   const authLink = cn(
     'hidden min-h-11 items-center transition-colors duration-(--duration-instant) ease-emphasized sm:inline-flex',
     onMedia ? 'text-white/80 hover:text-white' : 'text-on-surface-variant hover:text-on-surface',
@@ -133,9 +129,9 @@ export function LandingHeader() {
               {t('nav.events')}
             </Link>
             {showAuthChrome ? (
-              <span className={navLinkStatic} aria-disabled="true" title={t('nav.ticketsSoon')}>
+              <Link to={WEB_ROUTES.tickets()} className={navLink}>
                 {t('nav.tickets')}
-              </span>
+              </Link>
             ) : (
               LANDING_SECTION_NAV.map((item) => (
                 <a
@@ -224,13 +220,15 @@ export function LandingHeader() {
                     </Link>
                   </SheetClose>
                   {showAuthChrome ? (
-                    <span
-                      className="flex w-full cursor-default items-center rounded-app px-5 py-0 font-label text-base text-on-surface opacity-60"
-                      aria-disabled="true"
-                      title={t('nav.ticketsSoon')}
-                    >
-                      {t('nav.tickets')}
-                    </span>
+                    <SheetClose asChild>
+                      <Link
+                        to={WEB_ROUTES.tickets()}
+                        variant="ghost"
+                        className={cn(LANDING_FOCUS_RING)}
+                      >
+                        {t('nav.tickets')}
+                      </Link>
+                    </SheetClose>
                   ) : (
                     LANDING_SECTION_NAV.map((item) => (
                       <a

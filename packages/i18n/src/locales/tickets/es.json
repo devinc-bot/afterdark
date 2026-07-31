@@ -131,5 +131,38 @@
     "success": "Ticket eliminado correctamente",
     "error": "No pudimos eliminar el ticket. Intentá de nuevo.",
     "errorFallback": "No pudimos eliminar el ticket. Intentá de nuevo en unos minutos."
+  },
+  "mine": {
+    "page": {
+      "title": "Mis entradas",
+      "description": "Las entradas que compraste para próximos y pasados eventos.",
+      "metaTitle": "Mis entradas · {appName}"
+    },
+    "list": {
+      "ariaLabel": "Lista de entradas compradas"
+    },
+    "card": {
+      "venue": "Lugar",
+      "type": "Tipo",
+      "quantity": "Cantidad",
+      "quantityValue": "{count}",
+      "qrLabel": "Código QR de la entrada (ilustrativo)",
+      "openQr": "Abrir QR del ticket",
+      "noCover": "Sin imagen"
+    },
+    "qrDialog": {
+      "title": "QR de entrada",
+      "description": "Mostrá este código en la puerta. Caduca en poco tiempo.",
+      "when": "Fecha y hora",
+      "countdown": "Caduca en {seconds}s",
+      "countdownAria": "El código caduca en {seconds} segundos",
+      "expired": "Este código expiró. Pedí uno nuevo para entrar.",
+      "refresh": "Obtener nuevo QR",
+      "qrAria": "Código QR para escanear"
+    },
+    "status": {
+      "valid": "Válido",
+      "used": "Usado"
+    }
   }
 }

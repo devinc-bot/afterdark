@@ -7,6 +7,7 @@ export const WEB_ROUTES = {
   events: () => '/events' as const,
   event: (documentId: string) => `/events/${documentId}` as const,
   settings: () => '/settings' as const,
+  tickets: () => '/tickets' as const,
   properties: () => '/properties' as const,
   property: (id: string) => `/properties/${id}` as const,
   login,

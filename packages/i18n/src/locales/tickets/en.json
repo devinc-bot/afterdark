@@ -131,5 +131,38 @@
     "success": "Ticket deleted successfully",
     "error": "We couldn't delete the ticket. Try again.",
     "errorFallback": "We couldn't delete the ticket. Try again in a few minutes."
+  },
+  "mine": {
+    "page": {
+      "title": "My tickets",
+      "description": "Tickets you bought for upcoming and past events.",
+      "metaTitle": "My tickets · {appName}"
+    },
+    "list": {
+      "ariaLabel": "List of purchased tickets"
+    },
+    "card": {
+      "venue": "Venue",
+      "type": "Type",
+      "quantity": "Quantity",
+      "quantityValue": "{count}",
+      "qrLabel": "Ticket QR code (illustrative)",
+      "openQr": "Open ticket QR",
+      "noCover": "No image"
+    },
+    "qrDialog": {
+      "title": "Entry QR",
+      "description": "Show this code at the door. It expires shortly.",
+      "when": "Date and time",
+      "countdown": "Expires in {seconds}s",
+      "countdownAria": "Code expires in {seconds} seconds",
+      "expired": "This code expired. Get a new one to enter.",
+      "refresh": "Get new QR",
+      "qrAria": "Scannable QR code"
+    },
+    "status": {
+      "valid": "Valid",
+      "used": "Used"
+    }
   }
 }

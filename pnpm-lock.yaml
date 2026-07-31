@@ -268,6 +268,9 @@ importers:
       react-i18next:
         specifier: 15.5.3
         version: 15.5.3(i18next@23.16.8)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(typescript@6.0.3)
+      react-qr-code:
+        specifier: 2.0.18
+        version: 2.0.18(react@19.2.6)
       vite:
         specifier: 7.3.5
         version: 7.3.5(@types/node@22.15.0)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.48.0)(tsx@4.19.4)(yaml@2.9.0)
