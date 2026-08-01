@@ -178,7 +178,12 @@ export function EventDetailContent({ event }: EventDetailContentProps) {
           <h2 id="event-detail-map" className={SECTION_HEADING}>
             {t('discover.detail.map')}
           </h2>
-          <EventDetailMap latitude={latitude} longitude={longitude} eventName={event.name} />
+          <EventDetailMap
+            latitude={latitude}
+            longitude={longitude}
+            locationName={event.locationName}
+            addressText={addressText}
+          />
         </section>
       ) : null}
     </article>

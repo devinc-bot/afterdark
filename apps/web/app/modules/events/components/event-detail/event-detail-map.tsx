@@ -1,19 +1,33 @@
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { MapPin } from 'lucide-react'
-import { Map, MapControls, MapMarker, MarkerContent, useTheme } from '@repo/ui'
+import {
+  Map,
+  MapControls,
+  MapMarker,
+  MapPinMarker,
+  MarkerContent,
+  MarkerPopup,
+  useTheme,
+} from '@repo/ui'
 import { EVENTS_DISCOVER_MAP_SINGLE_ZOOM } from '../../constants/events-discover-map'
 
 type EventDetailMapProps = {
   latitude: number
   longitude: number
-  eventName: string
+  locationName: string
+  addressText: string | null
 }
 
-export function EventDetailMap({ latitude, longitude, eventName }: EventDetailMapProps) {
+export function EventDetailMap({
+  latitude,
+  longitude,
+  locationName,
+  addressText,
+}: EventDetailMapProps) {
   const { t } = useTranslation('events')
   const { theme } = useTheme()
   const [mounted, setMounted] = useState(false)
+  const markerLabel = locationName.trim() || addressText || t('discover.detail.map')
 
   useEffect(() => {
     setMounted(true)
@@ -34,7 +48,7 @@ export function EventDetailMap({ latitude, longitude, eventName }: EventDetailMa
 
   return (
     <div
-      className="relative h-56 overflow-hidden rounded-app-lg border border-hairline/50 sm:h-64"
+      className="relative h-80 overflow-hidden rounded-app-lg border border-hairline/50 sm:h-96"
       aria-label={t('discover.detail.mapAriaLabel')}
     >
       <Map
@@ -43,13 +57,25 @@ export function EventDetailMap({ latitude, longitude, eventName }: EventDetailMa
         zoom={EVENTS_DISCOVER_MAP_SINGLE_ZOOM}
         className="h-full w-full"
       >
-        <MapControls showZoom showLocate={false} />
+        <MapControls showZoom showCompass showLocate={false} />
         <MapMarker longitude={longitude} latitude={latitude}>
           <MarkerContent>
-            <span title={eventName} aria-label={eventName}>
-              <MapPin className="size-7 fill-primary stroke-background drop-shadow" aria-hidden />
-            </span>
+            <MapPinMarker label={markerLabel} />
           </MarkerContent>
+          <MarkerPopup>
+            <div className="max-w-[18rem] space-y-1 p-1">
+              {locationName.trim() ? (
+                <p className="font-label text-sm font-medium text-balance text-foreground">
+                  {locationName}
+                </p>
+              ) : null}
+              {addressText ? (
+                <p className="font-body text-xs leading-relaxed text-pretty text-muted-foreground">
+                  {addressText}
+                </p>
+              ) : null}
+            </div>
+          </MarkerPopup>
         </MapMarker>
       </Map>
     </div>

@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { MapPin } from 'lucide-react'
-import { Map, MapControls, MapMarker, MarkerContent, useMap } from '@repo/ui'
+import { Map, MapControls, MapMarker, MapPinMarker, MarkerContent, useMap } from '@repo/ui'
 import {
   LOCATION_MAP_SELECTED_ZOOM,
   DEFAULT_LOCATION_MAP_CENTER,
@@ -139,13 +138,25 @@ export function LocationMap({
 
   return (
     <div className={`flex flex-col gap-2 ${className ?? ''}`}>
-      <div className="relative h-70 overflow-hidden rounded-app border border-hairline">
+      <div className="relative aspect-video overflow-hidden rounded-app border border-hairline">
         <Map
           center={initialCenter}
           zoom={hasPin ? LOCATION_MAP_SELECTED_ZOOM : DEFAULT_LOCATION_MAP_ZOOM}
           className="h-full w-full"
         >
-          <MapControls showZoom showLocate={false} />
+          <MapControls
+            position="top-right"
+            showZoom
+            showCompass
+            showLocate
+            showFullscreen
+            onLocate={(coords) => {
+              onCoordinatesChange({
+                latitude: coords.latitude,
+                longitude: coords.longitude,
+              })
+            }}
+          />
           <MapClickToPlace
             enabled
             onPlace={(coords) => {
@@ -167,9 +178,7 @@ export function LocationMap({
                 }}
               >
                 <MarkerContent>
-                  <div className="cursor-grab active:cursor-grabbing">
-                    <MapPin className="fill-primary stroke-white drop-shadow" size={32} />
-                  </div>
+                  <MapPinMarker />
                 </MarkerContent>
               </MapMarker>
             </>
