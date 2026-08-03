@@ -141,12 +141,17 @@
     "list": {
       "ariaLabel": "List of purchased tickets"
     },
+    "states": {
+      "loading": "Loading your tickets…",
+      "error": "We couldn't load your tickets. Try again in a few minutes.",
+      "empty": "You don't have any purchased tickets yet."
+    },
     "card": {
       "venue": "Venue",
       "type": "Type",
       "quantity": "Quantity",
       "quantityValue": "{count}",
-      "qrLabel": "Ticket QR code (illustrative)",
+      "qrLabel": "Ticket QR code",
       "openQr": "Open ticket QR",
       "noCover": "No image"
     },

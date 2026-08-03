@@ -13,7 +13,12 @@ import {
   UseGuards,
 } from '@nestjs/common'
 import { API_ROUTES } from '@repo/common'
-import type { JwtPayload, PaginatedResponse, TicketResponse } from '@repo/types'
+import type {
+  JwtPayload,
+  PaginatedResponse,
+  PurchasedTicketResponse,
+  TicketResponse,
+} from '@repo/types'
 import { USER_ROLE } from '@repo/types'
 import {
   createTicketSchema,
@@ -33,12 +38,15 @@ import { CreateTicketUseCase } from '../application/create-ticket.use-case'
 import { DeleteTicketUseCase } from '../application/delete-ticket.use-case'
 import { GetTicketByDocumentIdUseCase } from '../application/get-ticket-by-document-id.use-case'
 import { ListMyTicketsUseCase } from '../application/list-my-tickets.use-case'
+import { ListPurchasedTicketsUseCase } from '../application/list-purchased-tickets.use-case'
 import { UpdateTicketUseCase } from '../application/update-ticket.use-case'
 
 @Controller(API_ROUTES.tickets.prefix)
 export class TicketsController {
   constructor(
     @Inject(ListMyTicketsUseCase) private readonly listMyTicketsUseCase: ListMyTicketsUseCase,
+    @Inject(ListPurchasedTicketsUseCase)
+    private readonly listPurchasedTicketsUseCase: ListPurchasedTicketsUseCase,
     @Inject(GetTicketByDocumentIdUseCase)
     private readonly getTicketByDocumentIdUseCase: GetTicketByDocumentIdUseCase,
     @Inject(CreateTicketUseCase) private readonly createTicketUseCase: CreateTicketUseCase,
@@ -54,6 +62,13 @@ export class TicketsController {
     @Query(new ZodValidationPipe(listTicketsQuerySchema)) query: ListTicketsQueryInput
   ): Promise<PaginatedResponse<TicketResponse>> {
     return this.listMyTicketsUseCase.execute(user.sub, query)
+  }
+
+  @Get(API_ROUTES.tickets.path.purchased())
+  @Roles([USER_ROLE.USER])
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  listPurchasedTickets(@CurrentUser() user: JwtPayload): Promise<PurchasedTicketResponse[]> {
+    return this.listPurchasedTicketsUseCase.execute(user.sub)
   }
 
   @Get(API_ROUTES.tickets.path.get(':documentId'))

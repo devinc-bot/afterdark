@@ -2,11 +2,11 @@ import { useState } from 'react'
 import { Calendar, MapPin, QrCode, Ticket } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { Badge, Button, Card, CardFooter, CardHeader, CardTitle, NotImage, cn } from '@repo/ui'
-import type { MockTicket } from '../constants/mock-tickets'
+import type { PurchasedTicketResponse } from '@repo/types'
 import { TicketQrDialog } from './ticket-qr-dialog'
 
 type TicketCardProps = {
-  ticket: MockTicket
+  ticket: PurchasedTicketResponse
 }
 
 function formatTicketWhen(iso: string, locale: string) {
@@ -26,9 +26,10 @@ function formatTicketWhen(iso: string, locale: string) {
 export function TicketCard({ ticket }: TicketCardProps) {
   const { t, i18n } = useTranslation('tickets')
   const [qrOpen, setQrOpen] = useState(false)
-  const when = formatTicketWhen(ticket.startsAt, i18n.language)
-  const statusLabel = ticket.status === 'valid' ? t('mine.status.valid') : t('mine.status.used')
-  const isUsed = ticket.status === 'used'
+  const eventStartsAt = String(ticket.eventStartsAt)
+  const when = formatTicketWhen(eventStartsAt, i18n.language)
+  const statusLabel = ticket.checkedIn ? t('mine.status.used') : t('mine.status.valid')
+  const isUsed = ticket.checkedIn
 
   return (
     <>
@@ -43,9 +44,9 @@ export function TicketCard({ ticket }: TicketCardProps) {
         )}
       >
         <div className="relative overflow-hidden">
-          {ticket.coverUrl ? (
+          {ticket.eventImageUrl ? (
             <img
-              src={ticket.coverUrl}
+              src={ticket.eventImageUrl}
               alt=""
               className={cn(
                 'aspect-[16/10] w-full object-cover',
@@ -97,7 +98,7 @@ export function TicketCard({ ticket }: TicketCardProps) {
                   aria-hidden
                   strokeWidth={1.75}
                 />
-                <time dateTime={ticket.startsAt} className="text-pretty">
+                <time dateTime={eventStartsAt} className="text-pretty">
                   {when}
                 </time>
               </p>
@@ -110,7 +111,7 @@ export function TicketCard({ ticket }: TicketCardProps) {
                 />
                 <span className="min-w-0 text-pretty">
                   <span className="sr-only">{t('mine.card.venue')}: </span>
-                  {ticket.venue}
+                  {ticket.locationName}
                 </span>
               </p>
 
@@ -122,12 +123,12 @@ export function TicketCard({ ticket }: TicketCardProps) {
                     strokeWidth={1.75}
                   />
                   <span className="sr-only">{t('mine.card.type')}: </span>
-                  <span className="font-medium">{ticket.ticketType}</span>
+                  <span className="font-medium">{ticket.ticketName}</span>
                 </span>
                 <span className="size-1 rounded-full bg-outline-variant/50" aria-hidden />
                 <span className="text-on-surface-variant">
                   <span className="sr-only">{t('mine.card.quantity')}: </span>
-                  {t('mine.card.quantityValue', { count: ticket.quantity })}
+                  {t('mine.card.quantityValue', { count: 1 })}
                 </span>
               </div>
             </div>
@@ -162,6 +163,7 @@ export function TicketCard({ ticket }: TicketCardProps) {
             type="button"
             variant="default"
             size="lg"
+            disabled={isUsed}
             className={cn(
               'w-full transition-transform duration-(--duration-fast) ease-emphasized',
               'group-hover:scale-[1.01] motion-reduce:group-hover:scale-100'

@@ -16,21 +16,27 @@ The public site SHALL expose a `/tickets` route registered as `WEB_ROUTES.ticket
 - **WHEN** they navigate to `/tickets`
 - **THEN** they are redirected to the login page
 
-### Requirement: Purchased tickets are listed as cards with mock data
+### Requirement: Purchased tickets are listed as cards from the authenticated user’s purchases
 
-The my-tickets page SHALL list the user’s purchased tickets as cards. For this change the list MUST come from local mock data (no API). The page MUST NOT render an empty state. Each card SHALL show: event cover image, event name, date and time, venue, ticket type, quantity, status (`válido` or `usado` via Spanish UI copy), and a QR visual.
+The API SHALL expose `GET /api/tickets/purchased` for authenticated `user` accounts. It MUST return only sold ticket units whose order belongs to the authenticated user and has completed payment status. The my-tickets page SHALL consume this endpoint and render a card for each returned sold ticket unit. Each card SHALL show: event cover image, event name, date and time, venue, ticket type, status (`válido` or `usado` via Spanish UI copy), and a QR visual.
 
 #### Scenario: Card fields visible
 
-- **GIVEN** an authenticated user on `/tickets`
+- **GIVEN** an authenticated user with completed purchases on `/tickets`
 - **WHEN** the page renders
-- **THEN** at least one ticket card is shown and each card displays cover, name, date/time, venue, ticket type, quantity, status, and a QR
+- **THEN** one card per purchased ticket unit is shown and each card displays cover, name, date/time, venue, ticket type, status, and a QR
 
-#### Scenario: Both statuses represented in mock data
+#### Scenario: Purchases belong only to the current user
 
-- **GIVEN** an authenticated user on `/tickets`
-- **WHEN** the mock list renders
-- **THEN** the list includes at least one ticket with status válido and at least one with status usado
+- **GIVEN** purchases exist for two different users
+- **WHEN** one user requests `GET /api/tickets/purchased`
+- **THEN** the response excludes every ticket unit purchased by the other user
+
+#### Scenario: No completed purchases
+
+- **GIVEN** an authenticated user without completed purchases
+- **WHEN** they navigate to `/tickets`
+- **THEN** the page renders an empty state in the active locale
 
 ### Requirement: Header Entradas navigates to my tickets
 

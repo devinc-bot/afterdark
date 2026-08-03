@@ -141,12 +141,17 @@
     "list": {
       "ariaLabel": "Lista de entradas compradas"
     },
+    "states": {
+      "loading": "Cargando tus entradas…",
+      "error": "No pudimos cargar tus entradas. Intentá de nuevo en unos minutos.",
+      "empty": "Todavía no tenés entradas compradas."
+    },
     "card": {
       "venue": "Lugar",
       "type": "Tipo",
       "quantity": "Cantidad",
       "quantityValue": "{count}",
-      "qrLabel": "Código QR de la entrada (ilustrativo)",
+      "qrLabel": "Código QR de la entrada",
       "openQr": "Abrir QR del ticket",
       "noCover": "Sin imagen"
     },

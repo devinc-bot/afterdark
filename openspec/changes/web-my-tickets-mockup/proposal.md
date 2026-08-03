@@ -1,11 +1,12 @@
 ## Why
 
-Authenticated attendees need a place to see the tickets they bought. The header already surfaces “Entradas”; the list mock validates card UX before purchase/API work. Opening a scannable QR in a modal with a short-lived countdown previews door-entry UX before real ticket codes exist.
+Authenticated attendees need a place to see the tickets they bought. The current page validates card UX with local mock data, but cannot show a user’s actual purchases.
 
 ## What Changes
 
 - Add an authenticated web route `/tickets` (`WEB_ROUTES.tickets()`) under the `_app` layout (`RequireAuth`).
-- Render a mockup list of purchased tickets as **cards** (no API, no empty state). Each card shows: event cover, event name, date/time, venue, ticket type, quantity, status (`válido` / `usado`), and a QR visual.
+- Add an authenticated attendee endpoint that returns the user’s purchased ticket units, joined with their ticket type, event, location, and event cover.
+- Replace the local mock list in `/tickets` with cards rendered from that endpoint. Each card shows: event cover, event name, date/time, venue, ticket type, status (`válido` / `usado`), and its QR visual.
 - Activate the header “Entradas” nav link (desktop + mobile) for authenticated users so it navigates to `/tickets`.
 - **Abrir QR del ticket** opens a dialog with a scannable QR (`react-qr-code`, same as dashboard), a hardcoded countdown, and when it hits 0 the QR is replaced by **Obtener nuevo QR** (resets countdown + shows QR again).
 - Add Spanish/English i18n keys for the page, cards, and QR dialog.
@@ -13,11 +14,10 @@ Authenticated attendees need a place to see the tickets they bought. The header 
 ## Non-goals
 
 - Purchase flow, payment, or inventory.
-- Real ticket API, DB schema, or server-issued rotating codes.
-- Empty state when the user has no tickets.
+- DB schema changes or server-issued rotating codes.
 - Ticket detail page, transfer, refund, or PDF download.
 - Dashboard / owner-facing ticket views.
-- Filtering, sorting, or pagination beyond a simple static mock list.
+- Filtering, sorting, pagination, ticket transfer, refund, or PDF download.
 
 ## Capabilities
 
@@ -31,6 +31,5 @@ Authenticated attendees need a place to see the tickets they bought. The header 
 
 ## Impact
 
-- **Apps:** `apps/web` (route, tickets module, header nav, QR dialog).
-- **Packages:** `packages/i18n` (page/card/dialog copy).
-- **Deps:** `react-qr-code` on `@repo/web` (already used by dashboard; prefer over a second QR library).
+- **Apps:** `apps/api` (attendee tickets endpoint), `apps/web` (route and tickets module).
+- **Packages:** `packages/db` (read repository), `packages/types` (response contract), `packages/i18n` (empty/error copy if needed).

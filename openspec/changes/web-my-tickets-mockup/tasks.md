@@ -16,3 +16,10 @@
 
 - [x] 4.1 Add `react-qr-code` to `@repo/web` (same version as dashboard) and i18n keys for the QR dialog (title, countdown, expired, refresh)
 - [x] 4.2 Implement `TicketQrDialog` (scannable QR, hardcoded TTL countdown, expiry → Obtener nuevo QR) and wire Abrir QR on `TicketCard`
+
+## 5. Real purchased tickets
+
+- [x] 5.1 Add `PurchasedTicketResponse`, the `GET /tickets/purchased` route contract, and a DB repository that returns completed purchases owned by the authenticated user.
+- [x] 5.2 Add the JWT + `user`-role API use case/controller endpoint, mapping the purchased-ticket rows and their event cover to the shared response.
+- [x] 5.3 Replace `MOCK_TICKETS` with a web service/query and render loading, error, empty, and purchased-ticket card states; pass each persisted QR value into the dialog.
+- [x] 5.4 Add ES/EN copy for the new page states and verify type-check, lint, format, and i18n.

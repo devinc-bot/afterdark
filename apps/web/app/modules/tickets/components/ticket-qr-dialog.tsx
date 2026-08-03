@@ -11,16 +11,16 @@ import {
   DialogTitle,
   cn,
 } from '@repo/ui'
-import {
-  MOCK_QR_TTL_SECONDS,
-  mockTicketQrPayload,
-  type MockTicket,
-} from '../constants/mock-tickets'
+import type { PurchasedTicketResponse } from '@repo/types'
+import { TICKET_QR_TTL_SECONDS } from '../constants/ticket-qr'
 
 type TicketQrDialogProps = {
   open: boolean
   onOpenChange: (open: boolean) => void
-  ticket: Pick<MockTicket, 'id' | 'eventName' | 'startsAt' | 'venue' | 'ticketType' | 'quantity'>
+  ticket: Pick<
+    PurchasedTicketResponse,
+    'eventName' | 'eventStartsAt' | 'locationName' | 'ticketName' | 'qrCode'
+  >
 }
 
 function formatTicketWhen(iso: string, locale: string) {
@@ -49,17 +49,18 @@ function TicketTearDivider() {
 
 export function TicketQrDialog({ open, onOpenChange, ticket }: TicketQrDialogProps) {
   const { t, i18n } = useTranslation('tickets')
-  const [secondsLeft, setSecondsLeft] = useState(MOCK_QR_TTL_SECONDS)
+  const [secondsLeft, setSecondsLeft] = useState(TICKET_QR_TTL_SECONDS)
   const [runId, setRunId] = useState(0)
   const isExpired = secondsLeft <= 0
   const isUrgent = !isExpired && secondsLeft <= 10
-  const qrValue = mockTicketQrPayload(ticket.id)
-  const when = formatTicketWhen(ticket.startsAt, i18n.language)
+  const qrValue = ticket.qrCode
+  const eventStartsAt = String(ticket.eventStartsAt)
+  const when = formatTicketWhen(eventStartsAt, i18n.language)
 
   useEffect(() => {
     if (!open) return
 
-    setSecondsLeft(MOCK_QR_TTL_SECONDS)
+    setSecondsLeft(TICKET_QR_TTL_SECONDS)
 
     const id = window.setInterval(() => {
       setSecondsLeft((prev) => {
@@ -104,7 +105,7 @@ export function TicketQrDialog({ open, onOpenChange, ticket }: TicketQrDialogPro
                 strokeWidth={1.75}
               />
               <span className="sr-only">{t('mine.qrDialog.when')}: </span>
-              <time dateTime={ticket.startsAt} className="text-pretty text-on-surface">
+              <time dateTime={eventStartsAt} className="text-pretty text-on-surface">
                 {when}
               </time>
             </p>
@@ -115,7 +116,7 @@ export function TicketQrDialog({ open, onOpenChange, ticket }: TicketQrDialogPro
                 strokeWidth={1.75}
               />
               <span className="sr-only">{t('mine.card.venue')}: </span>
-              <span className="min-w-0 text-pretty">{ticket.venue}</span>
+              <span className="min-w-0 text-pretty">{ticket.locationName}</span>
             </p>
           </div>
 
@@ -124,14 +125,14 @@ export function TicketQrDialog({ open, onOpenChange, ticket }: TicketQrDialogPro
               <dt className="font-label text-xs tracking-wide text-on-surface-variant">
                 {t('mine.card.type')}
               </dt>
-              <dd className="mt-0.5 truncate font-medium text-on-surface">{ticket.ticketType}</dd>
+              <dd className="mt-0.5 truncate font-medium text-on-surface">{ticket.ticketName}</dd>
             </div>
             <div className="min-w-0">
               <dt className="font-label text-xs tracking-wide text-on-surface-variant">
                 {t('mine.card.quantity')}
               </dt>
               <dd className="mt-0.5 font-medium tabular-nums text-on-surface">
-                {t('mine.card.quantityValue', { count: ticket.quantity })}
+                {t('mine.card.quantityValue', { count: 1 })}
               </dd>
             </div>
           </dl>

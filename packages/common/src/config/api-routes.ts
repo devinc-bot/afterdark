@@ -81,6 +81,7 @@ export const API_ROUTES = {
     prefix: API_TICKETS_PREFIX,
     path: {
       list: () => '/my-tickets' as const,
+      purchased: () => '/purchased' as const,
       get: (documentId: string) => `/${documentId}` as const,
       create: () => '/create' as const,
       update: (documentId: string) => `/${documentId}` as const,

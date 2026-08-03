@@ -1,5 +1,5 @@
-import type { LocationSelect, EventSelect, TicketSelect } from '@repo/db'
-import type { TicketResponse } from '@repo/types'
+import type { EventSelect, LocationSelect, TicketSelect, TicketSoldSelect } from '@repo/db'
+import type { PurchasedTicketResponse, TicketResponse } from '@repo/types'
 import type { CreateTicketInput, UpdateTicketInput } from '@repo/validators'
 
 type TicketSalesStats = {
@@ -35,6 +35,27 @@ export function toTicketResponse(
     revenue: sales.revenue,
     createdAt: ticket.createdAt,
     updatedAt: ticket.updatedAt,
+  }
+}
+
+export function toPurchasedTicketResponse(
+  ticketSold: TicketSoldSelect,
+  ticket: Pick<TicketSelect, 'name' | 'type'>,
+  event: Pick<EventSelect, 'name' | 'startsAt'>,
+  location: Pick<LocationSelect, 'name'>,
+  eventImageUrl: string | null
+): PurchasedTicketResponse {
+  return {
+    documentId: ticketSold.documentId,
+    qrCode: ticketSold.qrCode,
+    checkedIn: ticketSold.checkedIn,
+    usedAt: ticketSold.usedAt,
+    ticketName: ticket.name,
+    ticketType: ticket.type,
+    eventName: event.name,
+    eventStartsAt: event.startsAt,
+    locationName: location.name,
+    eventImageUrl,
   }
 }
 
