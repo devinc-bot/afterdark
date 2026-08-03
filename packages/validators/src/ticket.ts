@@ -153,3 +153,7 @@ export const listTicketsQuerySchema = paginationSchema.extend({
 })
 
 export type ListTicketsQueryInput = z.infer<typeof listTicketsQuerySchema>
+
+export const listPurchasedTicketsQuerySchema = paginationSchema
+
+export type ListPurchasedTicketsQueryInput = z.infer<typeof listPurchasedTicketsQuerySchema>

@@ -146,6 +146,13 @@
       "error": "We couldn't load your tickets. Try again in a few minutes.",
       "empty": "You don't have any purchased tickets yet."
     },
+    "pagination": {
+      "ariaLabel": "Ticket pagination",
+      "previous": "Previous",
+      "next": "Next",
+      "page": "Page {page}",
+      "morePages": "More pages"
+    },
     "card": {
       "venue": "Venue",
       "type": "Type",

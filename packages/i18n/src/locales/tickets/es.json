@@ -146,6 +146,13 @@
       "error": "No pudimos cargar tus entradas. Intentá de nuevo en unos minutos.",
       "empty": "Todavía no tenés entradas compradas."
     },
+    "pagination": {
+      "ariaLabel": "Paginación de entradas",
+      "previous": "Anterior",
+      "next": "Siguiente",
+      "page": "Página {page}",
+      "morePages": "Más páginas"
+    },
     "card": {
       "venue": "Lugar",
       "type": "Tipo",

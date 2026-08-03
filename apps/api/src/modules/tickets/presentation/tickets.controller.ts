@@ -22,10 +22,12 @@ import type {
 import { USER_ROLE } from '@repo/types'
 import {
   createTicketSchema,
+  listPurchasedTicketsQuerySchema,
   listTicketsQuerySchema,
   updateTicketSchema,
   uuidSchema,
   type CreateTicketInput,
+  type ListPurchasedTicketsQueryInput,
   type ListTicketsQueryInput,
   type UpdateTicketInput,
 } from '@repo/validators'
@@ -67,8 +69,12 @@ export class TicketsController {
   @Get(API_ROUTES.tickets.path.purchased())
   @Roles([USER_ROLE.USER])
   @UseGuards(JwtAuthGuard, RolesGuard)
-  listPurchasedTickets(@CurrentUser() user: JwtPayload): Promise<PurchasedTicketResponse[]> {
-    return this.listPurchasedTicketsUseCase.execute(user.sub)
+  listPurchasedTickets(
+    @CurrentUser() user: JwtPayload,
+    @Query(new ZodValidationPipe(listPurchasedTicketsQuerySchema))
+    query: ListPurchasedTicketsQueryInput
+  ): Promise<PaginatedResponse<PurchasedTicketResponse>> {
+    return this.listPurchasedTicketsUseCase.execute(user.sub, query)
   }
 
   @Get(API_ROUTES.tickets.path.get(':documentId'))
