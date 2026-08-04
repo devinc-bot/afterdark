@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { formatDateInputPlaceholder, formatIsoDateInput } from '@repo/common'
 import { Calendar } from 'lucide-react'
 import { cn } from '../../lib/utils'
 import { Input } from './input.tsx'
@@ -9,41 +10,6 @@ export interface DateInputProps extends Omit<React.InputHTMLAttributes<HTMLInput
 }
 
 const DEFAULT_LOCALE = 'es-AR'
-
-function formatIsoDateForLocale(iso: string, locale: string): string {
-  if (!iso) {
-    return ''
-  }
-
-  const date = new Date(`${iso}T00:00:00`)
-  if (Number.isNaN(date.getTime())) {
-    return iso
-  }
-
-  return new Intl.DateTimeFormat(locale, {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric',
-  }).format(date)
-}
-
-function placeholderForLocale(locale: string): string {
-  const yearToken = locale.toLowerCase().startsWith('es') ? 'aaaa' : 'yyyy'
-  const parts = new Intl.DateTimeFormat(locale, {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric',
-  }).formatToParts(new Date(2000, 11, 31))
-
-  return parts
-    .map((part) => {
-      if (part.type === 'day') return 'dd'
-      if (part.type === 'month') return 'mm'
-      if (part.type === 'year') return yearToken
-      return part.value
-    })
-    .join('')
-}
 
 function openNativeDatePicker(input: HTMLInputElement | null) {
   if (!input || input.disabled || input.readOnly) {
@@ -96,8 +62,8 @@ const DateInput = React.forwardRef<HTMLInputElement, DateInputProps>(
       typeof defaultValue === 'string' ? defaultValue : ''
     )
     const isoValue = isControlled ? String(value ?? '') : uncontrolledValue
-    const displayValue = formatIsoDateForLocale(isoValue, locale)
-    const resolvedPlaceholder = placeholder ?? placeholderForLocale(locale)
+    const displayValue = formatIsoDateInput(isoValue, { locale })
+    const resolvedPlaceholder = placeholder ?? formatDateInputPlaceholder(locale)
 
     const handleOpenPicker = () => {
       openNativeDatePicker(dateRef.current)

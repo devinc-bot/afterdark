@@ -1,3 +1,4 @@
+import { formatDate } from '@repo/common'
 import type { PublicEventDetailAddress, PublicEventResponse } from '@repo/types'
 
 export function formatEventWhen(value: Date | string, locale = 'es-AR'): string {
@@ -9,10 +10,13 @@ export function formatEventWhen(value: Date | string, locale = 'es-AR'): string 
   // Midnight often means "date only" in published events — hide noisy 0:00.
   const includeTime = date.getHours() !== 0 || date.getMinutes() !== 0
 
-  return new Intl.DateTimeFormat(locale, {
-    dateStyle: 'medium',
-    ...(includeTime ? { timeStyle: 'short' as const } : {}),
-  }).format(date)
+  return formatDate(date, {
+    locale,
+    options: {
+      dateStyle: 'medium',
+      ...(includeTime ? { timeStyle: 'short' as const } : {}),
+    },
+  })
 }
 
 /** Compact sticky-panel date, e.g. "sáb, 1 ago · 09:00". */
@@ -22,15 +26,14 @@ export function formatEventWhenCompact(value: Date | string, locale = 'es-AR'): 
     return ''
   }
 
-  const dayPart = new Intl.DateTimeFormat(locale, {
-    weekday: 'short',
-    day: 'numeric',
-    month: 'short',
-  }).format(date)
-  const timePart = new Intl.DateTimeFormat(locale, {
-    hour: '2-digit',
-    minute: '2-digit',
-  }).format(date)
+  const dayPart = formatDate(date, {
+    locale,
+    options: { weekday: 'short', day: 'numeric', month: 'short' },
+  })
+  const timePart = formatDate(date, {
+    locale,
+    options: { hour: '2-digit', minute: '2-digit' },
+  })
 
   return `${dayPart} · ${timePart}`
 }

@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
+import { formatDate } from '@repo/common'
 import type { DashboardSalesAnalyticsResponse, DashboardSeriesGranularity } from '@repo/types'
 import { BarChart, Skeleton } from '@repo/ui'
 import { DASHBOARD_PERIOD, type DashboardPeriod } from '~/modules/owner/constants/dashboard-period'
@@ -29,9 +30,10 @@ function formatWeekdayLabel(periodKey: string, locale: string): string {
   const [year, month, day] = periodKey.split('-').map(Number)
   if (!year || !month || !day) return periodKey
 
-  const weekday = new Intl.DateTimeFormat(locale === 'en' ? 'en-US' : 'es-AR', {
-    weekday: 'long',
-  }).format(new Date(year, month - 1, day))
+  const weekday = formatDate(new Date(year, month - 1, day), {
+    locale: locale === 'en' ? 'en-US' : 'es-AR',
+    options: { weekday: 'long' },
+  })
 
   return capitalizeLabel(weekday)
 }
@@ -57,9 +59,10 @@ function formatSeriesLabel(params: {
   const [year, month] = periodKey.split('-').map(Number)
   if (!year || !month) return periodKey
 
-  const monthLabel = new Intl.DateTimeFormat(locale === 'en' ? 'en-US' : 'es-AR', {
-    month: 'short',
-  }).format(new Date(year, month - 1, 1))
+  const monthLabel = formatDate(new Date(year, month - 1, 1), {
+    locale: locale === 'en' ? 'en-US' : 'es-AR',
+    options: { month: 'short' },
+  })
 
   return capitalizeLabel(monthLabel)
 }
