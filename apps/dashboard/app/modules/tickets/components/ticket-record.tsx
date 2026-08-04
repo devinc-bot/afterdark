@@ -1,5 +1,6 @@
 import { useState, type ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
+import { formatCurrency, formatNumber } from '@repo/common'
 import {
   Avatar,
   AvatarFallback,
@@ -50,15 +51,6 @@ export type TicketRecordItem = {
   status: TicketStatus
 }
 
-function formatCurrency(value: number): string {
-  return new Intl.NumberFormat('es-AR', {
-    style: 'currency',
-    currency: 'ARS',
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  }).format(value)
-}
-
 export function getTicketTypeLabel(type: TicketType, t: TFunction<'tickets'>): string {
   return type === TICKET_TYPE.VIP ? t('form.typeVip') : t('form.typeGeneral')
 }
@@ -69,7 +61,7 @@ function getTicketTypeTone(type: TicketType): TicketRecordItem['ticketTypeTone']
 }
 
 function formatSoldCount(value: number): string {
-  return value.toLocaleString('es-AR')
+  return formatNumber(value, { locale: 'es-AR' })
 }
 
 function getEventInitials(eventName: string): string {
@@ -118,7 +110,7 @@ function TicketTypeBadge({
 }
 
 function formatQuantity(value: number): string {
-  return value.toLocaleString('es-AR')
+  return formatNumber(value, { locale: 'es-AR' })
 }
 
 function TicketRecordRow({
@@ -149,10 +141,20 @@ function TicketRecordRow({
           tone={record.ticketTypeTone ?? getTicketTypeTone(record.ticketType)}
         />
       </TableCell>
-      <TableCell className="p-6 text-ink">{formatCurrency(record.price)}</TableCell>
+      <TableCell className="p-6 text-ink">
+        {formatCurrency(record.price, {
+          locale: 'es-AR',
+          options: { minimumFractionDigits: 2, maximumFractionDigits: 2 },
+        })}
+      </TableCell>
       <TableCell className="p-6 text-ink">{formatQuantity(record.quantity)}</TableCell>
       <TableCell className="p-6 text-ink">{formatSoldCount(record.totalSold)}</TableCell>
-      <TableCell className="p-6 font-semibold text-ink">{formatCurrency(record.revenue)}</TableCell>
+      <TableCell className="p-6 font-semibold text-ink">
+        {formatCurrency(record.revenue, {
+          locale: 'es-AR',
+          options: { minimumFractionDigits: 2, maximumFractionDigits: 2 },
+        })}
+      </TableCell>
       <TableCell className="p-6 text-right">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

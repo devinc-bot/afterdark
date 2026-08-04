@@ -1,15 +1,11 @@
 import type { StaffPersonnelItem } from '@repo/types'
+import { formatDate } from '@repo/common'
 import {
   STAFF_USER_AVATAR_TONE,
   type StaffUserRecord,
 } from '~/modules/staff/types/staff-user-record'
 
 const AVATAR_TONES = Object.values(STAFF_USER_AVATAR_TONE)
-
-const STAFF_LAST_ACTIVE_FORMATTER = new Intl.DateTimeFormat('es-AR', {
-  dateStyle: 'short',
-  timeStyle: 'short',
-})
 
 function hashDocumentId(documentId: string): number {
   let hash = 0
@@ -28,11 +24,11 @@ function parseLastActiveAt(value: StaffPersonnelItem['lastActiveAt']): Date {
 }
 
 function formatLastActiveLabel(lastActiveAt: Date): string {
-  if (Number.isNaN(lastActiveAt.getTime())) {
-    return '—'
-  }
-
-  return STAFF_LAST_ACTIVE_FORMATTER.format(lastActiveAt)
+  return formatDate(lastActiveAt, {
+    locale: 'es-AR',
+    options: { dateStyle: 'short', timeStyle: 'short' },
+    fallback: '—',
+  })
 }
 
 function resolveAvatarUrl(avatar: string | null): string | null {

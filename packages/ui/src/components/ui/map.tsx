@@ -15,8 +15,8 @@ import {
   type ReactNode,
 } from 'react'
 import { createPortal } from 'react-dom'
-import { X, Minus, Plus, Locate, Maximize, Loader2 } from 'lucide-react'
-
+import { X, Minus, Plus, Locate, Maximize, Loader2, MapPin } from 'lucide-react'
+import type { ComponentProps } from 'react'
 import { cn } from '../../lib/utils'
 
 const defaultStyles = {
@@ -560,7 +560,7 @@ function MarkerContent({ children, className }: MarkerContentProps) {
 
 function DefaultMarkerIcon() {
   return (
-    <div className="relative h-4 w-4 rounded-full border-2 border-white bg-blue-500 shadow-lg" />
+    <div className="relative size-3.5 rounded-full border-2 border-primary-foreground bg-primary shadow-glass" />
   )
 }
 
@@ -634,7 +634,7 @@ function MarkerPopup({
   return createPortal(
     <div
       className={cn(
-        'bg-popover text-popover-foreground relative max-w-62 rounded-md border p-3 shadow-md',
+        'bg-popover text-popover-foreground relative max-w-62 rounded-app border p-3 glass-panel',
         'animate-in fade-in-0 zoom-in-95 duration-200 ease-out',
         className
       )}
@@ -768,7 +768,7 @@ const positionClasses = {
 
 function ControlGroup({ children }: { children: React.ReactNode }) {
   return (
-    <div className="border-border bg-background [&>button:not(:last-child)]:border-border flex flex-col overflow-hidden rounded-md border shadow-sm [&>button:not(:last-child)]:border-b">
+    <div className="border-border bg-background [&>button:not(:last-child)]:border-border flex flex-col overflow-hidden rounded-app-sm border shadow-sm [&>button:not(:last-child)]:border-b">
       {children}
     </div>
   )
@@ -791,7 +791,7 @@ function ControlButton({
       aria-label={label}
       type="button"
       className={cn(
-        'flex size-8 items-center justify-center transition-all',
+        'flex size-9 items-center justify-center transition-all',
         'first:rounded-t-md last:rounded-b-md',
         'hover:bg-accent dark:hover:bg-accent/40',
         'focus-visible:ring-ring focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-inset',
@@ -803,6 +803,8 @@ function ControlButton({
     </button>
   )
 }
+
+const ICON_SIZE = 'size-7'
 
 function MapControls({
   position = 'bottom-right',
@@ -869,16 +871,16 @@ function MapControls({
       {showZoom && (
         <ControlGroup>
           <ControlButton onClick={handleZoomIn} label="Zoom in">
-            <Plus className="size-4" />
+            <Plus className={ICON_SIZE} />
           </ControlButton>
           <ControlButton onClick={handleZoomOut} label="Zoom out">
-            <Minus className="size-4" />
+            <Minus className={ICON_SIZE} />
           </ControlButton>
         </ControlGroup>
       )}
       {showCompass && (
         <ControlGroup>
-          <CompassButton onClick={handleResetBearing} />
+          <CompassButton className={ICON_SIZE} onClick={handleResetBearing} />
         </ControlGroup>
       )}
       {showLocate && (
@@ -889,9 +891,9 @@ function MapControls({
             disabled={waitingForLocation}
           >
             {waitingForLocation ? (
-              <Loader2 className="size-4 animate-spin" />
+              <Loader2 className={cn(ICON_SIZE, 'animate-spin')} />
             ) : (
-              <Locate className="size-4" />
+              <Locate className={ICON_SIZE} />
             )}
           </ControlButton>
         </ControlGroup>
@@ -899,7 +901,7 @@ function MapControls({
       {showFullscreen && (
         <ControlGroup>
           <ControlButton onClick={handleFullscreen} label="Toggle fullscreen">
-            <Maximize className="size-4" />
+            <Maximize className={ICON_SIZE} />
           </ControlButton>
         </ControlGroup>
       )}
@@ -907,7 +909,7 @@ function MapControls({
   )
 }
 
-function CompassButton({ onClick }: { onClick: () => void }) {
+function CompassButton({ className, onClick }: { className: string; onClick: () => void }) {
   const { map } = useMap()
   const compassRef = useRef<SVGSVGElement>(null)
 
@@ -937,7 +939,7 @@ function CompassButton({ onClick }: { onClick: () => void }) {
       <svg
         ref={compassRef}
         viewBox="0 0 24 24"
-        className="size-5 transition-transform duration-200"
+        className={cn('transition-transform duration-200', className)}
         style={{ transformStyle: 'preserve-3d' }}
       >
         <path d="M12 2L16 12H12V2Z" className="fill-red-500" />
@@ -2047,6 +2049,32 @@ function MapClusterLayer<P extends GeoJSON.GeoJsonProperties = GeoJSON.GeoJsonPr
   return null
 }
 
+type MapPinMarkerProps = {
+  /** Accessible name for the pin (also used as native title). */
+  label?: string
+} & Omit<ComponentProps<'span'>, 'children'>
+
+/**
+ * Shared map place pin — citrus primary chip with soft depth.
+ * Theme-aware (dark/light); replaces hardcoded white/black MapPin clones.
+ */
+function MapPinMarker({ label, className, ...props }: MapPinMarkerProps) {
+  return (
+    <span
+      title={label}
+      aria-label={label}
+      className={cn('flex items-center justify-center', className)}
+      {...props}
+    >
+      <MapPin
+        className="size-8 fill-inverse-surface stroke-inverse-on-surface"
+        strokeWidth={1.75}
+        aria-hidden
+      />
+    </span>
+  )
+}
+
 export {
   Map,
   useMap,
@@ -2061,6 +2089,7 @@ export {
   MapArc,
   MapGeoJSON,
   MapClusterLayer,
+  MapPinMarker,
 }
 
-export type { MapRef, MapViewport, MapArcDatum, MapArcEvent, MapGeoJSONEvent }
+export type { MapRef, MapViewport, MapArcDatum, MapArcEvent, MapGeoJSONEvent, MapPinMarkerProps }

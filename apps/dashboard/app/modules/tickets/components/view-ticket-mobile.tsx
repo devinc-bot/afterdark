@@ -1,4 +1,5 @@
 import { cn } from '@repo/ui'
+import { formatCurrency } from '@repo/common'
 import { Home, Ticket, User } from 'lucide-react'
 import QRCode from 'react-qr-code'
 
@@ -36,15 +37,6 @@ function isTicketPreviewReady(ticket?: MobileTicketTemplate | null): boolean {
   )
 }
 
-function formatTicketPrice(value: number): string {
-  return new Intl.NumberFormat('es-AR', {
-    style: 'currency',
-    currency: 'ARS',
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  }).format(value)
-}
-
 function displayText(value: string | undefined): string {
   return value?.trim() || TICKET_PREVIEW_COPY.pendingValue
 }
@@ -54,7 +46,10 @@ function displayPrice(value: number | undefined): string {
     return TICKET_PREVIEW_COPY.pendingValue
   }
 
-  return formatTicketPrice(value)
+  return formatCurrency(value, {
+    locale: 'es-AR',
+    options: { minimumFractionDigits: 2, maximumFractionDigits: 2 },
+  })
 }
 
 function TicketField({

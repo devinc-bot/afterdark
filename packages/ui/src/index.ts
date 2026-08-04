@@ -274,8 +274,11 @@ export {
   MapMarker,
   MarkerContent,
   MarkerPopup,
+  MarkerTooltip,
   useMap,
+  MapPinMarker,
   type MapRef,
+  type MapPinMarkerProps,
 } from './components/ui/map.tsx'
 export {
   VT,

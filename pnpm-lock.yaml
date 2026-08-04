@@ -455,6 +455,9 @@ importers:
       '@radix-ui/react-tooltip':
         specifier: 1.2.9
         version: 1.2.9(@types/react-dom@19.1.5(@types/react@19.1.6))(@types/react@19.1.6)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
+      '@repo/common':
+        specifier: workspace:*
+        version: link:../common
       '@tanstack/react-router':
         specifier: 1.170.8
         version: 1.170.8(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
