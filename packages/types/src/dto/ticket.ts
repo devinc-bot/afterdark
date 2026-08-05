@@ -25,7 +25,6 @@ export interface TicketResponse {
 
 export interface PurchasedTicketResponse {
   documentId: string
-  qrCode: string
   checkedIn: boolean
   usedAt: Date | null
   ticketName: string
@@ -34,4 +33,10 @@ export interface PurchasedTicketResponse {
   eventStartsAt: Date
   locationName: string
   eventImageUrl: string | null
+}
+
+export interface PurchasedTicketQrResponse {
+  token: string
+  expiresAt: Date
+  ticket: PurchasedTicketResponse
 }

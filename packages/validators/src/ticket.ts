@@ -2,6 +2,8 @@ import { z } from 'zod'
 import { TICKET_SALES_FILTER, TICKET_STATUS, TICKET_TYPE } from '@repo/types'
 import { paginationSchema, optionalCoercedDateSchema, uuidSchema } from './common.ts'
 
+export const ticketSoldDocumentIdSchema = z.string().trim().min(1).max(255)
+
 export const ticketStatusSchema = z.enum([TICKET_STATUS.ACTIVE, TICKET_STATUS.INACTIVE])
 
 export const ticketTypeSchema = z.enum([TICKET_TYPE.GENERAL, TICKET_TYPE.VIP])

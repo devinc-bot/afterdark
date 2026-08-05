@@ -55,3 +55,5 @@ export type PaginatedPurchasedTicketsResult = {
   rows: PurchasedTicketWithRelations[]
   total: number
 }
+
+export type PurchasedTicketWithRelationsByDocumentId = PurchasedTicketWithRelations

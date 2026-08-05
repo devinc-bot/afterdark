@@ -16,6 +16,7 @@ import { API_ROUTES } from '@repo/common'
 import type {
   JwtPayload,
   PaginatedResponse,
+  PurchasedTicketQrResponse,
   PurchasedTicketResponse,
   TicketResponse,
 } from '@repo/types'
@@ -24,6 +25,7 @@ import {
   createTicketSchema,
   listPurchasedTicketsQuerySchema,
   listTicketsQuerySchema,
+  ticketSoldDocumentIdSchema,
   updateTicketSchema,
   uuidSchema,
   type CreateTicketInput,
@@ -41,6 +43,7 @@ import { DeleteTicketUseCase } from '../application/delete-ticket.use-case'
 import { GetTicketByDocumentIdUseCase } from '../application/get-ticket-by-document-id.use-case'
 import { ListMyTicketsUseCase } from '../application/list-my-tickets.use-case'
 import { ListPurchasedTicketsUseCase } from '../application/list-purchased-tickets.use-case'
+import { IssuePurchasedTicketQrUseCase } from '../application/issue-purchased-ticket-qr.use-case'
 import { UpdateTicketUseCase } from '../application/update-ticket.use-case'
 
 @Controller(API_ROUTES.tickets.prefix)
@@ -49,6 +52,8 @@ export class TicketsController {
     @Inject(ListMyTicketsUseCase) private readonly listMyTicketsUseCase: ListMyTicketsUseCase,
     @Inject(ListPurchasedTicketsUseCase)
     private readonly listPurchasedTicketsUseCase: ListPurchasedTicketsUseCase,
+    @Inject(IssuePurchasedTicketQrUseCase)
+    private readonly issuePurchasedTicketQrUseCase: IssuePurchasedTicketQrUseCase,
     @Inject(GetTicketByDocumentIdUseCase)
     private readonly getTicketByDocumentIdUseCase: GetTicketByDocumentIdUseCase,
     @Inject(CreateTicketUseCase) private readonly createTicketUseCase: CreateTicketUseCase,
@@ -75,6 +80,17 @@ export class TicketsController {
     query: ListPurchasedTicketsQueryInput
   ): Promise<PaginatedResponse<PurchasedTicketResponse>> {
     return this.listPurchasedTicketsUseCase.execute(user.sub, query)
+  }
+
+  @Get(API_ROUTES.tickets.path.purchasedQr(':ticketSoldDocumentId'))
+  @Roles([USER_ROLE.USER])
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  issuePurchasedTicketQr(
+    @CurrentUser() user: JwtPayload,
+    @Param('ticketSoldDocumentId', new ZodValidationPipe(ticketSoldDocumentIdSchema))
+    ticketSoldDocumentId: string
+  ): Promise<PurchasedTicketQrResponse> {
+    return this.issuePurchasedTicketQrUseCase.execute(user.sub, ticketSoldDocumentId)
   }
 
   @Get(API_ROUTES.tickets.path.get(':documentId'))

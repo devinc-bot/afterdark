@@ -23,3 +23,8 @@
 - [x] 5.2 Add the JWT + `user`-role API use case/controller endpoint, mapping the purchased-ticket rows and their event cover to the shared response.
 - [x] 5.3 Replace `MOCK_TICKETS` with a web service/query and render loading, error, empty, and purchased-ticket card states; pass each persisted QR value into the dialog.
 - [x] 5.4 Add ES/EN copy for the new page states and verify type-check, lint, format, and i18n.
+
+## 6. Server-issued ticket QR
+
+- [x] Add `GET /tickets/purchased/:ticketSoldId/qr`, restricted to the authenticated owner of a completed sold ticket; generate a 20-minute JWT containing `userId`, `ticketSoldId`, and `eventId`, persist it in `tickets_sold.qrCode`, and return the token, expiration, and modal ticket data.
+- [x] Update `TicketQrDialog` to request the QR payload when it opens or refreshes, render the returned JWT as the QR, derive the countdown from its expiration, and preserve loading, error, and expired states.

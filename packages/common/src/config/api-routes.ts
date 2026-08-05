@@ -82,6 +82,8 @@ export const API_ROUTES = {
     path: {
       list: () => '/my-tickets' as const,
       purchased: () => '/purchased' as const,
+      purchasedQr: (ticketSoldDocumentId: string) =>
+        `/purchased/${ticketSoldDocumentId}/qr` as const,
       get: (documentId: string) => `/${documentId}` as const,
       create: () => '/create' as const,
       update: (documentId: string) => `/${documentId}` as const,

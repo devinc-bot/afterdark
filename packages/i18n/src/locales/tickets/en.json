@@ -166,8 +166,11 @@
       "title": "Entry QR",
       "description": "Show this code at the door. It expires shortly.",
       "when": "Date and time",
-      "countdown": "Expires in {seconds}s",
-      "countdownAria": "Code expires in {seconds} seconds",
+      "loading": "Generating QR code…",
+      "error": "We couldn't generate the QR code. Try again.",
+      "retry": "Retry",
+      "countdown": "Expires in {time}",
+      "countdownAria": "Code expires in {time}",
       "expired": "This code expired. Get a new one to enter.",
       "refresh": "Get new QR",
       "qrAria": "Scannable QR code"

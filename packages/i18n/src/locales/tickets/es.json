@@ -166,8 +166,11 @@
       "title": "QR de entrada",
       "description": "Mostrá este código en la puerta. Caduca en poco tiempo.",
       "when": "Fecha y hora",
-      "countdown": "Caduca en {seconds}s",
-      "countdownAria": "El código caduca en {seconds} segundos",
+      "loading": "Generando código QR…",
+      "error": "No pudimos generar el código QR. Intentá de nuevo.",
+      "retry": "Reintentar",
+      "countdown": "Caduca en {time}",
+      "countdownAria": "El código caduca en {time}",
       "expired": "Este código expiró. Pedí uno nuevo para entrar.",
       "refresh": "Obtener nuevo QR",
       "qrAria": "Código QR para escanear"

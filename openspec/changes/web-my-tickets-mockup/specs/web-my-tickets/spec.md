@@ -18,7 +18,7 @@ The public site SHALL expose a `/tickets` route registered as `WEB_ROUTES.ticket
 
 ### Requirement: Purchased tickets are listed as cards from the authenticated user’s purchases
 
-The API SHALL expose `GET /api/tickets/purchased` for authenticated `user` accounts. It MUST return only sold ticket units whose order belongs to the authenticated user and has completed payment status. The my-tickets page SHALL consume this endpoint and render a card for each returned sold ticket unit. Each card SHALL show: event cover image, event name, date and time, venue, ticket type, status (`válido` or `usado` via Spanish UI copy), and a QR visual.
+The API SHALL expose `GET /api/tickets/purchased` for authenticated `user` accounts. It MUST return only sold ticket units whose order belongs to the authenticated user and has completed payment status, and it MUST NOT expose the persisted QR token. The my-tickets page SHALL consume this endpoint and render a card for each returned sold ticket unit. Each card SHALL show: event cover image, event name, date and time, venue, ticket type, status (`válido` or `usado` via Spanish UI copy), and a QR visual.
 
 #### Scenario: Card fields visible
 
@@ -54,15 +54,21 @@ For authenticated users (including session-loading chrome), the header “Entrad
 - **WHEN** they activate the “Entradas” link
 - **THEN** they navigate to `/tickets` and the sheet closes per existing sheet-link behavior
 
-### Requirement: Ticket QR dialog with countdown
+### Requirement: Server-issued ticket QR dialog with countdown
 
-Activating **Abrir QR del ticket** on a card SHALL open a modal dialog that shows a scannable QR code generated with `react-qr-code` from a hardcoded mock payload for that ticket, plus a countdown whose initial duration is a hardcoded mock TTL. While the countdown is greater than zero, the QR MUST remain visible. When the countdown reaches zero, the QR MUST be hidden and a control labeled **Obtener nuevo QR** (Spanish UI) MUST appear. Activating that control SHALL show the QR again and restart the countdown. Closing the dialog SHALL stop the timer.
+The API SHALL expose `GET /api/tickets/purchased/:ticketSoldId/qr` for authenticated `user` accounts. It MUST verify that the sold ticket belongs to the authenticated user and has a completed order, generate a JWT with `userId`, `ticketSoldId`, and `eventId`, set its lifetime to 20 minutes, persist it in `tickets_sold.qrCode`, and return the token, expiration, and the ticket information required by the QR dialog. Activating **Abrir QR del ticket** SHALL request this payload and render its token as a scannable QR using `react-qr-code`. While the returned expiration has not elapsed, the QR MUST remain visible. When it expires, the QR MUST be hidden and **Obtener nuevo QR** (Spanish UI) MUST request a fresh payload. Closing the dialog SHALL stop the timer.
 
 #### Scenario: Open dialog shows QR and countdown
 
 - **GIVEN** an authenticated user on `/tickets`
 - **WHEN** they activate Abrir QR del ticket on a card
-- **THEN** a dialog opens showing a scannable QR and a countdown greater than zero
+- **THEN** a dialog opens, requests the QR payload, and shows its scannable JWT QR with a countdown derived from its returned expiration
+
+#### Scenario: QR payload is scoped to the authenticated purchase
+
+- **GIVEN** a sold ticket owned by another user or without a completed order
+- **WHEN** an authenticated user requests `GET /api/tickets/purchased/:ticketSoldId/qr`
+- **THEN** the API rejects the request and does not generate or persist a QR JWT
 
 #### Scenario: Countdown expiry
 
@@ -74,4 +80,4 @@ Activating **Abrir QR del ticket** on a card SHALL open a modal dialog that show
 
 - **GIVEN** the QR dialog is in the expired state
 - **WHEN** the user activates Obtener nuevo QR
-- **THEN** the QR is shown again and the countdown restarts from the mock TTL
+- **THEN** the dialog requests a new QR JWT, renders it, and restarts the countdown from its returned 20-minute expiration

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
 import { Calendar, MapPin, RefreshCw } from 'lucide-react'
 import QRCode from 'react-qr-code'
 import { useTranslation } from 'react-i18next'
@@ -12,14 +13,14 @@ import {
   cn,
 } from '@repo/ui'
 import type { PurchasedTicketResponse } from '@repo/types'
-import { TICKET_QR_TTL_SECONDS } from '../constants/ticket-qr'
+import { fetchPurchasedTicketQr } from '../services/purchased-tickets.service'
 
 type TicketQrDialogProps = {
   open: boolean
   onOpenChange: (open: boolean) => void
   ticket: Pick<
     PurchasedTicketResponse,
-    'eventName' | 'eventStartsAt' | 'locationName' | 'ticketName' | 'qrCode'
+    'documentId' | 'eventName' | 'eventStartsAt' | 'locationName' | 'ticketName'
   >
 }
 
@@ -37,6 +38,13 @@ function formatTicketWhen(iso: string, locale: string) {
   }).format(date)
 }
 
+function formatCountdown(seconds: number): string {
+  const minutes = Math.floor(seconds / 60)
+  const remainingSeconds = seconds % 60
+
+  return `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`
+}
+
 function TicketTearDivider() {
   return (
     <div className="relative px-1" aria-hidden>
@@ -49,34 +57,40 @@ function TicketTearDivider() {
 
 export function TicketQrDialog({ open, onOpenChange, ticket }: TicketQrDialogProps) {
   const { t, i18n } = useTranslation('tickets')
-  const [secondsLeft, setSecondsLeft] = useState(TICKET_QR_TTL_SECONDS)
-  const [runId, setRunId] = useState(0)
-  const isExpired = secondsLeft <= 0
-  const isUrgent = !isExpired && secondsLeft <= 10
-  const qrValue = ticket.qrCode
-  const eventStartsAt = String(ticket.eventStartsAt)
+  const [secondsLeft, setSecondsLeft] = useState<number | null>(null)
+  const { data, error, isFetching, refetch } = useQuery({
+    queryKey: ['purchased-ticket-qr', ticket.documentId],
+    queryFn: () => fetchPurchasedTicketQr(ticket.documentId),
+    enabled: open,
+  })
+  const qrTicket = data?.ticket ?? ticket
+  const isExpired = secondsLeft !== null && secondsLeft <= 0
+  const isUrgent = !isExpired && secondsLeft !== null && secondsLeft <= 10
+  const countdown = secondsLeft === null ? null : formatCountdown(secondsLeft)
+  const eventStartsAt = String(qrTicket.eventStartsAt)
   const when = formatTicketWhen(eventStartsAt, i18n.language)
 
   useEffect(() => {
-    if (!open) return
+    if (!open || !data) {
+      setSecondsLeft(null)
+      return
+    }
 
-    setSecondsLeft(TICKET_QR_TTL_SECONDS)
+    const expiresAt = new Date(data.expiresAt).getTime()
+    const updateCountdown = () => {
+      setSecondsLeft(Math.max(0, Math.ceil((expiresAt - Date.now()) / 1000)))
+    }
 
+    updateCountdown()
     const id = window.setInterval(() => {
-      setSecondsLeft((prev) => {
-        if (prev <= 1) {
-          window.clearInterval(id)
-          return 0
-        }
-        return prev - 1
-      })
+      updateCountdown()
     }, 1000)
 
     return () => window.clearInterval(id)
-  }, [open, runId])
+  }, [data, open])
 
   const handleRefresh = () => {
-    setRunId((current) => current + 1)
+    void refetch()
   }
 
   return (
@@ -94,7 +108,7 @@ export function TicketQrDialog({ open, onOpenChange, ticket }: TicketQrDialogPro
         {/* Event meta — tight cluster */}
         <div className="flex flex-col gap-3 px-5 pt-4 sm:px-6">
           <h3 className="font-display text-lg font-semibold leading-snug tracking-tight text-balance text-on-surface">
-            {ticket.eventName}
+            {qrTicket.eventName}
           </h3>
 
           <div className="flex flex-col gap-2 text-sm text-on-surface-variant">
@@ -116,7 +130,7 @@ export function TicketQrDialog({ open, onOpenChange, ticket }: TicketQrDialogPro
                 strokeWidth={1.75}
               />
               <span className="sr-only">{t('mine.card.venue')}: </span>
-              <span className="min-w-0 text-pretty">{ticket.locationName}</span>
+              <span className="min-w-0 text-pretty">{qrTicket.locationName}</span>
             </p>
           </div>
 
@@ -125,7 +139,7 @@ export function TicketQrDialog({ open, onOpenChange, ticket }: TicketQrDialogPro
               <dt className="font-label text-xs tracking-wide text-on-surface-variant">
                 {t('mine.card.type')}
               </dt>
-              <dd className="mt-0.5 truncate font-medium text-on-surface">{ticket.ticketName}</dd>
+              <dd className="mt-0.5 truncate font-medium text-on-surface">{qrTicket.ticketName}</dd>
             </div>
             <div className="min-w-0">
               <dt className="font-label text-xs tracking-wide text-on-surface-variant">
@@ -144,7 +158,37 @@ export function TicketQrDialog({ open, onOpenChange, ticket }: TicketQrDialogPro
 
         {/* QR hero */}
         <div className="flex flex-col items-center gap-4 px-5 pb-6 sm:px-6">
-          {isExpired ? (
+          {error ? (
+            <>
+              <div
+                className="flex size-[212px] flex-col items-center justify-center gap-3 rounded-app border border-dashed border-hairline/50 bg-surface-muted/50 px-6 text-center"
+                role="alert"
+              >
+                <p className="max-w-[22ch] text-sm text-pretty text-on-surface-variant">
+                  {t('mine.qrDialog.error')}
+                </p>
+              </div>
+              <Button
+                type="button"
+                variant="default"
+                size="lg"
+                className="w-full"
+                onClick={handleRefresh}
+              >
+                <RefreshCw className="size-4" aria-hidden strokeWidth={1.75} />
+                {t('mine.qrDialog.retry')}
+              </Button>
+            </>
+          ) : isFetching || secondsLeft === null ? (
+            <div
+              className="flex size-[212px] items-center justify-center rounded-app border border-hairline/50 bg-surface-muted/50 px-6 text-center"
+              role="status"
+            >
+              <p className="text-sm text-pretty text-on-surface-variant">
+                {t('mine.qrDialog.loading')}
+              </p>
+            </div>
+          ) : isExpired ? (
             <>
               <div
                 className="flex size-[212px] flex-col items-center justify-center gap-3 rounded-app border border-dashed border-hairline/50 bg-surface-muted/50 px-6 text-center"
@@ -168,7 +212,7 @@ export function TicketQrDialog({ open, onOpenChange, ticket }: TicketQrDialogPro
           ) : (
             <>
               <div
-                key={runId}
+                key={data.token}
                 className={cn(
                   'rounded-app bg-white p-3.5 shadow-(--shadow-glass)',
                   'animate-in fade-in-0 zoom-in-95 duration-200 ease-emphasized',
@@ -177,7 +221,13 @@ export function TicketQrDialog({ open, onOpenChange, ticket }: TicketQrDialogPro
                 role="img"
                 aria-label={t('mine.qrDialog.qrAria')}
               >
-                <QRCode value={qrValue} size={184} level="M" fgColor="#131314" bgColor="#ffffff" />
+                <QRCode
+                  value={data.token}
+                  size={184}
+                  level="M"
+                  fgColor="#131314"
+                  bgColor="#ffffff"
+                />
               </div>
 
               <p
@@ -187,9 +237,9 @@ export function TicketQrDialog({ open, onOpenChange, ticket }: TicketQrDialogPro
                   isUrgent ? 'bg-error/15 text-error' : 'bg-surface-high text-on-surface-variant'
                 )}
                 aria-live="polite"
-                aria-label={t('mine.qrDialog.countdownAria', { seconds: secondsLeft })}
+                aria-label={t('mine.qrDialog.countdownAria', { time: countdown })}
               >
-                {t('mine.qrDialog.countdown', { seconds: secondsLeft })}
+                {t('mine.qrDialog.countdown', { time: countdown })}
               </p>
             </>
           )}

@@ -8,19 +8,19 @@ The web header shows “Entradas” for authenticated users. Settings and other 
 
 - Authenticated `/tickets` page listing real purchased ticket units as cards.
 - Each card: event cover, name, date/time, venue, ticket type, quantity, status, QR visual, and **Abrir QR del ticket**.
-- Dialog on open: scannable QR + countdown; at 0 hide QR and show **Obtener nuevo QR**.
+- Dialog on open: requests a server-issued QR JWT, shows a scannable QR + its 20-minute countdown; at 0 hides QR and shows **Obtener nuevo QR**.
 - Enable header “Entradas” → `/tickets`.
 - Spanish + English i18n.
 
 **Non-Goals:**
 
-- Purchase, DB schema changes, filtering, pagination, and real rotating secrets from the server.
+- Purchase, DB schema changes, filtering, pagination, ticket transfer, refund, or PDF download.
 
 ## Decisions
 
 1. **Route under `/_app/tickets`.** Same pattern as `/_app/settings`.
 
-2. **Attendee purchases endpoint.** Add `GET /api/tickets/purchased`, guarded by JWT and the `user` role. It resolves the authenticated account’s user profile, then reads only `tickets_sold` whose order belongs to that user and has `completed` payment status. Each row is one entry unit and includes its stable `qrCode`, `checkedIn`/`usedAt`, ticket type, event, location, and first event image.
+2. **Attendee purchases endpoint.** Add `GET /api/tickets/purchased`, guarded by JWT and the `user` role. It resolves the authenticated account’s user profile, then reads only `tickets_sold` whose order belongs to that user and has `completed` payment status. Each row is one entry unit and includes `checkedIn`/`usedAt`, ticket type, event, location, and first event image. It MUST NOT expose the persisted QR token.
 
 3. **Repository and contract.** The Drizzle join lives in `packages/db/src/repositories/`; a new `PurchasedTicketResponse` in `@repo/types` is the shared API/UI contract. No schema migration or request validator is necessary for this read-only endpoint.
 
@@ -28,9 +28,9 @@ The web header shows “Entradas” for authenticated users. Settings and other 
 
 5. **Cards.** `@repo/ui` Card layout with cover, meta, QR icon, CTA opening the dialog. Each card represents a sold ticket unit, so it shows a quantity of one.
 
-6. **QR library: `react-qr-code`.** Reuse the existing dependency. The dialog renders the persisted sold-ticket QR value; countdown/refresh remains a UI preview and does not rotate the server value in this increment.
+6. **QR library: `react-qr-code`.** Reuse the existing dependency. When the dialog opens, the web app requests `GET /api/tickets/purchased/:ticketSoldId/qr`. The API verifies the sold ticket belongs to the authenticated user and has a completed order, generates a JWT containing `userId`, `ticketSoldId`, and `eventId`, persists it in `tickets_sold.qrCode`, and returns it with its expiration and ticket-modal data.
 
-7. **Countdown.** Constant `MOCK_QR_TTL_SECONDS = 30` (hardcoded). Timer runs while dialog is open and QR is active; clears on close. Expiry → hide QR, show refresh CTA. Refresh resets timer and shows the same persisted value again.
+7. **Countdown.** Server-issued JWTs expire after 20 minutes. The dialog derives its countdown from the returned expiration, clears the timer on close, and hides the QR at expiry. Refresh requests a newly generated JWT and updates the displayed code and expiration.
 
 8. **Dialog.** `@repo/ui` `Dialog` / `DialogContent` (same pattern as sign-out dialog). Title includes event name; countdown visible while QR is shown. A checked-in ticket cannot open a QR.
 
@@ -41,7 +41,7 @@ The web header shows “Entradas” for authenticated users. Settings and other 
 ## Risks / Trade-offs
 
 - [A user sees another attendee’s purchase] → Mitigation: ownership filtering occurs in the repository from the JWT subject; the client supplies no user ID.
-- [Users expect rotating codes] → Mitigation: persisted QR values are rendered now; rotation stays explicitly out of scope.
+- [A QR is issued for another user’s ticket] → Mitigation: the API derives ownership from the JWT subject and rejects sold-ticket IDs outside that user’s completed purchases.
 
 ## Migration Plan
 

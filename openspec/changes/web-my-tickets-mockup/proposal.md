@@ -8,13 +8,13 @@ Authenticated attendees need a place to see the tickets they bought. The current
 - Add an authenticated attendee endpoint that returns the user’s purchased ticket units, joined with their ticket type, event, location, and event cover.
 - Replace the local mock list in `/tickets` with cards rendered from that endpoint. Each card shows: event cover, event name, date/time, venue, ticket type, status (`válido` / `usado`), and its QR visual.
 - Activate the header “Entradas” nav link (desktop + mobile) for authenticated users so it navigates to `/tickets`.
-- **Abrir QR del ticket** opens a dialog with a scannable QR (`react-qr-code`, same as dashboard), a hardcoded countdown, and when it hits 0 the QR is replaced by **Obtener nuevo QR** (resets countdown + shows QR again).
+- **Abrir QR del ticket** opens a dialog that requests a server-issued QR JWT, renders it with `react-qr-code`, and counts down its 20-minute lifetime. On expiry, **Obtener nuevo QR** requests a replacement code.
 - Add Spanish/English i18n keys for the page, cards, and QR dialog.
 
 ## Non-goals
 
 - Purchase flow, payment, or inventory.
-- DB schema changes or server-issued rotating codes.
+- DB schema changes.
 - Ticket detail page, transfer, refund, or PDF download.
 - Dashboard / owner-facing ticket views.
 - Filtering, sorting, pagination, ticket transfer, refund, or PDF download.

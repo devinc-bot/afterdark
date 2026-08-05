@@ -47,7 +47,6 @@ export function toPurchasedTicketResponse(
 ): PurchasedTicketResponse {
   return {
     documentId: ticketSold.documentId,
-    qrCode: ticketSold.qrCode,
     checkedIn: ticketSold.checkedIn,
     usedAt: ticketSold.usedAt,
     ticketName: ticket.name,

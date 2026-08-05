@@ -1,5 +1,9 @@
 import { buildApiPath, toApiServiceError } from '@repo/common'
-import type { PaginatedResponse, PurchasedTicketResponse } from '@repo/types'
+import type {
+  PaginatedResponse,
+  PurchasedTicketQrResponse,
+  PurchasedTicketResponse,
+} from '@repo/types'
 import { i18n } from '@repo/i18n/client'
 import { api, API_ROUTES } from '~/config/api'
 
@@ -26,5 +30,20 @@ export async function fetchPurchasedTickets(
     )
   } catch (error) {
     throw toApiServiceError(error, i18n.t('tickets:mine.states.error'))
+  }
+}
+
+export async function fetchPurchasedTicketQr(
+  ticketSoldDocumentId: string
+): Promise<PurchasedTicketQrResponse> {
+  const path = buildApiPath(
+    API_ROUTES.tickets,
+    API_ROUTES.tickets.path.purchasedQr(ticketSoldDocumentId)
+  )
+
+  try {
+    return await api.get<PurchasedTicketQrResponse>(path)
+  } catch (error) {
+    throw toApiServiceError(error, i18n.t('tickets:mine.qrDialog.error'))
   }
 }
