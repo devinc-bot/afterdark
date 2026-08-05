@@ -1,4 +1,4 @@
-import type { TicketStatus, TicketType } from '../enums/ticket.ts'
+import type { TicketCheckInOutcome, TicketStatus, TicketType } from '../enums/ticket.ts'
 
 export interface TicketResponse {
   documentId: string
@@ -39,4 +39,29 @@ export interface PurchasedTicketQrResponse {
   token: string
   expiresAt: Date
   ticket: PurchasedTicketResponse
+}
+
+export interface TicketCheckInResponse {
+  outcome: TicketCheckInOutcome
+  checkedInAt: Date
+  ticket: {
+    documentId: string
+    name: string
+    type: TicketType
+  }
+  event: {
+    documentId: string
+    name: string
+    startsAt: Date
+  }
+  location: {
+    documentId: string
+    name: string
+  }
+  purchaser: {
+    documentId: string
+    fullName: string
+    email: string
+    phone: string | null
+  }
 }

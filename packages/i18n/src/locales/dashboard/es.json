@@ -10,6 +10,7 @@
     "tickets": "Entradas",
     "events": "Eventos",
     "sales": "Ventas",
+    "qrTicket": "QR Ticket",
     "users": "Usuarios",
     "language": "Idioma",
     "theme": "Tema",
@@ -54,6 +55,11 @@
     "details": "Detalles del error"
   },
   "pages": {
+    "qrTicket": {
+      "metaTitle": "Escanear QR · {appNameAdmin}",
+      "title": "QR Ticket",
+      "description": "Escaneá el código QR para validar y marcar el ticket como usado."
+    },
     "panel": {
       "metaTitle": "Panel · {appNameAdmin}",
       "title": "Panel",

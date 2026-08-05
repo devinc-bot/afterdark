@@ -159,3 +159,9 @@ export type ListTicketsQueryInput = z.infer<typeof listTicketsQuerySchema>
 export const listPurchasedTicketsQuerySchema = paginationSchema
 
 export type ListPurchasedTicketsQueryInput = z.infer<typeof listPurchasedTicketsQuerySchema>
+
+export const ticketCheckInSchema = z.object({
+  token: z.string().trim().min(1).max(4096),
+})
+
+export type TicketCheckInInput = z.infer<typeof ticketCheckInSchema>

@@ -19,3 +19,13 @@ export const TICKET_SALES_FILTER = {
 } as const
 
 export type TicketSalesFilter = (typeof TICKET_SALES_FILTER)[keyof typeof TICKET_SALES_FILTER]
+
+export const TICKET_CHECK_IN_OUTCOME = {
+  SUCCESS: 'success',
+  INVALID: 'invalid',
+  EXPIRED: 'expired',
+  USED: 'used',
+} as const
+
+export type TicketCheckInOutcome =
+  (typeof TICKET_CHECK_IN_OUTCOME)[keyof typeof TICKET_CHECK_IN_OUTCOME]

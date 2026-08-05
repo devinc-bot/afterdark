@@ -73,7 +73,10 @@
     "UPDATE_FAILED": "Could not update ticket.",
     "DELETE_FAILED": "Could not delete ticket.",
     "LIST_FAILED": "Could not load tickets.",
-    "HAS_PAYMENTS": "Cannot delete a ticket with recorded sales."
+    "HAS_PAYMENTS": "Cannot delete a ticket with recorded sales.",
+    "CHECK_IN_INVALID": "The ticket is invalid or does not belong to Event Flow.",
+    "CHECK_IN_EXPIRED": "The ticket QR code has expired.",
+    "CHECK_IN_USED": "This ticket has already been used."
   },
   "file": {
     "FILE_REQUIRED": "You need to send an image file.",

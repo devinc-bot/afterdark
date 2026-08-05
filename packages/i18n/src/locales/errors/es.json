@@ -73,7 +73,10 @@
     "UPDATE_FAILED": "No se pudo actualizar el ticket.",
     "DELETE_FAILED": "No se pudo eliminar el ticket.",
     "LIST_FAILED": "No se pudo cargar los tickets.",
-    "HAS_PAYMENTS": "No se puede eliminar un ticket con ventas registradas."
+    "HAS_PAYMENTS": "No se puede eliminar un ticket con ventas registradas.",
+    "CHECK_IN_INVALID": "El ticket no es válido o no pertenece a Event Flow.",
+    "CHECK_IN_EXPIRED": "El código QR del ticket venció.",
+    "CHECK_IN_USED": "Este ticket ya fue usado."
   },
   "file": {
     "FILE_REQUIRED": "Tenés que enviar un archivo de imagen.",

@@ -20,6 +20,7 @@ import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
 import { Route as AppStaffRouteImport } from './routes/_app/staff'
 import { Route as AppSettingsRouteImport } from './routes/_app/settings'
 import { Route as AppSalesRouteImport } from './routes/_app/sales'
+import { Route as AppQrTicketRouteImport } from './routes/_app/qr-ticket'
 import { Route as AppDashboardRouteImport } from './routes/_app/dashboard'
 import { Route as NameTokenRouteImport } from './routes/$name.$token'
 import { Route as AppTicketsIndexRouteImport } from './routes/_app/tickets/index'
@@ -84,6 +85,11 @@ const AppSettingsRoute = AppSettingsRouteImport.update({
 const AppSalesRoute = AppSalesRouteImport.update({
   id: '/sales',
   path: '/sales',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppQrTicketRoute = AppQrTicketRouteImport.update({
+  id: '/qr-ticket',
+  path: '/qr-ticket',
   getParentRoute: () => AppRoute,
 } as any)
 const AppDashboardRoute = AppDashboardRouteImport.update({
@@ -152,6 +158,7 @@ export interface FileRoutesByFullPath {
   '/reset-password': typeof ResetPasswordRoute
   '/$name/$token': typeof NameTokenRoute
   '/dashboard': typeof AppDashboardRoute
+  '/qr-ticket': typeof AppQrTicketRoute
   '/sales': typeof AppSalesRoute
   '/settings': typeof AppSettingsRoute
   '/staff': typeof AppStaffRoute
@@ -175,6 +182,7 @@ export interface FileRoutesByTo {
   '/reset-password': typeof ResetPasswordRoute
   '/$name/$token': typeof NameTokenRoute
   '/dashboard': typeof AppDashboardRoute
+  '/qr-ticket': typeof AppQrTicketRoute
   '/sales': typeof AppSalesRoute
   '/settings': typeof AppSettingsRoute
   '/staff': typeof AppStaffRoute
@@ -200,6 +208,7 @@ export interface FileRoutesById {
   '/reset-password': typeof ResetPasswordRoute
   '/$name/$token': typeof NameTokenRoute
   '/_app/dashboard': typeof AppDashboardRoute
+  '/_app/qr-ticket': typeof AppQrTicketRoute
   '/_app/sales': typeof AppSalesRoute
   '/_app/settings': typeof AppSettingsRoute
   '/_app/staff': typeof AppStaffRoute
@@ -225,6 +234,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/$name/$token'
     | '/dashboard'
+    | '/qr-ticket'
     | '/sales'
     | '/settings'
     | '/staff'
@@ -248,6 +258,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/$name/$token'
     | '/dashboard'
+    | '/qr-ticket'
     | '/sales'
     | '/settings'
     | '/staff'
@@ -272,6 +283,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/$name/$token'
     | '/_app/dashboard'
+    | '/_app/qr-ticket'
     | '/_app/sales'
     | '/_app/settings'
     | '/_app/staff'
@@ -379,6 +391,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppSalesRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/qr-ticket': {
+      id: '/_app/qr-ticket'
+      path: '/qr-ticket'
+      fullPath: '/qr-ticket'
+      preLoaderRoute: typeof AppQrTicketRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/dashboard': {
       id: '/_app/dashboard'
       path: '/dashboard'
@@ -461,6 +480,7 @@ declare module '@tanstack/react-router' {
 
 interface AppRouteChildren {
   AppDashboardRoute: typeof AppDashboardRoute
+  AppQrTicketRoute: typeof AppQrTicketRoute
   AppSalesRoute: typeof AppSalesRoute
   AppSettingsRoute: typeof AppSettingsRoute
   AppStaffRoute: typeof AppStaffRoute
@@ -477,6 +497,7 @@ interface AppRouteChildren {
 
 const AppRouteChildren: AppRouteChildren = {
   AppDashboardRoute: AppDashboardRoute,
+  AppQrTicketRoute: AppQrTicketRoute,
   AppSalesRoute: AppSalesRoute,
   AppSettingsRoute: AppSettingsRoute,
   AppStaffRoute: AppStaffRoute,

@@ -14,6 +14,7 @@ export const DASHBOARD_ROUTES = {
   eventsNew: () => '/events/new' as const,
   eventsEdit: (documentId: string) => `/events/${documentId}/edit` as const,
   sales: () => '/sales' as const,
+  qrTicket: () => '/qr-ticket' as const,
   staff: () => '/staff' as const,
   settings: () => '/settings' as const,
   login,
