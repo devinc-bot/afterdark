@@ -141,12 +141,24 @@
     "list": {
       "ariaLabel": "Lista de entradas compradas"
     },
+    "states": {
+      "loading": "Cargando tus entradas…",
+      "error": "No pudimos cargar tus entradas. Intentá de nuevo en unos minutos.",
+      "empty": "Todavía no tenés entradas compradas."
+    },
+    "pagination": {
+      "ariaLabel": "Paginación de entradas",
+      "previous": "Anterior",
+      "next": "Siguiente",
+      "page": "Página {page}",
+      "morePages": "Más páginas"
+    },
     "card": {
       "venue": "Lugar",
       "type": "Tipo",
       "quantity": "Cantidad",
       "quantityValue": "{count}",
-      "qrLabel": "Código QR de la entrada (ilustrativo)",
+      "qrLabel": "Código QR de la entrada",
       "openQr": "Abrir QR del ticket",
       "noCover": "Sin imagen"
     },
@@ -154,8 +166,11 @@
       "title": "QR de entrada",
       "description": "Mostrá este código en la puerta. Caduca en poco tiempo.",
       "when": "Fecha y hora",
-      "countdown": "Caduca en {seconds}s",
-      "countdownAria": "El código caduca en {seconds} segundos",
+      "loading": "Generando código QR…",
+      "error": "No pudimos generar el código QR. Intentá de nuevo.",
+      "retry": "Reintentar",
+      "countdown": "Caduca en {time}",
+      "countdownAria": "El código caduca en {time}",
       "expired": "Este código expiró. Pedí uno nuevo para entrar.",
       "refresh": "Obtener nuevo QR",
       "qrAria": "Código QR para escanear"

@@ -1,4 +1,4 @@
-import type { LocationSelect, EventSelect, TicketSelect } from '@repo/db/schema'
+import type { EventSelect, LocationSelect, TicketSelect, TicketSoldSelect } from '@repo/db/schema'
 import type { TicketSalesFilter, TicketStatus, TicketType } from '../enums/ticket.ts'
 
 export type TicketWithRelations = {
@@ -37,3 +37,23 @@ export type PaginatedTicketsResult = {
   rows: TicketWithRelationsAndSales[]
   total: number
 }
+
+export type ListPurchasedTicketsParams = {
+  userDocumentId: string
+  page: number
+  limit: number
+}
+
+export type PurchasedTicketWithRelations = {
+  ticketSold: TicketSoldSelect
+  ticket: TicketSelect
+  event: EventSelect
+  location: LocationSelect
+}
+
+export type PaginatedPurchasedTicketsResult = {
+  rows: PurchasedTicketWithRelations[]
+  total: number
+}
+
+export type PurchasedTicketWithRelationsByDocumentId = PurchasedTicketWithRelations

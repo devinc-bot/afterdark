@@ -22,3 +22,21 @@ export interface TicketResponse {
   createdAt: Date
   updatedAt: Date
 }
+
+export interface PurchasedTicketResponse {
+  documentId: string
+  checkedIn: boolean
+  usedAt: Date | null
+  ticketName: string
+  ticketType: TicketType
+  eventName: string
+  eventStartsAt: Date
+  locationName: string
+  eventImageUrl: string | null
+}
+
+export interface PurchasedTicketQrResponse {
+  token: string
+  expiresAt: Date
+  ticket: PurchasedTicketResponse
+}
