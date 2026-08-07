@@ -145,7 +145,18 @@ export function TicketScanner() {
             className="pointer-events-none absolute inset-0 grid place-items-center"
             aria-hidden="true"
           >
-            <div className="size-[68%] rounded-app border-2 border-primary shadow-[0_0_0_999px_rgba(0,0,0,0.42)]" />
+            <div className="relative size-[68%] overflow-hidden rounded-app border-2 border-primary shadow-[0_0_0_999px_rgba(0,0,0,0.42)]">
+              {state === TICKET_SCANNER_STATE.SCANNING ? (
+                <div className="absolute inset-3 overflow-hidden">
+                  <div className="animate-ticket-scan-line absolute inset-x-0 top-0 h-full will-change-transform">
+                    <div className="relative h-0.5 w-full">
+                      <div className="absolute inset-x-0 top-1/2 h-10 -translate-y-1/2 bg-gradient-to-b from-transparent via-primary/20 to-transparent" />
+                      <div className="relative h-0.5 w-full bg-gradient-to-r from-transparent via-primary to-transparent" />
+                    </div>
+                  </div>
+                </div>
+              ) : null}
+            </div>
           </div>
         ) : null}
 
