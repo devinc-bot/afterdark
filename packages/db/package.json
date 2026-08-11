@@ -13,7 +13,7 @@
   },
   "scripts": {
     "type-check": "tsc --noEmit",
-    "test": "tsx --test src/repositories/orders/delete-stale-pending-orders.test.ts src/repositories/orders/find-orders-paginated-by-user-document-id.test.ts",
+    "test": "tsx --test src/repositories/orders/delete-stale-pending-orders.test.ts src/repositories/orders/find-orders-paginated-by-user-document-id.test.ts src/repositories/orders/delete-pending-order-by-document-id-and-user-id.test.ts",
     "db:generate": "drizzle-kit generate --config=drizzle-dev.config.ts",
     "db:migrate": "drizzle-kit migrate --config=drizzle-dev.config.ts",
     "db:migrate:prod": "drizzle-kit migrate --config=drizzle-prod.config.ts",
