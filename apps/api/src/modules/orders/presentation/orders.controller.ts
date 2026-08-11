@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
   HttpStatus,
@@ -32,6 +33,7 @@ import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard'
 import { RolesGuard } from '../../common/guards/roles.guard'
 import { ZodValidationPipe } from '../../common/pipes/zod-validation.pipe'
 import { CreatePendingOrderUseCase } from '../application/create-pending-order.use-case'
+import { DeletePendingOrderUseCase } from '../application/delete-pending-order.use-case'
 import { GetOrderByDocumentIdUseCase } from '../application/get-order-by-document-id.use-case'
 import { ListMyOrdersUseCase } from '../application/list-my-orders.use-case'
 
@@ -42,7 +44,9 @@ export class OrdersController {
     private readonly createPendingOrderUseCase: CreatePendingOrderUseCase,
     @Inject(GetOrderByDocumentIdUseCase)
     private readonly getOrderByDocumentIdUseCase: GetOrderByDocumentIdUseCase,
-    @Inject(ListMyOrdersUseCase) private readonly listMyOrdersUseCase: ListMyOrdersUseCase
+    @Inject(ListMyOrdersUseCase) private readonly listMyOrdersUseCase: ListMyOrdersUseCase,
+    @Inject(DeletePendingOrderUseCase)
+    private readonly deletePendingOrderUseCase: DeletePendingOrderUseCase
   ) {}
 
   @Get(API_ROUTES.orders.path.list())
@@ -53,6 +57,17 @@ export class OrdersController {
     @Query(new ZodValidationPipe(listOrdersQuerySchema)) query: ListOrdersQueryInput
   ): Promise<PaginatedResponse<BuyerOrderSummaryResponse>> {
     return this.listMyOrdersUseCase.execute(user.sub, query)
+  }
+
+  @Delete(API_ROUTES.orders.path.delete(':documentId'))
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @Roles([USER_ROLE.USER])
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  delete(
+    @CurrentUser() user: JwtPayload,
+    @Param('documentId', new ZodValidationPipe(uuidSchema)) documentId: string
+  ): Promise<void> {
+    return this.deletePendingOrderUseCase.execute(user.sub, documentId)
   }
 
   @Post(API_ROUTES.orders.path.create())

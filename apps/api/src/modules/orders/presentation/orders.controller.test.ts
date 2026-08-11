@@ -14,7 +14,8 @@ test('delegates order history to the current user use case', async () => {
   const controller = new OrdersController(
     undefined as never,
     undefined as never,
-    listMyOrdersUseCase as never
+    listMyOrdersUseCase as never,
+    undefined as never
   )
 
   assert.equal(
@@ -22,4 +23,25 @@ test('delegates order history to the current user use case', async () => {
     result
   )
   assert.deepEqual(calls, [{ userDocumentId: 'buyer-document-id', query: { page: 1, limit: 10 } }])
+})
+
+test('delegates pending order deletion to the current user use case', async () => {
+  const calls: Array<{ orderDocumentId: string; userDocumentId: string }> = []
+  const deletePendingOrderUseCase = {
+    execute: async (userDocumentId: string, orderDocumentId: string) => {
+      calls.push({ userDocumentId, orderDocumentId })
+    },
+  }
+  const controller = new OrdersController(
+    undefined as never,
+    undefined as never,
+    undefined as never,
+    deletePendingOrderUseCase as never
+  )
+
+  await controller.delete({ sub: 'buyer-document-id' } as never, 'order-document-id')
+
+  assert.deepEqual(calls, [
+    { userDocumentId: 'buyer-document-id', orderDocumentId: 'order-document-id' },
+  ])
 })
