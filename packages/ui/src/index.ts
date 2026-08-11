@@ -10,7 +10,7 @@ export {
 } from './components/ui/accordion.tsx'
 export { Badge, badgeVariants, type BadgeProps } from './components/ui/badge.tsx'
 export { Avatar, AvatarFallback, AvatarImage } from './components/ui/avatar.tsx'
-export { Button, buttonVariants, type ButtonProps, type ButtonVariant } from './components/ui/button.tsx'
+export { Button, buttonVariants, type ButtonProps } from './components/ui/button.tsx'
 export {
   type CarouselApi,
   Autoplay,
