@@ -19,6 +19,7 @@ export const WEB_ROUTES = {
   checkoutPending,
   settings: () => '/settings' as const,
   tickets: () => '/tickets' as const,
+  orders: () => '/orders' as const,
   properties: () => '/properties' as const,
   property: (id: string) => `/properties/${id}` as const,
   login,

@@ -22,7 +22,7 @@
 
 ## 6. Web Orders UI
 
-- [ ] 6.1 Add the authenticated `/orders` route, web route constant, and desktop/mobile navigation entry without editing the generated route tree.
+- [x] 6.1 Add the authenticated `/orders` route, web route constant, and desktop/mobile navigation entry without editing the generated route tree.
 - [ ] 6.2 Build the responsive orders page and order summaries with the retention notice, localized statuses, shared formatters, skeleton/error/empty states, pagination, and dark/light support.
 - [ ] 6.3 Add the pending-only deletion confirmation and feedback flow, prevent duplicate submission, keep failures recoverable, and reconcile pagination after success.
 

@@ -21,6 +21,7 @@ import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
 import { Route as PublicEventsRouteImport } from './routes/_public/events'
 import { Route as AppTicketsRouteImport } from './routes/_app/tickets'
 import { Route as AppSettingsRouteImport } from './routes/_app/settings'
+import { Route as AppOrdersRouteImport } from './routes/_app/orders'
 import { Route as PublicEventsIndexRouteImport } from './routes/_public/events.index'
 import { Route as CheckoutOrderIdSuccessRouteImport } from './routes/checkout.$orderId.success'
 import { Route as CheckoutOrderIdPendingRouteImport } from './routes/checkout.$orderId.pending'
@@ -85,6 +86,11 @@ const AppSettingsRoute = AppSettingsRouteImport.update({
   path: '/settings',
   getParentRoute: () => AppRoute,
 } as any)
+const AppOrdersRoute = AppOrdersRouteImport.update({
+  id: '/orders',
+  path: '/orders',
+  getParentRoute: () => AppRoute,
+} as any)
 const PublicEventsIndexRoute = PublicEventsIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -117,6 +123,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/orders': typeof AppOrdersRoute
   '/settings': typeof AppSettingsRoute
   '/tickets': typeof AppTicketsRoute
   '/events': typeof PublicEventsRouteWithChildren
@@ -134,6 +141,7 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/orders': typeof AppOrdersRoute
   '/settings': typeof AppSettingsRoute
   '/tickets': typeof AppTicketsRoute
   '/auth/callback': typeof AuthCallbackRoute
@@ -153,6 +161,7 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/_app/orders': typeof AppOrdersRoute
   '/_app/settings': typeof AppSettingsRoute
   '/_app/tickets': typeof AppTicketsRoute
   '/_public/events': typeof PublicEventsRouteWithChildren
@@ -172,6 +181,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/register'
     | '/reset-password'
+    | '/orders'
     | '/settings'
     | '/tickets'
     | '/events'
@@ -189,6 +199,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/register'
     | '/reset-password'
+    | '/orders'
     | '/settings'
     | '/tickets'
     | '/auth/callback'
@@ -207,6 +218,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/register'
     | '/reset-password'
+    | '/_app/orders'
     | '/_app/settings'
     | '/_app/tickets'
     | '/_public/events'
@@ -320,6 +332,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppSettingsRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/orders': {
+      id: '/_app/orders'
+      path: '/orders'
+      fullPath: '/orders'
+      preLoaderRoute: typeof AppOrdersRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_public/events/': {
       id: '/_public/events/'
       path: '/'
@@ -359,11 +378,13 @@ declare module '@tanstack/react-router' {
 }
 
 interface AppRouteChildren {
+  AppOrdersRoute: typeof AppOrdersRoute
   AppSettingsRoute: typeof AppSettingsRoute
   AppTicketsRoute: typeof AppTicketsRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
+  AppOrdersRoute: AppOrdersRoute,
   AppSettingsRoute: AppSettingsRoute,
   AppTicketsRoute: AppTicketsRoute,
 }
