@@ -6,6 +6,8 @@ import { CreateTicketUseCase } from './application/create-ticket.use-case'
 import { DeleteTicketUseCase } from './application/delete-ticket.use-case'
 import { GetTicketByDocumentIdUseCase } from './application/get-ticket-by-document-id.use-case'
 import { ListMyTicketsUseCase } from './application/list-my-tickets.use-case'
+import { ListPurchasedTicketsUseCase } from './application/list-purchased-tickets.use-case'
+import { IssuePurchasedTicketQrUseCase } from './application/issue-purchased-ticket-qr.use-case'
 import { UpdateTicketUseCase } from './application/update-ticket.use-case'
 import { TicketsController } from './presentation/tickets.controller'
 
@@ -14,6 +16,8 @@ import { TicketsController } from './presentation/tickets.controller'
   controllers: [TicketsController],
   providers: [
     ListMyTicketsUseCase,
+    ListPurchasedTicketsUseCase,
+    IssuePurchasedTicketQrUseCase,
     GetTicketByDocumentIdUseCase,
     CreateTicketUseCase,
     UpdateTicketUseCase,
