@@ -4,7 +4,7 @@
 
 ## 2. Database Repositories
 
-- [ ] 2.1 Add and test the buyer-scoped paginated order-summary repository with public ticket/event context and deterministic newest-first ordering.
+- [x] 2.1 Add and test the buyer-scoped paginated order-summary repository with public ticket/event context and deterministic newest-first ordering.
 - [ ] 2.2 Add and test the atomic buyer-owned pending-order deletion repository, including non-pending, foreign, and missing order cases.
 
 ## 3. Mercado Pago Integration
