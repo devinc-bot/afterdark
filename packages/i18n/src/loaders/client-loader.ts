@@ -58,6 +58,10 @@ const localeImports: Record<
     es: () => import('../locales/landing/es.json'),
     en: () => import('../locales/landing/en.json'),
   },
+  orders: {
+    es: () => import('../locales/orders/es.json'),
+    en: () => import('../locales/orders/en.json'),
+  },
   dashboardLanding: {
     es: () => import('../locales/dashboard-landing/es.json'),
     en: () => import('../locales/dashboard-landing/en.json'),
