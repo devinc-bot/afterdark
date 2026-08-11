@@ -46,6 +46,22 @@ export class MercadoPagoCheckoutProSdkAdapter implements MercadoPagoCheckoutProP
     return { id: String(response.id), initPoint }
   }
 
+  async expirePreference(preferenceId: string): Promise<void> {
+    const preference = await this.preference.get({ preferenceId })
+    if (!preference.items?.length) {
+      throw new Error('Mercado Pago preference response is missing items')
+    }
+
+    await this.preference.update({
+      id: preferenceId,
+      updatePreferenceRequest: {
+        items: preference.items,
+        expires: true,
+        expiration_date_to: new Date().toISOString(),
+      },
+    })
+  }
+
   async getPayment(paymentId: string): Promise<MercadoPagoPaymentResult> {
     const response = await this.payment.get({ id: paymentId })
     if (response.id === undefined || !response.status) {

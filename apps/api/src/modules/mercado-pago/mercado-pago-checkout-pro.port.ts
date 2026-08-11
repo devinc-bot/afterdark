@@ -24,5 +24,6 @@ export type MercadoPagoPaymentResult = {
 
 export interface MercadoPagoCheckoutProPort {
   createPreference(input: CreateMercadoPagoPreferenceInput): Promise<MercadoPagoPreferenceResult>
+  expirePreference(preferenceId: string): Promise<void>
   getPayment(paymentId: string): Promise<MercadoPagoPaymentResult>
 }
