@@ -24,11 +24,11 @@
 
 - [x] 6.1 Add the authenticated `/orders` route, web route constant, and desktop/mobile navigation entry without editing the generated route tree.
 - [x] 6.2 Build the responsive orders page and order summaries with the retention notice, localized statuses, shared formatters, skeleton/error/empty states, pagination, and dark/light support.
-- [ ] 6.3 Add the pending-only deletion confirmation and feedback flow, prevent duplicate submission, keep failures recoverable, and reconcile pagination after success.
+- [x] 6.3 Add the pending-only deletion confirmation and feedback flow, prevent duplicate submission, keep failures recoverable, and reconcile pagination after success.
 
 ## 7. Internationalization
 
-- [ ] 7.1 Add and register matching English and Spanish `orders` resources, navigation labels, and API error translations; run the i18n parity check.
+- [x] 7.1 Add and register matching English and Spanish `orders` resources, navigation labels, and API error translations; run the i18n parity check.
 
 ## 8. Verification
 

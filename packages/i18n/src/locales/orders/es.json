@@ -17,7 +17,8 @@
   },
   "actions": {
     "retry": "Reintentar",
-    "discoverEvents": "Descubrir eventos"
+    "discoverEvents": "Descubrir eventos",
+    "delete": "Eliminar"
   },
   "pagination": {
     "ariaLabel": "Paginación de órdenes",
@@ -39,7 +40,16 @@
     "orderedAt": "Fecha de la orden",
     "eventDate": "Fecha del evento",
     "total": "Total",
-    "reference": "Orden #{{reference}}",
+    "reference": "Orden #{reference}",
     "unavailable": "No disponible"
+  },
+  "delete": {
+    "title": "Eliminar orden pendiente",
+    "description": "Vas a cancelar el checkout y eliminar la orden de {{ticket}}. Esta acción no se puede revertir.",
+    "cancel": "Cancelar",
+    "confirm": "Eliminar orden",
+    "deleting": "Eliminando…",
+    "success": "La orden pendiente fue eliminada.",
+    "error": "No pudimos eliminar la orden. Intentá de nuevo."
   }
 }

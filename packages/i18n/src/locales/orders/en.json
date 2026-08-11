@@ -17,7 +17,8 @@
   },
   "actions": {
     "retry": "Retry",
-    "discoverEvents": "Discover events"
+    "discoverEvents": "Discover events",
+    "delete": "Delete"
   },
   "pagination": {
     "ariaLabel": "Order pagination",
@@ -39,7 +40,16 @@
     "orderedAt": "Order date",
     "eventDate": "Event date",
     "total": "Total",
-    "reference": "Order #{{reference}}",
+    "reference": "Order #{reference}",
     "unavailable": "Unavailable"
+  },
+  "delete": {
+    "title": "Delete pending order",
+    "description": "You are about to cancel checkout and delete the order for {{ticket}}. This action cannot be undone.",
+    "cancel": "Cancel",
+    "confirm": "Delete order",
+    "deleting": "Deleting…",
+    "success": "The pending order was deleted.",
+    "error": "We couldn't delete the order. Try again."
   }
 }

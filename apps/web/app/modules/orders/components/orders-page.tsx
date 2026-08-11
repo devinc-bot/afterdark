@@ -13,13 +13,17 @@ import {
   PaginationNext,
   PaginationPrevious,
   Skeleton,
+  toast,
 } from '@repo/ui'
+import type { BuyerOrderSummaryResponse } from '@repo/types'
 import { PageAtmosphereWash } from '~/modules/common/components/page-atmosphere-wash'
 import { Container } from '~/modules/common/components/container'
 import { PageHeader } from '~/modules/common/components/page-header'
 import { WEB_ROUTES } from '~/modules/common/constants/routes'
+import { useDeleteOrderMutation } from '../mutations/use-delete-order-mutation'
 import { useOrdersQuery } from '../queries/use-orders-query'
 import { ORDERS_FIRST_PAGE } from '../services/orders.service'
+import { DeleteOrderDialog } from './delete-order-dialog'
 import { OrderSummary } from './order-summary'
 
 function OrdersListSkeleton() {
@@ -50,12 +54,30 @@ function OrdersListSkeleton() {
 export function OrdersPage() {
   const { t } = useTranslation('orders')
   const [page, setPage] = useState(ORDERS_FIRST_PAGE)
+  const [selectedOrder, setSelectedOrder] = useState<BuyerOrderSummaryResponse | null>(null)
   const ordersQuery = useOrdersQuery({ page })
+  const deleteOrderMutation = useDeleteOrderMutation()
   const orders = ordersQuery.data?.data ?? []
 
   function handlePageChange(nextPage: number) {
     if (nextPage === page) return
     startTransition(() => setPage(nextPage))
+  }
+
+  async function handleDeleteConfirm() {
+    if (!selectedOrder || deleteOrderMutation.isPending) return
+
+    try {
+      await deleteOrderMutation.mutateAsync(selectedOrder.documentId)
+      setSelectedOrder(null)
+      toast.success(t('delete.success'))
+
+      if (orders.length === 1 && page > ORDERS_FIRST_PAGE) {
+        startTransition(() => setPage(page - 1))
+      }
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : t('delete.error'))
+    }
   }
 
   function renderPagination() {
@@ -152,7 +174,7 @@ export function OrdersPage() {
         >
           {orders.map((order) => (
             <li key={order.documentId}>
-              <OrderSummary order={order} />
+              <OrderSummary order={order} onDelete={setSelectedOrder} />
             </li>
           ))}
         </ul>
@@ -163,7 +185,7 @@ export function OrdersPage() {
 
   return (
     <Container>
-      <div className="relative mx-auto w-full max-w-5xl">
+      <div className="relative mx-auto w-full">
         <PageAtmosphereWash className="h-40" />
         <PageHeader title={t('page.title')} description={t('page.description')} />
 
@@ -173,6 +195,16 @@ export function OrdersPage() {
         </aside>
 
         {renderContent()}
+
+        <DeleteOrderDialog
+          open={selectedOrder !== null}
+          order={selectedOrder}
+          onOpenChange={(open) => {
+            if (!open) setSelectedOrder(null)
+          }}
+          onConfirm={handleDeleteConfirm}
+          isDeleting={deleteOrderMutation.isPending}
+        />
       </div>
     </Container>
   )

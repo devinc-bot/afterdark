@@ -1,15 +1,16 @@
-import { CalendarDays, ReceiptText, Ticket } from 'lucide-react'
+import { CalendarDays, ReceiptText, Ticket, Trash2 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { formatCurrency, formatDate } from '@repo/common'
-import { Badge, cn } from '@repo/ui'
+import { Badge, Button, cn } from '@repo/ui'
 import type { BuyerOrderSummaryResponse } from '@repo/types'
 import { getOrderStatusBadgeVariant } from '../utils/order-display'
 
 type OrderSummaryProps = {
   order: BuyerOrderSummaryResponse
+  onDelete?: (order: BuyerOrderSummaryResponse) => void
 }
 
-export function OrderSummary({ order }: OrderSummaryProps) {
+export function OrderSummary({ order, onDelete }: OrderSummaryProps) {
   const { t, i18n } = useTranslation('orders')
   const orderDate = formatDate(order.createdAt, {
     locale: i18n.language,
@@ -25,7 +26,7 @@ export function OrderSummary({ order }: OrderSummaryProps) {
     : null
 
   return (
-    <article className="grid gap-5 rounded-app-lg border border-hairline/35 bg-surface-card px-5 py-5 shadow-none sm:px-6 sm:py-6 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center lg:gap-10">
+    <article className="grid gap-5 rounded-app-lg border border-hairline/35 bg-surface-card px-5 py-5 transition-colors hover:glass-panel sm:px-6 sm:py-6 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center lg:gap-10">
       <div className="min-w-0">
         <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
           <p className="min-w-0 truncate font-display text-lg font-semibold tracking-tight text-on-surface">
@@ -87,9 +88,19 @@ export function OrderSummary({ order }: OrderSummaryProps) {
           )}
           title={order.documentId}
         >
-          {t('card.reference', { reference: order.documentId.slice(-8) })}
+          {t('card.reference')}
+          {order.documentId.slice(-8)}
         </span>
       </dl>
+
+      {order.status === 'pending' && onDelete ? (
+        <div className="flex justify-end border-t border-hairline/25 pt-4 lg:col-start-2 lg:border-t-0 lg:pt-0">
+          <Button type="button" variant="ghost" size="sm" onClick={() => onDelete(order)}>
+            <Trash2 className="size-3.5" aria-hidden strokeWidth={1.75} />
+            {t('actions.delete')}
+          </Button>
+        </div>
+      ) : null}
     </article>
   )
 }
