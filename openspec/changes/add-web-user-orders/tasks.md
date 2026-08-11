@@ -18,7 +18,7 @@
 
 ## 5. Web Data Layer
 
-- [ ] 5.1 Add typed order list/delete services plus TanStack Query query and mutation hooks with pagination keys and cache invalidation.
+- [x] 5.1 Add typed order list/delete services plus TanStack Query query and mutation hooks with pagination keys and cache invalidation.
 
 ## 6. Web Orders UI
 
