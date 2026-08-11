@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next'
-import { DASHBOARD_URL } from '@repo/common'
 import { cn } from '@repo/ui'
+import { clientEnv } from '~/config/env'
 import { Container } from '~/modules/common/components/container'
 import { LANDING_CTA_PRIMARY, LANDING_FOCUS_RING, LANDING_HEADING } from '../../constants/layout'
 import { Reveal } from '../reveal'
@@ -34,7 +34,7 @@ export function SectionOrganizers({ className }: SectionOrganizersProps) {
 
         <Reveal className="lg:col-span-5 lg:justify-self-end">
           <a
-            href={DASHBOARD_URL}
+            href={clientEnv.VITE_DASHBOARD_URL}
             target="_blank"
             rel="noopener noreferrer"
             className={cn(

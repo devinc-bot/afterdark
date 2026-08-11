@@ -1,7 +1,7 @@
 import 'reflect-metadata'
 import { NestFactory } from '@nestjs/core'
 import { AppModule } from './app.module'
-import { ENV } from './modules/common/config/env'
+import { ENV } from './config/env'
 import { HttpExceptionFilter } from './modules/common/filters/http-exception.filter'
 import { API_PREFIX } from '@repo/common'
 

@@ -223,13 +223,29 @@
       "shareError": "We could not share the link. Try again.",
       "ticketsSoon": "Tickets coming soon",
       "ticketsReady": "Tickets",
-      "ticketsUnavailableHint": "Sales aren’t open yet — check back soon.",
+      "ticketsUnavailableHint": "There are no tickets available for this event yet.",
       "buyTickets": "Buy tickets",
+      "purchaseError": "We could not start your purchase. Try again.",
       "buyTicketsUnavailable": "Coming soon",
-      "buyTicketsDisabled": "Ticket purchase is not available yet",
+      "buyTicketsDisabled": "Payments for this event are not available right now.",
+      "paymentsUnavailableHint": "We’re getting payments ready for this event. Please check back soon.",
+      "ticketSoldOut": "Sold out",
+      "ticketAvailability": "{count, plural, one {# available} other {# available}}",
+      "ticketType": {
+        "general": "General",
+        "vip": "VIP"
+      },
       "purchasePanelAriaLabel": "Event booking",
       "faq": "Frequently asked questions",
       "faqAriaLabel": "Event frequently asked questions"
+    },
+    "checkout": {
+      "successTitle": "Purchase confirmed",
+      "success": "Your payment was approved. Your tickets have been issued.",
+      "pendingTitle": "We are confirming your payment",
+      "pending": "Confirmation can take a few moments. We will let you know when your tickets are ready.",
+      "errorTitle": "We could not complete the payment",
+      "error": "No tickets were issued. You can try again from the event."
     }
   }
 }

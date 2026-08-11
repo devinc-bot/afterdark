@@ -8,7 +8,7 @@ import {
 import { Resend } from 'resend'
 import { MAIL_ERROR_CODE } from '@repo/i18n/constants'
 import { TranslationService } from '@repo/i18n/server'
-import { ENV } from '../../common/config/env'
+import { ENV } from '../../../config/env'
 import type { MailSender } from '../mail-sender.port'
 import type { SendMailInput, SendMailResult } from '../types'
 

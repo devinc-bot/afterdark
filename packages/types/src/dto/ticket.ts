@@ -22,3 +22,15 @@ export interface TicketResponse {
   createdAt: Date
   updatedAt: Date
 }
+
+/** On-sale ticket offer on anonymous public event detail. */
+export interface PublicPurchasableTicketResponse {
+  documentId: string
+  name: string
+  price: number
+  type: TicketType
+  /** Units still available for purchase. */
+  remainingQuantity: number
+  saleStartsAt: Date | null
+  saleEndsAt: Date | null
+}

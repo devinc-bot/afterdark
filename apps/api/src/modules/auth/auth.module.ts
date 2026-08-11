@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common'
 import { JwtModule } from '@nestjs/jwt'
-import { ENV } from '../common/config/env'
+import { ENV } from '../../config/env'
 import { MailModule } from '../mail'
 import { ForgotPasswordUseCase } from './application/forgot-password.use-case'
 import { GoogleOauthCallbackUseCase } from './application/google-oauth-callback.use-case'

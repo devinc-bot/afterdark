@@ -23,6 +23,7 @@
     "support": "Discover events, reserve your spot, and show up with everything sorted.",
     "ctaPrimary": "Create account",
     "ctaSecondary": "Sign in",
+    "ctaLoading": "Loading actions",
     "imageAlt": "Crowd enjoying a live event"
   },
   "about": {

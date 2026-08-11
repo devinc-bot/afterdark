@@ -8,6 +8,8 @@ export const API_STAFF_PREFIX = '/staff' as const
 export const API_INVITATIONS_PREFIX = '/invitations' as const
 export const API_TICKETS_PREFIX = '/tickets' as const
 export const API_EVENTS_PREFIX = '/events' as const
+export const API_ORDERS_PREFIX = '/orders' as const
+export const API_MERCADO_PAGO_PREFIX = '/mercado-pago' as const
 export const API_GEO_PREFIX = '/geo' as const
 export const API_HEALTH_PREFIX = '/health' as const
 export const API_DASHBOARD_PREFIX = '/dashboard' as const
@@ -107,6 +109,22 @@ export const API_ROUTES = {
       kpiDashboard: () => '/kpidashboard' as const,
       sales: () => '/sales' as const,
       salesAnalytics: () => '/sales/analytics' as const,
+    },
+  },
+  orders: {
+    prefix: API_ORDERS_PREFIX,
+    path: {
+      /** Authenticated USER — create pending order (POST). */
+      create: () => '/' as const,
+      /** Authenticated buyer — get order by documentId (GET). */
+      get: (documentId: string) => `/${routeSegment(documentId)}` as const,
+    },
+  },
+  mercadoPago: {
+    prefix: API_MERCADO_PAGO_PREFIX,
+    path: {
+      /** Public — Mercado Pago webhook notifications (POST). */
+      webhook: () => '/webhook' as const,
     },
   },
   health: {

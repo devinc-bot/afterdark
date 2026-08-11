@@ -4,6 +4,7 @@ import type {
   EventFaqSelect,
   EventSelect,
   LocationSelect,
+  TicketSelect,
 } from '@repo/db'
 import type {
   EventFaqResponse,
@@ -12,6 +13,7 @@ import type {
   PublicEventDetailResponse,
   PublicEventOrganizer,
   PublicEventResponse,
+  PublicPurchasableTicketResponse,
   PublishedEventOrganizerRow,
 } from '@repo/types'
 import type { CreateEventInput, UpdateEventInput } from '@repo/validators'
@@ -97,7 +99,9 @@ export function toPublicEventDetailResponse(
   images: EventImageResponse[] = [],
   locationImages: EventImageResponse[] = [],
   faqs: EventFaqSelect[] = [],
-  organizer: PublishedEventOrganizerRow
+  organizer: PublishedEventOrganizerRow,
+  tickets: PublicPurchasableTicketResponse[] = [],
+  paymentsReady = false
 ): PublicEventDetailResponse {
   return {
     documentId: event.documentId,
@@ -120,6 +124,23 @@ export function toPublicEventDetailResponse(
     locationImages,
     faqs: faqs.map(toEventFaqResponse),
     organizer: toPublicEventOrganizer(organizer),
+    tickets,
+    paymentsReady,
+  }
+}
+
+export function toPublicPurchasableTicketResponse(
+  ticket: TicketSelect,
+  completedSalesQuantity: number
+): PublicPurchasableTicketResponse {
+  return {
+    documentId: ticket.documentId,
+    name: ticket.name,
+    price: ticket.price,
+    type: ticket.type,
+    remainingQuantity: Math.max(ticket.quantity - completedSalesQuantity, 0),
+    saleStartsAt: ticket.saleStartsAt,
+    saleEndsAt: ticket.saleEndsAt,
   }
 }
 

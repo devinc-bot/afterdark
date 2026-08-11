@@ -1,6 +1,6 @@
 import type { LocationSelect, StaffInvitationSelect } from '@repo/db'
 import type { CreateStaffInvitationResponse } from '@repo/types'
-import { ENV } from '../../common/config/env'
+import { ENV } from '../../../config/env'
 import { buildStaffInvitationUrl } from '../utils/staff-invitation.utils'
 
 export function toStaffInvitationResponse(

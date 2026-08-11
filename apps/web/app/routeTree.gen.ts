@@ -21,6 +21,9 @@ import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
 import { Route as PublicEventsRouteImport } from './routes/_public/events'
 import { Route as AppSettingsRouteImport } from './routes/_app/settings'
 import { Route as PublicEventsIndexRouteImport } from './routes/_public/events.index'
+import { Route as CheckoutOrderIdSuccessRouteImport } from './routes/checkout.$orderId.success'
+import { Route as CheckoutOrderIdPendingRouteImport } from './routes/checkout.$orderId.pending'
+import { Route as CheckoutOrderIdErrorRouteImport } from './routes/checkout.$orderId.error'
 import { Route as PublicEventsDocumentIdRouteImport } from './routes/_public/events.$documentId'
 
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
@@ -81,6 +84,21 @@ const PublicEventsIndexRoute = PublicEventsIndexRouteImport.update({
   path: '/',
   getParentRoute: () => PublicEventsRoute,
 } as any)
+const CheckoutOrderIdSuccessRoute = CheckoutOrderIdSuccessRouteImport.update({
+  id: '/checkout/$orderId/success',
+  path: '/checkout/$orderId/success',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CheckoutOrderIdPendingRoute = CheckoutOrderIdPendingRouteImport.update({
+  id: '/checkout/$orderId/pending',
+  path: '/checkout/$orderId/pending',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CheckoutOrderIdErrorRoute = CheckoutOrderIdErrorRouteImport.update({
+  id: '/checkout/$orderId/error',
+  path: '/checkout/$orderId/error',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PublicEventsDocumentIdRoute = PublicEventsDocumentIdRouteImport.update({
   id: '/$documentId',
   path: '/$documentId',
@@ -98,6 +116,9 @@ export interface FileRoutesByFullPath {
   '/auth/callback': typeof AuthCallbackRoute
   '/register/confirm': typeof RegisterConfirmRoute
   '/events/$documentId': typeof PublicEventsDocumentIdRoute
+  '/checkout/$orderId/error': typeof CheckoutOrderIdErrorRoute
+  '/checkout/$orderId/pending': typeof CheckoutOrderIdPendingRoute
+  '/checkout/$orderId/success': typeof CheckoutOrderIdSuccessRoute
   '/events/': typeof PublicEventsIndexRoute
 }
 export interface FileRoutesByTo {
@@ -110,6 +131,9 @@ export interface FileRoutesByTo {
   '/auth/callback': typeof AuthCallbackRoute
   '/register/confirm': typeof RegisterConfirmRoute
   '/events/$documentId': typeof PublicEventsDocumentIdRoute
+  '/checkout/$orderId/error': typeof CheckoutOrderIdErrorRoute
+  '/checkout/$orderId/pending': typeof CheckoutOrderIdPendingRoute
+  '/checkout/$orderId/success': typeof CheckoutOrderIdSuccessRoute
   '/events': typeof PublicEventsIndexRoute
 }
 export interface FileRoutesById {
@@ -126,6 +150,9 @@ export interface FileRoutesById {
   '/auth/callback': typeof AuthCallbackRoute
   '/register_/confirm': typeof RegisterConfirmRoute
   '/_public/events/$documentId': typeof PublicEventsDocumentIdRoute
+  '/checkout/$orderId/error': typeof CheckoutOrderIdErrorRoute
+  '/checkout/$orderId/pending': typeof CheckoutOrderIdPendingRoute
+  '/checkout/$orderId/success': typeof CheckoutOrderIdSuccessRoute
   '/_public/events/': typeof PublicEventsIndexRoute
 }
 export interface FileRouteTypes {
@@ -141,6 +168,9 @@ export interface FileRouteTypes {
     | '/auth/callback'
     | '/register/confirm'
     | '/events/$documentId'
+    | '/checkout/$orderId/error'
+    | '/checkout/$orderId/pending'
+    | '/checkout/$orderId/success'
     | '/events/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -153,6 +183,9 @@ export interface FileRouteTypes {
     | '/auth/callback'
     | '/register/confirm'
     | '/events/$documentId'
+    | '/checkout/$orderId/error'
+    | '/checkout/$orderId/pending'
+    | '/checkout/$orderId/success'
     | '/events'
   id:
     | '__root__'
@@ -168,6 +201,9 @@ export interface FileRouteTypes {
     | '/auth/callback'
     | '/register_/confirm'
     | '/_public/events/$documentId'
+    | '/checkout/$orderId/error'
+    | '/checkout/$orderId/pending'
+    | '/checkout/$orderId/success'
     | '/_public/events/'
   fileRoutesById: FileRoutesById
 }
@@ -181,6 +217,9 @@ export interface RootRouteChildren {
   ResetPasswordRoute: typeof ResetPasswordRoute
   AuthCallbackRoute: typeof AuthCallbackRoute
   RegisterConfirmRoute: typeof RegisterConfirmRoute
+  CheckoutOrderIdErrorRoute: typeof CheckoutOrderIdErrorRoute
+  CheckoutOrderIdPendingRoute: typeof CheckoutOrderIdPendingRoute
+  CheckoutOrderIdSuccessRoute: typeof CheckoutOrderIdSuccessRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -269,6 +308,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PublicEventsIndexRouteImport
       parentRoute: typeof PublicEventsRoute
     }
+    '/checkout/$orderId/success': {
+      id: '/checkout/$orderId/success'
+      path: '/checkout/$orderId/success'
+      fullPath: '/checkout/$orderId/success'
+      preLoaderRoute: typeof CheckoutOrderIdSuccessRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/checkout/$orderId/pending': {
+      id: '/checkout/$orderId/pending'
+      path: '/checkout/$orderId/pending'
+      fullPath: '/checkout/$orderId/pending'
+      preLoaderRoute: typeof CheckoutOrderIdPendingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/checkout/$orderId/error': {
+      id: '/checkout/$orderId/error'
+      path: '/checkout/$orderId/error'
+      fullPath: '/checkout/$orderId/error'
+      preLoaderRoute: typeof CheckoutOrderIdErrorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_public/events/$documentId': {
       id: '/_public/events/$documentId'
       path: '/$documentId'
@@ -324,6 +384,9 @@ const rootRouteChildren: RootRouteChildren = {
   ResetPasswordRoute: ResetPasswordRoute,
   AuthCallbackRoute: AuthCallbackRoute,
   RegisterConfirmRoute: RegisterConfirmRoute,
+  CheckoutOrderIdErrorRoute: CheckoutOrderIdErrorRoute,
+  CheckoutOrderIdPendingRoute: CheckoutOrderIdPendingRoute,
+  CheckoutOrderIdSuccessRoute: CheckoutOrderIdSuccessRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

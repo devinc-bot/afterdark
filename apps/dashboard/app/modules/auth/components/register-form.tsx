@@ -1,9 +1,8 @@
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from '@tanstack/react-router'
 import { useForm } from '@tanstack/react-form'
-import { z } from 'zod'
-import { registerOwnerSchema } from '@repo/validators'
+import { registerFormFieldsSchema, registerFormSchema } from '@repo/validators'
 import { Button, Field, fieldErrorMessage } from '@repo/ui'
 import { DASHBOARD_ROUTES } from '../../common/constants/routes'
 import { useRequestRegister } from '../mutations/use-auth-mutations'
@@ -14,23 +13,6 @@ export function RegisterForm() {
   const { t } = useTranslation('auth')
   const register = useRequestRegister()
   const [submittedEmail, setSubmittedEmail] = useState<string | null>(null)
-
-  const registerFieldsSchema = useMemo(
-    () =>
-      registerOwnerSchema.extend({
-        confirmPassword: z.string().min(8, t('password.min', { min: 8 })),
-      }),
-    [t]
-  )
-
-  const registerFormSchema = useMemo(
-    () =>
-      registerFieldsSchema.refine((data) => data.password === data.confirmPassword, {
-        message: t('password.noMatch'),
-        path: ['confirmPassword'],
-      }),
-    [registerFieldsSchema, t]
-  )
 
   const form = useForm({
     defaultValues: { name: '', lastName: '', email: '', password: '', confirmPassword: '' },
@@ -80,8 +62,8 @@ export function RegisterForm() {
         <form.Field
           name="name"
           validators={{
-            onBlur: registerFieldsSchema.shape.name,
-            onSubmit: registerFieldsSchema.shape.name,
+            onBlur: registerFormFieldsSchema.shape.name,
+            onSubmit: registerFormFieldsSchema.shape.name,
           }}
         >
           {(field) => {
@@ -108,8 +90,8 @@ export function RegisterForm() {
         <form.Field
           name="lastName"
           validators={{
-            onBlur: registerFieldsSchema.shape.lastName,
-            onSubmit: registerFieldsSchema.shape.lastName,
+            onBlur: registerFormFieldsSchema.shape.lastName,
+            onSubmit: registerFormFieldsSchema.shape.lastName,
           }}
         >
           {(field) => {
@@ -137,8 +119,8 @@ export function RegisterForm() {
       <form.Field
         name="email"
         validators={{
-          onBlur: registerFieldsSchema.shape.email,
-          onSubmit: registerFieldsSchema.shape.email,
+          onBlur: registerFormFieldsSchema.shape.email,
+          onSubmit: registerFormFieldsSchema.shape.email,
         }}
       >
         {(field) => {
@@ -165,8 +147,8 @@ export function RegisterForm() {
       <form.Field
         name="password"
         validators={{
-          onBlur: registerFieldsSchema.shape.password,
-          onSubmit: registerFieldsSchema.shape.password,
+          onBlur: registerFormFieldsSchema.shape.password,
+          onSubmit: registerFormFieldsSchema.shape.password,
         }}
       >
         {(field) => {
@@ -193,8 +175,8 @@ export function RegisterForm() {
       <form.Field
         name="confirmPassword"
         validators={{
-          onBlur: registerFieldsSchema.shape.confirmPassword,
-          onSubmit: registerFieldsSchema.shape.confirmPassword,
+          onBlur: registerFormFieldsSchema.shape.confirmPassword,
+          onSubmit: registerFormFieldsSchema.shape.confirmPassword,
         }}
       >
         {(field) => {

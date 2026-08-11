@@ -1,7 +1,7 @@
 import { Inject, Injectable, ServiceUnavailableException } from '@nestjs/common'
 import { MAIL_ERROR_CODE } from '@repo/i18n/constants'
 import { TranslationService } from '@repo/i18n/server'
-import { ENV } from '../../../common/config/env'
+import { ENV } from '../../../../config/env'
 
 @Injectable()
 export class MailConfigService {

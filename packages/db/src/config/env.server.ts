@@ -1,4 +1,4 @@
-import { databaseEnvSchema } from '@repo/validators/database'
+import { databaseEnvSchema } from './env.ts'
 
 const result = databaseEnvSchema.safeParse(process.env)
 

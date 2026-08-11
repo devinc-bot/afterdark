@@ -105,6 +105,7 @@ export {
   appLogoVariants,
   type AppLogoProps,
 } from './components/ui/app-logo.tsx'
+export { GoogleMark, type GoogleMarkProps } from './components/ui/google-mark.tsx'
 export {
   Select,
   SelectContent,

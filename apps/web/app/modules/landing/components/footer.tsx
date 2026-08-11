@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
-import { DASHBOARD_URL } from '@repo/common'
 import { AppLogo, Link, cn } from '@repo/ui'
+import { clientEnv } from '~/config/env'
 import { Container } from '~/modules/common/components/container'
 import { WEB_ROUTES } from '~/modules/common/constants/routes'
 import { LANDING_CTA_PRIMARY, LANDING_FOCUS_RING } from '../constants/layout'
@@ -133,7 +133,7 @@ export function LandingFooter() {
               {t('footer.publishBody')}
             </p>
             <a
-              href={DASHBOARD_URL}
+              href={clientEnv.VITE_DASHBOARD_URL}
               target="_blank"
               rel="noopener noreferrer"
               className={cn(
