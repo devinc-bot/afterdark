@@ -2,7 +2,6 @@ import { startTransition, useEffect, useState, type MouseEvent } from 'react'
 import { Menu } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate, useRouterState } from '@tanstack/react-router'
-import { getCookieSync } from '@repo/common'
 import {
   Button,
   Link,
@@ -13,6 +12,7 @@ import {
   SheetTitle,
   SheetTrigger,
   AppLogo,
+  Skeleton,
   cn,
   ThemeToggle,
   linkVariants,
@@ -20,7 +20,6 @@ import {
 import { UserMenu } from '~/modules/common/components/user-menu'
 import { LanguageToggle } from '~/modules/common/components/language-toggle'
 import { Container } from '~/modules/common/components/container'
-import { COOKIE_KEYS } from '~/modules/common/constants/cookies'
 import { WEB_ROUTES } from '~/modules/common/constants/routes'
 import { useSession } from '~/modules/common/hooks/use-session'
 import {
@@ -46,9 +45,8 @@ export function LandingHeader() {
   const { user, isAuthenticated, isLoading } = useSession()
   const [navSolid, setNavSolid] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
-  const hasToken = getCookieSync({ name: COOKIE_KEYS.accessToken }) !== null
-  const showAuthChrome = isAuthenticated || (isLoading && hasToken)
-  const showAuthCtas = !showAuthChrome
+  const showAuthChrome = !isLoading && isAuthenticated
+  const showAuthCtas = !isLoading && !isAuthenticated
   const isLanding = pathname === WEB_ROUTES.home()
   // Non-landing public pages have no hero media — keep chrome solid for separation.
   const chromeSolid = navSolid || !isLanding
@@ -149,19 +147,20 @@ export function LandingHeader() {
           <div className="flex shrink-0 items-center gap-1 sm:gap-2">
             <LanguageToggle className={iconButton} />
             <ThemeToggle className={iconButton} />
-            {showAuthChrome ? (
-              isAuthenticated && user ? (
-                <UserMenu
-                  user={user}
-                  ariaLabel={t('nav.accountAria', { name: displayName })}
-                  settingsHref={WEB_ROUTES.settings()}
-                />
-              ) : (
-                <div
-                  className="size-8 animate-pulse rounded-full bg-surface-container"
-                  aria-hidden
-                />
-              )
+            {isLoading ? (
+              <Skeleton
+                className={cn(
+                  'size-9 rounded-full',
+                  onMedia ? 'bg-white/25' : 'bg-surface-container'
+                )}
+                aria-hidden
+              />
+            ) : showAuthChrome && user ? (
+              <UserMenu
+                user={user}
+                ariaLabel={t('nav.accountAria', { name: displayName })}
+                settingsHref={WEB_ROUTES.settings()}
+              />
             ) : (
               <>
                 <Link to={WEB_ROUTES.login()} size="sm" className={authLink}>

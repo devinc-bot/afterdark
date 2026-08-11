@@ -17,6 +17,7 @@ import { TicketsModule } from './modules/tickets'
 import { EventsModule } from './modules/events'
 import { MailModule } from './modules/mail'
 import { GeoModule } from './modules/geo'
+import { MercadoPagoModule } from './modules/mercado-pago'
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { GeoModule } from './modules/geo'
     EventsModule,
     MailModule,
     GeoModule,
+    MercadoPagoModule,
   ],
   controllers: [AppController],
 })

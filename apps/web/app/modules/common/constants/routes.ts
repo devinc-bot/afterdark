@@ -1,11 +1,22 @@
 import { CLIENT_ROUTES } from '@repo/common'
 
-const { resetPassword, registerConfirm, authCallback, login } = CLIENT_ROUTES
+const {
+  resetPassword,
+  registerConfirm,
+  authCallback,
+  login,
+  checkoutSuccess,
+  checkoutError,
+  checkoutPending,
+} = CLIENT_ROUTES
 
 export const WEB_ROUTES = {
   home: () => '/' as const,
   events: () => '/events' as const,
   event: (documentId: string) => `/events/${documentId}` as const,
+  checkoutSuccess,
+  checkoutError,
+  checkoutPending,
   settings: () => '/settings' as const,
   tickets: () => '/tickets' as const,
   properties: () => '/properties' as const,

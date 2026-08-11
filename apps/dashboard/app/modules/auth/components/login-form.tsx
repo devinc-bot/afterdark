@@ -11,13 +11,16 @@ import { AuthMethodSeparator, GoogleContinueButton } from './google-continue-but
 
 export function LoginForm() {
   const { t } = useTranslation('auth')
-  const login = useLogin()
   const { error: oauthError } = useSearch({ from: '/login' })
+  const login = useLogin()
 
   const form = useForm({
     defaultValues: { email: '', password: '' },
+    validators: {
+      onSubmit: loginSchema,
+    },
     onSubmit: async ({ value }) => {
-      await login.mutateAsync({ email: value.email, password: value.password })
+      await login.mutateAsync(value)
     },
   })
 

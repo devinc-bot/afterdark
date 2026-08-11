@@ -5,9 +5,7 @@
 Define how anonymous visitors discover published events on the public web:
 catalog API, filters, image cover-flow, the `/events` infinite-scroll list, and
 the public event detail page at `/events/$documentId`.
-
 ## Requirements
-
 ### Requirement: Public published-events catalog API
 
 The system SHALL expose an anonymous HTTP endpoint that returns only events with status `published`, validated via `@repo/validators` (public list query schema). Draft and finished events MUST NOT appear. The response MUST include fields needed for discovery: event identity and schedule, location name, city/state (from the location address when present), coordinates when present, and optional images.
@@ -214,7 +212,7 @@ The `/events/$documentId` page SHALL show a FAQ section when the public detail p
 of one published event in this order: a full-width image carousel of all event images,
 the title with a share/copy-link action, the schedule, the full description, an optional
 FAQ Accordion section when `faqs` is non-empty, the full address (street and number,
-city, state), the existing "Entradas próximamente" placeholder, venue gallery when
+city, state), the ticket purchase panel (from `tickets` / `paymentsReady` per ticket-checkout; not the legacy “Entradas próximamente” stub), venue gallery when
 `locationImages` is non-empty, and — as the last element on the page — an embedded map
 centered on the event's coordinates when present. UI copy MUST be Spanish via
 `@repo/i18n`. Selecting an event from the discovery list (via its "Ver evento" action)
@@ -226,7 +224,7 @@ MUST navigate to that event's detail page at `/events/$documentId`.
 - **WHEN** the page loads
 - **THEN** the event detail UI is shown without requiring login, including all of its
   images in the top carousel, full description, schedule, full address, optional FAQ
-  section when FAQs exist, and the "Entradas próximamente" placeholder
+  section when FAQs exist, and the ticket purchase panel driven by public detail data
 
 #### Scenario: Image carousel shows all event images
 
@@ -246,10 +244,10 @@ MUST navigate to that event's detail page at `/events/$documentId`.
 #### Scenario: Map renders last, after all other event data
 
 - **GIVEN** the event has address coordinates
-- **WHEN** the detail page loads
+- **WHEN** the page loads
 - **THEN** the embedded map centers on those coordinates with a single marker for the
   event, and it is the last element rendered on the page (after schedule, description,
-  FAQ when present, address text, tickets placeholder, and venue gallery when present)
+  FAQ when present, address text, ticket purchase panel, and venue gallery when present)
 
 #### Scenario: Event without coordinates omits the map
 
@@ -391,3 +389,26 @@ error or a blank page.
 - **GIVEN** the requested `documentId` does not correspond to a published event
 - **WHEN** `/events/$documentId` loads
 - **THEN** the page shows a "Evento no encontrado" state with a link back to `/events`
+
+### Requirement: Public event detail includes purchasable tickets
+
+The anonymous public single-event detail response MUST include a `tickets` array of offers for that event that are eligible for public sale display: active status and within sale window when dates are set (rules in application layer; field shapes via `@repo/validators` / DTO types). Each item MUST include identity (`documentId`), `name`, `price`, `type`, remaining quantity (or equivalent stock signal), and sale window fields when present. Tickets that are inactive or outside the sale window MUST be omitted. The response MUST also include `paymentsReady` (boolean): true only when Afterdark's Mercado Pago account is configured.
+
+#### Scenario: Published event with on-sale tickets and configured platform payments
+
+- **GIVEN** a published event with two active on-sale tickets and Afterdark's Mercado Pago account configured
+- **WHEN** an unauthenticated client requests the public detail endpoint
+- **THEN** `tickets` contains both offers with price and stock signals and `paymentsReady` is true
+
+#### Scenario: Platform payments not configured
+
+- **GIVEN** a published event with on-sale tickets but Afterdark's Mercado Pago account is not configured
+- **WHEN** an unauthenticated client requests the public detail endpoint
+- **THEN** `tickets` may still list offers for display and `paymentsReady` is false
+
+#### Scenario: No eligible tickets
+
+- **GIVEN** a published event with only inactive tickets or tickets outside the sale window
+- **WHEN** an unauthenticated client requests the public detail endpoint
+- **THEN** `tickets` is an empty array and the request still succeeds
+

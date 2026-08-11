@@ -17,7 +17,7 @@ import {
 import { AUTH_ERROR_CODE } from '@repo/i18n'
 import { TranslationService } from '@repo/i18n/server'
 import type { RegisterOwnerInput } from '@repo/validators'
-import { ENV } from '../../common/config/env'
+import { ENV } from '../../../config/env'
 import { hashValue } from '../../common'
 import { SendUserRegistrationUseCase } from '../../mail'
 import {

@@ -2,7 +2,7 @@ import { memoryStorage } from 'multer'
 import type { MulterOptions } from '@nestjs/platform-express/multer/interfaces/multer-options.interface'
 import { isAllowedImageMimeType } from '@repo/validators'
 import { FILE_ERROR_CODE } from '@repo/i18n/constants'
-import { ENV } from '../common/config/env'
+import { ENV } from '../../config/env'
 
 export const imageUploadOptions: MulterOptions = {
   limits: {

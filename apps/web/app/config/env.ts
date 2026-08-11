@@ -1,6 +1,11 @@
 import { clientApiEnvSchema } from '@repo/validators'
+import { z } from 'zod'
 
-const envResult = clientApiEnvSchema.safeParse(import.meta.env)
+const webEnvSchema = clientApiEnvSchema.extend({
+  VITE_DASHBOARD_URL: z.url(),
+})
+
+const envResult = webEnvSchema.safeParse(import.meta.env)
 
 if (!envResult.success) {
   throw new Error('Error validating client environment variables', { cause: envResult.error })

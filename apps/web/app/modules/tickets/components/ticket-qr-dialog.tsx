@@ -179,7 +179,7 @@ export function TicketQrDialog({ open, onOpenChange, ticket }: TicketQrDialogPro
                 {t('mine.qrDialog.retry')}
               </Button>
             </>
-          ) : isFetching || secondsLeft === null ? (
+          ) : isFetching || secondsLeft === null || !data ? (
             <div
               className="flex size-[212px] items-center justify-center rounded-app border border-hairline/50 bg-surface-muted/50 px-6 text-center"
               role="status"

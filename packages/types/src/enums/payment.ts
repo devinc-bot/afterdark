@@ -12,3 +12,10 @@ export const PAYMENT_PROVIDER = {
 } as const
 
 export type PaymentProvider = (typeof PAYMENT_PROVIDER)[keyof typeof PAYMENT_PROVIDER]
+
+export const MERCADO_PAGO_NOTIFICATION_TYPE = {
+  PAYMENT: 'payment',
+} as const
+
+export type MercadoPagoNotificationType =
+  (typeof MERCADO_PAGO_NOTIFICATION_TYPE)[keyof typeof MERCADO_PAGO_NOTIFICATION_TYPE]

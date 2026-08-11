@@ -18,7 +18,7 @@ import {
 } from '../services/auth.service'
 import { saveAuthSession } from '../utils/auth-storage.utils'
 
-export function useLogin() {
+export function useLogin(returnTo?: string) {
   const navigate = useNavigate()
 
   return useMutation({
@@ -26,7 +26,7 @@ export function useLogin() {
     onSuccess: async (session) => {
       saveAuthSession(session)
       await useSessionStore.getState().loadSession()
-      await navigate({ to: WEB_ROUTES.home() })
+      await navigate(returnTo ? { to: returnTo as '/' } : { to: WEB_ROUTES.home() })
     },
   })
 }
