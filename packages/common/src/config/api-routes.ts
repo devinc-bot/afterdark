@@ -117,10 +117,14 @@ export const API_ROUTES = {
   orders: {
     prefix: API_ORDERS_PREFIX,
     path: {
+      /** Authenticated buyer — list their orders (GET). */
+      list: () => '/' as const,
       /** Authenticated USER — create pending order (POST). */
       create: () => '/' as const,
       /** Authenticated buyer — get order by documentId (GET). */
       get: (documentId: string) => `/${routeSegment(documentId)}` as const,
+      /** Authenticated buyer — delete their pending order (DELETE). */
+      delete: (documentId: string) => `/${routeSegment(documentId)}` as const,
     },
   },
   mercadoPago: {
