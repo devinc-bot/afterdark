@@ -13,7 +13,7 @@
 
 ## 4. Orders API
 
-- [ ] 4.1 Add the authenticated paginated order-history use case and controller endpoint with shared pagination validation, mapping, and tests.
+- [x] 4.1 Add the authenticated paginated order-history use case and controller endpoint with shared pagination validation, mapping, and tests.
 - [ ] 4.2 Add the authenticated pending-order deletion use case and controller endpoint with provider-first expiration, atomic status enforcement, translated errors, and race/error tests.
 
 ## 5. Web Data Layer
