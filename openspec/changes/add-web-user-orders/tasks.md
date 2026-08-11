@@ -9,7 +9,7 @@
 
 ## 3. Mercado Pago Integration
 
-- [ ] 3.1 Extend the Checkout Pro port and SDK adapter to expire an existing preference while preserving required preference data, and cover success/failure mapping with adapter tests.
+- [x] 3.1 Extend the Checkout Pro port and SDK adapter to expire an existing preference while preserving required preference data, and cover success/failure mapping with adapter tests.
 
 ## 4. Orders API
 

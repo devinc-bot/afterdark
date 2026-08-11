@@ -113,10 +113,12 @@ test('expires a Checkout Pro preference with its existing items', async () => {
     assert.equal(requests.length, 2)
     assert.deepEqual(requests[0], {
       url: 'https://api.mercadopago.com/checkout/preferences/preference-123',
-      method: undefined,
+      method: 'GET',
       body: undefined,
     })
-    const updateBody = requests[1]?.body as {
+    const updateRequest = requests[1]
+    assert.ok(updateRequest)
+    const updateBody = updateRequest.body as {
       items: unknown
       expires: unknown
       expiration_date_to: unknown
@@ -127,14 +129,10 @@ test('expires a Checkout Pro preference with its existing items', async () => {
     assert.equal(updateBody.expires, true)
     assert.ok(typeof updateBody.expiration_date_to === 'string')
     assert.match(updateBody.expiration_date_to, /^\d{4}-\d{2}-\d{2}T/)
-    assert.equal(requests[1]?.method, 'PUT')
+    assert.equal(updateRequest.method, 'PUT')
     assert.equal(
-      requests[1]?.url,
+      updateRequest.url,
       'https://api.mercadopago.com/checkout/preferences/preference-123'
-    )
-    assert.match(
-      (requests[1]?.body as { expiration_date_to: string }).expiration_date_to,
-      /^\d{4}-\d{2}-\d{2}T/
     )
   } finally {
     globalThis.fetch = originalFetch
