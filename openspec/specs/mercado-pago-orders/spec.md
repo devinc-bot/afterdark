@@ -94,4 +94,3 @@ The system SHALL expire an order's active Mercado Pago Checkout Pro preference b
 - **GIVEN** an authenticated buyer owns a pending order whose Checkout Pro preference was never persisted
 - **WHEN** the buyer confirms deletion
 - **THEN** the API skips provider expiration and applies the buyer-scoped pending-only local delete
-
