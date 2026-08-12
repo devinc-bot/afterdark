@@ -10,4 +10,4 @@
 
 ## 3. Verification
 
-- [ ] 3.1 Run package type-checks, formatter tests, `pnpm lint`, `pnpm format:check`, and `pnpm check:i18n`.
+- [x] 3.1 Run package type-checks, formatter tests, `pnpm lint`, `pnpm format:check`, and `pnpm check:i18n`. Note: `pnpm format:check` reports pre-existing formatting issues outside this change; focused formatter files pass formatting.

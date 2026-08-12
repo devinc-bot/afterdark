@@ -32,4 +32,4 @@
 
 ## 8. Verification
 
-- [ ] 8.1 Run affected package tests, repository-wide type-check, oxlint, oxfmt check, OpenSpec validation, and responsive accessibility checks for the orders page.
+- [x] 8.1 Run affected package tests, repository-wide type-check, oxlint, oxfmt check, OpenSpec validation, and responsive accessibility checks for the orders page. Note: `pnpm format:check` reports pre-existing formatting issues outside this change; focused order files pass formatting.
