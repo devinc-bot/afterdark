@@ -1,4 +1,5 @@
 export * from './accounts/index.ts'
+export * from './api-error-records/index.ts'
 export * from './assets/index.ts'
 export * from './auth/index.ts'
 export * from './locations/index.ts'
