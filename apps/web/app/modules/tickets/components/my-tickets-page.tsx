@@ -112,7 +112,7 @@ export function MyTicketsPage() {
 
   return (
     <Container>
-      <div className="relative mx-auto w-full max-w-5xl">
+      <div className="relative mx-auto w-full">
         <PageAtmosphereWash className="h-40" />
 
         <PageHeader title={t('mine.page.title')} description={t('mine.page.description')} />

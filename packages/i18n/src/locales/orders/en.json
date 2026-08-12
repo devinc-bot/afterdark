@@ -1,0 +1,55 @@
+{
+  "page": {
+    "title": "My orders",
+    "description": "Review the status and details of your purchases.",
+    "metaTitle": "My orders · {appName}"
+  },
+  "retentionNotice": "Pending orders older than one month are deleted automatically.",
+  "list": {
+    "ariaLabel": "Order list"
+  },
+  "states": {
+    "loading": "Loading your orders…",
+    "errorTitle": "We couldn't load your orders",
+    "error": "Try again in a few minutes.",
+    "emptyTitle": "You don't have any orders yet",
+    "emptyDescription": "When you make a purchase, its details and status will appear here."
+  },
+  "actions": {
+    "retry": "Retry",
+    "discoverEvents": "Discover events",
+    "delete": "Delete"
+  },
+  "pagination": {
+    "ariaLabel": "Order pagination",
+    "previous": "Previous",
+    "next": "Next",
+    "page": "Page {page}",
+    "morePages": "More pages"
+  },
+  "status": {
+    "completed": "Paid",
+    "pending": "Pending",
+    "rejected": "Rejected",
+    "cancelled": "Cancelled"
+  },
+  "card": {
+    "eventUnavailable": "Event unavailable",
+    "ticket": "Ticket",
+    "quantityValue": "{count, plural, one {# ticket} other {# tickets}}",
+    "orderedAt": "Order date",
+    "eventDate": "Event date",
+    "total": "Total",
+    "reference": "Order #{reference}",
+    "unavailable": "Unavailable"
+  },
+  "delete": {
+    "title": "Delete pending order",
+    "description": "You are about to cancel checkout and delete the order for {{ticket}}. This action cannot be undone.",
+    "cancel": "Cancel",
+    "confirm": "Delete order",
+    "deleting": "Deleting…",
+    "success": "The pending order was deleted.",
+    "error": "We couldn't delete the order. Try again."
+  }
+}

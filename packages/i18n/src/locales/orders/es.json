@@ -1,0 +1,55 @@
+{
+  "page": {
+    "title": "Mis órdenes",
+    "description": "Revisá el estado y los detalles de tus compras.",
+    "metaTitle": "Mis órdenes · {appName}"
+  },
+  "retentionNotice": "Las órdenes pendientes con más de un mes de antigüedad se eliminarán automáticamente.",
+  "list": {
+    "ariaLabel": "Lista de órdenes"
+  },
+  "states": {
+    "loading": "Cargando tus órdenes…",
+    "errorTitle": "No pudimos cargar tus órdenes",
+    "error": "Intentá de nuevo en unos minutos.",
+    "emptyTitle": "Todavía no tenés órdenes",
+    "emptyDescription": "Cuando hagas una compra, el detalle y su estado aparecerán acá."
+  },
+  "actions": {
+    "retry": "Reintentar",
+    "discoverEvents": "Descubrir eventos",
+    "delete": "Eliminar"
+  },
+  "pagination": {
+    "ariaLabel": "Paginación de órdenes",
+    "previous": "Anterior",
+    "next": "Siguiente",
+    "page": "Página {page}",
+    "morePages": "Más páginas"
+  },
+  "status": {
+    "completed": "Pagada",
+    "pending": "Pendiente",
+    "rejected": "Rechazada",
+    "cancelled": "Cancelada"
+  },
+  "card": {
+    "eventUnavailable": "Evento no disponible",
+    "ticket": "Entrada",
+    "quantityValue": "{count, plural, one {# entrada} other {# entradas}}",
+    "orderedAt": "Fecha de la orden",
+    "eventDate": "Fecha del evento",
+    "total": "Total",
+    "reference": "Orden #{reference}",
+    "unavailable": "No disponible"
+  },
+  "delete": {
+    "title": "Eliminar orden pendiente",
+    "description": "Vas a cancelar el checkout y eliminar la orden de {{ticket}}. Esta acción no se puede revertir.",
+    "cancel": "Cancelar",
+    "confirm": "Eliminar orden",
+    "deleting": "Eliminando…",
+    "success": "La orden pendiente fue eliminada.",
+    "error": "No pudimos eliminar la orden. Intentá de nuevo."
+  }
+}

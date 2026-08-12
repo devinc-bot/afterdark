@@ -26,6 +26,8 @@ import esSales from '../locales/sales/es.json' with { type: 'json' }
 import enSales from '../locales/sales/en.json' with { type: 'json' }
 import esLanding from '../locales/landing/es.json' with { type: 'json' }
 import enLanding from '../locales/landing/en.json' with { type: 'json' }
+import esOrders from '../locales/orders/es.json' with { type: 'json' }
+import enOrders from '../locales/orders/en.json' with { type: 'json' }
 import esDashboardLanding from '../locales/dashboard-landing/es.json' with { type: 'json' }
 import enDashboardLanding from '../locales/dashboard-landing/en.json' with { type: 'json' }
 
@@ -49,6 +51,7 @@ export const SERVER_RESOURCES: ServerResources = {
     events: esEvents,
     sales: esSales,
     landing: esLanding,
+    orders: esOrders,
     dashboardLanding: esDashboardLanding,
   },
   en: {
@@ -65,6 +68,7 @@ export const SERVER_RESOURCES: ServerResources = {
     events: enEvents,
     sales: enSales,
     landing: enLanding,
+    orders: enOrders,
     dashboardLanding: enDashboardLanding,
   },
 }

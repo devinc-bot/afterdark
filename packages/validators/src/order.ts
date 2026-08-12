@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { uuidSchema } from './common.ts'
+import { paginationSchema, uuidSchema } from './common.ts'
 
 export const createOrderSchema = z.object({
   ticketId: uuidSchema,
@@ -7,3 +7,7 @@ export const createOrderSchema = z.object({
 })
 
 export type CreateOrderInput = z.infer<typeof createOrderSchema>
+
+export const listOrdersQuerySchema = paginationSchema
+
+export type ListOrdersQueryInput = z.infer<typeof listOrdersQuerySchema>

@@ -127,9 +127,14 @@ export function LandingHeader() {
               {t('nav.events')}
             </Link>
             {showAuthChrome ? (
-              <Link to={WEB_ROUTES.tickets()} className={navLink}>
-                {t('nav.tickets')}
-              </Link>
+              <>
+                <Link to={WEB_ROUTES.tickets()} className={navLink}>
+                  {t('nav.tickets')}
+                </Link>
+                <Link to={WEB_ROUTES.orders()} className={navLink}>
+                  {t('nav.orders')}
+                </Link>
+              </>
             ) : (
               LANDING_SECTION_NAV.map((item) => (
                 <a
@@ -219,15 +224,26 @@ export function LandingHeader() {
                     </Link>
                   </SheetClose>
                   {showAuthChrome ? (
-                    <SheetClose asChild>
-                      <Link
-                        to={WEB_ROUTES.tickets()}
-                        variant="ghost"
-                        className={cn(LANDING_FOCUS_RING)}
-                      >
-                        {t('nav.tickets')}
-                      </Link>
-                    </SheetClose>
+                    <>
+                      <SheetClose asChild>
+                        <Link
+                          to={WEB_ROUTES.tickets()}
+                          variant="ghost"
+                          className={cn(LANDING_FOCUS_RING)}
+                        >
+                          {t('nav.tickets')}
+                        </Link>
+                      </SheetClose>
+                      <SheetClose asChild>
+                        <Link
+                          to={WEB_ROUTES.orders()}
+                          variant="ghost"
+                          className={cn(LANDING_FOCUS_RING)}
+                        >
+                          {t('nav.orders')}
+                        </Link>
+                      </SheetClose>
+                    </>
                   ) : (
                     LANDING_SECTION_NAV.map((item) => (
                       <a

@@ -7,7 +7,7 @@
     "build": "nest build",
     "start": "node --env-file=.env --import tsx dist/main",
     "type-check": "tsc --noEmit",
-    "test": "node --env-file=.env --import tsx --test src/modules/mercado-pago/adapters/mercado-pago-checkout-pro.sdk-adapter.test.ts src/modules/mercado-pago/application/reconcile-webhook.use-case.test.ts src/modules/orders/application/services/pending-order-cleanup.scheduler.test.ts",
+    "test": "node --experimental-test-module-mocks --env-file=.env --import tsx --test src/modules/mercado-pago/adapters/mercado-pago-checkout-pro.sdk-adapter.test.ts src/modules/mercado-pago/application/reconcile-webhook.use-case.test.ts src/modules/orders/application/delete-pending-order.use-case.test.ts src/modules/orders/application/services/pending-order-cleanup.scheduler.test.ts src/modules/orders/mappers/orders.mapper.test.ts src/modules/orders/presentation/orders.controller.test.ts",
     "mail:smoke": "node --env-file=.env --import tsx src/modules/mail/scripts/smoke-mail.ts"
   },
   "dependencies": {

@@ -4,7 +4,9 @@ import { JwtAuthGuard } from '../common/guards/jwt-auth.guard'
 import { RolesGuard } from '../common/guards/roles.guard'
 import { MercadoPagoModule } from '../mercado-pago'
 import { CreatePendingOrderUseCase } from './application/create-pending-order.use-case'
+import { DeletePendingOrderUseCase } from './application/delete-pending-order.use-case'
 import { GetOrderByDocumentIdUseCase } from './application/get-order-by-document-id.use-case'
+import { ListMyOrdersUseCase } from './application/list-my-orders.use-case'
 import { PendingOrderCleanupScheduler } from './application/services/pending-order-cleanup.scheduler'
 import { OrdersController } from './presentation/orders.controller'
 
@@ -13,7 +15,9 @@ import { OrdersController } from './presentation/orders.controller'
   controllers: [OrdersController],
   providers: [
     CreatePendingOrderUseCase,
+    DeletePendingOrderUseCase,
     GetOrderByDocumentIdUseCase,
+    ListMyOrdersUseCase,
     PendingOrderCleanupScheduler,
     JwtAuthGuard,
     RolesGuard,
