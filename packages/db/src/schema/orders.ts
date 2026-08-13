@@ -25,6 +25,8 @@ export const orders = sqliteTable('orders', {
   provider: text('provider', { enum: [PAYMENT_PROVIDER.MERCADO_PAGO] })
     .notNull()
     .default(PAYMENT_PROVIDER.MERCADO_PAGO),
+  /** Provider order id (e.g. Mercado Pago Order id) for webhook reconciliation. */
+  externalOrderId: text('external_order_id').unique(),
   metadata: text('metadata', { mode: 'json' }).$type<Record<string, unknown>>(),
   paidAt: integer('paid_at', { mode: 'timestamp' }),
 })

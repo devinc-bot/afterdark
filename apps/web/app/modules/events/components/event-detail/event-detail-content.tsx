@@ -146,7 +146,12 @@ export function EventDetailContent({ event }: EventDetailContentProps) {
 
         <div className="order-1 lg:order-2 lg:col-span-4">
           <div className="lg:sticky lg:top-24">
-            <EventDetailPurchasePanel startsAt={event.startsAt} />
+            <EventDetailPurchasePanel
+              eventId={event.documentId}
+              startsAt={event.startsAt}
+              tickets={event.tickets}
+              paymentsReady={event.paymentsReady}
+            />
           </div>
         </div>
       </div>
@@ -178,7 +183,12 @@ export function EventDetailContent({ event }: EventDetailContentProps) {
           <h2 id="event-detail-map" className={SECTION_HEADING}>
             {t('discover.detail.map')}
           </h2>
-          <EventDetailMap latitude={latitude} longitude={longitude} eventName={event.name} />
+          <EventDetailMap
+            latitude={latitude}
+            longitude={longitude}
+            locationName={event.locationName}
+            addressText={addressText}
+          />
         </section>
       ) : null}
     </article>

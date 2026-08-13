@@ -110,6 +110,17 @@
     "PROVIDER_FAILED": "We could not locate your area. Try again or move the pin.",
     "RATE_LIMITED": "Too many searches. Wait a moment and try again."
   },
+  "order": {
+    "NOT_FOUND": "We could not find the order.",
+    "NOT_ON_SALE": "This ticket is not on sale.",
+    "OUT_OF_STOCK": "There are not enough tickets available.",
+    "CHECKOUT_UNAVAILABLE": "Checkout is not available right now.",
+    "CHECKOUT_FAILED": "We could not start the Mercado Pago checkout. Try again.",
+    "LIST_FAILED": "We could not load your orders. Try again in a few minutes.",
+    "DELETE_NOT_PENDING": "Only pending orders can be deleted.",
+    "DELETE_FAILED": "We could not delete the order. Try again.",
+    "WEBHOOK_INVALID": "The payment notification is invalid."
+  },
   "dashboard": {
     "KPI_FAILED": "We could not load dashboard metrics. Try again in a few minutes.",
     "SALES_ANALYTICS_FAILED": "We could not load dashboard sales analytics. Try again in a few minutes.",

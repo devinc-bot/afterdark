@@ -255,6 +255,7 @@ async function upsertOrder(
         quantity: values.quantity,
         provider: values.provider,
         paidAt: values.paidAt,
+        externalOrderId: values.externalOrderId,
         metadata: values.metadata,
         updatedAt: new Date(),
       })
@@ -423,9 +424,9 @@ export async function seedTicketsOrders(): Promise<void> {
       quantity,
       provider: PAYMENT_PROVIDER.MERCADO_PAGO,
       paidAt,
+      externalOrderId: isCompleted ? `mp-seed-${i}` : null,
       metadata: isCompleted
         ? {
-            providerPaymentId: `mp-seed-${i}`,
             preferenceId: `pref-seed-${i}`,
           }
         : null,

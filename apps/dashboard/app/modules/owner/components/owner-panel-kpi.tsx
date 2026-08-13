@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next'
+import { formatCurrency, formatDateRange, formatNumber } from '@repo/common'
 import type { DashboardKpiResponse } from '@repo/types'
 import { KpiInformation as KpiCard, Skeleton } from '@repo/ui'
 import { Banknote, CalendarCheck, Ticket } from 'lucide-react'
@@ -7,28 +8,6 @@ type OwnerPanelKpiProps = {
   data?: DashboardKpiResponse
   isLoading: boolean
   isError: boolean
-}
-
-function formatCount(value: number, locale: string): string {
-  return value.toLocaleString(locale === 'en' ? 'en-US' : 'es-AR')
-}
-
-function formatCurrency(value: number, locale: string): string {
-  return new Intl.NumberFormat(locale === 'en' ? 'en-US' : 'es-AR', {
-    style: 'currency',
-    currency: 'ARS',
-    maximumFractionDigits: 0,
-  }).format(value)
-}
-
-function formatDateRange(from: string, to: string, locale: string): string {
-  const formatter = new Intl.DateTimeFormat(locale === 'en' ? 'en-US' : 'es-AR', {
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric',
-  })
-
-  return `${formatter.format(new Date(from))} – ${formatter.format(new Date(to))}`
 }
 
 function KpiSkeleton() {
@@ -43,7 +22,7 @@ function KpiSkeleton() {
 
 export function OwnerPanelKpi({ data, isLoading, isError }: OwnerPanelKpiProps) {
   const { t, i18n } = useTranslation('dashboard')
-  const locale = i18n.language
+  const locale = i18n.language === 'en' ? 'en-US' : 'es-AR'
 
   if (isError) {
     return (
@@ -75,20 +54,26 @@ export function OwnerPanelKpi({ data, isLoading, isError }: OwnerPanelKpiProps) 
       <KpiCard
         variant="primary"
         label={t('pages.panel.kpi.publishedEvents')}
-        value={formatCount(data.publishedEventsCount, locale)}
+        value={formatNumber(data.publishedEventsCount, { locale })}
         icon={<CalendarCheck aria-hidden="true" />}
       />
 
       <KpiCard
         label={t('pages.panel.kpi.ticketsSold')}
-        value={formatCount(data.ticketsSoldCount, locale)}
+        value={formatNumber(data.ticketsSoldCount, { locale })}
         icon={<Ticket aria-hidden="true" />}
       />
 
       <KpiCard
         label={t('pages.panel.kpi.totalRevenue')}
-        value={formatCurrency(data.totalRevenue, locale)}
-        subtext={formatDateRange(data.revenueFromDate, data.revenueToDate, locale)}
+        value={formatCurrency(data.totalRevenue, {
+          locale,
+          options: { maximumFractionDigits: 0 },
+        })}
+        subtext={formatDateRange(data.revenueFromDate, data.revenueToDate, {
+          locale,
+          options: { day: 'numeric', month: 'short', year: 'numeric' },
+        })}
         icon={<Banknote aria-hidden="true" />}
       />
     </div>

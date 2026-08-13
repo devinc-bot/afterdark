@@ -3,11 +3,12 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "dev": "tsx watch src/main.ts",
+    "dev": "node --env-file=.env --import tsx --watch src/main.ts",
     "build": "nest build",
-    "start": "node dist/main",
+    "start": "node --env-file=.env --import tsx dist/main",
     "type-check": "tsc --noEmit",
-    "mail:smoke": "tsx src/modules/mail/scripts/smoke-mail.ts"
+    "test": "node --experimental-test-module-mocks --env-file=.env --import tsx --test src/modules/mercado-pago/adapters/mercado-pago-checkout-pro.sdk-adapter.test.ts src/modules/mercado-pago/application/reconcile-webhook.use-case.test.ts src/modules/orders/application/delete-pending-order.use-case.test.ts src/modules/orders/application/services/pending-order-cleanup.scheduler.test.ts src/modules/orders/mappers/orders.mapper.test.ts src/modules/orders/presentation/orders.controller.test.ts",
+    "mail:smoke": "node --env-file=.env --import tsx src/modules/mail/scripts/smoke-mail.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "3.1071.0",
@@ -24,9 +25,10 @@
     "@repo/types": "workspace:*",
     "@repo/validators": "workspace:*",
     "bcryptjs": "3.0.3",
-    "dotenv": "17.4.2",
     "drizzle-orm": "0.43.1",
     "files-sdk": "2.0.0",
+    "mercadopago": "3.3.0",
+    "multer": "1.4.5-lts.1",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-email": "6.0.0",

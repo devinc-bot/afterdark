@@ -11,6 +11,7 @@
     "events": "Eventos",
     "publish": "¿Organizás?",
     "tickets": "Entradas",
+    "orders": "Órdenes",
     "accountAria": "Cuenta de {name}",
     "openMenu": "Abrir menú",
     "closeMenu": "Cerrar menú",
@@ -23,6 +24,7 @@
     "support": "Descubrí eventos, reservá tu lugar y llegá con todo resuelto.",
     "ctaPrimary": "Crear cuenta",
     "ctaSecondary": "Iniciar sesión",
+    "ctaLoading": "Cargando acciones",
     "imageAlt": "Público disfrutando de un evento en vivo"
   },
   "about": {

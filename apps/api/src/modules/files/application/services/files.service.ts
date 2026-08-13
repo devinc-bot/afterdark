@@ -14,7 +14,7 @@ import {
 } from '@repo/validators'
 import { FILE_ERROR_CODE } from '@repo/i18n/constants'
 import { TranslationService } from '@repo/i18n/server'
-import { ENV } from '../../../common/config/env'
+import { ENV } from '../../../../config/env'
 import { optimizeImage } from '../../utils/image-optimizer'
 
 type FilesClient = import('files-sdk').Files

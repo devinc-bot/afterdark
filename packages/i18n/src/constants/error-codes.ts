@@ -108,6 +108,18 @@ export const GEO_ERROR_CODE = {
   RATE_LIMITED: 'geo.RATE_LIMITED',
 } as const
 
+export const ORDER_ERROR_CODE = {
+  NOT_FOUND: 'order.NOT_FOUND',
+  NOT_ON_SALE: 'order.NOT_ON_SALE',
+  OUT_OF_STOCK: 'order.OUT_OF_STOCK',
+  CHECKOUT_UNAVAILABLE: 'order.CHECKOUT_UNAVAILABLE',
+  CHECKOUT_FAILED: 'order.CHECKOUT_FAILED',
+  LIST_FAILED: 'order.LIST_FAILED',
+  DELETE_NOT_PENDING: 'order.DELETE_NOT_PENDING',
+  DELETE_FAILED: 'order.DELETE_FAILED',
+  WEBHOOK_INVALID: 'order.WEBHOOK_INVALID',
+} as const
+
 export type AuthErrorCode = (typeof AUTH_ERROR_CODE)[keyof typeof AUTH_ERROR_CODE]
 export type InvitationErrorCode = (typeof INVITATION_ERROR_CODE)[keyof typeof INVITATION_ERROR_CODE]
 export type LocationErrorCode = (typeof LOCATION_ERROR_CODE)[keyof typeof LOCATION_ERROR_CODE]
@@ -119,6 +131,7 @@ export type MailErrorCode = (typeof MAIL_ERROR_CODE)[keyof typeof MAIL_ERROR_COD
 export type GuardErrorCode = (typeof GUARD_ERROR_CODE)[keyof typeof GUARD_ERROR_CODE]
 export type EventErrorCode = (typeof EVENT_ERROR_CODE)[keyof typeof EVENT_ERROR_CODE]
 export type GeoErrorCode = (typeof GEO_ERROR_CODE)[keyof typeof GEO_ERROR_CODE]
+export type OrderErrorCode = (typeof ORDER_ERROR_CODE)[keyof typeof ORDER_ERROR_CODE]
 
 export type ErrorCode =
   | AuthErrorCode
@@ -132,3 +145,4 @@ export type ErrorCode =
   | GuardErrorCode
   | EventErrorCode
   | GeoErrorCode
+  | OrderErrorCode

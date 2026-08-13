@@ -1,9 +1,7 @@
 import { useEffect } from 'react'
-import { getCookieSync } from '@repo/common'
-import { Link, VT, cn, vtStyle } from '@repo/ui'
+import { Link, Skeleton, VT, cn, vtStyle } from '@repo/ui'
 import { useTranslation } from 'react-i18next'
 import { Container } from '~/modules/common/components/container'
-import { COOKIE_KEYS } from '~/modules/common/constants/cookies'
 import { WEB_ROUTES } from '~/modules/common/constants/routes'
 import { useSession } from '~/modules/common/hooks/use-session'
 import { LANDING_IMAGES } from '../constants/images'
@@ -30,9 +28,7 @@ import { SectionPulse } from './section/section-pulse'
 export function LandingPage() {
   const { t } = useTranslation('landing')
   const { isAuthenticated, isLoading } = useSession()
-  const hasToken = getCookieSync({ name: COOKIE_KEYS.accessToken }) !== null
-  const showAuthChrome = isAuthenticated || (isLoading && hasToken)
-  const showAuthCtas = !showAuthChrome
+  const showAuthCtas = !isLoading && !isAuthenticated
 
   useEffect(() => {
     scrollToSectionFromLocationHash()
@@ -53,20 +49,35 @@ export function LandingPage() {
       <LandingHeader />
 
       <main id="contenido" style={vtStyle(VT.mainContent)}>
-        <SectionHero showAuthCtas={showAuthCtas}>
-          <div className="mt-8 flex flex-wrap items-center gap-3">
-            <Link to={WEB_ROUTES.register()} size="lg" className={cn('px-8', LANDING_CTA_PRIMARY)}>
-              {t('hero.ctaPrimary')}
-            </Link>
-            <Link
-              to={WEB_ROUTES.login()}
-              variant="outline"
-              size="lg"
-              className={LANDING_CTA_GHOST_ON_MEDIA}
+        <SectionHero showAuthCtas={showAuthCtas || isLoading}>
+          {isLoading ? (
+            <div
+              className="mt-8 flex flex-wrap items-center gap-3"
+              aria-busy="true"
+              aria-label={t('hero.ctaLoading')}
             >
-              {t('hero.ctaSecondary')}
-            </Link>
-          </div>
+              <Skeleton className="h-11 w-40 rounded-md bg-white/25" />
+              <Skeleton className="h-11 w-28 rounded-md bg-white/15" />
+            </div>
+          ) : (
+            <div className="mt-8 flex flex-wrap items-center gap-3">
+              <Link
+                to={WEB_ROUTES.register()}
+                size="lg"
+                className={cn('px-8', LANDING_CTA_PRIMARY)}
+              >
+                {t('hero.ctaPrimary')}
+              </Link>
+              <Link
+                to={WEB_ROUTES.login()}
+                variant="outline"
+                size="lg"
+                className={LANDING_CTA_GHOST_ON_MEDIA}
+              >
+                {t('hero.ctaSecondary')}
+              </Link>
+            </div>
+          )}
         </SectionHero>
 
         <section

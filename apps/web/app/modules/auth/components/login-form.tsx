@@ -1,9 +1,8 @@
-import { useMemo } from 'react'
 import { useForm } from '@tanstack/react-form'
 import { Link, useSearch } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
-import { z } from 'zod'
 import { googleOauthErrorMessageKey } from '@repo/common'
+import { loginSchema } from '@repo/validators'
 import { Button, Field, fieldErrorMessage } from '@repo/ui'
 import { WEB_ROUTES } from '../../common/constants/routes'
 import { useLogin } from '../mutations/use-auth-mutations'
@@ -12,22 +11,13 @@ import { AuthMethodSeparator, GoogleContinueButton } from './google-continue-but
 
 export function LoginForm() {
   const { t } = useTranslation('auth')
-  const login = useLogin()
-  const { error: oauthError } = useSearch({ from: '/login' })
-
-  const loginFormSchema = useMemo(
-    () =>
-      z.object({
-        email: z.email(t('field.email', { ns: 'validation' })),
-        password: z.string().min(8, t('password.min', { min: 8 })),
-      }),
-    [t]
-  )
+  const { error: oauthError, returnTo } = useSearch({ from: '/login' })
+  const login = useLogin(returnTo)
 
   const form = useForm({
     defaultValues: { email: '', password: '' },
     validators: {
-      onSubmit: loginFormSchema,
+      onSubmit: loginSchema,
     },
     onSubmit: async ({ value }) => {
       await login.mutateAsync(value)
@@ -62,8 +52,8 @@ export function LoginForm() {
         <form.Field
           name="email"
           validators={{
-            onBlur: loginFormSchema.shape.email,
-            onSubmit: loginFormSchema.shape.email,
+            onBlur: loginSchema.shape.email,
+            onSubmit: loginSchema.shape.email,
           }}
         >
           {(field) => {
@@ -89,8 +79,8 @@ export function LoginForm() {
         <form.Field
           name="password"
           validators={{
-            onBlur: loginFormSchema.shape.password,
-            onSubmit: loginFormSchema.shape.password,
+            onBlur: loginSchema.shape.password,
+            onSubmit: loginSchema.shape.password,
           }}
         >
           {(field) => {

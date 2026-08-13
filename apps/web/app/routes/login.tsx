@@ -6,11 +6,13 @@ import { usePageTitle } from '@repo/ui'
 
 type LoginSearch = {
   error?: string
+  returnTo?: string
 }
 
 export const Route = createFileRoute('/login')({
   validateSearch: (search: Record<string, unknown>): LoginSearch => ({
     error: typeof search.error === 'string' ? search.error : undefined,
+    returnTo: typeof search.returnTo === 'string' ? search.returnTo : undefined,
   }),
   component: LoginPage,
 })

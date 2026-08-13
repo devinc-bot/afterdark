@@ -25,33 +25,33 @@ La API (`apps/api`) importa **repositorios**, tipos y el cliente desde `@repo/db
 
 Cada tabla incluye las columnas base (`id`, `document_id`, `created_at`, `updated_at`) salvo que se indique lo contrario.
 
-| Tabla SQL               | Export TS             | Archivo schema            | Tipo    |
-| ----------------------- | --------------------- | ------------------------- | ------- |
-| `users`                 | `users`               | `user.ts`                 | Entidad |
-| `owners`                | `owners`              | `owner.ts`                | Entidad |
-| `staff`                 | `staff`               | `staff.ts`                | Entidad |
-| `accounts`              | `accounts`            | `account.ts`              | Entidad |
-| `roles`                 | `roles`               | `role.ts`                 | Entidad |
-| `addresses`             | `addresses`           | `address.ts`              | Entidad |
-| `assets`                | `assets`              | `asset.ts`                | Entidad |
-| `clubs`                 | `clubs`               | `club.ts`                 | Entidad |
-| `services`              | `services`            | `service.ts`              | Entidad |
-| `tickets`               | `tickets`             | `ticket.ts`               | Entidad |
-| `orders`                | `orders`              | `orders.ts`               | Entidad |
-| `tickets_sold`          | `ticketsSold`         | `tickets_sold.ts`         | Entidad |
-| `chat`                  | `chats`               | `chat.ts`                 | Entidad |
-| `messages`              | `messages`            | `messages.ts`             | Entidad |
-| `staff_invitations`     | `staffInvitations`    | `staff-invitation.ts`     | Entidad |
-| `password_reset_tokens` | `passwordResetTokens` | `password-reset-token.ts` | Entidad |
-| `user_registration_tokens` | `userRegistrationTokens` | `user-registration-token.ts` | Entidad |
+| Tabla SQL                   | Export TS                 | Archivo schema                | Tipo    |
+| --------------------------- | ------------------------- | ----------------------------- | ------- |
+| `users`                     | `users`                   | `user.ts`                     | Entidad |
+| `owners`                    | `owners`                  | `owner.ts`                    | Entidad |
+| `staff`                     | `staff`                   | `staff.ts`                    | Entidad |
+| `accounts`                  | `accounts`                | `account.ts`                  | Entidad |
+| `roles`                     | `roles`                   | `role.ts`                     | Entidad |
+| `addresses`                 | `addresses`               | `address.ts`                  | Entidad |
+| `assets`                    | `assets`                  | `asset.ts`                    | Entidad |
+| `clubs`                     | `clubs`                   | `club.ts`                     | Entidad |
+| `services`                  | `services`                | `service.ts`                  | Entidad |
+| `tickets`                   | `tickets`                 | `ticket.ts`                   | Entidad |
+| `orders`                    | `orders`                  | `orders.ts`                   | Entidad |
+| `tickets_sold`              | `ticketsSold`             | `tickets_sold.ts`             | Entidad |
+| `chat`                      | `chats`                   | `chat.ts`                     | Entidad |
+| `messages`                  | `messages`                | `messages.ts`                 | Entidad |
+| `staff_invitations`         | `staffInvitations`        | `staff-invitation.ts`         | Entidad |
+| `password_reset_tokens`     | `passwordResetTokens`     | `password-reset-token.ts`     | Entidad |
+| `user_registration_tokens`  | `userRegistrationTokens`  | `user-registration-token.ts`  | Entidad |
 | `owner_registration_tokens` | `ownerRegistrationTokens` | `owner-registration-token.ts` | Entidad |
-| `account_role_lnk`      | `accountRolesLnk`     | `account-role-lnk.ts`     | Enlace  |
-| `user_accounts_lnk`     | `userAccountsLnk`     | `user-account-lnk.ts`     | Enlace  |
-| `owner_account_lnk`     | `ownerAccountsLnk`    | `owner-account-lnk.ts`    | Enlace  |
-| `staff_account_lnk`     | `staffAccountsLnk`    | `staff-account-lnk.ts`    | Enlace  |
-| `owner_addresses_lnk`   | `ownerAddressesLnk`   | `owner-address-lnk.ts`    | Enlace  |
-| `club_addresses_lnk`    | `clubAddressesLnk`    | `club-address-lnk.ts`     | Enlace  |
-| `club_assets_lnk`       | `clubAssetsLnk`       | `club-asset-lnk.ts`       | Enlace  |
+| `account_role_lnk`          | `accountRolesLnk`         | `account-role-lnk.ts`         | Enlace  |
+| `user_accounts_lnk`         | `userAccountsLnk`         | `user-account-lnk.ts`         | Enlace  |
+| `owner_account_lnk`         | `ownerAccountsLnk`        | `owner-account-lnk.ts`        | Enlace  |
+| `staff_account_lnk`         | `staffAccountsLnk`        | `staff-account-lnk.ts`        | Enlace  |
+| `owner_addresses_lnk`       | `ownerAddressesLnk`       | `owner-address-lnk.ts`        | Enlace  |
+| `club_addresses_lnk`        | `clubAddressesLnk`        | `club-address-lnk.ts`         | Enlace  |
+| `club_assets_lnk`           | `clubAssetsLnk`           | `club-asset-lnk.ts`           | Enlace  |
 
 Tipos inferidos por tabla: `{Nombre}Select` y `{Nombre}Insert` (ej. `UserSelect`, `StaffInvitationInsert`).
 
@@ -202,8 +202,8 @@ erDiagram
 
 Perfil de persona (sin credenciales).
 
-| Columna (TS) | SQL           | Tipo | Null | Default                  |
-| ------------ | ------------- | ---- | ---- | ------------------------ |
+| Columna (TS) | SQL           | Tipo    | Null | Default                  |
+| ------------ | ------------- | ------- | ---- | ------------------------ |
 | `name`       | `name`        | text    | NO   | —                        |
 | `lastName`   | `last_name`   | text    | NO   | —                        |
 | `phone`      | `phone`       | text    | NO   | —                        |
@@ -216,8 +216,8 @@ Perfil de persona (sin credenciales).
 
 Perfil de propietario (mismas columnas que `users`, sin credenciales).
 
-| Columna (TS) | SQL           | Tipo | Null | Default                   |
-| ------------ | ------------- | ---- | ---- | ------------------------- |
+| Columna (TS)       | SQL                 | Tipo    | Null | Default                   |
+| ------------------ | ------------------- | ------- | ---- | ------------------------- |
 | `name`             | `name`              | text    | NO   | —                         |
 | `lastName`         | `last_name`         | text    | NO   | —                         |
 | `phone`            | `phone`             | text    | NO   | —                         |
@@ -232,13 +232,13 @@ Perfil de propietario (mismas columnas que `users`, sin credenciales).
 
 Perfil de staff (nombre, contacto y estado; sin credenciales).
 
-| Columna (TS) | SQL         | Tipo | Null | Default                   |
-| ------------ | ----------- | ---- | ---- | ------------------------- |
-| `name`     | `name`      | text    | NO   | —                         |
-| `lastName` | `last_name` | text    | NO   | —                         |
-| `phone`    | `phone`     | text    | NO   | —                         |
-| `avatarId` | `avatar_id` | integer | SÍ   | FK → `assets.id`          |
-| `status`   | `status`    | text    | NO   | `active` (`STAFF_STATUS`) |
+| Columna (TS) | SQL         | Tipo    | Null | Default                   |
+| ------------ | ----------- | ------- | ---- | ------------------------- |
+| `name`       | `name`      | text    | NO   | —                         |
+| `lastName`   | `last_name` | text    | NO   | —                         |
+| `phone`      | `phone`     | text    | NO   | —                         |
+| `avatarId`   | `avatar_id` | integer | SÍ   | FK → `assets.id`          |
+| `status`     | `status`    | text    | NO   | `active` (`STAFF_STATUS`) |
 
 #### `accounts` — `account.ts`
 
@@ -426,16 +426,17 @@ Registro manual de dueño pendiente de verificación de email (sin `account` aú
 
 #### `orders` — `orders.ts`
 
-| Columna (TS) | SQL         | Tipo      | Null   | FK / default                                    |
-| ------------ | ----------- | --------- | ------ | ----------------------------------------------- |
-| `ticketId`   | `ticket_id` | integer   | NO     | `tickets.id`                                    |
-| `userId`     | `user_id`   | integer   | NO     | `users.id`                                      |
-| `status`     | `status`    | text      | **SÍ** | Enum `PAYMENT_STATUS`; sin default en schema    |
-| `amount`     | `amount`    | real      | NO     | —                                               |
-| `quantity`   | `quantity`  | integer   | NO     | Default `1`                                     |
-| `provider`   | `provider`  | text      | NO     | Enum `PAYMENT_PROVIDER`; default `mercado_pago` |
-| `metadata`   | `metadata`  | json      | SÍ     | Respuesta / datos del proveedor de pago         |
-| `paidAt`     | `paid_at`   | timestamp | SÍ     | Fecha en que el pago pasó a `completed`         |
+| Columna (TS)      | SQL                 | Tipo      | Null   | FK / default                                         |
+| ----------------- | ------------------- | --------- | ------ | ---------------------------------------------------- |
+| `ticketId`        | `ticket_id`         | integer   | NO     | `tickets.id`                                         |
+| `userId`          | `user_id`           | integer   | NO     | `users.id`                                           |
+| `status`          | `status`            | text      | **SÍ** | Enum `PAYMENT_STATUS`; sin default en schema         |
+| `amount`          | `amount`            | real      | NO     | —                                                    |
+| `quantity`        | `quantity`          | integer   | NO     | Default `1`                                          |
+| `provider`        | `provider`          | text      | NO     | Enum `PAYMENT_PROVIDER`; default `mercado_pago`      |
+| `externalOrderId` | `external_order_id` | text      | SÍ     | UNIQUE; id de orden del proveedor (ej. Mercado Pago) |
+| `metadata`        | `metadata`          | json      | SÍ     | Datos auxiliares del proveedor (sin el order id)     |
+| `paidAt`          | `paid_at`           | timestamp | SÍ     | Fecha en que el pago pasó a `completed`              |
 
 Columnas base: `createdAt` (creación de la orden / inicio de checkout), `updatedAt` (última modificación).
 
@@ -498,42 +499,44 @@ Export Drizzle: `chats`. Solo columnas base; sin campos adicionales.
 
 ## Índices únicos
 
-| Tabla                   | Columna(s)                                   |
-| ----------------------- | -------------------------------------------- |
-| Todas                   | `document_id` (`{tabla}_document_id_unique`) |
-| `accounts`              | `email`                                      |
-| `staff_invitations`     | `token`                                      |
-| `password_reset_tokens` | `token`                                      |
-| `user_registration_tokens` | `token`                                   |
-| `owner_registration_tokens` | `token`                                  |
-| `owner_addresses_lnk`   | `owner_id`, `address_id`                     |
-| `club_addresses_lnk`    | `club_id`, `address_id`                      |
-| `tickets_sold`          | `qr_code`                                    |
+| Tabla                       | Columna(s)                                   |
+| --------------------------- | -------------------------------------------- |
+| Todas                       | `document_id` (`{tabla}_document_id_unique`) |
+| `accounts`                  | `email`                                      |
+| `staff_invitations`         | `token`                                      |
+| `password_reset_tokens`     | `token`                                      |
+| `user_registration_tokens`  | `token`                                      |
+| `owner_registration_tokens` | `token`                                      |
+| `owner_addresses_lnk`       | `owner_id`, `address_id`                     |
+| `orders`                    | `external_order_id`                          |
+| `club_addresses_lnk`        | `club_id`, `address_id`                      |
+| `tickets_sold`              | `qr_code`                                    |
 
 ---
 
 ## Migraciones
 
-Las migraciones **nuevas** se generan con prefijo `timestamp` (`YYYYMMDDHHmmss_….sql`) vía `migrations.prefix` en `drizzle.config.ts`, para evitar colisiones de índice secuencial entre ramas. Las históricas `0000`…`0020` se mantienen con prefijo numérico y no se renombran.
+Las migraciones **nuevas** se generan con prefijo `timestamp` (`YYYYMMDDHHmmss_….sql`) vía `migrations.prefix` en las configuraciones de Drizzle, para evitar colisiones de índice secuencial entre ramas. Las históricas `0000`…`0020` se mantienen con prefijo numérico y no se renombran.
 
 Historial en `src/migrations/meta/_journal.json`:
 
-| #    | Archivo                         | Cambio principal                                                       |
-| ---- | ------------------------------- | ---------------------------------------------------------------------- |
-| 0000 | `0000_ambitious_nocturne.sql`   | Esquema inicial (17 tablas base)                                       |
-| 0001 | `0001_user_identity_fields.sql` | `users`: +`birthday`, +`national_id`, +`tax_id`; −`age`                |
-| 0002 | `0002_addresses_entity.sql`     | `addresses` + `*_addresses_lnk`; domicilio sale de `clubs`             |
-| 0003 | `0003_fine_prism.sql`           | Tabla `staff_invitations`                                              |
-| 0004 | `0004_cloudy_betty_ross.sql`    | `staff_invitations.invited_by_user_id`                                 |
-| 0005 | `0005_complex_gorilla_man.sql`  | `clubs.owner_user_id`                                                  |
-| 0006 | `0006_blushing_kronos.sql`      | `account_role_lnk`; rol sale de `user_accounts_lnk`                    |
-| 0007 | `0007_shallow_famine.sql`       | `owners` + `owner_account_lnk`                                         |
-| 0008 | `0008_aspiring_brood.sql`       | `users`: −`tax_id`                                                     |
-| 0009 | `0009_acoustic_maverick.sql`    | `staff` + `staff_account_lnk`                                          |
-| 0015 | `0015_friendly_kabuki.sql`      | `payments` → `orders`; +`quantity`, `provider`, `metadata`; −`club_id` |
-| 0016 | `0016_bent_stranger.sql`        | Tabla `tickets_sold` (`order_id`, `qr_code`)                           |
-| 0017 | `0017_grey_pixie.sql`           | Tabla `password_reset_tokens`                                          |
-| 0020 | `0020_equal_shaman.sql`         | `addresses`: +`latitude`, +`longitude`                                 |
+| #    | Archivo                            | Cambio principal                                                       |
+| ---- | ---------------------------------- | ---------------------------------------------------------------------- |
+| 0000 | `0000_ambitious_nocturne.sql`      | Esquema inicial (17 tablas base)                                       |
+| 0001 | `0001_user_identity_fields.sql`    | `users`: +`birthday`, +`national_id`, +`tax_id`; −`age`                |
+| 0002 | `0002_addresses_entity.sql`        | `addresses` + `*_addresses_lnk`; domicilio sale de `clubs`             |
+| 0003 | `0003_fine_prism.sql`              | Tabla `staff_invitations`                                              |
+| 0004 | `0004_cloudy_betty_ross.sql`       | `staff_invitations.invited_by_user_id`                                 |
+| 0005 | `0005_complex_gorilla_man.sql`     | `clubs.owner_user_id`                                                  |
+| 0006 | `0006_blushing_kronos.sql`         | `account_role_lnk`; rol sale de `user_accounts_lnk`                    |
+| 0007 | `0007_shallow_famine.sql`          | `owners` + `owner_account_lnk`                                         |
+| 0008 | `0008_aspiring_brood.sql`          | `users`: −`tax_id`                                                     |
+| 0009 | `0009_acoustic_maverick.sql`       | `staff` + `staff_account_lnk`                                          |
+| 0015 | `0015_friendly_kabuki.sql`         | `payments` → `orders`; +`quantity`, `provider`, `metadata`; −`club_id` |
+| 0016 | `0016_bent_stranger.sql`           | Tabla `tickets_sold` (`order_id`, `qr_code`)                           |
+| 0017 | `0017_grey_pixie.sql`              | Tabla `password_reset_tokens`                                          |
+| 0020 | `0020_equal_shaman.sql`            | `addresses`: +`latitude`, +`longitude`                                 |
+| —    | `20260803212105_typical_alice.sql` | `orders.external_order_id` (UNIQUE)                                    |
 
 ### Comandos (desde `packages/db`)
 
@@ -562,16 +565,17 @@ Definidas en `packages/validators/src/database.ts`:
 
 Capa de acceso a datos en `src/repositories/`. Cada archivo agrupa las operaciones Drizzle de un dominio:
 
-| Archivo                           | Responsabilidad                                          |
-| --------------------------------- | -------------------------------------------------------- |
-| `accounts.repository.ts`          | Cuentas (`accounts`), búsqueda por email, join con roles |
-| `auth.repository.ts`              | Registro de cuenta + perfil, login lookup compuesto      |
-| `clubs.repository.ts`             | CRUD de clubes con dirección (transacciones)             |
-| `owners.repository.ts`            | Perfiles owner, actualización, invitador                 |
-| `staff.repository.ts`             | Perfiles staff                                           |
-| `users.repository.ts`             | Perfiles user                                            |
-| `roles.repository.ts`             | Roles por nombre                                         |
-| `staff-invitations.repository.ts` | Alta de invitaciones staff                               |
+| Archivo                           | Responsabilidad                                                   |
+| --------------------------------- | ----------------------------------------------------------------- |
+| `accounts.repository.ts`          | Cuentas (`accounts`), búsqueda por email, join con roles          |
+| `auth.repository.ts`              | Registro de cuenta + perfil, login lookup compuesto               |
+| `clubs.repository.ts`             | CRUD de clubes con dirección (transacciones)                      |
+| `owners.repository.ts`            | Perfiles owner, actualización, invitador                          |
+| `orders/`                         | Create/update orders, lookup por provider id, tickets_sold, stock |
+| `staff.repository.ts`             | Perfiles staff                                                    |
+| `users.repository.ts`             | Perfiles user                                                     |
+| `roles.repository.ts`             | Roles por nombre                                                  |
+| `staff-invitations.repository.ts` | Alta de invitaciones staff                                        |
 
 **Convenciones:**
 

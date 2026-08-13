@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
+import { formatDate } from '@repo/common'
 import {
   Avatar,
   AvatarFallback,
@@ -33,10 +34,10 @@ import type { TFunction } from 'i18next'
 import { EllipsisVertical, Pencil, Trash2 } from 'lucide-react'
 
 function formatDateTime(value: Date): string {
-  return new Intl.DateTimeFormat('es-AR', {
-    dateStyle: 'short',
-    timeStyle: 'short',
-  }).format(value)
+  return formatDate(value, {
+    locale: 'es-AR',
+    options: { dateStyle: 'short', timeStyle: 'short' },
+  })
 }
 
 function getEventInitials(eventName: string): string {

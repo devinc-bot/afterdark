@@ -1,3 +1,5 @@
+import { formatIsoDateInput } from '@repo/common'
+
 export type EventsDiscoverFiltersValue = {
   startsFrom: string
   startsTo: string
@@ -42,16 +44,10 @@ export function clearDiscoverFilterField(
 }
 
 export function formatDiscoverFilterDate(value: string): string {
-  if (!value) {
-    return ''
-  }
-
-  const date = new Date(`${value}T00:00:00`)
-  if (Number.isNaN(date.getTime())) {
-    return value
-  }
-
-  return new Intl.DateTimeFormat('es-AR', { dateStyle: 'medium' }).format(date)
+  return formatIsoDateInput(value, {
+    locale: 'es-AR',
+    options: { dateStyle: 'medium' },
+  })
 }
 
 export function toPublicEventsFilterParams(filters: EventsDiscoverFiltersValue): {

@@ -21,7 +21,11 @@ import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
 import { Route as PublicEventsRouteImport } from './routes/_public/events'
 import { Route as AppTicketsRouteImport } from './routes/_app/tickets'
 import { Route as AppSettingsRouteImport } from './routes/_app/settings'
+import { Route as AppOrdersRouteImport } from './routes/_app/orders'
 import { Route as PublicEventsIndexRouteImport } from './routes/_public/events.index'
+import { Route as CheckoutOrderIdSuccessRouteImport } from './routes/checkout.$orderId.success'
+import { Route as CheckoutOrderIdPendingRouteImport } from './routes/checkout.$orderId.pending'
+import { Route as CheckoutOrderIdErrorRouteImport } from './routes/checkout.$orderId.error'
 import { Route as PublicEventsDocumentIdRouteImport } from './routes/_public/events.$documentId'
 
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
@@ -82,10 +86,30 @@ const AppSettingsRoute = AppSettingsRouteImport.update({
   path: '/settings',
   getParentRoute: () => AppRoute,
 } as any)
+const AppOrdersRoute = AppOrdersRouteImport.update({
+  id: '/orders',
+  path: '/orders',
+  getParentRoute: () => AppRoute,
+} as any)
 const PublicEventsIndexRoute = PublicEventsIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => PublicEventsRoute,
+} as any)
+const CheckoutOrderIdSuccessRoute = CheckoutOrderIdSuccessRouteImport.update({
+  id: '/checkout/$orderId/success',
+  path: '/checkout/$orderId/success',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CheckoutOrderIdPendingRoute = CheckoutOrderIdPendingRouteImport.update({
+  id: '/checkout/$orderId/pending',
+  path: '/checkout/$orderId/pending',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CheckoutOrderIdErrorRoute = CheckoutOrderIdErrorRouteImport.update({
+  id: '/checkout/$orderId/error',
+  path: '/checkout/$orderId/error',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const PublicEventsDocumentIdRoute = PublicEventsDocumentIdRouteImport.update({
   id: '/$documentId',
@@ -99,12 +123,16 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/orders': typeof AppOrdersRoute
   '/settings': typeof AppSettingsRoute
   '/tickets': typeof AppTicketsRoute
   '/events': typeof PublicEventsRouteWithChildren
   '/auth/callback': typeof AuthCallbackRoute
   '/register/confirm': typeof RegisterConfirmRoute
   '/events/$documentId': typeof PublicEventsDocumentIdRoute
+  '/checkout/$orderId/error': typeof CheckoutOrderIdErrorRoute
+  '/checkout/$orderId/pending': typeof CheckoutOrderIdPendingRoute
+  '/checkout/$orderId/success': typeof CheckoutOrderIdSuccessRoute
   '/events/': typeof PublicEventsIndexRoute
 }
 export interface FileRoutesByTo {
@@ -113,11 +141,15 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/orders': typeof AppOrdersRoute
   '/settings': typeof AppSettingsRoute
   '/tickets': typeof AppTicketsRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/register/confirm': typeof RegisterConfirmRoute
   '/events/$documentId': typeof PublicEventsDocumentIdRoute
+  '/checkout/$orderId/error': typeof CheckoutOrderIdErrorRoute
+  '/checkout/$orderId/pending': typeof CheckoutOrderIdPendingRoute
+  '/checkout/$orderId/success': typeof CheckoutOrderIdSuccessRoute
   '/events': typeof PublicEventsIndexRoute
 }
 export interface FileRoutesById {
@@ -129,12 +161,16 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/_app/orders': typeof AppOrdersRoute
   '/_app/settings': typeof AppSettingsRoute
   '/_app/tickets': typeof AppTicketsRoute
   '/_public/events': typeof PublicEventsRouteWithChildren
   '/auth/callback': typeof AuthCallbackRoute
   '/register_/confirm': typeof RegisterConfirmRoute
   '/_public/events/$documentId': typeof PublicEventsDocumentIdRoute
+  '/checkout/$orderId/error': typeof CheckoutOrderIdErrorRoute
+  '/checkout/$orderId/pending': typeof CheckoutOrderIdPendingRoute
+  '/checkout/$orderId/success': typeof CheckoutOrderIdSuccessRoute
   '/_public/events/': typeof PublicEventsIndexRoute
 }
 export interface FileRouteTypes {
@@ -145,12 +181,16 @@ export interface FileRouteTypes {
     | '/login'
     | '/register'
     | '/reset-password'
+    | '/orders'
     | '/settings'
     | '/tickets'
     | '/events'
     | '/auth/callback'
     | '/register/confirm'
     | '/events/$documentId'
+    | '/checkout/$orderId/error'
+    | '/checkout/$orderId/pending'
+    | '/checkout/$orderId/success'
     | '/events/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -159,11 +199,15 @@ export interface FileRouteTypes {
     | '/login'
     | '/register'
     | '/reset-password'
+    | '/orders'
     | '/settings'
     | '/tickets'
     | '/auth/callback'
     | '/register/confirm'
     | '/events/$documentId'
+    | '/checkout/$orderId/error'
+    | '/checkout/$orderId/pending'
+    | '/checkout/$orderId/success'
     | '/events'
   id:
     | '__root__'
@@ -174,12 +218,16 @@ export interface FileRouteTypes {
     | '/login'
     | '/register'
     | '/reset-password'
+    | '/_app/orders'
     | '/_app/settings'
     | '/_app/tickets'
     | '/_public/events'
     | '/auth/callback'
     | '/register_/confirm'
     | '/_public/events/$documentId'
+    | '/checkout/$orderId/error'
+    | '/checkout/$orderId/pending'
+    | '/checkout/$orderId/success'
     | '/_public/events/'
   fileRoutesById: FileRoutesById
 }
@@ -193,6 +241,9 @@ export interface RootRouteChildren {
   ResetPasswordRoute: typeof ResetPasswordRoute
   AuthCallbackRoute: typeof AuthCallbackRoute
   RegisterConfirmRoute: typeof RegisterConfirmRoute
+  CheckoutOrderIdErrorRoute: typeof CheckoutOrderIdErrorRoute
+  CheckoutOrderIdPendingRoute: typeof CheckoutOrderIdPendingRoute
+  CheckoutOrderIdSuccessRoute: typeof CheckoutOrderIdSuccessRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -281,12 +332,40 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppSettingsRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/orders': {
+      id: '/_app/orders'
+      path: '/orders'
+      fullPath: '/orders'
+      preLoaderRoute: typeof AppOrdersRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_public/events/': {
       id: '/_public/events/'
       path: '/'
       fullPath: '/events/'
       preLoaderRoute: typeof PublicEventsIndexRouteImport
       parentRoute: typeof PublicEventsRoute
+    }
+    '/checkout/$orderId/success': {
+      id: '/checkout/$orderId/success'
+      path: '/checkout/$orderId/success'
+      fullPath: '/checkout/$orderId/success'
+      preLoaderRoute: typeof CheckoutOrderIdSuccessRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/checkout/$orderId/pending': {
+      id: '/checkout/$orderId/pending'
+      path: '/checkout/$orderId/pending'
+      fullPath: '/checkout/$orderId/pending'
+      preLoaderRoute: typeof CheckoutOrderIdPendingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/checkout/$orderId/error': {
+      id: '/checkout/$orderId/error'
+      path: '/checkout/$orderId/error'
+      fullPath: '/checkout/$orderId/error'
+      preLoaderRoute: typeof CheckoutOrderIdErrorRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_public/events/$documentId': {
       id: '/_public/events/$documentId'
@@ -299,11 +378,13 @@ declare module '@tanstack/react-router' {
 }
 
 interface AppRouteChildren {
+  AppOrdersRoute: typeof AppOrdersRoute
   AppSettingsRoute: typeof AppSettingsRoute
   AppTicketsRoute: typeof AppTicketsRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
+  AppOrdersRoute: AppOrdersRoute,
   AppSettingsRoute: AppSettingsRoute,
   AppTicketsRoute: AppTicketsRoute,
 }
@@ -345,6 +426,9 @@ const rootRouteChildren: RootRouteChildren = {
   ResetPasswordRoute: ResetPasswordRoute,
   AuthCallbackRoute: AuthCallbackRoute,
   RegisterConfirmRoute: RegisterConfirmRoute,
+  CheckoutOrderIdErrorRoute: CheckoutOrderIdErrorRoute,
+  CheckoutOrderIdPendingRoute: CheckoutOrderIdPendingRoute,
+  CheckoutOrderIdSuccessRoute: CheckoutOrderIdSuccessRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -20,15 +20,27 @@ export const googleOauthStartSchema = z
 
 export type GoogleOauthStartInput = z.infer<typeof googleOauthStartSchema>
 
-const registerProfileSchema = z.object({
-  name: z.string().min(2).max(255),
-  lastName: z.string().min(2).max(255),
+/** API register body (user or owner). */
+export const registerSchema = z.object({
+  name: z.string().trim().min(2).max(255),
+  lastName: z.string().trim().min(2).max(255),
   email: z.email(),
   password: z.string().min(8),
 })
 
-export const registerUserSchema = registerProfileSchema
-export const registerOwnerSchema = registerProfileSchema
+/** Client form fields (before password-match refine). */
+export const registerFormFieldsSchema = registerSchema.extend({
+  confirmPassword: z.string().min(8),
+})
+
+/** Client form with confirmPassword match. */
+export const registerFormSchema = registerFormFieldsSchema.refine(
+  (data) => data.password === data.confirmPassword,
+  {
+    message: 'validation:field.password.noMatch',
+    path: ['confirmPassword'],
+  }
+)
 
 export const confirmUserRegistrationSchema = z.object({
   token: z.string().min(1),
@@ -53,8 +65,9 @@ export const resetPasswordSchema = resetPasswordBaseSchema.refine(
 )
 
 export type LoginInput = z.infer<typeof loginSchema>
-export type RegisterUserInput = z.infer<typeof registerUserSchema>
-export type RegisterOwnerInput = z.infer<typeof registerOwnerSchema>
+export type RegisterInput = z.infer<typeof registerSchema>
+export type RegisterUserInput = RegisterInput
+export type RegisterOwnerInput = RegisterInput
 export type ConfirmUserRegistrationInput = z.infer<typeof confirmUserRegistrationSchema>
 export type ForgotPasswordInput = z.infer<typeof forgotPasswordSchema>
 export type ResetPasswordInput = z.infer<typeof resetPasswordSchema>

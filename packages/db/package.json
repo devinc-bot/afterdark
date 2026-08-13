@@ -7,16 +7,18 @@
   "types": "./src/index.ts",
   "exports": {
     ".": "./src/index.ts",
+    "./config/env": "./src/config/env.ts",
     "./config/env.server": "./src/config/env.server.ts",
     "./schema": "./src/schema/index.ts"
   },
   "scripts": {
     "type-check": "tsc --noEmit",
-    "db:generate": "drizzle-kit generate",
-    "db:migrate": "drizzle-kit migrate",
-    "db:push": "drizzle-kit push",
-    "db:reset": "node -e \"const fs=require('fs');const p='../../local.db';for (const f of [p,p+'-wal',p+'-shm']) { try { fs.unlinkSync(f) } catch {} }\" && drizzle-kit migrate && tsx src/seed/index.ts",
-    "db:studio": "drizzle-kit studio",
+    "test": "tsx --test src/repositories/orders/delete-stale-pending-orders.test.ts src/repositories/orders/find-orders-paginated-by-user-document-id.test.ts src/repositories/orders/delete-pending-order-by-document-id-and-user-id.test.ts",
+    "db:generate": "drizzle-kit generate --config=drizzle-dev.config.ts",
+    "db:migrate": "drizzle-kit migrate --config=drizzle-dev.config.ts",
+    "db:migrate:prod": "drizzle-kit migrate --config=drizzle-prod.config.ts",
+    "db:push": "drizzle-kit push --config=drizzle-dev.config.ts",
+    "db:studio": "drizzle-kit studio --config=drizzle-dev.config.ts",
     "db:seed": "tsx src/seed/index.ts"
   },
   "dependencies": {
@@ -25,14 +27,14 @@
     "@repo/validators": "workspace:*",
     "bcryptjs": "3.0.3",
     "dotenv": "17.4.2",
-    "drizzle-orm": "0.43.1",
+    "drizzle-orm": "0.45.2",
     "zod": "4.4.3"
   },
   "devDependencies": {
     "@types/bcryptjs": "2.4.6",
-    "@types/node": "22.15.0",
+    "@types/node": "26.1.2",
     "drizzle-kit": "0.31.1",
     "tsx": "4.19.4",
-    "typescript": "6.0.3"
+    "typescript": "7.0.2"
   }
 }

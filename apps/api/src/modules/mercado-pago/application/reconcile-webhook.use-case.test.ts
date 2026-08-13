@@ -1,0 +1,117 @@
+import assert from 'node:assert/strict'
+import { createHmac } from 'node:crypto'
+import test from 'node:test'
+process.env.MERCADOPAGO_WEBHOOK_SECRET = 'test-webhook-secret'
+
+const reconcileModulePromise = import('./reconcile-webhook.use-case.ts')
+
+test('accepts a legacy payment notification with its resource as the payment ID', async () => {
+  const { ReconcileMercadoPagoWebhookUseCase } = await reconcileModulePromise
+  const requestId = 'request-123'
+  const timestamp = String(Math.floor(Date.now() / 1000))
+  const paymentId = 'payment-123'
+  const manifest = `request-id:${requestId};ts:${timestamp};`
+  const signature = createHmac('sha256', process.env.MERCADOPAGO_WEBHOOK_SECRET ?? '')
+    .update(manifest)
+    .digest('hex')
+  let receivedPaymentId: string | undefined
+  const useCase = new ReconcileMercadoPagoWebhookUseCase(
+    { translateError: (code: string) => code } as never,
+    {
+      getPayment: async (id: string) => {
+        receivedPaymentId = id
+        return {}
+      },
+    } as never
+  )
+
+  await useCase.execute(
+    { resource: paymentId, topic: 'payment' },
+    `ts=${timestamp},v1=${signature}`,
+    requestId,
+    undefined
+  )
+
+  assert.equal(receivedPaymentId, paymentId)
+})
+
+test('includes the query payment ID in the webhook signature manifest', async () => {
+  const { ReconcileMercadoPagoWebhookUseCase } = await reconcileModulePromise
+  const requestId = 'request-456'
+  const timestamp = String(Math.floor(Date.now() / 1000))
+  const paymentId = 'payment-456'
+  const manifest = `id:${paymentId};request-id:${requestId};ts:${timestamp};`
+  const signature = createHmac('sha256', process.env.MERCADOPAGO_WEBHOOK_SECRET ?? '')
+    .update(manifest)
+    .digest('hex')
+  let receivedPaymentId: string | undefined
+  const useCase = new ReconcileMercadoPagoWebhookUseCase(
+    { translateError: (code: string) => code } as never,
+    {
+      getPayment: async (id: string) => {
+        receivedPaymentId = id
+        return {}
+      },
+    } as never
+  )
+
+  await useCase.execute(
+    { type: 'payment', data: { id: paymentId } },
+    `ts=${timestamp},v1=${signature}`,
+    requestId,
+    paymentId
+  )
+
+  assert.equal(receivedPaymentId, paymentId)
+})
+
+test('omits a missing request ID from the webhook signature manifest', async () => {
+  const { ReconcileMercadoPagoWebhookUseCase } = await reconcileModulePromise
+  const timestamp = String(Math.floor(Date.now() / 1000))
+  const paymentId = 'payment-789'
+  const signature = createHmac('sha256', process.env.MERCADOPAGO_WEBHOOK_SECRET ?? '')
+    .update(`ts:${timestamp};`)
+    .digest('hex')
+  let receivedPaymentId: string | undefined
+  const useCase = new ReconcileMercadoPagoWebhookUseCase(
+    { translateError: (code: string) => code } as never,
+    {
+      getPayment: async (id: string) => {
+        receivedPaymentId = id
+        return {}
+      },
+    } as never
+  )
+
+  await useCase.execute(
+    { resource: paymentId, topic: 'payment' },
+    `ts=${timestamp},v1=${signature}`,
+    undefined,
+    undefined
+  )
+
+  assert.equal(receivedPaymentId, paymentId)
+})
+
+test('rejects a valid signature outside the webhook replay window', async () => {
+  const { ReconcileMercadoPagoWebhookUseCase } = await reconcileModulePromise
+  const useCase = new ReconcileMercadoPagoWebhookUseCase(
+    { translateError: (code: string) => code } as never,
+    { getPayment: async () => ({}) } as never
+  )
+  const requestId = 'request-123'
+  const timestamp = String(Math.floor(Date.now() / 1000) - 301)
+  const manifest = `id:payment-123;request-id:${requestId};ts:${timestamp};`
+  const signature = createHmac('sha256', process.env.MERCADOPAGO_WEBHOOK_SECRET ?? '')
+    .update(manifest)
+    .digest('hex')
+
+  await assert.rejects(
+    useCase.execute(
+      { type: 'payment', data: { id: 'payment-123' } },
+      `ts=${timestamp},v1=${signature}`,
+      requestId,
+      'payment-123'
+    )
+  )
+})

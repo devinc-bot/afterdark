@@ -3,7 +3,7 @@ import {
   confirmUserRegistrationSchema,
   forgotPasswordSchema,
   loginSchema,
-  registerUserSchema,
+  registerSchema,
   resetPasswordSchema,
 } from '@repo/validators'
 import { translateSync } from '@repo/i18n'
@@ -31,7 +31,7 @@ export const loginFn = createServerFn({ method: 'POST' })
   })
 
 export const requestRegisterUserFn = createServerFn({ method: 'POST' })
-  .inputValidator(registerUserSchema)
+  .inputValidator(registerSchema)
   .handler(async ({ data }): Promise<void> => {
     return postAuth<void>(
       buildApiPath(API_ROUTES.auth, API_ROUTES.auth.path.registerUserRequest()),

@@ -1,5 +1,6 @@
 import type { EventStatus } from '../enums/event.ts'
 import type { PaginatedResponse } from './common.ts'
+import type { PublicPurchasableTicketResponse } from './ticket.ts'
 
 export interface EventImageResponse {
   documentId: string
@@ -76,4 +77,8 @@ export interface PublicEventDetailResponse {
   locationImages: EventImageResponse[]
   faqs: EventFaqResponse[]
   organizer: PublicEventOrganizer
+  /** Active tickets currently within their sale window (may be empty). */
+  tickets: PublicPurchasableTicketResponse[]
+  /** True when platform's Mercado Pago account is configured. */
+  paymentsReady: boolean
 }

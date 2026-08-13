@@ -11,7 +11,7 @@ import { TranslationService } from '@repo/i18n/server'
 import { USER_ROLE, type UserRole } from '@repo/types'
 import type { ForgotPasswordInput } from '@repo/validators'
 import { SendPasswordResetUseCase } from '../../mail'
-import { ENV } from '../../common/config/env'
+import { ENV } from '../../../config/env'
 import {
   PASSWORD_RESET_MAX_ATTEMPTS_PER_DAY,
   PASSWORD_RESET_TOKEN_TTL_MINUTES,

@@ -4,15 +4,19 @@ import { Button, cn } from '@repo/ui'
 type EventDetailBuyButtonProps = {
   label: string
   disabled?: boolean
+  loading?: boolean
   title?: string
   className?: string
+  onClick?: () => void
 }
 
 export function EventDetailBuyButton({
   label,
   disabled = false,
+  loading = false,
   title,
   className,
+  onClick,
 }: EventDetailBuyButtonProps) {
   return (
     <Button
@@ -20,9 +24,11 @@ export function EventDetailBuyButton({
       size="sm"
       variant={disabled ? 'outline' : 'default'}
       disabled={disabled}
+      loading={loading}
       title={title}
       aria-label={title ?? label}
       aria-disabled={disabled || undefined}
+      onClick={onClick}
       iconLeft={<Ticket aria-hidden strokeWidth={1.75} />}
       className={cn(
         'shrink-0 rounded-full',

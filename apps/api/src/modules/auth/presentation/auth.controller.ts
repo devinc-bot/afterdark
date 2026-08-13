@@ -16,8 +16,7 @@ import {
   forgotPasswordSchema,
   googleOauthStartSchema,
   loginSchema,
-  registerOwnerSchema,
-  registerUserSchema,
+  registerSchema,
   resetPasswordSchema,
   type ConfirmUserRegistrationInput,
   type ForgotPasswordInput,
@@ -73,14 +72,14 @@ export class AuthController {
 
   @Post(API_ROUTES.auth.path.registerUser())
   @HttpCode(HttpStatus.CREATED)
-  registerUser(@Body(new ZodValidationPipe(registerUserSchema)) body: RegisterUserInput) {
+  registerUser(@Body(new ZodValidationPipe(registerSchema)) body: RegisterUserInput) {
     return this.registerUserUseCase.execute(body)
   }
 
   @Post(API_ROUTES.auth.path.registerUserRequest())
   @HttpCode(HttpStatus.NO_CONTENT)
   requestUserRegistration(
-    @Body(new ZodValidationPipe(registerUserSchema)) body: RegisterUserInput
+    @Body(new ZodValidationPipe(registerSchema)) body: RegisterUserInput
   ) {
     return this.requestUserRegistrationUseCase.execute(body)
   }
@@ -95,14 +94,14 @@ export class AuthController {
 
   @Post(API_ROUTES.auth.path.registerOwner())
   @HttpCode(HttpStatus.CREATED)
-  registerOwner(@Body(new ZodValidationPipe(registerOwnerSchema)) body: RegisterOwnerInput) {
+  registerOwner(@Body(new ZodValidationPipe(registerSchema)) body: RegisterOwnerInput) {
     return this.registerOwnerUseCase.execute(body)
   }
 
   @Post(API_ROUTES.auth.path.registerOwnerRequest())
   @HttpCode(HttpStatus.NO_CONTENT)
   requestOwnerRegistration(
-    @Body(new ZodValidationPipe(registerOwnerSchema)) body: RegisterOwnerInput
+    @Body(new ZodValidationPipe(registerSchema)) body: RegisterOwnerInput
   ) {
     return this.requestOwnerRegistrationUseCase.execute(body)
   }
