@@ -8,3 +8,12 @@ pnpm-debug.log
 local.db*
 apps/api/uploads/
 .claude/settings.local.json
+
+# OpenSpec artifacts are local-only.
+openspec/specs/*
+!openspec/specs/.gitkeep
+openspec/changes/*
+!openspec/changes/.gitkeep
+!openspec/changes/archive/
+openspec/changes/archive/*
+!openspec/changes/archive/.gitkeep

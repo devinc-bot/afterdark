@@ -1,4 +1,6 @@
 export { CommonModule } from './common.module'
 export { HttpExceptionFilter } from './filters/http-exception.filter'
+export { ApiErrorRetentionScheduler } from './services/api-error-retention.scheduler'
+export { ApiErrorRecorderService } from './services/api-error-recorder.service'
 export { ZodValidationPipe } from './pipes/zod-validation.pipe'
 export { hashValue, verifyValue } from './utils/bcrypt.utils'
