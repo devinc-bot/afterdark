@@ -4,12 +4,11 @@ import { PageLayout } from '~/modules/common/components/page-layout'
 import { OrganizationSettingsSection } from '~/modules/owner/components/organization-settings-section'
 import { ProfileSettingsSection } from '~/modules/owner/components/profile-settings-section'
 import { SettingsFormActions } from '~/modules/settings/components/settings-form-actions'
-import { SettingsStatusBanner } from '~/modules/settings/components/settings-status-banner'
 import { SETTINGS_FORM_ID, SETTINGS_SAVE_STATUS } from '~/modules/settings/constants/settings-form'
 import { SettingsFormProvider, useSettingsForm } from '~/modules/owner/hooks/settings-form-context'
 
 function SettingsFormContent() {
-  const { save, isDirty, saveStatus, saveMessage, discard } = useSettingsForm()
+  const { save, isDirty, saveStatus, discard } = useSettingsForm()
 
   return (
     <form
@@ -21,7 +20,6 @@ function SettingsFormContent() {
         void save()
       }}
     >
-      <SettingsStatusBanner saveStatus={saveStatus} saveMessage={saveMessage} />
       <div className="flex flex-col gap-12">
         <ProfileSettingsSection />
         <OrganizationSettingsSection />

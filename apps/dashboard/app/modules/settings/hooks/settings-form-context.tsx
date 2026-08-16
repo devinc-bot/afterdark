@@ -2,14 +2,13 @@ import { createContext, useCallback, useContext, useRef, useState, type ReactNod
 import { useTranslation } from 'react-i18next'
 import type { ZodType } from 'zod'
 import type { BaseProfileResponse } from '@repo/types'
-import { useAutoDismiss, useUnsavedChangesGuard } from '@repo/ui'
+import { toast, useUnsavedChangesGuard } from '@repo/ui'
 import { toSessionUser } from '~/modules/common/formatters/session-user.formatter'
 import { useSessionStore } from '~/modules/common/stores/session.store'
 import { useSettings } from '~/modules/settings/queries/use-settings'
 import { updateSettings } from '~/modules/settings/services/settings.service'
 import {
   SETTINGS_SAVE_STATUS,
-  SETTINGS_SUCCESS_DISMISS_MS,
   type SettingsSaveStatus,
 } from '~/modules/settings/constants/settings-form'
 import { useSettingsFormValues } from '~/modules/settings/hooks/use-settings-form-values'
@@ -49,7 +48,6 @@ export function createSettingsFormProvider<
     errors: SettingsFieldErrors<TField>
     isDirty: boolean
     saveStatus: SettingsSaveStatus
-    saveMessage: string | null
     setProfileField: (field: TField, value: string) => void
     setNestedProfileField: (section: TField, field: string, value: string) => void
     save: () => Promise<void>
@@ -67,23 +65,13 @@ export function createSettingsFormProvider<
     )
     const [errors, setErrors] = useState<SettingsFieldErrors<TField>>({})
     const [saveStatus, setSaveStatus] = useState<SettingsSaveStatus>(SETTINGS_SAVE_STATUS.IDLE)
-    const [saveMessage, setSaveMessage] = useState<string | null>(null)
     const isSavingRef = useRef(false)
 
     useUnsavedChangesGuard(isDirty, t('shared.actions.confirmLeave'))
-    useAutoDismiss(
-      saveStatus === SETTINGS_SAVE_STATUS.SUCCESS && !!saveMessage,
-      SETTINGS_SUCCESS_DISMISS_MS,
-      () => {
-        setSaveStatus(SETTINGS_SAVE_STATUS.IDLE)
-        setSaveMessage(null)
-      }
-    )
 
     const clearFeedback = useCallback(() => {
       setErrors({})
       setSaveStatus(SETTINGS_SAVE_STATUS.IDLE)
-      setSaveMessage(null)
     }, [])
 
     const setProfileField = useCallback(
@@ -126,7 +114,7 @@ export function createSettingsFormProvider<
         const fieldErrors = mapSettingsFormErrors<TField>(validation.error)
         setErrors(fieldErrors)
         setSaveStatus(SETTINGS_SAVE_STATUS.ERROR)
-        setSaveMessage(t('shared.messages.validationSummary'))
+        toast.error(t('shared.messages.validationSummary'))
 
         const firstInvalidFieldId = getFirstInvalidFieldId(fieldErrors, config.fieldOrder)
         if (firstInvalidFieldId) {
@@ -137,7 +125,6 @@ export function createSettingsFormProvider<
 
       isSavingRef.current = true
       setSaveStatus(SETTINGS_SAVE_STATUS.SAVING)
-      setSaveMessage(t('shared.messages.saving'))
       setErrors({})
 
       try {
@@ -148,13 +135,13 @@ export function createSettingsFormProvider<
 
         commit(config.toFormValues(updatedUser))
         setSaveStatus(SETTINGS_SAVE_STATUS.SUCCESS)
-        setSaveMessage(t(resolveSaveSuccessMessageKey()))
+        toast.success(t(resolveSaveSuccessMessageKey()))
 
         useSessionStore.setState({ user: toSessionUser(updatedUser) })
         void refetchSettings()
       } catch (error) {
         setSaveStatus(SETTINGS_SAVE_STATUS.ERROR)
-        setSaveMessage(resolveSaveErrorMessage(error, t('shared.messages.saveFallback')))
+        toast.error(resolveSaveErrorMessage(error, t('shared.messages.saveFallback')))
       } finally {
         isSavingRef.current = false
       }
@@ -168,7 +155,6 @@ export function createSettingsFormProvider<
           errors,
           isDirty,
           saveStatus,
-          saveMessage,
           setProfileField,
           setNestedProfileField,
           save,

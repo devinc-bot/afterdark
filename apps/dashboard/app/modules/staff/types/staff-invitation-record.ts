@@ -3,8 +3,8 @@ import { STAFF_INVITATION_STATUS, type StaffInvitationStatus } from '@repo/types
 export type StaffInvitationRecord = {
   id: string
   email: string
-  clubId: string
-  clubName: string
+  organizationId: string
+  organizationName: string
   url: string
   expiresAt: number
   createdAt: number

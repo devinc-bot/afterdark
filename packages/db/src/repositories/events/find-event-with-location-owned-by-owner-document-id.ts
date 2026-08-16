@@ -1,7 +1,7 @@
 import { and, eq } from 'drizzle-orm'
 import { events } from '../../schema/event.ts'
-import { owners } from '../../schema/owner.ts'
-import { eventsByOwnerQuery } from './events-by-owner-query.ts'
+import { findSoleOrganizationByOwnerDocumentId } from '../organizations/find-sole-organization-by-owner-document-id.ts'
+import { eventsWithLocationQuery } from './events-with-location-query.ts'
 import { findEventFaqsByEventIds } from './find-event-faqs-by-event-ids.ts'
 import type { EventWithLocation } from '@repo/types'
 
@@ -9,8 +9,11 @@ export async function findEventWithLocationOwnedByOwnerDocumentId(
   eventDocumentId: string,
   ownerDocumentId: string
 ): Promise<EventWithLocation | null> {
-  const [row] = await eventsByOwnerQuery()
-    .where(and(eq(events.documentId, eventDocumentId), eq(owners.documentId, ownerDocumentId)))
+  const organization = await findSoleOrganizationByOwnerDocumentId(ownerDocumentId)
+  if (!organization) return null
+
+  const [row] = await eventsWithLocationQuery()
+    .where(and(eq(events.documentId, eventDocumentId), eq(events.organizationId, organization.id)))
     .limit(1)
 
   if (!row) {

@@ -21,7 +21,6 @@
     },
     "messages": {
       "validationSummary": "Fix the fields with errors before saving.",
-      "saving": "Saving…",
       "saveSuccess": "Done. Your profile is up to date.",
       "saveSuccessNight": "Changes saved successfully.",
       "saveFallback": "We couldn't save. Check your connection and try again."
@@ -35,17 +34,14 @@
     "sections": {
       "profile": "Profile",
       "profileDescription": "Your personal and contact information.",
-      "organization": "Organization",
-      "organizationDescription": "If you operate as a company or organization.",
+      "organization": "Organization details",
+      "organizationDescription": "Your organization name will be shown publicly as the organizer of your events.",
       "address": "Address",
       "addressDescription": "Where you live. Optional.",
       "account": "Account",
       "accountDescription": "How you sign in to {appNameDisplay}."
     },
     "organization": {
-      "isOrganization": "Are you an organization?",
-      "yes": "Yes",
-      "no": "No",
       "name": "Organization name",
       "taxId": "Tax ID (CUIT)"
     },

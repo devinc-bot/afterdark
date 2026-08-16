@@ -17,6 +17,8 @@ import { locationAddressesLnk } from '../schema/location-address-lnk.ts'
 import { locations } from '../schema/location.ts'
 import { events } from '../schema/event.ts'
 import { orders } from '../schema/orders.ts'
+import { organizationAccountsLnk } from '../schema/organization-account-lnk.ts'
+import { organizations } from '../schema/organization.ts'
 import { ownerAccountsLnk } from '../schema/owner-account-lnk.ts'
 import { owners } from '../schema/owner.ts'
 import { roles } from '../schema/role.ts'
@@ -96,6 +98,28 @@ async function upsertAccountRoleLink(
   if (existing) return
 
   await db.insert(accountRolesLnk).values({ documentId, accountId, roleId })
+}
+
+async function ensureOrganizationMembership(accountId: number): Promise<number> {
+  const [existing] = await db
+    .select({ organizationId: organizationAccountsLnk.organizationId })
+    .from(organizationAccountsLnk)
+    .where(eq(organizationAccountsLnk.accountId, accountId))
+    .limit(1)
+  if (existing) return existing.organizationId
+
+  const [organization] = await db
+    .insert(organizations)
+    .values({ documentId: 'seed-organization', name: 'Test Owner' })
+    .returning({ id: organizations.id })
+
+  await db.insert(organizationAccountsLnk).values({
+    documentId: 'seed-organization-account-lnk',
+    organizationId: organization.id,
+    accountId,
+  })
+
+  return organization.id
 }
 
 async function upsertUserAccountLink(
@@ -309,6 +333,7 @@ export async function seedTicketsOrders(): Promise<void> {
     accountId,
     ownerRoleId
   )
+  const organizationId = await ensureOrganizationMembership(accountId)
 
   const buyerAccountId = await upsertAccountByEmail(
     seedEnv.SEED_BUYER_ACCOUNT_DOCUMENT_ID,
@@ -373,6 +398,7 @@ export async function seedTicketsOrders(): Promise<void> {
     const id = await upsertEvent(`seed-event-${n}`, {
       documentId: `seed-event-${n}`,
       locationId: locationIds[eventLocationIndexes[i]],
+      organizationId,
       name: `Evento ${n}`,
       description: `Evento de prueba número ${n}`,
       startsAt: new Date(now + n * DAY_MS),

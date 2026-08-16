@@ -9,6 +9,7 @@ import {
   findEventImageAssetsByEventIds,
   findEventWithLocationOwnedByOwnerDocumentId,
   findLocationOwnedByOwnerDocumentId,
+  findSoleOrganizationByOwnerDocumentId,
   updateEventByDocumentId,
 } from '@repo/db'
 import { TranslationService } from '@repo/i18n/server'
@@ -44,6 +45,12 @@ export class UpdateEventUseCase {
       throw new NotFoundException(this.ts.translateError('event.CLUB_NOT_FOUND'))
     }
 
+    const organization = await findSoleOrganizationByOwnerDocumentId(ownerDocumentId)
+
+    if (!organization) {
+      throw new InternalServerErrorException(this.ts.translateError('event.UPDATE_FAILED'))
+    }
+
     const eventId = existing.event.id
     const currentImages = await findEventImageAssetsByEventIds([eventId])
 
@@ -61,7 +68,10 @@ export class UpdateEventUseCase {
     const uploadedImages = await this.eventImages.upload(files)
 
     try {
-      const row = await updateEventByDocumentId(documentId, toEventUpsertInput(input, location.id))
+      const row = await updateEventByDocumentId(
+        documentId,
+        toEventUpsertInput(input, location.id, organization.id)
+      )
       await this.eventImages.removeUnwanted(eventId, keepImageIds)
       await this.eventImages.saveNew(eventId, files, uploadedImages)
       const images = await this.eventImages.getByEventId(eventId)

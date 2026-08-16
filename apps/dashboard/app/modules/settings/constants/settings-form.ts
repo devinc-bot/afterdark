@@ -7,16 +7,4 @@ export const SETTINGS_SAVE_STATUS = {
 
 export type SettingsSaveStatus = (typeof SETTINGS_SAVE_STATUS)[keyof typeof SETTINGS_SAVE_STATUS]
 
-export const SETTINGS_STATUS_BANNER_ROLE = {
-  ALERT: 'alert',
-  STATUS: 'status',
-} as const
-
-export const SETTINGS_STATUS_BANNER_ARIA_LIVE = {
-  ASSERTIVE: 'assertive',
-  POLITE: 'polite',
-} as const
-
 export const SETTINGS_FORM_ID = 'settings-form'
-
-export const SETTINGS_SUCCESS_DISMISS_MS = 4000

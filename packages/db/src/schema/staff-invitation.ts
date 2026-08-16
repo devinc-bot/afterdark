@@ -1,15 +1,15 @@
 import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core'
 import { STAFF_INVITATION_STATUS, USER_ROLE } from '@repo/types/enums'
 import { createBaseColumns } from './base.ts'
-import { locations } from './location.ts'
+import { organizations } from './organization.ts'
 import { owners } from './owner.ts'
 
 export const staffInvitations = sqliteTable('staff_invitations', {
   ...createBaseColumns('staff_invitations'),
   email: text('email').notNull(),
-  locationId: integer('location_id')
+  organizationId: integer('organization_id')
     .notNull()
-    .references(() => locations.id),
+    .references(() => organizations.id),
   invitedByOwnerId: integer('invited_by_owner_id')
     .notNull()
     .references(() => owners.id),

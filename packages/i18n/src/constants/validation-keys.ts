@@ -12,7 +12,6 @@ export const VALIDATION_KEY = {
   FIELD_SECURITY_WORD_REQUIRED: 'validation:field.securityWord.required',
   FIELD_SECURITY_WORD_MIN: 'validation:field.securityWord.min',
   FIELD_INVITATION_EMAIL: 'validation:field.invitation.email',
-  FIELD_INVITATION_LOCATION: 'validation:field.invitation.location',
   FIELD_LOCATION_NAME: 'validation:field.location.name',
   FIELD_LOCATION_ADDRESS: 'validation:field.location.address',
   FIELD_LOCATION_CAPACITY_REQUIRED: 'validation:field.location.capacity.required',

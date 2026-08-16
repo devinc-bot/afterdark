@@ -4,7 +4,6 @@ import type { OwnerSettingsFormValues } from '@repo/validators'
 export function toOwnerFormValues(owner: CurrentOwnerResponse): OwnerSettingsFormValues {
   const organizationName = owner.organizationName ?? ''
   const taxId = owner.taxId ?? ''
-  const isOrganization = organizationName.length > 0 || taxId.length > 0
 
   return {
     profile: {
@@ -15,7 +14,6 @@ export function toOwnerFormValues(owner: CurrentOwnerResponse): OwnerSettingsFor
       nationalId: owner.nationalId ?? '',
       organizationName,
       taxId,
-      isOrganization: isOrganization ? 'true' : 'false',
       address: {
         address: owner.address?.address ?? '',
         streetNumber: owner.address?.streetNumber ?? '',

@@ -21,7 +21,6 @@
     },
     "messages": {
       "validationSummary": "Revisá los campos con error antes de guardar.",
-      "saving": "Guardando…",
       "saveSuccess": "Listo. Tu perfil quedó al día.",
       "saveSuccessNight": "Cambios guardados correctamente.",
       "saveFallback": "No pudimos guardar. Revisá tu conexión e intentá de nuevo."
@@ -35,17 +34,14 @@
     "sections": {
       "profile": "Perfil",
       "profileDescription": "Tu información personal y de contacto.",
-      "organization": "Organización",
-      "organizationDescription": "Si operás como empresa u organización.",
+      "organization": "Datos de la organización",
+      "organizationDescription": "El nombre de tu organización se mostrará públicamente como organizador de tus eventos.",
       "address": "Domicilio",
       "addressDescription": "Dónde vivís. Es opcional.",
       "account": "Cuenta",
       "accountDescription": "Cómo iniciás sesión en {appNameDisplay}."
     },
     "organization": {
-      "isOrganization": "¿Eres una organización?",
-      "yes": "Sí",
-      "no": "No",
       "name": "Nombre de la organización",
       "taxId": "CUIT"
     },

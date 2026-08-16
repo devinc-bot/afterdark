@@ -1,20 +1,22 @@
 import { and, eq } from 'drizzle-orm'
 import { db } from '../../client.ts'
-import { owners } from '../../schema/owner.ts'
 import { staffInvitations, type StaffInvitationSelect } from '../../schema/staff-invitation.ts'
+import { findSoleOrganizationByOwnerDocumentId } from '../organizations/find-sole-organization-by-owner-document-id.ts'
 
 export async function findStaffInvitationByDocumentIdForOwner(
   invitationDocumentId: string,
   ownerDocumentId: string
 ): Promise<StaffInvitationSelect | null> {
+  const organization = await findSoleOrganizationByOwnerDocumentId(ownerDocumentId)
+  if (!organization) return null
+
   const [row] = await db
     .select({ invitation: staffInvitations })
     .from(staffInvitations)
-    .innerJoin(owners, eq(owners.id, staffInvitations.invitedByOwnerId))
     .where(
       and(
         eq(staffInvitations.documentId, invitationDocumentId),
-        eq(owners.documentId, ownerDocumentId)
+        eq(staffInvitations.organizationId, organization.id)
       )
     )
     .limit(1)

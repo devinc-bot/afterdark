@@ -1,21 +1,16 @@
 {
   "page": {
     "title": "Gestión de personal",
-    "description": "Administrá permisos del equipo y el acceso al control de entradas en las ubicaciones activas.",
+    "description": "Administrá permisos del equipo y el acceso operativo de la organización.",
     "metaTitle": "Gestión de personal · {appNameAdmin}"
   },
   "form": {
     "title": "Invitar personal del equipo",
-    "description": "Ingresá el correo y la ubicación. Podés agregar una palabra de seguridad opcional que ambos deberán conocer.",
+    "description": "Ingresá el correo. La persona será asignada a tu organización y podés agregar una palabra de seguridad opcional.",
     "trigger": "Invitar personal",
     "cancel": "Cancelar",
     "email": "Correo electrónico",
     "emailPlaceholder": "juan@repo.com",
-    "location": "Ubicación asignada",
-    "locationPlaceholder": "Seleccioná una ubicación…",
-    "locationLoading": "Cargando ubicaciones…",
-    "locationEmpty": "No tenés ubicaciones registradas",
-    "locationsLoadError": "No pudimos cargar tus ubicaciones. Intentá de nuevo.",
     "expiresIn": "Vencimiento del enlace",
     "expires12h": "12 horas",
     "expires24h": "24 horas",
@@ -45,7 +40,7 @@
       "title": "Activá tu acceso",
       "description": "Completá el formulario para crear tu cuenta. Usá la palabra de seguridad que acordaste con tu administrador, si corresponde.",
       "invitedAs": "Correo invitado",
-      "locationLabel": "Ubicación asignada",
+      "organizationLabel": "Organización",
       "name": "Nombre",
       "namePlaceholder": "Tu nombre",
       "lastName": "Apellido",
@@ -88,14 +83,14 @@
   "delete": {
     "title": "Eliminar usuario",
     "descriptionPrefix": "¿Querés eliminar a",
-    "descriptionSuffix": "? Esta acción es irreversible: se borra su cuenta y pierde acceso por completo.",
+    "descriptionSuffix": "? Perderá el acceso a esta organización. Si pertenece a otra, su cuenta seguirá activa.",
     "cancel": "Cancelar",
     "confirm": "Eliminar usuario"
   },
   "table": {
     "title": "Registro del equipo",
     "name": "Nombre",
-    "venue": "Club",
+    "organization": "Organización",
     "role": "Rol",
     "status": "Estado",
     "statusActive": "Activo",
@@ -118,7 +113,7 @@
     "updateStatusError": "No pudimos actualizar el estado. Intentá de nuevo.",
     "retry": "Reintentar",
     "emptyTitle": "Todavía no hay usuarios",
-    "emptyDescription": "Creá el primer usuario para empezar a asignar accesos operativos por club."
+    "emptyDescription": "Invitá a la primera persona para asignarle acceso operativo a la organización."
   },
   "roles": {
     "controller": "Control de entradas",
@@ -137,7 +132,7 @@
   "invitationsTable": {
     "title": "Invitaciones enviadas",
     "email": "Correo",
-    "venue": "Club",
+    "organization": "Organización",
     "security": "Seguridad",
     "expires": "Vencimiento",
     "status": "Estado",
@@ -156,6 +151,6 @@
     "loadError": "No pudimos cargar las invitaciones. Intentá de nuevo.",
     "retry": "Reintentar",
     "emptyTitle": "Todavía no hay invitaciones",
-    "emptyDescription": "Generá un enlace de invitación para sumar personal al equipo de un club."
+    "emptyDescription": "Generá un enlace de invitación para sumar personal a la organización."
   }
 }

@@ -1,12 +1,12 @@
 import { STAFF_INVITATION_EXPIRY_OPTIONS } from '@repo/validators'
 import { hashValue } from '../../common'
 
-export const STAFF_INVITATION_PAYLOAD_VERSION = 1.1 as const
+export const STAFF_INVITATION_PAYLOAD_VERSION = 2 as const
 
 export type StaffInvitationPayload = {
   v: typeof STAFF_INVITATION_PAYLOAD_VERSION
   email: string
-  locationId: string
+  organizationId: string
   slug: string
 }
 
@@ -61,7 +61,7 @@ export function buildStaffInvitationUrl(origin: string, slug: string, token: str
 
 export async function buildStaffInvitationPayload(input: {
   email: string
-  locationDocumentId: string
+  organizationDocumentId: string
   securityWord?: string
   expiresInMs?: number
   now?: number
@@ -84,7 +84,7 @@ export async function buildStaffInvitationPayload(input: {
   const payload: StaffInvitationPayload = {
     v: STAFF_INVITATION_PAYLOAD_VERSION,
     email: input.email,
-    locationId: input.locationDocumentId,
+    organizationId: input.organizationDocumentId,
     slug,
   }
 
