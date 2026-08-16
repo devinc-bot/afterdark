@@ -13,6 +13,7 @@ export async function createEvent(input: EventUpsertInput): Promise<EventWithLoc
       .insert(events)
       .values({
         locationId: input.locationId,
+        organizationId: input.organizationId,
         name: input.name,
         description: input.description,
         startsAt: input.startsAt,

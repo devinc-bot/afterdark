@@ -1,18 +1,18 @@
-import type { LocationSelect, StaffInvitationSelect } from '@repo/db'
+import type { OrganizationSelect, StaffInvitationSelect } from '@repo/db'
 import type { CreateStaffInvitationResponse } from '@repo/types'
 import { ENV } from '../../../config/env'
 import { buildStaffInvitationUrl } from '../utils/staff-invitation.utils'
 
 export function toStaffInvitationResponse(
   invitation: StaffInvitationSelect,
-  location: Pick<LocationSelect, 'documentId' | 'name'>,
+  organization: Pick<OrganizationSelect, 'documentId' | 'name'>,
   invitedByOwnerDocumentId: string
 ): CreateStaffInvitationResponse {
   return {
     documentId: invitation.documentId,
     email: invitation.email,
-    locationId: location.documentId,
-    locationName: location.name,
+    organizationId: organization.documentId,
+    organizationName: organization.name,
     invitedByOwnerId: invitedByOwnerDocumentId,
     slug: invitation.slug,
     url: buildStaffInvitationUrl(ENV.DASHBOARD_URL, invitation.slug, invitation.token),

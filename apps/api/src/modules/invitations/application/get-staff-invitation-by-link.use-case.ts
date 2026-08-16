@@ -7,7 +7,7 @@ import {
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common'
-import { findStaffInvitationByTokenWithLocation } from '@repo/db'
+import { findStaffInvitationByTokenWithOrganization } from '@repo/db'
 import { TranslationService } from '@repo/i18n/server'
 import { STAFF_INVITATION_STATUS, type StaffInvitationPublicResponse } from '@repo/types'
 import { JwtService } from '@nestjs/jwt'
@@ -28,7 +28,7 @@ export class GetStaffInvitationByLinkUseCase {
     }
 
     try {
-      const row = await findStaffInvitationByTokenWithLocation(token)
+      const row = await findStaffInvitationByTokenWithOrganization(token)
 
       if (!row) {
         throw new NotFoundException(this.ts.translateError('invitation.PUBLIC_INVALID'))
@@ -60,8 +60,8 @@ export class GetStaffInvitationByLinkUseCase {
       return {
         documentId: row.invitation.documentId,
         email: row.invitation.email,
-        locationId: row.locationDocumentId,
-        locationName: row.locationName,
+        organizationId: row.organizationDocumentId,
+        organizationName: row.organizationName,
         slug: row.invitation.slug,
         expiresAt: row.invitation.expiresAt,
         hasSecurityWord: Boolean(row.invitation.securityWordHash),

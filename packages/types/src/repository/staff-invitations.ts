@@ -1,7 +1,7 @@
 import type { StaffInvitationSelect } from '@repo/db/schema'
 
-export type StaffInvitationWithLocationRow = {
+export type StaffInvitationWithOrganizationRow = {
   invitation: StaffInvitationSelect
-  locationDocumentId: string
-  locationName: string
+  organizationDocumentId: string
+  organizationName: string
 }

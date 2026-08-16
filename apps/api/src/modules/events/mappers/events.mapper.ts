@@ -144,9 +144,14 @@ export function toPublicPurchasableTicketResponse(
   }
 }
 
-export function toEventUpsertInput(input: CreateEventInput | UpdateEventInput, locationId: number) {
+export function toEventUpsertInput(
+  input: CreateEventInput | UpdateEventInput,
+  locationId: number,
+  organizationId: number
+) {
   return {
     locationId,
+    organizationId,
     name: input.name,
     description: input.description,
     startsAt: input.startsAt,

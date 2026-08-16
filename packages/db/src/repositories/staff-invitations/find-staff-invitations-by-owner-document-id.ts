@@ -1,43 +1,26 @@
 import { desc, eq } from 'drizzle-orm'
+import type { StaffInvitationWithOrganizationRow } from '@repo/types'
 import { db } from '../../client.ts'
-import { locations } from '../../schema/location.ts'
-import { owners } from '../../schema/owner.ts'
+import { organizations } from '../../schema/organization.ts'
 import { staffInvitations } from '../../schema/staff-invitation.ts'
-import type { StaffInvitationWithLocationRow } from '@repo/types'
+import { findSoleOrganizationByOwnerDocumentId } from '../organizations/find-sole-organization-by-owner-document-id.ts'
 
 export async function findStaffInvitationsByOwnerDocumentId(
   ownerDocumentId: string
-): Promise<StaffInvitationWithLocationRow[]> {
+): Promise<StaffInvitationWithOrganizationRow[]> {
+  const organization = await findSoleOrganizationByOwnerDocumentId(ownerDocumentId)
+  if (!organization) return []
+
   const rows = await db
     .select({
-      invitation: {
-        id: staffInvitations.id,
-        documentId: staffInvitations.documentId,
-        createdAt: staffInvitations.createdAt,
-        updatedAt: staffInvitations.updatedAt,
-        email: staffInvitations.email,
-        locationId: staffInvitations.locationId,
-        invitedByOwnerId: staffInvitations.invitedByOwnerId,
-        slug: staffInvitations.slug,
-        token: staffInvitations.token,
-        securityWordHash: staffInvitations.securityWordHash,
-        expiresAt: staffInvitations.expiresAt,
-        status: staffInvitations.status,
-        role: staffInvitations.role,
-        acceptedAt: staffInvitations.acceptedAt,
-      },
-      locationDocumentId: locations.documentId,
-      locationName: locations.name,
+      invitation: staffInvitations,
+      organizationDocumentId: organizations.documentId,
+      organizationName: organizations.name,
     })
     .from(staffInvitations)
-    .innerJoin(owners, eq(owners.id, staffInvitations.invitedByOwnerId))
-    .innerJoin(locations, eq(locations.id, staffInvitations.locationId))
-    .where(eq(owners.documentId, ownerDocumentId))
+    .innerJoin(organizations, eq(organizations.id, staffInvitations.organizationId))
+    .where(eq(staffInvitations.organizationId, organization.id))
     .orderBy(desc(staffInvitations.createdAt))
 
-  return rows.map((row) => ({
-    invitation: row.invitation,
-    locationDocumentId: row.locationDocumentId,
-    locationName: row.locationName,
-  }))
+  return rows
 }

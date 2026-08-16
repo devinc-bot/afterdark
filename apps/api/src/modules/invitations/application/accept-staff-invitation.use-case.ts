@@ -13,8 +13,8 @@ import {
   accountExistsByEmail,
   deleteStaffInvitationById,
   findRoleByName,
-  findStaffInvitationByTokenWithLocation,
-  registerStaffForLocation,
+  findStaffInvitationByTokenWithOrganization,
+  registerStaffForOrganization,
 } from '@repo/db'
 import { TranslationService } from '@repo/i18n/server'
 import { STAFF_INVITATION_STATUS, USER_ROLE } from '@repo/types'
@@ -43,7 +43,7 @@ export class AcceptStaffInvitationUseCase {
       throw new NotFoundException(this.ts.translateError('invitation.PUBLIC_INVALID'))
     }
 
-    const row = await findStaffInvitationByTokenWithLocation(token)
+    const row = await findStaffInvitationByTokenWithOrganization(token)
 
     if (!row) {
       throw new NotFoundException(this.ts.translateError('invitation.PUBLIC_INVALID'))
@@ -92,13 +92,13 @@ export class AcceptStaffInvitationUseCase {
     const hashedPassword = await hashValue(input.password)
 
     try {
-      await registerStaffForLocation({
+      await registerStaffForOrganization({
         email: row.invitation.email,
         hashedPassword,
         roleId: staffRole.id,
         roleName: USER_ROLE.STAFF,
         profile: { name: input.name, lastName: input.lastName, phone: input.phone },
-        locationId: row.invitation.locationId,
+        organizationId: row.invitation.organizationId,
       })
     } catch {
       throw new InternalServerErrorException(this.ts.translateError('invitation.ACCEPT_FAILED'))

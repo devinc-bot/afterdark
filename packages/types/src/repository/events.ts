@@ -15,6 +15,7 @@ export type EventFaqInput = {
 
 export type EventUpsertInput = {
   locationId: number
+  organizationId: number
   name: string
   description: string
   startsAt: Date

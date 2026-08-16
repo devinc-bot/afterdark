@@ -16,6 +16,7 @@ export async function updateEventByDocumentId(
       .update(events)
       .set({
         locationId: input.locationId,
+        organizationId: input.organizationId,
         name: input.name,
         description: input.description,
         startsAt: input.startsAt,

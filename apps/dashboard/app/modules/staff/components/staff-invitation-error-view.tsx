@@ -10,6 +10,7 @@ type StaffInvitationErrorViewProps = {
 
 export function StaffInvitationErrorView({ title, description }: StaffInvitationErrorViewProps) {
   const { t } = useTranslation('staff')
+  const { t: tCommon } = useTranslation('common')
 
   return (
     <div className="flex min-h-dvh flex-col bg-background">
@@ -18,7 +19,7 @@ export function StaffInvitationErrorView({ title, description }: StaffInvitation
           to={DASHBOARD_ROUTES.login()}
           className="text-lg tracking-tight text-ink transition-colors duration-150 hover:text-primary"
         >
-          Repo
+          {tCommon('appNameDisplay')}
         </Link>
       </header>
 

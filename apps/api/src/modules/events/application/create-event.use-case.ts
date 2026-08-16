@@ -5,7 +5,11 @@ import {
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common'
-import { createEvent, findLocationOwnedByOwnerDocumentId } from '@repo/db'
+import {
+  createEvent,
+  findLocationOwnedByOwnerDocumentId,
+  findSoleOrganizationByOwnerDocumentId,
+} from '@repo/db'
 import { TranslationService } from '@repo/i18n/server'
 import type { EventResponse } from '@repo/types'
 import { EVENT_IMAGE_MAX_COUNT, type CreateEventInput } from '@repo/validators'
@@ -31,6 +35,12 @@ export class CreateEventUseCase {
       throw new NotFoundException(this.ts.translateError('event.CLUB_NOT_FOUND'))
     }
 
+    const organization = await findSoleOrganizationByOwnerDocumentId(ownerDocumentId)
+
+    if (!organization) {
+      throw new InternalServerErrorException(this.ts.translateError('event.CREATE_FAILED'))
+    }
+
     validateEventImageLimit(
       [],
       files,
@@ -40,7 +50,7 @@ export class CreateEventUseCase {
     const uploadedImages = await this.eventImages.upload(files)
 
     try {
-      const row = await createEvent(toEventUpsertInput(input, location.id))
+      const row = await createEvent(toEventUpsertInput(input, location.id, organization.id))
       const images = await this.eventImages.saveNew(row.event.id, files, uploadedImages)
       return toEventResponse(row.event, row.location, images, row.faqs)
     } catch (error) {

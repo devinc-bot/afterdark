@@ -15,7 +15,7 @@ Documentación del esquema y la capa de acceso a datos del monorepo **Repo**, al
 | Schemas      | `packages/db/src/schema/`                                               |
 | Repositorios | `packages/db/src/repositories/`                                         |
 | Migraciones  | `packages/db/src/migrations/`                                           |
-| Tablas       | 23                                                                      |
+| Tablas       | 31                                                                      |
 
 La API (`apps/api`) importa **repositorios**, tipos y el cliente desde `@repo/db`. Las consultas Drizzle viven en `repositories/`; los servicios NestJS solo orquestan reglas de negocio y excepciones HTTP. No hay TypeORM ni entidades con decoradores.
 
@@ -34,7 +34,10 @@ Cada tabla incluye las columnas base (`id`, `document_id`, `created_at`, `update
 | `roles`                     | `roles`                   | `role.ts`                     | Entidad   |
 | `addresses`                 | `addresses`               | `address.ts`                  | Entidad   |
 | `assets`                    | `assets`                  | `asset.ts`                    | Entidad   |
-| `clubs`                     | `clubs`                   | `club.ts`                     | Entidad   |
+| `organizations`             | `organizations`           | `organization.ts`             | Entidad   |
+| `locations`                 | `locations`               | `location.ts`                 | Entidad   |
+| `events`                    | `events`                  | `event.ts`                    | Entidad   |
+| `event_faqs`                | `eventFaqs`               | `event-faq.ts`                | Entidad   |
 | `services`                  | `services`                | `service.ts`                  | Entidad   |
 | `tickets`                   | `tickets`                 | `ticket.ts`                   | Entidad   |
 | `orders`                    | `orders`                  | `orders.ts`                   | Entidad   |
@@ -50,9 +53,11 @@ Cada tabla incluye las columnas base (`id`, `document_id`, `created_at`, `update
 | `user_accounts_lnk`         | `userAccountsLnk`         | `user-account-lnk.ts`         | Enlace    |
 | `owner_account_lnk`         | `ownerAccountsLnk`        | `owner-account-lnk.ts`        | Enlace    |
 | `staff_account_lnk`         | `staffAccountsLnk`        | `staff-account-lnk.ts`        | Enlace    |
+| `organization_accounts_lnk` | `organizationAccountsLnk` | `organization-account-lnk.ts` | Enlace    |
 | `owner_addresses_lnk`       | `ownerAddressesLnk`       | `owner-address-lnk.ts`        | Enlace    |
-| `club_addresses_lnk`        | `clubAddressesLnk`        | `club-address-lnk.ts`         | Enlace    |
-| `club_assets_lnk`           | `clubAssetsLnk`           | `club-asset-lnk.ts`           | Enlace    |
+| `location_addresses_lnk`    | `locationAddressesLnk`    | `location-address-lnk.ts`     | Enlace    |
+| `location_assets_lnk`       | `locationAssetsLnk`       | `location-asset-lnk.ts`       | Enlace    |
+| `event_assets_lnk`          | `eventAssetsLnk`          | `event-asset-lnk.ts`          | Enlace    |
 
 Tipos inferidos por tabla: `{Nombre}Select` y `{Nombre}Insert` (ej. `UserSelect`, `StaffInvitationInsert`).
 
@@ -83,7 +88,6 @@ Los valores de columnas `text` con enum provienen de `packages/types/src/domain.
 | `OWNER_STATUS`            | `active`, `inactive`, `pending`                 |
 | `STAFF_STATUS`            | `active`, `inactive`                            |
 | `USER_ROLE`               | `user`, `admin`, `owner`, `staff`               |
-| `CLUB_STATUS`             | `active`, `inactive`                            |
 | `STAFF_INVITATION_STATUS` | `pending`, `accepted`, `expired`, `cancelled`   |
 | `TICKET_STATUS`           | `active`, `inactive`                            |
 | `TICKET_TYPE`             | `general`, `vip`                                |
@@ -95,16 +99,19 @@ Nota: `staff_invitations.role` solo admite `user`, `owner` y `staff` (no `admin`
 
 ### Tablas de enlace (`*_lnk`)
 
-| Tabla                    | Cardinalidad | Descripción          |
-| ------------------------ | ------------ | -------------------- |
-| `user_accounts_lnk`      | N:1 por lado | Usuario ↔ cuenta     |
-| `owner_account_lnk`      | N:1 por lado | Owner ↔ cuenta       |
-| `staff_account_lnk`      | N:1 por lado | Staff ↔ cuenta       |
-| `account_role_lnk`       | 1:1          | Cuenta ↔ rol         |
-| `owner_addresses_lnk`    | 1:1          | Owner ↔ domicilio    |
-| `club_addresses_lnk`     | 1:1          | Club ↔ domicilio     |
-| `club_assets_lnk`        | N:M          | Club ↔ asset         |
-| `location_addresses_lnk` | 1:1          | Location ↔ domicilio |
+| Tabla                       | Cardinalidad | Descripción           |
+| --------------------------- | ------------ | --------------------- |
+| `user_accounts_lnk`         | N:1 por lado | Usuario ↔ cuenta      |
+| `owner_account_lnk`         | N:1 por lado | Owner ↔ cuenta        |
+| `staff_account_lnk`         | N:1 por lado | Staff ↔ cuenta        |
+| `organization_accounts_lnk` | N:M          | Organización ↔ cuenta |
+| `account_role_lnk`          | 1:1          | Cuenta ↔ rol          |
+| `owner_addresses_lnk`       | 1:1          | Owner ↔ domicilio     |
+| `location_addresses_lnk`    | 1:1          | Location ↔ domicilio  |
+| `location_assets_lnk`       | N:M          | Location ↔ asset      |
+| `event_assets_lnk`          | N:M          | Evento ↔ asset        |
+
+`staff_location_lnk` fue eliminada: la autorización de staff se resuelve mediante membresías de cuenta en `organization_accounts_lnk`.
 
 ---
 
@@ -118,6 +125,8 @@ erDiagram
   accounts ||--o{ user_accounts_lnk : has
   accounts ||--o{ owner_account_lnk : has
   accounts ||--o{ staff_account_lnk : has
+  accounts ||--o{ organization_accounts_lnk : belongs_to
+  organizations ||--o{ organization_accounts_lnk : has
   accounts ||--o| account_role_lnk : has
   roles ||--o{ account_role_lnk : assigns
   owners ||--o| owner_addresses_lnk : has
@@ -126,16 +135,15 @@ erDiagram
   owners }o--o| assets : avatar
   staff }o--o| assets : avatar
 
-  users ||--o{ clubs : owns
-  clubs ||--o| club_addresses_lnk : has
-  addresses ||--o| club_addresses_lnk : has
-  clubs ||--o{ club_assets_lnk : has
-  assets ||--o{ club_assets_lnk : has
-
-  clubs ||--o{ tickets : sells
+  owners ||--o{ locations : owns
+  locations ||--o| location_addresses_lnk : has
+  addresses ||--o| location_addresses_lnk : has
+  organizations ||--o{ events : owns
+  locations ||--o{ events : hosts
+  events ||--o{ tickets : sells
   accounts ||--o{ password_reset_tokens : has
-  clubs ||--o{ staff_invitations : receives
-  users ||--o{ staff_invitations : invites
+  organizations ||--o{ staff_invitations : receives
+  owners ||--o{ staff_invitations : invites
   users ||--o{ orders : makes
   tickets ||--o{ orders : for
   orders ||--o{ tickets_sold : generates
@@ -165,20 +173,19 @@ erDiagram
     text name
   }
 
-  clubs {
+  organizations {
     integer id PK
     text document_id UK
-    integer owner_user_id FK
     text name
-    text status
+    text tax_id
   }
 
   staff_invitations {
     integer id PK
     text document_id UK
     text email
-    integer club_id FK
-    integer invited_by_user_id FK
+    integer organization_id FK
+    integer invited_by_owner_id FK
     text token UK
     text status
   }
@@ -217,17 +224,24 @@ Perfil de persona (sin credenciales).
 
 Perfil de propietario (mismas columnas que `users`, sin credenciales).
 
-| Columna (TS)       | SQL                 | Tipo    | Null | Default                   |
-| ------------------ | ------------------- | ------- | ---- | ------------------------- |
-| `name`             | `name`              | text    | NO   | —                         |
-| `lastName`         | `last_name`         | text    | NO   | —                         |
-| `phone`            | `phone`             | text    | NO   | —                         |
-| `avatarId`         | `avatar_id`         | integer | SÍ   | FK → `assets.id`          |
-| `birthday`         | `birthday`          | text    | SÍ   | —                         |
-| `nationalId`       | `national_id`       | text    | SÍ   | —                         |
-| `organizationName` | `organization_name` | text    | SÍ   | —                         |
-| `taxId`            | `tax_id`            | text    | SÍ   | —                         |
-| `status`           | `status`            | text    | NO   | `active` (`OWNER_STATUS`) |
+| Columna (TS) | SQL           | Tipo    | Null | Default                   |
+| ------------ | ------------- | ------- | ---- | ------------------------- |
+| `name`       | `name`        | text    | NO   | —                         |
+| `lastName`   | `last_name`   | text    | NO   | —                         |
+| `phone`      | `phone`       | text    | NO   | —                         |
+| `avatarId`   | `avatar_id`   | integer | SÍ   | FK → `assets.id`          |
+| `birthday`   | `birthday`    | text    | SÍ   | —                         |
+| `nationalId` | `national_id` | text    | SÍ   | —                         |
+| `status`     | `status`      | text    | NO   | `active` (`OWNER_STATUS`) |
+
+La identidad comercial ya no vive en `owners`; se persiste en `organizations`.
+
+#### `organizations` — `organization.ts`
+
+| Columna (TS) | SQL      | Tipo | Null | Notas                     |
+| ------------ | -------- | ---- | ---- | ------------------------- |
+| `name`       | `name`   | text | NO   | Nombre comercial          |
+| `taxId`      | `tax_id` | text | SÍ   | Identificación tributaria |
 
 #### `staff` — `staff.ts`
 
@@ -293,21 +307,27 @@ Catálogo de roles.
 
 El JWT incluye `role` desde `roles.name` vía esta tabla.
 
+#### `organization_accounts_lnk` — `organization-account-lnk.ts`
+
+| Columna (TS)     | SQL               | FK →               | Notas                              |
+| ---------------- | ----------------- | ------------------ | ---------------------------------- |
+| `organizationId` | `organization_id` | `organizations.id` | UNIQUE junto con `account_id`      |
+| `accountId`      | `account_id`      | `accounts.id`      | UNIQUE junto con `organization_id` |
+
+Modela membresías N:M. Los flujos owner actuales usan un resolver estricto que exige exactamente una organización.
+
 ---
 
-### Clubs y ubicación
+### Organizaciones y ubicación
 
-#### `clubs` — `club.ts`
+#### `locations` — `location.ts`
 
-| Columna (TS)  | SQL             | Tipo    | Null | Default         |
-| ------------- | --------------- | ------- | ---- | --------------- |
-| `name`        | `name`          | text    | NO   | —               |
-| `capacity`    | `capacity`      | text    | NO   | —               |
-| `description` | `description`   | text    | SÍ   | —               |
-| `ownerUserId` | `owner_user_id` | integer | NO   | FK → `users.id` |
-| `status`      | `status`        | text    | NO   | `active`        |
-
-Regla de negocio (API): solo un usuario con rol `owner` puede crear invitaciones, y el club debe tener `owner_user_id` igual al `users.id` del invitador.
+| Columna (TS)  | SQL           | Tipo    | Null | Default          |
+| ------------- | ------------- | ------- | ---- | ---------------- |
+| `name`        | `name`        | text    | NO   | —                |
+| `capacity`    | `capacity`    | text    | NO   | —                |
+| `description` | `description` | text    | SÍ   | —                |
+| `ownerId`     | `owner_id`    | integer | NO   | FK → `owners.id` |
 
 #### `addresses` — `address.ts`
 
@@ -329,13 +349,6 @@ Join de discovery pública (`findPublishedEventsPaginated`): `events` → `locat
 | `locationId` | `location_id` | `locations.id` | UNIQUE (1 domicilio por location) |
 | `addressId`  | `address_id`  | `addresses.id` | UNIQUE                            |
 
-#### `club_addresses_lnk` — `club-address-lnk.ts`
-
-| Columna (TS) | SQL          | FK →           | Notas                         |
-| ------------ | ------------ | -------------- | ----------------------------- |
-| `clubId`     | `club_id`    | `clubs.id`     | UNIQUE (1 domicilio por club) |
-| `addressId`  | `address_id` | `addresses.id` | UNIQUE                        |
-
 #### `owner_addresses_lnk` — `owner-address-lnk.ts`
 
 | Columna (TS) | SQL          | FK →           | Notas                          |
@@ -349,18 +362,20 @@ Join de discovery pública (`findPublishedEventsPaginated`): `events` → `locat
 
 #### `staff_invitations` — `staff-invitation.ts`
 
-| Columna (TS)       | SQL                  | Tipo      | Null | Default          |
-| ------------------ | -------------------- | --------- | ---- | ---------------- |
-| `email`            | `email`              | text      | NO   | —                |
-| `clubId`           | `club_id`            | integer   | NO   | FK → `clubs.id`  |
-| `invitedByUserId`  | `invited_by_user_id` | integer   | NO   | FK → `users.id`  |
-| `slug`             | `slug`               | text      | NO   | Segmento URL     |
-| `token`            | `token`              | text      | NO   | UNIQUE           |
-| `securityWordHash` | `security_word_hash` | text      | SÍ   | SHA-256 opcional |
-| `expiresAt`        | `expires_at`         | timestamp | NO   | —                |
-| `status`           | `status`             | text      | NO   | `pending`        |
-| `role`             | `role`               | text      | NO   | `staff`          |
-| `acceptedAt`       | `accepted_at`        | timestamp | SÍ   | —                |
+| Columna (TS)       | SQL                   | Tipo      | Null | Default                 |
+| ------------------ | --------------------- | --------- | ---- | ----------------------- |
+| `email`            | `email`               | text      | NO   | —                       |
+| `organizationId`   | `organization_id`     | integer   | NO   | FK → `organizations.id` |
+| `invitedByOwnerId` | `invited_by_owner_id` | integer   | NO   | FK → `owners.id`        |
+| `slug`             | `slug`                | text      | NO   | Segmento URL            |
+| `token`            | `token`               | text      | NO   | UNIQUE                  |
+| `securityWordHash` | `security_word_hash`  | text      | SÍ   | SHA-256 opcional        |
+| `expiresAt`        | `expires_at`          | timestamp | NO   | —                       |
+| `status`           | `status`              | text      | NO   | `pending`               |
+| `role`             | `role`                | text      | NO   | `staff`                 |
+| `acceptedAt`       | `accepted_at`         | timestamp | SÍ   | —                       |
+
+La aceptación crea la membresía de la cuenta staff en la organización invitante; la invitación no selecciona ni persiste una ubicación.
 
 **Endpoint:** `POST /api/invitations/staff`
 
@@ -406,6 +421,25 @@ Registro manual de dueño pendiente de verificación de email (sin `account` aú
 | `usedAt`       | `used_at`       | timestamp | SÍ   | —       |
 
 **Endpoints:** `POST /api/auth/register/owner/request`, `POST /api/auth/register/owner/confirm` (`028`)
+
+---
+
+### Eventos
+
+#### `events` — `event.ts`
+
+| Columna (TS)     | SQL               | Tipo      | Null | Default                  |
+| ---------------- | ----------------- | --------- | ---- | ------------------------ |
+| `locationId`     | `location_id`     | integer   | NO   | FK → `locations.id`      |
+| `organizationId` | `organization_id` | integer   | NO   | FK → `organizations.id`  |
+| `name`           | `name`            | text      | NO   | —                        |
+| `description`    | `description`     | text      | NO   | —                        |
+| `startsAt`       | `starts_at`       | timestamp | NO   | —                        |
+| `endsAt`         | `ends_at`         | timestamp | NO   | —                        |
+| `location`       | `location`        | text      | SÍ   | Etiqueta opcional        |
+| `status`         | `status`          | text      | NO   | `draft` (`EVENT_STATUS`) |
+
+`organization_id` define el ownership y la identidad pública del organizador. `location_id` define el venue; no se usa para inferir autorización.
 
 ---
 
@@ -463,11 +497,18 @@ Columnas base: `createdAt` (creación de la orden / inicio de checkout), `update
 | `storageKey` | `storage_key` | text | SÍ   |
 | `type`       | `type`        | text | SÍ   |
 
-#### `club_assets_lnk` — `club-asset-lnk.ts`
+#### `location_assets_lnk` — `location-asset-lnk.ts`
+
+| Columna (TS) | SQL           | FK →           |
+| ------------ | ------------- | -------------- |
+| `locationId` | `location_id` | `locations.id` |
+| `assetId`    | `asset_id`    | `assets.id`    |
+
+#### `event_assets_lnk` — `event-asset-lnk.ts`
 
 | Columna (TS) | SQL        | FK →        |
 | ------------ | ---------- | ----------- |
-| `clubId`     | `club_id`  | `clubs.id`  |
+| `eventId`    | `event_id` | `events.id` |
 | `assetId`    | `asset_id` | `assets.id` |
 
 #### `services` — `service.ts`
@@ -530,8 +571,9 @@ Diagnósticos saneados de fallos HTTP 5xx. No almacena cuerpos, headers, cookies
 | `user_registration_tokens`  | `token`                                      |
 | `owner_registration_tokens` | `token`                                      |
 | `owner_addresses_lnk`       | `owner_id`, `address_id`                     |
+| `organization_accounts_lnk` | `organization_id`, `account_id`              |
 | `orders`                    | `external_order_id`                          |
-| `club_addresses_lnk`        | `club_id`, `address_id`                      |
+| `location_addresses_lnk`    | `location_id`, `address_id`                  |
 | `tickets_sold`              | `qr_code`                                    |
 
 ---
@@ -542,25 +584,26 @@ Las migraciones **nuevas** se generan con prefijo `timestamp` (`YYYYMMDDHHmmss_�
 
 Historial en `src/migrations/meta/_journal.json`:
 
-| #    | Archivo                               | Cambio principal                                                       |
-| ---- | ------------------------------------- | ---------------------------------------------------------------------- |
-| 0000 | `0000_ambitious_nocturne.sql`         | Esquema inicial (17 tablas base)                                       |
-| 0001 | `0001_user_identity_fields.sql`       | `users`: +`birthday`, +`national_id`, +`tax_id`; −`age`                |
-| 0002 | `0002_addresses_entity.sql`           | `addresses` + `*_addresses_lnk`; domicilio sale de `clubs`             |
-| 0003 | `0003_fine_prism.sql`                 | Tabla `staff_invitations`                                              |
-| 0004 | `0004_cloudy_betty_ross.sql`          | `staff_invitations.invited_by_user_id`                                 |
-| 0005 | `0005_complex_gorilla_man.sql`        | `clubs.owner_user_id`                                                  |
-| 0006 | `0006_blushing_kronos.sql`            | `account_role_lnk`; rol sale de `user_accounts_lnk`                    |
-| 0007 | `0007_shallow_famine.sql`             | `owners` + `owner_account_lnk`                                         |
-| 0008 | `0008_aspiring_brood.sql`             | `users`: −`tax_id`                                                     |
-| 0009 | `0009_acoustic_maverick.sql`          | `staff` + `staff_account_lnk`                                          |
-| 0015 | `0015_friendly_kabuki.sql`            | `payments` → `orders`; +`quantity`, `provider`, `metadata`; −`club_id` |
-| 0016 | `0016_bent_stranger.sql`              | Tabla `tickets_sold` (`order_id`, `qr_code`)                           |
-| 0017 | `0017_grey_pixie.sql`                 | Tabla `password_reset_tokens`                                          |
-| 0020 | `0020_equal_shaman.sql`               | `addresses`: +`latitude`, +`longitude`                                 |
-| —    | `20260803212105_typical_alice.sql`    | `orders.external_order_id` (UNIQUE)                                    |
-| —    | `20260812165400_redundant_leader.sql` | Tabla `api_error_records` e índice de retención                        |
-| —    | `20260812214325_clean_warbound.sql`   | `api_error_records.fingerprint` e índice de deduplicación              |
+| #    | Archivo                                               | Cambio principal                                                                                                                |
+| ---- | ----------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| 0000 | `0000_ambitious_nocturne.sql`                         | Esquema inicial (17 tablas base)                                                                                                |
+| 0001 | `0001_user_identity_fields.sql`                       | `users`: +`birthday`, +`national_id`, +`tax_id`; −`age`                                                                         |
+| 0002 | `0002_addresses_entity.sql`                           | `addresses` + `*_addresses_lnk`; domicilio sale de `clubs`                                                                      |
+| 0003 | `0003_fine_prism.sql`                                 | Tabla `staff_invitations`                                                                                                       |
+| 0004 | `0004_cloudy_betty_ross.sql`                          | `staff_invitations.invited_by_user_id`                                                                                          |
+| 0005 | `0005_complex_gorilla_man.sql`                        | `clubs.owner_user_id`                                                                                                           |
+| 0006 | `0006_blushing_kronos.sql`                            | `account_role_lnk`; rol sale de `user_accounts_lnk`                                                                             |
+| 0007 | `0007_shallow_famine.sql`                             | `owners` + `owner_account_lnk`                                                                                                  |
+| 0008 | `0008_aspiring_brood.sql`                             | `users`: −`tax_id`                                                                                                              |
+| 0009 | `0009_acoustic_maverick.sql`                          | `staff` + `staff_account_lnk`                                                                                                   |
+| 0015 | `0015_friendly_kabuki.sql`                            | `payments` → `orders`; +`quantity`, `provider`, `metadata`; −`club_id`                                                          |
+| 0016 | `0016_bent_stranger.sql`                              | Tabla `tickets_sold` (`order_id`, `qr_code`)                                                                                    |
+| 0017 | `0017_grey_pixie.sql`                                 | Tabla `password_reset_tokens`                                                                                                   |
+| 0020 | `0020_equal_shaman.sql`                               | `addresses`: +`latitude`, +`longitude`                                                                                          |
+| —    | `20260803212105_typical_alice.sql`                    | `orders.external_order_id` (UNIQUE)                                                                                             |
+| —    | `20260812165400_redundant_leader.sql`                 | Tabla `api_error_records` e índice de retención                                                                                 |
+| —    | `20260812214325_clean_warbound.sql`                   | `api_error_records.fingerprint` e índice de deduplicación                                                                       |
+| —    | `20260814212201_organization-account-memberships.sql` | Organizaciones, membresías N:M, ownership de eventos e invitaciones; elimina `staff_location_lnk` y campos comerciales de owner |
 
 ### Comandos (desde `packages/db`)
 
@@ -589,25 +632,25 @@ Definidas en `packages/validators/src/database.ts`:
 
 Capa de acceso a datos en `src/repositories/`. Cada archivo agrupa las operaciones Drizzle de un dominio:
 
-| Archivo                           | Responsabilidad                                                      |
-| --------------------------------- | -------------------------------------------------------------------- |
-| `accounts.repository.ts`          | Cuentas (`accounts`), búsqueda por email, join con roles             |
-| `auth.repository.ts`              | Registro de cuenta + perfil, login lookup compuesto                  |
-| `clubs.repository.ts`             | CRUD de clubes con dirección (transacciones)                         |
-| `owners.repository.ts`            | Perfiles owner, actualización, invitador                             |
-| `orders/`                         | Create/update orders, lookup por provider id, tickets_sold, stock    |
-| `staff.repository.ts`             | Perfiles staff                                                       |
-| `users.repository.ts`             | Perfiles user                                                        |
-| `roles.repository.ts`             | Roles por nombre                                                     |
-| `staff-invitations.repository.ts` | Alta de invitaciones staff                                           |
-| `api-error-records/`              | Inserción deduplicada de diagnósticos saneados y limpieza por cutoff |
+| Directorio           | Responsabilidad                                                      |
+| -------------------- | -------------------------------------------------------------------- |
+| `accounts/`          | Cuentas (`accounts`), búsqueda por email, join con roles             |
+| `auth/`              | Registro de cuenta + perfil, login lookup compuesto                  |
+| `locations/`         | CRUD de ubicaciones con dirección                                    |
+| `events/`            | CRUD, ownership de organización y consultas públicas                 |
+| `organizations/`     | Membresía y settings de organización                                 |
+| `owners/`            | Perfiles owner                                                       |
+| `orders/`            | Create/update orders, lookup por provider id, tickets_sold, stock    |
+| `staff/`             | Personal y autorización por organización                             |
+| `staff-invitations/` | Invitaciones por organización y aceptación transaccional             |
+| `api-error-records/` | Inserción deduplicada de diagnósticos saneados y limpieza por cutoff |
 
 **Convenciones:**
 
-- Funciones exportadas con nombre (`findClubByDocumentId`, `createClubWithAddress`, …).
+- Funciones exportadas con nombre (`findLocationByDocumentId`, `findSoleOrganizationByOwnerDocumentId`, …).
 - Sin dependencias de NestJS ni excepciones HTTP — devolver `null` o lanzar `Error` genérico en fallos de persistencia inesperados.
 - El servicio en `apps/api` traduce `null` → `NotFoundException`, etc.
-- Tipos de entrada/salida del repositorio pueden definirse en el mismo archivo (`ClubUpsertInput`, `OwnerProfileRow`, …).
+- Tipos de entrada/salida del repositorio pueden definirse en el mismo archivo (`LocationUpsertInput`, `OwnerProfileRow`, …).
 - Nuevas funciones: exportar en `repositories/index.ts` (re-exportadas por `src/index.ts`).
 
 `api-error-records/` exporta `createApiErrorRecord`, `createApiErrorRecordUnlessRecent` y `deleteApiErrorRecordsBefore`. La API calcula la huella desde el input saneado y usa `createApiErrorRecordUnlessRecent` para insertar sólo cuando no existe una huella equivalente desde el cutoff de cinco minutos.
@@ -621,28 +664,28 @@ Capa de acceso a datos en `src/repositories/`. Cada archivo agrupa las operacion
 ### API (`apps/api`) — preferir repositorios
 
 ```ts
-import { findClubByDocumentId, createClubWithAddress } from '@repo/db'
+import { findLocationByDocumentId, createLocationWithAddress } from '@repo/db'
 
-const club = await findClubByDocumentId(documentId)
-if (!club) throw new NotFoundException(CLUB_MESSAGE.NOT_FOUND)
+const location = await findLocationByDocumentId(documentId)
+if (!location) throw new NotFoundException(LOCATION_MESSAGE.NOT_FOUND)
 
-const row = await createClubWithAddress(ownerId, input)
+const row = await createLocationWithAddress(ownerId, input)
 ```
 
 ### Acceso directo a `db` (seeds, scripts, casos excepcionales)
 
 ```ts
-import { db, users, clubs, staffInvitations } from '@repo/db'
+import { db, users, locations } from '@repo/db'
 import { eq, and } from 'drizzle-orm'
 
 // Buscar por documentId (API / JWT)
 const [user] = await db.select().from(users).where(eq(users.documentId, documentId)).limit(1)
 
 // FK interna por id entero
-const [club] = await db
+const [location] = await db
   .select()
-  .from(clubs)
-  .where(and(eq(clubs.documentId, clubDocumentId), eq(clubs.ownerId, owner.id)))
+  .from(locations)
+  .where(and(eq(locations.documentId, locationDocumentId), eq(locations.ownerId, owner.id)))
   .limit(1)
 ```
 

@@ -16,59 +16,15 @@ import {
   SelectItem,
   toast,
 } from '@repo/ui'
-import type { TFunction } from 'i18next'
 import { useResolveFieldError } from '@repo/i18n/client'
-import { useLocations } from '~/modules/locations/queries/use-locations-queries'
 import { postStaffInvitation } from '~/modules/staff/services/staff-invitations.service'
 
 const STAFF_USER_FORM_ID = 'staff-user-form'
 
 const EMPTY_STAFF_INVITATION_FORM_VALUES: CreateStaffInvitationInput = {
   email: '',
-  locationId: '',
   securityWord: '',
   expiresInMs: STAFF_INVITATION_EXPIRY_OPTIONS['12h'],
-}
-
-type LocationSelectFieldDisplayInput = {
-  isLoading: boolean
-  isError: boolean
-  locationCount: number
-  fieldError: string | null
-  t: TFunction<'staff'>
-}
-
-type LocationSelectFieldDisplay = {
-  placeholder: string
-  error: string | undefined
-}
-
-function getLocationSelectFieldDisplay({
-  isLoading,
-  isError,
-  locationCount,
-  fieldError,
-  t,
-}: LocationSelectFieldDisplayInput): LocationSelectFieldDisplay {
-  if (isLoading) {
-    return { placeholder: t('form.locationLoading'), error: fieldError ?? undefined }
-  }
-
-  if (isError) {
-    return {
-      placeholder: t('form.locationPlaceholder'),
-      error: t('form.locationsLoadError'),
-    }
-  }
-
-  if (locationCount === 0) {
-    return { placeholder: t('form.locationEmpty'), error: fieldError ?? undefined }
-  }
-
-  return {
-    placeholder: t('form.locationPlaceholder'),
-    error: fieldError ?? undefined,
-  }
 }
 
 export type StaffInvitationSuccess = {
@@ -85,11 +41,6 @@ type StaffUserFormProps = {
 export function StaffUserForm({ onInviteSuccess }: StaffUserFormProps) {
   const { t } = useTranslation('staff')
   const resolveFieldError = useResolveFieldError()
-  const {
-    data: locations = [],
-    isLoading: isLocationsLoading,
-    isError: isLocationsError,
-  } = useLocations()
 
   const form = useForm({
     defaultValues: EMPTY_STAFF_INVITATION_FORM_VALUES,
@@ -147,40 +98,6 @@ export function StaffUserForm({ onInviteSuccess }: StaffUserFormProps) {
                     aria-invalid={error ? true : undefined}
                   />
                 </Field>
-              )
-            }}
-          </form.Field>
-
-          <form.Field
-            name="locationId"
-            validators={{ onSubmit: createStaffInvitationSchema.shape.locationId }}
-          >
-            {(field) => {
-              const error = resolveFieldError(field.state.meta.errors)
-              const { placeholder: locationPlaceholder, error: locationFieldError } =
-                getLocationSelectFieldDisplay({
-                  isLoading: isLocationsLoading,
-                  isError: isLocationsError,
-                  locationCount: locations.length,
-                  fieldError: error,
-                  t,
-                })
-
-              return (
-                <SelectField
-                  label={t('form.location')}
-                  value={field.state.value || undefined}
-                  onValueChange={(value) => field.handleChange(value)}
-                  placeholder={locationPlaceholder}
-                  error={locationFieldError}
-                  disabled={isLocationsLoading || locations.length === 0}
-                >
-                  {locations.map((location) => (
-                    <SelectItem key={location.documentId} value={location.documentId}>
-                      {location.name}
-                    </SelectItem>
-                  ))}
-                </SelectField>
               )
             }}
           </form.Field>

@@ -4,8 +4,8 @@ import type { UserRole } from '../enums/user.ts'
 export interface CreateStaffInvitationResponse {
   documentId: string
   email: string
-  locationId: string
-  locationName: string
+  organizationId: string
+  organizationName: string
   invitedByOwnerId: string
   slug: string
   url: string
@@ -21,8 +21,8 @@ export interface CreateStaffInvitationResponse {
 export interface StaffInvitationPublicResponse {
   documentId: string
   email: string
-  locationId: string
-  locationName: string
+  organizationId: string
+  organizationName: string
   slug: string
   expiresAt: Date
   hasSecurityWord: boolean
@@ -32,8 +32,8 @@ export interface StaffPersonnelItem {
   documentId: string
   name: string
   email: string
-  locationId: string
-  locationName: string
+  organizationId: string
+  organizationName: string
   role: UserRole
   status: StaffStatus
   avatar: string | null

@@ -232,7 +232,7 @@ export function StaffInvitations({
           <TableHeader>
             <TableRow>
               <TableHead className="p-6">{t('invitationsTable.email')}</TableHead>
-              <TableHead className="p-6">{t('invitationsTable.venue')}</TableHead>
+              <TableHead className="p-6">{t('invitationsTable.organization')}</TableHead>
               <TableHead className="p-6">{t('invitationsTable.security')}</TableHead>
               <TableHead className="p-6">{t('invitationsTable.expires')}</TableHead>
               <TableHead className="p-6">{t('invitationsTable.status')}</TableHead>
@@ -247,7 +247,7 @@ export function StaffInvitations({
                 </TableCell>
                 <TableCell className="p-6">
                   <Badge variant="outline" size="sm">
-                    {invitation.clubName}
+                    {invitation.organizationName}
                   </Badge>
                 </TableCell>
                 <TableCell className="p-6 text-sm text-ink-muted">

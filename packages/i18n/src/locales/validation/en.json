@@ -54,8 +54,7 @@
       "cannotClear": "Your address is already saved and can't be left empty."
     },
     "invitation": {
-      "email": "Enter a valid email.",
-      "location": "Select a location."
+      "email": "Enter a valid email."
     },
     "location": {
       "name": "Location name is required.",
