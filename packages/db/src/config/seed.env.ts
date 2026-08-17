@@ -3,7 +3,7 @@ import { fileURLToPath } from 'node:url'
 import { config } from 'dotenv'
 import { seedEnvSchema } from '@repo/validators'
 
-config({ path: resolve(fileURLToPath(new URL('.', import.meta.url)), '../../../.env') })
+config({ path: resolve(fileURLToPath(new URL('.', import.meta.url)), '../../.env') })
 
 const result = seedEnvSchema.safeParse(process.env)
 

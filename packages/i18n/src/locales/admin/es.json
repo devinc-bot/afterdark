@@ -1,0 +1,15 @@
+{
+  "login": {
+    "subtitle": "Iniciá sesión con una cuenta autorizada."
+  },
+  "accessDenied": "No tienes acceso al panel de Admin.",
+  "nav": {
+    "language": "Idioma",
+    "signOut": "Cerrar sesión"
+  },
+  "home": {
+    "label": "Admin",
+    "title": "Tu espacio de administración está listo.",
+    "description": "Las herramientas de gestión de la plataforma aparecerán acá a medida que estén disponibles."
+  }
+}
