@@ -19,7 +19,7 @@ import {
 } from '@repo/ui'
 import { useNavigate, useRouterState } from '@tanstack/react-router'
 import { useCallback, useMemo, useRef, useState } from 'react'
-import { CalendarDays, LayoutGrid, MapPin, ShoppingBag, Ticket, Users } from 'lucide-react'
+import { CalendarDays, LayoutGrid, MapPin, QrCode, ShoppingBag, Ticket, Users } from 'lucide-react'
 import { USER_ROLE, type UserRole } from '@repo/types'
 import { clearAuthSession } from '~/modules/auth/utils/auth-storage.utils'
 import { AppShellLanguageSwitcher } from '~/modules/common/components/app-shell-language-switcher'
@@ -63,6 +63,11 @@ function buildPrimaryNav(t: TFunction<'dashboard'>, role?: UserRole): AppShellNa
       title: t('nav.sales'),
       url: DASHBOARD_ROUTES.sales(),
       icon: ShoppingBag,
+    },
+    {
+      title: t('nav.qrTicket'),
+      url: DASHBOARD_ROUTES.qrTicket(),
+      icon: QrCode,
     },
     {
       title: t('nav.users'),

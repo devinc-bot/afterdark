@@ -7,6 +7,16 @@ export const EVENT_FAQ_MAX_COUNT = 20
 export const EVENT_FAQ_QUESTION_MAX_LENGTH = 200
 export const EVENT_FAQ_ANSWER_MAX_LENGTH = 2000
 
+export const EVENT_DURATION_MIN_HOURS = 1
+export const EVENT_DURATION_MAX_HOURS = 72
+export const EVENT_DURATION_HOURS_STEP = 0.5
+
+export const eventDurationHoursSchema = z.coerce
+  .number({ message: 'validation:field.event.durationHours' })
+  .min(EVENT_DURATION_MIN_HOURS, 'validation:field.event.durationHours')
+  .max(EVENT_DURATION_MAX_HOURS, 'validation:field.event.durationHours')
+  .multipleOf(EVENT_DURATION_HOURS_STEP, 'validation:field.event.durationHours')
+
 function multipartUuidListSchema() {
   return z
     .union([z.string(), z.array(z.string())])
@@ -60,41 +70,17 @@ export const eventStatusSchema = z.enum([
   EVENT_STATUS.FINISHED,
 ])
 
-const eventDateRangeRefineForm = {
-  refine: (data: { startsAt: string; endsAt: string }) => {
-    const start = new Date(data.startsAt)
-    const end = new Date(data.endsAt)
-
-    if (Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) {
-      return true
-    }
-
-    return end > start
-  },
-  message: 'validation:field.event.endDateAfterStart' as const,
-  path: ['endsAt'] as const,
-}
-
-const eventDateRangeRefineApi = {
-  refine: (data: { startsAt: Date; endsAt: Date }) => data.endsAt > data.startsAt,
-  message: 'validation:field.event.endDateAfterStart' as const,
-  path: ['endsAt'] as const,
-}
-
 const createEventFieldsSchema = z.object({
   locationId: uuidSchema,
   name: z.string().trim().min(1, 'validation:field.event.name'),
   description: z.string().trim().min(1, 'validation:field.event.description'),
   startsAt: z.coerce.date({ message: 'validation:field.event.startDate' }),
-  endsAt: z.coerce.date({ message: 'validation:field.event.endDate' }),
+  durationHours: eventDurationHoursSchema,
   status: eventStatusSchema.default(EVENT_STATUS.PUBLISHED),
   faqs: eventFaqsSchema.default([]),
 })
 
-export const createEventSchema = createEventFieldsSchema.refine(eventDateRangeRefineApi.refine, {
-  message: eventDateRangeRefineApi.message,
-  path: [...eventDateRangeRefineApi.path],
-})
+export const createEventSchema = createEventFieldsSchema
 
 export type CreateEventInput = z.infer<typeof createEventSchema>
 
@@ -102,14 +88,9 @@ export const updateEventSchema = createEventSchema
 
 export type UpdateEventInput = z.infer<typeof updateEventSchema>
 
-export const updateEventMultipartSchema = createEventFieldsSchema
-  .extend({
-    keepImageIds: multipartUuidListSchema(),
-  })
-  .refine(eventDateRangeRefineApi.refine, {
-    message: eventDateRangeRefineApi.message,
-    path: [...eventDateRangeRefineApi.path],
-  })
+export const updateEventMultipartSchema = createEventFieldsSchema.extend({
+  keepImageIds: multipartUuidListSchema(),
+})
 
 export type UpdateEventMultipartInput = z.infer<typeof updateEventMultipartSchema>
 
@@ -120,30 +101,28 @@ export const eventFieldSchemas = {
   name: z.string().trim().min(1, 'validation:field.event.name'),
   description: z.string().trim().min(1, 'validation:field.event.description'),
   startsAt: z.string().trim().min(1, 'validation:field.event.startDate'),
-  endsAt: z.string().trim().min(1, 'validation:field.event.endDate'),
+  durationHours: z
+    .string()
+    .trim()
+    .min(1, 'validation:field.event.durationHours')
+    .refine((value) => eventDurationHoursSchema.safeParse(value).success, {
+      message: 'validation:field.event.durationHours',
+    }),
   status: eventStatusSchema,
   faqs: z.array(eventFaqItemSchema).max(EVENT_FAQ_MAX_COUNT, 'validation:field.event.faq.max'),
 }
 
-export const eventFormSchema = z.object(eventFieldSchemas).refine(eventDateRangeRefineForm.refine, {
-  message: eventDateRangeRefineForm.message,
-  path: [...eventDateRangeRefineForm.path],
-})
+export const eventFormSchema = z.object(eventFieldSchemas)
 
 export type EventFormValues = z.infer<typeof eventFormSchema>
 
-export const eventDetailsFormSchema = z
-  .object({
-    name: eventFieldSchemas.name,
-    description: eventFieldSchemas.description,
-    startsAt: eventFieldSchemas.startsAt,
-    endsAt: eventFieldSchemas.endsAt,
-    status: eventFieldSchemas.status,
-  })
-  .refine(eventDateRangeRefineForm.refine, {
-    message: eventDateRangeRefineForm.message,
-    path: [...eventDateRangeRefineForm.path],
-  })
+export const eventDetailsFormSchema = z.object({
+  name: eventFieldSchemas.name,
+  description: eventFieldSchemas.description,
+  startsAt: eventFieldSchemas.startsAt,
+  durationHours: eventFieldSchemas.durationHours,
+  status: eventFieldSchemas.status,
+})
 
 export type EventDetailsFormValues = z.infer<typeof eventDetailsFormSchema>
 

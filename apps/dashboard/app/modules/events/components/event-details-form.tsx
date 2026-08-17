@@ -3,10 +3,16 @@ import { useForm } from '@tanstack/react-form'
 import { useTranslation } from 'react-i18next'
 import type { EventImageResponse } from '@repo/types'
 import { EVENT_STATUS, type EventStatus } from '@repo/types'
-import { eventFieldSchemas, type EventDetailsFormValues } from '@repo/validators'
+import {
+  EVENT_DURATION_HOURS_STEP,
+  EVENT_DURATION_MAX_HOURS,
+  EVENT_DURATION_MIN_HOURS,
+  eventFieldSchemas,
+  type EventDetailsFormValues,
+} from '@repo/validators'
 import { useResolveFieldError } from '@repo/i18n/client'
 import {
-  DateTimeInput,
+  CalendarDateTimeInput,
   Field,
   Input,
   requiredFieldLabel,
@@ -42,15 +48,31 @@ function snapshotDetailsValues(values: EventDetailsValues): string {
     name: values.name,
     description: values.description,
     startsAt: values.startsAt,
-    endsAt: values.endsAt,
+    durationHours: values.durationHours,
     status: values.status,
     existingImageIds: values.existingImages.map((image) => image.documentId).sort(),
     newImages: values.eventImg.map((file) => `${file.name}:${file.size}:${file.lastModified}`),
   })
 }
 
+function sanitizeDurationHours(value: string): string | null {
+  const normalizedValue = value.replace(',', '.')
+  if (!/^\d*(\.\d?)?$/.test(normalizedValue)) {
+    return null
+  }
+
+  const durationHours = Number(normalizedValue)
+  if (!Number.isFinite(durationHours)) {
+    return null
+  }
+
+  return durationHours > EVENT_DURATION_MAX_HOURS
+    ? String(EVENT_DURATION_MAX_HOURS)
+    : normalizedValue
+}
+
 export function EventDetailsForm({ ref, defaultValues, onDirtyChange }: EventDetailsFormProps) {
-  const { t } = useTranslation('events')
+  const { t, i18n } = useTranslation('events')
   const resolveFieldError = useResolveFieldError()
   const initialSnapshotRef = useRef(snapshotDetailsValues(defaultValues))
 
@@ -73,7 +95,7 @@ export function EventDetailsForm({ ref, defaultValues, onDirtyChange }: EventDet
           name: values.name,
           description: values.description,
           startsAt: values.startsAt,
-          endsAt: values.endsAt,
+          durationHours: values.durationHours,
           status: values.status,
         },
         existingImages: values.existingImages,
@@ -175,12 +197,15 @@ export function EventDetailsForm({ ref, defaultValues, onDirtyChange }: EventDet
                     htmlFor={field.name}
                     error={error}
                   >
-                    <DateTimeInput
+                    <CalendarDateTimeInput
                       id={field.name}
                       name={field.name}
                       value={field.state.value}
+                      placeholder={t('form.startsAtPlaceholder')}
+                      locale={i18n.language.startsWith('es') ? 'es' : 'en'}
+                      timeLabel={t('form.time')}
                       onBlur={field.handleBlur}
-                      onChange={(event) => field.handleChange(event.target.value)}
+                      onValueChange={field.handleChange}
                       aria-invalid={error ? true : undefined}
                     />
                   </Field>
@@ -189,46 +214,35 @@ export function EventDetailsForm({ ref, defaultValues, onDirtyChange }: EventDet
             </form.Field>
 
             <form.Field
-              name="endsAt"
-              validators={{
-                onSubmit: ({ value, fieldApi }) => {
-                  const base = eventFieldSchemas.endsAt.safeParse(value)
-                  if (!base.success) {
-                    return base.error.issues[0]?.message
-                  }
-
-                  const startsAt = fieldApi.form.getFieldValue('startsAt')
-                  if (startsAt) {
-                    const start = new Date(startsAt)
-                    const end = new Date(value)
-                    if (
-                      !Number.isNaN(start.getTime()) &&
-                      !Number.isNaN(end.getTime()) &&
-                      end <= start
-                    ) {
-                      return 'validation:field.event.endDateAfterStart'
-                    }
-                  }
-
-                  return undefined
-                },
-              }}
+              name="durationHours"
+              validators={{ onSubmit: eventFieldSchemas.durationHours }}
             >
               {(field) => {
                 const error = resolveFieldError(field.state.meta.errors)
 
                 return (
                   <Field
-                    label={requiredFieldLabel(t('form.endsAt'))}
+                    label={requiredFieldLabel(t('form.durationHours'))}
                     htmlFor={field.name}
                     error={error}
                   >
-                    <DateTimeInput
+                    <Input
                       id={field.name}
                       name={field.name}
+                      type="number"
+                      inputMode="decimal"
+                      min={EVENT_DURATION_MIN_HOURS}
+                      max={EVENT_DURATION_MAX_HOURS}
+                      step={EVENT_DURATION_HOURS_STEP}
                       value={field.state.value}
+                      placeholder={t('form.durationHoursPlaceholder')}
                       onBlur={field.handleBlur}
-                      onChange={(event) => field.handleChange(event.target.value)}
+                      onChange={(event) => {
+                        const durationHours = sanitizeDurationHours(event.target.value)
+                        if (durationHours !== null) {
+                          field.handleChange(durationHours)
+                        }
+                      }}
                       aria-invalid={error ? true : undefined}
                     />
                   </Field>

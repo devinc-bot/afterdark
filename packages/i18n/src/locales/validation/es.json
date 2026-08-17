@@ -92,6 +92,7 @@
       "name": "El nombre del evento es requerido.",
       "description": "La descripción es requerida.",
       "startDate": "La fecha y hora de inicio son requeridas.",
+      "durationHours": "Seleccioná una duración válida.",
       "endDate": "La fecha y hora de finalización son requeridas.",
       "location": "Seleccioná una ubicación.",
       "endDateAfterStart": "La fecha y hora de inicio debe ser anterior a la de finalización.",

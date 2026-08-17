@@ -12,10 +12,7 @@ function appendEventFields(formData: FormData, input: CreateEventInput | UpdateE
     'startsAt',
     input.startsAt instanceof Date ? input.startsAt.toISOString() : String(input.startsAt)
   )
-  formData.append(
-    'endsAt',
-    input.endsAt instanceof Date ? input.endsAt.toISOString() : String(input.endsAt)
-  )
+  formData.append('durationHours', String(input.durationHours))
   formData.append('status', input.status)
   formData.append('faqs', JSON.stringify(input.faqs ?? []))
 }
