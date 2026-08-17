@@ -4,6 +4,8 @@ import esCommon from '../locales/common/es.json' with { type: 'json' }
 import enCommon from '../locales/common/en.json' with { type: 'json' }
 import esAuth from '../locales/auth/es.json' with { type: 'json' }
 import enAuth from '../locales/auth/en.json' with { type: 'json' }
+import esAdmin from '../locales/admin/es.json' with { type: 'json' }
+import enAdmin from '../locales/admin/en.json' with { type: 'json' }
 import esValidation from '../locales/validation/es.json' with { type: 'json' }
 import enValidation from '../locales/validation/en.json' with { type: 'json' }
 import esErrors from '../locales/errors/es.json' with { type: 'json' }
@@ -40,6 +42,7 @@ export const SERVER_RESOURCES: ServerResources = {
   es: {
     common: esCommon,
     auth: esAuth,
+    admin: esAdmin,
     validation: esValidation,
     errors: esErrors,
     emails: esEmails,
@@ -57,6 +60,7 @@ export const SERVER_RESOURCES: ServerResources = {
   en: {
     common: enCommon,
     auth: enAuth,
+    admin: enAdmin,
     validation: enValidation,
     errors: enErrors,
     emails: enEmails,

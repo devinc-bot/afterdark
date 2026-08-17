@@ -14,6 +14,10 @@ const localeImports: Record<
     es: () => import('../locales/auth/es.json'),
     en: () => import('../locales/auth/en.json'),
   },
+  admin: {
+    es: () => import('../locales/admin/es.json'),
+    en: () => import('../locales/admin/en.json'),
+  },
   validation: {
     es: () => import('../locales/validation/es.json'),
     en: () => import('../locales/validation/en.json'),

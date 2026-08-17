@@ -1,0 +1,15 @@
+{
+  "login": {
+    "subtitle": "Sign in with an authorized account."
+  },
+  "accessDenied": "You do not have access to the Admin panel.",
+  "nav": {
+    "language": "Language",
+    "signOut": "Sign out"
+  },
+  "home": {
+    "label": "Admin",
+    "title": "Your admin workspace is ready.",
+    "description": "Platform management tools will appear here as they become available."
+  }
+}

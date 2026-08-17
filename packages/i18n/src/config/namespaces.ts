@@ -1,6 +1,7 @@
 export const NAMESPACE = {
   COMMON: 'common',
   AUTH: 'auth',
+  ADMIN: 'admin',
   VALIDATION: 'validation',
   ERRORS: 'errors',
   EMAILS: 'emails',
@@ -23,6 +24,7 @@ export const DEFAULT_NAMESPACE: Namespace = NAMESPACE.COMMON
 export const ALL_NAMESPACES: Namespace[] = [
   NAMESPACE.COMMON,
   NAMESPACE.AUTH,
+  NAMESPACE.ADMIN,
   NAMESPACE.VALIDATION,
   NAMESPACE.ERRORS,
   NAMESPACE.EMAILS,
