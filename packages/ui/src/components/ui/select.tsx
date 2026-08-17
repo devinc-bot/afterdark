@@ -169,7 +169,11 @@ function SelectField({
 
   return (
     <div className={cn('flex w-full flex-col gap-2', containerClassName)}>
-      {label ? <Label htmlFor={selectId}>{label}</Label> : null}
+      {label ? (
+        <Label htmlFor={selectId} variant="field">
+          {label}
+        </Label>
+      ) : null}
       <div className="flex flex-col gap-1.5">
         <Select disabled={disabled} {...selectProps}>
           <SelectTrigger

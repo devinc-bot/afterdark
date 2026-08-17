@@ -1,13 +1,15 @@
 import { EVENT_STATUS, type EventResponse } from '@repo/types'
-import type { EventFormValues } from '@repo/validators'
+import { eventDurationHoursSchema, type EventFormValues } from '@repo/validators'
 import type { EventRecordItem } from '~/modules/events/components/event-record'
+
+const MILLISECONDS_PER_HOUR = 3_600_000
 
 export const EMPTY_EVENT_FORM_VALUES: EventFormValues = {
   locationId: '',
   name: '',
   description: '',
   startsAt: '',
-  endsAt: '',
+  durationHours: '',
   status: EVENT_STATUS.PUBLISHED,
   faqs: [],
 }
@@ -17,13 +19,24 @@ function formatDateForDatetimeLocal(value: Date): string {
   return `${value.getFullYear()}-${pad(value.getMonth() + 1)}-${pad(value.getDate())}T${pad(value.getHours())}:${pad(value.getMinutes())}`
 }
 
+function getEventDurationHours(event: EventResponse): string {
+  const durationHours =
+    (new Date(event.endsAt).getTime() - new Date(event.startsAt).getTime()) / MILLISECONDS_PER_HOUR
+
+  if (!eventDurationHoursSchema.safeParse(durationHours).success) {
+    return ''
+  }
+
+  return String(durationHours)
+}
+
 export function eventResponseToFormValues(event: EventResponse): EventFormValues {
   return {
     locationId: event.locationId,
     name: event.name,
     description: event.description,
     startsAt: formatDateForDatetimeLocal(new Date(event.startsAt)),
-    endsAt: formatDateForDatetimeLocal(new Date(event.endsAt)),
+    durationHours: getEventDurationHours(event),
     status: event.status,
     faqs: event.faqs.map(({ question, answer }) => ({ question, answer })),
   }

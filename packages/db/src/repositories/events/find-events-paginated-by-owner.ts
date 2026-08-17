@@ -19,7 +19,7 @@ export async function findEventsPaginatedByOwner(
   const [rows, totalRows] = await Promise.all([
     eventsWithLocationQuery()
       .where(where)
-      .orderBy(desc(events.startsAt))
+      .orderBy(desc(events.createdAt))
       .limit(limit)
       .offset(offset),
     db.select({ total: count() }).from(events).where(where),
