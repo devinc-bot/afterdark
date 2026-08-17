@@ -74,6 +74,13 @@ export { Input, type InputProps } from './components/ui/input.tsx'
 export { DateInput, type DateInputProps } from './components/ui/date-input.tsx'
 export { DateTimeInput, type DateTimeInputProps } from './components/ui/datetime-input.tsx'
 export {
+  CalendarDateTimeInput,
+  type CalendarDateTimeInputProps,
+} from './components/ui/calendar-date-time-input.tsx'
+export { Calendar, CalendarDayButton } from './components/ui/calendar.tsx'
+export { InputGroup, InputGroupAddon, InputGroupInput } from './components/ui/input-group.tsx'
+export { Popover, PopoverContent, PopoverTrigger } from './components/ui/popover.tsx'
+export {
   KpiInformation,
   kpiInformationVariants,
   type KpiInformationProps,

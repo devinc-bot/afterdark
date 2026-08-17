@@ -42,7 +42,7 @@ function buildDetailsDefaults(event?: EventResponse): EventDetailsValues {
     name: fields.name,
     description: fields.description,
     startsAt: fields.startsAt,
-    endsAt: fields.endsAt,
+    durationHours: fields.durationHours,
     status: fields.status,
     existingImages: event?.images ?? [],
     eventImg: [],

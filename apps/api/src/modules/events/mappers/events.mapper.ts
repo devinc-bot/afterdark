@@ -18,6 +18,8 @@ import type {
 } from '@repo/types'
 import type { CreateEventInput, UpdateEventInput } from '@repo/validators'
 
+const MILLISECONDS_PER_HOUR = 3_600_000
+
 export function toPublicEventOrganizer(row: PublishedEventOrganizerRow): PublicEventOrganizer {
   const organizationName = row.organizationName?.trim()
   const personalName = `${row.name} ${row.lastName}`.trim()
@@ -155,7 +157,7 @@ export function toEventUpsertInput(
     name: input.name,
     description: input.description,
     startsAt: input.startsAt,
-    endsAt: input.endsAt,
+    endsAt: new Date(input.startsAt.getTime() + input.durationHours * MILLISECONDS_PER_HOUR),
     status: input.status,
     faqs: input.faqs ?? [],
   }

@@ -186,6 +186,12 @@ test('uses direct organization ownership for owner and public event queries', as
     status: EVENT_STATUS.DRAFT,
     faqs: [],
   })
+  await db.run(sql`
+    UPDATE events SET created_at = 100 WHERE id = ${first.event.id}
+  `)
+  await db.run(sql`
+    UPDATE events SET created_at = 200 WHERE id = ${second.event.id}
+  `)
 
   const ownerEvents = await findEventsPaginatedByOwner({
     ownerDocumentId: 'owner-one',
@@ -194,8 +200,8 @@ test('uses direct organization ownership for owner and public event queries', as
   })
   assert.equal(ownerEvents.total, 2)
   assert.deepEqual(
-    ownerEvents.rows.map(({ event }) => event.documentId).sort(),
-    [first.event.documentId, second.event.documentId].sort()
+    ownerEvents.rows.map(({ event }) => event.documentId),
+    [second.event.documentId, first.event.documentId]
   )
   assert.equal(
     (await findEventOwnedByOwnerDocumentId(first.event.documentId, 'owner-one'))?.id,

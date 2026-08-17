@@ -18,6 +18,7 @@ import type {
   PaginatedResponse,
   PurchasedTicketQrResponse,
   PurchasedTicketResponse,
+  TicketCheckInResponse,
   TicketResponse,
 } from '@repo/types'
 import { USER_ROLE } from '@repo/types'
@@ -26,25 +27,30 @@ import {
   listPurchasedTicketsQuerySchema,
   listTicketsQuerySchema,
   ticketSoldDocumentIdSchema,
+  ticketCheckInSchema,
   updateTicketSchema,
   uuidSchema,
   type CreateTicketInput,
   type ListPurchasedTicketsQueryInput,
   type ListTicketsQueryInput,
+  type TicketCheckInInput,
   type UpdateTicketInput,
 } from '@repo/validators'
+import { TranslationService } from '@repo/i18n/server'
 import { CurrentUser } from '../../common/decorators/current-user.decorator'
 import { Roles } from '../../common/decorators/roles.decorator'
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard'
 import { RolesGuard } from '../../common/guards/roles.guard'
 import { ZodValidationPipe } from '../../common/pipes/zod-validation.pipe'
 import { CreateTicketUseCase } from '../application/create-ticket.use-case'
+import { CheckInTicketUseCase } from '../application/check-in-ticket.use-case'
 import { DeleteTicketUseCase } from '../application/delete-ticket.use-case'
 import { GetTicketByDocumentIdUseCase } from '../application/get-ticket-by-document-id.use-case'
 import { ListMyTicketsUseCase } from '../application/list-my-tickets.use-case'
 import { ListPurchasedTicketsUseCase } from '../application/list-purchased-tickets.use-case'
 import { IssuePurchasedTicketQrUseCase } from '../application/issue-purchased-ticket-qr.use-case'
 import { UpdateTicketUseCase } from '../application/update-ticket.use-case'
+import { toTicketCheckInHttpResponse } from './ticket-check-in-http.mapper'
 
 @Controller(API_ROUTES.tickets.prefix)
 export class TicketsController {
@@ -54,11 +60,14 @@ export class TicketsController {
     private readonly listPurchasedTicketsUseCase: ListPurchasedTicketsUseCase,
     @Inject(IssuePurchasedTicketQrUseCase)
     private readonly issuePurchasedTicketQrUseCase: IssuePurchasedTicketQrUseCase,
+    @Inject(CheckInTicketUseCase)
+    private readonly checkInTicketUseCase: CheckInTicketUseCase,
     @Inject(GetTicketByDocumentIdUseCase)
     private readonly getTicketByDocumentIdUseCase: GetTicketByDocumentIdUseCase,
     @Inject(CreateTicketUseCase) private readonly createTicketUseCase: CreateTicketUseCase,
     @Inject(UpdateTicketUseCase) private readonly updateTicketUseCase: UpdateTicketUseCase,
-    @Inject(DeleteTicketUseCase) private readonly deleteTicketUseCase: DeleteTicketUseCase
+    @Inject(DeleteTicketUseCase) private readonly deleteTicketUseCase: DeleteTicketUseCase,
+    @Inject(TranslationService) private readonly ts: TranslationService
   ) {}
 
   @Get(API_ROUTES.tickets.path.list())
@@ -91,6 +100,23 @@ export class TicketsController {
     ticketSoldDocumentId: string
   ): Promise<PurchasedTicketQrResponse> {
     return this.issuePurchasedTicketQrUseCase.execute(user.sub, ticketSoldDocumentId)
+  }
+
+  @Post(API_ROUTES.tickets.path.checkIns())
+  @HttpCode(HttpStatus.OK)
+  @Roles([USER_ROLE.OWNER, USER_ROLE.STAFF])
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  async checkInTicket(
+    @CurrentUser() user: JwtPayload,
+    @Body(new ZodValidationPipe(ticketCheckInSchema)) body: TicketCheckInInput
+  ): Promise<TicketCheckInResponse> {
+    const result = await this.checkInTicketUseCase.execute({
+      operatorDocumentId: user.sub,
+      operatorRole: user.role,
+      token: body.token,
+    })
+
+    return toTicketCheckInHttpResponse(result, (code) => this.ts.translateError(code))
   }
 
   @Get(API_ROUTES.tickets.path.get(':documentId'))

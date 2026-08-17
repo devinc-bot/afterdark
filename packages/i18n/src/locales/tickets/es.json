@@ -4,6 +4,33 @@
     "description": "Administrá los tipos de entrada, precios, disponibilidad y estado de venta por club.",
     "metaTitle": "Gestión de tickets · {appNameAdmin}"
   },
+  "checkIn": {
+    "cameraLoading": "Preparando la cámara…",
+    "cameraInstruction": "Ubicá el código QR dentro del recuadro.",
+    "submitting": "Validando ticket…",
+    "cameraErrorTitle": "No pudimos acceder a la cámara",
+    "cameraErrorDescription": "Revisá los permisos de la cámara e intentá nuevamente.",
+    "retry": "Reintentar",
+    "success": "Ticket escaneado correctamente",
+    "invalid": "El ticket no es válido o no pertenece a Event Flow",
+    "expired": "El código QR del ticket venció",
+    "used": "Este ticket ya fue usado",
+    "scanNext": "Escanear siguiente ticket",
+    "notProvided": "No informado",
+    "eventSection": "Evento",
+    "purchaserSection": "Comprador",
+    "fields": {
+      "event": "Evento",
+      "dateTime": "Fecha y hora",
+      "location": "Ubicación",
+      "ticket": "Ticket",
+      "ticketType": "Tipo de entrada",
+      "purchaser": "Nombre",
+      "email": "Correo electrónico",
+      "phone": "Teléfono",
+      "checkedInAt": "Escaneado"
+    }
+  },
   "tabs": {
     "active": "Activos",
     "inactive": "Inactivos"

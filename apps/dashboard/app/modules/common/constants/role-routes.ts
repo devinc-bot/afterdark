@@ -4,6 +4,7 @@ import { DASHBOARD_ROUTES } from './routes'
 /** Rutas accesibles por staff (prefijos; incluye subrutas). */
 export const STAFF_ALLOWED_PATH_PREFIXES = [
   DASHBOARD_ROUTES.home(),
+  DASHBOARD_ROUTES.qrTicket(),
   DASHBOARD_ROUTES.settings(),
 ] as const
 
@@ -14,6 +15,7 @@ export const OWNER_ALLOWED_PATH_PREFIXES = [
   DASHBOARD_ROUTES.tickets(),
   DASHBOARD_ROUTES.events(),
   DASHBOARD_ROUTES.sales(),
+  DASHBOARD_ROUTES.qrTicket(),
   DASHBOARD_ROUTES.staff(),
   DASHBOARD_ROUTES.settings(),
 ] as const

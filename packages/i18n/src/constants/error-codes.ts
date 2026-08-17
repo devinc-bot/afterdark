@@ -66,6 +66,9 @@ export const TICKET_ERROR_CODE = {
   DELETE_FAILED: 'ticket.DELETE_FAILED',
   LIST_FAILED: 'ticket.LIST_FAILED',
   HAS_PAYMENTS: 'ticket.HAS_PAYMENTS',
+  CHECK_IN_INVALID: 'ticket.CHECK_IN_INVALID',
+  CHECK_IN_EXPIRED: 'ticket.CHECK_IN_EXPIRED',
+  CHECK_IN_USED: 'ticket.CHECK_IN_USED',
 } as const
 
 export const FILE_ERROR_CODE = {

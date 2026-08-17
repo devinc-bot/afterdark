@@ -78,7 +78,7 @@ const input = {
   name: event.name,
   description: event.description,
   startsAt: event.startsAt,
-  endsAt: event.endsAt,
+  durationHours: 4 as const,
   status: EVENT_STATUS.DRAFT,
   faqs: [],
 }
@@ -92,6 +92,10 @@ test('creates an event for the owner sole organization', async () => {
 
   assert.equal((state.createInput as { organizationId: number }).organizationId, organization.id)
   assert.equal((state.createInput as { locationId: number }).locationId, location.id)
+  assert.equal(
+    (state.createInput as { endsAt: Date }).endsAt.getTime(),
+    event.startsAt.getTime() + 4 * 3_600_000
+  )
 })
 
 test('updates an event without changing its authorized organization', async () => {
@@ -106,6 +110,10 @@ test('updates an event without changing its authorized organization', async () =
   )
 
   assert.equal((state.updateInput as { organizationId: number }).organizationId, organization.id)
+  assert.equal(
+    (state.updateInput as { endsAt: Date }).endsAt.getTime(),
+    event.startsAt.getTime() + 4 * 3_600_000
+  )
 })
 
 test('fails before persistence when owner organization context is invalid', async () => {

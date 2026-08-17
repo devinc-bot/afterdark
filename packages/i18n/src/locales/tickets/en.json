@@ -4,6 +4,33 @@
     "description": "Manage ticket types, prices, availability and sale status per club.",
     "metaTitle": "Ticket management · {appNameAdmin}"
   },
+  "checkIn": {
+    "cameraLoading": "Preparing the camera…",
+    "cameraInstruction": "Place the QR code inside the frame.",
+    "submitting": "Validating ticket…",
+    "cameraErrorTitle": "We couldn't access the camera",
+    "cameraErrorDescription": "Check the camera permissions and try again.",
+    "retry": "Retry",
+    "success": "Ticket scanned successfully",
+    "invalid": "Invalid ticket or it does not belong to Event Flow",
+    "expired": "The ticket has expired",
+    "used": "The ticket has already been used",
+    "scanNext": "Scan next ticket",
+    "notProvided": "Not provided",
+    "eventSection": "Event",
+    "purchaserSection": "Purchaser",
+    "fields": {
+      "event": "Event",
+      "dateTime": "Date and time",
+      "location": "Location",
+      "ticket": "Ticket",
+      "ticketType": "Ticket type",
+      "purchaser": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "checkedInAt": "Scanned"
+    }
+  },
   "tabs": {
     "active": "Active",
     "inactive": "Inactive"

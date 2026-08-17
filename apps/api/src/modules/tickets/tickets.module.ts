@@ -3,6 +3,7 @@ import { AuthModule } from '../auth/auth.module'
 import { JwtAuthGuard } from '../common/guards/jwt-auth.guard'
 import { RolesGuard } from '../common/guards/roles.guard'
 import { CreateTicketUseCase } from './application/create-ticket.use-case'
+import { CheckInTicketUseCase } from './application/check-in-ticket.use-case'
 import { DeleteTicketUseCase } from './application/delete-ticket.use-case'
 import { GetTicketByDocumentIdUseCase } from './application/get-ticket-by-document-id.use-case'
 import { ListMyTicketsUseCase } from './application/list-my-tickets.use-case'
@@ -18,6 +19,7 @@ import { TicketsController } from './presentation/tickets.controller'
     ListMyTicketsUseCase,
     ListPurchasedTicketsUseCase,
     IssuePurchasedTicketQrUseCase,
+    CheckInTicketUseCase,
     GetTicketByDocumentIdUseCase,
     CreateTicketUseCase,
     UpdateTicketUseCase,

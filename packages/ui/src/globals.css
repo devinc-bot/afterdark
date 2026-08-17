@@ -214,6 +214,7 @@
   --animate-landing-fade: landing-fade 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
   --animate-accordion-down: accordion-down 0.24s cubic-bezier(0.22, 1, 0.36, 1);
   --animate-accordion-up: accordion-up 0.24s cubic-bezier(0.22, 1, 0.36, 1);
+  --animate-ticket-scan-line: ticket-scan-line 2.4s cubic-bezier(0.45, 0, 0.55, 1) infinite;
 
   @keyframes accordion-down {
     from {
@@ -287,6 +288,17 @@
     100% {
       transform: scale(1) translate(0, 0);
       opacity: 0.35;
+    }
+  }
+
+  /* Full-height traveler: line sits at top, translateY walks it top↔bottom. */
+  @keyframes ticket-scan-line {
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0);
+    }
+    50% {
+      transform: translate3d(0, calc(100% - 2px), 0);
     }
   }
 }
@@ -413,6 +425,10 @@ html[data-theme='light'] {
     animation: var(--animate-hero-drift);
   }
 
+  .animate-ticket-scan-line {
+    animation: var(--animate-ticket-scan-line);
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .animate-landing-fade,
     .animate-hero-drift,
@@ -421,6 +437,12 @@ html[data-theme='light'] {
       filter: none !important;
       opacity: 1 !important;
       transform: none !important;
+    }
+
+    .animate-ticket-scan-line {
+      animation: none !important;
+      /* % is relative to the full-height traveler → parks the 2px line mid-frame */
+      transform: translate3d(0, calc(50% - 1px), 0) !important;
     }
   }
 }

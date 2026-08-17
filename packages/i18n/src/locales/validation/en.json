@@ -92,6 +92,7 @@
       "name": "Event name is required.",
       "description": "Description is required.",
       "startDate": "Start date and time are required.",
+      "durationHours": "Select a valid duration.",
       "endDate": "End date and time are required.",
       "location": "Select a location.",
       "endDateAfterStart": "Start date and time must be before the end date and time.",
