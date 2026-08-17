@@ -18,10 +18,10 @@ export class ListStaffInvitationsUseCase {
     try {
       const rows = await findStaffInvitationsByOwnerDocumentId(inviterDocumentId)
 
-      return rows.map(({ invitation, locationDocumentId, locationName }) =>
+      return rows.map(({ invitation, organizationDocumentId, organizationName }) =>
         toStaffInvitationResponse(
           invitation,
-          { documentId: locationDocumentId, name: locationName },
+          { documentId: organizationDocumentId, name: organizationName },
           inviter.documentId
         )
       )

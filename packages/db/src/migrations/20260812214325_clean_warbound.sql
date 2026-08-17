@@ -1,0 +1,2 @@
+ALTER TABLE `api_error_records` ADD `fingerprint` text(64) DEFAULT 'legacy' NOT NULL;--> statement-breakpoint
+CREATE INDEX `api_error_records_fingerprint_created_at_idx` ON `api_error_records` (`fingerprint`,`created_at`);

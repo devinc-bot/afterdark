@@ -181,7 +181,7 @@ function StaffUserRecordRow({
       </TableCell>
       <TableCell className="p-6">
         <Badge variant="outline" size="sm">
-          {record.clubName}
+          {record.organizationName}
         </Badge>
       </TableCell>
       <TableCell className="p-6">
@@ -339,7 +339,7 @@ export function StaffUserRecords({
                 <TableHeader>
                   <TableRow>
                     <TableHead className="p-6">{t('table.name')}</TableHead>
-                    <TableHead className="p-6">{t('table.venue')}</TableHead>
+                    <TableHead className="p-6">{t('table.organization')}</TableHead>
                     <TableHead className="p-6">{t('table.role')}</TableHead>
                     <TableHead className="p-6">{t('table.status')}</TableHead>
                     <TableHead className="text-right p-6">{t('table.actions')}</TableHead>

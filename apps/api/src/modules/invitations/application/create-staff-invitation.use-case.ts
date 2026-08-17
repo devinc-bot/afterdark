@@ -1,14 +1,8 @@
-import {
-  ConflictException,
-  Inject,
-  Injectable,
-  InternalServerErrorException,
-  NotFoundException,
-} from '@nestjs/common'
+import { ConflictException, Inject, Injectable, InternalServerErrorException } from '@nestjs/common'
 import {
   accountExistsByEmail,
   createStaffInvitation as insertStaffInvitation,
-  findLocationByDocumentId,
+  findSoleOrganizationByOwnerDocumentId,
 } from '@repo/db'
 import { TranslationService } from '@repo/i18n/server'
 import { CreateStaffInvitationResponse, STAFF_INVITATION_STATUS, USER_ROLE } from '@repo/types'
@@ -36,16 +30,16 @@ export class CreateStaffInvitationUseCase {
       throw new ConflictException(this.ts.translateError('auth.EMAIL_ALREADY_REGISTERED'))
     }
 
-    const location = await findLocationByDocumentId(input.locationId)
+    const organization = await findSoleOrganizationByOwnerDocumentId(inviterDocumentId)
 
-    if (!location) {
-      throw new NotFoundException(this.ts.translateError('invitation.CLUB_NOT_FOUND'))
+    if (!organization) {
+      throw new InternalServerErrorException(this.ts.translateError('invitation.CREATE_FAILED'))
     }
 
     const { payload, slug, expiresAt, expiresInSeconds, securityWordHash } =
       await buildStaffInvitationPayload({
         email: input.email,
-        locationDocumentId: location.documentId,
+        organizationDocumentId: organization.documentId,
         securityWord: input.securityWord,
         expiresInMs: input.expiresInMs,
       })
@@ -55,7 +49,7 @@ export class CreateStaffInvitationUseCase {
     try {
       const invitation = await insertStaffInvitation({
         email: input.email,
-        locationId: location.id,
+        organizationId: organization.id,
         invitedByOwnerId: inviter.id,
         slug,
         token,
@@ -65,7 +59,7 @@ export class CreateStaffInvitationUseCase {
         role: USER_ROLE.STAFF,
       })
 
-      return toStaffInvitationResponse(invitation, location, inviter.documentId)
+      return toStaffInvitationResponse(invitation, organization, inviter.documentId)
     } catch {
       throw new InternalServerErrorException(this.ts.translateError('invitation.CREATE_FAILED'))
     }

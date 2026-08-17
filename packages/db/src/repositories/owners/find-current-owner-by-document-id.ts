@@ -3,6 +3,8 @@ import { db } from '../../client.ts'
 import { accounts } from '../../schema/account.ts'
 import { addresses } from '../../schema/address.ts'
 import { assets } from '../../schema/asset.ts'
+import { organizationAccountsLnk } from '../../schema/organization-account-lnk.ts'
+import { organizations } from '../../schema/organization.ts'
 import { ownerAccountsLnk } from '../../schema/owner-account-lnk.ts'
 import { ownerAddressesLnk } from '../../schema/owner-address-lnk.ts'
 import { owners } from '../../schema/owner.ts'
@@ -11,7 +13,7 @@ import type { CurrentOwnerRow } from '@repo/types'
 export async function findCurrentOwnerByDocumentId(
   documentId: string
 ): Promise<CurrentOwnerRow | null> {
-  const [row] = await db
+  const rows = await db
     .select({
       documentId: owners.documentId,
       name: owners.name,
@@ -20,8 +22,8 @@ export async function findCurrentOwnerByDocumentId(
       phone: owners.phone,
       birthday: owners.birthday,
       nationalId: owners.nationalId,
-      organizationName: owners.organizationName,
-      taxId: owners.taxId,
+      organizationName: organizations.name,
+      taxId: organizations.taxId,
       status: owners.status,
       email: accounts.email,
       address: addresses.address,
@@ -32,16 +34,19 @@ export async function findCurrentOwnerByDocumentId(
     .from(owners)
     .innerJoin(ownerAccountsLnk, eq(ownerAccountsLnk.ownerId, owners.id))
     .innerJoin(accounts, eq(accounts.id, ownerAccountsLnk.accountId))
+    .innerJoin(organizationAccountsLnk, eq(organizationAccountsLnk.accountId, accounts.id))
+    .innerJoin(organizations, eq(organizations.id, organizationAccountsLnk.organizationId))
     .leftJoin(assets, eq(assets.id, owners.avatarId))
     .leftJoin(ownerAddressesLnk, eq(ownerAddressesLnk.ownerId, owners.id))
     .leftJoin(addresses, eq(addresses.id, ownerAddressesLnk.addressId))
     .where(eq(owners.documentId, documentId))
-    .limit(1)
+    .limit(2)
 
-  if (!row) {
+  if (rows.length !== 1) {
     return null
   }
 
+  const row = rows[0]!
   const { address, streetNumber, state, city, ...owner } = row
 
   return {

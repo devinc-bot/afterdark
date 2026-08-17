@@ -54,8 +54,7 @@
       "cannotClear": "Ya cargaste tu domicilio, no podés dejarlo vacío."
     },
     "invitation": {
-      "email": "Ingresá un email válido.",
-      "location": "Seleccioná una ubicación."
+      "email": "Ingresá un email válido."
     },
     "location": {
       "name": "El nombre de la ubicación es requerido.",

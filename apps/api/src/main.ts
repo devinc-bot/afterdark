@@ -2,7 +2,6 @@ import 'reflect-metadata'
 import { NestFactory } from '@nestjs/core'
 import { AppModule } from './app.module'
 import { ENV } from './config/env'
-import { HttpExceptionFilter } from './modules/common/filters/http-exception.filter'
 import { API_PREFIX } from '@repo/common'
 
 async function bootstrap() {
@@ -14,7 +13,6 @@ async function bootstrap() {
     allowedHeaders: ['Content-Type', 'Authorization'],
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   })
-  app.useGlobalFilters(new HttpExceptionFilter())
   app.setGlobalPrefix(API_PREFIX)
   await app.listen(ENV.PORT)
 }

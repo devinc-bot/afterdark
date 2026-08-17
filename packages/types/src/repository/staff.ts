@@ -37,8 +37,8 @@ export type OwnerStaffPersonnelRow = {
   email: string
   avatar: string | null
   staffStatus: StaffStatus
-  locationDocumentId: string
-  locationName: string
+  organizationDocumentId: string
+  organizationName: string
   role: UserRole
   lastActiveAt: Date
 }

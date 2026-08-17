@@ -4,8 +4,8 @@ export type StaffUserRecord = {
   id: string
   name: string
   email: string
-  clubId: string
-  clubName: string
+  organizationId: string
+  organizationName: string
   role: UserRole
   lastActiveLabel: string
   lastActiveAt: number

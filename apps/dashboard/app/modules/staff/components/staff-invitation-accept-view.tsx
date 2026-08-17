@@ -108,10 +108,10 @@ export function StaffInvitationAcceptView({ invitation, token }: StaffInvitation
                   <dd className="mt-1 font-medium text-ink">{invitation.email}</dd>
                 </div>
                 <div>
-                  <dt className="text-ink-muted">{t('invitation.accept.locationLabel')}</dt>
+                  <dt className="text-ink-muted">{t('invitation.accept.organizationLabel')}</dt>
                   <dd className="mt-1">
                     <Badge variant="outline" size="sm">
-                      {invitation.locationName}
+                      {invitation.organizationName}
                     </Badge>
                   </dd>
                 </div>

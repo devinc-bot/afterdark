@@ -7,6 +7,7 @@ import { assets } from '../../schema/asset.ts'
 import { events } from '../../schema/event.ts'
 import { locationAddressesLnk } from '../../schema/location-address-lnk.ts'
 import { locations } from '../../schema/location.ts'
+import { organizations } from '../../schema/organization.ts'
 import { owners } from '../../schema/owner.ts'
 import { findEventFaqsByEventIds } from './find-event-faqs-by-event-ids.ts'
 
@@ -21,12 +22,13 @@ export async function findPublishedEventByDocumentId(
       organizer: {
         name: owners.name,
         lastName: owners.lastName,
-        organizationName: owners.organizationName,
+        organizationName: organizations.name,
         avatar: assets.url,
       },
     })
     .from(events)
     .innerJoin(locations, eq(locations.id, events.locationId))
+    .innerJoin(organizations, eq(organizations.id, events.organizationId))
     .innerJoin(owners, eq(owners.id, locations.ownerId))
     .leftJoin(assets, eq(assets.id, owners.avatarId))
     .innerJoin(locationAddressesLnk, eq(locationAddressesLnk.locationId, locations.id))
