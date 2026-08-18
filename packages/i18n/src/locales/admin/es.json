@@ -3,9 +3,24 @@
     "subtitle": "Iniciá sesión con una cuenta autorizada."
   },
   "accessDenied": "No tienes acceso al panel de Admin.",
+  "brand": {
+    "subtitle": "Panel de administración"
+  },
   "nav": {
     "language": "Idioma",
-    "signOut": "Cerrar sesión"
+    "signOut": "Cerrar sesión",
+    "users": "Usuarios registrados",
+    "errors": "Errores",
+    "theme": "Tema",
+    "themeDark": "Oscuro",
+    "themeLight": "Claro"
+  },
+  "sections": {
+    "users": "Usuarios registrados",
+    "errors": "Errores"
+  },
+  "user": {
+    "fallbackName": "Administrador"
   },
   "home": {
     "label": "Admin",

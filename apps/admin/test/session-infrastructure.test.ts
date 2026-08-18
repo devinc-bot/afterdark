@@ -18,8 +18,23 @@ const loginMutationModuleUrl = new URL(
   '../app/modules/auth/mutations/use-auth-mutations.ts',
   import.meta.url
 )
-const homeRouteModuleUrl = new URL('../app/routes/index.tsx', import.meta.url)
-const homeModuleUrl = new URL('../app/modules/home/components/admin-home.tsx', import.meta.url)
+const appLayoutRouteModuleUrl = new URL('../app/routes/_app.tsx', import.meta.url)
+const appIndexRouteModuleUrl = new URL('../app/routes/_app/index.tsx', import.meta.url)
+const usersRouteModuleUrl = new URL('../app/routes/_app/users.tsx', import.meta.url)
+const errorsRouteModuleUrl = new URL('../app/routes/_app/errors.tsx', import.meta.url)
+const appShellModuleUrl = new URL('../app/modules/common/components/app-shell.tsx', import.meta.url)
+const appShellUserModuleUrl = new URL(
+  '../app/modules/common/components/app-shell-user.tsx',
+  import.meta.url
+)
+const appShellThemeModuleUrl = new URL(
+  '../app/modules/common/components/app-shell-theme-switcher.tsx',
+  import.meta.url
+)
+const appShellLanguageModuleUrl = new URL(
+  '../app/modules/common/components/app-shell-language-switcher.tsx',
+  import.meta.url
+)
 const adminLocaleEsUrl = new URL(
   '../../../packages/i18n/src/locales/admin/es.json',
   import.meta.url
@@ -75,18 +90,46 @@ test('admin login is password-only and rejects a session without the admin role'
   assert.equal(mutationSource.includes('clearAuthenticatedState(queryClient)'), true)
 })
 
-test('admin home is protected and provides account controls without mock metrics', async () => {
-  const [routeSource, homeSource] = await Promise.all([
-    readFile(homeRouteModuleUrl, 'utf8'),
-    readFile(homeModuleUrl, 'utf8'),
-  ])
+test('admin protected layout requires an admin session', async () => {
+  const routeSource = await readFile(appLayoutRouteModuleUrl, 'utf8')
 
   assert.equal(routeSource.includes('<RequireAdminSession>'), true)
-  assert.equal(homeSource.includes('<LanguageSwitcher />'), true)
-  assert.equal(homeSource.includes('<ThemeToggle />'), true)
-  assert.equal(homeSource.includes('user.email'), true)
-  assert.equal(homeSource.includes('clearAuthenticatedState(queryClient)'), true)
-  assert.equal(homeSource.includes('KPI'), false)
+  assert.equal(routeSource.includes('<AppShell>'), true)
+})
+
+test('admin protected root redirects to users and exposes empty section routes', async () => {
+  const [indexSource, usersSource, errorsSource] = await Promise.all([
+    readFile(appIndexRouteModuleUrl, 'utf8'),
+    readFile(usersRouteModuleUrl, 'utf8'),
+    readFile(errorsRouteModuleUrl, 'utf8'),
+  ])
+
+  assert.equal(indexSource.includes('redirect('), true)
+  assert.equal(indexSource.includes('ADMIN_ROUTES.users()'), true)
+  assert.equal(usersSource.includes("createFileRoute('/_app/users')"), true)
+  assert.equal(errorsSource.includes("createFileRoute('/_app/errors')"), true)
+})
+
+test('admin shell provides navigation, account identity, and sign-out without mock metrics', async () => {
+  const [shellSource, userSource, themeSource, languageSource] = await Promise.all([
+    readFile(appShellModuleUrl, 'utf8'),
+    readFile(appShellUserModuleUrl, 'utf8'),
+    readFile(appShellThemeModuleUrl, 'utf8'),
+    readFile(appShellLanguageModuleUrl, 'utf8'),
+  ])
+
+  assert.equal(shellSource.includes('<AppSidebar'), true)
+  assert.equal(shellSource.includes('ADMIN_ROUTES.users()'), true)
+  assert.equal(shellSource.includes('ADMIN_ROUTES.errors()'), true)
+  assert.equal(shellSource.includes('clearAuthenticatedState(queryClient)'), true)
+  assert.equal(shellSource.includes("t('nav.users')"), true)
+  assert.equal(shellSource.includes("t('brand.subtitle')"), true)
+  assert.equal(userSource.includes('user.email'), true)
+  assert.equal(userSource.includes("t('nav.signOut')"), true)
+  assert.equal(themeSource.includes('useTheme'), true)
+  assert.equal(themeSource.includes("t('nav.theme')"), true)
+  assert.equal(languageSource.includes('useLanguage'), true)
+  assert.equal(shellSource.includes('KPI'), false)
 })
 
 test('admin copy is provided in Spanish and English', async () => {
@@ -99,4 +142,12 @@ test('admin copy is provided in Spanish and English', async () => {
   assert.equal(enSource.includes('"accessDenied"'), true)
   assert.equal(esSource.includes('"home"'), true)
   assert.equal(enSource.includes('"home"'), true)
+  assert.equal(esSource.includes('"brand"'), true)
+  assert.equal(enSource.includes('"brand"'), true)
+  assert.equal(esSource.includes('"sections"'), true)
+  assert.equal(enSource.includes('"sections"'), true)
+  assert.equal(esSource.includes('"users"'), true)
+  assert.equal(enSource.includes('"errors"'), true)
+  assert.equal(esSource.includes('"theme"'), true)
+  assert.equal(enSource.includes('"fallbackName"'), true)
 })
