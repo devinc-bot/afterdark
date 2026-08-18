@@ -3,9 +3,24 @@
     "subtitle": "Sign in with an authorized account."
   },
   "accessDenied": "You do not have access to the Admin panel.",
+  "brand": {
+    "subtitle": "Administration panel"
+  },
   "nav": {
     "language": "Language",
-    "signOut": "Sign out"
+    "signOut": "Sign out",
+    "users": "Registered users",
+    "errors": "Errors",
+    "theme": "Theme",
+    "themeDark": "Dark",
+    "themeLight": "Light"
+  },
+  "sections": {
+    "users": "Registered users",
+    "errors": "Errors"
+  },
+  "user": {
+    "fallbackName": "Administrator"
   },
   "home": {
     "label": "Admin",
