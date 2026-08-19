@@ -116,6 +116,28 @@
       "activate": "Activate",
       "deactivate": "Deactivate"
     },
+    "detail": {
+      "close": "Close user details",
+      "name": "Name",
+      "email": "Email",
+      "role": "Role",
+      "status": "Status",
+      "statusActive": "Active",
+      "statusInactive": "Inactive",
+      "phone": "Phone",
+      "birthday": "Birthday",
+      "nationalId": "National ID",
+      "organization": "Organization",
+      "taxId": "Tax ID",
+      "address": "Address",
+      "provider": "Provider",
+      "providerLocal": "Local",
+      "providerGoogle": "Google",
+      "registeredAt": "Registered at",
+      "documentId": "ID",
+      "noProfile": "No profile",
+      "error": "We could not load the user details."
+    },
     "status": {
       "error": "We could not update the user status. Try again."
     },

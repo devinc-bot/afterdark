@@ -1,3 +1,4 @@
+import type { AuthProvider } from '../enums/auth.ts'
 import type { StaffStatus } from '../enums/staff.ts'
 import { USER_ROLE, type OwnerStatus, type UserRole, type UserStatus } from '../enums/user.ts'
 
@@ -72,4 +73,21 @@ export interface AdminUserListItemResponse {
   role: UserRole
   status: AdminUserStatus | null
   createdAt: string
+}
+
+export interface AdminUserDetailResponse {
+  documentId: string
+  email: string
+  provider: AuthProvider
+  role: UserRole
+  createdAt: string
+  name: string | null
+  lastName: string | null
+  phone: string | null
+  birthday: string | null
+  nationalId: string | null
+  status: AdminUserStatus | null
+  organizationName: string | null
+  taxId: string | null
+  address: CurrentUserAddress | null
 }

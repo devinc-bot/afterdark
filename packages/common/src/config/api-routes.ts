@@ -154,6 +154,7 @@ export const API_ROUTES = {
     prefix: API_USERS_PREFIX,
     path: {
       list: () => '/' as const,
+      get: (documentId: string) => `/${documentId}` as const,
       updateStatus: (documentId: string) => `/${documentId}/status` as const,
     },
   },
