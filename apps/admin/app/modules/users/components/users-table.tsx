@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import { MoreHorizontal } from 'lucide-react'
-import type { ApiErrorRecordResponse } from '@repo/types'
+import type { AdminUserListItemResponse, AdminUserTogglableStatus } from '@repo/types'
 import { formatDate } from '@repo/common'
 import {
   Badge,
@@ -28,69 +28,56 @@ import {
   TableRow,
 } from '@repo/ui'
 
-export type ErrorRecordsPagination = {
+export type AdminUsersPagination = {
   page: number
   totalPages: number
   total: number
   onPageChange: (page: number) => void
 }
 
-const ERROR_COLUMN_KEYS = [
-  'occurredAt',
-  'method',
-  'path',
-  'statusCode',
-  'errorName',
-  'message',
-] as const
+const USER_COLUMN_KEYS = ['email', 'name', 'role', 'createdAt'] as const
 
-function ErrorsTableHead() {
+const SKELETON_ROW_KEYS = ['a', 'b', 'c', 'd', 'e'] as const
+
+function UsersTableHead() {
   const { t } = useTranslation('admin')
 
   return (
     <TableHeader>
       <TableRow>
-        {ERROR_COLUMN_KEYS.map((columnKey) => (
+        {USER_COLUMN_KEYS.map((columnKey) => (
           <TableHead key={columnKey} className="p-6">
-            {t(`errors.table.${columnKey}`)}
+            {t(`users.table.${columnKey}`)}
           </TableHead>
         ))}
-        <TableHead className="p-6 text-right">{t('errors.table.actions')}</TableHead>
+        <TableHead className="p-6 text-right">{t('users.table.actions')}</TableHead>
       </TableRow>
     </TableHeader>
   )
 }
 
-const SKELETON_ROW_KEYS = ['a', 'b', 'c', 'd', 'e', 'f'] as const
-
-function ErrorsTableSkeleton() {
+function UsersTableSkeleton() {
   const { t } = useTranslation('admin')
 
   return (
     <Card variant="gradient" aria-busy="true">
-      <span className="sr-only">{t('errors.table.loading')}</span>
+      <span className="sr-only">{t('users.table.loading')}</span>
       <Table variant="compact" className="min-w-200">
-        <ErrorsTableHead />
+        <UsersTableHead />
         <TableBody>
           {SKELETON_ROW_KEYS.map((rowKey) => (
             <TableRow key={rowKey} className="border-0">
               <TableCell className="p-6">
-                <Skeleton className="h-4 w-24" />
+                <Skeleton className="h-4 w-56 max-w-full" />
               </TableCell>
               <TableCell className="p-6">
-                <Skeleton className="h-4 w-12" />
+                <Skeleton className="h-4 w-36 max-w-full" />
               </TableCell>
               <TableCell className="p-6">
-                <Skeleton className="h-4 w-40 max-w-full" />
+                <Skeleton className="h-5 w-16" />
               </TableCell>
               <TableCell className="p-6">
-                <Skeleton className="h-4 w-10" />
-              </TableCell>
-              <TableCell className="p-6">
-                <Skeleton className="h-4 w-24" />
-              </TableCell>
-              <TableCell className="p-6">
-                <Skeleton className="h-4 w-48 max-w-full" />
+                <Skeleton className="h-4 w-28" />
               </TableCell>
               <TableCell className="p-6">
                 <Skeleton className="ml-auto h-8 w-8" />
@@ -103,7 +90,7 @@ function ErrorsTableSkeleton() {
   )
 }
 
-function ErrorsStateMessage({
+function UsersStateMessage({
   title,
   description,
   action,
@@ -125,13 +112,13 @@ function ErrorsStateMessage({
   )
 }
 
-function ErrorsPaginationBar({
+function UsersPaginationBar({
   pagination,
   previousLabel,
   nextLabel,
   ariaLabel,
 }: {
-  pagination: ErrorRecordsPagination
+  pagination: AdminUsersPagination
   previousLabel: string
   nextLabel: string
   ariaLabel: string
@@ -181,108 +168,106 @@ function ErrorsPaginationBar({
   )
 }
 
-function ErrorRecordRow({
-  record,
+function UserRow({
+  user,
   pending,
-  onSelect,
-  onDelete,
+  onStatusChange,
 }: {
-  record: ApiErrorRecordResponse
+  user: AdminUserListItemResponse
   pending: boolean
-  onSelect: (record: ApiErrorRecordResponse) => void
-  onDelete: (record: ApiErrorRecordResponse) => void
+  onStatusChange: (documentId: string, status: AdminUserTogglableStatus) => void
 }) {
   const { t } = useTranslation('admin')
 
+  const fullName =
+    user.name || user.lastName ? `${user.name ?? ''} ${user.lastName ?? ''}`.trim() : null
+
   return (
-    <TableRow
-      className="cursor-pointer border-0 transition-colors hover:bg-surface-container-low focus-within:bg-surface-container-low"
-      onClick={() => onSelect(record)}
-      onKeyDown={(event) => {
-        if (event.key === 'Enter' || event.key === ' ') {
-          event.preventDefault()
-          onSelect(record)
-        }
-      }}
-      tabIndex={0}
-      role="button"
-    >
+    <TableRow className="border-0">
+      <TableCell className="p-6">
+        <span className="block max-w-64 truncate font-mono text-xs text-ink">{user.email}</span>
+      </TableCell>
+      <TableCell className="p-6 text-ink">{fullName ?? t('users.table.noName')}</TableCell>
+      <TableCell className="p-6">
+        <Badge variant="secondary">{t(`users.roles.${user.role}`)}</Badge>
+      </TableCell>
       <TableCell className="p-6 text-ink">
-        {formatDate(record.createdAt, { options: { dateStyle: 'short', timeStyle: 'short' } })}
-      </TableCell>
-      <TableCell className="p-6 text-ink">{record.method}</TableCell>
-      <TableCell className="p-6">
-        <span className="block max-w-64 truncate font-mono text-xs text-ink">{record.path}</span>
-      </TableCell>
-      <TableCell className="p-6">
-        <Badge variant="destructive">{record.statusCode}</Badge>
-      </TableCell>
-      <TableCell className="p-6 text-ink">{record.errorName}</TableCell>
-      <TableCell className="p-6">
-        <span className="block max-w-64 truncate text-sm text-ink-muted">{record.message}</span>
+        {formatDate(new Date(user.createdAt), {
+          options: { dateStyle: 'short', timeStyle: 'short' },
+        })}
       </TableCell>
       <TableCell className="p-6 text-right">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon"
-              disabled={pending}
-              aria-label={t('errors.actions.menu')}
-              onClick={(event) => event.stopPropagation()}
-            >
-              <MoreHorizontal className="size-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" onClick={(event) => event.stopPropagation()}>
-            <DropdownMenuItem className="text-error" onSelect={() => onDelete(record)}>
-              {t('errors.actions.delete')}
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        {user.status === null ? (
+          <span className="text-sm text-ink-muted">—</span>
+        ) : (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                disabled={pending}
+                aria-label={t('users.actions.menu')}
+              >
+                <MoreHorizontal className="size-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem
+                disabled={user.status === 'active'}
+                onSelect={() => onStatusChange(user.documentId, 'active')}
+              >
+                {t('users.actions.activate')}
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                disabled={user.status === 'inactive'}
+                onSelect={() => onStatusChange(user.documentId, 'inactive')}
+              >
+                {t('users.actions.deactivate')}
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
       </TableCell>
     </TableRow>
   )
 }
 
-export function ErrorsTable({
-  records,
+export function UsersTable({
+  users,
   pagination,
   isLoading = false,
   isError = false,
   hasActiveFilters = false,
   pendingDocumentId,
   onRetry,
-  onSelect,
-  onDelete,
+  onStatusChange,
 }: {
-  records: ApiErrorRecordResponse[]
-  pagination?: ErrorRecordsPagination
+  users: AdminUserListItemResponse[]
+  pagination?: AdminUsersPagination
   isLoading?: boolean
   isError?: boolean
   hasActiveFilters?: boolean
   pendingDocumentId?: string
   onRetry?: () => void
-  onSelect?: (record: ApiErrorRecordResponse) => void
-  onDelete: (record: ApiErrorRecordResponse) => void
+  onStatusChange: (documentId: string, status: AdminUserTogglableStatus) => void
 }) {
   const { t } = useTranslation('admin')
 
   function renderBody() {
     if (isLoading) {
-      return <ErrorsTableSkeleton />
+      return <UsersTableSkeleton />
     }
 
     if (isError) {
       return (
-        <ErrorsStateMessage
-          title={t('errors.list.errorTitle')}
-          description={t('errors.list.error')}
+        <UsersStateMessage
+          title={t('users.list.errorTitle')}
+          description={t('users.list.error')}
           action={
             onRetry ? (
               <Button type="button" variant="outline" onClick={onRetry}>
-                {t('errors.list.retry')}
+                {t('users.list.retry')}
               </Button>
             ) : undefined
           }
@@ -290,14 +275,14 @@ export function ErrorsTable({
       )
     }
 
-    if (records.length === 0) {
+    if (users.length === 0) {
       return (
-        <ErrorsStateMessage
-          title={hasActiveFilters ? t('errors.table.emptyFiltered') : t('errors.table.empty')}
+        <UsersStateMessage
+          title={hasActiveFilters ? t('users.table.emptyFiltered') : t('users.table.empty')}
           description={
             hasActiveFilters
-              ? t('errors.table.emptyFilteredDescription')
-              : t('errors.table.emptyDescription')
+              ? t('users.table.emptyFilteredDescription')
+              : t('users.table.emptyDescription')
           }
         />
       )
@@ -306,25 +291,24 @@ export function ErrorsTable({
     return (
       <Card variant="gradient">
         <Table variant="compact" className="min-w-200">
-          <ErrorsTableHead />
+          <UsersTableHead />
           <TableBody>
-            {records.map((record) => (
-              <ErrorRecordRow
-                key={record.documentId}
-                record={record}
-                pending={record.documentId === pendingDocumentId}
-                onSelect={onSelect ?? (() => {})}
-                onDelete={onDelete}
+            {users.map((user) => (
+              <UserRow
+                key={user.documentId}
+                user={user}
+                pending={user.documentId === pendingDocumentId}
+                onStatusChange={onStatusChange}
               />
             ))}
           </TableBody>
         </Table>
         {pagination ? (
-          <ErrorsPaginationBar
+          <UsersPaginationBar
             pagination={pagination}
-            previousLabel={t('errors.pagination.previous')}
-            nextLabel={t('errors.pagination.next')}
-            ariaLabel={t('errors.pagination.label')}
+            previousLabel={t('users.pagination.previous')}
+            nextLabel={t('users.pagination.next')}
+            ariaLabel={t('users.pagination.label')}
           />
         ) : null}
       </Card>

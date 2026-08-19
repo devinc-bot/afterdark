@@ -19,6 +19,7 @@ import { EventsModule } from './modules/events'
 import { MailModule } from './modules/mail'
 import { GeoModule } from './modules/geo'
 import { MercadoPagoModule } from './modules/mercado-pago'
+import { UsersModule } from './modules/users'
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { MercadoPagoModule } from './modules/mercado-pago'
     MailModule,
     GeoModule,
     MercadoPagoModule,
+    UsersModule,
   ],
   controllers: [AppController],
 })

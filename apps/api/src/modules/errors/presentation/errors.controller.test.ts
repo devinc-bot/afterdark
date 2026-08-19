@@ -11,8 +11,22 @@ test('delegates error record listing to the use case', async () => {
       return result
     },
   }
-  const controller = new ErrorsController(listApiErrorRecordsUseCase as never)
+  const controller = new ErrorsController(listApiErrorRecordsUseCase as never, undefined as never)
 
   assert.equal(await controller.list({ page: 1, limit: 10 }), result)
   assert.deepEqual(calls, [{ query: { page: 1, limit: 10 } }])
+})
+
+test('delegates error record deletion to the use case', async () => {
+  const calls: string[] = []
+  const deleteApiErrorRecordUseCase = {
+    execute: async (documentId: string) => {
+      calls.push(documentId)
+    },
+  }
+  const controller = new ErrorsController(undefined as never, deleteApiErrorRecordUseCase as never)
+
+  await controller.delete('rec-1')
+
+  assert.deepEqual(calls, ['rec-1'])
 })

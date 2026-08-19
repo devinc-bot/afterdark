@@ -45,11 +45,24 @@
       "statusCode": "Status",
       "errorName": "Error",
       "message": "Message",
+      "actions": "Actions",
       "loading": "Loading errors",
       "empty": "No errors recorded.",
       "emptyDescription": "When the API records a failure, it will appear here.",
       "emptyFiltered": "No errors found.",
       "emptyFilteredDescription": "Try different filters."
+    },
+    "actions": {
+      "menu": "Error actions",
+      "delete": "Delete"
+    },
+    "delete": {
+      "title": "Delete error",
+      "description": "This action cannot be undone. The record will be permanently deleted.",
+      "cancel": "Cancel",
+      "confirm": "Delete",
+      "deleting": "Deleting…",
+      "error": "We could not delete the error record. Try again."
     },
     "list": {
       "error": "We could not load the error records. Try again in a few minutes.",
@@ -68,6 +81,53 @@
       "correlationId": "Correlation ID",
       "fingerprint": "Fingerprint",
       "stack": "Stack trace"
+    }
+  },
+  "users": {
+    "description": "Accounts registered on the platform, across all roles.",
+    "filters": {
+      "email": "Email",
+      "emailPlaceholder": "Search by email…",
+      "role": "Role",
+      "roleAll": "All",
+      "reset": "Reset"
+    },
+    "roles": {
+      "user": "Customer",
+      "owner": "Owner",
+      "staff": "Staff",
+      "admin": "Admin"
+    },
+    "table": {
+      "email": "Email",
+      "name": "Name",
+      "role": "Role",
+      "createdAt": "Registered at",
+      "actions": "Actions",
+      "loading": "Loading users",
+      "empty": "No registered accounts.",
+      "emptyDescription": "When someone signs up, they will appear here.",
+      "emptyFiltered": "No accounts found.",
+      "emptyFilteredDescription": "Try different filters.",
+      "noName": "No profile"
+    },
+    "actions": {
+      "menu": "User actions",
+      "activate": "Activate",
+      "deactivate": "Deactivate"
+    },
+    "status": {
+      "error": "We could not update the user status. Try again."
+    },
+    "list": {
+      "error": "We could not load the users. Try again in a few minutes.",
+      "errorTitle": "Something went wrong",
+      "retry": "Retry"
+    },
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next",
+      "label": "Users pagination"
     }
   }
 }

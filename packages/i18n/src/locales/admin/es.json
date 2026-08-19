@@ -45,11 +45,24 @@
       "statusCode": "Estado",
       "errorName": "Error",
       "message": "Mensaje",
+      "actions": "Acciones",
       "loading": "Cargando errores",
       "empty": "No hay errores registrados.",
       "emptyDescription": "Cuando la API registre una falla, aparecerá acá.",
       "emptyFiltered": "No se encontraron errores.",
       "emptyFilteredDescription": "Probá con otros filtros."
+    },
+    "actions": {
+      "menu": "Acciones del error",
+      "delete": "Eliminar"
+    },
+    "delete": {
+      "title": "Eliminar error",
+      "description": "Esta acción no se puede deshacer. El registro se eliminará definitivamente.",
+      "cancel": "Cancelar",
+      "confirm": "Eliminar",
+      "deleting": "Eliminando…",
+      "error": "No pudimos eliminar el error. Intentá de nuevo."
     },
     "list": {
       "error": "No pudimos cargar los errores registrados. Intentá de nuevo en unos minutos.",
@@ -68,6 +81,53 @@
       "correlationId": "ID de correlación",
       "fingerprint": "Huella",
       "stack": "Stack trace"
+    }
+  },
+  "users": {
+    "description": "Cuentas registradas en la plataforma, de cualquier rol.",
+    "filters": {
+      "email": "Email",
+      "emailPlaceholder": "Buscar por email…",
+      "role": "Rol",
+      "roleAll": "Todos",
+      "reset": "Restablecer"
+    },
+    "roles": {
+      "user": "Cliente",
+      "owner": "Dueño",
+      "staff": "Staff",
+      "admin": "Admin"
+    },
+    "table": {
+      "email": "Email",
+      "name": "Nombre",
+      "role": "Rol",
+      "createdAt": "Registrado el",
+      "actions": "Acciones",
+      "loading": "Cargando usuarios",
+      "empty": "No hay cuentas registradas.",
+      "emptyDescription": "Cuando alguien se registre, aparecerá acá.",
+      "emptyFiltered": "No se encontraron cuentas.",
+      "emptyFilteredDescription": "Probá con otros filtros.",
+      "noName": "Sin perfil"
+    },
+    "actions": {
+      "menu": "Acciones del usuario",
+      "activate": "Activar",
+      "deactivate": "Desactivar"
+    },
+    "status": {
+      "error": "No pudimos actualizar el estado del usuario. Intentá de nuevo."
+    },
+    "list": {
+      "error": "No pudimos cargar los usuarios. Intentá de nuevo en unos minutos.",
+      "errorTitle": "Algo salió mal",
+      "retry": "Reintentar"
+    },
+    "pagination": {
+      "previous": "Anterior",
+      "next": "Siguiente",
+      "label": "Paginación de usuarios"
     }
   }
 }
