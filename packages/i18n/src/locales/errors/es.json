@@ -125,5 +125,8 @@
     "KPI_FAILED": "No pudimos cargar los indicadores del dashboard. Intentá de nuevo en unos minutos.",
     "SALES_ANALYTICS_FAILED": "No pudimos cargar las ventas del dashboard. Intentá de nuevo en unos minutos.",
     "SALES_LIST_FAILED": "No pudimos cargar el historial de ventas. Intentá de nuevo en unos minutos."
+  },
+  "admin": {
+    "ERRORS_LIST_FAILED": "No pudimos cargar los errores registrados. Intentá de nuevo en unos minutos."
   }
 }
