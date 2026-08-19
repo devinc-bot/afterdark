@@ -18,12 +18,17 @@ import {
   type UpdateAdminUserStatusInput,
 } from '@repo/validators'
 import { uuidSchema } from '@repo/validators'
-import type { AdminUserListItemResponse, PaginatedResponse } from '@repo/types'
+import type {
+  AdminUserDetailResponse,
+  AdminUserListItemResponse,
+  PaginatedResponse,
+} from '@repo/types'
 import { USER_ROLE } from '@repo/types'
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard'
 import { Roles } from '../../common/decorators/roles.decorator'
 import { RolesGuard } from '../../common/guards/roles.guard'
 import { ZodValidationPipe } from '../../common/pipes/zod-validation.pipe'
+import { GetAdminUserDetailUseCase } from '../application/get-admin-user-detail.use-case'
 import { ListAdminUsersUseCase } from '../application/list-admin-users.use-case'
 import { UpdateAdminUserStatusUseCase } from '../application/update-admin-user-status.use-case'
 
@@ -31,6 +36,8 @@ import { UpdateAdminUserStatusUseCase } from '../application/update-admin-user-s
 export class UsersController {
   constructor(
     @Inject(ListAdminUsersUseCase) private readonly listAdminUsers: ListAdminUsersUseCase,
+    @Inject(GetAdminUserDetailUseCase)
+    private readonly getAdminUserDetail: GetAdminUserDetailUseCase,
     @Inject(UpdateAdminUserStatusUseCase)
     private readonly updateAdminUserStatus: UpdateAdminUserStatusUseCase
   ) {}
@@ -42,6 +49,15 @@ export class UsersController {
     @Query(new ZodValidationPipe(listAdminUsersQuerySchema)) query: ListAdminUsersQueryInput
   ): Promise<PaginatedResponse<AdminUserListItemResponse>> {
     return this.listAdminUsers.execute(query)
+  }
+
+  @Get(API_ROUTES.users.path.get(':documentId'))
+  @Roles([USER_ROLE.ADMIN])
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  get(
+    @Param('documentId', new ZodValidationPipe(uuidSchema)) documentId: string
+  ): Promise<AdminUserDetailResponse> {
+    return this.getAdminUserDetail.execute(documentId)
   }
 
   @Patch(API_ROUTES.users.path.updateStatus(':documentId'))

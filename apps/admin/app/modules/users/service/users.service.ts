@@ -1,4 +1,5 @@
 import type {
+  AdminUserDetailResponse,
   AdminUserListItemResponse,
   AdminUserTogglableStatus,
   PaginatedResponse,
@@ -30,6 +31,16 @@ export async function fetchAdminUsers(
     return await api.get<PaginatedResponse<AdminUserListItemResponse>>(`${path}?${query}`)
   } catch (error) {
     throw toApiServiceError(error, i18n.t('admin:users.list.error'))
+  }
+}
+
+export async function fetchAdminUserDetail(documentId: string): Promise<AdminUserDetailResponse> {
+  const path = buildApiPath(API_ROUTES.users, API_ROUTES.users.path.get(documentId))
+
+  try {
+    return await api.get<AdminUserDetailResponse>(path)
+  } catch (error) {
+    throw toApiServiceError(error, i18n.t('admin:users.detail.error'))
   }
 }
 

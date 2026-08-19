@@ -131,6 +131,8 @@
     "ERRORS_DELETE_FAILED": "We could not delete the error record. Try again.",
     "ERRORS_DELETE_NOT_FOUND": "We could not find the error record to delete.",
     "USERS_LIST_FAILED": "We could not load the users. Try again in a few minutes.",
+    "USERS_DETAIL_FAILED": "We could not load the user details. Try again.",
+    "USERS_DETAIL_NOT_FOUND": "We could not find that account.",
     "USERS_STATUS_UPDATE_FAILED": "We could not update the user status. Try again.",
     "USERS_STATUS_UPDATE_NOT_FOUND": "We could not find an account with a profile to update."
   }

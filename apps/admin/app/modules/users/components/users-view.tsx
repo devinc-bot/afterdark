@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import type { AdminUserListItemResponse } from '@repo/types'
 import { useAdminUsers } from '~/modules/users/queries/use-users-queries'
 import { useUpdateAdminUserStatus } from '~/modules/users/mutations/use-update-admin-user-status'
 import {
@@ -8,7 +9,8 @@ import {
   type AdminUsersFilters,
 } from '~/modules/users/components/users-filters'
 import { UsersTable, type AdminUsersPagination } from '~/modules/users/components/users-table'
-import { type UserRole } from '~/modules/users/constants/admin-user-roles'
+import { UserDetail } from '~/modules/users/components/user-detail'
+import { type AdminUserRole } from '~/modules/users/constants/admin-user-roles'
 
 const USERS_PAGE_SIZE = 10
 
@@ -21,6 +23,7 @@ export function UsersView() {
   const { t } = useTranslation('admin')
   const [page, setPage] = useState(1)
   const [filters, setFilters] = useState<AdminUsersFilters>(DEFAULT_FILTERS)
+  const [selected, setSelected] = useState<AdminUserListItemResponse | null>(null)
   const updateStatus = useUpdateAdminUserStatus()
 
   const hasActiveFilters = filters.email.trim() !== '' || filters.role !== FILTER_ALL
@@ -38,7 +41,7 @@ export function UsersView() {
     page,
     limit: USERS_PAGE_SIZE,
     email: filters.email.trim() || undefined,
-    role: filters.role === FILTER_ALL ? undefined : (filters.role as UserRole),
+    role: filters.role === FILTER_ALL ? undefined : (filters.role as AdminUserRole),
   })
 
   useEffect(() => {
@@ -72,8 +75,11 @@ export function UsersView() {
         hasActiveFilters={hasActiveFilters}
         pendingDocumentId={updateStatus.variables?.documentId}
         onRetry={() => void refetch()}
+        onSelect={setSelected}
         onStatusChange={(documentId, status) => updateStatus.mutate({ documentId, status })}
       />
+
+      <UserDetail user={selected} onOpenChange={(open) => !open && setSelected(null)} />
     </div>
   )
 }

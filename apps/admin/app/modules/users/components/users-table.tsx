@@ -171,10 +171,12 @@ function UsersPaginationBar({
 function UserRow({
   user,
   pending,
+  onSelect,
   onStatusChange,
 }: {
   user: AdminUserListItemResponse
   pending: boolean
+  onSelect: (user: AdminUserListItemResponse) => void
   onStatusChange: (documentId: string, status: AdminUserTogglableStatus) => void
 }) {
   const { t } = useTranslation('admin')
@@ -183,7 +185,18 @@ function UserRow({
     user.name || user.lastName ? `${user.name ?? ''} ${user.lastName ?? ''}`.trim() : null
 
   return (
-    <TableRow className="border-0">
+    <TableRow
+      className="cursor-pointer border-0 transition-colors hover:bg-surface-container-low focus-within:bg-surface-container-low"
+      onClick={() => onSelect(user)}
+      onKeyDown={(event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault()
+          onSelect(user)
+        }
+      }}
+      tabIndex={0}
+      role="button"
+    >
       <TableCell className="p-6">
         <span className="block max-w-64 truncate font-mono text-xs text-ink">{user.email}</span>
       </TableCell>
@@ -196,7 +209,7 @@ function UserRow({
           options: { dateStyle: 'short', timeStyle: 'short' },
         })}
       </TableCell>
-      <TableCell className="p-6 text-right">
+      <TableCell className="p-6 text-right" onClick={(event) => event.stopPropagation()}>
         {user.status === null ? (
           <span className="text-sm text-ink-muted">—</span>
         ) : (
@@ -241,6 +254,7 @@ export function UsersTable({
   hasActiveFilters = false,
   pendingDocumentId,
   onRetry,
+  onSelect,
   onStatusChange,
 }: {
   users: AdminUserListItemResponse[]
@@ -250,6 +264,7 @@ export function UsersTable({
   hasActiveFilters?: boolean
   pendingDocumentId?: string
   onRetry?: () => void
+  onSelect: (user: AdminUserListItemResponse) => void
   onStatusChange: (documentId: string, status: AdminUserTogglableStatus) => void
 }) {
   const { t } = useTranslation('admin')
@@ -298,6 +313,7 @@ export function UsersTable({
                 key={user.documentId}
                 user={user}
                 pending={user.documentId === pendingDocumentId}
+                onSelect={onSelect}
                 onStatusChange={onStatusChange}
               />
             ))}
