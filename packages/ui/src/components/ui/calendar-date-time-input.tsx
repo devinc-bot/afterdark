@@ -5,6 +5,7 @@ import { CalendarIcon, Clock2Icon } from 'lucide-react'
 import { enUS, es } from 'react-day-picker/locale'
 import { Calendar } from './calendar'
 import { InputGroup, InputGroupAddon, InputGroupInput } from './input-group'
+import { Label } from './label'
 import { Popover, PopoverContent, PopoverTrigger } from './popover'
 
 type CalendarDateTimeInputProps = Omit<
@@ -68,6 +69,7 @@ function CalendarDateTimeInput({
   const selectedDate = parseDateTime(value)
   const [timeDraft, setTimeDraft] = React.useState(getTimeValue(selectedDate))
   const isInvalid = props['aria-invalid'] === true || props['aria-invalid'] === 'true'
+  const timeInputId = id ? `${id}-time` : undefined
 
   React.useEffect(() => {
     if (open) {
@@ -85,7 +87,13 @@ function CalendarDateTimeInput({
   }
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
+    <Popover
+      open={open}
+      onOpenChange={(nextOpen) => {
+        if (disabled) return
+        setOpen(nextOpen)
+      }}
+    >
       <PopoverTrigger asChild>
         <InputGroup
           aria-invalid={isInvalid || undefined}
@@ -100,11 +108,10 @@ function CalendarDateTimeInput({
             readOnly
             disabled={disabled}
             onBlur={onBlur}
-            onClick={() => setOpen(true)}
             onKeyDown={(event) => {
               if (event.key === 'Enter' || event.key === ' ') {
                 event.preventDefault()
-                setOpen(true)
+                setOpen((current) => !current)
               }
             }}
           />
@@ -125,16 +132,13 @@ function CalendarDateTimeInput({
           locale={locale === 'es' ? es : enUS}
         />
         <div className="border-t border-hairline px-3 py-3">
-          <label
-            className="flex items-center gap-2 text-xs font-semibold uppercase tracking-label-xs text-ink-muted"
-            htmlFor={`${id}-time`}
-          >
-            <Clock2Icon className="size-4" />
+          <Label variant="field" htmlFor={timeInputId} className="flex items-center gap-2">
+            <Clock2Icon className="size-7" aria-hidden />
             {timeLabel}
-          </label>
+          </Label>
           <InputGroup className="mt-2">
             <InputGroupInput
-              id={`${id}-time`}
+              id={timeInputId}
               type="time"
               step="60"
               value={timeDraft}

@@ -10,7 +10,7 @@ const InputGroup = React.forwardRef<HTMLDivElement, React.ComponentProps<'div'>>
       ref={ref}
       role="group"
       className={cn(
-        'cn-gradient-border cn-gradient-border--field flex h-9 w-full items-center rounded-app-sm text-ink transition-[box-shadow] focus-within:ring-2 focus-within:ring-primary/25',
+        'cn-gradient-border cn-gradient-border--field flex h-9 w-full items-center overflow-hidden rounded-app-sm text-ink transition-shadow focus-within:ring-2 focus-within:ring-primary/25',
         className
       )}
       {...props}
@@ -28,7 +28,7 @@ function InputGroupAddon({
     <div
       aria-hidden
       className={cn(
-        'flex shrink-0 items-center px-3 text-ink-muted-soft [&>svg]:size-4',
+        'flex shrink-0 items-center px-3 text-ink-muted-soft [&>svg]:size-7',
         align === 'inline-start' ? 'order-first' : 'order-last',
         className
       )}
@@ -42,7 +42,7 @@ function InputGroupInput({ className, ...props }: React.ComponentProps<'input'>)
     <Input
       data-slot="input-group-control"
       className={cn(
-        'h-full flex-1 rounded-none border-0 bg-transparent px-4 shadow-none focus-visible:ring-0',
+        'h-full flex-1 rounded-none border-0 bg-none px-4 shadow-none focus-visible:ring-0 read-only:cursor-pointer disabled:cursor-not-allowed',
         className
       )}
       {...props}
