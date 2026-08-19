@@ -78,9 +78,7 @@ export class AuthController {
 
   @Post(API_ROUTES.auth.path.registerUserRequest())
   @HttpCode(HttpStatus.NO_CONTENT)
-  requestUserRegistration(
-    @Body(new ZodValidationPipe(registerSchema)) body: RegisterUserInput
-  ) {
+  requestUserRegistration(@Body(new ZodValidationPipe(registerSchema)) body: RegisterUserInput) {
     return this.requestUserRegistrationUseCase.execute(body)
   }
 
@@ -100,9 +98,7 @@ export class AuthController {
 
   @Post(API_ROUTES.auth.path.registerOwnerRequest())
   @HttpCode(HttpStatus.NO_CONTENT)
-  requestOwnerRegistration(
-    @Body(new ZodValidationPipe(registerSchema)) body: RegisterOwnerInput
-  ) {
+  requestOwnerRegistration(@Body(new ZodValidationPipe(registerSchema)) body: RegisterOwnerInput) {
     return this.requestOwnerRegistrationUseCase.execute(body)
   }
 

@@ -15,7 +15,11 @@ export function GoogleContinueButton() {
       className="w-full"
       onClick={() => {
         window.location.assign(
-          buildGoogleOauthStartUrl({ role: USER_ROLE.USER, app: AUTH_OAUTH_APP.WEB, apiUrl: API_URL })
+          buildGoogleOauthStartUrl({
+            role: USER_ROLE.USER,
+            app: AUTH_OAUTH_APP.WEB,
+            apiUrl: API_URL,
+          })
         )
       }}
     >
