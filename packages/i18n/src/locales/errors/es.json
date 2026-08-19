@@ -128,6 +128,8 @@
   },
   "admin": {
     "ERRORS_LIST_FAILED": "No pudimos cargar los errores registrados. Intentá de nuevo en unos minutos.",
+    "ERRORS_DELETE_FAILED": "No pudimos eliminar el error. Intentá de nuevo.",
+    "ERRORS_DELETE_NOT_FOUND": "No encontramos el error registrado para eliminar.",
     "USERS_LIST_FAILED": "No pudimos cargar los usuarios. Intentá de nuevo en unos minutos.",
     "USERS_STATUS_UPDATE_FAILED": "No pudimos actualizar el estado del usuario. Intentá de nuevo.",
     "USERS_STATUS_UPDATE_NOT_FOUND": "No encontramos una cuenta con perfil para actualizar."

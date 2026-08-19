@@ -30,3 +30,13 @@ export async function fetchApiErrorRecords(
     throw toApiServiceError(error, i18n.t('admin:errors.list.error'))
   }
 }
+
+export async function deleteApiErrorRecord(documentId: string): Promise<void> {
+  const path = buildApiPath(API_ROUTES.errors, API_ROUTES.errors.path.delete(documentId))
+
+  try {
+    await api.delete<void>(path)
+  } catch (error) {
+    throw toApiServiceError(error, i18n.t('admin:errors.delete.error'))
+  }
+}

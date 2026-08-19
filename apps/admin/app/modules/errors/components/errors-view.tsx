@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { ApiErrorRecordResponse } from '@repo/types'
+import { ErrorDeleteDialog } from '~/modules/errors/components/error-delete-dialog'
 import { ErrorRecordDetail } from '~/modules/errors/components/error-record-detail'
 import {
   ErrorsFilters,
@@ -8,6 +9,7 @@ import {
   type ErrorRecordsFilters,
 } from '~/modules/errors/components/errors-filters'
 import { ErrorsTable, type ErrorRecordsPagination } from '~/modules/errors/components/errors-table'
+import { useDeleteApiErrorRecord } from '~/modules/errors/mutations/use-delete-api-error-record'
 import { useApiErrorRecords } from '~/modules/errors/queries/use-errors-queries'
 import { dateInputToEndOfDay, dateInputToStartOfDay } from '~/modules/errors/utils/errors.formatter'
 
@@ -25,6 +27,8 @@ export function ErrorsView() {
   const [page, setPage] = useState(1)
   const [filters, setFilters] = useState<ErrorRecordsFilters>(DEFAULT_FILTERS)
   const [selected, setSelected] = useState<ApiErrorRecordResponse | null>(null)
+  const [deleteTarget, setDeleteTarget] = useState<ApiErrorRecordResponse | null>(null)
+  const deleteRecord = useDeleteApiErrorRecord()
 
   const hasActiveFilters =
     filters.statusCode !== FILTER_ALL ||
@@ -64,6 +68,13 @@ export function ErrorsView() {
       }
     : undefined
 
+  function handleDeleteConfirm() {
+    if (!deleteTarget) return
+    deleteRecord.mutate(deleteTarget.documentId, {
+      onSuccess: () => setDeleteTarget(null),
+    })
+  }
+
   return (
     <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-6 sm:px-6">
       <header className="flex flex-col gap-2 py-2">
@@ -79,11 +90,21 @@ export function ErrorsView() {
         isLoading={isLoading}
         isError={isError}
         hasActiveFilters={hasActiveFilters}
+        pendingDocumentId={deleteRecord.variables}
         onRetry={() => void refetch()}
         onSelect={setSelected}
+        onDelete={setDeleteTarget}
       />
 
       <ErrorRecordDetail record={selected} onOpenChange={(open) => !open && setSelected(null)} />
+
+      <ErrorDeleteDialog
+        record={deleteTarget}
+        open={deleteTarget !== null}
+        onOpenChange={(open) => !open && setDeleteTarget(null)}
+        onConfirm={handleDeleteConfirm}
+        isDeleting={deleteRecord.isPending}
+      />
     </div>
   )
 }

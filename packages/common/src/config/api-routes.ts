@@ -147,6 +147,7 @@ export const API_ROUTES = {
     prefix: API_ERRORS_PREFIX,
     path: {
       list: () => '/' as const,
+      delete: (documentId: string) => `/${documentId}` as const,
     },
   },
   users: {

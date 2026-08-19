@@ -1,11 +1,16 @@
 import type { ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
+import { MoreHorizontal } from 'lucide-react'
 import type { ApiErrorRecordResponse } from '@repo/types'
 import { formatDate } from '@repo/common'
 import {
   Badge,
   Button,
   Card,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
   getPaginationItems,
   Pagination,
   PaginationButton,
@@ -50,6 +55,7 @@ function ErrorsTableHead() {
             {t(`errors.table.${columnKey}`)}
           </TableHead>
         ))}
+        <TableHead className="p-6 text-right">{t('errors.table.actions')}</TableHead>
       </TableRow>
     </TableHeader>
   )
@@ -85,6 +91,9 @@ function ErrorsTableSkeleton() {
               </TableCell>
               <TableCell className="p-6">
                 <Skeleton className="h-4 w-48 max-w-full" />
+              </TableCell>
+              <TableCell className="p-6">
+                <Skeleton className="ml-auto h-8 w-8" />
               </TableCell>
             </TableRow>
           ))}
@@ -174,11 +183,17 @@ function ErrorsPaginationBar({
 
 function ErrorRecordRow({
   record,
+  pending,
   onSelect,
+  onDelete,
 }: {
   record: ApiErrorRecordResponse
+  pending: boolean
   onSelect: (record: ApiErrorRecordResponse) => void
+  onDelete: (record: ApiErrorRecordResponse) => void
 }) {
+  const { t } = useTranslation('admin')
+
   return (
     <TableRow
       className="cursor-pointer border-0 transition-colors hover:bg-surface-container-low focus-within:bg-surface-container-low"
@@ -206,6 +221,27 @@ function ErrorRecordRow({
       <TableCell className="p-6">
         <span className="block max-w-64 truncate text-sm text-ink-muted">{record.message}</span>
       </TableCell>
+      <TableCell className="p-6 text-right">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              disabled={pending}
+              aria-label={t('errors.actions.menu')}
+              onClick={(event) => event.stopPropagation()}
+            >
+              <MoreHorizontal className="size-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" onClick={(event) => event.stopPropagation()}>
+            <DropdownMenuItem className="text-error" onSelect={() => onDelete(record)}>
+              {t('errors.actions.delete')}
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </TableCell>
     </TableRow>
   )
 }
@@ -216,16 +252,20 @@ export function ErrorsTable({
   isLoading = false,
   isError = false,
   hasActiveFilters = false,
+  pendingDocumentId,
   onRetry,
   onSelect,
+  onDelete,
 }: {
   records: ApiErrorRecordResponse[]
   pagination?: ErrorRecordsPagination
   isLoading?: boolean
   isError?: boolean
   hasActiveFilters?: boolean
+  pendingDocumentId?: string
   onRetry?: () => void
   onSelect?: (record: ApiErrorRecordResponse) => void
+  onDelete: (record: ApiErrorRecordResponse) => void
 }) {
   const { t } = useTranslation('admin')
 
@@ -272,7 +312,9 @@ export function ErrorsTable({
               <ErrorRecordRow
                 key={record.documentId}
                 record={record}
+                pending={record.documentId === pendingDocumentId}
                 onSelect={onSelect ?? (() => {})}
+                onDelete={onDelete}
               />
             ))}
           </TableBody>

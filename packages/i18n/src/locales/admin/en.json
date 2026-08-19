@@ -45,11 +45,24 @@
       "statusCode": "Status",
       "errorName": "Error",
       "message": "Message",
+      "actions": "Actions",
       "loading": "Loading errors",
       "empty": "No errors recorded.",
       "emptyDescription": "When the API records a failure, it will appear here.",
       "emptyFiltered": "No errors found.",
       "emptyFilteredDescription": "Try different filters."
+    },
+    "actions": {
+      "menu": "Error actions",
+      "delete": "Delete"
+    },
+    "delete": {
+      "title": "Delete error",
+      "description": "This action cannot be undone. The record will be permanently deleted.",
+      "cancel": "Cancel",
+      "confirm": "Delete",
+      "deleting": "Deleting…",
+      "error": "We could not delete the error record. Try again."
     },
     "list": {
       "error": "We could not load the error records. Try again in a few minutes.",

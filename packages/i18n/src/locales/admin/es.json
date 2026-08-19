@@ -45,11 +45,24 @@
       "statusCode": "Estado",
       "errorName": "Error",
       "message": "Mensaje",
+      "actions": "Acciones",
       "loading": "Cargando errores",
       "empty": "No hay errores registrados.",
       "emptyDescription": "Cuando la API registre una falla, aparecerá acá.",
       "emptyFiltered": "No se encontraron errores.",
       "emptyFilteredDescription": "Probá con otros filtros."
+    },
+    "actions": {
+      "menu": "Acciones del error",
+      "delete": "Eliminar"
+    },
+    "delete": {
+      "title": "Eliminar error",
+      "description": "Esta acción no se puede deshacer. El registro se eliminará definitivamente.",
+      "cancel": "Cancelar",
+      "confirm": "Eliminar",
+      "deleting": "Eliminando…",
+      "error": "No pudimos eliminar el error. Intentá de nuevo."
     },
     "list": {
       "error": "No pudimos cargar los errores registrados. Intentá de nuevo en unos minutos.",
