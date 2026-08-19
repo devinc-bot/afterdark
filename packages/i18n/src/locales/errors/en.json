@@ -127,6 +127,9 @@
     "SALES_LIST_FAILED": "We could not load the sales history. Try again in a few minutes."
   },
   "admin": {
-    "ERRORS_LIST_FAILED": "We could not load the error records. Try again in a few minutes."
+    "ERRORS_LIST_FAILED": "We could not load the error records. Try again in a few minutes.",
+    "USERS_LIST_FAILED": "We could not load the users. Try again in a few minutes.",
+    "USERS_STATUS_UPDATE_FAILED": "We could not update the user status. Try again.",
+    "USERS_STATUS_UPDATE_NOT_FOUND": "We could not find an account with a profile to update."
   }
 }

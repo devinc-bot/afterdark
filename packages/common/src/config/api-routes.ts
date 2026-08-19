@@ -14,6 +14,7 @@ export const API_GEO_PREFIX = '/geo' as const
 export const API_HEALTH_PREFIX = '/health' as const
 export const API_DASHBOARD_PREFIX = '/dashboard' as const
 export const API_ERRORS_PREFIX = '/errors' as const
+export const API_USERS_PREFIX = '/users' as const
 const routeSegment = (value: string) => (value.startsWith(':') ? value : encodeURIComponent(value))
 
 export const API_ROUTES = {
@@ -146,6 +147,13 @@ export const API_ROUTES = {
     prefix: API_ERRORS_PREFIX,
     path: {
       list: () => '/' as const,
+    },
+  },
+  users: {
+    prefix: API_USERS_PREFIX,
+    path: {
+      list: () => '/' as const,
+      updateStatus: (documentId: string) => `/${documentId}/status` as const,
     },
   },
 } as const

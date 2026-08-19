@@ -69,5 +69,52 @@
       "fingerprint": "Huella",
       "stack": "Stack trace"
     }
+  },
+  "users": {
+    "description": "Cuentas registradas en la plataforma, de cualquier rol.",
+    "filters": {
+      "email": "Email",
+      "emailPlaceholder": "Buscar por email…",
+      "role": "Rol",
+      "roleAll": "Todos",
+      "reset": "Restablecer"
+    },
+    "roles": {
+      "user": "Cliente",
+      "owner": "Dueño",
+      "staff": "Staff",
+      "admin": "Admin"
+    },
+    "table": {
+      "email": "Email",
+      "name": "Nombre",
+      "role": "Rol",
+      "createdAt": "Registrado el",
+      "actions": "Acciones",
+      "loading": "Cargando usuarios",
+      "empty": "No hay cuentas registradas.",
+      "emptyDescription": "Cuando alguien se registre, aparecerá acá.",
+      "emptyFiltered": "No se encontraron cuentas.",
+      "emptyFilteredDescription": "Probá con otros filtros.",
+      "noName": "Sin perfil"
+    },
+    "actions": {
+      "menu": "Acciones del usuario",
+      "activate": "Activar",
+      "deactivate": "Desactivar"
+    },
+    "status": {
+      "error": "No pudimos actualizar el estado del usuario. Intentá de nuevo."
+    },
+    "list": {
+      "error": "No pudimos cargar los usuarios. Intentá de nuevo en unos minutos.",
+      "errorTitle": "Algo salió mal",
+      "retry": "Reintentar"
+    },
+    "pagination": {
+      "previous": "Anterior",
+      "next": "Siguiente",
+      "label": "Paginación de usuarios"
+    }
   }
 }
