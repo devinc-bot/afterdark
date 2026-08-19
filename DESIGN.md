@@ -129,25 +129,25 @@ Repo’s visual system lives in `packages/ui/src/globals.css` (Tailwind v4 `@the
 
 ### Neutrals (dark, shipping)
 
-| Role | Hex | Use |
-| --- | --- | --- |
-| Background / surface | `#121311` | Page canvas |
-| Surface muted / low | `#1a1b18` | Recessed panels, inputs |
-| Surface raised / card | `#1e1f1c` | Cards, elevated blocks |
-| Surface high | `#282a26` | Popovers, hover lifts |
-| Surface highest | `#33352f` | Strongest fill step |
-| Foreground / ink | `#e6e7e2` | Primary text |
-| Muted foreground | `#c5c8b8` / `#b8bcab` | Secondary text |
-| Border / hairline | `#4a4e42` / `#44473c` | Dividers, control edges |
+| Role                  | Hex                   | Use                     |
+| --------------------- | --------------------- | ----------------------- |
+| Background / surface  | `#121311`             | Page canvas             |
+| Surface muted / low   | `#1a1b18`             | Recessed panels, inputs |
+| Surface raised / card | `#1e1f1c`             | Cards, elevated blocks  |
+| Surface high          | `#282a26`             | Popovers, hover lifts   |
+| Surface highest       | `#33352f`             | Strongest fill step     |
+| Foreground / ink      | `#e6e7e2`             | Primary text            |
+| Muted foreground      | `#c5c8b8` / `#b8bcab` | Secondary text          |
+| Border / hairline     | `#4a4e42` / `#44473c` | Dividers, control edges |
 
 ### Brand
 
-| Role | Hex | Use |
-| --- | --- | --- |
-| Primary | `#d4e85a` | CTAs, focus ring, charts |
-| On-primary | `#2a3208` | Text on primary fills |
-| Primary hover | `#6b7a1a` | Hover / inverse primary |
-| Accent | `#ff6b3d` | Rare emphasis (not default chrome) |
+| Role          | Hex       | Use                                |
+| ------------- | --------- | ---------------------------------- |
+| Primary       | `#d4e85a` | CTAs, focus ring, charts           |
+| On-primary    | `#2a3208` | Text on primary fills              |
+| Primary hover | `#6b7a1a` | Hover / inverse primary            |
+| Accent        | `#ff6b3d` | Rare emphasis (not default chrome) |
 
 ### Feedback
 
@@ -159,12 +159,12 @@ Error text `#ffb4ab`, error container `#93000a`. Focus ring matches primary.
 
 ## Typography
 
-| Role | Family | Notes |
-| --- | --- | --- |
+| Role               | Family     | Notes                                           |
+| ------------------ | ---------- | ----------------------------------------------- |
 | Display / headings | Montserrat | 600–700; scale 20→48px (+ mobile 28px headline) |
-| Body | Inter | 14px base / 16px large; comfortable line-height |
-| Labels | Geist Sans | Slight tracking on sm/xs labels |
-| Mono | Geist Mono | Code, dense metadata |
+| Body               | Inter      | 14px base / 16px large; comfortable line-height |
+| Labels             | Geist Sans | Slight tracking on sm/xs labels                 |
+| Mono               | Geist Mono | Code, dense metadata                            |
 
 Scale (px): 10 / 12 / 14 / 16 / 20 / 24 / 32 / 48 (+ 56–60 display extras). Prefer `text-wrap: balance` on headings. Cap display clamp max around 6rem. Public heroes may go large; dashboard stays tighter.
 
