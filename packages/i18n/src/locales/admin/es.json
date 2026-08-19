@@ -26,5 +26,48 @@
     "label": "Admin",
     "title": "Tu espacio de administración está listo.",
     "description": "Las herramientas de gestión de la plataforma aparecerán acá a medida que estén disponibles."
+  },
+  "errors": {
+    "description": "Errores registrados por la API en los últimos 30 días.",
+    "filters": {
+      "statusCode": "Código de estado",
+      "statusCodeAll": "Todos",
+      "path": "Ruta",
+      "pathPlaceholder": "Buscar por ruta…",
+      "from": "Desde",
+      "to": "Hasta",
+      "reset": "Restablecer"
+    },
+    "table": {
+      "occurredAt": "Ocurrido el",
+      "method": "Método",
+      "path": "Ruta",
+      "statusCode": "Estado",
+      "errorName": "Error",
+      "message": "Mensaje",
+      "loading": "Cargando errores",
+      "empty": "No hay errores registrados.",
+      "emptyDescription": "Cuando la API registre una falla, aparecerá acá.",
+      "emptyFiltered": "No se encontraron errores.",
+      "emptyFilteredDescription": "Probá con otros filtros."
+    },
+    "list": {
+      "error": "No pudimos cargar los errores registrados. Intentá de nuevo en unos minutos.",
+      "errorTitle": "Algo salió mal",
+      "retry": "Reintentar"
+    },
+    "pagination": {
+      "previous": "Anterior",
+      "next": "Siguiente",
+      "label": "Paginación de errores"
+    },
+    "detail": {
+      "close": "Cerrar detalle del error",
+      "occurredAt": "Ocurrido el",
+      "message": "Mensaje",
+      "correlationId": "ID de correlación",
+      "fingerprint": "Huella",
+      "stack": "Stack trace"
+    }
   }
 }

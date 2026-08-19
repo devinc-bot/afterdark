@@ -125,5 +125,8 @@
     "KPI_FAILED": "We could not load dashboard metrics. Try again in a few minutes.",
     "SALES_ANALYTICS_FAILED": "We could not load dashboard sales analytics. Try again in a few minutes.",
     "SALES_LIST_FAILED": "We could not load the sales history. Try again in a few minutes."
+  },
+  "admin": {
+    "ERRORS_LIST_FAILED": "We could not load the error records. Try again in a few minutes."
   }
 }

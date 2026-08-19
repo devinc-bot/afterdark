@@ -26,5 +26,48 @@
     "label": "Admin",
     "title": "Your admin workspace is ready.",
     "description": "Platform management tools will appear here as they become available."
+  },
+  "errors": {
+    "description": "Errors recorded by the API in the last 30 days.",
+    "filters": {
+      "statusCode": "Status code",
+      "statusCodeAll": "All",
+      "path": "Path",
+      "pathPlaceholder": "Search by path…",
+      "from": "From",
+      "to": "To",
+      "reset": "Reset"
+    },
+    "table": {
+      "occurredAt": "Occurred at",
+      "method": "Method",
+      "path": "Path",
+      "statusCode": "Status",
+      "errorName": "Error",
+      "message": "Message",
+      "loading": "Loading errors",
+      "empty": "No errors recorded.",
+      "emptyDescription": "When the API records a failure, it will appear here.",
+      "emptyFiltered": "No errors found.",
+      "emptyFilteredDescription": "Try different filters."
+    },
+    "list": {
+      "error": "We could not load the error records. Try again in a few minutes.",
+      "errorTitle": "Something went wrong",
+      "retry": "Retry"
+    },
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next",
+      "label": "Errors pagination"
+    },
+    "detail": {
+      "close": "Close error details",
+      "occurredAt": "Occurred at",
+      "message": "Message",
+      "correlationId": "Correlation ID",
+      "fingerprint": "Fingerprint",
+      "stack": "Stack trace"
+    }
   }
 }
