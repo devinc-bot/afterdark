@@ -116,6 +116,28 @@
       "activate": "Activar",
       "deactivate": "Desactivar"
     },
+    "detail": {
+      "close": "Cerrar detalle del usuario",
+      "name": "Nombre",
+      "email": "Email",
+      "role": "Rol",
+      "status": "Estado",
+      "statusActive": "Activo",
+      "statusInactive": "Inactivo",
+      "phone": "Teléfono",
+      "birthday": "Fecha de nacimiento",
+      "nationalId": "Documento",
+      "organization": "Organización",
+      "taxId": "CUIT / Tax ID",
+      "address": "Dirección",
+      "provider": "Proveedor",
+      "providerLocal": "Local",
+      "providerGoogle": "Google",
+      "registeredAt": "Registrado el",
+      "documentId": "ID",
+      "noProfile": "Sin perfil",
+      "error": "No pudimos cargar los detalles del usuario."
+    },
     "status": {
       "error": "No pudimos actualizar el estado del usuario. Intentá de nuevo."
     },
