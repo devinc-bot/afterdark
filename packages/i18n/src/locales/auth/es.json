@@ -110,7 +110,8 @@
     "or": "o",
     "errors": {
       "emailExists": "Ya existe una cuenta con este correo.",
-      "generic": "No se pudo continuar con Google. Intentá de nuevo."
+      "generic": "No se pudo continuar con Google. Intentá de nuevo.",
+      "pendingApproval": "Tu cuenta está pendiente de aprobación. Cuando un administrador la apruebe, vas a poder ingresar."
     }
   },
   "session": {

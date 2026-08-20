@@ -22,7 +22,8 @@
     "USER_REGISTRATION_TOKEN_INVALID": "The link is invalid or has expired.",
     "USER_REGISTRATION_RATE_LIMITED": "Too many attempts. Please try again later.",
     "ROLE_NOT_CONFIGURED": "We could not complete registration. Please contact the administrator.",
-    "REGISTER_SUCCESS": "Account created successfully. You can now sign in."
+    "REGISTER_SUCCESS": "Account created successfully. You can now sign in.",
+    "OWNER_PENDING_APPROVAL": "Your account is pending approval. You'll be able to sign in once an administrator approves it."
   },
   "invitation": {
     "INVITER_NOT_FOUND": "Owner not found.",

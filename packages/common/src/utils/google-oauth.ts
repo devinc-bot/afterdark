@@ -15,7 +15,8 @@ export function buildGoogleOauthStartUrl(input: {
 
 export function googleOauthErrorMessageKey(
   error: string | undefined
-): 'google.errors.emailExists' | 'google.errors.generic' {
+): 'google.errors.emailExists' | 'google.errors.pendingApproval' | 'google.errors.generic' {
   if (error === 'email_exists') return 'google.errors.emailExists'
+  if (error === 'google_pending_approval') return 'google.errors.pendingApproval'
   return 'google.errors.generic'
 }

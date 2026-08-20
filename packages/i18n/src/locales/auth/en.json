@@ -110,7 +110,8 @@
     "or": "or",
     "errors": {
       "emailExists": "An account with this email already exists.",
-      "generic": "Could not continue with Google. Please try again."
+      "generic": "Could not continue with Google. Please try again.",
+      "pendingApproval": "Your account is pending approval. You'll be able to sign in once an administrator approves it."
     }
   },
   "session": {

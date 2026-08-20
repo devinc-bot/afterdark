@@ -3,6 +3,7 @@ import { eq } from 'drizzle-orm'
 import { USER_ROLE } from '@repo/types'
 import {
   EVENT_STATUS,
+  OWNER_STATUS,
   PAYMENT_PROVIDER,
   PAYMENT_STATUS,
   TICKET_STATUS,
@@ -325,6 +326,7 @@ export async function seedTicketsOrders(): Promise<void> {
     name: 'Test',
     lastName: 'Owner',
     phone: '1130000001',
+    status: OWNER_STATUS.ACTIVE,
   })
 
   await upsertOwnerAccountLink(`${seedEnv.SEED_OWNER_DOCUMENT_ID}-account-lnk`, ownerId, accountId)

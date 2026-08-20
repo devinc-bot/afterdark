@@ -10,6 +10,7 @@ import {
   Skeleton,
 } from '@repo/ui'
 import { formatDate } from '@repo/common'
+import { ADMIN_USER_STATUS } from '~/modules/users/constants/admin-user-status'
 import { useAdminUserDetail } from '~/modules/users/queries/use-users-queries'
 
 function DetailField({
@@ -36,8 +37,8 @@ function DetailField({
 }
 
 function statusBadgeVariant(status: AdminUserStatus): 'secondary' | 'destructive' | 'outline' {
-  if (status === 'active') return 'secondary'
-  if (status === 'inactive') return 'destructive'
+  if (status === ADMIN_USER_STATUS.ACTIVE) return 'secondary'
+  if (status === ADMIN_USER_STATUS.INACTIVE) return 'destructive'
   return 'outline'
 }
 
@@ -67,12 +68,14 @@ export function UserDetail({
   const headerName =
     user && (user.name || user.lastName) ? `${user.name ?? ''} ${user.lastName ?? ''}`.trim() : null
 
-  const headerStatus =
-    user?.status === 'active'
-      ? t('users.detail.statusActive')
-      : user?.status === 'inactive'
-        ? t('users.detail.statusInactive')
-        : (user?.status ?? null)
+  const statusLabel = (status: AdminUserStatus | null): string | null => {
+    if (status === ADMIN_USER_STATUS.ACTIVE) return t('users.detail.statusActive')
+    if (status === ADMIN_USER_STATUS.INACTIVE) return t('users.detail.statusInactive')
+    if (status === ADMIN_USER_STATUS.PENDING) return t('users.detail.statusPending')
+    return status ?? null
+  }
+
+  const headerStatus = statusLabel(user?.status ?? null)
 
   return (
     <Sheet open={user !== null} onOpenChange={onOpenChange}>
