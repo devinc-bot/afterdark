@@ -1,0 +1,158 @@
+{
+  "login": {
+    "subtitle": "Sign in with an authorized account."
+  },
+  "accessDenied": "You do not have access to the Admin panel.",
+  "brand": {
+    "subtitle": "Administration panel"
+  },
+  "nav": {
+    "language": "Language",
+    "signOut": "Sign out",
+    "users": "Registered users",
+    "errors": "Errors",
+    "theme": "Theme",
+    "themeDark": "Dark",
+    "themeLight": "Light"
+  },
+  "sections": {
+    "users": "Registered users",
+    "errors": "Errors"
+  },
+  "user": {
+    "fallbackName": "Administrator"
+  },
+  "home": {
+    "label": "Admin",
+    "title": "Your admin workspace is ready.",
+    "description": "Platform management tools will appear here as they become available."
+  },
+  "errors": {
+    "description": "Errors recorded by the API in the last 30 days.",
+    "filters": {
+      "statusCode": "Status code",
+      "statusCodeAll": "All",
+      "path": "Path",
+      "pathPlaceholder": "Search by path…",
+      "from": "From",
+      "to": "To",
+      "reset": "Reset"
+    },
+    "table": {
+      "occurredAt": "Occurred at",
+      "method": "Method",
+      "path": "Path",
+      "statusCode": "Status",
+      "errorName": "Error",
+      "message": "Message",
+      "actions": "Actions",
+      "loading": "Loading errors",
+      "empty": "No errors recorded.",
+      "emptyDescription": "When the API records a failure, it will appear here.",
+      "emptyFiltered": "No errors found.",
+      "emptyFilteredDescription": "Try different filters."
+    },
+    "actions": {
+      "menu": "Error actions",
+      "delete": "Delete"
+    },
+    "delete": {
+      "title": "Delete error",
+      "description": "This action cannot be undone. The record will be permanently deleted.",
+      "cancel": "Cancel",
+      "confirm": "Delete",
+      "deleting": "Deleting…",
+      "error": "We could not delete the error record. Try again."
+    },
+    "list": {
+      "error": "We could not load the error records. Try again in a few minutes.",
+      "errorTitle": "Something went wrong",
+      "retry": "Retry"
+    },
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next",
+      "label": "Errors pagination"
+    },
+    "detail": {
+      "close": "Close error details",
+      "occurredAt": "Occurred at",
+      "message": "Message",
+      "correlationId": "Correlation ID",
+      "fingerprint": "Fingerprint",
+      "stack": "Stack trace"
+    }
+  },
+  "users": {
+    "description": "Accounts registered on the platform, across all roles.",
+    "filters": {
+      "email": "Email",
+      "emailPlaceholder": "Search by email…",
+      "role": "Role",
+      "roleAll": "All",
+      "reset": "Reset"
+    },
+    "roles": {
+      "user": "Customer",
+      "owner": "Owner",
+      "staff": "Staff",
+      "admin": "Admin"
+    },
+    "table": {
+      "email": "Email",
+      "name": "Name",
+      "role": "Role",
+      "createdAt": "Registered at",
+      "actions": "Actions",
+      "loading": "Loading users",
+      "empty": "No registered accounts.",
+      "emptyDescription": "When someone signs up, they will appear here.",
+      "emptyFiltered": "No accounts found.",
+      "emptyFilteredDescription": "Try different filters.",
+      "noName": "No profile",
+      "pending": "Pending"
+    },
+    "actions": {
+      "menu": "User actions",
+      "activate": "Activate",
+      "deactivate": "Deactivate",
+      "approve": "Approve"
+    },
+    "detail": {
+      "close": "Close user details",
+      "name": "Name",
+      "email": "Email",
+      "role": "Role",
+      "status": "Status",
+      "statusActive": "Active",
+      "statusInactive": "Inactive",
+      "statusPending": "Pending approval",
+      "phone": "Phone",
+      "birthday": "Birthday",
+      "nationalId": "National ID",
+      "organization": "Organization",
+      "taxId": "Tax ID",
+      "address": "Address",
+      "provider": "Provider",
+      "providerLocal": "Local",
+      "providerGoogle": "Google",
+      "registeredAt": "Registered at",
+      "documentId": "ID",
+      "noProfile": "No profile",
+      "error": "We could not load the user details."
+    },
+    "status": {
+      "error": "We could not update the user status. Try again."
+    },
+    "list": {
+      "error": "We could not load the users. Try again in a few minutes.",
+      "errorTitle": "Something went wrong",
+      "retry": "Retry"
+    },
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next",
+      "label": "Users pagination"
+    }
+  }
+}

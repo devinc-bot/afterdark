@@ -17,3 +17,10 @@ openspec/changes/*
 !openspec/changes/archive/
 openspec/changes/archive/*
 !openspec/changes/archive/.gitkeep
+
+# Impecable AI
+.impecable/*
+
+# Old specs
+spec/features/*
+!spec/features/.gitkeep

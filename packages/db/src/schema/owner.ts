@@ -15,7 +15,7 @@ export const owners = sqliteTable('owners', {
     enum: [OWNER_STATUS.ACTIVE, OWNER_STATUS.INACTIVE, OWNER_STATUS.PENDING],
   })
     .notNull()
-    .default(OWNER_STATUS.ACTIVE),
+    .default(OWNER_STATUS.PENDING),
 })
 
 export type OwnerSelect = typeof owners.$inferSelect

@@ -7,6 +7,7 @@ import { AuthModule } from './modules/auth'
 import { CategoriesModule } from './modules/categories'
 import { LocationsModule } from './modules/locations'
 import { DashboardModule } from './modules/dashboard'
+import { ErrorsModule } from './modules/errors'
 import { HealthModule } from './modules/health'
 import { InvitationsModule } from './modules/invitations'
 import { OrdersModule } from './modules/orders'
@@ -18,6 +19,7 @@ import { EventsModule } from './modules/events'
 import { MailModule } from './modules/mail'
 import { GeoModule } from './modules/geo'
 import { MercadoPagoModule } from './modules/mercado-pago'
+import { UsersModule } from './modules/users'
 
 @Module({
   imports: [
@@ -28,6 +30,7 @@ import { MercadoPagoModule } from './modules/mercado-pago'
     CategoriesModule,
     LocationsModule,
     DashboardModule,
+    ErrorsModule,
     HealthModule,
     InvitationsModule,
     OrdersModule,
@@ -39,6 +42,7 @@ import { MercadoPagoModule } from './modules/mercado-pago'
     MailModule,
     GeoModule,
     MercadoPagoModule,
+    UsersModule,
   ],
   controllers: [AppController],
 })

@@ -612,7 +612,7 @@ pnpm db:generate   # Generar migración tras cambiar schema/
 pnpm db:migrate    # Aplicar migraciones pendientes
 pnpm db:push       # Solo dev: sincronizar schema sin migración
 pnpm db:reset      # Reset local + migrar + seed de roles
-pnpm db:seed       # Seed de roles
+pnpm db:seed       # Seed de roles, fixtures y cuenta admin configurada
 pnpm db:studio     # UI de Drizzle
 ```
 
@@ -620,11 +620,20 @@ pnpm db:studio     # UI de Drizzle
 
 Definidas en `packages/validators/src/database.ts`:
 
-| Variable             | Uso                                               |
-| -------------------- | ------------------------------------------------- |
-| `TURSO_DATABASE_URL` | URL libSQL (`libsql://…` o `file:../../local.db`) |
-| `TURSO_AUTH_TOKEN`   | Token de Turso (vacío en local)                   |
-| `NODE_ENV`           | `development` \| `production` \| `test`           |
+| Variable              | Uso                                                     |
+| --------------------- | ------------------------------------------------------- |
+| `TURSO_DATABASE_URL`  | URL libSQL (`libsql://…` o `file:../../local.db`)       |
+| `TURSO_AUTH_TOKEN`    | Token de Turso (vacío en local)                         |
+| `NODE_ENV`            | `development` \| `production` \| `test`                 |
+| `SEED_ADMIN_EMAIL`    | Email obligatorio de la cuenta platform-admin seed      |
+| `SEED_ADMIN_PASSWORD` | Contraseña obligatoria de la cuenta platform-admin seed |
+| `SEED_OWNER_*`        | Identidad y credenciales obligatorias del fixture owner |
+| `SEED_BUYER_*`        | Identidad y credenciales obligatorias del fixture buyer |
+
+`packages/db/.env` contiene los fixtures locales no-admin. `db:seed` no tiene una
+contraseña admin por defecto: configure `SEED_ADMIN_EMAIL` y `SEED_ADMIN_PASSWORD`
+en ese archivo antes de ejecutarlo. Volver a correrlo rota la contraseña y restablece
+el rol `admin` de esa cuenta.
 
 ---
 

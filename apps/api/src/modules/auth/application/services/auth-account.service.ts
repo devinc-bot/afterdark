@@ -1,17 +1,26 @@
-import { ConflictException, Inject, Injectable, InternalServerErrorException } from '@nestjs/common'
+import {
+  ConflictException,
+  Inject,
+  Injectable,
+  InternalServerErrorException,
+  UnauthorizedException,
+} from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { hashValue } from '../../../common'
 import {
   accountExistsByEmail,
   findAuthAccountByEmail,
+  findOwnerStatusByDocumentId,
   findRoleByName,
   registerAccount,
 } from '@repo/db'
 import {
   AUTH_PROVIDER,
+  OWNER_STATUS,
   type LoginResponse,
   type RegisterResponse,
   type UserRole,
+  USER_ROLE,
 } from '@repo/types'
 import type { RegisterUserInput } from '@repo/validators'
 import { TranslationService } from '@repo/i18n/server'
@@ -56,6 +65,14 @@ export class AuthAccountService {
   }
 
   async createAccessToken(row: AuthAccountRow): Promise<LoginResponse> {
+    if (row.role.name === USER_ROLE.OWNER) {
+      const status = await findOwnerStatusByDocumentId(row.sub)
+
+      if (status === OWNER_STATUS.PENDING) {
+        throw new UnauthorizedException(this.ts.translateError('auth.OWNER_PENDING_APPROVAL'))
+      }
+    }
+
     const accessToken = await this.jwtService.signAsync({
       sub: row.sub,
       email: row.account.email,

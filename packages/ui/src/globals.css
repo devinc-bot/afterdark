@@ -1,4 +1,7 @@
-@import 'tailwindcss';
+@layer theme, base, components, utilities;
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/preflight.css' layer(base);
+@import 'tailwindcss/utilities.css' layer(utilities);
 @import '@fontsource/montserrat/400.css';
 @import '@fontsource/montserrat/600.css';
 @import '@fontsource/montserrat/700.css';
@@ -13,6 +16,7 @@
 
 @source "../../../apps/web/app";
 @source "../../../apps/dashboard/app";
+@source "../../../apps/admin/app";
 @source "../../../packages/ui/src";
 
 @theme {
@@ -87,8 +91,7 @@
   /* ── Shadow (soft depth; glow kept minimal) ────────────────────── */
   /* Layered ambient + contact + top highlight — floating panels / glass */
   --shadow-glass:
-    0 1px 0 rgba(255, 255, 255, 0.06),
-    0 4px 12px rgba(0, 0, 0, 0.28),
+    0 1px 0 rgba(255, 255, 255, 0.06), 0 4px 12px rgba(0, 0, 0, 0.28),
     0 18px 48px rgba(0, 0, 0, 0.42);
   --shadow-primary-glow: 0 0 12px rgba(212, 232, 90, 0.08);
   --shadow-inner-glow: inset 0 0 8px rgba(212, 232, 90, 0.04);
@@ -314,10 +317,8 @@ html[data-theme='light'] {
   color-scheme: light;
 
   --shadow-glass:
-    0 1px 0 rgba(255, 255, 255, 0.85),
-    0 2px 4px rgba(26, 27, 24, 0.04),
-    0 12px 28px rgba(26, 27, 24, 0.1),
-    0 24px 48px rgba(26, 27, 24, 0.06);
+    0 1px 0 rgba(255, 255, 255, 0.85), 0 2px 4px rgba(26, 27, 24, 0.04),
+    0 12px 28px rgba(26, 27, 24, 0.1), 0 24px 48px rgba(26, 27, 24, 0.06);
   --shadow-primary-glow: 0 0 10px rgba(101, 163, 13, 0.08);
   --shadow-inner-glow: inset 0 0 6px rgba(101, 163, 13, 0.04);
 
@@ -586,6 +587,29 @@ html[data-theme='light'] {
 
   *::-webkit-scrollbar-corner {
     background: transparent;
+  }
+
+  input[type='number'],
+  input[type='time'] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+  }
+
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button,
+  input[type='time']::-webkit-inner-spin-button,
+  input[type='time']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  input[type='time']::-webkit-calendar-picker-indicator,
+  input[type='time']::-webkit-clear-button {
+    display: none;
+  }
+
+  input[type='time']::-ms-clear {
+    display: none;
   }
 
   body {

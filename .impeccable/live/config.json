@@ -1,8 +1,5 @@
 {
-  "files": [
-    "apps/web/app/routes/__root.tsx",
-    "apps/dashboard/app/routes/__root.tsx"
-  ],
+  "files": ["apps/web/app/routes/__root.tsx", "apps/dashboard/app/routes/__root.tsx"],
   "insertBefore": "</body>",
   "commentSyntax": "jsx",
   "cspChecked": true

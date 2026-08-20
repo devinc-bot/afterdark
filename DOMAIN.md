@@ -13,6 +13,7 @@ Business context and product rules. Schema detail → `packages/db/DATABASE.md`.
 | Cliente  | `web`       | Cuenta, descubrir/comprar entradas                           |
 | Dueño    | `dashboard` | Organización, ubicaciones, eventos, tickets, staff, settings |
 | Staff    | `dashboard` | Operación en organización (invitación + panel)               |
+| Admin    | `admin`     | Operación de plataforma (acceso con cuenta seed)             |
 
 Misma DB Turso; tipos/validators compartidos.
 
@@ -27,7 +28,7 @@ Misma DB Turso; tipos/validators compartidos.
 | `user`  | Cliente      | `web` → `/register`                    |
 | `owner` | Dueño/gestor | `dashboard` → `/register`              |
 | `staff` | Personal     | Invitación del dueño (`/$name/$token`) |
-| `admin` | Plataforma   | Fuera de alcance UI actual             |
+| `admin` | Plataforma   | Seeder; `admin` → `/login`             |
 
 ---
 

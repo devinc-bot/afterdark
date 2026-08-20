@@ -5,5 +5,5 @@
       "~/*": ["./app/*"]
     }
   },
-  "include": ["app/**/*", "vite.config.ts", "tailwind.config.ts", "postcss.config.js"]
+  "include": ["app/**/*", "vite.config.ts"]
 }

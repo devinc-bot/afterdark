@@ -12,7 +12,7 @@ Read the relevant doc before making changes:
 | ---------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
 | [openspec/config.yaml](./openspec/config.yaml)                                                       | **Development flow** — OpenSpec project context & per-artifact rules |
 | [.agents/skills/openspec-codex/SKILL.md](./.agents/skills/openspec-codex/SKILL.md)                   | **En Codex** — flujo OpenSpec, incluido el equivalente de `/opsx:*`  |
-| [.cursor/rules/spec-interview-before-changes.mdc](./.cursor/rules/spec-interview-before-changes.mdc) | **En Cursor** — flujo OpenSpec obligatorio                            |
+| [.cursor/rules/spec-interview-before-changes.mdc](./.cursor/rules/spec-interview-before-changes.mdc) | **En Cursor** — flujo OpenSpec obligatorio                           |
 | [spec/README.md](./spec/README.md)                                                                   | Legacy SDD layout (reference/history; migrate on next touch)         |
 | [ARCHITECTURE.md](./ARCHITECTURE.md)                                                                 | Project structure, modules, routes, layers, packages                 |
 | [STYLEGUIDE.md](./STYLEGUIDE.md)                                                                     | Naming, constants, dependencies, lint/format                         |
@@ -27,6 +27,11 @@ Read the relevant doc before making changes:
 - **Personality:** Alegre · Original · Minimalista — product-as-hero, soft depth, airy type, cheerful tone ([dock.cool](https://www.dock.cool/#hero) as reference).
 - **Themes & locales:** Dark + light are first-class; UI copy EN + ES via `@repo/i18n`.
 - **Do not:** neon/glow costume, dense airless layouts, stiff editorial formality, generic stock marketing.
+
+### Admin Panel
+
+- `apps/admin` admits only seeded `admin` accounts and runs on port 3003.
+- Add `http://localhost:3003` locally and the deployed Admin origin to `CORS_ALLOWED_ORIGINS` before testing authentication.
 
 ---
 
@@ -80,9 +85,11 @@ pnpm openspec doctor         # health of the OpenSpec root
 pnpm dev              # both apps in parallel
 pnpm dev:web        # web only  → http://localhost:3001
 pnpm dev:dashboard    # dashboard only → http://localhost:3002
+pnpm dev:admin        # admin only → http://localhost:3003
 
 # Build & type-check
 pnpm build
+pnpm build:admin      # admin only
 pnpm type-check
 
 # Lint & format (oxlint + oxfmt)
@@ -127,6 +134,7 @@ pnpm dlx shadcn@latest add table
 | New domain type      | `packages/types/src/domain.ts`                                               |
 
 <!-- context7 -->
+
 Use Context7 MCP to fetch current documentation whenever the user asks about a library, framework, SDK, API, CLI tool, or cloud service — even well-known ones like React, Next.js, Prisma, Express, Tailwind, Django, or Spring Boot. This includes API syntax, configuration, version migration, library-specific debugging, setup instructions, and CLI tool usage. Use even when you think you know the answer — your training data may not reflect recent changes. Prefer this over web search for library docs.
 
 Do not use for: refactoring, writing scripts from scratch, debugging business logic, code review, or general programming concepts.

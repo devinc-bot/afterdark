@@ -7,6 +7,7 @@ context: |
   Apps:
     - apps/web (@repo/web) — public site, TanStack Start → http://localhost:3001
     - apps/dashboard (@repo/dashboard) — owner/staff panel, TanStack Start/Router → http://localhost:3002
+    - apps/admin (@repo/admin) — seeded platform-admin panel, TanStack Start/Router → http://localhost:3003
     - apps/api (@repo/api) — NestJS, vertical-slice modules (application/presentation/mappers/...)
 
   Shared packages:
@@ -15,7 +16,7 @@ context: |
       repository functions, they do NOT import `db` directly.
     - packages/validators (@repo/validators) — Zod v4 schemas (single source of validation truth).
     - packages/ui (@repo/ui) — ShadCN components, Tailwind v4.
-    - packages/i18n (@repo/i18n) — locale JSON; UI copy is Spanish.
+    - packages/i18n (@repo/i18n) — locale JSON; UI copy is Spanish and English.
     - packages/types, packages/common — shared domain types and config (e.g. api-routes).
 
   Conventions:
@@ -25,6 +26,7 @@ context: |
     - DB changes use drizzle-kit migrations with a timestamp prefix; never rename committed migrations.
     - `routeTree.gen.ts` is generated on `pnpm dev` — never edit it.
     - `createFileRoute` needs a string-literal path (TanStack codegen); route constants are for navigation only.
+    - `apps/admin` admits only `USER_ROLE.ADMIN`; provisioning remains seed-only and CORS must include port 3003 locally plus the deployed Admin origin.
 
   Reference docs (read before proposing): ARCHITECTURE.md, DOMAIN.md, STYLEGUIDE.md,
   packages/db/DATABASE.md, AGENTS.md.

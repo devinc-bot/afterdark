@@ -1,3 +1,4 @@
+export * from './api-error-record.ts'
 export * from './auth.ts'
 export * from './location.ts'
 export * from './common.ts'

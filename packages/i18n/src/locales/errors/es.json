@@ -22,7 +22,8 @@
     "USER_REGISTRATION_TOKEN_INVALID": "El enlace no es válido o ya expiró.",
     "USER_REGISTRATION_RATE_LIMITED": "Demasiados intentos. Probá de nuevo más tarde.",
     "ROLE_NOT_CONFIGURED": "No pudimos completar el registro. Contactá al administrador.",
-    "REGISTER_SUCCESS": "Cuenta creada correctamente. Ya podés iniciar sesión."
+    "REGISTER_SUCCESS": "Cuenta creada correctamente. Ya podés iniciar sesión.",
+    "OWNER_PENDING_APPROVAL": "Tu cuenta está pendiente de aprobación. Cuando un administrador la apruebe, vas a poder ingresar."
   },
   "invitation": {
     "INVITER_NOT_FOUND": "Propietario no encontrado.",
@@ -125,5 +126,15 @@
     "KPI_FAILED": "No pudimos cargar los indicadores del dashboard. Intentá de nuevo en unos minutos.",
     "SALES_ANALYTICS_FAILED": "No pudimos cargar las ventas del dashboard. Intentá de nuevo en unos minutos.",
     "SALES_LIST_FAILED": "No pudimos cargar el historial de ventas. Intentá de nuevo en unos minutos."
+  },
+  "admin": {
+    "ERRORS_LIST_FAILED": "No pudimos cargar los errores registrados. Intentá de nuevo en unos minutos.",
+    "ERRORS_DELETE_FAILED": "No pudimos eliminar el error. Intentá de nuevo.",
+    "ERRORS_DELETE_NOT_FOUND": "No encontramos el error registrado para eliminar.",
+    "USERS_LIST_FAILED": "No pudimos cargar los usuarios. Intentá de nuevo en unos minutos.",
+    "USERS_DETAIL_FAILED": "No pudimos cargar los detalles del usuario. Intentá de nuevo.",
+    "USERS_DETAIL_NOT_FOUND": "No encontramos esa cuenta.",
+    "USERS_STATUS_UPDATE_FAILED": "No pudimos actualizar el estado del usuario. Intentá de nuevo.",
+    "USERS_STATUS_UPDATE_NOT_FOUND": "No encontramos una cuenta con perfil para actualizar."
   }
 }

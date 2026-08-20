@@ -1,6 +1,6 @@
 import { z } from 'zod'
-import { STAFF_STATUS, USER_ROLE } from '@repo/types'
-import { phoneSchema } from './common.ts'
+import { STAFF_STATUS, USER_ROLE, USER_STATUS } from '@repo/types'
+import { paginationSchema, phoneSchema } from './common.ts'
 import { baseProfileSchema } from './owner.ts'
 
 const optionalDigitsField = (invalidKey: string, pattern: RegExp) =>
@@ -50,6 +50,15 @@ export const updateCurrentUserProfileSchema = updateCurrentUserSchema.pick({
   name: true,
   lastName: true,
   phone: true,
+})
+
+export const listAdminUsersQuerySchema = paginationSchema.extend({
+  email: z.string().trim().min(1).max(255).optional(),
+  role: z.enum([USER_ROLE.USER, USER_ROLE.OWNER, USER_ROLE.STAFF, USER_ROLE.ADMIN]).optional(),
+})
+
+export const updateAdminUserStatusSchema = z.object({
+  status: z.enum([USER_STATUS.ACTIVE, USER_STATUS.INACTIVE]),
 })
 
 export const createUserSchema = z.object({
@@ -134,3 +143,5 @@ export type UpdateUserInput = z.infer<typeof updateUserSchema>
 export type UpdateCurrentUserInput = z.infer<typeof updateCurrentUserSchema>
 export type UpdateCurrentUserProfileInput = z.infer<typeof updateCurrentUserProfileSchema>
 export type UserAddressInput = z.infer<typeof userAddressSchema>
+export type ListAdminUsersQueryInput = z.infer<typeof listAdminUsersQuerySchema>
+export type UpdateAdminUserStatusInput = z.infer<typeof updateAdminUserStatusSchema>

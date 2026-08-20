@@ -22,7 +22,8 @@
     "USER_REGISTRATION_TOKEN_INVALID": "The link is invalid or has expired.",
     "USER_REGISTRATION_RATE_LIMITED": "Too many attempts. Please try again later.",
     "ROLE_NOT_CONFIGURED": "We could not complete registration. Please contact the administrator.",
-    "REGISTER_SUCCESS": "Account created successfully. You can now sign in."
+    "REGISTER_SUCCESS": "Account created successfully. You can now sign in.",
+    "OWNER_PENDING_APPROVAL": "Your account is pending approval. You'll be able to sign in once an administrator approves it."
   },
   "invitation": {
     "INVITER_NOT_FOUND": "Owner not found.",
@@ -125,5 +126,15 @@
     "KPI_FAILED": "We could not load dashboard metrics. Try again in a few minutes.",
     "SALES_ANALYTICS_FAILED": "We could not load dashboard sales analytics. Try again in a few minutes.",
     "SALES_LIST_FAILED": "We could not load the sales history. Try again in a few minutes."
+  },
+  "admin": {
+    "ERRORS_LIST_FAILED": "We could not load the error records. Try again in a few minutes.",
+    "ERRORS_DELETE_FAILED": "We could not delete the error record. Try again.",
+    "ERRORS_DELETE_NOT_FOUND": "We could not find the error record to delete.",
+    "USERS_LIST_FAILED": "We could not load the users. Try again in a few minutes.",
+    "USERS_DETAIL_FAILED": "We could not load the user details. Try again.",
+    "USERS_DETAIL_NOT_FOUND": "We could not find that account.",
+    "USERS_STATUS_UPDATE_FAILED": "We could not update the user status. Try again.",
+    "USERS_STATUS_UPDATE_NOT_FOUND": "We could not find an account with a profile to update."
   }
 }

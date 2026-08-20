@@ -10,12 +10,14 @@ Apps, packages, and data-flow conventions.
 | ----------- | -------------------------------------- | ---- |
 | `web`       | Public client (auth, discover / buy)   | 3001 |
 | `dashboard` | Owner/staff panel (clubs, events, …)   | 3002 |
+| `admin`     | Platform admin panel (seeded accounts) | 3003 |
 | `api`       | NestJS REST API + Drizzle (`@repo/db`) | 3000 |
 
 ```
 apps/
 ├── web/app/{config,modules,routes}
 ├── dashboard/app/{config,modules,routes}
+├── admin/app/{config,modules,routes}
 └── api/src/{modules,app.module.ts,main.ts}
 
 packages/
@@ -42,7 +44,7 @@ UI → queries/mutations → services → QueryFactory → Nest API → reposito
 5. API services use `@repo/db` repositories only — no direct `db` queries in Nest services.
 6. Contracts from `@repo/types` / `@repo/validators`; copy from `@repo/i18n`.
 
-Session: Zustand store + `GET /session/me`. Guards: `RequireGuest`, `RequireSession`, `RolesGuard`.
+Session: Zustand store + `GET /session/me`. Guards: `RequireGuest`, `RequireSession`, `RolesGuard`; `apps/admin` uses `RequireAdminSession` to require `USER_ROLE.ADMIN`.
 
 ---
 
@@ -151,7 +153,7 @@ apps/api/src/modules/mail/
 
 Root `.env`. Main vars: `VITE_API_URL`, `TURSO_*`, `NODE_ENV`, `PORT`, `JWT_SECRET`, `DASHBOARD_URL`, `WEB_URL`, `CORS_ALLOWED_ORIGINS`, `RESEND_API_KEY`, `MAIL_FROM`, `MAIL_SMOKE_TO`.
 
-Zod schemas for env live in `packages/validators/src/env/`. Apps compose them at boot (`apps/api/.../config/env.ts`, `packages/db`, web/dashboard client env). Mail keys may be empty at boot; `MailConfigService` / send use cases fail with `mail.NOT_CONFIGURED` when sending without config. `API_PREFIX` is a **code constant**, not env.
+Zod schemas for env live in `packages/validators/src/env/`. Apps compose them at boot (`apps/api/.../config/env.ts`, `packages/db`, web/dashboard/admin client env). `CORS_ALLOWED_ORIGINS` MUST include `http://localhost:3003` in local development and the deployed Admin origin. Mail keys may be empty at boot; `MailConfigService` / send use cases fail with `mail.NOT_CONFIGURED` when sending without config. `API_PREFIX` is a **code constant**, not env.
 
 ---
 

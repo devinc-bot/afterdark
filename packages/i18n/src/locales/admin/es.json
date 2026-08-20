@@ -1,0 +1,158 @@
+{
+  "login": {
+    "subtitle": "Iniciá sesión con una cuenta autorizada."
+  },
+  "accessDenied": "No tienes acceso al panel de Admin.",
+  "brand": {
+    "subtitle": "Panel de administración"
+  },
+  "nav": {
+    "language": "Idioma",
+    "signOut": "Cerrar sesión",
+    "users": "Usuarios registrados",
+    "errors": "Errores",
+    "theme": "Tema",
+    "themeDark": "Oscuro",
+    "themeLight": "Claro"
+  },
+  "sections": {
+    "users": "Usuarios registrados",
+    "errors": "Errores"
+  },
+  "user": {
+    "fallbackName": "Administrador"
+  },
+  "home": {
+    "label": "Admin",
+    "title": "Tu espacio de administración está listo.",
+    "description": "Las herramientas de gestión de la plataforma aparecerán acá a medida que estén disponibles."
+  },
+  "errors": {
+    "description": "Errores registrados por la API en los últimos 30 días.",
+    "filters": {
+      "statusCode": "Código de estado",
+      "statusCodeAll": "Todos",
+      "path": "Ruta",
+      "pathPlaceholder": "Buscar por ruta…",
+      "from": "Desde",
+      "to": "Hasta",
+      "reset": "Restablecer"
+    },
+    "table": {
+      "occurredAt": "Ocurrido el",
+      "method": "Método",
+      "path": "Ruta",
+      "statusCode": "Estado",
+      "errorName": "Error",
+      "message": "Mensaje",
+      "actions": "Acciones",
+      "loading": "Cargando errores",
+      "empty": "No hay errores registrados.",
+      "emptyDescription": "Cuando la API registre una falla, aparecerá acá.",
+      "emptyFiltered": "No se encontraron errores.",
+      "emptyFilteredDescription": "Probá con otros filtros."
+    },
+    "actions": {
+      "menu": "Acciones del error",
+      "delete": "Eliminar"
+    },
+    "delete": {
+      "title": "Eliminar error",
+      "description": "Esta acción no se puede deshacer. El registro se eliminará definitivamente.",
+      "cancel": "Cancelar",
+      "confirm": "Eliminar",
+      "deleting": "Eliminando…",
+      "error": "No pudimos eliminar el error. Intentá de nuevo."
+    },
+    "list": {
+      "error": "No pudimos cargar los errores registrados. Intentá de nuevo en unos minutos.",
+      "errorTitle": "Algo salió mal",
+      "retry": "Reintentar"
+    },
+    "pagination": {
+      "previous": "Anterior",
+      "next": "Siguiente",
+      "label": "Paginación de errores"
+    },
+    "detail": {
+      "close": "Cerrar detalle del error",
+      "occurredAt": "Ocurrido el",
+      "message": "Mensaje",
+      "correlationId": "ID de correlación",
+      "fingerprint": "Huella",
+      "stack": "Stack trace"
+    }
+  },
+  "users": {
+    "description": "Cuentas registradas en la plataforma, de cualquier rol.",
+    "filters": {
+      "email": "Email",
+      "emailPlaceholder": "Buscar por email…",
+      "role": "Rol",
+      "roleAll": "Todos",
+      "reset": "Restablecer"
+    },
+    "roles": {
+      "user": "Cliente",
+      "owner": "Dueño",
+      "staff": "Staff",
+      "admin": "Admin"
+    },
+    "table": {
+      "email": "Email",
+      "name": "Nombre",
+      "role": "Rol",
+      "createdAt": "Registrado el",
+      "actions": "Acciones",
+      "loading": "Cargando usuarios",
+      "empty": "No hay cuentas registradas.",
+      "emptyDescription": "Cuando alguien se registre, aparecerá acá.",
+      "emptyFiltered": "No se encontraron cuentas.",
+      "emptyFilteredDescription": "Probá con otros filtros.",
+      "noName": "Sin perfil",
+      "pending": "Pendiente"
+    },
+    "actions": {
+      "menu": "Acciones del usuario",
+      "activate": "Activar",
+      "deactivate": "Desactivar",
+      "approve": "Aprobar"
+    },
+    "detail": {
+      "close": "Cerrar detalle del usuario",
+      "name": "Nombre",
+      "email": "Email",
+      "role": "Rol",
+      "status": "Estado",
+      "statusActive": "Activo",
+      "statusInactive": "Inactivo",
+      "statusPending": "Pendiente de aprobación",
+      "phone": "Teléfono",
+      "birthday": "Fecha de nacimiento",
+      "nationalId": "Documento",
+      "organization": "Organización",
+      "taxId": "CUIT / Tax ID",
+      "address": "Dirección",
+      "provider": "Proveedor",
+      "providerLocal": "Local",
+      "providerGoogle": "Google",
+      "registeredAt": "Registrado el",
+      "documentId": "ID",
+      "noProfile": "Sin perfil",
+      "error": "No pudimos cargar los detalles del usuario."
+    },
+    "status": {
+      "error": "No pudimos actualizar el estado del usuario. Intentá de nuevo."
+    },
+    "list": {
+      "error": "No pudimos cargar los usuarios. Intentá de nuevo en unos minutos.",
+      "errorTitle": "Algo salió mal",
+      "retry": "Reintentar"
+    },
+    "pagination": {
+      "previous": "Anterior",
+      "next": "Siguiente",
+      "label": "Paginación de usuarios"
+    }
+  }
+}

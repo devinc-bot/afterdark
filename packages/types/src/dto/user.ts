@@ -1,5 +1,6 @@
+import type { AuthProvider } from '../enums/auth.ts'
 import type { StaffStatus } from '../enums/staff.ts'
-import { USER_ROLE, type OwnerStatus, type PropertyStatus, type UserRole } from '../enums/user.ts'
+import { USER_ROLE, type OwnerStatus, type UserRole, type UserStatus } from '../enums/user.ts'
 
 export interface SessionResponse {
   sub: string
@@ -59,14 +60,34 @@ export interface User {
   updatedAt: Date
 }
 
-/** @deprecated Placeholder del catálogo legacy en `web`; eliminar con el módulo `properties`. */
-export interface Property {
-  id: string
-  name: string
-  description: string | null
-  price: number
-  stock: number
-  status: PropertyStatus
-  createdAt: Date
-  updatedAt: Date
+export type AdminUserStatus = UserStatus | OwnerStatus | StaffStatus
+
+/** Subset of AdminUserStatus the admin can assign via the status-change action. */
+export type AdminUserTogglableStatus = Extract<AdminUserStatus, 'active' | 'inactive'>
+
+export interface AdminUserListItemResponse {
+  documentId: string
+  email: string
+  name: string | null
+  lastName: string | null
+  role: UserRole
+  status: AdminUserStatus | null
+  createdAt: string
+}
+
+export interface AdminUserDetailResponse {
+  documentId: string
+  email: string
+  provider: AuthProvider
+  role: UserRole
+  createdAt: string
+  name: string | null
+  lastName: string | null
+  phone: string | null
+  birthday: string | null
+  nationalId: string | null
+  status: AdminUserStatus | null
+  organizationName: string | null
+  taxId: string | null
+  address: CurrentUserAddress | null
 }
