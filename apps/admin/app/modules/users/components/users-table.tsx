@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { MoreHorizontal } from 'lucide-react'
 import type { AdminUserListItemResponse, AdminUserTogglableStatus } from '@repo/types'
 import { formatDate } from '@repo/common'
+import { ADMIN_USER_STATUS } from '~/modules/users/constants/admin-user-status'
 import {
   Badge,
   Button,
@@ -202,7 +203,12 @@ function UserRow({
       </TableCell>
       <TableCell className="p-6 text-ink">{fullName ?? t('users.table.noName')}</TableCell>
       <TableCell className="p-6">
-        <Badge variant="secondary">{t(`users.roles.${user.role}`)}</Badge>
+        <div className="flex items-center gap-2">
+          <Badge variant="secondary">{t(`users.roles.${user.role}`)}</Badge>
+          {user.status === ADMIN_USER_STATUS.PENDING ? (
+            <Badge variant="outline">{t('users.table.pending')}</Badge>
+          ) : null}
+        </div>
       </TableCell>
       <TableCell className="p-6 text-ink">
         {formatDate(new Date(user.createdAt), {
@@ -226,15 +232,22 @@ function UserRow({
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
+              {user.status === ADMIN_USER_STATUS.PENDING ? (
+                <DropdownMenuItem
+                  onSelect={() => onStatusChange(user.documentId, ADMIN_USER_STATUS.ACTIVE)}
+                >
+                  {t('users.actions.approve')}
+                </DropdownMenuItem>
+              ) : null}
               <DropdownMenuItem
-                disabled={user.status === 'active'}
-                onSelect={() => onStatusChange(user.documentId, 'active')}
+                disabled={user.status === ADMIN_USER_STATUS.ACTIVE}
+                onSelect={() => onStatusChange(user.documentId, ADMIN_USER_STATUS.ACTIVE)}
               >
                 {t('users.actions.activate')}
               </DropdownMenuItem>
               <DropdownMenuItem
-                disabled={user.status === 'inactive'}
-                onSelect={() => onStatusChange(user.documentId, 'inactive')}
+                disabled={user.status === ADMIN_USER_STATUS.INACTIVE}
+                onSelect={() => onStatusChange(user.documentId, ADMIN_USER_STATUS.INACTIVE)}
               >
                 {t('users.actions.deactivate')}
               </DropdownMenuItem>

@@ -109,12 +109,14 @@
       "emptyDescription": "Cuando alguien se registre, aparecerá acá.",
       "emptyFiltered": "No se encontraron cuentas.",
       "emptyFilteredDescription": "Probá con otros filtros.",
-      "noName": "Sin perfil"
+      "noName": "Sin perfil",
+      "pending": "Pendiente"
     },
     "actions": {
       "menu": "Acciones del usuario",
       "activate": "Activar",
-      "deactivate": "Desactivar"
+      "deactivate": "Desactivar",
+      "approve": "Aprobar"
     },
     "detail": {
       "close": "Cerrar detalle del usuario",
@@ -124,6 +126,7 @@
       "status": "Estado",
       "statusActive": "Activo",
       "statusInactive": "Inactivo",
+      "statusPending": "Pendiente de aprobación",
       "phone": "Teléfono",
       "birthday": "Fecha de nacimiento",
       "nationalId": "Documento",

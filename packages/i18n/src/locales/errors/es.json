@@ -22,7 +22,8 @@
     "USER_REGISTRATION_TOKEN_INVALID": "El enlace no es válido o ya expiró.",
     "USER_REGISTRATION_RATE_LIMITED": "Demasiados intentos. Probá de nuevo más tarde.",
     "ROLE_NOT_CONFIGURED": "No pudimos completar el registro. Contactá al administrador.",
-    "REGISTER_SUCCESS": "Cuenta creada correctamente. Ya podés iniciar sesión."
+    "REGISTER_SUCCESS": "Cuenta creada correctamente. Ya podés iniciar sesión.",
+    "OWNER_PENDING_APPROVAL": "Tu cuenta está pendiente de aprobación. Cuando un administrador la apruebe, vas a poder ingresar."
   },
   "invitation": {
     "INVITER_NOT_FOUND": "Propietario no encontrado.",

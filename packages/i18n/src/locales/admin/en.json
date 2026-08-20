@@ -109,12 +109,14 @@
       "emptyDescription": "When someone signs up, they will appear here.",
       "emptyFiltered": "No accounts found.",
       "emptyFilteredDescription": "Try different filters.",
-      "noName": "No profile"
+      "noName": "No profile",
+      "pending": "Pending"
     },
     "actions": {
       "menu": "User actions",
       "activate": "Activate",
-      "deactivate": "Deactivate"
+      "deactivate": "Deactivate",
+      "approve": "Approve"
     },
     "detail": {
       "close": "Close user details",
@@ -124,6 +126,7 @@
       "status": "Status",
       "statusActive": "Active",
       "statusInactive": "Inactive",
+      "statusPending": "Pending approval",
       "phone": "Phone",
       "birthday": "Birthday",
       "nationalId": "National ID",

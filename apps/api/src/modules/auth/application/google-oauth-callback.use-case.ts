@@ -1,4 +1,4 @@
-import { Inject, Injectable, Logger } from '@nestjs/common'
+import { Inject, Injectable, Logger, UnauthorizedException } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import {
   accountExistsByEmail,
@@ -138,6 +138,10 @@ export class GoogleOauthCallbackUseCase {
       const session = await this.accounts.createAccessToken(created)
       return buildAppAuthCallbackUrl(app, session.accessToken)
     } catch (error) {
+      if (error instanceof UnauthorizedException) {
+        return buildAppLoginErrorUrl(app, GOOGLE_OAUTH_ERROR.PENDING_APPROVAL)
+      }
+
       this.logger.error(
         'Google OAuth callback failed',
         error instanceof Error ? error.stack : undefined
