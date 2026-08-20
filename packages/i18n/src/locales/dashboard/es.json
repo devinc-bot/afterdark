@@ -58,7 +58,38 @@
     "qrTicket": {
       "metaTitle": "Escanear QR · {appNameAdmin}",
       "title": "QR Ticket",
-      "description": "Escaneá el código QR para validar y marcar el ticket como usado."
+      "description": "Escaneá el código QR para validar y marcar el ticket como usado.",
+      "tabs": {
+        "scan": "Escanear",
+        "history": "Historial"
+      },
+      "history": {
+        "selectLabel": "Evento",
+        "selectPlaceholder": "Seleccioná un evento",
+        "emptySelect": "Seleccioná un evento para ver los tickets escaneados.",
+        "noEvents": "Aún no hay eventos con tickets vendidos.",
+        "empty": "No hay tickets escaneados para este evento.",
+        "error": "No pudimos cargar el historial. Intentá de nuevo.",
+        "notReported": "No informado",
+        "typeGeneral": "General",
+        "typeVip": "VIP",
+        "table": {
+          "scannedAt": "Escaneado",
+          "purchaser": "Comprador",
+          "operator": "Operador",
+          "ticket": "Ticket"
+        },
+        "pagination": {
+          "label": "Paginación del historial",
+          "previous": "Anterior",
+          "next": "Siguiente",
+          "pageOf": "Página {page} de {totalPages}",
+          "previousAria": "Ir a la página anterior",
+          "nextAria": "Ir a la página siguiente",
+          "goToPage": "Ir a la página {page}",
+          "ellipsis": "Más páginas"
+        }
+      }
     },
     "panel": {
       "metaTitle": "Panel · {appNameAdmin}",

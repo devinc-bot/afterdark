@@ -50,6 +50,10 @@ export async function fetchEvents(
     limit: String(params.limit),
   })
 
+  if (params.hasSales !== undefined) {
+    searchParams.set('hasSales', String(params.hasSales))
+  }
+
   try {
     return await api.get<PaginatedResponse<EventResponse>>(
       `${buildApiPath(API_ROUTES.events, API_ROUTES.events.path.list())}?${searchParams.toString()}`
