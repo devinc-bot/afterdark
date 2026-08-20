@@ -80,13 +80,13 @@ export class EventsController {
   }
 
   @Get(API_ROUTES.events.path.list())
-  @Roles([USER_ROLE.OWNER])
+  @Roles([USER_ROLE.OWNER, USER_ROLE.STAFF])
   @UseGuards(JwtAuthGuard, RolesGuard)
   listMyEvents(
     @CurrentUser() user: JwtPayload,
     @Query(new ZodValidationPipe(listEventsQuerySchema)) query: ListEventsQueryInput
   ): Promise<PaginatedResponse<EventResponse>> {
-    return this.listMyEventsUseCase.execute(user.sub, query)
+    return this.listMyEventsUseCase.execute(user.sub, user.role, query)
   }
 
   @Get(API_ROUTES.events.path.get(':documentId'))

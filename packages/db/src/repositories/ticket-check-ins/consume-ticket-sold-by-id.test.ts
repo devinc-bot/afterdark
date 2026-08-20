@@ -31,7 +31,9 @@ before(async () => {
         order_id INTEGER NOT NULL,
         qr_code TEXT NOT NULL UNIQUE,
         checked_in INTEGER DEFAULT 0 NOT NULL,
-        used_at INTEGER
+        used_at INTEGER,
+        checked_in_by_account_id INTEGER,
+        checked_in_by_role TEXT
       )
     `)
   )
@@ -50,19 +52,30 @@ test('concurrent attempts consume a sold ticket exactly once', async () => {
   assert.ok(ticket)
 
   const usedAt = new Date('2026-08-05T20:00:00.000Z')
-  const results = await Promise.all([
-    consumeTicketSoldById({ ticketSoldId: ticket.id, usedAt }),
-    consumeTicketSoldById({ ticketSoldId: ticket.id, usedAt }),
-  ])
+  const consume = (ticketSoldId: number) =>
+    consumeTicketSoldById({
+      ticketSoldId,
+      usedAt,
+      checkedInByAccountId: 99,
+      checkedInByRole: 'owner',
+    })
+  const results = await Promise.all([consume(ticket.id), consume(ticket.id)])
 
   assert.equal(results.filter(Boolean).length, 1)
 
   const persisted = await db
-    .select({ checkedIn: ticketsSold.checkedIn, usedAt: ticketsSold.usedAt })
+    .select({
+      checkedIn: ticketsSold.checkedIn,
+      usedAt: ticketsSold.usedAt,
+      checkedInByAccountId: ticketsSold.checkedInByAccountId,
+      checkedInByRole: ticketsSold.checkedInByRole,
+    })
     .from(ticketsSold)
     .where(eq(ticketsSold.id, ticket.id))
     .get()
 
   assert.equal(persisted?.checkedIn, true)
   assert.deepEqual(persisted?.usedAt, usedAt)
+  assert.equal(persisted?.checkedInByAccountId, 99)
+  assert.equal(persisted?.checkedInByRole, 'owner')
 })

@@ -1,5 +1,6 @@
 import type { EventSelect, LocationSelect, TicketSelect, TicketSoldSelect } from '@repo/db/schema'
 import type { TicketSalesFilter, TicketStatus, TicketType } from '../enums/ticket.ts'
+import type { CheckInOperatorRole } from '../enums/user.ts'
 
 export type TicketWithRelations = {
   ticket: TicketSelect
@@ -57,3 +58,28 @@ export type PaginatedPurchasedTicketsResult = {
 }
 
 export type PurchasedTicketWithRelationsByDocumentId = PurchasedTicketWithRelations
+
+export type ScannedTicketHistoryRow = {
+  scannedAt: Date
+  ticket: {
+    name: string
+    type: TicketType
+  }
+  purchaser: {
+    name: string
+    lastName: string
+    email: string
+    phone: string
+  }
+  operator: {
+    accountId: number | null
+    fullName: string | null
+    email: string | null
+    role: CheckInOperatorRole | null
+  }
+}
+
+export type PaginatedScannedTicketsResult = {
+  rows: ScannedTicketHistoryRow[]
+  total: number
+}

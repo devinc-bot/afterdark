@@ -134,7 +134,14 @@ export function parseEventFormToUpdateInput(values: EventFormValues): UpdateEven
   return updateEventSchema.parse(values)
 }
 
-export const listEventsQuerySchema = paginationSchema
+const optionalBooleanQuerySchema = z.preprocess((value) => {
+  if (value === undefined || value === null) return undefined
+  return value === 'true'
+}, z.boolean().optional())
+
+export const listEventsQuerySchema = paginationSchema.extend({
+  hasSales: optionalBooleanQuerySchema,
+})
 
 export type ListEventsQueryInput = z.infer<typeof listEventsQuerySchema>
 
