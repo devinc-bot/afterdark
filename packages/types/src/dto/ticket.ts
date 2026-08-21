@@ -1,4 +1,6 @@
+import type { CheckInOperatorRole } from '../enums/user.ts'
 import type { TicketCheckInOutcome, TicketStatus, TicketType } from '../enums/ticket.ts'
+import type { PaginatedResponse } from './common.ts'
 
 export interface TicketResponse {
   documentId: string
@@ -77,3 +79,26 @@ export interface TicketCheckInResponse {
     phone: string | null
   }
 }
+
+/** Operator that consumed a scanned ticket; null for pre-operator-tracking scans. */
+export interface ScannedTicketHistoryOperator {
+  fullName: string | null
+  email: string | null
+  role: CheckInOperatorRole | null
+}
+
+export interface ScannedTicketHistoryItem {
+  purchaser: {
+    fullName: string
+    email: string
+    phone: string | null
+  }
+  operator: ScannedTicketHistoryOperator | null
+  ticket: {
+    name: string
+    type: TicketType
+  }
+  scannedAt: Date
+}
+
+export type ScannedTicketHistoryResponse = PaginatedResponse<ScannedTicketHistoryItem>

@@ -1,4 +1,5 @@
 import { and, eq } from 'drizzle-orm'
+import type { CheckInOperatorRole } from '@repo/types/enums'
 import { db } from '../../client.ts'
 import { ticketsSold } from '../../schema/tickets_sold.ts'
 
@@ -11,6 +12,8 @@ export type ConsumedTicketSoldRow = {
 export async function consumeTicketSoldById(params: {
   ticketSoldId: number
   usedAt: Date
+  checkedInByAccountId: number
+  checkedInByRole: CheckInOperatorRole
 }): Promise<ConsumedTicketSoldRow | null> {
   const row = await db
     .update(ticketsSold)
@@ -18,6 +21,8 @@ export async function consumeTicketSoldById(params: {
       checkedIn: true,
       usedAt: params.usedAt,
       updatedAt: params.usedAt,
+      checkedInByAccountId: params.checkedInByAccountId,
+      checkedInByRole: params.checkedInByRole,
     })
     .where(and(eq(ticketsSold.id, params.ticketSoldId), eq(ticketsSold.checkedIn, false)))
     .returning({

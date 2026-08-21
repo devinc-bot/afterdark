@@ -7,6 +7,9 @@ export const USER_ROLE = {
 
 export type UserRole = (typeof USER_ROLE)[keyof typeof USER_ROLE]
 
+/** Role of an operator authorized to consume a ticket at the door. */
+export type CheckInOperatorRole = typeof USER_ROLE.OWNER | typeof USER_ROLE.STAFF
+
 export const USER_STATUS = {
   ACTIVE: 'active',
   INACTIVE: 'inactive',

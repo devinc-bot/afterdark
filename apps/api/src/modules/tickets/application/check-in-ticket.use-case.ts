@@ -103,6 +103,8 @@ export class CheckInTicketUseCase {
     const consumedTicket = await consumeTicketSoldById({
       ticketSoldId: context.ticketSold.id,
       usedAt: now,
+      checkedInByAccountId: operator.accountId,
+      checkedInByRole: operator.role,
     })
 
     if (!consumedTicket) {

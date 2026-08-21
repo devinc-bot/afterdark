@@ -1,5 +1,6 @@
 import type { AddressSelect, EventFaqSelect, EventSelect, LocationSelect } from '@repo/db/schema'
 import type { EventStatus } from '../enums/event.ts'
+import type { UserRole } from '../enums/user.ts'
 
 export type EventWithLocation = {
   event: EventSelect
@@ -28,6 +29,15 @@ export type ListEventsByOwnerParams = {
   ownerDocumentId: string
   page: number
   limit: number
+}
+
+export type ListEventsByOperatorParams = {
+  operatorDocumentId: string
+  operatorRole: UserRole
+  page: number
+  limit: number
+  /** Restrict to events that have at least one completed sale. */
+  hasSales?: boolean
 }
 
 export type PaginatedEventsResult = {

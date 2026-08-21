@@ -1,7 +1,7 @@
 import { Inject, Injectable, InternalServerErrorException } from '@nestjs/common'
-import { findEventImageAssetsByEventIds, findEventsPaginatedByOwner } from '@repo/db'
+import { findEventImageAssetsByEventIds, findEventsPaginatedByOperator } from '@repo/db'
 import { TranslationService } from '@repo/i18n/server'
-import type { EventResponse, PaginatedResponse } from '@repo/types'
+import type { EventResponse, PaginatedResponse, UserRole } from '@repo/types'
 import type { ListEventsQueryInput } from '@repo/validators'
 import { groupEventImagesByEventId, toEventResponse } from '../mappers/events.mapper'
 
@@ -10,14 +10,17 @@ export class ListMyEventsUseCase {
   constructor(@Inject(TranslationService) private readonly ts: TranslationService) {}
 
   async execute(
-    ownerDocumentId: string,
+    operatorDocumentId: string,
+    operatorRole: UserRole,
     query: ListEventsQueryInput
   ): Promise<PaginatedResponse<EventResponse>> {
     try {
-      const { rows, total } = await findEventsPaginatedByOwner({
-        ownerDocumentId,
+      const { rows, total } = await findEventsPaginatedByOperator({
+        operatorDocumentId,
+        operatorRole,
         page: query.page,
         limit: query.limit,
+        hasSales: query.hasSales,
       })
 
       const imagesByEventId = groupEventImagesByEventId(

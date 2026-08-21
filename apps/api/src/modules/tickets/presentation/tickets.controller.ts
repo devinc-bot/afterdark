@@ -18,6 +18,7 @@ import type {
   PaginatedResponse,
   PurchasedTicketQrResponse,
   PurchasedTicketResponse,
+  ScannedTicketHistoryResponse,
   TicketCheckInResponse,
   TicketResponse,
 } from '@repo/types'
@@ -25,6 +26,7 @@ import { USER_ROLE } from '@repo/types'
 import {
   createTicketSchema,
   listPurchasedTicketsQuerySchema,
+  listScannedTicketsQuerySchema,
   listTicketsQuerySchema,
   ticketSoldDocumentIdSchema,
   ticketCheckInSchema,
@@ -32,6 +34,7 @@ import {
   uuidSchema,
   type CreateTicketInput,
   type ListPurchasedTicketsQueryInput,
+  type ListScannedTicketsQueryInput,
   type ListTicketsQueryInput,
   type TicketCheckInInput,
   type UpdateTicketInput,
@@ -49,6 +52,7 @@ import { GetTicketByDocumentIdUseCase } from '../application/get-ticket-by-docum
 import { ListMyTicketsUseCase } from '../application/list-my-tickets.use-case'
 import { ListPurchasedTicketsUseCase } from '../application/list-purchased-tickets.use-case'
 import { IssuePurchasedTicketQrUseCase } from '../application/issue-purchased-ticket-qr.use-case'
+import { ListScannedTicketsHistoryUseCase } from '../application/list-scanned-tickets-history.use-case'
 import { UpdateTicketUseCase } from '../application/update-ticket.use-case'
 import { toTicketCheckInHttpResponse } from './ticket-check-in-http.mapper'
 
@@ -62,6 +66,8 @@ export class TicketsController {
     private readonly issuePurchasedTicketQrUseCase: IssuePurchasedTicketQrUseCase,
     @Inject(CheckInTicketUseCase)
     private readonly checkInTicketUseCase: CheckInTicketUseCase,
+    @Inject(ListScannedTicketsHistoryUseCase)
+    private readonly listScannedTicketsHistoryUseCase: ListScannedTicketsHistoryUseCase,
     @Inject(GetTicketByDocumentIdUseCase)
     private readonly getTicketByDocumentIdUseCase: GetTicketByDocumentIdUseCase,
     @Inject(CreateTicketUseCase) private readonly createTicketUseCase: CreateTicketUseCase,
@@ -117,6 +123,17 @@ export class TicketsController {
     })
 
     return toTicketCheckInHttpResponse(result, (code) => this.ts.translateError(code))
+  }
+
+  @Get(API_ROUTES.tickets.path.checkInHistory())
+  @Roles([USER_ROLE.OWNER, USER_ROLE.STAFF])
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  listScannedTicketsHistory(
+    @CurrentUser() user: JwtPayload,
+    @Query(new ZodValidationPipe(listScannedTicketsQuerySchema))
+    query: ListScannedTicketsQueryInput
+  ): Promise<ScannedTicketHistoryResponse> {
+    return this.listScannedTicketsHistoryUseCase.execute(user.sub, user.role, query)
   }
 
   @Get(API_ROUTES.tickets.path.get(':documentId'))

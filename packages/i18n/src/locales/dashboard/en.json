@@ -59,7 +59,38 @@
     "qrTicket": {
       "metaTitle": "Scan QR · {appNameAdmin}",
       "title": "QR Ticket",
-      "description": "Scan the QR code to validate the ticket and mark it as used."
+      "description": "Scan the QR code to validate the ticket and mark it as used.",
+      "tabs": {
+        "scan": "Scan",
+        "history": "History"
+      },
+      "history": {
+        "selectLabel": "Event",
+        "selectPlaceholder": "Select an event",
+        "emptySelect": "Select an event to see its scanned tickets.",
+        "noEvents": "No events with sold tickets yet.",
+        "empty": "No scanned tickets for this event.",
+        "error": "We couldn't load the history. Try again.",
+        "notReported": "Not reported",
+        "typeGeneral": "General",
+        "typeVip": "VIP",
+        "table": {
+          "scannedAt": "Scanned at",
+          "purchaser": "Purchaser",
+          "operator": "Operator",
+          "ticket": "Ticket"
+        },
+        "pagination": {
+          "label": "History pagination",
+          "previous": "Previous",
+          "next": "Next",
+          "pageOf": "Page {page} of {totalPages}",
+          "previousAria": "Go to the previous page",
+          "nextAria": "Go to the next page",
+          "goToPage": "Go to page {page}",
+          "ellipsis": "More pages"
+        }
+      }
     },
     "panel": {
       "metaTitle": "Dashboard · {appNameAdmin}",
