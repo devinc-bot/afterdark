@@ -7,7 +7,7 @@ function Pagination({ className, ...props }: React.ComponentProps<'nav'>) {
   return (
     <nav
       role="navigation"
-      aria-label="pagination"
+      aria-label="Pagination"
       data-slot="pagination"
       className={cn('flex w-full items-center justify-center', className)}
       {...props}
@@ -19,7 +19,7 @@ function PaginationContent({ className, ...props }: React.ComponentProps<'ul'>) 
   return (
     <ul
       data-slot="pagination-content"
-      className={cn('flex flex-wrap items-center justify-center gap-1', className)}
+      className={cn('flex flex-wrap items-center justify-center gap-1.5', className)}
       {...props}
     />
   )
@@ -43,12 +43,12 @@ function PaginationButton({
   return (
     <Button
       type="button"
-      variant={variant ?? (isActive ? 'outline' : 'ghost')}
+      variant={variant ?? 'ghost'}
       size={size}
       className={cn(
-        'min-w-10 text-ink-muted hover:text-ink',
+        'min-h-11 min-w-11 text-ink-muted hover:bg-surface-strong hover:text-ink',
         isActive &&
-          'border-primary/40 bg-primary/10 text-primary hover:bg-primary/15 hover:text-primary',
+          'bg-primary-container font-semibold text-on-primary-container hover:bg-primary-container/85 hover:text-on-primary-container',
         className
       )}
       aria-current={isActive ? 'page' : undefined}
@@ -65,9 +65,9 @@ function PaginationPrevious({
 }: PaginationButtonProps & { text?: string }) {
   return (
     <PaginationButton
-      aria-label="Go to previous page"
+      aria-label={text}
       size="sm"
-      className={cn('gap-1 px-3', className)}
+      className={cn('gap-1 px-3 sm:min-w-0', className)}
       iconLeft={<ChevronLeft aria-hidden="true" />}
       {...props}
     >
@@ -83,9 +83,9 @@ function PaginationNext({
 }: PaginationButtonProps & { text?: string }) {
   return (
     <PaginationButton
-      aria-label="Go to next page"
+      aria-label={text}
       size="sm"
-      className={cn('gap-1 px-3', className)}
+      className={cn('gap-1 px-3 sm:min-w-0', className)}
       iconRight={<ChevronRight aria-hidden="true" />}
       {...props}
     >
@@ -101,16 +101,16 @@ function PaginationEllipsis({
 }: React.ComponentProps<'span'> & { label?: string }) {
   return (
     <span
-      aria-hidden
+      role="separator"
+      aria-label={label}
       data-slot="pagination-ellipsis"
       className={cn(
-        'flex size-10 items-center justify-center text-ink-muted [&_svg]:size-4',
+        'flex size-11 items-center justify-center text-ink-muted [&_svg]:size-4',
         className
       )}
       {...props}
     >
       <MoreHorizontal aria-hidden="true" />
-      <span className="sr-only">{label}</span>
     </span>
   )
 }

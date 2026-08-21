@@ -25,6 +25,7 @@ export function toPublicEventOrganizer(row: PublishedEventOrganizerRow): PublicE
   const personalName = `${row.name} ${row.lastName}`.trim()
 
   return {
+    documentId: row.documentId,
     name: organizationName && organizationName.length > 0 ? organizationName : personalName,
     avatar: row.avatar,
     firstName: row.name,

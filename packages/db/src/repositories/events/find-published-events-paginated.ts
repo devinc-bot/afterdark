@@ -10,6 +10,10 @@ import { locations } from '../../schema/location.ts'
 function buildPublishedEventsFilters(params: ListPublishedEventsParams): SQL {
   const conditions: SQL[] = [eq(events.status, EVENT_STATUS.PUBLISHED)]
 
+  if (params.organizationId) {
+    conditions.push(eq(events.organizationId, params.organizationId))
+  }
+
   if (params.startsFrom) {
     conditions.push(gte(events.startsAt, params.startsFrom))
   }

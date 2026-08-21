@@ -20,6 +20,7 @@ export async function findPublishedEventByDocumentId(
       location: locations,
       address: addresses,
       organizer: {
+        documentId: organizations.documentId,
         name: owners.name,
         lastName: owners.lastName,
         organizationName: organizations.name,
@@ -45,6 +46,7 @@ export async function findPublishedEventByDocumentId(
   return {
     ...row,
     organizer: {
+      documentId: row.organizer.documentId,
       name: row.organizer.name,
       lastName: row.organizer.lastName,
       organizationName: row.organizer.organizationName,

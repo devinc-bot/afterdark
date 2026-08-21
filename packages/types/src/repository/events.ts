@@ -46,6 +46,7 @@ export type PaginatedEventsResult = {
 }
 
 export type ListPublishedEventsParams = {
+  organizationId?: number
   page: number
   limit: number
   startsFrom?: Date
@@ -62,6 +63,7 @@ export type PublishedEventWithLocation = {
 
 /** Raw owner fields for public detail organizer mapping (display name resolved in API). */
 export type PublishedEventOrganizerRow = {
+  documentId: string
   name: string
   lastName: string
   organizationName: string | null

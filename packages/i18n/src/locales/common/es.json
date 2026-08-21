@@ -43,6 +43,10 @@
   "none": "Ninguno",
   "or": "o",
   "and": "y",
+  "passwordVisibility": {
+    "show": "Mostrar contraseña",
+    "hide": "Ocultar contraseña"
+  },
   "formActions": {
     "dirty": "Hay cambios sin guardar.",
     "clean": "No hay cambios"

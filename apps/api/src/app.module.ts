@@ -20,6 +20,7 @@ import { MailModule } from './modules/mail'
 import { GeoModule } from './modules/geo'
 import { MercadoPagoModule } from './modules/mercado-pago'
 import { UsersModule } from './modules/users'
+import { OrganizationsModule } from './modules/organizations/organizations.module'
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { UsersModule } from './modules/users'
     GeoModule,
     MercadoPagoModule,
     UsersModule,
+    OrganizationsModule,
   ],
   controllers: [AppController],
 })

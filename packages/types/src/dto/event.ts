@@ -59,6 +59,7 @@ export interface PublicEventDetailAddress {
 
 /** Host identity on anonymous public event detail (resolved display name + avatar). */
 export interface PublicEventOrganizer {
+  documentId: string
   name: string
   avatar: string | null
   firstName: string

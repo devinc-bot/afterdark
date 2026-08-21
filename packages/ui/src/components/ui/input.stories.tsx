@@ -50,3 +50,15 @@ export const Disabled: Story = {
     value: 'Valor fijo',
   },
 }
+
+export const Password: Story = {
+  render: (args) => (
+    <div className={fieldShellClassName}>
+      <Input {...args} />
+    </div>
+  ),
+  args: {
+    defaultValue: 'eventflow-2026',
+    type: 'password',
+  },
+}

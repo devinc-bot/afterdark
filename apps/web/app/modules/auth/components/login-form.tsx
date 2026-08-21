@@ -86,7 +86,19 @@ export function LoginForm() {
           {(field) => {
             const error = fieldErrorMessage(field.state.meta.errors)
             return (
-              <Field label={t('login.password')} htmlFor={field.name} error={error}>
+              <Field
+                label={t('login.password')}
+                htmlFor={field.name}
+                error={error}
+                labelAction={
+                  <Link
+                    to={WEB_ROUTES.forgotPassword()}
+                    className="shrink-0 text-sm text-on-surface-variant transition-colors duration-150 hover:text-primary hover:underline"
+                  >
+                    {t('login.forgotPassword')}
+                  </Link>
+                }
+              >
                 <AuthInput
                   id={field.name}
                   name={field.name}
@@ -132,21 +144,12 @@ export function LoginForm() {
 
       <hr className="mt-10 border-hairline" />
 
-      <nav aria-label="Otras opciones de acceso" className="mt-6 flex justify-center gap-3 text-sm">
+      <nav aria-label={t('login.noAccount')} className="mt-6 flex justify-center text-sm">
         <Link
           to={WEB_ROUTES.register()}
           className="text-on-surface-variant underline underline-offset-4 transition-colors duration-150 hover:text-primary"
         >
           {t('login.createAccount')}
-        </Link>
-        <span aria-hidden className="text-on-surface-variant">
-          ·
-        </span>
-        <Link
-          to={WEB_ROUTES.forgotPassword()}
-          className="text-on-surface-variant underline underline-offset-4 transition-colors duration-150 hover:text-primary"
-        >
-          {t('login.forgotPassword')}
         </Link>
       </nav>
     </form>
