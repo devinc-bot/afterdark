@@ -26,6 +26,7 @@ import { Route as PublicEventsIndexRouteImport } from './routes/_public/events.i
 import { Route as CheckoutOrderIdSuccessRouteImport } from './routes/checkout.$orderId.success'
 import { Route as CheckoutOrderIdPendingRouteImport } from './routes/checkout.$orderId.pending'
 import { Route as CheckoutOrderIdErrorRouteImport } from './routes/checkout.$orderId.error'
+import { Route as PublicOrganizationsOrganizationIdRouteImport } from './routes/_public/organizations.$organizationId'
 import { Route as PublicEventsDocumentIdRouteImport } from './routes/_public/events.$documentId'
 
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
@@ -111,6 +112,12 @@ const CheckoutOrderIdErrorRoute = CheckoutOrderIdErrorRouteImport.update({
   path: '/checkout/$orderId/error',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PublicOrganizationsOrganizationIdRoute =
+  PublicOrganizationsOrganizationIdRouteImport.update({
+    id: '/organizations/$organizationId',
+    path: '/organizations/$organizationId',
+    getParentRoute: () => PublicRoute,
+  } as any)
 const PublicEventsDocumentIdRoute = PublicEventsDocumentIdRouteImport.update({
   id: '/$documentId',
   path: '/$documentId',
@@ -130,6 +137,7 @@ export interface FileRoutesByFullPath {
   '/auth/callback': typeof AuthCallbackRoute
   '/register/confirm': typeof RegisterConfirmRoute
   '/events/$documentId': typeof PublicEventsDocumentIdRoute
+  '/organizations/$organizationId': typeof PublicOrganizationsOrganizationIdRoute
   '/checkout/$orderId/error': typeof CheckoutOrderIdErrorRoute
   '/checkout/$orderId/pending': typeof CheckoutOrderIdPendingRoute
   '/checkout/$orderId/success': typeof CheckoutOrderIdSuccessRoute
@@ -147,6 +155,7 @@ export interface FileRoutesByTo {
   '/auth/callback': typeof AuthCallbackRoute
   '/register/confirm': typeof RegisterConfirmRoute
   '/events/$documentId': typeof PublicEventsDocumentIdRoute
+  '/organizations/$organizationId': typeof PublicOrganizationsOrganizationIdRoute
   '/checkout/$orderId/error': typeof CheckoutOrderIdErrorRoute
   '/checkout/$orderId/pending': typeof CheckoutOrderIdPendingRoute
   '/checkout/$orderId/success': typeof CheckoutOrderIdSuccessRoute
@@ -168,6 +177,7 @@ export interface FileRoutesById {
   '/auth/callback': typeof AuthCallbackRoute
   '/register_/confirm': typeof RegisterConfirmRoute
   '/_public/events/$documentId': typeof PublicEventsDocumentIdRoute
+  '/_public/organizations/$organizationId': typeof PublicOrganizationsOrganizationIdRoute
   '/checkout/$orderId/error': typeof CheckoutOrderIdErrorRoute
   '/checkout/$orderId/pending': typeof CheckoutOrderIdPendingRoute
   '/checkout/$orderId/success': typeof CheckoutOrderIdSuccessRoute
@@ -188,6 +198,7 @@ export interface FileRouteTypes {
     | '/auth/callback'
     | '/register/confirm'
     | '/events/$documentId'
+    | '/organizations/$organizationId'
     | '/checkout/$orderId/error'
     | '/checkout/$orderId/pending'
     | '/checkout/$orderId/success'
@@ -205,6 +216,7 @@ export interface FileRouteTypes {
     | '/auth/callback'
     | '/register/confirm'
     | '/events/$documentId'
+    | '/organizations/$organizationId'
     | '/checkout/$orderId/error'
     | '/checkout/$orderId/pending'
     | '/checkout/$orderId/success'
@@ -225,6 +237,7 @@ export interface FileRouteTypes {
     | '/auth/callback'
     | '/register_/confirm'
     | '/_public/events/$documentId'
+    | '/_public/organizations/$organizationId'
     | '/checkout/$orderId/error'
     | '/checkout/$orderId/pending'
     | '/checkout/$orderId/success'
@@ -367,6 +380,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CheckoutOrderIdErrorRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_public/organizations/$organizationId': {
+      id: '/_public/organizations/$organizationId'
+      path: '/organizations/$organizationId'
+      fullPath: '/organizations/$organizationId'
+      preLoaderRoute: typeof PublicOrganizationsOrganizationIdRouteImport
+      parentRoute: typeof PublicRoute
+    }
     '/_public/events/$documentId': {
       id: '/_public/events/$documentId'
       path: '/$documentId'
@@ -407,10 +427,13 @@ const PublicEventsRouteWithChildren = PublicEventsRoute._addFileChildren(
 
 interface PublicRouteChildren {
   PublicEventsRoute: typeof PublicEventsRouteWithChildren
+  PublicOrganizationsOrganizationIdRoute: typeof PublicOrganizationsOrganizationIdRoute
 }
 
 const PublicRouteChildren: PublicRouteChildren = {
   PublicEventsRoute: PublicEventsRouteWithChildren,
+  PublicOrganizationsOrganizationIdRoute:
+    PublicOrganizationsOrganizationIdRoute,
 }
 
 const PublicRouteWithChildren =

@@ -138,6 +138,21 @@
       "description": "Encontrá tu noche — mirá destacados y filtrá el listado completo.",
       "metaTitle": "Eventos · {appName}"
     },
+    "organization": {
+      "metaTitle": "Organización · {appName}",
+      "bannerAlt": "Ambiente de eventos de {name}",
+      "bannerLabel": "Organización verificada",
+      "eyebrow": "Organiza experiencias",
+      "description": "Una agenda curada de encuentros para compartir, descubrir y vivir la noche a tu manera.",
+      "activeBadge": "Activa",
+      "eventsKicker": "La agenda",
+      "eventsTitle": "Próximos eventos",
+      "viewAll": "Ver todos los eventos",
+      "error": "No pudimos cargar los eventos de esta organización.",
+      "retry": "Reintentar",
+      "emptyTitle": "Todavía no hay eventos publicados",
+      "emptyDescription": "Cuando esta organización publique una fecha, la vas a encontrar acá."
+    },
     "filters": {
       "title": "Filtros",
       "open": "Filtrar",

@@ -28,8 +28,7 @@ context: |
     - `createFileRoute` needs a string-literal path (TanStack codegen); route constants are for navigation only.
     - `apps/admin` admits only `USER_ROLE.ADMIN`; provisioning remains seed-only and CORS must include port 3003 locally plus the deployed Admin origin.
 
-  Reference docs (read before proposing): ARCHITECTURE.md, DOMAIN.md, STYLEGUIDE.md,
-  packages/db/DATABASE.md, AGENTS.md.
+  Reference docs (read before proposing): AGENTS.md, STYLEGUIDE.md, packages/db/DATABASE.md.
 
   Legacy SDD: earlier specs live under spec/features/NNN-*/ (kept for reference/history).
   New work uses OpenSpec (openspec/). Migrate a legacy feature only when you next touch it.
@@ -54,7 +53,7 @@ rules:
     - Reference @repo/validators for validation; do NOT restate validation rules in prose.
     - If a requirement hinges on an unresolved product choice, call AskQuestion before writing the delta.
   design:
-    - Follow the layer conventions in ARCHITECTURE.md (vertical-slice modules in the API).
+    - Follow the API vertical-slice layer conventions in AGENTS.md.
     - New API DB access goes through a repository in packages/db/src/repositories/ (export from index).
     - Note migrations needed (drizzle-kit, timestamp-prefixed) and any i18n keys to add.
     - When multiple valid technical approaches exist with real trade-offs, call AskQuestion instead of silently picking one.
