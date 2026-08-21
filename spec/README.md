@@ -59,12 +59,10 @@ Disparadores útiles: _“creá la spec de …”_, _“nueva feature”_, _“c
 
 ## Docs del repo
 
-| Doc                                   | Uso                        |
-| ------------------------------------- | -------------------------- |
-| [DOMAIN.md](../DOMAIN.md)             | Negocio, entidades, idioma |
-| [ARCHITECTURE.md](../ARCHITECTURE.md) | Módulos, capas, rutas      |
-| [STYLEGUIDE.md](../STYLEGUIDE.md)     | Naming, lint, format       |
-| [AGENTS.md](../AGENTS.md)             | Guía para asistentes IA    |
+| Doc                               | Uso                                    |
+| --------------------------------- | -------------------------------------- |
+| [STYLEGUIDE.md](../STYLEGUIDE.md) | Naming, lint, format                   |
+| [AGENTS.md](../AGENTS.md)         | Guía IA, negocio, arquitectura y rutas |
 
 ## Para asistentes IA
 

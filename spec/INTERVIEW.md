@@ -116,7 +116,7 @@ Actualizar `spec/constitution/roadmap.md` al cerrar la fase 1 (fila nueva o stat
 
 **Objetivo:** `plan.md` y `tasks.md` alineados con la spec aprobada.
 
-El asistente puede **proponer** el borrador leyendo `ARCHITECTURE.md` y el código existente. El usuario confirma o corrige en un turno.
+El asistente puede **proponer** el borrador leyendo `AGENTS.md` y el código existente. El usuario confirma o corrige en un turno.
 
 **Escribir:** `plan.md` (capas, archivos), `tasks.md` (checklist sin `[x]`). Marcar fase 6 `done` en `progress.md`.
 

@@ -138,6 +138,21 @@
       "description": "Find a night out — browse highlights, then filter the full list.",
       "metaTitle": "Events · {appName}"
     },
+    "organization": {
+      "metaTitle": "Organization · {appName}",
+      "bannerAlt": "Event atmosphere from {name}",
+      "bannerLabel": "Verified organization",
+      "eyebrow": "Curating experiences",
+      "description": "A considered calendar of gatherings to share, discover, and experience the night your way.",
+      "activeBadge": "Active",
+      "eventsKicker": "The calendar",
+      "eventsTitle": "Upcoming events",
+      "viewAll": "View all events",
+      "error": "We couldn't load this organization's events.",
+      "retry": "Try again",
+      "emptyTitle": "No published events yet",
+      "emptyDescription": "Published dates from this organization will appear here."
+    },
     "filters": {
       "title": "Filters",
       "open": "Filter",

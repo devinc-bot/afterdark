@@ -19,7 +19,7 @@ Code conventions, naming rules, dependency policy, and quality toolchain.
 | External key values   | `snake_case` string literals              | `'access_token'`, `'session_token'`    |
 | String values in code | Use constant maps, not inline literals    | `MODE.DEVELOPMENT` not `"development"` |
 
-> UI **display text** (labels, messages, placeholders shown to users) stays in **Spanish** per product requirements. All identifiers (files, functions, constants, routes) must be in **English**. See [DOMAIN.md](./DOMAIN.md) for language rules.
+> UI display text (labels, messages, placeholders shown to users) is localized in Spanish and English through `@repo/i18n`. All identifiers (files, functions, constants, routes) must be in English. See [AGENTS.md](./AGENTS.md) for domain rules.
 
 ---
 
@@ -95,52 +95,6 @@ Use the same values in Zod enums: `z.enum([MODE.DEVELOPMENT, MODE.PRODUCTION, MO
 
 **Exceptions (literals are OK):** route paths inside `createFileRoute("...")` (codegen), UI copy shown to users (Spanish), and one-off test fixtures.
 
----
-
-## Conditional class names
-
-When `cn()` receives state-dependent Tailwind classes (disabled, active, error, etc.), do not use nested ternaries inline. Extract a named function with early returns that returns the variant string.
-
-| Part          | Convention                                         | Example                              |
-| ------------- | -------------------------------------------------- | ------------------------------------ |
-| Function name | `camelCase` with `get` prefix + `ClassName` suffix | `getSidebarNavItemStateClassName`    |
-| Return value  | Tailwind utility string for one visual state       | `'bg-surface-container text-ink'`    |
-| Location      | Co-located helper, `*.utils.ts`, or `lib/`         | `packages/ui/src/lib/sidebar-nav.ts` |
-
-```ts
-// incorrect
-const className = cn(
-  baseClassName,
-  item.disabled
-    ? 'cursor-not-allowed opacity-50'
-    : isActive
-      ? 'bg-surface-container text-ink'
-      : 'text-ink-muted hover:bg-surface-container/70'
-)
-
-// correct
-function getSidebarNavItemStateClassName({
-  disabled,
-  isActive,
-}: {
-  disabled?: boolean
-  isActive: boolean
-}): string {
-  if (disabled) return 'cursor-not-allowed opacity-50'
-  if (isActive) return 'bg-surface-container text-ink'
-  return 'text-ink-muted hover:bg-surface-container/70 hover:text-ink'
-}
-
-const className = cn(
-  baseClassName,
-  getSidebarNavItemStateClassName({ disabled: item.disabled, isActive })
-)
-```
-
-Compose the final class list with `cn(baseClassName, get…ClassName(input))`. Keep base/layout classes separate from state variants.
-
----
-
 ## Derived display values
 
 When placeholder, error message, disabled state copy, or similar **UI strings** depend on multiple flags (loading, empty, error, validation), do not use nested ternaries inside JSX or render callbacks. Extract a named function **outside the component** with early returns.
@@ -199,8 +153,6 @@ const { placeholder, error: clubFieldError } = getClubSelectFieldDisplay({
   fieldError: error,
 })
 ```
-
-Same rule applies to conditional **class names** — see [Conditional class names](#conditional-class-names) above.
 
 ---
 

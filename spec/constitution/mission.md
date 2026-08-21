@@ -38,6 +38,5 @@ Un solo lugar donde el público descubre y compra eventos, y donde cada ubicaci�
 
 ## Referencias
 
-- [DOMAIN.md](../../DOMAIN.md) — modelo de dominio y reglas de negocio
+- [AGENTS.md](../../AGENTS.md) — modelo de dominio, reglas de negocio, apps y capas
 - [DATABASE.md](../../packages/db/DATABASE.md) — esquema y entidades (`locations` / legacy `clubs`, `tickets`, `staff`, `payments`, …)
-- [ARCHITECTURE.md](../../ARCHITECTURE.md) — apps, módulos y capas del monorepo

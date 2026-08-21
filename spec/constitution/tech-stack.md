@@ -51,6 +51,5 @@ pnpm lint && pnpm format:check
 
 ## Referencias
 
-- [ARCHITECTURE.md](../../ARCHITECTURE.md)
 - [STYLEGUIDE.md](../../STYLEGUIDE.md)
 - [AGENTS.md](../../AGENTS.md)

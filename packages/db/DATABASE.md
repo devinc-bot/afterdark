@@ -704,9 +704,7 @@ Transacciones: tipo `Transaction` exportado desde `@repo/db`. Los repositorios q
 
 ## Referencias
 
-- [ARCHITECTURE.md](../../ARCHITECTURE.md) — capa de datos, repositorios y paquetes
-- [DOMAIN.md](../../DOMAIN.md) — reglas de negocio y lenguaje de UI
-- [AGENTS.md](../../AGENTS.md) — comandos y gotchas de Drizzle
+- [AGENTS.md](../../AGENTS.md) — reglas de arquitectura, dominio y Drizzle
 - Schemas fuente: `src/schema/`
 - Repositorios: `src/repositories/`
 - Enums de dominio: `packages/types/src/domain.ts`
