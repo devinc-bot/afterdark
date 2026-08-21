@@ -65,6 +65,10 @@
     "NOT_FOUND": "Propietario no encontrado.",
     "UPDATE_FAILED": "No se pudo actualizar el perfil."
   },
+  "organization": {
+    "NOT_FOUND": "No encontramos la organización.",
+    "GET_FAILED": "No pudimos cargar la organización."
+  },
   "ticket": {
     "NOT_FOUND": "Ticket no encontrado.",
     "FORBIDDEN": "No tenés permiso para este ticket.",

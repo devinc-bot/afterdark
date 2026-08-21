@@ -222,6 +222,16 @@ export function RegisterForm() {
 
       <AuthMethodSeparator />
       <GoogleContinueButton />
+
+      <div className="flex justify-center gap-1.5 text-sm text-on-surface-variant">
+        <span>{t('register.alreadyHaveAccount')}</span>
+        <Link
+          to={DASHBOARD_ROUTES.login()}
+          className="underline underline-offset-4 transition-colors duration-150 hover:text-primary"
+        >
+          {t('register.signIn')}
+        </Link>
+      </div>
     </form>
   )
 }

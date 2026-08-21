@@ -12,8 +12,10 @@ export function EventDetailOrganizer({ organizer }: EventDetailOrganizerProps) {
   const initials = getUserInitials(organizer.firstName, organizer.lastName)
 
   return (
-    <div
-      className="flex items-center gap-2.5 mt-2.5"
+    <RouterLink
+      to="/organizations/$organizationId"
+      params={{ organizationId: organizer.documentId }}
+      className="mt-2.5 flex w-fit items-center gap-2.5 rounded-app-sm transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
       aria-label={t('discover.detail.organizedByAriaLabel')}
     >
       <Avatar className="size-14 shrink-0">
@@ -25,6 +27,7 @@ export function EventDetailOrganizer({ organizer }: EventDetailOrganizerProps) {
       <p className="min-w-0 font-label text-sm text-pretty text-on-surface-variant mb-4">
         {t('discover.detail.organizedBy', { name: organizer.name })}
       </p>
-    </div>
+    </RouterLink>
   )
 }
+import { Link as RouterLink } from '@tanstack/react-router'

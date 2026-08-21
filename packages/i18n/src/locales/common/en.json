@@ -43,6 +43,10 @@
   "none": "None",
   "or": "or",
   "and": "and",
+  "passwordVisibility": {
+    "show": "Show password",
+    "hide": "Hide password"
+  },
   "formActions": {
     "dirty": "You have unsaved changes.",
     "clean": "No changes"

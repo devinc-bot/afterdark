@@ -14,6 +14,7 @@ export const WEB_ROUTES = {
   home: () => '/' as const,
   events: () => '/events' as const,
   event: (documentId: string) => `/events/${documentId}` as const,
+  organization: (documentId: string) => `/organizations/${documentId}` as const,
   checkoutSuccess,
   checkoutError,
   checkoutPending,
