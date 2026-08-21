@@ -165,3 +165,9 @@ export const ticketCheckInSchema = z.object({
 })
 
 export type TicketCheckInInput = z.infer<typeof ticketCheckInSchema>
+
+export const listScannedTicketsQuerySchema = paginationSchema.extend({
+  eventId: uuidSchema,
+})
+
+export type ListScannedTicketsQueryInput = z.infer<typeof listScannedTicketsQuerySchema>
