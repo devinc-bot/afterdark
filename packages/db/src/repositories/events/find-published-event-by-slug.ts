@@ -11,8 +11,8 @@ import { organizations } from '../../schema/organization.ts'
 import { owners } from '../../schema/owner.ts'
 import { findEventFaqsByEventIds } from './find-event-faqs-by-event-ids.ts'
 
-export async function findPublishedEventByDocumentId(
-  documentId: string
+export async function findPublishedEventBySlug(
+  slug: string
 ): Promise<PublishedEventDetailRow | null> {
   const [row] = await db
     .select({
@@ -35,25 +35,15 @@ export async function findPublishedEventByDocumentId(
     .leftJoin(assets, eq(assets.id, owners.avatarId))
     .innerJoin(locationAddressesLnk, eq(locationAddressesLnk.locationId, locations.id))
     .innerJoin(addresses, eq(addresses.id, locationAddressesLnk.addressId))
-    .where(and(eq(events.documentId, documentId), eq(events.status, EVENT_STATUS.PUBLISHED)))
+    .where(and(eq(events.slug, slug), eq(events.status, EVENT_STATUS.PUBLISHED)))
     .limit(1)
 
-  if (!row) {
-    return null
-  }
+  if (!row) return null
 
   const faqsByEventId = await findEventFaqsByEventIds([row.event.id])
-
   return {
     ...row,
-    organizer: {
-      documentId: row.organizer.documentId,
-      slug: row.organizer.slug,
-      name: row.organizer.name,
-      lastName: row.organizer.lastName,
-      organizationName: row.organizer.organizationName,
-      avatar: row.organizer.avatar ?? null,
-    },
+    organizer: { ...row.organizer, avatar: row.organizer.avatar ?? null },
     faqs: faqsByEventId.get(row.event.id) ?? [],
   }
 }

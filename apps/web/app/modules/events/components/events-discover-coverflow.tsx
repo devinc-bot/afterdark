@@ -32,7 +32,7 @@ function usePrefersReducedMotion(): boolean {
 
 type EventsDiscoverCoverflowProps = {
   slides: EventsDiscoverCoverflowSlide[]
-  onActivate: (documentId: string) => void
+  onActivate: (slug: string) => void
   className?: string
 }
 
@@ -251,7 +251,7 @@ export function EventsDiscoverCoverflow({
 
             return (
               <CarouselItem
-                key={slide.documentId}
+                key={slide.slug}
                 className={showControls ? 'basis-[86%] pl-3 sm:basis-[88%]' : 'basis-full pl-0'}
               >
                 <button
@@ -259,7 +259,7 @@ export function EventsDiscoverCoverflow({
                   className="relative aspect-19/9 w-full cursor-pointer overflow-hidden rounded-app-lg border-0 bg-transparent p-0"
                   onClick={(clickEvent) => {
                     armEventHero(clickEvent)
-                    onActivate(slide.documentId)
+                    onActivate(slide.slug)
                   }}
                   aria-label={activateLabel}
                 >
@@ -323,7 +323,7 @@ export function EventsDiscoverCoverflow({
               >
                 {slides.map((slide, i) => (
                   <button
-                    key={slide.documentId}
+                    key={slide.slug}
                     type="button"
                     role="tab"
                     onClick={() => api?.scrollTo(i)}

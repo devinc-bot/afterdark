@@ -53,6 +53,7 @@ test('lists operator events and filters to events with completed sales', async (
       location_id INTEGER,
       organization_id INTEGER,
       name TEXT,
+      slug TEXT,
       description TEXT,
       starts_at INTEGER,
       ends_at INTEGER,

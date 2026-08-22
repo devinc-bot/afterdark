@@ -5,7 +5,7 @@ import { formatEventPlace, formatEventWhen } from './events-discover-format'
 export const EVENTS_DISCOVER_COVERFLOW_LIMIT = 6
 
 export type EventsDiscoverCoverflowSlide = {
-  documentId: string
+  slug: string
   src: string
   title: string
   when: string
@@ -29,7 +29,7 @@ export function buildEventsDiscoverCoverflowSlides(
     }
 
     slides.push({
-      documentId: event.documentId,
+      slug: event.slug,
       src: firstImage.url,
       title: event.name,
       when: formatEventWhen(event.startsAt, locale),

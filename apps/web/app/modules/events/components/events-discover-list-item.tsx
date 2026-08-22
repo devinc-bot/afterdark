@@ -28,8 +28,8 @@ export function EventsDiscoverListItem({ event }: EventsDiscoverListItemProps) {
   const place = formatEventPlace(event)
 
   const detailLink = {
-    to: '/events/$documentId' as const,
-    params: { documentId: event.documentId },
+    to: '/events/$slug' as const,
+    params: { slug: event.slug },
     onClick: armEventHero,
   }
 
@@ -39,7 +39,7 @@ export function EventsDiscoverListItem({ event }: EventsDiscoverListItemProps) {
       id={`events-discover-item-${event.documentId}`}
       className={cn(
         'group flex h-full w-full flex-col border-hairline/15',
-        'bg-surface-card',
+        'bg-surface-card hover:-translate-y-1',
         'transition-[border-color,box-shadow,background-color] duration-(--duration-fast) ease-emphasized',
         'motion-reduce:transition-none',
         'hover:border-hairline/40 hover:bg-surface-high/40'
@@ -52,7 +52,7 @@ export function EventsDiscoverListItem({ event }: EventsDiscoverListItemProps) {
         aria-label={t('discover.list.viewEventAria', { name: event.name })}
       >
         {image ? (
-          <img src={image.url} alt="" className="aspect-video w-full object-cover" />
+          <img src={image.url} alt="" className="aspect-video w-full object-cover group-hover:scale-[1.05] duration-300" />
         ) : (
           <NotImage
             size="full"

@@ -3,7 +3,7 @@ import { API_ROUTES } from '@repo/common'
 import type { PublicOrganizationProfileResponse } from '@repo/types'
 import {
   listPublicEventsQuerySchema,
-  uuidSchema,
+  slugSchema,
   type ListPublicEventsQueryInput,
 } from '@repo/validators'
 import { ZodValidationPipe } from '../../common/pipes/zod-validation.pipe'
@@ -16,11 +16,11 @@ export class OrganizationsController {
     private readonly getPublicOrganizationProfileUseCase: GetPublicOrganizationProfileUseCase
   ) {}
 
-  @Get(API_ROUTES.organizations.path.getPublic(':documentId'))
-  getPublicByDocumentId(
-    @Param('documentId', new ZodValidationPipe(uuidSchema)) documentId: string,
+  @Get(API_ROUTES.organizations.path.getPublic(':slug'))
+  getPublicBySlug(
+    @Param('slug', new ZodValidationPipe(slugSchema)) slug: string,
     @Query(new ZodValidationPipe(listPublicEventsQuerySchema)) query: ListPublicEventsQueryInput
   ): Promise<PublicOrganizationProfileResponse> {
-    return this.getPublicOrganizationProfileUseCase.execute(documentId, query)
+    return this.getPublicOrganizationProfileUseCase.execute(slug, query)
   }
 }

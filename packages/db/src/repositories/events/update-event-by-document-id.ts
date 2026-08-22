@@ -3,6 +3,7 @@ import { db, type Transaction } from '../../client.ts'
 import { events } from '../../schema/event.ts'
 import { locations } from '../../schema/location.ts'
 import { replaceEventFaqs } from './replace-event-faqs.ts'
+import { allocateSlug } from '../slug.ts'
 import type { EventUpsertInput, EventWithLocation } from '@repo/types'
 
 export async function updateEventByDocumentId(
@@ -11,6 +12,14 @@ export async function updateEventByDocumentId(
 ): Promise<EventWithLocation> {
   return db.transaction(async (tx: Transaction) => {
     const now = new Date()
+    const existingSlugs = await tx
+      .select({ id: events.id, documentId: events.documentId, slug: events.slug })
+      .from(events)
+    const current = existingSlugs.find((row) => row.documentId === documentId)
+    const slug = allocateSlug(
+      input.name,
+      existingSlugs.filter((row) => row.id !== current?.id).map((row) => row.slug)
+    )
 
     const [event] = await tx
       .update(events)
@@ -18,6 +27,7 @@ export async function updateEventByDocumentId(
         locationId: input.locationId,
         organizationId: input.organizationId,
         name: input.name,
+        slug,
         description: input.description,
         startsAt: input.startsAt,
         endsAt: input.endsAt,

@@ -5,19 +5,19 @@ import { PageAtmosphereWash } from '~/modules/common/components/page-atmosphere-
 import { Container } from '~/modules/common/components/container'
 import { WEB_ROUTES } from '~/modules/common/constants/routes'
 import {
-  isPublicEventDocumentId,
+  isPublicEventSlug,
   usePublicEventDetailQuery,
 } from '../queries/use-public-event-detail-query'
 import { EventDetailContent } from './event-detail/event-detail-content'
 
 type EventDetailPageProps = {
-  documentId: string
+  slug: string
 }
 
-export function EventDetailPage({ documentId }: EventDetailPageProps) {
+export function EventDetailPage({ slug }: EventDetailPageProps) {
   const { t } = useTranslation('events')
   const { t: tCommon } = useTranslation('common')
-  const isValidDocumentId = isPublicEventDocumentId(documentId)
+  const isValidSlug = isPublicEventSlug(slug)
   const {
     data: event,
     isPending,
@@ -25,7 +25,7 @@ export function EventDetailPage({ documentId }: EventDetailPageProps) {
     error,
     refetch,
     isFetching,
-  } = usePublicEventDetailQuery(documentId)
+  } = usePublicEventDetailQuery(slug)
 
   usePageTitle('events', 'discover.detail.metaTitleFallback')
 
@@ -37,10 +37,10 @@ export function EventDetailPage({ documentId }: EventDetailPageProps) {
     document.title = t('discover.detail.metaTitle', { name: event.name })
   }, [event?.name, t])
 
-  const showNotFound = !isValidDocumentId || (!isPending && !isError && event === null)
-  const showLoading = isValidDocumentId && isPending
-  const showError = isValidDocumentId && isError
-  const showContent = isValidDocumentId && !isPending && !isError && event
+  const showNotFound = !isValidSlug || (!isPending && !isError && event === null)
+  const showLoading = isValidSlug && isPending
+  const showError = isValidSlug && isError
+  const showContent = isValidSlug && !isPending && !isError && event
 
   return (
     <div className="relative min-h-svh overflow-x-clip bg-background text-on-background">

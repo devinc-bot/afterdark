@@ -37,20 +37,20 @@ export function TicketCard({ ticket }: TicketCardProps) {
         className={cn(
           'group relative flex h-full w-full cursor-pointer flex-col overflow-hidden border-hairline/20 bg-surface-card',
           'shadow-none transition-[transform,border-color,box-shadow,background-color] duration-(--duration-fast) ease-emphasized',
-          'hover:z-10 hover:-translate-y-1.5 hover:border-primary/25 hover:bg-surface-high/40 hover:shadow-(--shadow-glass)',
+          'hover:z-10 hover:-translate-y-1 hover:border-primary/25 hover:bg-surface-high/40 hover:shadow-(--shadow-glass)',
           'active:translate-y-0 active:shadow-none',
           'motion-reduce:transition-none motion-reduce:hover:translate-y-0 motion-reduce:active:translate-y-0',
           isUsed && 'border-hairline/10 hover:border-hairline/35'
         )}
       >
-        <div className="relative overflow-hidden">
+        <div className="relative m-4 overflow-hidden rounded-app">
           {ticket.eventImageUrl ? (
             <img
               src={ticket.eventImageUrl}
               alt=""
               className={cn(
-                'aspect-[16/10] w-full object-cover',
-                'transition-transform duration-500 ease-emphasized',
+                'aspect-video w-full object-cover',
+                'transition-transform duration-300 ease-emphasized',
                 'group-hover:scale-[1.05] motion-reduce:transition-none motion-reduce:group-hover:scale-100',
                 isUsed && 'grayscale-[0.45] contrast-[0.92] group-hover:grayscale-[0.2]'
               )}
@@ -59,18 +59,14 @@ export function TicketCard({ ticket }: TicketCardProps) {
             <NotImage
               size="full"
               label={t('mine.card.noCover')}
-              className="aspect-[16/10] min-h-0 w-full rounded-none border-0"
+              className="aspect-video min-h-0 w-full rounded-none border-0"
             />
           )}
-          <div
-            className="pointer-events-none absolute inset-0 bg-linear-to-t from-surface-card via-transparent to-transparent opacity-90 transition-opacity duration-(--duration-fast) ease-emphasized group-hover:opacity-70 motion-reduce:transition-none"
-            aria-hidden
-          />
           <Badge
             variant={isUsed ? 'secondary' : 'default'}
             size="sm"
             className={cn(
-              'absolute top-3 right-3 shadow-(--shadow-glass)',
+              'absolute top-3 right-3 shadow-(--shadow-glass) rounded-app-sm',
               'transition-transform duration-(--duration-fast) ease-emphasized',
               'group-hover:-translate-y-0.5 motion-reduce:transition-none motion-reduce:group-hover:translate-y-0'
             )}

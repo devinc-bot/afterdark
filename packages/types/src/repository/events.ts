@@ -64,6 +64,7 @@ export type PublishedEventWithLocation = {
 /** Raw owner fields for public detail organizer mapping (display name resolved in API). */
 export type PublishedEventOrganizerRow = {
   documentId: string
+  slug: string
   name: string
   lastName: string
   organizationName: string | null

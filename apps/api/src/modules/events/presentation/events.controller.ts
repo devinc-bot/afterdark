@@ -30,6 +30,7 @@ import {
   listEventsQuerySchema,
   listPublicEventsQuerySchema,
   updateEventMultipartSchema,
+  slugSchema,
   uuidSchema,
   type CreateEventInput,
   type ListEventsQueryInput,
@@ -72,11 +73,11 @@ export class EventsController {
     return this.listPublicEventsUseCase.execute(query)
   }
 
-  @Get(API_ROUTES.events.path.getPublic(':documentId'))
-  getPublicByDocumentId(
-    @Param('documentId', new ZodValidationPipe(uuidSchema)) documentId: string
+  @Get(API_ROUTES.events.path.getPublic(':slug'))
+  getPublicBySlug(
+    @Param('slug', new ZodValidationPipe(slugSchema)) slug: string
   ): Promise<PublicEventDetailResponse> {
-    return this.getPublicEventByDocumentIdUseCase.execute(documentId)
+    return this.getPublicEventByDocumentIdUseCase.execute(slug)
   }
 
   @Get(API_ROUTES.events.path.list())

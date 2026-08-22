@@ -41,7 +41,7 @@ export function toTicketResponse(
 export function toPurchasedTicketResponse(
   ticketSold: TicketSoldSelect,
   ticket: Pick<TicketSelect, 'name' | 'type'>,
-  event: Pick<EventSelect, 'name' | 'startsAt'>,
+  event: Pick<EventSelect, 'slug' | 'name' | 'startsAt'>,
   location: Pick<LocationSelect, 'name'>,
   eventImageUrl: string | null
 ): PurchasedTicketResponse {
@@ -51,6 +51,7 @@ export function toPurchasedTicketResponse(
     usedAt: ticketSold.usedAt,
     ticketName: ticket.name,
     ticketType: ticket.type,
+    eventSlug: event.slug,
     eventName: event.name,
     eventStartsAt: event.startsAt,
     locationName: location.name,

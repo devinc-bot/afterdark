@@ -115,10 +115,10 @@ export function EventsDiscoverPage() {
     persistFilters(next)
   }
 
-  const handleCoverflowActivate = (documentId: string) => {
+  const handleCoverflowActivate = (slug: string) => {
     void navigate({
-      to: '/events/$documentId',
-      params: { documentId },
+      to: '/events/$slug',
+      params: { slug },
     })
   }
 

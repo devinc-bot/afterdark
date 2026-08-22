@@ -33,6 +33,7 @@ export interface EventResponse {
 /** Anonymous discovery catalog item (published events only). */
 export interface PublicEventResponse {
   documentId: string
+  slug: string
   name: string
   description: string
   startsAt: Date
@@ -60,6 +61,7 @@ export interface PublicEventDetailAddress {
 /** Host identity on anonymous public event detail (resolved display name + avatar). */
 export interface PublicEventOrganizer {
   documentId: string
+  slug: string
   name: string
   avatar: string | null
   firstName: string
@@ -68,6 +70,7 @@ export interface PublicEventOrganizer {
 
 export interface PublicEventDetailResponse {
   documentId: string
+  slug: string
   name: string
   description: string
   startsAt: Date

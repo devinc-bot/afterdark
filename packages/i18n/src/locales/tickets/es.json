@@ -187,6 +187,7 @@
       "quantityValue": "{count}",
       "qrLabel": "Código QR de la entrada",
       "openQr": "Abrir QR del ticket",
+      "viewEventAria": "Ver evento: {{name}}",
       "noCover": "Sin imagen"
     },
     "qrDialog": {

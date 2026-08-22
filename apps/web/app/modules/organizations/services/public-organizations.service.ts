@@ -4,13 +4,10 @@ import { i18n } from '@repo/i18n/client'
 import { api, API_ROUTES } from '~/config/api'
 
 export async function fetchPublicOrganizationProfile(
-  documentId: string,
+  slug: string,
   page: number
 ): Promise<PublicOrganizationProfileResponse | null> {
-  const path = buildApiPath(
-    API_ROUTES.organizations,
-    API_ROUTES.organizations.path.getPublic(documentId)
-  )
+  const path = buildApiPath(API_ROUTES.organizations, API_ROUTES.organizations.path.getPublic(slug))
 
   try {
     return await api.get<PublicOrganizationProfileResponse>(`${path}?page=${page}`)
