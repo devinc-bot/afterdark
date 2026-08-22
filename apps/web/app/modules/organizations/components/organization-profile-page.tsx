@@ -125,7 +125,7 @@ function OrganizationProfileContent({
         <Container className="relative flex min-h-80 flex-col justify-end py-8 sm:min-h-96 sm:py-10 lg:min-h-112 lg:py-12">
           <Link
             to={WEB_ROUTES.events()}
-            variant='link'
+            variant="link"
             className="absolute top-5 inline-flex items-center gap-1.5 font-label text-sm sm:top-6"
           >
             <ArrowLeft className="size-3.5" aria-hidden strokeWidth={1.75} />

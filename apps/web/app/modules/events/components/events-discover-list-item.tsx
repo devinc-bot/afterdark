@@ -52,7 +52,11 @@ export function EventsDiscoverListItem({ event }: EventsDiscoverListItemProps) {
         aria-label={t('discover.list.viewEventAria', { name: event.name })}
       >
         {image ? (
-          <img src={image.url} alt="" className="aspect-video w-full object-cover group-hover:scale-[1.05] duration-300" />
+          <img
+            src={image.url}
+            alt=""
+            className="aspect-video w-full object-cover group-hover:scale-[1.05] duration-300"
+          />
         ) : (
           <NotImage
             size="full"
