@@ -2,6 +2,15 @@ import { z } from 'zod'
 
 export const uuidSchema = z.uuid()
 
+/** URL-safe public identifier. UUIDs stay reserved for internal contracts. */
+export const slugSchema = z
+  .string()
+  .trim()
+  .min(1)
+  .max(255)
+  .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)
+  .refine((value) => !uuidSchema.safeParse(value).success)
+
 /**
  * Phone: optional leading `+`, digits with spaces/dashes/parens.
  * Requires 8–15 digits (E.164 upper bound); rejects letters/emoji.

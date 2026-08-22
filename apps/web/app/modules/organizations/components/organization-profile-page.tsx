@@ -1,5 +1,4 @@
 import { startTransition, useEffect, useState } from 'react'
-import { Link as RouterLink } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
 import { ArrowLeft } from 'lucide-react'
 import type { PublicOrganizationProfileResponse } from '@repo/types'
@@ -8,6 +7,7 @@ import {
   AvatarFallback,
   AvatarImage,
   LoadErrorBanner,
+  Link,
   NotFoundView,
   Pagination,
   PaginationButton,
@@ -23,20 +23,20 @@ import { Container } from '~/modules/common/components/container'
 import { WEB_ROUTES } from '~/modules/common/constants/routes'
 import { getUserInitials } from '~/modules/common/utils/user-initials.utils'
 import {
-  isPublicOrganizationDocumentId,
+  isPublicOrganizationSlug,
   usePublicOrganizationProfileQuery,
 } from '../queries/use-public-organization-profile-query'
 import { EventsDiscoverListItem } from '~/modules/events/components/events-discover-list-item'
 
 type OrganizationProfilePageProps = {
-  documentId: string
+  slug: string
 }
 
-export function OrganizationProfilePage({ documentId }: OrganizationProfilePageProps) {
+export function OrganizationProfilePage({ slug }: OrganizationProfilePageProps) {
   const { t } = useTranslation('events')
   const { t: tCommon } = useTranslation('common')
   const [page, setPage] = useState(1)
-  const isValidDocumentId = isPublicOrganizationDocumentId(documentId)
+  const isValidSlug = isPublicOrganizationSlug(slug)
   const {
     data: profile,
     isPending,
@@ -44,7 +44,7 @@ export function OrganizationProfilePage({ documentId }: OrganizationProfilePageP
     error,
     refetch,
     isFetching,
-  } = usePublicOrganizationProfileQuery(documentId, page)
+  } = usePublicOrganizationProfileQuery(slug, page)
 
   usePageTitle('events', 'discover.page.metaTitle')
 
@@ -56,10 +56,10 @@ export function OrganizationProfilePage({ documentId }: OrganizationProfilePageP
     document.title = t('discover.organization.metaTitle', { name: profile.name })
   }, [profile?.name, t])
 
-  const showNotFound = !isValidDocumentId || (!isPending && !isError && profile === null)
-  const showLoading = isValidDocumentId && isPending
-  const showError = isValidDocumentId && isError
-  const showContent = isValidDocumentId && !isPending && !isError && profile
+  const showNotFound = !isValidSlug || (!isPending && !isError && profile === null)
+  const showLoading = isValidSlug && isPending
+  const showError = isValidSlug && isError
+  const showContent = isValidSlug && !isPending && !isError && profile
 
   return (
     <main className="min-h-svh overflow-x-clip bg-background text-on-background">
@@ -123,13 +123,14 @@ function OrganizationProfileContent({
         <OrganizationHeroBackdrop images={heroImages} />
         <div className="absolute inset-0 bg-linear-to-t from-surface-container-lowest via-surface-container-lowest/60 to-surface-container-lowest/15" />
         <Container className="relative flex min-h-80 flex-col justify-end py-8 sm:min-h-96 sm:py-10 lg:min-h-112 lg:py-12">
-          <RouterLink
+          <Link
             to={WEB_ROUTES.events()}
-            className="absolute top-5 inline-flex min-h-11 items-center gap-1.5 rounded-app-sm px-2 font-label text-sm text-on-surface transition-colors duration-(--duration-fast) ease-emphasized hover:bg-surface-container-lowest/60 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary sm:top-6"
+            variant="link"
+            className="absolute top-5 inline-flex items-center gap-1.5 font-label text-sm sm:top-6"
           >
             <ArrowLeft className="size-3.5" aria-hidden strokeWidth={1.75} />
             {t('discover.organization.backToEvents')}
-          </RouterLink>
+          </Link>
           <div className="flex items-end gap-4 sm:gap-5">
             <Avatar className="size-20 shrink-0 border-4 border-surface-container-lowest sm:size-24">
               {profile.avatar ? <AvatarImage src={profile.avatar} alt="" /> : null}

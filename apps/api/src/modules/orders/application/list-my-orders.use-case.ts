@@ -14,8 +14,6 @@ export class ListMyOrdersUseCase {
     userDocumentId: string,
     query: ListOrdersQueryInput
   ): Promise<PaginatedResponse<BuyerOrderSummaryResponse>> {
-    throw new InternalServerErrorException(this.ts.translateError(ORDER_ERROR_CODE.LIST_FAILED))
-
     try {
       const { rows, total } = await findOrdersPaginatedByUserDocumentId({
         userDocumentId,

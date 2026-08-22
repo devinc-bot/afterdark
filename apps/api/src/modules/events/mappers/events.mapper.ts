@@ -26,6 +26,7 @@ export function toPublicEventOrganizer(row: PublishedEventOrganizerRow): PublicE
 
   return {
     documentId: row.documentId,
+    slug: row.slug,
     name: organizationName && organizationName.length > 0 ? organizationName : personalName,
     avatar: row.avatar,
     firstName: row.name,
@@ -79,6 +80,7 @@ export function toPublicEventResponse(
 ): PublicEventResponse {
   return {
     documentId: event.documentId,
+    slug: event.slug,
     name: event.name,
     description: event.description,
     startsAt: event.startsAt,
@@ -108,6 +110,7 @@ export function toPublicEventDetailResponse(
 ): PublicEventDetailResponse {
   return {
     documentId: event.documentId,
+    slug: event.slug,
     name: event.name,
     description: event.description,
     startsAt: event.startsAt,

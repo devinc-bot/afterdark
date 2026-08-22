@@ -187,6 +187,7 @@
       "quantityValue": "{count}",
       "qrLabel": "Ticket QR code",
       "openQr": "Open ticket QR",
+      "viewEventAria": "View event: {{name}}",
       "noCover": "No image"
     },
     "qrDialog": {

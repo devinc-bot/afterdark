@@ -4,6 +4,7 @@ import { organizationAccountsLnk } from '../../schema/organization-account-lnk.t
 import { organizations } from '../../schema/organization.ts'
 import { ownerAccountsLnk } from '../../schema/owner-account-lnk.ts'
 import { owners } from '../../schema/owner.ts'
+import { allocateSlug } from '../slug.ts'
 import type { OwnerUpdateInput } from '@repo/types'
 
 export async function updateOwnerByDocumentId(
@@ -31,6 +32,15 @@ export async function updateOwnerByDocumentId(
     const updatedAt = new Date()
     const organizationName =
       input.organizationName?.trim() || `${input.name} ${input.lastName}`.trim()
+    const organizationSlugs = await tx
+      .select({ id: organizations.id, slug: organizations.slug })
+      .from(organizations)
+    const slug = allocateSlug(
+      organizationName,
+      organizationSlugs
+        .filter((organization) => organization.id !== membership.organizationId)
+        .map((organization) => organization.slug)
+    )
 
     await tx
       .update(owners)
@@ -46,7 +56,7 @@ export async function updateOwnerByDocumentId(
 
     await tx
       .update(organizations)
-      .set({ name: organizationName, taxId: input.taxId, updatedAt })
+      .set({ name: organizationName, slug, taxId: input.taxId, updatedAt })
       .where(eq(organizations.id, membership.organizationId))
   })
 }

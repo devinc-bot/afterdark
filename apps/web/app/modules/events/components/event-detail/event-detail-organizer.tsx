@@ -13,8 +13,8 @@ export function EventDetailOrganizer({ organizer }: EventDetailOrganizerProps) {
 
   return (
     <RouterLink
-      to="/organizations/$organizationId"
-      params={{ organizationId: organizer.documentId }}
+      to="/organizations/$slug"
+      params={{ slug: organizer.slug }}
       className="mt-2.5 flex w-fit items-center gap-2.5 rounded-app-sm transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
       aria-label={t('discover.detail.organizedByAriaLabel')}
     >

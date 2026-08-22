@@ -54,6 +54,7 @@ test('resolves only a sole owner organization and updates settings transactional
       id INTEGER PRIMARY KEY,
       document_id TEXT NOT NULL,
       name TEXT NOT NULL,
+      slug TEXT,
       tax_id TEXT,
       updated_at INTEGER NOT NULL
     )

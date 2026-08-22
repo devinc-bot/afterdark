@@ -103,7 +103,7 @@ export const API_ROUTES = {
       /** Anonymous published-events catalog (GET). */
       listPublic: () => '/' as const,
       /** Anonymous published-event detail (GET). */
-      getPublic: (documentId: string) => `/id/${routeSegment(documentId)}` as const,
+      getPublic: (slug: string) => `/slug/${routeSegment(slug)}` as const,
       list: () => '/my-events' as const,
       get: (documentId: string) => `/${documentId}` as const,
       create: () => '/' as const,
@@ -163,7 +163,7 @@ export const API_ROUTES = {
   organizations: {
     prefix: API_ORGANIZATIONS_PREFIX,
     path: {
-      getPublic: (documentId: string) => `/public/${routeSegment(documentId)}` as const,
+      getPublic: (slug: string) => `/public/${routeSegment(slug)}` as const,
     },
   },
 } as const

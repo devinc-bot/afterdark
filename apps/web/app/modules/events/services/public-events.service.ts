@@ -69,9 +69,9 @@ export async function fetchPublicEvents(
 }
 
 export async function fetchPublicEventDetail(
-  documentId: string
+  slug: string
 ): Promise<PublicEventDetailResponse | null> {
-  const path = buildApiPath(API_ROUTES.events, API_ROUTES.events.path.getPublic(documentId))
+  const path = buildApiPath(API_ROUTES.events, API_ROUTES.events.path.getPublic(slug))
 
   try {
     return await api.get<PublicEventDetailResponse>(path)

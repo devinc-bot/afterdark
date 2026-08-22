@@ -111,7 +111,7 @@ async function ensureOrganizationMembership(accountId: number): Promise<number> 
 
   const [organization] = await db
     .insert(organizations)
-    .values({ documentId: 'seed-organization', name: 'Test Owner' })
+    .values({ documentId: 'seed-organization', name: 'Test Owner', slug: 'test-owner' })
     .returning({ id: organizations.id })
 
   await db.insert(organizationAccountsLnk).values({
@@ -402,6 +402,7 @@ export async function seedTicketsOrders(): Promise<void> {
       locationId: locationIds[eventLocationIndexes[i]],
       organizationId,
       name: `Evento ${n}`,
+      slug: `evento-${n}`,
       description: `Evento de prueba número ${n}`,
       startsAt: new Date(now + n * DAY_MS),
       endsAt: new Date(now + n * DAY_MS + 4 * 60 * 60 * 1000),

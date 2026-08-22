@@ -1,18 +1,17 @@
 import { useQuery } from '@tanstack/react-query'
-import { uuidSchema } from '@repo/validators'
+import { slugSchema } from '@repo/validators'
 import { fetchPublicEventDetail } from '../services/public-events.service'
 
-export const publicEventDetailQueryKey = (documentId: string) =>
-  ['public-event-detail', documentId] as const
+export const publicEventDetailQueryKey = (slug: string) => ['public-event-detail', slug] as const
 
-export function isPublicEventDocumentId(documentId: string): boolean {
-  return uuidSchema.safeParse(documentId).success
+export function isPublicEventSlug(slug: string): boolean {
+  return slugSchema.safeParse(slug).success
 }
 
-export function usePublicEventDetailQuery(documentId: string) {
+export function usePublicEventDetailQuery(slug: string) {
   return useQuery({
-    queryKey: publicEventDetailQueryKey(documentId),
-    queryFn: () => fetchPublicEventDetail(documentId),
-    enabled: isPublicEventDocumentId(documentId),
+    queryKey: publicEventDetailQueryKey(slug),
+    queryFn: () => fetchPublicEventDetail(slug),
+    enabled: isPublicEventSlug(slug),
   })
 }

@@ -43,6 +43,7 @@ export interface PurchasedTicketResponse {
   usedAt: Date | null
   ticketName: string
   ticketType: TicketType
+  eventSlug: string
   eventName: string
   eventStartsAt: Date
   locationName: string

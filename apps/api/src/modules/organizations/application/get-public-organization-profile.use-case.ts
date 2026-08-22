@@ -1,7 +1,7 @@
 import { Inject, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common'
 import {
   findEventImageAssetsByEventIds,
-  findPublicOrganizationByDocumentId,
+  findPublicOrganizationBySlug,
   findPublishedEventsPaginated,
 } from '@repo/db'
 import { TranslationService } from '@repo/i18n/server'
@@ -17,11 +17,11 @@ export class GetPublicOrganizationProfileUseCase {
   constructor(@Inject(TranslationService) private readonly ts: TranslationService) {}
 
   async execute(
-    documentId: string,
+    slug: string,
     query: ListPublicEventsQueryInput
   ): Promise<PublicOrganizationProfileResponse> {
     try {
-      const organization = await findPublicOrganizationByDocumentId(documentId)
+      const organization = await findPublicOrganizationBySlug(slug)
       if (!organization) {
         throw new NotFoundException(this.ts.translateError('organization.NOT_FOUND'))
       }
@@ -36,6 +36,7 @@ export class GetPublicOrganizationProfileUseCase {
 
       return {
         documentId: organization.documentId,
+        slug: organization.slug,
         name: organization.name,
         avatar: organization.avatar ?? null,
         events: {

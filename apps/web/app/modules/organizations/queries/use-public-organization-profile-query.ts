@@ -1,18 +1,18 @@
 import { useQuery } from '@tanstack/react-query'
-import { uuidSchema } from '@repo/validators'
+import { slugSchema } from '@repo/validators'
 import { fetchPublicOrganizationProfile } from '../services/public-organizations.service'
 
-export const publicOrganizationProfileQueryKey = (documentId: string, page: number) =>
-  ['public-organization-profile', documentId, page] as const
+export const publicOrganizationProfileQueryKey = (slug: string, page: number) =>
+  ['public-organization-profile', slug, page] as const
 
-export function isPublicOrganizationDocumentId(documentId: string): boolean {
-  return uuidSchema.safeParse(documentId).success
+export function isPublicOrganizationSlug(slug: string): boolean {
+  return slugSchema.safeParse(slug).success
 }
 
-export function usePublicOrganizationProfileQuery(documentId: string, page: number) {
+export function usePublicOrganizationProfileQuery(slug: string, page: number) {
   return useQuery({
-    queryKey: publicOrganizationProfileQueryKey(documentId, page),
-    queryFn: () => fetchPublicOrganizationProfile(documentId, page),
-    enabled: isPublicOrganizationDocumentId(documentId),
+    queryKey: publicOrganizationProfileQueryKey(slug, page),
+    queryFn: () => fetchPublicOrganizationProfile(slug, page),
+    enabled: isPublicOrganizationSlug(slug),
   })
 }

@@ -9,7 +9,7 @@ import { cn } from '../../lib/utils'
  */
 const badgeVariants = cva(
   [
-    'inline-flex w-fit max-w-full shrink-0 items-center justify-center rounded-pill border border-transparent',
+    'inline-flex w-fit max-w-full shrink-0 items-center justify-center rounded-app-lg border border-transparent',
     'font-label leading-none whitespace-nowrap',
     'transition-[color,background-color,border-color,box-shadow,opacity] duration-(--duration-instant) ease-emphasized',
     'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 focus-visible:ring-offset-background',

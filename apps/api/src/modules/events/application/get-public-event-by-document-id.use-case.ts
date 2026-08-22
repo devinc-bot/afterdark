@@ -2,7 +2,7 @@ import { Inject, Injectable, NotFoundException } from '@nestjs/common'
 import {
   findEventImageAssetsByEventIds,
   findLocationImageAssetsByLocationIds,
-  findPublishedEventByDocumentId,
+  findPublishedEventBySlug,
   findTicketsWithCompletedSalesByEventId,
 } from '@repo/db'
 import { TranslationService } from '@repo/i18n/server'
@@ -39,8 +39,8 @@ function arePlatformPaymentsConfigured(): boolean {
 export class GetPublicEventByDocumentIdUseCase {
   constructor(@Inject(TranslationService) private readonly ts: TranslationService) {}
 
-  async execute(documentId: string): Promise<PublicEventDetailResponse> {
-    const row = await findPublishedEventByDocumentId(documentId)
+  async execute(slug: string): Promise<PublicEventDetailResponse> {
+    const row = await findPublishedEventBySlug(slug)
 
     if (!row) {
       throw new NotFoundException(this.ts.translateError('event.NOT_FOUND'))

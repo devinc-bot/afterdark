@@ -1,10 +1,9 @@
 import { OrganizationProfilePage } from './organization-profile-page'
 
 type OrganizationEventsPageProps = {
-  organizationId: string
+  slug: string
 }
 
-/** Public route adapter kept while the URL parameter remains organizationId. */
-export function OrganizationEventsPage({ organizationId }: OrganizationEventsPageProps) {
-  return <OrganizationProfilePage documentId={organizationId} />
+export function OrganizationEventsPage({ slug }: OrganizationEventsPageProps) {
+  return <OrganizationProfilePage slug={slug} />
 }

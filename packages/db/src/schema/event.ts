@@ -13,6 +13,7 @@ export const events = sqliteTable('events', {
     .notNull()
     .references(() => organizations.id),
   name: text('name').notNull(),
+  slug: text('slug').notNull().unique('events_slug_unique'),
   description: text('description').notNull(),
   startsAt: integer('starts_at', { mode: 'timestamp' }).notNull(),
   endsAt: integer('ends_at', { mode: 'timestamp' }).notNull(),

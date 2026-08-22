@@ -9,6 +9,7 @@ export interface OrganizationDto {
 /** Anonymous organization profile with its published event catalog. */
 export interface PublicOrganizationProfileResponse {
   documentId: string
+  slug: string
   name: string
   avatar: string | null
   events: PublicEventsPaginatedResponse

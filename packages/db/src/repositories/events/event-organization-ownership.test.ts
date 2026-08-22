@@ -26,6 +26,7 @@ test('uses direct organization ownership for owner and public event queries', as
     findEventOwnedByOwnerDocumentId,
     findEventsPaginatedByOwner,
     findPublishedEventByDocumentId,
+    findPublishedEventBySlug,
   } = await dbModulePromise
 
   await db.run(sql`
@@ -55,6 +56,7 @@ test('uses direct organization ownership for owner and public event queries', as
       id INTEGER PRIMARY KEY,
       document_id TEXT NOT NULL,
       name TEXT NOT NULL,
+      slug TEXT,
       tax_id TEXT
     )
   `)
@@ -86,6 +88,7 @@ test('uses direct organization ownership for owner and public event queries', as
       location_id INTEGER NOT NULL,
       organization_id INTEGER NOT NULL,
       name TEXT NOT NULL,
+      slug TEXT,
       description TEXT NOT NULL,
       starts_at INTEGER NOT NULL,
       ends_at INTEGER NOT NULL,
@@ -223,4 +226,5 @@ test('uses direct organization ownership for owner and public event queries', as
   const published = await findPublishedEventByDocumentId(first.event.documentId)
   assert.equal(published?.organizer.organizationName, 'Organization Two')
   assert.equal(published?.organizer.name, 'One')
+  assert.equal((await findPublishedEventBySlug('first-event'))?.event.id, first.event.id)
 })
