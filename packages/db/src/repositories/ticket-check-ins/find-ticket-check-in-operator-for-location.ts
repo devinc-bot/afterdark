@@ -1,5 +1,5 @@
 import { and, eq } from 'drizzle-orm'
-import { alias } from 'drizzle-orm/sqlite-core'
+import { alias } from 'drizzle-orm/pg-core'
 import { USER_ROLE, type UserRole } from '@repo/types/enums'
 import { db } from '../../client.ts'
 import { accounts } from '../../schema/account.ts'

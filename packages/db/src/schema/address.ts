@@ -1,14 +1,14 @@
-import { real, sqliteTable, text } from 'drizzle-orm/sqlite-core'
+import { doublePrecision, pgTable, text } from 'drizzle-orm/pg-core'
 import { createBaseColumns } from './base.ts'
 
-export const addresses = sqliteTable('addresses', {
+export const addresses = pgTable('addresses', {
   ...createBaseColumns('addresses'),
   address: text('address').notNull(),
   streetNumber: text('street_number').notNull(),
   state: text('state').notNull(),
   city: text('city').notNull(),
-  latitude: real('latitude'),
-  longitude: real('longitude'),
+  latitude: doublePrecision('latitude'),
+  longitude: doublePrecision('longitude'),
 })
 
 export type AddressSelect = typeof addresses.$inferSelect

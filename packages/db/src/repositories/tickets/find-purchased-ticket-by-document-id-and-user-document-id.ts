@@ -15,7 +15,7 @@ export async function findPurchasedTicketByDocumentIdAndUserDocumentId(params: {
 }): Promise<PurchasedTicketWithRelationsByDocumentId | undefined> {
   const { ticketSoldDocumentId, userDocumentId } = params
 
-  return db
+  const [row] = await db
     .select({
       ticketSold: ticketsSold,
       ticket: tickets,
@@ -35,5 +35,6 @@ export async function findPurchasedTicketByDocumentIdAndUserDocumentId(params: {
         eq(orders.status, PAYMENT_STATUS.COMPLETED)
       )
     )
-    .get()
+
+  return row
 }

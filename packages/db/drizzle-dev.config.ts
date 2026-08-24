@@ -3,10 +3,10 @@ import { serverEnv } from './src/config/env.server.ts'
 
 export default {
   schema: './src/schema/index.ts',
-  out: './src/migrations',
-  dialect: 'sqlite',
+  out: './src/migrations-postgresql',
+  dialect: 'postgresql',
   dbCredentials: {
-    url: serverEnv.TURSO_DATABASE_URL,
+    url: serverEnv.DATABASE_MIGRATION_URL,
   },
   migrations: {
     prefix: 'timestamp',

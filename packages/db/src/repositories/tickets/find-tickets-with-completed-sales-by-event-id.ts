@@ -35,7 +35,7 @@ export type TicketWithCompletedSales = {
 export async function findTicketsWithCompletedSalesByEventId(
   eventId: number
 ): Promise<TicketWithCompletedSales[]> {
-  // SUM of joined completed order quantities; COALESCE → 0 when no rows; mapWith → JS number (SQLite may return string).
+  // SUM of joined completed order quantities; COALESCE returns zero when no rows.
   const completedSalesQuantity = sql<number>`coalesce(${sum(orders.quantity)}, 0)`.mapWith(Number)
 
   const rows = await db

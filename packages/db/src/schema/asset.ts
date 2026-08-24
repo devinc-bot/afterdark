@@ -1,8 +1,8 @@
-import { sqliteTable, text } from 'drizzle-orm/sqlite-core'
+import { pgTable, text } from 'drizzle-orm/pg-core'
 import { ASSET_TYPE } from '@repo/types/enums'
 import { createBaseColumns } from './base.ts'
 
-export const assets = sqliteTable('assets', {
+export const assets = pgTable('assets', {
   ...createBaseColumns('assets'),
   name: text('name').notNull(),
   url: text('url'),

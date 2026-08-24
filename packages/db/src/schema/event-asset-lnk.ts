@@ -1,9 +1,9 @@
-import { integer, sqliteTable } from 'drizzle-orm/sqlite-core'
+import { integer, pgTable } from 'drizzle-orm/pg-core'
 import { createBaseColumns } from './base.ts'
 import { assets } from './asset.ts'
 import { events } from './event.ts'
 
-export const eventAssetsLnk = sqliteTable('event_assets_lnk', {
+export const eventAssetsLnk = pgTable('event_assets_lnk', {
   ...createBaseColumns('event_assets_lnk'),
   eventId: integer('event_id')
     .notNull()

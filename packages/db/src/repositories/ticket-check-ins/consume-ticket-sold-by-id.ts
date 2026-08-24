@@ -15,7 +15,7 @@ export async function consumeTicketSoldById(params: {
   checkedInByAccountId: number
   checkedInByRole: CheckInOperatorRole
 }): Promise<ConsumedTicketSoldRow | null> {
-  const row = await db
+  const [row] = await db
     .update(ticketsSold)
     .set({
       checkedIn: true,
@@ -30,7 +30,6 @@ export async function consumeTicketSoldById(params: {
       checkedIn: ticketsSold.checkedIn,
       usedAt: ticketsSold.usedAt,
     })
-    .get()
 
   if (!row?.checkedIn || !row.usedAt) {
     return null

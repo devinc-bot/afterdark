@@ -1,9 +1,9 @@
-import { integer, sqliteTable, unique } from 'drizzle-orm/sqlite-core'
+import { integer, pgTable, unique } from 'drizzle-orm/pg-core'
 import { accounts } from './account.ts'
 import { createBaseColumns } from './base.ts'
 import { organizations } from './organization.ts'
 
-export const organizationAccountsLnk = sqliteTable(
+export const organizationAccountsLnk = pgTable(
   'organization_accounts_lnk',
   {
     ...createBaseColumns('organization_accounts_lnk'),

@@ -12,6 +12,8 @@ import { owners } from '../../schema/owner.ts'
 import { tickets } from '../../schema/ticket.ts'
 import { ticketsSold } from '../../schema/tickets_sold.ts'
 
+const DASHBOARD_TIME_ZONE = 'America/Argentina/Buenos_Aires'
+
 export async function findDashboardTicketsSoldSeriesByOwnerDocumentId(
   params: FindDashboardTicketsSoldSeriesParams
 ): Promise<DashboardTicketsSoldSeriesPoint[]> {
@@ -20,8 +22,8 @@ export async function findDashboardTicketsSoldSeriesByOwnerDocumentId(
 
   const bucketExpr =
     granularity === 'day'
-      ? sql<string>`strftime('%Y-%m-%d', ${orders.paidAt}, 'unixepoch', 'localtime')`
-      : sql<string>`strftime('%Y-%m', ${orders.paidAt}, 'unixepoch', 'localtime')`
+      ? sql<string>`to_char(${orders.paidAt} AT TIME ZONE ${sql.raw(`'${DASHBOARD_TIME_ZONE}'`)}, 'YYYY-MM-DD')`
+      : sql<string>`to_char(${orders.paidAt} AT TIME ZONE ${sql.raw(`'${DASHBOARD_TIME_ZONE}'`)}, 'YYYY-MM')`
 
   const rows = await db
     .select({

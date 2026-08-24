@@ -100,6 +100,8 @@ pnpm format:check   # format check without writing (CI)
 pnpm drizzle-kit generate
 pnpm drizzle-kit migrate
 pnpm drizzle-kit push   # dev only — prefer migrations in production
+pnpm db:seed:development # direct Neon URL; roles, admin, and development fixtures
+pnpm db:seed:production  # direct Neon URL; roles and configured admin only
 
 # Add a ShadCN component (run from packages/ui)
 pnpm dlx shadcn@latest add dialog
@@ -110,7 +112,7 @@ pnpm dlx shadcn@latest add table
 
 ## Framework gotchas
 
-- **Drizzle schemas** are plain TypeScript in `packages/db/src/schema/` — use `sqliteTable` (Turso/libSQL); no decorators or `reflect-metadata`.
+- **Drizzle schemas** are plain TypeScript in `packages/db/src/schema/` — use `pgTable` (Neon PostgreSQL); no decorators or `reflect-metadata`.
 - **Repositories** — all Drizzle queries used by `apps/api` live in `packages/db/src/repositories/`. NestJS services call repository functions from `@repo/db`; do not import `db` directly in API services unless adding a new repository first.
 - **Tailwind v4** has a different config format than v3 — consult the [v4 docs](https://tailwindcss.com/docs) before making changes.
 - **Zod v4** has breaking changes from v3 — consult the [migration guide](https://zod.dev/v4) before modifying validators.
@@ -122,7 +124,7 @@ pnpm dlx shadcn@latest add table
 
 ## Product domain
 
-**Repo** is an events and ticketing platform for locations, events, and tickets. All apps share one Turso database and shared types and validators.
+**Repo** is an events and ticketing platform for locations, events, and tickets. All apps share one Neon PostgreSQL database and shared types and validators.
 
 | Audience | App         | Role                                                      |
 | -------- | ----------- | --------------------------------------------------------- |
@@ -174,10 +176,10 @@ UI -> queries/mutations -> services -> QueryFactory -> Nest API -> repositories 
 
 ### Database and packages
 
-- `@repo/db`: schemas in `src/schema/` use `sqliteTable`; all API Drizzle reads and writes live in `src/repositories/`, organized by entity with one function per file. API services import repository functions only, never `db` directly.
+- `@repo/db`: schemas in `src/schema/` use `pgTable`; all API Drizzle reads and writes live in `src/repositories/`, organized by entity with one function per file. API services import repository functions only, never `db` directly.
 - `@repo/validators`: all domain and form Zod schemas; environment schemas live in `src/env/`. `@repo/types`: enums, DTOs, and repository types, imported through its barrel. `@repo/ui`: shared ShadCN and files SDK components. `@repo/i18n`: shared locale configuration and copy.
 - Generate timestamp-prefixed Drizzle migrations for production; never rename committed migrations. `drizzle-kit push` is development-only.
-- Root `.env` contains client API, Turso, runtime, JWT, origin, CORS, and mail variables. Parse each app's environment with schemas in `packages/validators/src/env/`; `API_PREFIX` is a code constant, not environment configuration.
+- Root `.env` contains client API, Neon PostgreSQL, runtime, JWT, origin, CORS, and mail variables. `DATABASE_URL` uses Neon's pooled hostname for API runtime; `DATABASE_MIGRATION_URL` uses the direct hostname for Drizzle Kit, migrations, seeds, and administrative commands. Parse each app's environment with schemas in `packages/validators/src/env/`; `API_PREFIX` is a code constant, not environment configuration.
 - `CORS_ALLOWED_ORIGINS` must include `http://localhost:3003` locally and the deployed admin origin.
 
 ### Frontend

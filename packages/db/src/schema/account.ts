@@ -1,8 +1,8 @@
-import { sqliteTable, text } from 'drizzle-orm/sqlite-core'
+import { pgTable, text } from 'drizzle-orm/pg-core'
 import { AUTH_PROVIDER } from '@repo/types'
 import { createBaseColumns } from './base.ts'
 
-export const accounts = sqliteTable('accounts', {
+export const accounts = pgTable('accounts', {
   ...createBaseColumns('accounts'),
   email: text('email').notNull().unique(),
   password: text('password'),
