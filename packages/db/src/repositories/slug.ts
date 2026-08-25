@@ -7,7 +7,7 @@ export function normalizeSlug(value: string): string {
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-+|-+$/g, '')
 
-  return normalized
+  return normalized || 'item'
 }
 
 /** Allocates the first available base, base-2, base-3, ... candidate. */
