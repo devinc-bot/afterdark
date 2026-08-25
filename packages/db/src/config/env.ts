@@ -1,8 +1,8 @@
 import { z } from 'zod'
 
 export const databaseEnvSchema = z.object({
-  TURSO_DATABASE_URL: z.string().default('file:../../local.db'),
-  TURSO_AUTH_TOKEN: z.string().optional(),
+  DATABASE_URL: z.url(),
+  DATABASE_MIGRATION_URL: z.url(),
 })
 
 export type DatabaseEnv = z.infer<typeof databaseEnvSchema>

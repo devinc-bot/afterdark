@@ -1,5 +1,5 @@
 import { and, count, desc, eq, sql } from 'drizzle-orm'
-import { alias } from 'drizzle-orm/sqlite-core'
+import { alias } from 'drizzle-orm/pg-core'
 import type { PaginatedScannedTicketsResult, ScannedTicketHistoryRow } from '@repo/types'
 import { db } from '../../client.ts'
 import { accounts } from '../../schema/account.ts'

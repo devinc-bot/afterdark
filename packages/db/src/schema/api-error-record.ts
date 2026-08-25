@@ -1,4 +1,4 @@
-import { index, integer, sqliteTable, text } from 'drizzle-orm/sqlite-core'
+import { index, integer, pgTable, varchar } from 'drizzle-orm/pg-core'
 import { createBaseColumns } from './base.ts'
 
 export const API_ERROR_RECORD_FIELD_LIMITS = {
@@ -11,22 +11,22 @@ export const API_ERROR_RECORD_FIELD_LIMITS = {
   fingerprint: 64,
 } as const
 
-export const apiErrorRecords = sqliteTable(
+export const apiErrorRecords = pgTable(
   'api_error_records',
   {
     ...createBaseColumns('api_error_records'),
-    method: text('method', { length: API_ERROR_RECORD_FIELD_LIMITS.method }).notNull(),
-    path: text('path', { length: API_ERROR_RECORD_FIELD_LIMITS.path }).notNull(),
+    method: varchar('method', { length: API_ERROR_RECORD_FIELD_LIMITS.method }).notNull(),
+    path: varchar('path', { length: API_ERROR_RECORD_FIELD_LIMITS.path }).notNull(),
     statusCode: integer('status_code').notNull(),
-    errorName: text('error_name', {
+    errorName: varchar('error_name', {
       length: API_ERROR_RECORD_FIELD_LIMITS.errorName,
     }).notNull(),
-    message: text('message', { length: API_ERROR_RECORD_FIELD_LIMITS.message }).notNull(),
-    stack: text('stack', { length: API_ERROR_RECORD_FIELD_LIMITS.stack }),
-    correlationId: text('correlation_id', {
+    message: varchar('message', { length: API_ERROR_RECORD_FIELD_LIMITS.message }).notNull(),
+    stack: varchar('stack', { length: API_ERROR_RECORD_FIELD_LIMITS.stack }),
+    correlationId: varchar('correlation_id', {
       length: API_ERROR_RECORD_FIELD_LIMITS.correlationId,
     }),
-    fingerprint: text('fingerprint', { length: API_ERROR_RECORD_FIELD_LIMITS.fingerprint })
+    fingerprint: varchar('fingerprint', { length: API_ERROR_RECORD_FIELD_LIMITS.fingerprint })
       .notNull()
       .default('legacy'),
   },

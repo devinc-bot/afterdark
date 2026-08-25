@@ -1,9 +1,9 @@
-import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core'
+import { integer, pgTable, text } from 'drizzle-orm/pg-core'
 import { USER_STATUS } from '@repo/types/enums'
 import { createBaseColumns } from './base.ts'
 import { assets } from './asset.ts'
 
-export const users = sqliteTable('users', {
+export const users = pgTable('users', {
   ...createBaseColumns('users'),
   name: text('name').notNull(),
   lastName: text('last_name').notNull(),

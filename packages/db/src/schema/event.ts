@@ -1,10 +1,10 @@
-import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core'
+import { integer, pgTable, text, timestamp } from 'drizzle-orm/pg-core'
 import { EVENT_STATUS } from '@repo/types/enums'
 import { createBaseColumns } from './base.ts'
 import { locations } from './location.ts'
 import { organizations } from './organization.ts'
 
-export const events = sqliteTable('events', {
+export const events = pgTable('events', {
   ...createBaseColumns('events'),
   locationId: integer('location_id')
     .notNull()
@@ -15,8 +15,8 @@ export const events = sqliteTable('events', {
   name: text('name').notNull(),
   slug: text('slug').notNull().unique('events_slug_unique'),
   description: text('description').notNull(),
-  startsAt: integer('starts_at', { mode: 'timestamp' }).notNull(),
-  endsAt: integer('ends_at', { mode: 'timestamp' }).notNull(),
+  startsAt: timestamp('starts_at', { withTimezone: true }).notNull(),
+  endsAt: timestamp('ends_at', { withTimezone: true }).notNull(),
   location: text('location'),
   status: text('status', {
     enum: [EVENT_STATUS.DRAFT, EVENT_STATUS.PUBLISHED, EVENT_STATUS.FINISHED],

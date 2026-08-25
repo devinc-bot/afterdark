@@ -1,15 +1,15 @@
-import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core'
+import { pgTable, text, timestamp } from 'drizzle-orm/pg-core'
 import { createBaseColumns } from './base.ts'
 
-export const ownerRegistrationTokens = sqliteTable('owner_registration_tokens', {
+export const ownerRegistrationTokens = pgTable('owner_registration_tokens', {
   ...createBaseColumns('owner_registration_tokens'),
   token: text('token').notNull().unique(),
   email: text('email').notNull(),
   name: text('name').notNull(),
   lastName: text('last_name').notNull(),
   passwordHash: text('password_hash').notNull(),
-  expiresAt: integer('expires_at', { mode: 'timestamp' }).notNull(),
-  usedAt: integer('used_at', { mode: 'timestamp' }),
+  expiresAt: timestamp('expires_at', { withTimezone: true }).notNull(),
+  usedAt: timestamp('used_at', { withTimezone: true }),
 })
 
 export type OwnerRegistrationTokenSelect = typeof ownerRegistrationTokens.$inferSelect

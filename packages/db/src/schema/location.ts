@@ -1,8 +1,8 @@
-import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core'
+import { integer, pgTable, text } from 'drizzle-orm/pg-core'
 import { createBaseColumns } from './base.ts'
 import { owners } from './owner.ts'
 
-export const locations = sqliteTable('locations', {
+export const locations = pgTable('locations', {
   ...createBaseColumns('locations'),
   name: text('name').notNull(),
   capacity: text('capacity').notNull(),

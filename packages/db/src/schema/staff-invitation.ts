@@ -1,10 +1,10 @@
-import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core'
+import { integer, pgTable, text, timestamp } from 'drizzle-orm/pg-core'
 import { STAFF_INVITATION_STATUS, USER_ROLE } from '@repo/types/enums'
 import { createBaseColumns } from './base.ts'
 import { organizations } from './organization.ts'
 import { owners } from './owner.ts'
 
-export const staffInvitations = sqliteTable('staff_invitations', {
+export const staffInvitations = pgTable('staff_invitations', {
   ...createBaseColumns('staff_invitations'),
   email: text('email').notNull(),
   organizationId: integer('organization_id')
@@ -16,7 +16,7 @@ export const staffInvitations = sqliteTable('staff_invitations', {
   slug: text('slug').notNull(),
   token: text('token').notNull().unique(),
   securityWordHash: text('security_word_hash'),
-  expiresAt: integer('expires_at', { mode: 'timestamp' }).notNull(),
+  expiresAt: timestamp('expires_at', { withTimezone: true }).notNull(),
   status: text('status', {
     enum: [
       STAFF_INVITATION_STATUS.PENDING,
@@ -32,7 +32,7 @@ export const staffInvitations = sqliteTable('staff_invitations', {
   })
     .notNull()
     .default(USER_ROLE.STAFF),
-  acceptedAt: integer('accepted_at', { mode: 'timestamp' }),
+  acceptedAt: timestamp('accepted_at', { withTimezone: true }),
 })
 
 export type StaffInvitationSelect = typeof staffInvitations.$inferSelect

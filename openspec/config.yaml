@@ -11,7 +11,7 @@ context: |
     - apps/api (@repo/api) — NestJS, vertical-slice modules (application/presentation/mappers/...)
 
   Shared packages:
-    - packages/db (@repo/db) — Drizzle ORM on Turso/libSQL (sqliteTable, no decorators).
+    - packages/db (@repo/db) — Drizzle ORM on Neon PostgreSQL (pgTable, no decorators).
       ALL queries used by the API live in packages/db/src/repositories/; API services call
       repository functions, they do NOT import `db` directly.
     - packages/validators (@repo/validators) — Zod v4 schemas (single source of validation truth).

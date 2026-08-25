@@ -1,9 +1,9 @@
-import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core'
+import { integer, pgTable, text } from 'drizzle-orm/pg-core'
 import { createBaseColumns } from './base.ts'
 import { chats } from './chat.ts'
 import { users } from './user.ts'
 
-export const messages = sqliteTable('messages', {
+export const messages = pgTable('messages', {
   ...createBaseColumns('messages'),
   fromId: integer('from_id')
     .notNull()

@@ -12,12 +12,12 @@
 
 ## Packages compartidos
 
-| Package            | Responsabilidad                                          |
-| ------------------ | -------------------------------------------------------- |
-| `@repo/db`         | Schema Drizzle, repositories, migraciones (Turso/libSQL) |
-| `@repo/types`      | Tipos de dominio e interfaces API                        |
-| `@repo/validators` | Schemas Zod (v4)                                         |
-| `@repo/ui`         | Componentes ShadCN compartidos                           |
+| Package            | Responsabilidad                                             |
+| ------------------ | ----------------------------------------------------------- |
+| `@repo/db`         | Schema Drizzle, repositories, migraciones (Neon PostgreSQL) |
+| `@repo/types`      | Tipos de dominio e interfaces API                           |
+| `@repo/validators` | Schemas Zod (v4)                                            |
+| `@repo/ui`         | Componentes ShadCN compartidos                              |
 
 ## Convenciones obligatorias
 
