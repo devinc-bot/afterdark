@@ -6,6 +6,7 @@ import { events } from '../../schema/event.ts'
 import { locations } from '../../schema/location.ts'
 import { orders } from '../../schema/orders.ts'
 import { tickets } from '../../schema/ticket.ts'
+import { ticketTypes } from '../../schema/ticket-type.ts'
 import { ticketsSold } from '../../schema/tickets_sold.ts'
 import { users } from '../../schema/user.ts'
 
@@ -24,12 +25,14 @@ export async function findPurchasedTicketsPaginatedByUserDocumentId(
       .select({
         ticketSold: ticketsSold,
         ticket: tickets,
+        ticketType: ticketTypes,
         event: events,
         location: locations,
       })
       .from(ticketsSold)
       .innerJoin(orders, eq(orders.id, ticketsSold.orderId))
       .innerJoin(tickets, eq(tickets.id, orders.ticketId))
+      .innerJoin(ticketTypes, eq(ticketTypes.id, tickets.ticketTypeId))
       .innerJoin(events, eq(events.id, tickets.eventId))
       .innerJoin(locations, eq(locations.id, events.locationId))
       .innerJoin(users, eq(users.id, orders.userId))
@@ -42,6 +45,7 @@ export async function findPurchasedTicketsPaginatedByUserDocumentId(
       .from(ticketsSold)
       .innerJoin(orders, eq(orders.id, ticketsSold.orderId))
       .innerJoin(tickets, eq(tickets.id, orders.ticketId))
+      .innerJoin(ticketTypes, eq(ticketTypes.id, tickets.ticketTypeId))
       .innerJoin(events, eq(events.id, tickets.eventId))
       .innerJoin(locations, eq(locations.id, events.locationId))
       .innerJoin(users, eq(users.id, orders.userId))

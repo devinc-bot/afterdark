@@ -7,7 +7,6 @@ import {
   PAYMENT_PROVIDER,
   PAYMENT_STATUS,
   TICKET_STATUS,
-  TICKET_TYPE,
 } from '@repo/types/enums'
 import { seedEnv } from '../../config/seed.env.ts'
 import { accounts } from '../../schema/account.ts'
@@ -27,6 +26,7 @@ import { ticketsSold } from '../../schema/tickets_sold.ts'
 import { userAccountsLnk } from '../../schema/user-account-lnk.ts'
 import { users } from '../../schema/user.ts'
 import { seedDb as db } from '../client.ts'
+import { findGlobalTicketTypeIdByName } from '../ticket-types.ts'
 
 const DAY_MS = 24 * 60 * 60 * 1000
 const BCRYPT_SALT_ROUNDS = 10
@@ -435,18 +435,21 @@ export async function seedTicketsOrders(): Promise<void> {
   /** First N orders are completed purchases on distinct past days. */
   const COMPLETED_ORDER_COUNT = 4
   const ticketRefs: { id: number; price: number }[] = []
+  const [generalTicketTypeId, vipTicketTypeId] = await Promise.all([
+    findGlobalTicketTypeIdByName('General'),
+    findGlobalTicketTypeIdByName('VIP'),
+  ])
 
   for (let i = 1; i <= SEED_COUNT; i++) {
     const eventId = eventIds[(i - 1) % eventIds.length]
     const ticketDocumentId = getSeedDocumentId(200 + i)
     const ticket = await upsertTicket(ticketDocumentId, {
       documentId: ticketDocumentId,
-      name: `Entrada ${i}`,
       price: 1000 * i,
       quantity: 100 * i,
       description: `Entrada de prueba número ${i}`,
       status: TICKET_STATUS.ACTIVE,
-      type: i % 3 === 0 ? TICKET_TYPE.VIP : TICKET_TYPE.GENERAL,
+      ticketTypeId: i % 3 === 0 ? vipTicketTypeId : generalTicketTypeId,
       eventId,
     })
     ticketRefs.push(ticket)

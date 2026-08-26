@@ -8,6 +8,20 @@
       "when": 1787605485696,
       "tag": "20260824210445_cute_big_bertha",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1787780073858,
+      "tag": "20260826220000_owner_ticket_types",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1787796000000,
+      "tag": "20260826230000_drop_ticket_name",
+      "breakpoints": true
     }
   ]
 }

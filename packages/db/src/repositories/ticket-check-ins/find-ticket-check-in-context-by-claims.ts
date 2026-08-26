@@ -5,6 +5,7 @@ import { events } from '../../schema/event.ts'
 import { locations } from '../../schema/location.ts'
 import { orders } from '../../schema/orders.ts'
 import { tickets } from '../../schema/ticket.ts'
+import { ticketTypes } from '../../schema/ticket-type.ts'
 import { ticketsSold } from '../../schema/tickets_sold.ts'
 import { userAccountsLnk } from '../../schema/user-account-lnk.ts'
 import { users } from '../../schema/user.ts'
@@ -21,8 +22,10 @@ export type TicketCheckInContextRow = {
   }
   ticket: {
     documentId: string
-    name: string
-    type: typeof tickets.$inferSelect.type
+    ticketType: {
+      documentId: string
+      name: string
+    }
   }
   event: {
     documentId: string
@@ -49,7 +52,7 @@ export async function findTicketCheckInContextByClaims(params: {
   userDocumentId: string
   token: string
 }): Promise<TicketCheckInContextRow | null> {
-  const row = await db
+  const rows = await db
     .select({
       ticketSold: {
         id: ticketsSold.id,
@@ -62,9 +65,9 @@ export async function findTicketCheckInContextByClaims(params: {
       },
       ticket: {
         documentId: tickets.documentId,
-        name: tickets.name,
-        type: tickets.type,
       },
+      ticketTypeDocumentId: ticketTypes.documentId,
+      ticketTypeName: ticketTypes.name,
       event: {
         documentId: events.documentId,
         name: events.name,
@@ -86,6 +89,7 @@ export async function findTicketCheckInContextByClaims(params: {
     .from(ticketsSold)
     .innerJoin(orders, eq(orders.id, ticketsSold.orderId))
     .innerJoin(tickets, eq(tickets.id, orders.ticketId))
+    .innerJoin(ticketTypes, eq(ticketTypes.id, tickets.ticketTypeId))
     .innerJoin(events, eq(events.id, tickets.eventId))
     .innerJoin(locations, eq(locations.id, events.locationId))
     .innerJoin(users, eq(users.id, orders.userId))
@@ -101,5 +105,17 @@ export async function findTicketCheckInContextByClaims(params: {
     )
     .limit(1)
 
-  return row[0] ?? null
+  const row = rows[0]
+  if (!row) return null
+
+  return {
+    ...row,
+    ticket: {
+      ...row.ticket,
+      ticketType: {
+        documentId: row.ticketTypeDocumentId,
+        name: row.ticketTypeName,
+      },
+    },
+  }
 }

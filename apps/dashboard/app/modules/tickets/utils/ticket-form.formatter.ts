@@ -1,11 +1,10 @@
-import { TICKET_STATUS, TICKET_TYPE, type TicketResponse } from '@repo/types'
+import { TICKET_STATUS, type TicketResponse } from '@repo/types'
 import type { TicketFormValues } from '@repo/validators'
 import type { TicketRecordItem } from '~/modules/tickets/components/ticket-record'
 
 export const EMPTY_TICKET_FORM_VALUES: TicketFormValues = {
-  name: '',
   eventId: '',
-  type: TICKET_TYPE.GENERAL,
+  ticketTypeId: '',
   price: '',
   quantity: '',
   description: '',
@@ -21,9 +20,8 @@ function formatDateForDatetimeLocal(value: Date): string {
 
 export function ticketResponseToFormValues(ticket: TicketResponse): TicketFormValues {
   return {
-    name: ticket.name,
     eventId: ticket.eventId ?? '',
-    type: ticket.type,
+    ticketTypeId: ticket.ticketType.documentId,
     price: String(ticket.price),
     quantity: String(ticket.quantity),
     description: ticket.description,
@@ -35,20 +33,13 @@ export function ticketResponseToFormValues(ticket: TicketResponse): TicketFormVa
   }
 }
 
-function resolveTicketTypeTone(type: TicketResponse['type']): TicketRecordItem['ticketTypeTone'] {
-  if (type === TICKET_TYPE.VIP) return 'primary'
-  return 'default'
-}
-
 export function ticketResponseToRecordItem(ticket: TicketResponse): TicketRecordItem {
   return {
     id: ticket.documentId,
-    name: ticket.name,
     clubName: ticket.locationName ?? '—',
     eventName: ticket.eventName ?? '—',
     eventImageUrl: ticket.eventImageUrl,
-    ticketType: ticket.type,
-    ticketTypeTone: resolveTicketTypeTone(ticket.type),
+    ticketType: ticket.ticketType.name,
     price: ticket.price,
     quantity: ticket.quantity,
     totalSold: ticket.totalSold,

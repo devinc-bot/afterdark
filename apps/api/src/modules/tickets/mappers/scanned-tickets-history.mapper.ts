@@ -21,8 +21,7 @@ export function toScannedTicketHistoryItem(row: ScannedTicketHistoryRow): Scanne
     },
     operator,
     ticket: {
-      name: row.ticket.name,
-      type: row.ticket.type,
+      ticketType: row.ticket.ticketType,
     },
     scannedAt: row.scannedAt,
   }

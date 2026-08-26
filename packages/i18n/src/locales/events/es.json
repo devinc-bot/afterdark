@@ -259,10 +259,6 @@
       "paymentsUnavailableHint": "Estamos preparando los pagos para este evento. Volvé a intentar pronto.",
       "ticketSoldOut": "Agotada",
       "ticketAvailability": "{count, plural, one {# disponible} other {# disponibles}}",
-      "ticketType": {
-        "general": "General",
-        "vip": "VIP"
-      },
       "purchasePanelAriaLabel": "Reserva del evento",
       "faq": "Preguntas frecuentes",
       "faqAriaLabel": "Preguntas frecuentes del evento"

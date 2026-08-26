@@ -13,12 +13,11 @@ export async function updateTicketByDocumentId(
   const [ticket] = await db
     .update(tickets)
     .set({
-      name: input.name,
       price: input.price,
       quantity: input.quantity,
       description: input.description,
       status: input.status,
-      type: input.type,
+      ticketTypeId: input.ticketTypeId,
       saleStartsAt: input.saleStartsAt ?? null,
       saleEndsAt: input.saleEndsAt ?? null,
       eventId: input.eventId ?? null,

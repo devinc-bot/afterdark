@@ -17,7 +17,7 @@ function toSalesSearchParams(params: ListOwnerSalesQueryInput): string {
 
   if (params.eventId) searchParams.set('eventId', params.eventId)
   if (params.locationId) searchParams.set('locationId', params.locationId)
-  if (params.ticketType) searchParams.set('ticketType', params.ticketType)
+  if (params.ticketTypeId) searchParams.set('ticketTypeId', params.ticketTypeId)
   if (params.from) searchParams.set('from', params.from.toISOString())
   if (params.to) searchParams.set('to', params.to.toISOString())
 

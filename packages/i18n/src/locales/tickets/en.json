@@ -89,8 +89,6 @@
     "eventsLoadError": "We couldn't load your events.",
     "type": "Ticket type",
     "typePlaceholder": "Select a type…",
-    "typeGeneral": "General",
-    "typeVip": "VIP",
     "status": "Status",
     "statusPlaceholder": "Select a status…",
     "statusActive": "Active",
@@ -113,6 +111,20 @@
     "errorEdit": "We couldn't update the ticket. Try again.",
     "errorCreateFallback": "We couldn't create the ticket. Try again in a few minutes.",
     "errorEditFallback": "We couldn't update the ticket. Try again in a few minutes."
+  },
+  "ticketTypes": {
+    "loading": "Loading ticket types…",
+    "empty": "No ticket types are available.",
+    "loadError": "We couldn't load ticket types. Check that you have permission and try again.",
+    "createTrigger": "Create ticket type",
+    "createTitle": "Create ticket type",
+    "createDescription": "Save it to reuse it on future tickets.",
+    "namePlaceholder": "E.g. Backstage",
+    "createSubmit": "Create type",
+    "createSuccess": "Ticket type created successfully",
+    "createError": "We couldn't create the ticket type. Try again.",
+    "duplicate": "You already have a ticket type with that name.",
+    "unauthorized": "You don't have permission to manage ticket types."
   },
   "table": {
     "title": "Ticket inventory detail",

@@ -7,6 +7,7 @@ export const API_LOCATIONS_PREFIX = '/locations' as const
 export const API_STAFF_PREFIX = '/staff' as const
 export const API_INVITATIONS_PREFIX = '/invitations' as const
 export const API_TICKETS_PREFIX = '/tickets' as const
+export const API_TICKET_TYPES_PREFIX = '/ticket-types' as const
 export const API_EVENTS_PREFIX = '/events' as const
 export const API_ORDERS_PREFIX = '/orders' as const
 export const API_MERCADO_PAGO_PREFIX = '/mercado-pago' as const
@@ -95,6 +96,13 @@ export const API_ROUTES = {
       create: () => '/create' as const,
       update: (documentId: string) => `/${documentId}` as const,
       delete: (documentId: string) => `/${documentId}` as const,
+    },
+  },
+  ticketTypes: {
+    prefix: API_TICKET_TYPES_PREFIX,
+    path: {
+      list: () => '/' as const,
+      create: () => '/' as const,
     },
   },
   events: {

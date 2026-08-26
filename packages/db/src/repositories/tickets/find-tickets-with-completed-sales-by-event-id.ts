@@ -3,10 +3,12 @@ import { PAYMENT_STATUS } from '@repo/types/enums'
 import { db } from '../../client.ts'
 import { orders } from '../../schema/orders.ts'
 import { tickets, type TicketSelect } from '../../schema/ticket.ts'
+import { ticketTypes, type TicketTypeSelect } from '../../schema/ticket-type.ts'
 
 /** Ticket row plus units already sold via completed orders. */
 export type TicketWithCompletedSales = {
   ticket: TicketSelect
+  ticketType: TicketTypeSelect
   /** Sum of `orders.quantity` with status `completed` for this ticket (0 when none). */
   completedSalesQuantity: number
 }
@@ -39,8 +41,9 @@ export async function findTicketsWithCompletedSalesByEventId(
   const completedSalesQuantity = sql<number>`coalesce(${sum(orders.quantity)}, 0)`.mapWith(Number)
 
   const rows = await db
-    .select({ ticket: tickets, completedSalesQuantity })
+    .select({ ticket: tickets, ticketType: ticketTypes, completedSalesQuantity })
     .from(tickets)
+    .innerJoin(ticketTypes, eq(ticketTypes.id, tickets.ticketTypeId))
     .leftJoin(
       orders,
       and(eq(orders.ticketId, tickets.id), eq(orders.status, PAYMENT_STATUS.COMPLETED))

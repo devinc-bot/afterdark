@@ -36,7 +36,7 @@ test('returns a paginated history for an authorized operator', async () => {
   state.rows = [
     {
       scannedAt: new Date('2026-08-17T22:00:00.000Z'),
-      ticket: { name: 'General', type: 'general' },
+      ticket: { ticketType: { documentId: 'type-general', name: 'General' } },
       purchaser: { name: 'Ada', lastName: 'Lovelace', email: 'ada@example.com', phone: '' },
       operator: {
         accountId: 1,

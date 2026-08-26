@@ -89,8 +89,6 @@
     "eventsLoadError": "No pudimos cargar tus eventos.",
     "type": "Tipo de ticket",
     "typePlaceholder": "Seleccioná un tipo…",
-    "typeGeneral": "General",
-    "typeVip": "VIP",
     "status": "Estado",
     "statusPlaceholder": "Seleccioná un estado…",
     "statusActive": "Activo",
@@ -113,6 +111,20 @@
     "errorEdit": "No pudimos actualizar el ticket. Intentá de nuevo.",
     "errorCreateFallback": "No pudimos crear el ticket. Intentá de nuevo en unos minutos.",
     "errorEditFallback": "No pudimos actualizar el ticket. Intentá de nuevo en unos minutos."
+  },
+  "ticketTypes": {
+    "loading": "Cargando tipos de entrada…",
+    "empty": "No hay tipos de entrada disponibles.",
+    "loadError": "No pudimos cargar los tipos de entrada. Verificá que tengas permiso e intentá de nuevo.",
+    "createTrigger": "Crear tipo de entrada",
+    "createTitle": "Crear tipo de entrada",
+    "createDescription": "Guardalo para reutilizarlo en tus próximos tickets.",
+    "namePlaceholder": "Ej. Backstage",
+    "createSubmit": "Crear tipo",
+    "createSuccess": "Tipo de entrada creado correctamente",
+    "createError": "No pudimos crear el tipo de entrada. Intentá de nuevo.",
+    "duplicate": "Ya tenés un tipo de entrada con ese nombre.",
+    "unauthorized": "No tenés permiso para administrar tipos de entrada."
   },
   "table": {
     "title": "Detalle del inventario de tickets",

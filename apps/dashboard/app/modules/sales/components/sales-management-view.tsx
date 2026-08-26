@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { TICKET_TYPE, type TicketType } from '@repo/types'
 import {
   Button,
   DateInput,
@@ -19,6 +18,7 @@ import {
   useSalesFilterEvents,
 } from '~/modules/sales/queries/use-sales-queries'
 import { dateInputToEndOfDay, dateInputToStartOfDay } from '~/modules/sales/utils/sales.formatter'
+import { useTicketTypes } from '~/modules/ticket-types/queries/use-ticket-type-queries'
 
 const SALES_PAGE_SIZE = 10
 const FILTER_ALL = 'all' as const
@@ -28,24 +28,25 @@ export function SalesManagementView() {
   const [page, setPage] = useState(1)
   const [locationId, setLocationId] = useState<string>(FILTER_ALL)
   const [eventId, setEventId] = useState<string>(FILTER_ALL)
-  const [ticketType, setTicketType] = useState<string>(FILTER_ALL)
+  const [ticketTypeId, setTicketTypeId] = useState<string>(FILTER_ALL)
   const [fromInput, setFromInput] = useState('')
   const [toInput, setToInput] = useState('')
 
   const locationsQuery = useSalesFilterLocations()
   const eventsQuery = useSalesFilterEvents()
+  const ticketTypesQuery = useTicketTypes()
 
   const hasActiveFilters =
     locationId !== FILTER_ALL ||
     eventId !== FILTER_ALL ||
-    ticketType !== FILTER_ALL ||
+    ticketTypeId !== FILTER_ALL ||
     fromInput !== '' ||
     toInput !== ''
 
   function resetFilters() {
     setLocationId(FILTER_ALL)
     setEventId(FILTER_ALL)
-    setTicketType(FILTER_ALL)
+    setTicketTypeId(FILTER_ALL)
     setFromInput('')
     setToInput('')
     setPage(1)
@@ -53,7 +54,7 @@ export function SalesManagementView() {
 
   useEffect(() => {
     setPage(1)
-  }, [locationId, eventId, ticketType, fromInput, toInput])
+  }, [locationId, eventId, ticketTypeId, fromInput, toInput])
 
   const filteredEvents = useMemo(() => {
     const events = eventsQuery.data ?? []
@@ -72,7 +73,7 @@ export function SalesManagementView() {
     limit: SALES_PAGE_SIZE,
     locationId: locationId === FILTER_ALL ? undefined : locationId,
     eventId: eventId === FILTER_ALL ? undefined : eventId,
-    ticketType: ticketType === FILTER_ALL ? undefined : (ticketType as TicketType),
+    ticketTypeId: ticketTypeId === FILTER_ALL ? undefined : ticketTypeId,
     from: dateInputToStartOfDay(fromInput),
     to: dateInputToEndOfDay(toInput),
   })
@@ -144,14 +145,27 @@ export function SalesManagementView() {
 
         <div className="flex flex-col gap-1.5">
           <Label htmlFor="sales-filter-type">{t('filters.ticketType')}</Label>
-          <Select value={ticketType} onValueChange={setTicketType}>
+          <Select
+            value={ticketTypeId}
+            onValueChange={setTicketTypeId}
+            disabled={ticketTypesQuery.isLoading || ticketTypesQuery.isError}
+          >
             <SelectTrigger id="sales-filter-type" className="w-full">
-              <SelectValue placeholder={t('filters.ticketTypeAll')} />
+              <SelectValue
+                placeholder={
+                  ticketTypesQuery.isLoading
+                    ? t('filters.ticketTypesLoading')
+                    : t('filters.ticketTypeAll')
+                }
+              />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value={FILTER_ALL}>{t('filters.ticketTypeAll')}</SelectItem>
-              <SelectItem value={TICKET_TYPE.GENERAL}>{t('filters.ticketTypeGeneral')}</SelectItem>
-              <SelectItem value={TICKET_TYPE.VIP}>{t('filters.ticketTypeVip')}</SelectItem>
+              {(ticketTypesQuery.data ?? []).map((ticketType) => (
+                <SelectItem key={ticketType.documentId} value={ticketType.documentId}>
+                  {ticketType.name}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </div>

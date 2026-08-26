@@ -10,7 +10,6 @@ import type {
   OwnerSaleResponse,
   PaginatedResponse,
   PaymentStatus,
-  TicketType,
 } from '@repo/types'
 import type {
   DashboardKpiQueryInput,
@@ -97,7 +96,7 @@ export class DashboardService {
         limit: query.limit,
         eventDocumentId: query.eventId,
         locationDocumentId: query.locationId,
-        ticketType: query.ticketType,
+        ticketTypeId: query.ticketTypeId,
         from: query.from,
         to: query.to,
       })
@@ -110,8 +109,7 @@ export class DashboardService {
           buyerName: `${row.buyerName} ${row.buyerLastName}`.trim(),
           buyerEmail: row.buyerEmail,
           eventName: row.eventName,
-          ticketName: row.ticketName,
-          ticketType: row.ticketType as TicketType,
+          ticketType: row.ticketType,
           locationName: row.locationName,
           paidAt: row.paidAt ? row.paidAt.toISOString() : null,
           quantity: row.quantity,

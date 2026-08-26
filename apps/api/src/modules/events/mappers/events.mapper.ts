@@ -5,6 +5,7 @@ import type {
   EventSelect,
   LocationSelect,
   TicketSelect,
+  TicketTypeSelect,
 } from '@repo/db'
 import type {
   EventFaqResponse,
@@ -137,13 +138,13 @@ export function toPublicEventDetailResponse(
 
 export function toPublicPurchasableTicketResponse(
   ticket: TicketSelect,
+  ticketType: TicketTypeSelect,
   completedSalesQuantity: number
 ): PublicPurchasableTicketResponse {
   return {
     documentId: ticket.documentId,
-    name: ticket.name,
     price: ticket.price,
-    type: ticket.type,
+    ticketType: { documentId: ticketType.documentId, name: ticketType.name },
     remainingQuantity: Math.max(ticket.quantity - completedSalesQuantity, 0),
     saleStartsAt: ticket.saleStartsAt,
     saleEndsAt: ticket.saleEndsAt,

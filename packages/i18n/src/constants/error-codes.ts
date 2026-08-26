@@ -72,6 +72,13 @@ export const TICKET_ERROR_CODE = {
   CHECK_IN_USED: 'ticket.CHECK_IN_USED',
 } as const
 
+export const TICKET_TYPE_ERROR_CODE = {
+  NOT_FOUND: 'ticketType.NOT_FOUND',
+  CREATE_FAILED: 'ticketType.CREATE_FAILED',
+  LIST_FAILED: 'ticketType.LIST_FAILED',
+  DUPLICATE: 'ticketType.DUPLICATE',
+} as const
+
 export const FILE_ERROR_CODE = {
   FILE_REQUIRED: 'file.FILE_REQUIRED',
   INVALID_IMAGE_TYPE: 'file.INVALID_IMAGE_TYPE',
@@ -127,6 +134,8 @@ export type LocationErrorCode = (typeof LOCATION_ERROR_CODE)[keyof typeof LOCATI
 export type StaffErrorCode = (typeof STAFF_ERROR_CODE)[keyof typeof STAFF_ERROR_CODE]
 export type OwnerErrorCode = (typeof OWNER_ERROR_CODE)[keyof typeof OWNER_ERROR_CODE]
 export type TicketErrorCode = (typeof TICKET_ERROR_CODE)[keyof typeof TICKET_ERROR_CODE]
+export type TicketTypeErrorCode =
+  (typeof TICKET_TYPE_ERROR_CODE)[keyof typeof TICKET_TYPE_ERROR_CODE]
 export type FileErrorCode = (typeof FILE_ERROR_CODE)[keyof typeof FILE_ERROR_CODE]
 export type MailErrorCode = (typeof MAIL_ERROR_CODE)[keyof typeof MAIL_ERROR_CODE]
 export type GuardErrorCode = (typeof GUARD_ERROR_CODE)[keyof typeof GUARD_ERROR_CODE]
@@ -141,6 +150,7 @@ export type ErrorCode =
   | StaffErrorCode
   | OwnerErrorCode
   | TicketErrorCode
+  | TicketTypeErrorCode
   | FileErrorCode
   | MailErrorCode
   | GuardErrorCode
