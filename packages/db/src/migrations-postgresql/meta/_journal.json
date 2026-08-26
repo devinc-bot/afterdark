@@ -8,6 +8,20 @@
       "when": 1787605485696,
       "tag": "20260824210445_cute_big_bertha",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1787776453229,
+      "tag": "20260826203413_slow_talisman",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1787777373814,
+      "tag": "20260826204933_dazzling_doomsday",
+      "breakpoints": true
     }
   ]
 }
