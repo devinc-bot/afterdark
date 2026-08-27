@@ -38,8 +38,9 @@ export function TicketRemoveDialog({
         <DialogHeader>
           <DialogTitle>{t('delete.title')}</DialogTitle>
           <DialogDescription>
-            {t('delete.description')} <span className="font-semibold text-ink">{record?.name}</span>
-            ? {t('delete.descriptionSuffix')}
+            {t('delete.description')}{' '}
+            <span className="font-semibold text-ink">{record?.ticketType}</span>?{' '}
+            {t('delete.descriptionSuffix')}
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>

@@ -83,6 +83,12 @@
     "CHECK_IN_EXPIRED": "The ticket QR code has expired.",
     "CHECK_IN_USED": "This ticket has already been used."
   },
+  "ticketType": {
+    "NOT_FOUND": "The selected ticket type is not available.",
+    "CREATE_FAILED": "Could not create the ticket type.",
+    "LIST_FAILED": "Could not load ticket types.",
+    "DUPLICATE": "You already have a ticket type with that name."
+  },
   "file": {
     "FILE_REQUIRED": "You need to send an image file.",
     "INVALID_IMAGE_TYPE": "The file must be a JPG, PNG or WEBP image.",

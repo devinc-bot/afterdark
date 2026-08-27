@@ -9,12 +9,11 @@ export async function createTicket(input: TicketUpsertInput): Promise<TicketWith
   const [ticket] = await db
     .insert(tickets)
     .values({
-      name: input.name,
       price: input.price,
       quantity: input.quantity,
       description: input.description,
       status: input.status,
-      type: input.type,
+      ticketTypeId: input.ticketTypeId,
       saleStartsAt: input.saleStartsAt ?? null,
       saleEndsAt: input.saleEndsAt ?? null,
       eventId: input.eventId ?? null,

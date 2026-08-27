@@ -15,6 +15,6 @@ export class GetTicketByDocumentIdUseCase {
       throw new NotFoundException(this.ts.translateError('ticket.NOT_FOUND'))
     }
 
-    return toTicketResponse(row.ticket, row.event, row.location)
+    return toTicketResponse(row.ticket, row.ticketType, row.event, row.location)
   }
 }

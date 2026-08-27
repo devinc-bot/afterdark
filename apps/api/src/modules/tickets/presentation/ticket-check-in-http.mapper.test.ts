@@ -10,7 +10,10 @@ test('returns successful check-in response for 200 controller flow', () => {
   const response = {
     outcome: TICKET_CHECK_IN_OUTCOME.SUCCESS,
     checkedInAt: new Date('2026-08-05T20:00:00.000Z'),
-    ticket: { documentId: 'ticket-sold-id', name: 'General', type: 'general' as const },
+    ticket: {
+      documentId: 'ticket-sold-id',
+      ticketType: { documentId: 'type-general', name: 'General' },
+    },
     event: {
       documentId: 'event-id',
       name: 'Event Flow',

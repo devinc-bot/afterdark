@@ -119,7 +119,7 @@ export function TicketCard({ ticket }: TicketCardProps) {
                     strokeWidth={1.75}
                   />
                   <span className="sr-only">{t('mine.card.type')}: </span>
-                  <span className="font-medium">{ticket.ticketName}</span>
+                  <span className="font-medium">{ticket.ticketType.name}</span>
                 </span>
                 <span className="size-1 rounded-full bg-outline-variant/50" aria-hidden />
                 <span className="text-on-surface-variant">

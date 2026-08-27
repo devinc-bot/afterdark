@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import { optionalCoercedDateSchema, paginationSchema } from './common.ts'
-import { ticketTypeSchema } from './ticket.ts'
+import { ticketTypeDocumentIdSchema } from './ticket.ts'
 
 export const dashboardKpiQuerySchema = z
   .object({
@@ -31,7 +31,7 @@ export const listOwnerSalesQuerySchema = paginationSchema
   .extend({
     eventId: optionalDocumentIdSchema,
     locationId: optionalDocumentIdSchema,
-    ticketType: ticketTypeSchema.optional(),
+    ticketTypeId: ticketTypeDocumentIdSchema.optional(),
     from: optionalCoercedDateSchema,
     to: optionalCoercedDateSchema,
   })

@@ -20,7 +20,7 @@ type TicketQrDialogProps = {
   onOpenChange: (open: boolean) => void
   ticket: Pick<
     PurchasedTicketResponse,
-    'documentId' | 'eventName' | 'eventStartsAt' | 'locationName' | 'ticketName'
+    'documentId' | 'eventName' | 'eventStartsAt' | 'locationName' | 'ticketType'
   >
 }
 
@@ -139,7 +139,9 @@ export function TicketQrDialog({ open, onOpenChange, ticket }: TicketQrDialogPro
               <dt className="font-label text-xs tracking-wide text-on-surface-variant">
                 {t('mine.card.type')}
               </dt>
-              <dd className="mt-0.5 truncate font-medium text-on-surface">{qrTicket.ticketName}</dd>
+              <dd className="mt-0.5 truncate font-medium text-on-surface">
+                {qrTicket.ticketType.name}
+              </dd>
             </div>
             <div className="min-w-0">
               <dt className="font-label text-xs tracking-wide text-on-surface-variant">

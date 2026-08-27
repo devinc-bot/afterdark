@@ -1,6 +1,7 @@
 import { Inject, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common'
 import {
   findEventOwnedByOwnerDocumentId,
+  findAvailableTicketTypeByDocumentId,
   findTicketWithRelationsOwnedByOwner,
   updateTicketByDocumentId,
 } from '@repo/db'
@@ -25,10 +26,21 @@ export class UpdateTicketUseCase {
     }
 
     const eventId = await this.resolveEventId(ownerDocumentId, input.eventId)
+    const ticketType = await findAvailableTicketTypeByDocumentId(
+      input.ticketTypeId,
+      ownerDocumentId
+    )
+
+    if (!ticketType) {
+      throw new NotFoundException(this.ts.translateError('ticketType.NOT_FOUND'))
+    }
 
     try {
-      const row = await updateTicketByDocumentId(documentId, toTicketUpsertInput(input, eventId))
-      return toTicketResponse(row.ticket, row.event, row.location)
+      const row = await updateTicketByDocumentId(
+        documentId,
+        toTicketUpsertInput(input, eventId, ticketType.id)
+      )
+      return toTicketResponse(row.ticket, row.ticketType, row.event, row.location)
     } catch {
       throw new InternalServerErrorException(this.ts.translateError('ticket.UPDATE_FAILED'))
     }

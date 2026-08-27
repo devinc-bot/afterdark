@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { useForm } from '@tanstack/react-form'
 import { useTranslation } from 'react-i18next'
 import type { TFunction } from 'i18next'
-import { TICKET_STATUS, TICKET_TYPE, type TicketStatus, type TicketType } from '@repo/types'
+import { TICKET_STATUS, type TicketStatus } from '@repo/types'
 import {
   parseTicketFormToCreateInput,
   parseTicketFormToUpdateInput,
@@ -28,6 +28,8 @@ import {
 import { FormSection } from '~/modules/common/components/form-section'
 import { useCreateTicket, useUpdateTicket } from '~/modules/tickets/mutation/use-ticket-mutations'
 import { useOwnerEventsForSelect } from '~/modules/tickets/queries/use-owner-events'
+import { TicketTypeCreateDialog } from '~/modules/ticket-types/components/ticket-type-create-dialog'
+import { useTicketTypes } from '~/modules/ticket-types/queries/use-ticket-type-queries'
 import { EMPTY_TICKET_FORM_VALUES } from '~/modules/tickets/utils/ticket-form.formatter'
 
 export const TICKET_FORM_MODE = {
@@ -177,7 +179,9 @@ export function TicketForm({
     isLoading: isEventsLoading,
     isError: isEventsError,
   } = useOwnerEventsForSelect()
+  const ticketTypesQuery = useTicketTypes()
   const events = eventsData?.data ?? []
+  const ticketTypes = ticketTypesQuery.data ?? []
 
   const isEdit = mode === TICKET_FORM_MODE.EDIT
   const initialValues = defaultValues ?? EMPTY_TICKET_FORM_VALUES
@@ -208,11 +212,6 @@ export function TicketForm({
       }
     },
   })
-
-  const ticketTypeOptions: { value: TicketType; label: string }[] = [
-    { value: TICKET_TYPE.GENERAL, label: t('form.typeGeneral') },
-    { value: TICKET_TYPE.VIP, label: t('form.typeVip') },
-  ]
 
   const ticketStatusOptions: { value: TicketStatus; label: string }[] = [
     { value: TICKET_STATUS.ACTIVE, label: t('form.statusActive') },
@@ -285,49 +284,47 @@ export function TicketForm({
             title={t('form.detailsSectionTitle')}
             description={t('form.detailsSectionDescription')}
           >
-            <form.Field name="name" validators={{ onSubmit: ticketFormSchema.shape.name }}>
-              {(field) => {
-                const error = resolveFieldError(field.state.meta.errors)
-
-                return (
-                  <Field
-                    label={requiredFieldLabel(t('form.name'))}
-                    htmlFor={field.name}
-                    error={error}
-                  >
-                    <Input
-                      id={field.name}
-                      name={field.name}
-                      value={field.state.value}
-                      placeholder={t('form.namePlaceholder')}
-                      onBlur={field.handleBlur}
-                      onChange={(event) => field.handleChange(event.target.value)}
-                      aria-invalid={error ? true : undefined}
-                    />
-                  </Field>
-                )
-              }}
-            </form.Field>
-
             <div className="grid gap-5 sm:grid-cols-2">
-              <form.Field name="type" validators={{ onSubmit: ticketFormSchema.shape.type }}>
+              <form.Field
+                name="ticketTypeId"
+                validators={{ onSubmit: ticketFormSchema.shape.ticketTypeId }}
+              >
                 {(field) => {
                   const error = resolveFieldError(field.state.meta.errors)
+                  const ticketTypesError = ticketTypesQuery.isError
+                    ? t('ticketTypes.loadError')
+                    : ticketTypes.length === 0
+                      ? t('ticketTypes.empty')
+                      : error
 
                   return (
-                    <SelectField
-                      label={t('form.type')}
-                      value={field.state.value}
-                      onValueChange={(value) => field.handleChange(value as TicketType)}
-                      placeholder={t('form.typePlaceholder')}
-                      error={error ?? undefined}
-                    >
-                      {ticketTypeOptions.map((option) => (
-                        <SelectItem key={option.value} value={option.value}>
-                          {option.label}
-                        </SelectItem>
-                      ))}
-                    </SelectField>
+                    <div className="flex flex-col gap-2">
+                      <SelectField
+                        label={t('form.type')}
+                        value={field.state.value || undefined}
+                        onValueChange={field.handleChange}
+                        placeholder={
+                          ticketTypesQuery.isLoading
+                            ? t('ticketTypes.loading')
+                            : t('form.typePlaceholder')
+                        }
+                        error={ticketTypesError ?? undefined}
+                        disabled={
+                          ticketTypesQuery.isLoading ||
+                          ticketTypesQuery.isError ||
+                          ticketTypes.length === 0
+                        }
+                      >
+                        {ticketTypes.map((ticketType) => (
+                          <SelectItem key={ticketType.documentId} value={ticketType.documentId}>
+                            {ticketType.name}
+                          </SelectItem>
+                        ))}
+                      </SelectField>
+                      <TicketTypeCreateDialog
+                        onCreated={(ticketType) => field.handleChange(ticketType.documentId)}
+                      />
+                    </div>
                   )
                 }}
               </form.Field>

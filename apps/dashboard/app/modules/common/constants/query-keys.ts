@@ -6,6 +6,7 @@ export const QUERY_KEYS = {
   tickets: (params?: { page?: number; limit?: number; status?: string }) =>
     ['tickets', params ?? {}] as const,
   ticket: (documentId: string) => ['ticket', documentId] as const,
+  ticketTypes: () => ['ticket-types'] as const,
   scannedTicketsHistory: (params: { eventId: string; page: number; limit: number }) =>
     ['scanned-tickets-history', params] as const,
   events: (params?: { page?: number; limit?: number; hasSales?: boolean }) =>

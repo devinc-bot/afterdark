@@ -48,7 +48,7 @@ export function DeleteOrderDialog({
         <DialogHeader>
           <DialogTitle>{t('delete.title')}</DialogTitle>
           <DialogDescription>
-            {t('delete.description', { ticket: order?.ticketName ?? '' })}
+            {t('delete.description', { ticket: order?.ticketType.name ?? '' })}
           </DialogDescription>
         </DialogHeader>
         <DialogFooter className="gap-4">

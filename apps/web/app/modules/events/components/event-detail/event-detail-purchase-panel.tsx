@@ -83,10 +83,9 @@ export function EventDetailPurchasePanel({
                   <div className="flex justify-between gap-3">
                     <div className="flex w-fit flex-col gap-1">
                       <p className="truncate font-body text-sm font-semibold text-on-surface">
-                        {ticket.name}
+                        {ticket.ticketType.name}
                       </p>
                       <p className="mt-0.5 font-label text-xs text-on-surface-variant">
-                        {t(`discover.detail.ticketType.${ticket.type}`)} ·{' '}
                         {isSoldOut
                           ? t('discover.detail.ticketSoldOut')
                           : t('discover.detail.ticketAvailability', {

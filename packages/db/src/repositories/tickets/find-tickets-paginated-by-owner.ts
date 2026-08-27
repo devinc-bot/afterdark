@@ -6,6 +6,7 @@ import { locations } from '../../schema/location.ts'
 import { events } from '../../schema/event.ts'
 import { owners } from '../../schema/owner.ts'
 import { tickets } from '../../schema/ticket.ts'
+import { ticketTypes } from '../../schema/ticket-type.ts'
 import { buildOwnerTicketFilters } from './build-owner-ticket-filters.ts'
 
 export async function findTicketsPaginatedByOwner(
@@ -34,12 +35,14 @@ export async function findTicketsPaginatedByOwner(
     db
       .select({
         ticket: tickets,
+        ticketType: ticketTypes,
         event: events,
         location: locations,
         totalSold: totalSoldSql,
         revenue: revenueSql,
       })
       .from(tickets)
+      .innerJoin(ticketTypes, eq(ticketTypes.id, tickets.ticketTypeId))
       .innerJoin(events, eq(events.id, tickets.eventId))
       .innerJoin(locations, eq(locations.id, events.locationId))
       .innerJoin(owners, eq(owners.id, locations.ownerId))
@@ -59,6 +62,7 @@ export async function findTicketsPaginatedByOwner(
   return {
     rows: rows.map((row) => ({
       ticket: row.ticket,
+      ticketType: row.ticketType,
       event: row.event,
       location: row.location,
       totalSold: row.totalSold,

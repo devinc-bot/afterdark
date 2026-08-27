@@ -99,10 +99,9 @@ export function TicketCheckInResult({ state, result, onScanNext }: TicketCheckIn
                 value={formatDateTime(result.event.startsAt, i18n.language)}
               />
               <Detail label={t('checkIn.fields.location')} value={result.location.name} />
-              <Detail label={t('checkIn.fields.ticket')} value={result.ticket.name} />
               <Detail
                 label={t('checkIn.fields.ticketType')}
-                value={result.ticket.type === 'vip' ? t('form.typeVip') : t('form.typeGeneral')}
+                value={result.ticket.ticketType.name}
               />
               <Detail
                 label={t('checkIn.fields.checkedInAt')}

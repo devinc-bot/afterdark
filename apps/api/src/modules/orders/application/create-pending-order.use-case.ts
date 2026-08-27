@@ -64,7 +64,7 @@ export class CreatePendingOrderUseCase {
     try {
       const preference = await this.mercadoPagoCheckoutPro.createPreference({
         externalReference: order.documentId,
-        title: ticket.name,
+        title: ticket.ticketType.name,
         quantity: order.quantity,
         unitPrice: ticket.price,
         notificationUrl: this.getWebhookUrl(),

@@ -8,6 +8,7 @@ import { events } from '../../schema/event.ts'
 import { orders } from '../../schema/orders.ts'
 import { owners } from '../../schema/owner.ts'
 import { tickets } from '../../schema/ticket.ts'
+import { ticketTypes } from '../../schema/ticket-type.ts'
 import { users } from '../../schema/user.ts'
 import { userAccountsLnk } from '../../schema/user-account-lnk.ts'
 
@@ -25,8 +26,8 @@ function buildOwnerSalesFilters(params: ListOwnerSalesParams): SQL {
     conditions.push(eq(locations.documentId, params.locationDocumentId))
   }
 
-  if (params.ticketType) {
-    conditions.push(eq(tickets.type, params.ticketType))
+  if (params.ticketTypeId) {
+    conditions.push(eq(ticketTypes.documentId, params.ticketTypeId))
   }
 
   if (params.from) {
@@ -55,8 +56,10 @@ export async function findOwnerSalesPaginated(
         buyerLastName: users.lastName,
         buyerEmail: accounts.email,
         eventName: events.name,
-        ticketName: tickets.name,
-        ticketType: tickets.type,
+        ticketType: {
+          documentId: ticketTypes.documentId,
+          name: ticketTypes.name,
+        },
         locationName: locations.name,
         paidAt: orders.paidAt,
         quantity: orders.quantity,
@@ -65,6 +68,7 @@ export async function findOwnerSalesPaginated(
       })
       .from(orders)
       .innerJoin(tickets, eq(tickets.id, orders.ticketId))
+      .innerJoin(ticketTypes, eq(ticketTypes.id, tickets.ticketTypeId))
       .innerJoin(events, eq(events.id, tickets.eventId))
       .innerJoin(locations, eq(locations.id, events.locationId))
       .innerJoin(owners, eq(owners.id, locations.ownerId))
@@ -79,6 +83,7 @@ export async function findOwnerSalesPaginated(
       .select({ total: count() })
       .from(orders)
       .innerJoin(tickets, eq(tickets.id, orders.ticketId))
+      .innerJoin(ticketTypes, eq(ticketTypes.id, tickets.ticketTypeId))
       .innerJoin(events, eq(events.id, tickets.eventId))
       .innerJoin(locations, eq(locations.id, events.locationId))
       .innerJoin(owners, eq(owners.id, locations.ownerId))
@@ -95,7 +100,6 @@ export async function findOwnerSalesPaginated(
       buyerLastName: row.buyerLastName,
       buyerEmail: row.buyerEmail,
       eventName: row.eventName,
-      ticketName: row.ticketName,
       ticketType: row.ticketType,
       locationName: row.locationName,
       paidAt: row.paidAt,

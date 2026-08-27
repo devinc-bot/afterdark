@@ -44,9 +44,10 @@ export class ListMyTicketsUseCase {
       const totalPages = total === 0 ? 0 : Math.ceil(total / query.limit)
 
       return {
-        data: rows.map(({ ticket, event, location, totalSold, revenue }) =>
+        data: rows.map(({ ticket, ticketType, event, location, totalSold, revenue }) =>
           toTicketResponse(
             ticket,
+            ticketType,
             event,
             location,
             { totalSold, revenue },

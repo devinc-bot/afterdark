@@ -21,7 +21,7 @@ export function useOwnerSales(params: Partial<ListOwnerSalesQueryInput> = {}) {
       limit: query.limit,
       eventId: query.eventId,
       locationId: query.locationId,
-      ticketType: query.ticketType,
+      ticketTypeId: query.ticketTypeId,
       from: query.from?.toISOString(),
       to: query.to?.toISOString(),
     }),

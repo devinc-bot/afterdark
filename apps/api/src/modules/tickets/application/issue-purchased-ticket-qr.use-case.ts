@@ -52,7 +52,7 @@ export class IssuePurchasedTicketQrUseCase {
         expiresAt,
         ticket: toPurchasedTicketResponse(
           row.ticketSold,
-          row.ticket,
+          row.ticketType,
           row.event,
           row.location,
           null

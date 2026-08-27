@@ -1,4 +1,4 @@
-import type { TicketType } from '../enums/ticket.ts'
+import type { TicketTypeResponse } from '../dto/ticket-type.ts'
 
 export type FindDashboardKpiParams = {
   ownerDocumentId: string
@@ -25,7 +25,7 @@ export type ListOwnerSalesParams = {
   limit: number
   eventDocumentId?: string
   locationDocumentId?: string
-  ticketType?: TicketType
+  ticketTypeId?: string
   from?: Date
   to?: Date
 }
@@ -36,8 +36,7 @@ export type OwnerSaleRow = {
   buyerLastName: string
   buyerEmail: string
   eventName: string
-  ticketName: string
-  ticketType: TicketType
+  ticketType: TicketTypeResponse
   locationName: string
   paidAt: Date | null
   quantity: number

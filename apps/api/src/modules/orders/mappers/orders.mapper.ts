@@ -33,7 +33,6 @@ export function toBuyerOrderSummaryResponse(
     createdAt: order.createdAt,
     updatedAt: order.updatedAt,
     ticketId: order.ticketId,
-    ticketName: order.ticketName,
     ticketType: order.ticketType,
     eventId: order.eventId,
     eventName: order.eventName,

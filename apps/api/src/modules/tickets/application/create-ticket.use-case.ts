@@ -1,5 +1,9 @@
 import { Inject, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common'
-import { createTicket, findEventOwnedByOwnerDocumentId } from '@repo/db'
+import {
+  createTicket,
+  findAvailableTicketTypeByDocumentId,
+  findEventOwnedByOwnerDocumentId,
+} from '@repo/db'
 import { TranslationService } from '@repo/i18n/server'
 import type { TicketResponse } from '@repo/types'
 import type { CreateTicketInput } from '@repo/validators'
@@ -11,10 +15,18 @@ export class CreateTicketUseCase {
 
   async execute(ownerDocumentId: string, input: CreateTicketInput): Promise<TicketResponse> {
     const eventId = await this.resolveEventId(ownerDocumentId, input.eventId)
+    const ticketType = await findAvailableTicketTypeByDocumentId(
+      input.ticketTypeId,
+      ownerDocumentId
+    )
+
+    if (!ticketType) {
+      throw new NotFoundException(this.ts.translateError('ticketType.NOT_FOUND'))
+    }
 
     try {
-      const row = await createTicket(toTicketUpsertInput(input, eventId))
-      return toTicketResponse(row.ticket, row.event, row.location)
+      const row = await createTicket(toTicketUpsertInput(input, eventId, ticketType.id))
+      return toTicketResponse(row.ticket, row.ticketType, row.event, row.location)
     } catch {
       throw new InternalServerErrorException(this.ts.translateError('ticket.CREATE_FAILED'))
     }

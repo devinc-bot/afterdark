@@ -71,8 +71,6 @@
         "empty": "No hay tickets escaneados para este evento.",
         "error": "No pudimos cargar el historial. Intentá de nuevo.",
         "notReported": "No informado",
-        "typeGeneral": "General",
-        "typeVip": "VIP",
         "table": {
           "scannedAt": "Escaneado",
           "purchaser": "Comprador",
