@@ -1,8 +1,8 @@
 ---
 name: spec-interview
 description: >-
-  Entrevista guiada para crear specs de features en spec/features/. Usar cuando
-  el usuario pida crear, empezar, completar o retomar una spec, nueva feature
+  Crear o actualizar los tres artefactos SDD de una feature en spec/features/.
+  Usar cuando el usuario pida crear, empezar, completar o retomar una feature
   SDD, o escribir spec.md/plan.md/tasks.md desde cero.
 ---
 
@@ -10,14 +10,14 @@ description: >-
 
 ## Antes de escribir
 
-1. Leer [spec/INTERVIEW.md](../../../spec/INTERVIEW.md) — protocolo completo.
+1. Leer [spec/INTERVIEW.md](../../../spec/INTERVIEW.md) y [spec/README.md](../../../spec/README.md).
 2. Leer `spec/constitution/mission.md`, `roadmap.md` y `tech-stack.md`.
-3. Si la feature ya existe: leer `spec/features/00N-<slug>/progress.md` y continuar la fase pendiente.
+3. Si la feature ya existe: leer sus tres artefactos en `spec/features/active/<NNN-slug>/`.
+4. Delegar la exploración del código relevante a un subagente antes de redactar. El subagente debe informar al hilo principal la arquitectura, patrones, archivos afectados, dependencias y riesgos.
 
 ## Comportamiento obligatorio
 
-- **Preguntar por fases**; no volcar una spec completa sin respuestas del usuario.
-- **Un turno = una fase** (máx. ~5 preguntas). Tras cada respuesta: actualizar archivos y resumir.
+- Preguntar solo lo necesario para resolver intención, alcance, non-goals, usuarios y escenarios.
 - Usar **AskQuestion** para opciones finitas (apps, roadmap, approved/draft).
 - Pre-rellenar desde código/roadmap y **confirmar** con el usuario.
 - **No implementar código** durante la entrevista salvo pedido explícito.
@@ -26,18 +26,16 @@ description: >-
 
 | Archivo | Rol |
 | ------- | --- |
-| `progress.md` | Estado de fases + log de respuestas |
-| `spec.md` | Qué / por qué / stories / contratos / reglas |
-| `plan.md` | Borrador en fase 6 |
-| `tasks.md` | Checklist en fase 6 |
-| `roadmap.md` | Fila al crear feature; status al aprobar |
+| `spec.md` | Intent, scope, non-goals, requirements, and scenarios |
+| `plan.md` | Technical approach and verification strategy |
+| `tasks.md` | Ordered implementation checklist |
 
-Copiar `spec/features/_template/` → `spec/features/00N-<slug>/` en la fase 1.
+Crear `spec/features/active/<NNN-slug>/` con exactamente esos tres archivos.
 
 ## Formato de respuesta al usuario
 
-Título de fase, preguntas numeradas (o AskQuestion), separador, bloque **Ya escrito** con rutas, **Siguiente** con la fase que sigue.
+Resumir las decisiones, indicar los artefactos actualizados y señalar la siguiente acción.
 
 ## Retomar
 
-Si `progress.md` tiene fases `done`, resumir lo acordado y continuar en la primera `pending` o `in_progress`.
+Leer los tres artefactos, resumir lo acordado y continuar desde la primera decisión o tarea pendiente.

@@ -1,72 +1,55 @@
-# Spec-driven development (SDD)
+# Spec-Driven Development
 
-Estructura del repositorio para escribir specs antes de código.
+This repository plans product work in `spec/` before implementation.
 
 ```text
 spec/
 ├── README.md
-├── INTERVIEW.md           # ← Protocolo de entrevista guiada (leer al crear specs)
-├── constitution/          # Qué construimos, con qué, en qué orden
+├── constitution/
 │   ├── mission.md
 │   ├── tech-stack.md
 │   └── roadmap.md
-└── features/                # Una carpeta numerada por feature
-    ├── _template/           # Copiar para empezar
-    │   ├── spec.md
-    │   ├── plan.md
-    │   ├── tasks.md
-    │   └── progress.md      # Estado de la entrevista por fase
-    └── 001-<slug>/
-        ├── spec.md
-        ├── plan.md
-        ├── tasks.md
-        └── progress.md
+└── features/
+    ├── active/             # Proposed or in-progress work
+    │   └── 001-feature-slug/
+    │       ├── spec.md
+    │       ├── plan.md
+    │       └── tasks.md
+    └── archive/            # Completed and verified work
+        └── 001-feature-slug/
+            ├── spec.md
+            ├── plan.md
+            └── tasks.md
 ```
 
-## Flujo
+## Lifecycle
 
-### Crear una spec (entrevista guiada)
+1. `/sdd-propose <slug>` creates the next numbered feature folder under `features/active/`.
+2. Review `spec.md`, `plan.md`, and `tasks.md` before implementation.
+3. `/sdd-apply <slug>` completes one unchecked task at a time and marks it done after verification.
+4. `/sdd-archive <slug>` confirms every task and acceptance criterion, then moves the folder to `features/archive/`.
 
-Cuando pidas **crear una spec** (al asistente o en el chat), no se completa todo de golpe:
+## Artifact Rules
 
-1. El asistente lee [INTERVIEW.md](./INTERVIEW.md) y hace **preguntas por fases** (identidad → alcance → stories → contratos → reglas → plan).
-2. Con cada respuesta tuya, va **escribiendo** `spec/features/00N-<slug>/` y actualizando `progress.md`.
-3. Podés decir _“seguimos con la spec de tickets”_ para **retomar** donde quedó.
-4. Cuando la spec está lista, status → `approved`; recién ahí conviene implementar.
+Every feature contains exactly these files:
 
-Disparadores útiles: _“creá la spec de …”_, _“nueva feature”_, _“completá la spec 006”_.
+| File       | Purpose                                                                                |
+| ---------- | -------------------------------------------------------------------------------------- |
+| `spec.md`  | Intent, scope, non-goals, requirements, and Given/When/Then acceptance scenarios.      |
+| `plan.md`  | Technical approach, affected layers, contracts, migrations, and verification strategy. |
+| `tasks.md` | Ordered, independently reviewable implementation checklist.                            |
 
-### Implementar
+- Feature folders use `NNN-kebab-case`, for example `001-upload-avatar`.
+- Requirements and technical content use English. UI copy and user-facing errors use Spanish.
+- Reference `@repo/validators` instead of duplicating validation rules in prose.
+- API persistence uses repositories in `packages/db`; see [DATABASE.md](../packages/db/DATABASE.md).
+- Order `tasks.md` by layer: shared types and validators, database and migrations, API, then the affected
+  client (`web`, `dashboard`, or `admin`) and i18n. Keep each task focused on one layer whenever possible.
+- Do not create `progress.md`, proposal files, design files, or delta specs.
 
-1. **Constitution** — Completar una vez (o actualizar cuando cambie visión/stack/roadmap).
-2. **Nueva feature** — Entrevista → carpeta `features/00N-<slug>/` (no solo copiar template vacío).
-3. **spec.md** — Qué hace y criterios de aceptación (`approved` antes de codear).
-4. **plan.md** — Cómo se implementa (capas, archivos, contratos).
-5. **tasks.md** — Checklist ejecutable; marcar tareas al avanzar.
-6. **Implementar** — Seguir `plan.md` y tachar `tasks.md`.
-7. **Cerrar** — Verificar criterios de `spec.md`; actualizar `roadmap.md`.
+## Assistant Rules
 
-## Convenciones
-
-| Qué                     | Regla                                                                         |
-| ----------------------- | ----------------------------------------------------------------------------- |
-| Carpetas de feature     | `001-upload-avatar`, `002-staff-invite` (número + kebab-case)                 |
-| UI copy en specs        | Español                                                                       |
-| Identificadores / rutas | Inglés                                                                        |
-| Validación              | `@repo/validators` — no duplicar reglas en prosa                              |
-| DB                      | Repositories en `packages/db` — ver [DATABASE.md](../packages/db/DATABASE.md) |
-| Entrevista              | Una fase por turno; ver [INTERVIEW.md](./INTERVIEW.md)                        |
-
-## Docs del repo
-
-| Doc                               | Uso                                    |
-| --------------------------------- | -------------------------------------- |
-| [STYLEGUIDE.md](../STYLEGUIDE.md) | Naming, lint, format                   |
-| [AGENTS.md](../AGENTS.md)         | Guía IA, negocio, arquitectura y rutas |
-
-## Para asistentes IA
-
-1. Leer `spec/constitution/` antes de features nuevas.
-2. **Crear spec:** seguir [INTERVIEW.md](./INTERVIEW.md) y skill `spec-interview` — preguntar por fases, no rellenar solo.
-3. **Implementar:** leer `spec/features/<NNN-slug>/spec.md`, `plan.md`, `tasks.md` y `progress.md`.
-4. No implementar fuera de lo especificado sin actualizar la spec primero.
+1. Read `spec/constitution/`, `AGENTS.md`, and relevant product or database documentation before proposing a feature.
+2. Do not implement scope outside the active feature without updating its artifacts first.
+3. Ask a concise question for unresolved product decisions instead of silently deciding them.
+4. Keep active and archived features separate; never overwrite an archived feature.

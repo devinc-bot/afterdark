@@ -1,13 +1,12 @@
 ---
-description: Flujo OpenSpec obligatorio antes de implementar cambios o features nuevas
+description: Flujo SDD obligatorio antes de implementar cambios o features nuevas
 alwaysApply: true
 ---
 
-# OpenSpec antes de cada cambio nuevo
+# SDD antes de cada cambio nuevo
 
-El desarrollo usa **OpenSpec** (carpeta `openspec/`). Cuando el usuario pida un **cambio nuevo**,
-**feature nueva** o **ampliación de alcance**, primero crear/actualizar un cambio OpenSpec y
-**alinear la propuesta** antes de escribir código.
+El desarrollo usa SDD en `spec/`. Cuando el usuario pida un **cambio nuevo**, **feature nueva** o
+**ampliación de alcance**, primero crear o actualizar la feature y alinear los artefactos antes de escribir código.
 
 ## Disparadores
 
@@ -16,28 +15,20 @@ El desarrollo usa **OpenSpec** (carpeta `openspec/`). Cuando el usuario pida un 
 
 ## Flujo
 
-1. **Explorar** (opcional, si el área es grande o incierta): `/opsx:explore` para leer el código y acotar el enfoque.
-2. **Proponer**: `/opsx:propose <slug>` genera `openspec/changes/<slug>/` con `proposal.md`, `specs/` (deltas ADDED/MODIFIED/REMOVED), `design.md` y `tasks.md`.
-3. **Revisar la propuesta con el usuario** antes de codear (intención, alcance, non-goals, specs delta). Ajustar artefactos según feedback.
-4. **Aplicar**: `/opsx:apply` implementa las tareas de `tasks.md` (respetar entregas incrementales por capa).
-5. **Archivar**: `/opsx:archive` mergea los deltas a `openspec/specs/` y mueve el cambio a `changes/archive/`.
-
-CLI local: `pnpm openspec <cmd>` (list, show, validate, view, doctor). Los slash `/opsx:*` corren en el chat.
+1. **Proponer**: `/sdd-propose <slug>` crea `spec/features/active/<NNN-slug>/` con `spec.md`, `plan.md` y `tasks.md`.
+2. **Revisar** los artefactos con el usuario antes de codear: intención, alcance, non-goals, requisitos y enfoque técnico.
+3. **Aplicar**: `/sdd-apply <slug>` implementa las tareas de `tasks.md` de forma incremental.
+4. **Archivar**: `/sdd-archive <slug>` verifica el trabajo y mueve la feature a `spec/features/archive/`.
 
 ## Reglas
 
 - **No implementar código** hasta que la propuesta esté revisada, salvo pedido explícito del usuario.
 - **Pedido ambiguo**: llamar **`AskQuestion`** (UI multiple-choice de Cursor). No inventar decisiones ni listar A/B/C como texto en el chat. Si la tool no está disponible (Composer en Agent), avisar y sugerir Plan mode o otro modelo.
-- **Apply incremental**: `/opsx:apply` implementa **una tarea por turno** y pausa; solo sigue en lote si el usuario dice “seguí”, “siguiente”, “todas”, etc.
-- **Deltas, no specs completas**: describir solo lo que cambia respecto al comportamiento actual (brownfield-first).
+- **Apply incremental**: `/sdd-apply` implementa **una tarea por turno** y pausa; solo sigue en lote si el usuario dice “seguí”, “siguiente”, “todas”, etc.
+- Cada feature genera únicamente `spec.md`, `plan.md` y `tasks.md`; no crear `progress.md`, propuestas separadas ni deltas.
 - Copy de UI y mensajes de error en **español**; identificadores, rutas y requisitos técnicos en **inglés**.
 - Validación vía `@repo/validators`; no duplicar reglas en prosa.
-- Contexto y convenciones del repo viven en `openspec/config.yaml` (se inyecta al generar artefactos).
-
-## Legacy SDD (`spec/`)
-
-Las specs previas en `spec/features/NNN-*/` quedan como **referencia/histórico**. Migrar una feature a
-`openspec/specs/` **solo cuando se la vuelva a tocar** (no back-fillear todo de una vez).
+- El contexto y convenciones del repo viven en `AGENTS.md`, `spec/README.md` y `spec/constitution/`.
 
 ## Excepciones
 

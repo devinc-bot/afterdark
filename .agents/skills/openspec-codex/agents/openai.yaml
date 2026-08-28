@@ -1,4 +1,0 @@
-interface:
-  display_name: "OpenSpec Workflow"
-  short_description: "Plan, apply, verify and archive OpenSpec work"
-  default_prompt: "Use $openspec-codex to manage this OpenSpec change."

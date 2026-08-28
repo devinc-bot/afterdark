@@ -8,16 +8,14 @@ Instructions for AI assistants (Claude Code, Cursor, etc.) working on this proje
 
 Read the relevant doc before making changes:
 
-| Doc                                                                                                  | When to consult                                                      |
-| ---------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
-| [openspec/config.yaml](./openspec/config.yaml)                                                       | **Development flow** — OpenSpec project context & per-artifact rules |
-| [.agents/skills/openspec-codex/SKILL.md](./.agents/skills/openspec-codex/SKILL.md)                   | **En Codex** — flujo OpenSpec, incluido el equivalente de `/opsx:*`  |
-| [.cursor/rules/spec-interview-before-changes.mdc](./.cursor/rules/spec-interview-before-changes.mdc) | **En Cursor** — flujo OpenSpec obligatorio                           |
-| [spec/README.md](./spec/README.md)                                                                   | Legacy SDD layout (reference/history; migrate on next touch)         |
-| [STYLEGUIDE.md](./STYLEGUIDE.md)                                                                     | Naming, constants, dependencies, lint/format                         |
-| [packages/db/DATABASE.md](./packages/db/DATABASE.md)                                                 | Schema, migrations, repositories                                     |
-| [PRODUCT.md](./PRODUCT.md)                                                                           | Brand register, users, personality, anti-references, principles      |
-| [DESIGN.md](./DESIGN.md)                                                                             | Visual tokens, themes, typography, component guidance                |
+| Doc                                                                                                  | When to consult                                                  |
+| ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| [spec/README.md](./spec/README.md)                                                                   | **Development flow** — SDD lifecycle, layout, and artifact rules |
+| [.cursor/rules/spec-interview-before-changes.mdc](./.cursor/rules/spec-interview-before-changes.mdc) | **En Cursor** — flujo SDD obligatorio                            |
+| [STYLEGUIDE.md](./STYLEGUIDE.md)                                                                     | Naming, constants, dependencies, lint/format                     |
+| [packages/db/DATABASE.md](./packages/db/DATABASE.md)                                                 | Schema, migrations, repositories                                 |
+| [PRODUCT.md](./PRODUCT.md)                                                                           | Brand register, users, personality, anti-references, principles  |
+| [DESIGN.md](./DESIGN.md)                                                                             | Visual tokens, themes, typography, component guidance            |
 
 ### Design Context
 
@@ -33,29 +31,30 @@ Read the relevant doc before making changes:
 
 ---
 
-## Development flow — OpenSpec
+## Development Flow - SDD
 
-New work is spec-driven via **OpenSpec** (`openspec/`). Before implementing a new feature or scope
-change, create and align an OpenSpec change first:
+New features and scope changes use the repository SDD workflow in `spec/`. Before implementation,
+create an approved feature folder in `spec/features/active/<NNN-slug>/`.
 
 ```text
-Cursor: /opsx:explore | /opsx:propose <slug> | /opsx:apply | /opsx:archive
-Codex:  $openspec-codex /opsx:explore
-        $openspec-codex /opsx:propose <slug>  # proposal → user review → implementation
-        $openspec-codex /opsx:apply           # one tasks.md item, then pause
-        $openspec-codex /opsx:archive
+/sdd-propose <slug>  # create spec.md, plan.md, and tasks.md for review
+/sdd-apply <slug>    # implement one unchecked task, then pause
+/sdd-archive <slug>  # verify and move the completed feature to archive
 ```
 
-- In Cursor, `/opsx:*` commands run in chat. In Codex, invoke the project-local `$openspec-codex`
-  skill with the same mode. The CLI runs in the terminal: `pnpm openspec <cmd>` (`list`, `show <item>`,
-  `validate`, `view`, `doctor`, `context`).
-- Project context and per-artifact rules live in [openspec/config.yaml](./openspec/config.yaml).
-- **Brownfield-first**: write **deltas** (ADDED/MODIFIED/REMOVED), not full specs. Don't back-fill specs
-  for code you aren't changing.
-- Legacy specs under `spec/features/NNN-*/` stay as reference; migrate a feature to `openspec/specs/`
-  only when you next touch it.
-- If a decision blocks planning, use Codex's native question capability when available; otherwise ask one
-  concise question in chat. Do not require Cursor's `AskQuestion` UI.
+- Each feature has exactly three generated artifacts: `spec.md`, `plan.md`, and `tasks.md`.
+- Use `active/` for work in progress and `archive/` only after all tasks and acceptance criteria pass.
+- Write complete, current feature specs rather than delta artifacts. Do not back-fill unrelated features.
+- `spec.md` records intent, scope, non-goals, requirements, and Given/When/Then scenarios. `plan.md`
+  describes the technical approach. `tasks.md` is the implementation checklist.
+- Before every proposal, delegate codebase exploration to a subagent. The subagent must report the relevant
+  architecture, existing patterns, affected files, dependencies, and risks to the main thread before it drafts artifacts.
+- Review the proposed artifacts with the user before writing code unless they explicitly request otherwise.
+- `/sdd-apply` completes one independently reviewable task by default. Continue in batches only when
+  the user requests it.
+- Plan and deliver work by layer: shared types and validators, database and migrations, API, then each
+  affected client (`web`, `dashboard`, or `admin`) and i18n. Each task should cover one layer whenever possible.
+- If a decision blocks planning, ask one concise question rather than assuming a product decision.
 
 ---
 
@@ -73,12 +72,6 @@ Codex:  $openspec-codex /opsx:explore
 ## Common commands
 
 ```bash
-# OpenSpec (spec-driven flow)
-pnpm openspec list           # active changes
-pnpm openspec show <item>    # view a change or spec
-pnpm openspec validate       # validate changes and specs
-pnpm openspec doctor         # health of the OpenSpec root
-
 # Development
 pnpm dev              # both apps in parallel
 pnpm dev:web        # web only  → http://localhost:3001
