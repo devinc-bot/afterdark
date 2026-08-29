@@ -1,0 +1,64 @@
+name: Deploy Staging
+
+on:
+  workflow_dispatch:
+    inputs:
+      commit_sha:
+        description: Commit SHA whose staging images will be deployed
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  packages: read
+
+concurrency:
+  group: deploy-staging
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment: staging
+    runs-on: ubuntu-24.04
+    env:
+      REGISTRY: ghcr.io/${{ github.repository_owner }}
+      TAG: staging-${{ inputs.commit_sha }}
+      REMOTE_APP_DIR: /opt/app
+      REMOTE_COMPOSE_ENV: /etc/app/staging.compose.env
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Resolve published image digests
+        run: |
+          set -euo pipefail
+          for service in api web dashboard admin migrator; do
+            image="$REGISTRY/app-$service"
+            digest=$(docker buildx imagetools inspect "$image:$TAG" --format '{{.Digest}}')
+            variable=$(printf '%s' "$service" | tr '[:lower:]' '[:upper:]')
+            printf '%s_IMAGE=%s@%s\n' "$variable" "$image" "$digest" >> release-images.env
+          done
+      - name: Configure trusted SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.VPS_SSH_PRIVATE_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.VPS_SSH_KNOWN_HOSTS }}
+        run: |
+          set -euo pipefail
+          install -d -m 700 ~/.ssh
+          printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/known_hosts
+      - name: Deploy selected digests
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+        run: |
+          set -euo pipefail
+          scp -i ~/.ssh/id_ed25519 release-images.env "$VPS_USER@$VPS_HOST:/tmp/app-staging-images.env"
+          ssh -i ~/.ssh/id_ed25519 "$VPS_USER@$VPS_HOST" \
+            "set -e; trap 'rm -f /tmp/app-staging-images.env' EXIT; cd '$REMOTE_APP_DIR'; bash deploy/scripts/deploy.sh '$REMOTE_COMPOSE_ENV' /tmp/app-staging-images.env; set -a; . '$REMOTE_COMPOSE_ENV'; set +a; curl --fail --retry 5 https://\$WEB_HOST/; curl --fail --retry 5 https://\$DASHBOARD_HOST/; curl --fail --retry 5 https://\$ADMIN_HOST/; curl --fail --retry 5 https://\$API_HOST/api/health/"

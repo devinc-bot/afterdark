@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: corepack enable
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm check
+      - run: pnpm --filter @repo/db test
+      - run: pnpm --filter @repo/api test:health
+      - run: pnpm --filter @repo/dashboard test
+      - run: pnpm --filter @repo/admin test
+      - run: bash deploy/scripts/test-deployment-scripts.sh
+
+  containers:
+    needs: quality
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker compose --env-file deploy/env/staging.vps.env.example --profile tools config --quiet
+      - run: docker compose --env-file deploy/env/production.vps.env.example --profile tools config --quiet
+      - run: docker build --file apps/api/Dockerfile --target runtime .
+      - run: docker build --file apps/api/Dockerfile --target migrator .
+      - run: docker build --file apps/web/Dockerfile .
+      - run: docker build --file apps/dashboard/Dockerfile .
+      - run: docker build --file apps/admin/Dockerfile .
