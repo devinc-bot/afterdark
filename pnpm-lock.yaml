@@ -68,9 +68,9 @@ importers:
       react-i18next:
         specifier: 15.5.3
         version: 15.5.3(i18next@23.16.8)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(typescript@6.0.3)
-      vite:
-        specifier: 7.3.5
-        version: 7.3.5(@types/node@22.15.0)(jiti@2.7.0)(lightningcss@1.33.0)(terser@5.48.0)(tsx@4.19.4)(yaml@2.9.0)
+      srvx:
+        specifier: 0.11.16
+        version: 0.11.16
       zod:
         specifier: 4.4.3
         version: 4.4.3
@@ -99,6 +99,9 @@ importers:
       typescript:
         specifier: 6.0.3
         version: 6.0.3
+      vite:
+        specifier: 7.3.5
+        version: 7.3.5(@types/node@22.15.0)(jiti@2.7.0)(lightningcss@1.33.0)(terser@5.48.0)(tsx@4.19.4)(yaml@2.9.0)
       vite-tsconfig-paths:
         specifier: 5.1.4
         version: 5.1.4(typescript@6.0.3)(vite@7.3.5(@types/node@22.15.0)(jiti@2.7.0)(lightningcss@1.33.0)(terser@5.48.0)(tsx@4.19.4)(yaml@2.9.0))
@@ -180,6 +183,9 @@ importers:
       sharp:
         specifier: 0.35.3
         version: 0.35.3(@types/node@22.15.0)
+      tsx:
+        specifier: 4.19.4
+        version: 4.19.4
       zod:
         specifier: 4.4.3
         version: 4.4.3
@@ -208,9 +214,6 @@ importers:
       '@types/react-dom':
         specifier: 19.1.2
         version: 19.1.2(@types/react@19.1.2)
-      tsx:
-        specifier: 4.19.4
-        version: 4.19.4
       typescript:
         specifier: 6.0.3
         version: 6.0.3
@@ -271,9 +274,9 @@ importers:
       react-qr-code:
         specifier: 2.0.18
         version: 2.0.18(react@19.2.6)
-      vite:
-        specifier: 7.3.5
-        version: 7.3.5(@types/node@22.15.0)(jiti@2.7.0)(lightningcss@1.33.0)(terser@5.48.0)(tsx@4.19.4)(yaml@2.9.0)
+      srvx:
+        specifier: 0.11.16
+        version: 0.11.16
       zod:
         specifier: 4.4.3
         version: 4.4.3
@@ -302,6 +305,9 @@ importers:
       typescript:
         specifier: 6.0.3
         version: 6.0.3
+      vite:
+        specifier: 7.3.5
+        version: 7.3.5(@types/node@22.15.0)(jiti@2.7.0)(lightningcss@1.33.0)(terser@5.48.0)(tsx@4.19.4)(yaml@2.9.0)
       vite-tsconfig-paths:
         specifier: 5.1.4
         version: 5.1.4(typescript@6.0.3)(vite@7.3.5(@types/node@22.15.0)(jiti@2.7.0)(lightningcss@1.33.0)(terser@5.48.0)(tsx@4.19.4)(yaml@2.9.0))
@@ -353,9 +359,9 @@ importers:
       react-qr-code:
         specifier: 2.0.18
         version: 2.0.18(react@19.2.6)
-      vite:
-        specifier: 7.3.5
-        version: 7.3.5(@types/node@22.15.0)(jiti@2.7.0)(lightningcss@1.33.0)(terser@5.48.0)(tsx@4.19.4)(yaml@2.9.0)
+      srvx:
+        specifier: 0.11.16
+        version: 0.11.16
       zod:
         specifier: 4.4.3
         version: 4.4.3
@@ -384,6 +390,9 @@ importers:
       typescript:
         specifier: 6.0.3
         version: 6.0.3
+      vite:
+        specifier: 7.3.5
+        version: 7.3.5(@types/node@22.15.0)(jiti@2.7.0)(lightningcss@1.33.0)(terser@5.48.0)(tsx@4.19.4)(yaml@2.9.0)
       vite-tsconfig-paths:
         specifier: 5.1.4
         version: 5.1.4(typescript@6.0.3)(vite@7.3.5(@types/node@22.15.0)(jiti@2.7.0)(lightningcss@1.33.0)(terser@5.48.0)(tsx@4.19.4)(yaml@2.9.0))

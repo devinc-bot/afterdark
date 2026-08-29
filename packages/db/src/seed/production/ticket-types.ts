@@ -1,6 +1,6 @@
 import { and, isNull, sql } from 'drizzle-orm'
-import { ticketTypes } from '../schema/ticket-type.ts'
-import { seedDb as db } from './client.ts'
+import { ticketTypes } from '../../schema/ticket-type.ts'
+import { seedDb as db } from '../client.ts'
 
 const DEFAULT_TICKET_TYPE_NAMES = ['General', 'VIP'] as const
 

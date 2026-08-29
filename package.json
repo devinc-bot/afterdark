@@ -22,6 +22,7 @@
     "check": "pnpm type-check && pnpm lint && pnpm format:check",
     "check:i18n": "pnpm --filter @repo/i18n check:i18n",
     "openspec": "openspec",
+    "db:up": "bash scripts/start-dev-db.sh",
     "prepare": "husky"
   },
   "devDependencies": {
