@@ -26,7 +26,7 @@ import { ticketsSold } from '../../schema/tickets_sold.ts'
 import { userAccountsLnk } from '../../schema/user-account-lnk.ts'
 import { users } from '../../schema/user.ts'
 import { seedDb as db } from '../client.ts'
-import { findGlobalTicketTypeIdByName } from '../ticket-types.ts'
+import { findGlobalTicketTypeIdByName } from '../production/ticket-types.ts'
 
 const DAY_MS = 24 * 60 * 60 * 1000
 const BCRYPT_SALT_ROUNDS = 10

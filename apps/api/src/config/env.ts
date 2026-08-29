@@ -1,4 +1,4 @@
-import { databaseEnvSchema } from '@repo/db/config/env'
+import { runtimeDatabaseEnvSchema } from '@repo/db/config/env'
 import { z } from 'zod'
 import {
   googleOauthEnvSchema,
@@ -10,7 +10,7 @@ import {
 } from './env.schema'
 
 const envSchema = z.object({
-  ...databaseEnvSchema.shape,
+  ...runtimeDatabaseEnvSchema.shape,
   ...uploadEnvSchema.shape,
   ...mailEnvSchema.shape,
   ...googleOauthEnvSchema.shape,
