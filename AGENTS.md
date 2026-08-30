@@ -2,7 +2,7 @@
 
 ## Proyecto
 
-Repo es una plataforma web de eventos y ticketing: los clientes descubren y compran entradas, mientras que los dueños y su staff administran organizaciones, locations, eventos, tickets y operaciones. Es un monorepo `pnpm` con TanStack Start, React 19 y Tailwind v4 para `web`, `dashboard` y `admin`; NestJS, Drizzle y Neon PostgreSQL para la API; y paquetes compartidos para tipos, validación, UI e i18n.
+Lumina es una plataforma web de eventos y ticketing: los clientes descubren y compran entradas, mientras que los dueños y su staff administran organizaciones, locations, eventos, tickets y operaciones. Es un monorepo `pnpm` con TanStack Start, React 19 y Tailwind v4 para `web`, `dashboard` y `admin`; NestJS, Drizzle y Neon PostgreSQL para la API; y paquetes compartidos para tipos, validación, UI e i18n.
 
 La arquitectura de datos es `UI -> queries/mutations -> services -> QueryFactory -> Nest API -> repositories -> DB`. Las apps cliente viven en `apps/{web,dashboard,admin}`, la API en `apps/api`, y los paquetes compartidos en `packages/{common,db,validators,types,ui,i18n}`.
 

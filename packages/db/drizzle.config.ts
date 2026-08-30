@@ -1,12 +1,14 @@
 import type { Config } from 'drizzle-kit'
-import { serverEnv } from './src/config/env.server.ts'
+import { loadMigrationEnv } from './src/config/env.loader.ts'
+
+const migrationEnv = loadMigrationEnv()
 
 export default {
   schema: './src/schema/index.ts',
   out: './src/migrations-postgresql',
   dialect: 'postgresql',
   dbCredentials: {
-    url: serverEnv.DATABASE_MIGRATION_URL,
+    url: migrationEnv.DATABASE_MIGRATION_URL,
   },
   migrations: {
     prefix: 'timestamp',

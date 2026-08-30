@@ -151,6 +151,7 @@ export const API_ROUTES = {
     prefix: API_HEALTH_PREFIX,
     path: {
       root: () => '/' as const,
+      ready: () => '/ready' as const,
     },
   },
   errors: {

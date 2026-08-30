@@ -1,9 +1,4 @@
-import { clientApiEnvSchema } from '@repo/validators'
-import { z } from 'zod'
-
-const webEnvSchema = clientApiEnvSchema.extend({
-  VITE_DASHBOARD_URL: z.url(),
-})
+import { webEnvSchema } from './env.schema'
 
 const envResult = webEnvSchema.safeParse(import.meta.env)
 
