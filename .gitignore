@@ -1,5 +1,7 @@
 node_modules/
 .env
+*.env
+!*.env.example
 dist/
 .vinxi/
 .output/
@@ -8,15 +10,6 @@ pnpm-debug.log
 local.db*
 apps/api/uploads/
 .claude/settings.local.json
-
-# OpenSpec artifacts are local-only.
-openspec/specs/*
-!openspec/specs/.gitkeep
-openspec/changes/*
-!openspec/changes/.gitkeep
-!openspec/changes/archive/
-openspec/changes/archive/*
-!openspec/changes/archive/.gitkeep
 
 # Vitest
 coverage/
@@ -29,6 +22,8 @@ test-results/
 # Impecable AI
 .impecable/*
 
-# Old specs
-spec/features/*
-!spec/features/.gitkeep
+# SDD feature artifacts
+spec/features/active/*
+!spec/features/active/.gitkeep
+spec/features/archive/*
+!spec/features/archive/.gitkeep

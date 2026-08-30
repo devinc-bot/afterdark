@@ -6,8 +6,7 @@
   "scripts": {
     "dev": "vite dev",
     "build": "vite build",
-    "start": "vite preview",
-    "test": "pnpm -C ../.. exec vitest run apps/web/test",
+    "start": "node server.mjs",
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
@@ -26,7 +25,7 @@
     "react-dom": "19.2.6",
     "react-i18next": "15.5.3",
     "react-qr-code": "2.0.18",
-    "vite": "7.3.5",
+    "srvx": "0.11.16",
     "zod": "4.4.3",
     "zustand": "5.0.8"
   },
@@ -38,6 +37,7 @@
     "@vitejs/plugin-react": "4.7.0",
     "tailwindcss": "4.3.0",
     "typescript": "6.0.3",
+    "vite": "7.3.5",
     "vite-tsconfig-paths": "5.1.4"
   }
 }

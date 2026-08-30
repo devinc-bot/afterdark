@@ -13,12 +13,11 @@
   },
   "scripts": {
     "type-check": "tsc --noEmit",
-    "test": "pnpm -C ../.. exec vitest run db",
-    "db:generate": "drizzle-kit generate --config=drizzle-dev.config.ts",
-    "db:migrate": "drizzle-kit migrate --config=drizzle-dev.config.ts",
-    "db:migrate:prod": "drizzle-kit migrate --config=drizzle-prod.config.ts",
-    "db:push": "drizzle-kit push --config=drizzle-dev.config.ts",
-    "db:studio": "drizzle-kit studio --config=drizzle-dev.config.ts",
+    "test": "tsx --test src/config/env.server.test.ts src/repositories/slug.test.ts",
+    "db:generate": "drizzle-kit generate --config=drizzle.config.ts",
+    "db:migrate": "drizzle-kit migrate --config=drizzle.config.ts",
+    "db:push": "drizzle-kit push --config=drizzle.config.ts",
+    "db:studio": "drizzle-kit studio --config=drizzle.config.ts",
     "db:seed:development": "tsx src/seed/development/index.ts",
     "db:seed:production": "tsx src/seed/production/index.ts"
   },
