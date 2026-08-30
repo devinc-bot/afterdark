@@ -35,12 +35,13 @@ Every feature contains exactly these files:
 
 | File       | Purpose                                                                                |
 | ---------- | -------------------------------------------------------------------------------------- |
-| `spec.md`  | Intent, scope, non-goals, requirements, and Given/When/Then acceptance scenarios.      |
+| `spec.md`  | Product requirements using the [standard EARS template](./SPEC_TEMPLATE.md).           |
 | `plan.md`  | Technical approach, affected layers, contracts, migrations, and verification strategy. |
 | `tasks.md` | Ordered, independently reviewable implementation checklist.                            |
 
 - Feature folders use `NNN-kebab-case`, for example `001-upload-avatar`.
-- Requirements and technical content use English. UI copy and user-facing errors use Spanish.
+- Use [SPEC_TEMPLATE.md](./SPEC_TEMPLATE.md) as the exact structure for every new `spec.md`. Requirements
+  and technical content use English. UI copy and user-facing errors use Spanish.
 - Reference `@repo/validators` instead of duplicating validation rules in prose.
 - API persistence uses repositories in `packages/db`; see [DATABASE.md](../packages/db/DATABASE.md).
 - Order `tasks.md` by layer: shared types and validators, database and migrations, API, then the affected

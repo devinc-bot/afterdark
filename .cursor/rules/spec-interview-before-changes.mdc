@@ -1,36 +1,38 @@
 ---
-description: Flujo SDD obligatorio antes de implementar cambios o features nuevas
+description: Mandatory SDD workflow before implementing new changes or features
 alwaysApply: true
 ---
 
-# SDD antes de cada cambio nuevo
+# SDD Before Every New Change
 
-El desarrollo usa SDD en `spec/`. Cuando el usuario pida un **cambio nuevo**, **feature nueva** o
-**ampliación de alcance**, primero crear o actualizar la feature y alinear los artefactos antes de escribir código.
+Development uses SDD in `spec/`. When the user requests a **new change**, **new feature**, or **scope
+expansion**, first create or update the feature and align its artifacts before writing code.
 
-## Disparadores
+## Triggers
 
-- "quiero que…", "agregá…", "nueva feature", "creá spec", "implementá…"
-- Cualquier pedido que agregue comportamiento, endpoints, pantallas o reglas de negocio no cubiertas.
+- "I want...", "add...", "new feature", "create spec", "implement..."
+- Any request that adds uncovered behavior, endpoints, screens, or business rules.
 
-## Flujo
+## Workflow
 
-1. **Proponer**: `/sdd-propose <slug>` crea `spec/features/active/<NNN-slug>/` con `spec.md`, `plan.md` y `tasks.md`.
-2. **Revisar** los artefactos con el usuario antes de codear: intención, alcance, non-goals, requisitos y enfoque técnico.
-3. **Aplicar**: `/sdd-apply <slug>` implementa las tareas de `tasks.md` de forma incremental.
-4. **Archivar**: `/sdd-archive <slug>` verifica el trabajo y mueve la feature a `spec/features/archive/`.
+1. **Propose**: `/sdd-propose <slug>` creates `spec/features/active/<NNN-slug>/` with `spec.md`, `plan.md`, and `tasks.md`.
+2. **Review** the artifacts with the user before coding: intent, scope, non-goals, requirements, and technical approach.
+3. **Apply**: `/sdd-apply <slug>` implements `tasks.md` incrementally.
+4. **Archive**: `/sdd-archive <slug>` verifies the work and moves the feature to `spec/features/archive/`.
 
-## Reglas
+## Rules
 
-- **No implementar código** hasta que la propuesta esté revisada, salvo pedido explícito del usuario.
-- **Pedido ambiguo**: llamar **`AskQuestion`** (UI multiple-choice de Cursor). No inventar decisiones ni listar A/B/C como texto en el chat. Si la tool no está disponible (Composer en Agent), avisar y sugerir Plan mode o otro modelo.
-- **Apply incremental**: `/sdd-apply` implementa **una tarea por turno** y pausa; solo sigue en lote si el usuario dice “seguí”, “siguiente”, “todas”, etc.
-- Cada feature genera únicamente `spec.md`, `plan.md` y `tasks.md`; no crear `progress.md`, propuestas separadas ni deltas.
-- Copy de UI y mensajes de error en **español**; identificadores, rutas y requisitos técnicos en **inglés**.
-- Validación vía `@repo/validators`; no duplicar reglas en prosa.
-- El contexto y convenciones del repo viven en `AGENTS.md`, `spec/README.md` y `spec/constitution/`.
+- **Do not implement code** until the proposal has been reviewed, unless the user explicitly requests it.
+- **Ambiguous request**: call **`AskQuestion`** (Cursor multiple-choice UI). Do not invent decisions or list A/B/C options as chat text. If the tool is unavailable (Composer in Agent), say so and suggest Plan mode or another model.
+- **Incremental apply**: `/sdd-apply` implements **one task per turn** and pauses; only continue in batches if the user says "continue", "next", "all", or equivalent.
+- Each feature generates only `spec.md`, `plan.md`, and `tasks.md`; do not create `progress.md`, separate proposals, or delta specs.
+- Every new `spec.md` must follow [`spec/SPEC_TEMPLATE.md`](../../spec/SPEC_TEMPLATE.md), with EARS functional
+  requirements and technical content in English.
+- UI copy and error messages are in **Spanish**; identifiers, routes, and technical requirements are in **English**.
+- Validate through `@repo/validators`; do not duplicate validation rules in prose.
+- Repository context and conventions live in `AGENTS.md`, `spec/README.md`, and `spec/constitution/`.
 
-## Excepciones
+## Exceptions
 
-- **Fix trivial** (1–2 archivos, sin nuevo comportamiento): implementar directo, sin propuesta.
-- **"seguí con lo que tengas" / "inferí vos"**: documentar supuestos en la propuesta y avanzar.
+- **Trivial fix** (1-2 files, no new behavior): implement directly without a proposal.
+- **"Continue with what you have" / "make reasonable assumptions"**: document assumptions in the proposal and proceed.

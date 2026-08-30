@@ -10,7 +10,8 @@ description: >-
 
 ## Antes de escribir
 
-1. Leer [spec/INTERVIEW.md](../../../spec/INTERVIEW.md) y [spec/README.md](../../../spec/README.md).
+1. Leer [spec/INTERVIEW.md](../../../spec/INTERVIEW.md), [spec/README.md](../../../spec/README.md) y
+   [spec/SPEC_TEMPLATE.md](../../../spec/SPEC_TEMPLATE.md).
 2. Leer `spec/constitution/mission.md`, `roadmap.md` y `tech-stack.md`.
 3. Si la feature ya existe: leer sus tres artefactos en `spec/features/active/<NNN-slug>/`.
 4. Delegar la exploración del código relevante a un subagente antes de redactar. El subagente debe informar al hilo principal la arquitectura, patrones, archivos afectados, dependencias y riesgos.
@@ -26,11 +27,15 @@ description: >-
 
 | Archivo | Rol |
 | ------- | --- |
-| `spec.md` | Intent, scope, non-goals, requirements, and scenarios |
+| `spec.md` | Product requirements using `spec/SPEC_TEMPLATE.md` in English |
 | `plan.md` | Technical approach and verification strategy |
 | `tasks.md` | Ordered implementation checklist |
 
 Crear `spec/features/active/<NNN-slug>/` con exactamente esos tres archivos.
+
+Every new `spec.md` must use `spec/SPEC_TEMPLATE.md` exactly. Write its headings, user stories, EARS
+functional requirements, and all technical content in English. Keep an unanswered product decision in the
+`Open Questions` section with the `[NEEDS CLARIFICATION]` marker.
 
 ## Formato de respuesta al usuario
 
