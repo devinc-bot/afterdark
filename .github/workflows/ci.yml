@@ -20,7 +20,8 @@ jobs:
           cache: pnpm
       - run: corepack enable
       - run: pnpm install --frozen-lockfile
-      - run: pnpm check
+      - run: pnpm type-check
+      - run: pnpm lint
       - run: pnpm test
 
   e2e:
