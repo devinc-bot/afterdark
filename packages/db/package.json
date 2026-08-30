@@ -13,7 +13,7 @@
   },
   "scripts": {
     "type-check": "tsc --noEmit",
-    "test": "tsx --test src/repositories/slug.test.ts",
+    "test": "pnpm -C ../.. exec vitest run db",
     "db:generate": "drizzle-kit generate --config=drizzle-dev.config.ts",
     "db:migrate": "drizzle-kit migrate --config=drizzle-dev.config.ts",
     "db:migrate:prod": "drizzle-kit migrate --config=drizzle-prod.config.ts",
