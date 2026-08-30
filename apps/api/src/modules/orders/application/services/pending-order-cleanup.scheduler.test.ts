@@ -1,5 +1,4 @@
-import assert from 'node:assert/strict'
-import test from 'node:test'
+import { expect, test, vi } from 'vitest'
 import { Logger } from '@nestjs/common'
 import { PendingOrderCleanupScheduler } from './pending-order-cleanup.scheduler.ts'
 
@@ -22,7 +21,7 @@ class TestPendingOrderCleanupScheduler extends PendingOrderCleanupScheduler {
 test('uses the first day of the preceding calendar month as the cutoff', () => {
   const scheduler = new TestPendingOrderCleanupScheduler()
 
-  assert.deepEqual(scheduler.getCutoff(new Date(2026, 2, 1, 12, 30)), new Date(2026, 1, 1))
+  expect(scheduler.getCutoff(new Date(2026, 2, 1, 12, 30))).toEqual(new Date(2026, 1, 1))
 })
 
 test('passes the calculated cutoff to the cleanup operation', async () => {
@@ -30,29 +29,24 @@ test('passes the calculated cutoff to the cleanup operation', async () => {
 
   await scheduler.cleanupStalePendingOrders()
 
-  assert.ok(scheduler.receivedCutoff)
-  assert.equal(scheduler.receivedCutoff.getDate(), 1)
-  assert.equal(scheduler.receivedCutoff.getHours(), 0)
-  assert.equal(scheduler.receivedCutoff.getMinutes(), 0)
-  assert.equal(scheduler.receivedCutoff.getSeconds(), 0)
-  assert.equal(scheduler.receivedCutoff.getMilliseconds(), 0)
+  expect(scheduler.receivedCutoff).toBeTruthy()
+  expect(scheduler.receivedCutoff!.getDate()).toBe(1)
+  expect(scheduler.receivedCutoff!.getHours()).toBe(0)
+  expect(scheduler.receivedCutoff!.getMinutes()).toBe(0)
+  expect(scheduler.receivedCutoff!.getSeconds()).toBe(0)
+  expect(scheduler.receivedCutoff!.getMilliseconds()).toBe(0)
 })
 
 test('logs cleanup failures without rejecting', async () => {
   const scheduler = new TestPendingOrderCleanupScheduler()
   const cleanupError = new Error('database unavailable')
-  const originalError = Logger.prototype.error
   const loggedErrors: unknown[][] = []
   scheduler.cleanupError = cleanupError
-  Logger.prototype.error = function (...args: unknown[]): void {
+  vi.spyOn(Logger.prototype, 'error').mockImplementation((...args: unknown[]) => {
     loggedErrors.push(args)
-  }
+  })
 
-  try {
-    await scheduler.cleanupStalePendingOrders()
-  } finally {
-    Logger.prototype.error = originalError
-  }
+  await scheduler.cleanupStalePendingOrders()
 
-  assert.deepEqual(loggedErrors, [['Pending order cleanup failed', cleanupError]])
+  expect(loggedErrors).toEqual([['Pending order cleanup failed', cleanupError]])
 })

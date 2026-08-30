@@ -1,5 +1,4 @@
-import assert from 'node:assert/strict'
-import { mock, test } from 'node:test'
+import { expect, test, vi } from 'vitest'
 import { STAFF_INVITATION_STATUS, USER_ROLE } from '@repo/types'
 
 const invitation = {
@@ -26,40 +25,34 @@ const organization = {
   taxId: null,
 }
 
-const state: {
-  insertedInput: unknown
-  payload: unknown
-  registrationInput: unknown
-} = {
-  insertedInput: null,
-  payload: null,
-  registrationInput: null,
-}
+const state = vi.hoisted(() => ({
+  insertedInput: null as unknown,
+  payload: null as unknown,
+  registrationInput: null as unknown,
+}))
 
-mock.module('@repo/db', {
-  namedExports: {
-    accountExistsByEmail: async () => false,
-    createStaffInvitation: async (input: unknown) => {
-      state.insertedInput = input
-      return invitation
-    },
-    deleteStaffInvitationById: async () => undefined,
-    findRoleByName: async () => ({ id: 4 }),
-    findSoleOrganizationByOwnerDocumentId: async () => organization,
-    findStaffInvitationByTokenWithOrganization: async () => ({
-      invitation,
-      organizationDocumentId: organization.documentId,
-      organizationName: organization.name,
-    }),
-    registerStaffForOrganization: async (input: unknown) => {
-      state.registrationInput = input
-    },
+vi.mock('@repo/db', () => ({
+  accountExistsByEmail: async () => false,
+  createStaffInvitation: async (input: unknown) => {
+    state.insertedInput = input
+    return invitation
   },
-})
+  deleteStaffInvitationById: async () => undefined,
+  findRoleByName: async () => ({ id: 4 }),
+  findSoleOrganizationByOwnerDocumentId: async () => organization,
+  findStaffInvitationByTokenWithOrganization: async () => ({
+    invitation,
+    organizationDocumentId: organization.documentId,
+    organizationName: organization.name,
+  }),
+  registerStaffForOrganization: async (input: unknown) => {
+    state.registrationInput = input
+  },
+}))
 
-const createUseCaseModulePromise = import('./create-staff-invitation.use-case.ts')
-const getUseCaseModulePromise = import('./get-staff-invitation-by-link.use-case.ts')
-const acceptUseCaseModulePromise = import('./accept-staff-invitation.use-case.ts')
+import { AcceptStaffInvitationUseCase } from './accept-staff-invitation.use-case.ts'
+import { CreateStaffInvitationUseCase } from './create-staff-invitation.use-case.ts'
+import { GetStaffInvitationByLinkUseCase } from './get-staff-invitation-by-link.use-case.ts'
 
 const translationService = {
   translateError: (code: string) => code,
@@ -76,7 +69,6 @@ const jwtService = {
 test('creates an invitation for the owner organization without location input', async () => {
   state.insertedInput = null
   state.payload = null
-  const { CreateStaffInvitationUseCase } = await createUseCaseModulePromise
   const useCase = new CreateStaffInvitationUseCase(jwtService, translationService, {
     requireOwnerInviter: async () => ({ id: 1, documentId: 'owner-one', role: USER_ROLE.OWNER }),
   } as never)
@@ -87,29 +79,24 @@ test('creates an invitation for the owner organization without location input', 
     expiresInMs: 43_200_000,
   })
 
-  assert.equal(response.organizationId, organization.documentId)
-  assert.equal(response.organizationName, organization.name)
-  assert.equal((state.insertedInput as { organizationId: number }).organizationId, organization.id)
-  assert.equal(
-    (state.payload as { organizationId: string }).organizationId,
-    organization.documentId
-  )
-  assert.equal('locationId' in (state.insertedInput as object), false)
+  expect(response.organizationId).toBe(organization.documentId)
+  expect(response.organizationName).toBe(organization.name)
+  expect((state.insertedInput as { organizationId: number }).organizationId).toBe(organization.id)
+  expect((state.payload as { organizationId: string }).organizationId).toBe(organization.documentId)
+  expect('locationId' in (state.insertedInput as object)).toBe(false)
 })
 
 test('returns public invitation organization context', async () => {
-  const { GetStaffInvitationByLinkUseCase } = await getUseCaseModulePromise
   const useCase = new GetStaffInvitationByLinkUseCase(jwtService, translationService)
 
   const response = await useCase.execute(invitation.slug, invitation.token)
 
-  assert.equal(response.organizationId, organization.documentId)
-  assert.equal(response.organizationName, organization.name)
+  expect(response.organizationId).toBe(organization.documentId)
+  expect(response.organizationName).toBe(organization.name)
 })
 
 test('accepts an invitation into its persisted organization', async () => {
   state.registrationInput = null
-  const { AcceptStaffInvitationUseCase } = await acceptUseCaseModulePromise
   const useCase = new AcceptStaffInvitationUseCase(jwtService, translationService)
 
   await useCase.execute(invitation.slug, invitation.token, {
@@ -120,8 +107,7 @@ test('accepts an invitation into its persisted organization', async () => {
     password: 'password123',
   })
 
-  assert.equal(
-    (state.registrationInput as { organizationId: number }).organizationId,
+  expect((state.registrationInput as { organizationId: number }).organizationId).toBe(
     organization.id
   )
 })

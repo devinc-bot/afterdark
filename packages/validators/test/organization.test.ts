@@ -1,5 +1,4 @@
-import assert from 'node:assert/strict'
-import test from 'node:test'
+import { expect, test } from 'vitest'
 import {
   createStaffInvitationSchema,
   ownerSettingsFormSchema,
@@ -13,8 +12,8 @@ test('organization settings require a name when tax ID is present', () => {
     taxId: '20329642330',
   })
 
-  assert.equal(result.success, false)
-  assert.equal(result.error?.issues[0]?.path[0], 'organizationName')
+  expect(result.success).toBe(false)
+  expect(result.error?.issues[0]?.path[0]).toBe('organizationName')
 })
 
 test('owner settings compose organization validation', () => {
@@ -29,8 +28,8 @@ test('owner settings compose organization validation', () => {
     address: { address: '', streetNumber: '', state: '', city: '' },
   })
 
-  assert.equal(result.success, true)
-  assert.equal(result.data?.organizationName, 'Afterdark')
+  expect(result.success).toBe(true)
+  expect(result.data?.organizationName).toBe('Afterdark')
 })
 
 test('owner settings always require an organization name', () => {
@@ -47,8 +46,8 @@ test('owner settings always require an organization name', () => {
     },
   })
 
-  assert.equal(result.success, false)
-  assert.deepEqual(result.error?.issues[0]?.path, ['profile', 'organizationName'])
+  expect(result.success).toBe(false)
+  expect(result.error?.issues[0]?.path).toEqual(['profile', 'organizationName'])
 })
 
 test('staff invitation no longer accepts location context', () => {
@@ -59,5 +58,5 @@ test('staff invitation no longer accepts location context', () => {
     expiresInMs: 43200000,
   })
 
-  assert.equal('locationId' in result, false)
+  expect('locationId' in result).toBe(false)
 })

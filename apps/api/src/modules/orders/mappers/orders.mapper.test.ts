@@ -1,5 +1,4 @@
-import assert from 'node:assert/strict'
-import test from 'node:test'
+import { expect, test } from 'vitest'
 import { toBuyerOrderSummaryResponse } from './orders.mapper.ts'
 
 test('maps a buyer order summary row to its public response', () => {
@@ -19,7 +18,7 @@ test('maps a buyer order summary row to its public response', () => {
     eventStartsAt: new Date(1000000),
   })
 
-  assert.deepEqual(result, {
+  expect(result).toEqual({
     documentId: 'order-1',
     status: 'pending',
     amount: 2500,

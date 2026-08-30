@@ -1,33 +1,23 @@
-import assert from 'node:assert/strict'
-import { mock, test } from 'node:test'
+import { expect, test, vi } from 'vitest'
 
-const state: {
-  row: Record<string, unknown> | null
-  fail: boolean
-  lastParams: Record<string, unknown> | null
-} = {
-  row: null,
+const state = vi.hoisted(() => ({
+  row: null as Record<string, unknown> | null,
   fail: false,
-  lastParams: null,
-}
+  lastParams: null as Record<string, unknown> | null,
+}))
 
-mock.module('@repo/db', {
-  namedExports: {
-    findAdminUserDetailByAccountDocumentId: async (accountDocumentId: string) => {
-      state.lastParams = { accountDocumentId }
-      if (state.fail) throw new Error('db down')
-      return state.row
-    },
+vi.mock('@repo/db', () => ({
+  findAdminUserDetailByAccountDocumentId: async (accountDocumentId: string) => {
+    state.lastParams = { accountDocumentId }
+    if (state.fail) throw new Error('db down')
+    return state.row
   },
-})
+}))
 
-const useCaseModulePromise = import('./get-admin-user-detail.use-case.ts')
+import { GetAdminUserDetailUseCase } from './get-admin-user-detail.use-case.ts'
 
 function createUseCase() {
-  return useCaseModulePromise.then(
-    ({ GetAdminUserDetailUseCase }) =>
-      new GetAdminUserDetailUseCase({ translateError: (code: string) => code } as never)
-  )
+  return new GetAdminUserDetailUseCase({ translateError: (code: string) => code } as never)
 }
 
 function resetState() {
@@ -58,8 +48,8 @@ test('passes the account document id through and maps the detail row', async () 
   const useCase = await createUseCase()
   const result = await useCase.execute('acc-user')
 
-  assert.deepEqual(state.lastParams, { accountDocumentId: 'acc-user' })
-  assert.deepEqual(result, {
+  expect(state.lastParams).toEqual({ accountDocumentId: 'acc-user' })
+  expect(result).toEqual({
     documentId: 'acc-user',
     email: 'user@example.com',
     provider: 'local',
@@ -82,7 +72,7 @@ test('throws a not found error when the account does not exist', async () => {
   state.row = null
 
   const useCase = await createUseCase()
-  await assert.rejects(() => useCase.execute('missing'), {
+  await expect(useCase.execute('missing')).rejects.toMatchObject({
     name: 'NotFoundException',
     message: 'admin.USERS_DETAIL_NOT_FOUND',
   })
@@ -93,7 +83,7 @@ test('throws an internal server error when the repository fails', async () => {
   state.fail = true
 
   const useCase = await createUseCase()
-  await assert.rejects(() => useCase.execute('acc-user'), {
+  await expect(useCase.execute('acc-user')).rejects.toMatchObject({
     name: 'InternalServerErrorException',
     message: 'admin.USERS_DETAIL_FAILED',
   })
