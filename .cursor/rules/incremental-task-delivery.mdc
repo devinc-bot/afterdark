@@ -6,7 +6,7 @@ alwaysApply: true
 # Entregas incrementales
 
 Cuando el usuario pida una **feature**, **cambio grande** o **refactor amplio**, no implementar todo de una vez.
-En OpenSpec, `/opsx:apply` debe seguir esta misma regla (una tarea de `tasks.md` por turno).
+En SDD, `/sdd-apply` debe seguir esta misma regla (una tarea de `tasks.md` por turno).
 
 ## Flujo
 

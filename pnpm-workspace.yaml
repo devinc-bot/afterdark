@@ -3,7 +3,6 @@ packages:
   - 'packages/*'
 
 allowBuilds:
-  '@fission-ai/openspec': false # CLI de specs; su postinstall es solo aviso de telemetria
   '@nestjs/core': true
   '@parcel/watcher': true
   esbuild: true
