@@ -1,5 +1,4 @@
-import assert from 'node:assert/strict'
-import test from 'node:test'
+import { expect, test } from 'vitest'
 import { loadDatabaseEnv, loadMigrationEnv } from './env.loader.ts'
 
 const DATABASE_URL = 'postgresql://runtime-user:runtime-password@postgres:5432/afterdark'
@@ -20,7 +19,7 @@ test('uses injected database URLs without reading a local environment file', () 
     },
   })
 
-  assert.deepEqual(result, {
+  expect(result).toEqual({
     DATABASE_URL,
   })
 })
@@ -40,8 +39,8 @@ test('loads an existing local environment file when database URLs are absent', (
     },
   })
 
-  assert.equal(loadedPath, 'local.env')
-  assert.deepEqual(result, {
+  expect(loadedPath).toBe('local.env')
+  expect(result).toEqual({
     DATABASE_URL,
   })
 })
@@ -59,14 +58,13 @@ test('uses the injected direct migration URL without reading a local environment
     },
   })
 
-  assert.deepEqual(result, {
+  expect(result).toEqual({
     DATABASE_MIGRATION_URL,
   })
 })
 
 test('rejects migration configuration without a direct database URL', () => {
-  assert.throws(
-    () => loadMigrationEnv({ environment: {}, fileExists: () => false }),
+  expect(() => loadMigrationEnv({ environment: {}, fileExists: () => false })).toThrow(
     /DATABASE_MIGRATION_URL/
   )
 })
