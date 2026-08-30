@@ -1,5 +1,4 @@
-import assert from 'node:assert/strict'
-import test from 'node:test'
+import { expect, test } from 'vitest'
 import { UsersController } from './users.controller.ts'
 
 function createController(
@@ -32,9 +31,9 @@ test('delegates user listing to the use case', async () => {
     },
   })
 
-  assert.equal(await controller.list({ page: 1, limit: 10 }), result)
-  assert.deepEqual(calls, [{ query: { page: 1, limit: 10 } }])
-  assert.ok(useCases.listAdminUsersUseCase)
+  expect(await controller.list({ page: 1, limit: 10 })).toBe(result)
+  expect(calls).toEqual([{ query: { page: 1, limit: 10 } }])
+  expect(useCases.listAdminUsersUseCase).toBeTruthy()
 })
 
 test('delegates user detail to the use case', async () => {
@@ -47,8 +46,8 @@ test('delegates user detail to the use case', async () => {
     },
   })
 
-  assert.equal(await controller.get('acc-user'), result)
-  assert.deepEqual(calls, ['acc-user'])
+  expect(await controller.get('acc-user')).toBe(result)
+  expect(calls).toEqual(['acc-user'])
 })
 
 test('delegates user status update to the use case', async () => {
@@ -60,5 +59,5 @@ test('delegates user status update to the use case', async () => {
   })
 
   await controller.updateStatus('acc-user', { status: 'inactive' })
-  assert.deepEqual(calls, [{ documentId: 'acc-user', status: 'inactive' }])
+  expect(calls).toEqual([{ documentId: 'acc-user', status: 'inactive' }])
 })

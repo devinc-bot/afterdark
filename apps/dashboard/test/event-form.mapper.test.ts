@@ -1,6 +1,5 @@
-import assert from 'node:assert/strict'
-import test from 'node:test'
 import { EVENT_STATUS, type EventResponse } from '@repo/types'
+import { expect, test } from 'vitest'
 import { eventResponseToFormValues } from '../app/modules/events/utils/event-form.mapper.ts'
 
 function createEventResponse(startsAt: string, endsAt: string): EventResponse {
@@ -25,7 +24,7 @@ test('maps an event schedule to its duration input value', () => {
     createEventResponse('2026-08-17T22:00:00.000Z', '2026-08-18T02:00:00.000Z')
   )
 
-  assert.equal(values.durationHours, '4')
+  expect(values.durationHours).toBe('4')
 })
 
 test('leaves an out-of-range event duration unselected', () => {
@@ -33,5 +32,5 @@ test('leaves an out-of-range event duration unselected', () => {
     createEventResponse('2026-08-17T22:00:00.000Z', '2026-08-21T22:00:00.000Z')
   )
 
-  assert.equal(values.durationHours, '')
+  expect(values.durationHours).toBe('')
 })

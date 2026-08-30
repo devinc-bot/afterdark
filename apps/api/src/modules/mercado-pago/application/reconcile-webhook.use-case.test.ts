@@ -1,12 +1,8 @@
-import assert from 'node:assert/strict'
 import { createHmac } from 'node:crypto'
-import test from 'node:test'
-process.env.MERCADOPAGO_WEBHOOK_SECRET = 'test-webhook-secret'
-
-const reconcileModulePromise = import('./reconcile-webhook.use-case.ts')
+import { expect, test } from 'vitest'
+import { ReconcileMercadoPagoWebhookUseCase } from './reconcile-webhook.use-case.ts'
 
 test('accepts a legacy payment notification with its resource as the payment ID', async () => {
-  const { ReconcileMercadoPagoWebhookUseCase } = await reconcileModulePromise
   const requestId = 'request-123'
   const timestamp = String(Math.floor(Date.now() / 1000))
   const paymentId = 'payment-123'
@@ -32,11 +28,10 @@ test('accepts a legacy payment notification with its resource as the payment ID'
     undefined
   )
 
-  assert.equal(receivedPaymentId, paymentId)
+  expect(receivedPaymentId).toBe(paymentId)
 })
 
 test('includes the query payment ID in the webhook signature manifest', async () => {
-  const { ReconcileMercadoPagoWebhookUseCase } = await reconcileModulePromise
   const requestId = 'request-456'
   const timestamp = String(Math.floor(Date.now() / 1000))
   const paymentId = 'payment-456'
@@ -62,11 +57,10 @@ test('includes the query payment ID in the webhook signature manifest', async ()
     paymentId
   )
 
-  assert.equal(receivedPaymentId, paymentId)
+  expect(receivedPaymentId).toBe(paymentId)
 })
 
 test('omits a missing request ID from the webhook signature manifest', async () => {
-  const { ReconcileMercadoPagoWebhookUseCase } = await reconcileModulePromise
   const timestamp = String(Math.floor(Date.now() / 1000))
   const paymentId = 'payment-789'
   const signature = createHmac('sha256', process.env.MERCADOPAGO_WEBHOOK_SECRET ?? '')
@@ -90,11 +84,10 @@ test('omits a missing request ID from the webhook signature manifest', async () 
     undefined
   )
 
-  assert.equal(receivedPaymentId, paymentId)
+  expect(receivedPaymentId).toBe(paymentId)
 })
 
 test('rejects a valid signature outside the webhook replay window', async () => {
-  const { ReconcileMercadoPagoWebhookUseCase } = await reconcileModulePromise
   const useCase = new ReconcileMercadoPagoWebhookUseCase(
     { translateError: (code: string) => code } as never,
     { getPayment: async () => ({}) } as never
@@ -106,12 +99,12 @@ test('rejects a valid signature outside the webhook replay window', async () => 
     .update(manifest)
     .digest('hex')
 
-  await assert.rejects(
+  await expect(
     useCase.execute(
       { type: 'payment', data: { id: 'payment-123' } },
       `ts=${timestamp},v1=${signature}`,
       requestId,
       'payment-123'
     )
-  )
+  ).rejects.toThrow()
 })

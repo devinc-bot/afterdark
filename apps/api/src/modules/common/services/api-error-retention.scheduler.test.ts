@@ -1,5 +1,4 @@
-import assert from 'node:assert/strict'
-import test from 'node:test'
+import { expect, test, vi } from 'vitest'
 import { Logger } from '@nestjs/common'
 import { ApiErrorRetentionScheduler } from './api-error-retention.scheduler.ts'
 
@@ -22,7 +21,7 @@ test('uses a cutoff exactly 30 days before cleanup', () => {
   const scheduler = new TestApiErrorRetentionScheduler()
   const now = new Date(2026, 2, 31, 12, 30)
 
-  assert.deepEqual(scheduler.getRetentionCutoff(now), new Date(2026, 2, 1, 12, 30))
+  expect(scheduler.getRetentionCutoff(now)).toEqual(new Date(2026, 2, 1, 12, 30))
 })
 
 test('passes the 30-day cutoff to the repository', async () => {
@@ -30,27 +29,22 @@ test('passes the 30-day cutoff to the repository', async () => {
 
   await scheduler.cleanupExpiredRecords()
 
-  assert.ok(scheduler.receivedCutoff)
-  const ageInMilliseconds = Date.now() - scheduler.receivedCutoff.getTime()
-  assert.ok(ageInMilliseconds >= 30 * 24 * 60 * 60 * 1000)
-  assert.ok(ageInMilliseconds < 30 * 24 * 60 * 60 * 1000 + 1000)
+  expect(scheduler.receivedCutoff).toBeTruthy()
+  const ageInMilliseconds = Date.now() - scheduler.receivedCutoff!.getTime()
+  expect(ageInMilliseconds).toBeGreaterThanOrEqual(30 * 24 * 60 * 60 * 1000)
+  expect(ageInMilliseconds).toBeLessThan(30 * 24 * 60 * 60 * 1000 + 1000)
 })
 
 test('logs cleanup failures without rejecting', async () => {
   const scheduler = new TestApiErrorRetentionScheduler()
   const cleanupError = new Error('database unavailable')
-  const originalError = Logger.prototype.error
   const loggedErrors: unknown[][] = []
   scheduler.cleanupError = cleanupError
-  Logger.prototype.error = function (...args: unknown[]): void {
+  vi.spyOn(Logger.prototype, 'error').mockImplementation((...args: unknown[]) => {
     loggedErrors.push(args)
-  }
+  })
 
-  try {
-    await scheduler.cleanupExpiredRecords()
-  } finally {
-    Logger.prototype.error = originalError
-  }
+  await scheduler.cleanupExpiredRecords()
 
-  assert.deepEqual(loggedErrors, [['API error record cleanup failed', cleanupError]])
+  expect(loggedErrors).toEqual([['API error record cleanup failed', cleanupError]])
 })

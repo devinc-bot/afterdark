@@ -1,34 +1,26 @@
-import assert from 'node:assert/strict'
-import { mock, test } from 'node:test'
+import { expect, test, vi } from 'vitest'
 import { NotFoundException } from '@nestjs/common'
 import { USER_ROLE } from '@repo/types'
 
-const state: {
-  organization: { id: number } | null
-  rows: unknown[]
-  total: number
-  lastQuery: unknown
-} = {
-  organization: { id: 10 },
-  rows: [],
+const state = vi.hoisted(() => ({
+  organization: { id: 10 } as { id: number } | null,
+  rows: [] as unknown[],
   total: 0,
-  lastQuery: null,
-}
+  lastQuery: null as unknown,
+}))
 
-mock.module('@repo/db', {
-  namedExports: {
-    findEventOrganizationByOperator: async (params: unknown) => {
-      state.lastQuery = params
-      return state.organization
-    },
-    findScannedTicketsPaginatedByEvent: async (params: unknown) => {
-      state.lastQuery = params
-      return { rows: state.rows, total: state.total }
-    },
+vi.mock('@repo/db', () => ({
+  findEventOrganizationByOperator: async (params: unknown) => {
+    state.lastQuery = params
+    return state.organization
   },
-})
+  findScannedTicketsPaginatedByEvent: async (params: unknown) => {
+    state.lastQuery = params
+    return { rows: state.rows, total: state.total }
+  },
+}))
 
-const useCaseModulePromise = import('./list-scanned-tickets-history.use-case.ts')
+import { ListScannedTicketsHistoryUseCase } from './list-scanned-tickets-history.use-case.ts'
 const translationService = { translateError: (code: string) => code } as never
 
 test('returns a paginated history for an authorized operator', async () => {
@@ -48,35 +40,27 @@ test('returns a paginated history for an authorized operator', async () => {
   ]
   state.total = 25
 
-  const { ListScannedTicketsHistoryUseCase } = await useCaseModulePromise
   const result = await new ListScannedTicketsHistoryUseCase(translationService).execute(
     'owner-one',
     USER_ROLE.OWNER,
     { eventId: 'event-one', page: 2, limit: 10 }
   )
 
-  assert.equal(result.total, 25)
-  assert.equal(result.page, 2)
-  assert.equal(result.totalPages, 3)
-  assert.equal(result.data.length, 1)
-  assert.equal(result.data[0]?.purchaser.fullName, 'Ada Lovelace')
-  assert.equal(result.data[0]?.purchaser.phone, null)
+  expect(result.total).toBe(25)
+  expect(result.page).toBe(2)
+  expect(result.totalPages).toBe(3)
+  expect(result.data).toHaveLength(1)
+  expect(result.data[0]?.purchaser.fullName).toBe('Ada Lovelace')
+  expect(result.data[0]?.purchaser.phone).toBeNull()
 })
 
 test('throws not found when the operator is not a member of the event organization', async () => {
   state.organization = null
-  const { ListScannedTicketsHistoryUseCase } = await useCaseModulePromise
-
-  await assert.rejects(
-    () =>
-      new ListScannedTicketsHistoryUseCase(translationService).execute(
-        'owner-two',
-        USER_ROLE.OWNER,
-        { eventId: 'event-one', page: 1, limit: 10 }
-      ),
-    (error: unknown) => {
-      assert.ok(error instanceof NotFoundException)
-      return true
-    }
-  )
+  await expect(
+    new ListScannedTicketsHistoryUseCase(translationService).execute('owner-two', USER_ROLE.OWNER, {
+      eventId: 'event-one',
+      page: 1,
+      limit: 10,
+    })
+  ).rejects.toBeInstanceOf(NotFoundException)
 })

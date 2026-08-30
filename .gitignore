@@ -11,6 +11,14 @@ local.db*
 apps/api/uploads/
 .claude/settings.local.json
 
+# Vitest
+coverage/
+
+# Playwright
+playwright-report/
+test-results/
+.playwright/
+
 # Impecable AI
 .impecable/*
 

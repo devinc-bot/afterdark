@@ -1,5 +1,4 @@
-import assert from 'node:assert/strict'
-import test from 'node:test'
+import { expect, test } from 'vitest'
 import { OrdersController } from './orders.controller.ts'
 
 test('delegates order history to the current user use case', async () => {
@@ -18,11 +17,10 @@ test('delegates order history to the current user use case', async () => {
     undefined as never
   )
 
-  assert.equal(
-    await controller.list({ sub: 'buyer-document-id' } as never, { page: 1, limit: 10 }),
+  expect(await controller.list({ sub: 'buyer-document-id' } as never, { page: 1, limit: 10 })).toBe(
     result
   )
-  assert.deepEqual(calls, [{ userDocumentId: 'buyer-document-id', query: { page: 1, limit: 10 } }])
+  expect(calls).toEqual([{ userDocumentId: 'buyer-document-id', query: { page: 1, limit: 10 } }])
 })
 
 test('delegates pending order deletion to the current user use case', async () => {
@@ -41,7 +39,7 @@ test('delegates pending order deletion to the current user use case', async () =
 
   await controller.delete({ sub: 'buyer-document-id' } as never, 'order-document-id')
 
-  assert.deepEqual(calls, [
+  expect(calls).toEqual([
     { userDocumentId: 'buyer-document-id', orderDocumentId: 'order-document-id' },
   ])
 })

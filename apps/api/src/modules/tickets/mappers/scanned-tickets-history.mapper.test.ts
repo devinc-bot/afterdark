@@ -1,5 +1,4 @@
-import assert from 'node:assert/strict'
-import test from 'node:test'
+import { expect, test } from 'vitest'
 import type { ScannedTicketHistoryRow } from '@repo/types'
 import { toScannedTicketHistoryItem } from './scanned-tickets-history.mapper.ts'
 
@@ -18,7 +17,7 @@ const baseRow: ScannedTicketHistoryRow = {
 test('maps a scanned ticket with operator into a history item', () => {
   const result = toScannedTicketHistoryItem(baseRow)
 
-  assert.deepEqual(result, {
+  expect(result).toEqual({
     purchaser: { fullName: 'Ada Lovelace', email: 'ada@example.com', phone: '11111111' },
     operator: { fullName: 'Grace Hopper', email: 'grace@example.com', role: 'owner' },
     ticket: { ticketType: { documentId: 'type-vip', name: 'VIP' } },
@@ -32,7 +31,7 @@ test('reports a null operator for pre-operator-tracking scans', () => {
     operator: { accountId: null, fullName: null, email: null, role: null },
   })
 
-  assert.equal(result.operator, null)
+  expect(result.operator).toBeNull()
 })
 
 test('normalizes an empty purchaser phone to null', () => {
@@ -41,5 +40,5 @@ test('normalizes an empty purchaser phone to null', () => {
     purchaser: { ...baseRow.purchaser, phone: '' },
   })
 
-  assert.equal(result.purchaser.phone, null)
+  expect(result.purchaser.phone).toBeNull()
 })

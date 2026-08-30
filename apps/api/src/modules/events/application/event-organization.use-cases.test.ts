@@ -1,5 +1,4 @@
-import assert from 'node:assert/strict'
-import { mock, test } from 'node:test'
+import { describe, expect, test, vi } from 'vitest'
 import { EVENT_STATUS } from '@repo/types'
 
 const organization = {
@@ -33,35 +32,31 @@ const event = {
   status: EVENT_STATUS.DRAFT,
 }
 
-const state: {
-  createInput: unknown
-  organization: typeof organization | null
-  updateInput: unknown
-} = {
-  createInput: null,
-  organization,
-  updateInput: null,
-}
-
-mock.module('@repo/db', {
-  namedExports: {
-    createEvent: async (input: unknown) => {
-      state.createInput = input
-      return { event, location, faqs: [] }
-    },
-    findEventImageAssetsByEventIds: async () => [],
-    findEventWithLocationOwnedByOwnerDocumentId: async () => ({ event, location, faqs: [] }),
-    findLocationOwnedByOwnerDocumentId: async () => location,
-    findSoleOrganizationByOwnerDocumentId: async () => state.organization,
-    updateEventByDocumentId: async (_documentId: string, input: unknown) => {
-      state.updateInput = input
-      return { event, location, faqs: [] }
-    },
+const { state } = vi.hoisted(() => ({
+  state: {
+    createInput: null as unknown,
+    organization: null as typeof organization | null,
+    updateInput: null as unknown,
   },
-})
+}))
 
-const createUseCaseModulePromise = import('./create-event.use-case.ts')
-const updateUseCaseModulePromise = import('./update-event.use-case.ts')
+vi.mock('@repo/db', () => ({
+  createEvent: async (input: unknown) => {
+    state.createInput = input
+    return { event, location, faqs: [] }
+  },
+  findEventImageAssetsByEventIds: async () => [],
+  findEventWithLocationOwnedByOwnerDocumentId: async () => ({ event, location, faqs: [] }),
+  findLocationOwnedByOwnerDocumentId: async () => location,
+  findSoleOrganizationByOwnerDocumentId: async () => state.organization,
+  updateEventByDocumentId: async (_documentId: string, input: unknown) => {
+    state.updateInput = input
+    return { event, location, faqs: [] }
+  },
+}))
+
+import { CreateEventUseCase } from './create-event.use-case.ts'
+import { UpdateEventUseCase } from './update-event.use-case.ts'
 
 const translationService = {
   translateError: (code: string) => code,
@@ -83,47 +78,43 @@ const input = {
   faqs: [],
 }
 
-test('creates an event for the owner sole organization', async () => {
-  state.organization = organization
-  state.createInput = null
-  const { CreateEventUseCase } = await createUseCaseModulePromise
+describe('event organization use cases', () => {
+  test('creates an event for the owner sole organization', async () => {
+    state.organization = organization
+    state.createInput = null
+    await new CreateEventUseCase(eventImages, translationService).execute('owner-one', input)
 
-  await new CreateEventUseCase(eventImages, translationService).execute('owner-one', input)
+    expect((state.createInput as { organizationId: number }).organizationId).toBe(organization.id)
+    expect((state.createInput as { locationId: number }).locationId).toBe(location.id)
+    expect((state.createInput as { endsAt: Date }).endsAt.getTime()).toBe(
+      event.startsAt.getTime() + 4 * 3_600_000
+    )
+  })
 
-  assert.equal((state.createInput as { organizationId: number }).organizationId, organization.id)
-  assert.equal((state.createInput as { locationId: number }).locationId, location.id)
-  assert.equal(
-    (state.createInput as { endsAt: Date }).endsAt.getTime(),
-    event.startsAt.getTime() + 4 * 3_600_000
-  )
-})
+  test('updates an event without changing its authorized organization', async () => {
+    state.organization = organization
+    state.updateInput = null
+    await new UpdateEventUseCase(eventImages, translationService).execute(
+      'owner-one',
+      event.documentId,
+      input
+    )
 
-test('updates an event without changing its authorized organization', async () => {
-  state.organization = organization
-  state.updateInput = null
-  const { UpdateEventUseCase } = await updateUseCaseModulePromise
+    expect((state.updateInput as { organizationId: number }).organizationId).toBe(organization.id)
+    expect((state.updateInput as { endsAt: Date }).endsAt.getTime()).toBe(
+      event.startsAt.getTime() + 4 * 3_600_000
+    )
+  })
 
-  await new UpdateEventUseCase(eventImages, translationService).execute(
-    'owner-one',
-    event.documentId,
-    input
-  )
-
-  assert.equal((state.updateInput as { organizationId: number }).organizationId, organization.id)
-  assert.equal(
-    (state.updateInput as { endsAt: Date }).endsAt.getTime(),
-    event.startsAt.getTime() + 4 * 3_600_000
-  )
-})
-
-test('fails before persistence when owner organization context is invalid', async () => {
-  state.organization = null
-  state.createInput = null
-  const { CreateEventUseCase } = await createUseCaseModulePromise
-
-  await assert.rejects(
-    () => new CreateEventUseCase(eventImages, translationService).execute('owner-one', input),
-    { name: 'InternalServerErrorException', message: 'event.CREATE_FAILED' }
-  )
-  assert.equal(state.createInput, null)
+  test('fails before persistence when owner organization context is invalid', async () => {
+    state.organization = null
+    state.createInput = null
+    await expect(
+      new CreateEventUseCase(eventImages, translationService).execute('owner-one', input)
+    ).rejects.toMatchObject({
+      name: 'InternalServerErrorException',
+      message: 'event.CREATE_FAILED',
+    })
+    expect(state.createInput).toBeNull()
+  })
 })
