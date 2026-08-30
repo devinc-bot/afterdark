@@ -1,5 +1,4 @@
-import assert from 'node:assert/strict'
-import { mock, test } from 'node:test'
+import { expect, test, vi } from 'vitest'
 import { OWNER_STATUS } from '@repo/types'
 
 const ownerRow = {
@@ -17,29 +16,23 @@ const ownerRow = {
   address: null,
 }
 
-const state: {
-  currentOwner: typeof ownerRow | null
-  ownerId: number | null
-  updates: unknown[]
-} = {
-  currentOwner: ownerRow,
-  ownerId: 1,
-  updates: [],
-}
+const state = vi.hoisted(() => ({
+  currentOwner: null as typeof ownerRow | null,
+  ownerId: 1 as number | null,
+  updates: [] as unknown[],
+}))
 
-mock.module('@repo/db', {
-  namedExports: {
-    findCurrentOwnerByDocumentId: async () => state.currentOwner,
-    findOwnerIdByDocumentId: async () => state.ownerId,
-    updateOwnerByDocumentId: async (_documentId: string, input: unknown) => {
-      state.updates.push(input)
-    },
-    upsertOwnerAddress: async () => undefined,
+vi.mock('@repo/db', () => ({
+  findCurrentOwnerByDocumentId: async () => state.currentOwner,
+  findOwnerIdByDocumentId: async () => state.ownerId,
+  updateOwnerByDocumentId: async (_documentId: string, input: unknown) => {
+    state.updates.push(input)
   },
-})
+  upsertOwnerAddress: async () => undefined,
+}))
 
-const getUseCaseModulePromise = import('./get-current-owner.use-case.ts')
-const updateUseCaseModulePromise = import('./update-current-owner.use-case.ts')
+import { GetCurrentOwnerUseCase } from './get-current-owner.use-case.ts'
+import { UpdateCurrentOwnerUseCase } from './update-current-owner.use-case.ts'
 
 const translationService = {
   translateError: (code: string) => code,
@@ -53,15 +46,10 @@ function resetState() {
 }
 
 async function createGetUseCase() {
-  const { GetCurrentOwnerUseCase } = await getUseCaseModulePromise
   return new GetCurrentOwnerUseCase(translationService)
 }
 
 async function createUpdateUseCase() {
-  const [{ GetCurrentOwnerUseCase }, { UpdateCurrentOwnerUseCase }] = await Promise.all([
-    getUseCaseModulePromise,
-    updateUseCaseModulePromise,
-  ])
   return new UpdateCurrentOwnerUseCase(
     new GetCurrentOwnerUseCase(translationService),
     translationService
@@ -74,8 +62,8 @@ test('returns organization-backed owner settings with the existing response fiel
 
   const response = await useCase.execute('owner-one')
 
-  assert.equal(response.organizationName, 'Organization One')
-  assert.equal(response.taxId, '20329642330')
+  expect(response.organizationName).toBe('Organization One')
+  expect(response.taxId).toBe('20329642330')
 })
 
 test('returns not found for a missing owner', async () => {
@@ -83,7 +71,7 @@ test('returns not found for a missing owner', async () => {
   state.currentOwner = null
   const useCase = await createGetUseCase()
 
-  await assert.rejects(() => useCase.execute('missing-owner'), {
+  await expect(useCase.execute('missing-owner')).rejects.toMatchObject({
     name: 'NotFoundException',
     message: 'owner.NOT_FOUND',
   })
@@ -94,24 +82,22 @@ test('does not update when the repository cannot resolve owner settings', async 
   state.currentOwner = null
   const updateUseCase = await createUpdateUseCase()
 
-  await assert.rejects(
-    () =>
-      updateUseCase.execute('owner-one', {
-        name: 'Owner',
-        lastName: 'One',
-        phone: '11111111',
-        birthday: '',
-        nationalId: '',
-        organizationName: 'Organization One',
-        taxId: '20329642330',
-        address: { address: '', streetNumber: '', state: '', city: '' },
-      }),
-    {
-      name: 'NotFoundException',
-      message: 'owner.NOT_FOUND',
-    }
-  )
-  assert.deepEqual(state.updates, [])
+  await expect(
+    updateUseCase.execute('owner-one', {
+      name: 'Owner',
+      lastName: 'One',
+      phone: '11111111',
+      birthday: '',
+      nationalId: '',
+      organizationName: 'Organization One',
+      taxId: '20329642330',
+      address: { address: '', streetNumber: '', state: '', city: '' },
+    })
+  ).rejects.toMatchObject({
+    name: 'NotFoundException',
+    message: 'owner.NOT_FOUND',
+  })
+  expect(state.updates).toEqual([])
 })
 
 test('preserves organization fields when updating owner settings', async () => {
@@ -129,7 +115,7 @@ test('preserves organization fields when updating owner settings', async () => {
     address: { address: '', streetNumber: '', state: '', city: '' },
   })
 
-  assert.deepEqual(state.updates, [
+  expect(state.updates).toEqual([
     {
       name: 'Updated',
       lastName: 'Owner',

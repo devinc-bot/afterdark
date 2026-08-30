@@ -1,5 +1,4 @@
-import assert from 'node:assert/strict'
-import { mock, test } from 'node:test'
+import { expect, test, vi } from 'vitest'
 import { PAYMENT_STATUS, type PaymentStatus } from '@repo/types'
 
 type Order = {
@@ -7,31 +6,24 @@ type Order = {
   externalOrderId: string | null
 }
 
-const state: {
-  currentOrder: Order | null
-  deleteResult: boolean
-  initialOrder: Order | null
-  userId: number | null
-} = {
-  currentOrder: null,
+const state = vi.hoisted(() => ({
+  currentOrder: null as Order | null,
   deleteResult: false,
-  initialOrder: null,
-  userId: null,
-}
+  initialOrder: null as Order | null,
+  userId: null as number | null,
+}))
 let findOrderCallCount = 0
 
-mock.module('@repo/db', {
-  namedExports: {
-    findUserIdByDocumentId: async () => state.userId,
-    findOrderByDocumentIdAndUserId: async () => {
-      findOrderCallCount += 1
-      return findOrderCallCount === 1 ? state.initialOrder : state.currentOrder
-    },
-    deletePendingOrderByDocumentIdAndUserId: async () => state.deleteResult,
+vi.mock('@repo/db', () => ({
+  findUserIdByDocumentId: async () => state.userId,
+  findOrderByDocumentIdAndUserId: async () => {
+    findOrderCallCount += 1
+    return findOrderCallCount === 1 ? state.initialOrder : state.currentOrder
   },
-})
+  deletePendingOrderByDocumentIdAndUserId: async () => state.deleteResult,
+}))
 
-const useCaseModulePromise = import('./delete-pending-order.use-case.ts')
+import { DeletePendingOrderUseCase } from './delete-pending-order.use-case.ts'
 
 function resetState({
   currentOrder,
@@ -56,12 +48,9 @@ function createUseCase({
 }: {
   expirePreference: (preferenceId: string) => Promise<void>
 }) {
-  return useCaseModulePromise.then(
-    ({ DeletePendingOrderUseCase }) =>
-      new DeletePendingOrderUseCase(
-        { translateError: (code: string) => code } as never,
-        { expirePreference } as never
-      )
+  return new DeletePendingOrderUseCase(
+    { translateError: (code: string) => code } as never,
+    { expirePreference } as never
   )
 }
 
@@ -79,7 +68,7 @@ test('expires the provider preference before deleting an owned pending order', a
 
   await useCase.execute('buyer-1', 'order-1')
 
-  assert.deepEqual(expiredPreferences, ['preference-1'])
+  expect(expiredPreferences).toEqual(['preference-1'])
 })
 
 test('rejects deletion of an owned non-pending order', async () => {
@@ -89,7 +78,7 @@ test('rejects deletion of an owned non-pending order', async () => {
   })
   const useCase = await createUseCase({ expirePreference: async () => undefined })
 
-  await assert.rejects(() => useCase.execute('buyer-1', 'order-1'), {
+  await expect(useCase.execute('buyer-1', 'order-1')).rejects.toMatchObject({
     name: 'ConflictException',
     message: 'order.DELETE_NOT_PENDING',
   })
@@ -106,7 +95,7 @@ test('retains the local order when preference expiration fails', async () => {
     },
   })
 
-  await assert.rejects(() => useCase.execute('buyer-1', 'order-1'), {
+  await expect(useCase.execute('buyer-1', 'order-1')).rejects.toMatchObject({
     name: 'InternalServerErrorException',
     message: 'order.DELETE_FAILED',
   })
@@ -116,7 +105,7 @@ test('returns not found when the buyer does not own an order', async () => {
   resetState({ initialOrder: null, deleteResult: false })
   const useCase = await createUseCase({ expirePreference: async () => undefined })
 
-  await assert.rejects(() => useCase.execute('buyer-1', 'order-1'), {
+  await expect(useCase.execute('buyer-1', 'order-1')).rejects.toMatchObject({
     name: 'NotFoundException',
     message: 'order.NOT_FOUND',
   })
@@ -130,7 +119,7 @@ test('rejects deletion when reconciliation completes the order concurrently', as
   })
   const useCase = await createUseCase({ expirePreference: async () => undefined })
 
-  await assert.rejects(() => useCase.execute('buyer-1', 'order-1'), {
+  await expect(useCase.execute('buyer-1', 'order-1')).rejects.toMatchObject({
     name: 'ConflictException',
     message: 'order.DELETE_NOT_PENDING',
   })

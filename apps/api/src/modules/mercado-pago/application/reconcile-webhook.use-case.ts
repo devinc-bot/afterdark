@@ -59,7 +59,7 @@ export class ReconcileMercadoPagoWebhookUseCase {
     if (
       !paymentId ||
       !isPaymentWebhook(body) ||
-      !this.isSignatureValid(String(dataId), signature, requestId)
+      !this.isSignatureValid(dataId, signature, requestId)
     ) {
       throw new ForbiddenException(this.ts.translateError('order.WEBHOOK_INVALID'))
     }

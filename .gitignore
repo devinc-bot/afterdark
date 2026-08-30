@@ -18,6 +18,14 @@ openspec/changes/*
 openspec/changes/archive/*
 !openspec/changes/archive/.gitkeep
 
+# Vitest
+coverage/
+
+# Playwright
+playwright-report/
+test-results/
+.playwright/
+
 # Impecable AI
 .impecable/*
 

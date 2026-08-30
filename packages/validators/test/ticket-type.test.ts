@@ -1,5 +1,4 @@
-import assert from 'node:assert/strict'
-import test from 'node:test'
+import { expect, test } from 'vitest'
 import {
   createTicketSchema,
   createTicketTypeSchema,
@@ -9,8 +8,8 @@ import {
 const TICKET_TYPE_DOCUMENT_ID = '8d1d285f-9d21-4b42-b218-495b05b4f223'
 
 test('ticket type creation trims a valid name and rejects blank names', () => {
-  assert.equal(createTicketTypeSchema.parse({ name: '  Backstage  ' }).name, 'Backstage')
-  assert.equal(createTicketTypeSchema.safeParse({ name: '   ' }).success, false)
+  expect(createTicketTypeSchema.parse({ name: '  Backstage  ' }).name).toBe('Backstage')
+  expect(createTicketTypeSchema.safeParse({ name: '   ' }).success).toBe(false)
 })
 
 test('ticket creation requires a persistent ticket type document id', () => {
@@ -23,6 +22,6 @@ test('ticket creation requires a persistent ticket type document id', () => {
     eventId: 'event-id',
   })
 
-  assert.equal(input.success, true)
-  assert.equal(ticketTypeDocumentIdSchema.safeParse('general').success, false)
+  expect(input.success).toBe(true)
+  expect(ticketTypeDocumentIdSchema.safeParse('general').success).toBe(false)
 })
