@@ -232,6 +232,7 @@ export {
   tableVariants,
 } from './components/ui/table.tsx'
 export { Textarea, textareaVariants, type TextareaProps } from './components/ui/textarea.tsx'
+export { RichEditor, type RichEditorProps } from './components/ui/rich-editor.tsx'
 export {
   Pagination,
   PaginationButton,
