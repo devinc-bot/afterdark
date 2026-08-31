@@ -11,13 +11,15 @@
     "signOut": "Cerrar sesión",
     "users": "Usuarios registrados",
     "errors": "Errores",
+    "legalDocuments": "Documentos legales",
     "theme": "Tema",
     "themeDark": "Oscuro",
     "themeLight": "Claro"
   },
   "sections": {
     "users": "Usuarios registrados",
-    "errors": "Errores"
+    "errors": "Errores",
+    "legalDocuments": "Documentos legales"
   },
   "user": {
     "fallbackName": "Administrador"
@@ -26,6 +28,26 @@
     "label": "Admin",
     "title": "Tu espacio de administración está listo.",
     "description": "Las herramientas de gestión de la plataforma aparecerán acá a medida que estén disponibles."
+  },
+  "legalDocuments": {
+    "title": "Documentos legales",
+    "description": "Prepará el contenido legal para organizaciones y clientes web. Los cambios de esta vista todavía no se guardan.",
+    "tabs": {
+      "terms": "Términos y condiciones",
+      "privacy": "Política de privacidad"
+    },
+    "organizations": {
+      "title": "Organizaciones",
+      "description": "Contenido dirigido a dueños y equipos que administran organizaciones.",
+      "termsEditorLabel": "Editor de términos y condiciones para organizaciones",
+      "privacyEditorLabel": "Editor de política de privacidad para organizaciones"
+    },
+    "web": {
+      "title": "Web",
+      "description": "Contenido dirigido a clientes que usan la experiencia pública de Repo.",
+      "termsEditorLabel": "Editor de términos y condiciones para web",
+      "privacyEditorLabel": "Editor de política de privacidad para web"
+    }
   },
   "errors": {
     "description": "Errores registrados por la API en los últimos 30 días.",

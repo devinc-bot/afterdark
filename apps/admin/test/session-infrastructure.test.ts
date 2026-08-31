@@ -22,6 +22,18 @@ const appLayoutRouteModuleUrl = new URL('../app/routes/_app.tsx', import.meta.ur
 const appIndexRouteModuleUrl = new URL('../app/routes/_app/index.tsx', import.meta.url)
 const usersRouteModuleUrl = new URL('../app/routes/_app/users.tsx', import.meta.url)
 const errorsRouteModuleUrl = new URL('../app/routes/_app/errors.tsx', import.meta.url)
+const legalDocumentsRouteModuleUrl = new URL(
+  '../app/routes/_app/legal-documents.tsx',
+  import.meta.url
+)
+const legalDocumentsViewModuleUrl = new URL(
+  '../app/modules/legal-documents/components/legal-documents-view.tsx',
+  import.meta.url
+)
+const legalDocumentSectionModuleUrl = new URL(
+  '../app/modules/legal-documents/components/legal-document-section.tsx',
+  import.meta.url
+)
 const appShellModuleUrl = new URL('../app/modules/common/components/app-shell.tsx', import.meta.url)
 const appShellUserModuleUrl = new URL(
   '../app/modules/common/components/app-shell-user.tsx',
@@ -97,17 +109,19 @@ test('admin protected layout requires an admin session', async () => {
   assert.equal(routeSource.includes('<AppShell>'), true)
 })
 
-test('admin protected root redirects to users and exposes empty section routes', async () => {
-  const [indexSource, usersSource, errorsSource] = await Promise.all([
+test('admin protected root redirects to users and exposes section routes', async () => {
+  const [indexSource, usersSource, errorsSource, legalDocumentsSource] = await Promise.all([
     readFile(appIndexRouteModuleUrl, 'utf8'),
     readFile(usersRouteModuleUrl, 'utf8'),
     readFile(errorsRouteModuleUrl, 'utf8'),
+    readFile(legalDocumentsRouteModuleUrl, 'utf8'),
   ])
 
   assert.equal(indexSource.includes('redirect('), true)
   assert.equal(indexSource.includes('ADMIN_ROUTES.users()'), true)
   assert.equal(usersSource.includes("createFileRoute('/_app/users')"), true)
   assert.equal(errorsSource.includes("createFileRoute('/_app/errors')"), true)
+  assert.equal(legalDocumentsSource.includes("createFileRoute('/_app/legal-documents')"), true)
 })
 
 test('admin shell provides navigation, account identity, and sign-out without mock metrics', async () => {
@@ -121,6 +135,7 @@ test('admin shell provides navigation, account identity, and sign-out without mo
   assert.equal(shellSource.includes('<AppSidebar'), true)
   assert.equal(shellSource.includes('ADMIN_ROUTES.users()'), true)
   assert.equal(shellSource.includes('ADMIN_ROUTES.errors()'), true)
+  assert.equal(shellSource.includes('ADMIN_ROUTES.legalDocuments()'), true)
   assert.equal(shellSource.includes('clearAuthenticatedState(queryClient)'), true)
   assert.equal(shellSource.includes("t('nav.users')"), true)
   assert.equal(shellSource.includes("t('brand.subtitle')"), true)
@@ -130,6 +145,20 @@ test('admin shell provides navigation, account identity, and sign-out without mo
   assert.equal(themeSource.includes("t('nav.theme')"), true)
   assert.equal(languageSource.includes('useLanguage'), true)
   assert.equal(shellSource.includes('KPI'), false)
+})
+
+test('admin legal documents provide organization and web editors without persistence actions', async () => {
+  const [viewSource, sectionSource] = await Promise.all([
+    readFile(legalDocumentsViewModuleUrl, 'utf8'),
+    readFile(legalDocumentSectionModuleUrl, 'utf8'),
+  ])
+
+  assert.equal(viewSource.match(/<LegalDocumentSection/g)?.length, 2)
+  assert.equal(sectionSource.match(/<RichEditor/g)?.length, 2)
+  assert.equal(sectionSource.includes('setTermsContent'), true)
+  assert.equal(sectionSource.includes('setPrivacyContent'), true)
+  assert.equal(viewSource.includes('save'), false)
+  assert.equal(sectionSource.includes('publish'), false)
 })
 
 test('admin copy is provided in Spanish and English', async () => {
@@ -150,4 +179,6 @@ test('admin copy is provided in Spanish and English', async () => {
   assert.equal(enSource.includes('"errors"'), true)
   assert.equal(esSource.includes('"theme"'), true)
   assert.equal(enSource.includes('"fallbackName"'), true)
+  assert.equal(esSource.includes('"legalDocuments"'), true)
+  assert.equal(enSource.includes('"legalDocuments"'), true)
 })

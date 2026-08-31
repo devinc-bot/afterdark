@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { useQueryClient } from '@tanstack/react-query'
 import { useNavigate, useRouterState } from '@tanstack/react-router'
 import type { LucideIcon } from 'lucide-react'
-import { TriangleAlert, Users } from 'lucide-react'
+import { FileText, TriangleAlert, Users } from 'lucide-react'
 import {
   AppLogo,
   AppSidebar,
@@ -57,6 +57,11 @@ function AppShellLayout({ children }: { children: React.ReactNode }) {
     () => [
       { title: t('nav.users'), url: ADMIN_ROUTES.users(), icon: Users },
       { title: t('nav.errors'), url: ADMIN_ROUTES.errors(), icon: TriangleAlert },
+      {
+        title: t('nav.legalDocuments'),
+        url: ADMIN_ROUTES.legalDocuments(),
+        icon: FileText,
+      },
     ],
     [t]
   )
