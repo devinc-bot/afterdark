@@ -23,6 +23,7 @@ import {
 import { clearAuthenticatedState } from '~/modules/auth/utils/sign-out.utils'
 import { ADMIN_ROUTES } from '~/modules/common/constants/routes'
 import { useSession } from '~/modules/common/hooks/use-session'
+import { logoutAuthSession } from '~/modules/common/services/session.service'
 import { AppShellLanguageSwitcher } from './app-shell-language-switcher'
 import { AppShellThemeSwitcher } from './app-shell-theme-switcher'
 import { AppShellUser } from './app-shell-user'
@@ -77,10 +78,16 @@ function AppShellLayout({ children }: { children: React.ReactNode }) {
 
   const closeMobileSidebar = useCallback(() => setOpenMobile(false), [setOpenMobile])
 
-  const handleSignOut = useCallback(() => {
-    clearAuthenticatedState(queryClient)
-    closeMobileSidebar()
-    void navigate({ to: ADMIN_ROUTES.login() })
+  const handleSignOut = useCallback(async () => {
+    try {
+      await logoutAuthSession()
+    } catch {
+      // Local authentication must be cleared even when the API cannot be reached.
+    } finally {
+      clearAuthenticatedState(queryClient)
+      closeMobileSidebar()
+      await navigate({ to: ADMIN_ROUTES.login() })
+    }
   }, [closeMobileSidebar, navigate, queryClient])
 
   return (

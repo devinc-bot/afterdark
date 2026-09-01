@@ -1,8 +1,10 @@
 import { Injectable, Logger } from '@nestjs/common'
 import type { GeoIpLocateResult } from '@repo/types'
+import type { GeoIpLocator } from '../geo-ip-locator.port'
 
 const IPQUERY_BASE_URL = 'https://api.ipquery.io'
-const USER_AGENT = 'repo/1.0 (location; contact=ops@repo.local)'
+const USER_AGENT = 'lumina/1.0 (location; contact=ops@lumina.local)'
+export const IPQUERY_TIMEOUT_MS = 1_500
 
 type IpQueryLocationPayload = {
   location?: {
@@ -15,7 +17,7 @@ type IpQueryLocationPayload = {
 }
 
 @Injectable()
-export class IpQueryLocatorAdapter {
+export class IpQueryLocatorAdapter implements GeoIpLocator {
   private readonly logger = new Logger(IpQueryLocatorAdapter.name)
 
   async locateByIp(ip: string | null): Promise<GeoIpLocateResult> {
@@ -54,6 +56,7 @@ export class IpQueryLocatorAdapter {
         Accept: 'application/json',
         'User-Agent': USER_AGENT,
       },
+      signal: AbortSignal.timeout(IPQUERY_TIMEOUT_MS),
     })
 
     if (!response.ok) {
