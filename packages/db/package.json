@@ -13,7 +13,7 @@
   },
   "scripts": {
     "type-check": "tsc --noEmit",
-    "test": "tsx --test src/config/env.server.test.ts src/repositories/slug.test.ts",
+    "test": "pnpm --dir ../.. exec vitest run packages/db/src/config/env.server.test.ts packages/db/src/repositories/slug.test.ts packages/db/src/repositories/auth/account-sessions.test.ts",
     "db:generate": "drizzle-kit generate --config=drizzle.config.ts",
     "db:migrate": "drizzle-kit migrate --config=drizzle.config.ts",
     "db:push": "drizzle-kit push --config=drizzle.config.ts",
