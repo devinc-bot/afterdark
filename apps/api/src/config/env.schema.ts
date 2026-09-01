@@ -46,6 +46,13 @@ function getSchemefulSite(url: string): string {
   return `${protocol}//${registrableDomain}`
 }
 
+function parseCorsOrigins(value: string): string[] {
+  return value
+    .split(',')
+    .map((origin) => origin.trim())
+    .filter(Boolean)
+}
+
 export const apiConfigSchema = z
   .object({
     PORT: z.coerce.number().default(3000),
@@ -55,9 +62,7 @@ export const apiConfigSchema = z
     DASHBOARD_URL: z.url(),
     WEB_URL: z.url(),
     ADMIN_URL: z.url(),
-    CORS_ALLOWED_ORIGINS: z
-      .string()
-      .transform((value) => value.split(',').map((origin) => origin.trim())),
+    CORS_ALLOWED_ORIGINS: z.string().default(''),
     // Number of trusted reverse-proxy hops before the client; use 0 for local direct access.
     TRUST_PROXY_HOPS: z.coerce.number().int().nonnegative(),
     NODE_ENV: z.enum([MODE.DEVELOPMENT, MODE.PRODUCTION, MODE.TEST]).default(MODE.DEVELOPMENT),
@@ -74,20 +79,21 @@ export const apiConfigSchema = z
       })
     }
 
-    const requiredOrigins = [config.WEB_URL, config.DASHBOARD_URL, config.ADMIN_URL]
-    if (requiredOrigins.some((origin) => !config.CORS_ALLOWED_ORIGINS.includes(origin))) {
-      context.addIssue({
-        code: 'custom',
-        path: ['CORS_ALLOWED_ORIGINS'],
-        message: 'CORS_ALLOWED_ORIGINS must include WEB_URL, DASHBOARD_URL, and ADMIN_URL.',
-      })
-    }
-
     if (config.NODE_ENV === MODE.PRODUCTION && config.TRUST_PROXY_HOPS === 0) {
       context.addIssue({
         code: 'custom',
         path: ['TRUST_PROXY_HOPS'],
         message: 'TRUST_PROXY_HOPS must be at least 1 in production.',
       })
+    }
+  })
+  .transform((config) => {
+    const requiredOrigins = [config.WEB_URL, config.DASHBOARD_URL, config.ADMIN_URL]
+
+    return {
+      ...config,
+      CORS_ALLOWED_ORIGINS: [
+        ...new Set([...requiredOrigins, ...parseCorsOrigins(config.CORS_ALLOWED_ORIGINS)]),
+      ],
     }
   })

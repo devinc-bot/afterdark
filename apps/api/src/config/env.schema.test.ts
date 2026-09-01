@@ -20,7 +20,33 @@ test('accepts same-site application and API origins with a configured proxy topo
   expect(apiConfigSchema.parse(validConfig)).toMatchObject({
     TRUST_PROXY_HOPS: 1,
     ADMIN_URL: validConfig.ADMIN_URL,
+    CORS_ALLOWED_ORIGINS: [validConfig.WEB_URL, validConfig.DASHBOARD_URL, validConfig.ADMIN_URL],
   })
+})
+
+test('defaults CORS origins to the three application URLs and accepts extra origins', () => {
+  const result = apiConfigSchema.parse({
+    ...validConfig,
+    CORS_ALLOWED_ORIGINS: 'https://admin.example.com, https://partner.example.com',
+  })
+
+  expect(result.CORS_ALLOWED_ORIGINS).toEqual([
+    validConfig.WEB_URL,
+    validConfig.DASHBOARD_URL,
+    validConfig.ADMIN_URL,
+    'https://partner.example.com',
+  ])
+
+  const withoutConfiguredOrigins = apiConfigSchema.parse({
+    ...validConfig,
+    CORS_ALLOWED_ORIGINS: undefined,
+  })
+
+  expect(withoutConfiguredOrigins.CORS_ALLOWED_ORIGINS).toEqual([
+    validConfig.WEB_URL,
+    validConfig.DASHBOARD_URL,
+    validConfig.ADMIN_URL,
+  ])
 })
 
 test('rejects a deployment whose origins do not share a schemeful site', () => {
