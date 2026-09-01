@@ -112,6 +112,9 @@ export const API_ROUTES = {
       listPublic: () => '/' as const,
       /** Anonymous published-event detail (GET). */
       getPublic: (slug: string) => `/slug/${routeSegment(slug)}` as const,
+      /** Public published-event availability stream (SSE). */
+      availabilityStream: (documentId: string) =>
+        `/${routeSegment(documentId)}/availability/events` as const,
       list: () => '/my-events' as const,
       get: (documentId: string) => `/${documentId}` as const,
       create: () => '/' as const,
@@ -138,6 +141,8 @@ export const API_ROUTES = {
       get: (documentId: string) => `/${routeSegment(documentId)}` as const,
       /** Authenticated buyer — delete their pending order (DELETE). */
       delete: (documentId: string) => `/${routeSegment(documentId)}` as const,
+      /** Authenticated buyer's private purchase state stream (SSE). */
+      stream: (documentId: string) => `/${routeSegment(documentId)}/events` as const,
     },
   },
   mercadoPago: {

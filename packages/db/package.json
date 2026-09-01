@@ -13,13 +13,14 @@
   },
   "scripts": {
     "type-check": "tsc --noEmit",
-    "test": "tsx --test src/config/env.server.test.ts src/repositories/slug.test.ts",
+    "test": "pnpm -C ../.. exec vitest run packages/db/src",
     "db:generate": "drizzle-kit generate --config=drizzle.config.ts",
     "db:migrate": "drizzle-kit migrate --config=drizzle.config.ts",
     "db:push": "drizzle-kit push --config=drizzle.config.ts",
     "db:studio": "drizzle-kit studio --config=drizzle.config.ts",
     "db:seed:development": "tsx src/seed/development/index.ts",
-    "db:seed:production": "tsx src/seed/production/index.ts"
+    "db:seed:production": "tsx src/seed/production/index.ts",
+    "db:audit:legacy-orders": "tsx src/scripts/audit-legacy-orders.ts"
   },
   "dependencies": {
     "@repo/types": "workspace:*",

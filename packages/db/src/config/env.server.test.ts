@@ -1,9 +1,10 @@
 import { expect, test } from 'vitest'
-import { loadDatabaseEnv, loadMigrationEnv } from './env.loader.ts'
+import { loadDatabaseEnv, loadMigrationEnv, loadTestDatabaseEnv } from './env.loader.ts'
 
 const DATABASE_URL = 'postgresql://runtime-user:runtime-password@postgres:5432/afterdark'
 const DATABASE_MIGRATION_URL =
   'postgresql://migration-user:migration-password@postgres:5432/afterdark'
+const DATABASE_TEST_URL = 'postgresql://test-user:test-password@postgres:5432/afterdark_test'
 
 test('uses injected database URLs without reading a local environment file', () => {
   const environment: NodeJS.ProcessEnv = {
@@ -67,4 +68,20 @@ test('rejects migration configuration without a direct database URL', () => {
   expect(() => loadMigrationEnv({ environment: {}, fileExists: () => false })).toThrow(
     /DATABASE_MIGRATION_URL/
   )
+})
+
+test('requires an explicitly injected isolated test database URL', () => {
+  expect(loadTestDatabaseEnv({ DATABASE_TEST_URL })).toEqual({ DATABASE_TEST_URL })
+  expect(() => loadTestDatabaseEnv({})).toThrow(/DATABASE_TEST_URL/)
+  expect(() =>
+    loadTestDatabaseEnv({
+      DATABASE_TEST_URL: 'postgresql://test-user:test-password@postgres:5432/afterdark',
+    })
+  ).toThrow(/ending in "_test"/)
+  expect(() =>
+    loadTestDatabaseEnv({
+      DATABASE_URL: DATABASE_TEST_URL,
+      DATABASE_TEST_URL,
+    })
+  ).toThrow(/must differ/)
 })

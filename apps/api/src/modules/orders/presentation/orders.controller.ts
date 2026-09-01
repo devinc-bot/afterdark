@@ -9,8 +9,10 @@ import {
   Param,
   Post,
   Query,
+  Sse,
   UseGuards,
 } from '@nestjs/common'
+import type { MessageEvent } from '@nestjs/common'
 import { API_ROUTES } from '@repo/common'
 import {
   USER_ROLE,
@@ -32,10 +34,16 @@ import { Roles } from '../../common/decorators/roles.decorator'
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard'
 import { RolesGuard } from '../../common/guards/roles.guard'
 import { ZodValidationPipe } from '../../common/pipes/zod-validation.pipe'
+import { SseStreamsService } from '../../realtime/application/services/sse-streams.service'
 import { CreatePendingOrderUseCase } from '../application/create-pending-order.use-case'
 import { DeletePendingOrderUseCase } from '../application/delete-pending-order.use-case'
 import { GetOrderByDocumentIdUseCase } from '../application/get-order-by-document-id.use-case'
 import { ListMyOrdersUseCase } from '../application/list-my-orders.use-case'
+
+function toAfterVersion(value: string | undefined): number {
+  const parsed = Number.parseInt(value ?? '', 10)
+  return Number.isSafeInteger(parsed) && parsed >= 0 ? parsed : 0
+}
 
 @Controller(API_ROUTES.orders.prefix)
 export class OrdersController {
@@ -46,7 +54,8 @@ export class OrdersController {
     private readonly getOrderByDocumentIdUseCase: GetOrderByDocumentIdUseCase,
     @Inject(ListMyOrdersUseCase) private readonly listMyOrdersUseCase: ListMyOrdersUseCase,
     @Inject(DeletePendingOrderUseCase)
-    private readonly deletePendingOrderUseCase: DeletePendingOrderUseCase
+    private readonly deletePendingOrderUseCase: DeletePendingOrderUseCase,
+    @Inject(SseStreamsService) private readonly sseStreamsService: SseStreamsService
   ) {}
 
   @Get(API_ROUTES.orders.path.list())
@@ -89,5 +98,20 @@ export class OrdersController {
     @Param('documentId', new ZodValidationPipe(uuidSchema)) documentId: string
   ): Promise<OrderResponse> {
     return this.getOrderByDocumentIdUseCase.execute(user.sub, documentId)
+  }
+
+  @Sse(API_ROUTES.orders.path.stream(':documentId'))
+  @Roles([USER_ROLE.USER])
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  stream(
+    @CurrentUser() user: JwtPayload,
+    @Param('documentId', new ZodValidationPipe(uuidSchema)) documentId: string,
+    @Query('afterVersion') afterVersion?: string
+  ): Promise<import('rxjs').Observable<MessageEvent>> {
+    return this.sseStreamsService.createPurchaseStream(
+      user.sub,
+      documentId,
+      toAfterVersion(afterVersion)
+    )
   }
 }

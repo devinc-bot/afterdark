@@ -1,4 +1,5 @@
 import { expect, test } from 'vitest'
+import { of } from 'rxjs'
 import { OrdersController } from './orders.controller.ts'
 
 test('delegates order history to the current user use case', async () => {
@@ -14,6 +15,7 @@ test('delegates order history to the current user use case', async () => {
     undefined as never,
     undefined as never,
     listMyOrdersUseCase as never,
+    undefined as never,
     undefined as never
   )
 
@@ -21,6 +23,40 @@ test('delegates order history to the current user use case', async () => {
     result
   )
   expect(calls).toEqual([{ userDocumentId: 'buyer-document-id', query: { page: 1, limit: 10 } }])
+})
+
+test('delegates a private purchase stream with the authenticated buyer and catchup version', async () => {
+  const calls: Array<{ userDocumentId: string; purchaseDocumentId: string; afterVersion: number }> =
+    []
+  const stream = of({ data: {} })
+  const sseStreamsService = {
+    createPurchaseStream: async (
+      userDocumentId: string,
+      purchaseDocumentId: string,
+      afterVersion: number
+    ) => {
+      calls.push({ userDocumentId, purchaseDocumentId, afterVersion })
+      return stream
+    },
+  }
+  const controller = new OrdersController(
+    undefined as never,
+    undefined as never,
+    undefined as never,
+    undefined as never,
+    sseStreamsService as never
+  )
+
+  expect(
+    await controller.stream({ sub: 'buyer-document-id' } as never, 'purchase-document-id', '4')
+  ).toBe(stream)
+  expect(calls).toEqual([
+    {
+      userDocumentId: 'buyer-document-id',
+      purchaseDocumentId: 'purchase-document-id',
+      afterVersion: 4,
+    },
+  ])
 })
 
 test('delegates pending order deletion to the current user use case', async () => {
@@ -34,7 +70,8 @@ test('delegates pending order deletion to the current user use case', async () =
     undefined as never,
     undefined as never,
     undefined as never,
-    deletePendingOrderUseCase as never
+    deletePendingOrderUseCase as never,
+    undefined as never
   )
 
   await controller.delete({ sub: 'buyer-document-id' } as never, 'order-document-id')

@@ -1,23 +1,27 @@
-import { and, eq, sql, sum } from 'drizzle-orm'
-import { PAYMENT_STATUS } from '@repo/types/enums'
+import { eq, sql } from 'drizzle-orm'
+import { INVENTORY_RESERVATION_STATUS, PURCHASE_STATUS } from '@repo/types/enums'
 import { db } from '../../client.ts'
-import { orders } from '../../schema/orders.ts'
+import { inventoryReservations } from '../../schema/inventory-reservation.ts'
+import { purchaseItems } from '../../schema/purchase-item.ts'
+import { purchases } from '../../schema/purchase.ts'
 import { tickets, type TicketSelect } from '../../schema/ticket.ts'
 import { ticketTypes, type TicketTypeSelect } from '../../schema/ticket-type.ts'
 
-/** Ticket row plus units already sold via completed orders. */
+/** Ticket row plus confirmed and actively reserved normalized units. */
 export type TicketWithCompletedSales = {
   ticket: TicketSelect
   ticketType: TicketTypeSelect
-  /** Sum of `orders.quantity` with status `completed` for this ticket (0 when none). */
+  /** Sum of confirmed purchase-item quantities for this ticket (0 when none). */
   completedSalesQuantity: number
+  /** Sum of unexpired active reservations for this ticket (0 when none). */
+  reservedQuantity: number
 }
 
 /**
  * Lists all tickets for an event with their completed sales quantity.
  *
  * Includes inactive tickets and tickets outside the sale window — callers filter for
- * public/offer display. Remaining stock is typically `ticket.quantity - completedSalesQuantity`.
+ * public/offer display. Remaining stock excludes confirmed units and active reservations.
  *
  * @param eventId - Internal numeric event id (`events.id`)
  *
@@ -37,19 +41,27 @@ export type TicketWithCompletedSales = {
 export async function findTicketsWithCompletedSalesByEventId(
   eventId: number
 ): Promise<TicketWithCompletedSales[]> {
-  // SUM of joined completed order quantities; COALESCE returns zero when no rows.
-  const completedSalesQuantity = sql<number>`coalesce(${sum(orders.quantity)}, 0)`.mapWith(Number)
+  const completedSalesQuantity = sql<number>`coalesce((
+    select sum(${purchaseItems.quantity})
+    from ${purchaseItems}
+    inner join ${purchases} on ${purchases.id} = ${purchaseItems.purchaseId}
+    where ${purchaseItems.ticketId} = ${tickets.id}
+      and ${purchases.status} = ${PURCHASE_STATUS.CONFIRMED}
+  ), 0)`.mapWith(Number)
+  const reservedQuantity = sql<number>`coalesce((
+    select sum(${inventoryReservations.quantity})
+    from ${inventoryReservations}
+    inner join ${purchaseItems} on ${purchaseItems.id} = ${inventoryReservations.purchaseItemId}
+    where ${purchaseItems.ticketId} = ${tickets.id}
+      and ${inventoryReservations.status} = ${INVENTORY_RESERVATION_STATUS.ACTIVE}
+      and ${inventoryReservations.expiresAt} > now()
+  ), 0)`.mapWith(Number)
 
   const rows = await db
-    .select({ ticket: tickets, ticketType: ticketTypes, completedSalesQuantity })
+    .select({ ticket: tickets, ticketType: ticketTypes, completedSalesQuantity, reservedQuantity })
     .from(tickets)
     .innerJoin(ticketTypes, eq(ticketTypes.id, tickets.ticketTypeId))
-    .leftJoin(
-      orders,
-      and(eq(orders.ticketId, tickets.id), eq(orders.status, PAYMENT_STATUS.COMPLETED))
-    )
     .where(eq(tickets.eventId, eventId))
-    .groupBy(tickets.id)
 
   return rows
 }

@@ -18,6 +18,7 @@ export const events = pgTable('events', {
   startsAt: timestamp('starts_at', { withTimezone: true }).notNull(),
   endsAt: timestamp('ends_at', { withTimezone: true }).notNull(),
   location: text('location'),
+  availabilityVersion: integer('availability_version').notNull().default(0),
   status: text('status', {
     enum: [EVENT_STATUS.DRAFT, EVENT_STATUS.PUBLISHED, EVENT_STATUS.FINISHED],
   })
