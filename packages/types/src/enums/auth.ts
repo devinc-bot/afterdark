@@ -5,6 +5,14 @@ export const AUTH_PROVIDER = {
 
 export type AuthProvider = (typeof AUTH_PROVIDER)[keyof typeof AUTH_PROVIDER]
 
+export const CLIENT_APP = {
+  WEB: 'web',
+  DASHBOARD: 'dashboard',
+  ADMIN: 'admin',
+} as const
+
+export type ClientApp = (typeof CLIENT_APP)[keyof typeof CLIENT_APP]
+
 export const AUTH_OAUTH_APP = {
   WEB: 'web',
   DASHBOARD: 'dashboard',

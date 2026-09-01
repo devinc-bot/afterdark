@@ -38,6 +38,7 @@ The following runtime values are secrets and must not be supplied as Docker buil
 - `DATABASE_URL`
 - `DATABASE_MIGRATION_URL`
 - `JWT_SECRET`
+- `REFRESH_TOKEN_SECRET`
 - `GOOGLE_CLIENT_SECRET`
 - `RESEND_API_KEY`
 - `MERCADOPAGO_ACCESS_TOKEN`

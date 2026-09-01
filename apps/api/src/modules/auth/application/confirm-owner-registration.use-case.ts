@@ -14,9 +14,13 @@ import {
 } from '@repo/db'
 import { AUTH_ERROR_CODE } from '@repo/i18n'
 import { TranslationService } from '@repo/i18n/server'
-import { AUTH_PROVIDER, USER_ROLE, type LoginResponse } from '@repo/types'
+import { AUTH_PROVIDER, USER_ROLE } from '@repo/types'
 import type { ConfirmUserRegistrationInput } from '@repo/validators'
-import { AuthAccountService } from './services/auth-account.service'
+import {
+  AuthAccountService,
+  type AuthenticatedSession,
+  type SessionRequestMetadata,
+} from './services/auth-account.service'
 import {
   OWNER_REGISTRATION_PURPOSE,
   type OwnerRegistrationPayload,
@@ -30,7 +34,10 @@ export class ConfirmOwnerRegistrationUseCase {
     @Inject(AuthAccountService) private readonly accounts: AuthAccountService
   ) {}
 
-  async execute(input: ConfirmUserRegistrationInput): Promise<LoginResponse> {
+  async execute(
+    input: ConfirmUserRegistrationInput,
+    metadata: SessionRequestMetadata
+  ): Promise<AuthenticatedSession> {
     const registrationToken = await findOwnerRegistrationTokenByToken(input.token)
 
     if (!registrationToken) {
@@ -52,7 +59,7 @@ export class ConfirmOwnerRegistrationUseCase {
         await markOwnerRegistrationTokenUsed(registrationToken.id)
       }
 
-      return this.accounts.createAccessToken(existingAccount)
+      return this.accounts.createSession(existingAccount, metadata)
     }
 
     let payload: OwnerRegistrationPayload
@@ -112,6 +119,6 @@ export class ConfirmOwnerRegistrationUseCase {
       )
     }
 
-    return this.accounts.createAccessToken(created)
+    return this.accounts.createSession(created, metadata)
   }
 }

@@ -1,4 +1,5 @@
 import { IMAGE_OPTIMIZATION, IMAGE_UPLOAD_MAX_BYTES } from '@repo/validators'
+import { getDomain } from 'tldts'
 import { z } from 'zod'
 
 export const googleOauthEnvSchema = z.object({
@@ -36,14 +37,57 @@ export const MODE = {
   TEST: 'test',
 } as const
 
-export const apiConfigSchema = z.object({
-  PORT: z.coerce.number().default(3000),
-  JWT_SECRET: z.string(),
-  API_PUBLIC_URL: z.url(),
-  DASHBOARD_URL: z.url(),
-  WEB_URL: z.url(),
-  CORS_ALLOWED_ORIGINS: z
-    .string()
-    .transform((value) => value.split(',').map((origin) => origin.trim())),
-  NODE_ENV: z.enum([MODE.DEVELOPMENT, MODE.PRODUCTION, MODE.TEST]).default(MODE.DEVELOPMENT),
-})
+function getSchemefulSite(url: string): string {
+  const { protocol, hostname } = new URL(url)
+  // Resolve the registrable domain so api.example.com and dashboard.example.com
+  // share https://example.com, while api.foo.co.uk and bar.co.uk do not share a site.
+  const registrableDomain = getDomain(hostname) ?? hostname
+
+  return `${protocol}//${registrableDomain}`
+}
+
+export const apiConfigSchema = z
+  .object({
+    PORT: z.coerce.number().default(3000),
+    JWT_SECRET: z.string(),
+    REFRESH_TOKEN_SECRET: z.string().min(1),
+    API_PUBLIC_URL: z.url(),
+    DASHBOARD_URL: z.url(),
+    WEB_URL: z.url(),
+    ADMIN_URL: z.url(),
+    CORS_ALLOWED_ORIGINS: z
+      .string()
+      .transform((value) => value.split(',').map((origin) => origin.trim())),
+    // Number of trusted reverse-proxy hops before the client; use 0 for local direct access.
+    TRUST_PROXY_HOPS: z.coerce.number().int().nonnegative(),
+    NODE_ENV: z.enum([MODE.DEVELOPMENT, MODE.PRODUCTION, MODE.TEST]).default(MODE.DEVELOPMENT),
+  })
+  .superRefine((config, context) => {
+    const origins = [config.API_PUBLIC_URL, config.WEB_URL, config.DASHBOARD_URL, config.ADMIN_URL]
+    const expectedSite = getSchemefulSite(config.API_PUBLIC_URL)
+
+    if (origins.some((origin) => getSchemefulSite(origin) !== expectedSite)) {
+      context.addIssue({
+        code: 'custom',
+        message:
+          'API_PUBLIC_URL, WEB_URL, DASHBOARD_URL, and ADMIN_URL must share a schemeful site.',
+      })
+    }
+
+    const requiredOrigins = [config.WEB_URL, config.DASHBOARD_URL, config.ADMIN_URL]
+    if (requiredOrigins.some((origin) => !config.CORS_ALLOWED_ORIGINS.includes(origin))) {
+      context.addIssue({
+        code: 'custom',
+        path: ['CORS_ALLOWED_ORIGINS'],
+        message: 'CORS_ALLOWED_ORIGINS must include WEB_URL, DASHBOARD_URL, and ADMIN_URL.',
+      })
+    }
+
+    if (config.NODE_ENV === MODE.PRODUCTION && config.TRUST_PROXY_HOPS === 0) {
+      context.addIssue({
+        code: 'custom',
+        path: ['TRUST_PROXY_HOPS'],
+        message: 'TRUST_PROXY_HOPS must be at least 1 in production.',
+      })
+    }
+  })
