@@ -18,3 +18,9 @@ export const migrationEnvSchema = databaseEnvSchema.pick({
 })
 
 export type MigrationEnv = z.infer<typeof migrationEnvSchema>
+
+export const testDatabaseEnvSchema = z.object({
+  DATABASE_TEST_URL: z.url(),
+})
+
+export type TestDatabaseEnv = z.infer<typeof testDatabaseEnvSchema>

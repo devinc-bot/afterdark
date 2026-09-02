@@ -1,13 +1,10 @@
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common'
 import { findAuthAccountByEmail } from '@repo/db'
+import type { LoginResponse } from '@repo/types'
 import type { LoginInput } from '@repo/validators'
 import { TranslationService } from '@repo/i18n/server'
 import { verifyValue } from '../../common'
-import {
-  AuthAccountService,
-  type AuthenticatedSession,
-  type SessionRequestMetadata,
-} from './services/auth-account.service'
+import { AuthAccountService } from './services/auth-account.service'
 
 @Injectable()
 export class LoginUseCase {
@@ -16,10 +13,7 @@ export class LoginUseCase {
     @Inject(TranslationService) private readonly ts: TranslationService
   ) {}
 
-  async execute(
-    input: LoginInput,
-    metadata: SessionRequestMetadata
-  ): Promise<AuthenticatedSession> {
+  async execute(input: LoginInput): Promise<LoginResponse> {
     const row = await findAuthAccountByEmail(input.email)
 
     if (!row?.account.password) {
@@ -32,6 +26,6 @@ export class LoginUseCase {
       throw new UnauthorizedException(this.ts.translateError('auth.INVALID_CREDENTIALS'))
     }
 
-    return this.accounts.createSession(row, metadata)
+    return this.accounts.createAccessToken(row)
   }
 }

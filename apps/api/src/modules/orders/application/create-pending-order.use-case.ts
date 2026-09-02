@@ -1,17 +1,21 @@
 import { BadRequestException, Inject, Injectable } from '@nestjs/common'
 import {
-  countCompletedSoldQuantityByTicketId,
-  createOrder,
+  attachProviderPreference,
   findPublicTicketByDocumentId,
   findUserIdByDocumentId,
-  updateOrderById,
+  releaseReservationOnce,
+  reserveSingleTicketCheckout,
 } from '@repo/db'
 import { API_PREFIX, API_ROUTES, CLIENT_ROUTES } from '@repo/common'
 import { ORDER_ERROR_CODE } from '@repo/i18n'
 import { TranslationService } from '@repo/i18n/server'
 import {
   PAYMENT_PROVIDER,
+  PAYMENT_CURRENCY,
   PAYMENT_STATUS,
+  CHECKOUT_RESERVATION_DURATION_MS,
+  INVENTORY_RESERVATION_STATUS,
+  PURCHASE_STATUS,
   TICKET_STATUS,
   type CreateOrderResponse,
 } from '@repo/types'
@@ -20,7 +24,6 @@ import { ENV } from '../../../config/env'
 import type { MercadoPagoCheckoutProPort } from '../../mercado-pago/mercado-pago-checkout-pro.port'
 import { MERCADO_PAGO_CHECKOUT_PRO_PORT } from '../../mercado-pago/mercado-pago.tokens'
 import { arePlatformPaymentsConfigured, isTicketOnSale } from '../utils/orders'
-import { toOrderResponse } from '../mappers/orders.mapper'
 
 @Injectable()
 export class CreatePendingOrderUseCase {
@@ -47,34 +50,58 @@ export class CreatePendingOrderUseCase {
       throw new BadRequestException(this.ts.translateError(ORDER_ERROR_CODE.NOT_FOUND))
     }
 
-    const soldQuantity = await countCompletedSoldQuantityByTicketId(ticket.id)
-    if (ticket.quantity - soldQuantity < input.quantity) {
+    const now = new Date()
+    const expiresAt = new Date(now.getTime() + CHECKOUT_RESERVATION_DURATION_MS)
+    const checkout = await reserveSingleTicketCheckout({
+      userId,
+      ticketId: ticket.id,
+      quantity: input.quantity,
+      currency: PAYMENT_CURRENCY.ARS,
+      expiresAt,
+      now,
+    })
+    if (!checkout) {
       throw new BadRequestException(this.ts.translateError(ORDER_ERROR_CODE.OUT_OF_STOCK))
     }
 
-    const order = await createOrder({
-      ticketId: ticket.id,
-      userId,
-      amount: ticket.price * input.quantity,
-      quantity: input.quantity,
-      status: PAYMENT_STATUS.PENDING,
-      provider: PAYMENT_PROVIDER.MERCADO_PAGO,
-    })
-
     try {
       const preference = await this.mercadoPagoCheckoutPro.createPreference({
-        externalReference: order.documentId,
+        externalReference: checkout.purchase.documentId,
         title: ticket.ticketType.name,
-        quantity: order.quantity,
-        unitPrice: ticket.price,
+        quantity: checkout.purchaseItem.quantity,
+        unitPrice: checkout.purchaseItem.unitPrice,
         notificationUrl: this.getWebhookUrl(),
-        backUrls: this.getBackUrls(order.documentId),
+        expiresAt: checkout.purchase.expiresAt ?? expiresAt,
+        backUrls: this.getBackUrls(checkout.purchase.documentId),
       })
-      const updatedOrder = await updateOrderById(order.id, { externalOrderId: preference.id })
-      if (!updatedOrder) throw new Error('Order update returned no row')
+      const attachment = await attachProviderPreference({
+        purchaseDocumentId: checkout.purchase.documentId,
+        provider: PAYMENT_PROVIDER.MERCADO_PAGO,
+        providerPreferenceId: preference.id,
+        now,
+      })
+      if (attachment.outcome === 'not_attachable')
+        throw new Error('Provider preference is not attachable')
 
-      return { ...toOrderResponse(updatedOrder), checkoutUrl: preference.initPoint }
+      return {
+        documentId: checkout.purchase.documentId,
+        ticketId: ticket.documentId,
+        status: PAYMENT_STATUS.PENDING,
+        amount: checkout.purchase.totalAmount,
+        quantity: checkout.purchaseItem.quantity,
+        provider: PAYMENT_PROVIDER.MERCADO_PAGO,
+        paidAt: null,
+        createdAt: checkout.purchase.createdAt,
+        updatedAt: checkout.purchase.updatedAt,
+        checkoutUrl: preference.initPoint,
+      }
     } catch {
+      await releaseReservationOnce({
+        reservationDocumentId: checkout.reservation.documentId,
+        purchaseStatus: PURCHASE_STATUS.CANCELLED,
+        reservationStatus: INVENTORY_RESERVATION_STATUS.RELEASED,
+        now,
+      })
       throw new BadRequestException(this.ts.translateError(ORDER_ERROR_CODE.CHECKOUT_FAILED))
     }
   }

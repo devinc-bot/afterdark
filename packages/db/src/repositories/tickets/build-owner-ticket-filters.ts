@@ -1,20 +1,24 @@
 import { and, eq, exists, not, sql, type SQL } from 'drizzle-orm'
-import { PAYMENT_STATUS } from '@repo/types/enums'
+import { PURCHASE_STATUS } from '@repo/types/enums'
 import { TICKET_SALES_FILTER, type ListTicketsByOwnerParams } from '@repo/types'
 import { db } from '../../client.ts'
 import { locations } from '../../schema/location.ts'
-import { orders } from '../../schema/orders.ts'
 import { owners } from '../../schema/owner.ts'
 import { tickets } from '../../schema/ticket.ts'
 import { ticketsSold } from '../../schema/tickets_sold.ts'
+import { purchaseItems } from '../../schema/purchase-item.ts'
+import { purchases } from '../../schema/purchase.ts'
 
 function completedSalesExist(): SQL {
   return exists(
     db
       .select({ one: sql`1` })
       .from(ticketsSold)
-      .innerJoin(orders, eq(orders.id, ticketsSold.orderId))
-      .where(and(eq(orders.ticketId, tickets.id), eq(orders.status, PAYMENT_STATUS.COMPLETED)))
+      .innerJoin(purchaseItems, eq(purchaseItems.id, ticketsSold.purchaseItemId))
+      .innerJoin(purchases, eq(purchases.id, purchaseItems.purchaseId))
+      .where(
+        and(eq(purchaseItems.ticketId, tickets.id), eq(purchases.status, PURCHASE_STATUS.CONFIRMED))
+      )
   )
 }
 

@@ -1,6 +1,10 @@
 import { BadRequestException, Inject, Injectable } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
-import { completePasswordReset, findValidPasswordResetToken } from '@repo/db'
+import {
+  findValidPasswordResetToken,
+  markPasswordResetTokenUsed,
+  updateAccountPassword,
+} from '@repo/db'
 import { AUTH_ERROR_CODE } from '@repo/i18n'
 import { TranslationService } from '@repo/i18n/server'
 import type { ResetPasswordInput } from '@repo/validators'
@@ -41,16 +45,7 @@ export class ResetPasswordUseCase {
 
     const hashedPassword = await hashValue(input.password)
 
-    const completed = await completePasswordReset({
-      accountId: resetToken.accountId,
-      hashedPassword,
-      tokenId: resetToken.id,
-    })
-
-    if (!completed) {
-      throw new BadRequestException(
-        this.ts.translateError(AUTH_ERROR_CODE.PASSWORD_RESET_TOKEN_INVALID)
-      )
-    }
+    await updateAccountPassword(resetToken.accountId, hashedPassword)
+    await markPasswordResetTokenUsed(resetToken.id)
   }
 }
