@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest'
 import { EVENT_STATUS } from '@repo/types'
-import { toEventUpsertInput } from './events.mapper.ts'
+import { toEventUpsertInput, toPublicPurchasableTicketResponse } from './events.mapper.ts'
 
 test('maps an event duration to its persisted end timestamp', () => {
   const startsAt = new Date('2026-08-17T22:00:00.000Z')
@@ -21,4 +21,21 @@ test('maps an event duration to its persisted end timestamp', () => {
 
   expect(result.startsAt).toBe(startsAt)
   expect(result.endsAt.toISOString()).toBe('2026-08-18T02:00:00.000Z')
+})
+
+test('excludes active reserved units from public ticket availability', () => {
+  const response = toPublicPurchasableTicketResponse(
+    {
+      documentId: 'ticket-id',
+      price: 1000,
+      quantity: 10,
+      saleStartsAt: null,
+      saleEndsAt: null,
+    } as never,
+    { documentId: 'ticket-type-id', name: 'General' } as never,
+    6,
+    3
+  )
+
+  expect(response.remainingQuantity).toBe(1)
 })

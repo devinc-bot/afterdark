@@ -1,19 +1,12 @@
 import { ForbiddenException, Inject, Injectable } from '@nestjs/common'
 import { WebhookSignatureValidator } from 'mercadopago'
-import { findOrderByDocumentId, issueTicketsSoldForOrder, updateOrderById } from '@repo/db'
+import { reconcileMercadoPagoPayment } from '@repo/db'
 import { TranslationService } from '@repo/i18n/server'
-import {
-  MERCADO_PAGO_NOTIFICATION_TYPE,
-  type MercadoPagoNotificationType,
-  PAYMENT_STATUS,
-} from '@repo/types'
+import { MERCADO_PAGO_NOTIFICATION_TYPE, type MercadoPagoNotificationType } from '@repo/types'
 import { ENV } from '../../../config/env'
 import type { MercadoPagoCheckoutProPort } from '../mercado-pago-checkout-pro.port'
 import { MERCADO_PAGO_CHECKOUT_PRO_PORT } from '../mercado-pago.tokens'
 
-const APPROVED_ORDER_STATUS = 'approved'
-const REJECTED_ORDER_STATUS = 'rejected'
-const CANCELLED_ORDER_STATUS = 'cancelled'
 const WEBHOOK_TIMESTAMP_TOLERANCE_SECONDS = 5 * 60
 
 type MercadoPagoWebhookPayload = {
@@ -67,19 +60,15 @@ export class ReconcileMercadoPagoWebhookUseCase {
     const providerPayment = await this.mercadoPagoCheckoutPro.getPayment(paymentId)
     if (!providerPayment.externalReference) return
 
-    const localOrder = await findOrderByDocumentId(providerPayment.externalReference)
-    if (!localOrder) return
-
-    const status = this.toPaymentStatus(providerPayment.status)
-    if (!status || localOrder.status === PAYMENT_STATUS.COMPLETED) return
-    const order = await updateOrderById(localOrder.id, {
-      status,
-      paidAt:
-        status === PAYMENT_STATUS.COMPLETED ? (localOrder.paidAt ?? new Date()) : localOrder.paidAt,
+    await reconcileMercadoPagoPayment({
+      providerPaymentId: providerPayment.id,
+      providerStatus: providerPayment.status,
+      externalReference: providerPayment.externalReference,
+      amount: providerPayment.amount,
+      currency: providerPayment.currency,
+      payload: body as Record<string, unknown>,
+      now: new Date(),
     })
-    if (order?.status === PAYMENT_STATUS.COMPLETED) {
-      await issueTicketsSoldForOrder(order.id, order.quantity)
-    }
   }
 
   private isSignatureValid(
@@ -99,12 +88,5 @@ export class ReconcileMercadoPagoWebhookUseCase {
     } catch {
       return false
     }
-  }
-
-  private toPaymentStatus(status: string) {
-    if (status === APPROVED_ORDER_STATUS) return PAYMENT_STATUS.COMPLETED
-    if (status === REJECTED_ORDER_STATUS) return PAYMENT_STATUS.REJECTED
-    if (status === CANCELLED_ORDER_STATUS) return PAYMENT_STATUS.CANCELLED
-    return null
   }
 }

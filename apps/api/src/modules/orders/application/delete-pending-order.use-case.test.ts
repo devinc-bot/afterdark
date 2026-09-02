@@ -20,7 +20,9 @@ vi.mock('@repo/db', () => ({
     findOrderCallCount += 1
     return findOrderCallCount === 1 ? state.initialOrder : state.currentOrder
   },
+  findPendingPurchaseCancellation: async () => null,
   deletePendingOrderByDocumentIdAndUserId: async () => state.deleteResult,
+  releaseReservationOnce: async () => ({ transitioned: false }),
 }))
 
 import { DeletePendingOrderUseCase } from './delete-pending-order.use-case.ts'

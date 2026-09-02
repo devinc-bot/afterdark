@@ -6,7 +6,7 @@ import {
   findTicketCheckInOperatorForLocation,
 } from '@repo/db'
 import {
-  PAYMENT_STATUS,
+  PURCHASE_STATUS,
   TICKET_CHECK_IN_OUTCOME,
   type TicketCheckInResponse,
   type UserRole,
@@ -76,7 +76,7 @@ export class CheckInTicketUseCase {
       token: params.token,
     })
 
-    if (!context || context.order.status !== PAYMENT_STATUS.COMPLETED) {
+    if (!context || context.purchase.status !== PURCHASE_STATUS.CONFIRMED) {
       return { outcome: TICKET_CHECK_IN_OUTCOME.INVALID }
     }
 

@@ -8,11 +8,13 @@ import {
 import {
   deletePendingOrderByDocumentIdAndUserId,
   findOrderByDocumentIdAndUserId,
+  findPendingPurchaseCancellation,
   findUserIdByDocumentId,
+  releaseReservationOnce,
 } from '@repo/db'
 import { ORDER_ERROR_CODE } from '@repo/i18n/constants'
 import { TranslationService } from '@repo/i18n/server'
-import { PAYMENT_STATUS } from '@repo/types'
+import { INVENTORY_RESERVATION_STATUS, PAYMENT_STATUS, PURCHASE_STATUS } from '@repo/types'
 import type { MercadoPagoCheckoutProPort } from '../../mercado-pago/mercado-pago-checkout-pro.port'
 import { MERCADO_PAGO_CHECKOUT_PRO_PORT } from '../../mercado-pago/mercado-pago.tokens'
 
@@ -28,6 +30,29 @@ export class DeletePendingOrderUseCase {
     const userId = await findUserIdByDocumentId(userDocumentId)
     if (!userId) {
       throw new NotFoundException(this.ts.translateError(ORDER_ERROR_CODE.NOT_FOUND))
+    }
+
+    const purchase = await findPendingPurchaseCancellation(orderDocumentId, userId)
+    if (purchase) {
+      try {
+        if (purchase.payment.providerPreferenceId) {
+          await this.mercadoPagoCheckoutPro.expirePreference(purchase.payment.providerPreferenceId)
+        }
+      } catch {
+        throw new InternalServerErrorException(
+          this.ts.translateError(ORDER_ERROR_CODE.DELETE_FAILED)
+        )
+      }
+
+      const released = await releaseReservationOnce({
+        reservationDocumentId: purchase.reservation.documentId,
+        purchaseStatus: PURCHASE_STATUS.CANCELLED,
+        reservationStatus: INVENTORY_RESERVATION_STATUS.RELEASED,
+        now: new Date(),
+      })
+      if (released.transitioned) return
+
+      throw new ConflictException(this.ts.translateError(ORDER_ERROR_CODE.DELETE_NOT_PENDING))
     }
 
     const order = await findOrderByDocumentIdAndUserId(orderDocumentId, userId)

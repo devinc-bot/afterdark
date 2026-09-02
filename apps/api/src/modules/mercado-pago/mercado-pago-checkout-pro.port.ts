@@ -4,6 +4,7 @@ export type CreateMercadoPagoPreferenceInput = {
   quantity: number
   unitPrice: number
   notificationUrl: string
+  expiresAt: Date
   backUrls: {
     success: string
     pending: string
@@ -20,6 +21,8 @@ export type MercadoPagoPaymentResult = {
   id: string
   status: string
   externalReference: string | null
+  amount: number
+  currency: string
 }
 
 export interface MercadoPagoCheckoutProPort {

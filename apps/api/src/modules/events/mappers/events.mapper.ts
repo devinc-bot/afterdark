@@ -139,13 +139,14 @@ export function toPublicEventDetailResponse(
 export function toPublicPurchasableTicketResponse(
   ticket: TicketSelect,
   ticketType: TicketTypeSelect,
-  completedSalesQuantity: number
+  completedSalesQuantity: number,
+  reservedQuantity: number
 ): PublicPurchasableTicketResponse {
   return {
     documentId: ticket.documentId,
     price: ticket.price,
     ticketType: { documentId: ticketType.documentId, name: ticketType.name },
-    remainingQuantity: Math.max(ticket.quantity - completedSalesQuantity, 0),
+    remainingQuantity: Math.max(ticket.quantity - completedSalesQuantity - reservedQuantity, 0),
     saleStartsAt: ticket.saleStartsAt,
     saleEndsAt: ticket.saleEndsAt,
   }

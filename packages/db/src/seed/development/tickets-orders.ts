@@ -4,8 +4,9 @@ import { USER_ROLE } from '@repo/types'
 import {
   EVENT_STATUS,
   OWNER_STATUS,
+  PAYMENT_ATTEMPT_STATUS,
   PAYMENT_PROVIDER,
-  PAYMENT_STATUS,
+  PURCHASE_STATUS,
   TICKET_STATUS,
 } from '@repo/types/enums'
 import { seedEnv } from '../../config/seed.env.ts'
@@ -15,11 +16,13 @@ import { addresses } from '../../schema/address.ts'
 import { locationAddressesLnk } from '../../schema/location-address-lnk.ts'
 import { locations } from '../../schema/location.ts'
 import { events } from '../../schema/event.ts'
-import { orders } from '../../schema/orders.ts'
+import { payments } from '../../schema/payment.ts'
 import { organizationAccountsLnk } from '../../schema/organization-account-lnk.ts'
 import { organizations } from '../../schema/organization.ts'
 import { ownerAccountsLnk } from '../../schema/owner-account-lnk.ts'
 import { owners } from '../../schema/owner.ts'
+import { purchaseItems } from '../../schema/purchase-item.ts'
+import { purchases } from '../../schema/purchase.ts'
 import { roles } from '../../schema/role.ts'
 import { tickets } from '../../schema/ticket.ts'
 import { ticketsSold } from '../../schema/tickets_sold.ts'
@@ -50,11 +53,11 @@ const SEED_DOCUMENT_ID = {
   secondLocationAddressLink: getSeedDocumentId(12),
 } as const
 
-const ORDER_STATUSES = [
-  PAYMENT_STATUS.COMPLETED,
-  PAYMENT_STATUS.PENDING,
-  PAYMENT_STATUS.REJECTED,
-  PAYMENT_STATUS.CANCELLED,
+const SEED_PAYMENT_STATUSES = [
+  PAYMENT_ATTEMPT_STATUS.APPROVED,
+  PAYMENT_ATTEMPT_STATUS.PENDING,
+  PAYMENT_ATTEMPT_STATUS.REJECTED,
+  PAYMENT_ATTEMPT_STATUS.CANCELLED,
 ] as const
 
 async function getRoleIdByName(name: string): Promise<number> {
@@ -279,40 +282,90 @@ async function upsertTicket(
   return row
 }
 
-async function upsertOrder(
+async function upsertPurchase(
   documentId: string,
-  values: typeof orders.$inferInsert
+  values: typeof purchases.$inferInsert
 ): Promise<number> {
   const [existing] = await db
-    .select({ id: orders.id })
-    .from(orders)
-    .where(eq(orders.documentId, documentId))
+    .select({ id: purchases.id })
+    .from(purchases)
+    .where(eq(purchases.documentId, documentId))
     .limit(1)
 
   if (existing) {
     await db
-      .update(orders)
+      .update(purchases)
       .set({
-        ticketId: values.ticketId,
         userId: values.userId,
         status: values.status,
-        amount: values.amount,
-        quantity: values.quantity,
-        provider: values.provider,
-        paidAt: values.paidAt,
-        externalOrderId: values.externalOrderId,
-        metadata: values.metadata,
+        totalAmount: values.totalAmount,
+        currency: values.currency,
+        expiresAt: values.expiresAt,
+        confirmedAt: values.confirmedAt,
+        cancelledAt: values.cancelledAt,
         updatedAt: new Date(),
       })
-      .where(eq(orders.id, existing.id))
+      .where(eq(purchases.id, existing.id))
     return existing.id
   }
 
   const [row] = await db
-    .insert(orders)
+    .insert(purchases)
     .values({ ...values, documentId })
-    .returning({ id: orders.id })
+    .returning({ id: purchases.id })
   return row.id
+}
+
+async function upsertPurchaseItem(
+  purchaseId: number,
+  ticketId: number,
+  quantity: number,
+  unitPrice: number
+): Promise<number> {
+  const [existing] = await db
+    .select({ id: purchaseItems.id })
+    .from(purchaseItems)
+    .where(eq(purchaseItems.purchaseId, purchaseId))
+    .limit(1)
+
+  const values = {
+    ticketId,
+    quantity,
+    unitPrice,
+    lineTotal: unitPrice * quantity,
+    updatedAt: new Date(),
+  }
+  if (existing) {
+    await db.update(purchaseItems).set(values).where(eq(purchaseItems.id, existing.id))
+    return existing.id
+  }
+
+  const [row] = await db
+    .insert(purchaseItems)
+    .values({ purchaseId, ...values })
+    .returning({ id: purchaseItems.id })
+  return row.id
+}
+
+async function upsertPayment(
+  purchaseId: number,
+  values: Omit<typeof payments.$inferInsert, 'purchaseId'>
+): Promise<void> {
+  const [existing] = await db
+    .select({ id: payments.id })
+    .from(payments)
+    .where(eq(payments.purchaseId, purchaseId))
+    .limit(1)
+
+  if (existing) {
+    await db
+      .update(payments)
+      .set({ ...values, updatedAt: new Date() })
+      .where(eq(payments.id, existing.id))
+    return
+  }
+
+  await db.insert(payments).values({ purchaseId, ...values })
 }
 
 async function upsertTicketSold(
@@ -324,7 +377,13 @@ async function upsertTicketSold(
     .from(ticketsSold)
     .where(eq(ticketsSold.documentId, documentId))
     .limit(1)
-  if (existing) return
+  if (existing) {
+    await db
+      .update(ticketsSold)
+      .set({ ...values, updatedAt: new Date() })
+      .where(eq(ticketsSold.id, existing.id))
+    return
+  }
 
   await db.insert(ticketsSold).values({ ...values, documentId })
 }
@@ -432,8 +491,8 @@ export async function seedTicketsOrders(): Promise<void> {
   }
 
   const SEED_COUNT = 6
-  /** First N orders are completed purchases on distinct past days. */
-  const COMPLETED_ORDER_COUNT = 4
+  /** First N purchases are confirmed on distinct past days. */
+  const CONFIRMED_PURCHASE_COUNT = 4
   const ticketRefs: { id: number; price: number }[] = []
   const [generalTicketTypeId, vipTicketTypeId] = await Promise.all([
     findGlobalTicketTypeIdByName('General'),
@@ -458,34 +517,46 @@ export async function seedTicketsOrders(): Promise<void> {
   for (let i = 1; i <= SEED_COUNT; i++) {
     const ticket = ticketRefs[i - 1]
     const quantity = (i % 4) + 1
-    const isCompleted = i <= COMPLETED_ORDER_COUNT
-    const status = isCompleted
-      ? PAYMENT_STATUS.COMPLETED
-      : ORDER_STATUSES[((i - COMPLETED_ORDER_COUNT) % (ORDER_STATUSES.length - 1)) + 1]
+    const isConfirmed = i <= CONFIRMED_PURCHASE_COUNT
+    const paymentStatus = isConfirmed
+      ? PAYMENT_ATTEMPT_STATUS.APPROVED
+      : SEED_PAYMENT_STATUSES[
+          ((i - CONFIRMED_PURCHASE_COUNT) % (SEED_PAYMENT_STATUSES.length - 1)) + 1
+        ]
     // Spread completed sales across the last ~2 weeks (distinct days + hour offsets).
-    const paidAt = isCompleted
+    const confirmedAt = isConfirmed
       ? new Date(now - i * 3 * DAY_MS - (i % 4) * 2 * 60 * 60 * 1000)
       : null
 
-    const orderDocumentId = getSeedDocumentId(300 + i)
-    const orderId = await upsertOrder(orderDocumentId, {
-      documentId: orderDocumentId,
-      ticketId: ticket.id,
+    const purchaseDocumentId = getSeedDocumentId(300 + i)
+    const purchaseStatus = isConfirmed
+      ? PURCHASE_STATUS.CONFIRMED
+      : paymentStatus === PAYMENT_ATTEMPT_STATUS.PENDING
+        ? PURCHASE_STATUS.EXPIRED
+        : PURCHASE_STATUS.CANCELLED
+    const purchaseId = await upsertPurchase(purchaseDocumentId, {
+      documentId: purchaseDocumentId,
       userId: buyerUserId,
-      status,
-      amount: ticket.price * quantity,
-      quantity,
+      status: purchaseStatus,
+      totalAmount: ticket.price * quantity,
+      currency: 'ARS',
+      expiresAt: purchaseStatus === PURCHASE_STATUS.EXPIRED ? new Date(now - DAY_MS) : null,
+      confirmedAt,
+      cancelledAt: purchaseStatus === PURCHASE_STATUS.CANCELLED ? new Date(now - DAY_MS) : null,
+    })
+    const purchaseItemId = await upsertPurchaseItem(purchaseId, ticket.id, quantity, ticket.price)
+    await upsertPayment(purchaseId, {
       provider: PAYMENT_PROVIDER.MERCADO_PAGO,
-      paidAt,
-      externalOrderId: isCompleted ? `mp-seed-${i}` : null,
-      metadata: isCompleted
-        ? {
-            preferenceId: `pref-seed-${i}`,
-          }
-        : null,
+      status: paymentStatus,
+      amount: ticket.price * quantity,
+      currency: 'ARS',
+      providerPreferenceId: `pref-seed-${i}`,
+      providerPaymentId: isConfirmed ? `mp-seed-${i}` : null,
+      paidAt: confirmedAt,
+      reconciledAt: isConfirmed ? confirmedAt : null,
     })
 
-    if (!isCompleted) continue
+    if (!isConfirmed) continue
 
     for (let unit = 1; unit <= quantity; unit++) {
       const checkedIn = i % 2 === 0 && unit === 1
@@ -493,7 +564,8 @@ export async function seedTicketsOrders(): Promise<void> {
       const ticketSoldDocumentId = getSeedDocumentId(400 + i * 10 + unit)
       await upsertTicketSold(ticketSoldDocumentId, {
         documentId: ticketSoldDocumentId,
-        orderId,
+        purchaseItemId,
+        unitIndex: unit - 1,
         qrCode: `seed-qr-${i}-${unit}`,
         checkedIn,
         usedAt: checkedIn ? new Date(now - unit * 30 * 60 * 1000) : null,

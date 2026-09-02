@@ -65,8 +65,13 @@ export class GetPublicEventByDocumentIdUseCase {
       row.organizer,
       ticketRows
         .filter(({ ticket }) => isTicketOnSale(ticket))
-        .map(({ ticket, ticketType, completedSalesQuantity }) =>
-          toPublicPurchasableTicketResponse(ticket, ticketType, completedSalesQuantity)
+        .map(({ ticket, ticketType, completedSalesQuantity, reservedQuantity }) =>
+          toPublicPurchasableTicketResponse(
+            ticket,
+            ticketType,
+            completedSalesQuantity,
+            reservedQuantity
+          )
         ),
       arePlatformPaymentsConfigured()
     )

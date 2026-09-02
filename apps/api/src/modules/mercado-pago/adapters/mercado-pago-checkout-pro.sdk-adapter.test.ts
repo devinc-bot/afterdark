@@ -38,6 +38,7 @@ test('creates a Checkout Pro preference with the Mercado Pago SDK', async () => 
     quantity: 2,
     unitPrice: 2500,
     notificationUrl: 'https://api.afterdark.test/api/mercado-pago/webhook',
+    expiresAt: new Date('2026-09-01T12:15:00.000Z'),
     backUrls: {
       success: 'https://afterdark.test/checkout/order-123/success',
       pending: 'https://afterdark.test/checkout/order-123/pending',
@@ -54,6 +55,9 @@ test('creates a Checkout Pro preference with the Mercado Pago SDK', async () => 
       items: [{ id: 'order-123', title: 'Entrada general', quantity: 2, unit_price: 2500 }],
       external_reference: 'order-123',
       notification_url: 'https://api.afterdark.test/api/mercado-pago/webhook',
+      expires: true,
+      expiration_date_from: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T/),
+      expiration_date_to: '2026-09-01T12:15:00.000Z',
       back_urls: {
         success: 'https://afterdark.test/checkout/order-123/success',
         pending: 'https://afterdark.test/checkout/order-123/pending',
@@ -69,6 +73,8 @@ test('retrieves a payment with the Mercado Pago SDK', async () => {
     id: 456,
     status: 'approved',
     external_reference: 'order-123',
+    transaction_amount: 2500,
+    currency_id: 'ARS',
   })
   const adapter = new MercadoPagoCheckoutProSdkAdapter()
 
@@ -76,6 +82,8 @@ test('retrieves a payment with the Mercado Pago SDK', async () => {
     id: '456',
     status: 'approved',
     externalReference: 'order-123',
+    amount: 2500,
+    currency: 'ARS',
   })
   expect(sdk.getPayment).toHaveBeenCalledWith({ id: '456' })
 })
