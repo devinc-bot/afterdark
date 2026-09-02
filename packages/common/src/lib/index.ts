@@ -1,4 +1,10 @@
-export { QueryFactory, QueryFactoryError, type QueryFactoryOptions } from './query-factory.ts'
+export {
+  QueryFactory,
+  QueryFactoryAuthenticationError,
+  QueryFactoryError,
+  type QueryFactoryOptions,
+  type QueryFactoryRefreshOptions,
+} from './query-factory.ts'
 export {
   formatCurrency,
   formatDate,

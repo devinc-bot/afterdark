@@ -1,4 +1,4 @@
-# AGENTS.md - Repo Monorepo
+# AGENTS.md - Lumina Monorepo
 
 ## Proyecto
 
