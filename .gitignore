@@ -23,11 +23,7 @@ test-results/
 .impecable/*
 
 # SDD feature artifacts
-# spec/features/active/*
-# !spec/features/active/.gitkeep
-# !spec/features/active/001-auth-sessions/
-# !spec/features/active/001-auth-sessions/*.md
-# !spec/features/active/031-password-reset-token-retention/
-# !spec/features/active/031-password-reset-token-retention/*.md
-# spec/features/archive/*
-# !spec/features/archive/.gitkeep
+spec/features/active/*
+!spec/features/active/.gitkeep
+spec/features/archive/*
+!spec/features/archive/.gitkeep

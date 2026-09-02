@@ -38,7 +38,6 @@ The following runtime values are secrets and must not be supplied as Docker buil
 - `DATABASE_URL`
 - `DATABASE_MIGRATION_URL`
 - `JWT_SECRET`
-- `REFRESH_TOKEN_SECRET`
 - `GOOGLE_CLIENT_SECRET`
 - `RESEND_API_KEY`
 - `MERCADOPAGO_ACCESS_TOKEN`
@@ -48,9 +47,6 @@ The following runtime values are secrets and must not be supplied as Docker buil
 
 `GOOGLE_CLIENT_ID`, `MAIL_FROM`, `R2_ACCOUNT_ID`, `R2_BUCKET`, and public URLs are not credentials,
 but they remain runtime configuration because the API validates and uses them.
-
-`CORS_ALLOWED_ORIGINS` is optional. The API always allows `WEB_URL`, `DASHBOARD_URL`, and `ADMIN_URL`;
-set this variable as a comma-separated list only when additional origins are required.
 
 ## VPS Compose
 

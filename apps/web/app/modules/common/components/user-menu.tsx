@@ -20,7 +20,6 @@ import { clearAuthSession } from '~/modules/auth/utils/auth-storage.utils'
 import { SignOutDialog } from '~/modules/common/components/sign-out-dialog'
 import { WEB_ROUTES } from '~/modules/common/constants/routes'
 import { useSession } from '~/modules/common/hooks/use-session'
-import { logoutAuthSession } from '~/modules/common/services/session.service'
 import { getUserInitials } from '~/modules/common/utils/user-initials.utils'
 
 const TRIGGER_FOCUS_RING = 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink'
@@ -53,14 +52,11 @@ export function UserMenu({ user, ariaLabel, settingsHref }: UserMenuProps) {
     setIsSigningOut(true)
 
     try {
-      await logoutAuthSession()
-    } catch {
-      // Local authentication must be cleared even when the API cannot be reached.
-    } finally {
       clearAuthSession()
       clearSession()
       setSignOutOpen(false)
       await navigate({ to: WEB_ROUTES.home() })
+    } finally {
       signOutInFlight.current = false
       setIsSigningOut(false)
     }

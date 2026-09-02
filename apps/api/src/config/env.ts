@@ -9,15 +9,14 @@ import {
   MODE,
 } from './env.schema'
 
-export const envSchema = z
-  .object({
-    ...runtimeDatabaseEnvSchema.shape,
-    ...uploadEnvSchema.shape,
-    ...mailEnvSchema.shape,
-    ...googleOauthEnvSchema.shape,
-    ...mercadoPagoEnvSchema.shape,
-  })
-  .and(apiConfigSchema)
+const envSchema = z.object({
+  ...runtimeDatabaseEnvSchema.shape,
+  ...uploadEnvSchema.shape,
+  ...mailEnvSchema.shape,
+  ...googleOauthEnvSchema.shape,
+  ...mercadoPagoEnvSchema.shape,
+  ...apiConfigSchema.shape,
+})
 
 type Env = z.infer<typeof envSchema>
 

@@ -1,13 +1,9 @@
-import { AUTH_OAUTH_APP, CLIENT_APP, USER_ROLE } from '@repo/types'
+import { AUTH_OAUTH_APP, USER_ROLE } from '@repo/types'
 import { z } from 'zod'
 
 export const loginSchema = z.object({
   email: z.email(),
   password: z.string().min(8),
-})
-
-export const sessionClientAppSchema = z.object({
-  app: z.enum([CLIENT_APP.WEB, CLIENT_APP.DASHBOARD, CLIENT_APP.ADMIN]),
 })
 
 export const googleOauthStartSchema = z
@@ -69,8 +65,6 @@ export const resetPasswordSchema = resetPasswordBaseSchema.refine(
 )
 
 export type LoginInput = z.infer<typeof loginSchema>
-export type RefreshSessionInput = z.infer<typeof sessionClientAppSchema>
-export type LogoutSessionInput = RefreshSessionInput
 export type RegisterInput = z.infer<typeof registerSchema>
 export type RegisterUserInput = RegisterInput
 export type RegisterOwnerInput = RegisterInput
