@@ -71,6 +71,41 @@
       "when": 1788256800000,
       "tag": "20260901100000_enforce_ticket_allocation",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1788206400000,
+      "tag": "20260831200000_concurrent_payments",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1788210000000,
+      "tag": "20260831210000_backfill_concurrent_payments",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1788213600000,
+      "tag": "20260831220000_normalized_ticket_issuance",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1788217200000,
+      "tag": "20260831230000_webhook_payment_idempotency",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1788256800000,
+      "tag": "20260901100000_enforce_ticket_allocation",
+      "breakpoints": true
     }
   ]
 }
