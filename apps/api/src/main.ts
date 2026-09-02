@@ -7,7 +7,9 @@ import { API_PREFIX } from '@repo/common'
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
   app.enableShutdownHooks()
-  app.getHttpAdapter().getInstance().disable('x-powered-by')
+  const express = app.getHttpAdapter().getInstance()
+  express.disable('x-powered-by')
+  express.set('trust proxy', ENV.TRUST_PROXY_HOPS)
   app.enableCors({
     origin: ENV.CORS_ALLOWED_ORIGINS,
     credentials: true,

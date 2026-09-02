@@ -31,6 +31,7 @@ export const API_ROUTES = {
       registerOwnerRequest: () => '/register/owner/request' as const,
       registerOwnerConfirm: () => '/register/owner/confirm' as const,
       refreshToken: () => '/refresh' as const,
+      logout: () => '/logout' as const,
       forgotPassword: () => '/forgot-password' as const,
       resetPassword: () => '/reset-password' as const,
       google: () => '/google' as const,
