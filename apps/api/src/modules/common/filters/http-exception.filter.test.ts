@@ -1,5 +1,4 @@
-import assert from 'node:assert/strict'
-import test from 'node:test'
+import { expect, test, vi } from 'vitest'
 import { HttpException, Logger } from '@nestjs/common'
 import type { ArgumentsHost } from '@nestjs/common'
 import { Test } from '@nestjs/testing'
@@ -65,8 +64,8 @@ test('injects the error recorder through Nest', async () => {
   const filter = module.get(HttpExceptionFilter)
   const recorder = module.get(ApiErrorRecorderService)
 
-  assert.ok(filter)
-  assert.ok(recorder)
+  expect(filter).toBeTruthy()
+  expect(recorder).toBeTruthy()
 })
 
 test('records an unknown error as a generic internal failure', async () => {
@@ -75,13 +74,13 @@ test('records an unknown error as a generic internal failure', async () => {
 
   await filter.catch(new Error('Database unavailable'), host)
 
-  assert.deepEqual(filter.recorded?.context, {
+  expect(filter.recorded?.context).toEqual({
     method: 'POST',
     path: '/api/events?token=secret',
     statusCode: 500,
   })
-  assert.equal(response.statusCode, 500)
-  assert.equal(response.body?.message, 'Internal server error')
+  expect(response.statusCode).toBe(500)
+  expect(response.body?.message).toBe('Internal server error')
 })
 
 test('records explicit 5xx HTTP exceptions without exposing their details', async () => {
@@ -91,10 +90,10 @@ test('records explicit 5xx HTTP exceptions without exposing their details', asyn
 
   await filter.catch(exception, host)
 
-  assert.equal(filter.recorded?.context.statusCode, 503)
-  assert.equal(filter.recorded?.error, exception)
-  assert.equal(response.statusCode, 503)
-  assert.equal(response.body?.message, 'Internal server error')
+  expect(filter.recorded?.context.statusCode).toBe(503)
+  expect(filter.recorded?.error).toBe(exception)
+  expect(response.statusCode).toBe(503)
+  expect(response.body?.message).toBe('Internal server error')
 })
 
 test('does not record 4xx HTTP exceptions', async () => {
@@ -103,9 +102,9 @@ test('does not record 4xx HTTP exceptions', async () => {
 
   await filter.catch(new HttpException('Invalid event', 400), host)
 
-  assert.equal(filter.recorded, undefined)
-  assert.equal(response.statusCode, 400)
-  assert.equal(response.body?.message, 'Invalid event')
+  expect(filter.recorded).toBeUndefined()
+  expect(response.statusCode).toBe(400)
+  expect(response.body?.message).toBe('Invalid event')
 })
 
 test('logs a recording failure and preserves the 5xx response', async () => {
@@ -113,19 +112,14 @@ test('logs a recording failure and preserves the 5xx response', async () => {
   const { host, response } = createHost('/api/events')
   const recordingError = new Error('Database unavailable')
   const loggedErrors: unknown[][] = []
-  const originalError = Logger.prototype.error
   filter.recordingError = recordingError
-  Logger.prototype.error = function (...args: unknown[]): void {
+  vi.spyOn(Logger.prototype, 'error').mockImplementation((...args: unknown[]) => {
     loggedErrors.push(args)
-  }
+  })
 
-  try {
-    await filter.catch(new HttpException('Service unavailable', 503), host)
-  } finally {
-    Logger.prototype.error = originalError
-  }
+  await filter.catch(new HttpException('Service unavailable', 503), host)
 
-  assert.deepEqual(loggedErrors, [['API error recording failed', recordingError]])
-  assert.equal(response.statusCode, 503)
-  assert.equal(response.body?.message, 'Internal server error')
+  expect(loggedErrors).toEqual([['API error recording failed', recordingError]])
+  expect(response.statusCode).toBe(503)
+  expect(response.body?.message).toBe('Internal server error')
 })

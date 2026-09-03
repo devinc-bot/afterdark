@@ -1,5 +1,4 @@
-import assert from 'node:assert/strict'
-import { mock, test } from 'node:test'
+import { expect, test, vi } from 'vitest'
 import { STAFF_STATUS, USER_ROLE, type OwnerStaffPersonnelRow } from '@repo/types'
 
 const personnelRow: OwnerStaffPersonnelRow = {
@@ -15,27 +14,21 @@ const personnelRow: OwnerStaffPersonnelRow = {
   lastActiveAt: new Date(1000),
 }
 
-const state: {
-  deleteResult: boolean
-  personnel: OwnerStaffPersonnelRow[]
-  updateResult: boolean
-} = {
+const state = vi.hoisted(() => ({
   deleteResult: true,
-  personnel: [personnelRow],
+  personnel: [] as OwnerStaffPersonnelRow[],
   updateResult: true,
-}
+}))
 
-mock.module('@repo/db', {
-  namedExports: {
-    deleteStaffByDocumentId: async () => state.deleteResult,
-    findPersonnelByOwnerDocumentId: async () => state.personnel,
-    updateStaffStatusByDocumentId: async () => state.updateResult,
-  },
-})
+vi.mock('@repo/db', () => ({
+  deleteStaffByDocumentId: async () => state.deleteResult,
+  findPersonnelByOwnerDocumentId: async () => state.personnel,
+  updateStaffStatusByDocumentId: async () => state.updateResult,
+}))
 
-const listUseCaseModulePromise = import('./list-personnel-for-owner.use-case.ts')
-const updateUseCaseModulePromise = import('./update-staff-status.use-case.ts')
-const deleteUseCaseModulePromise = import('./delete-staff.use-case.ts')
+import { DeleteStaffUseCase } from './delete-staff.use-case.ts'
+import { ListPersonnelForOwnerUseCase } from './list-personnel-for-owner.use-case.ts'
+import { UpdateStaffStatusUseCase } from './update-staff-status.use-case.ts'
 
 const translationService = {
   translateError: (code: string) => code,
@@ -43,12 +36,11 @@ const translationService = {
 
 test('maps organization context in owner personnel responses', async () => {
   state.personnel = [personnelRow]
-  const { ListPersonnelForOwnerUseCase } = await listUseCaseModulePromise
   const useCase = new ListPersonnelForOwnerUseCase(translationService)
 
   const response = await useCase.execute('owner-one')
 
-  assert.deepEqual(response, [
+  expect(response).toEqual([
     {
       documentId: 'staff-one',
       name: 'Staff Member',
@@ -66,34 +58,21 @@ test('maps organization context in owner personnel responses', async () => {
 test('returns not found when owner and staff do not share an organization', async () => {
   state.updateResult = false
   state.deleteResult = false
-  const [{ UpdateStaffStatusUseCase }, { DeleteStaffUseCase }] = await Promise.all([
-    updateUseCaseModulePromise,
-    deleteUseCaseModulePromise,
-  ])
-
-  await assert.rejects(
-    () =>
-      new UpdateStaffStatusUseCase(translationService).execute(
-        'unrelated-owner',
-        'staff-one',
-        STAFF_STATUS.INACTIVE
-      ),
-    { name: 'NotFoundException', message: 'staff.NOT_FOUND' }
-  )
-  await assert.rejects(
-    () => new DeleteStaffUseCase(translationService).execute('unrelated-owner', 'staff-one'),
-    { name: 'NotFoundException', message: 'staff.NOT_FOUND' }
-  )
+  await expect(
+    new UpdateStaffStatusUseCase(translationService).execute(
+      'unrelated-owner',
+      'staff-one',
+      STAFF_STATUS.INACTIVE
+    )
+  ).rejects.toMatchObject({ name: 'NotFoundException', message: 'staff.NOT_FOUND' })
+  await expect(
+    new DeleteStaffUseCase(translationService).execute('unrelated-owner', 'staff-one')
+  ).rejects.toMatchObject({ name: 'NotFoundException', message: 'staff.NOT_FOUND' })
 })
 
 test('accepts repository success for organization-scoped status and membership removal', async () => {
   state.updateResult = true
   state.deleteResult = true
-  const [{ UpdateStaffStatusUseCase }, { DeleteStaffUseCase }] = await Promise.all([
-    updateUseCaseModulePromise,
-    deleteUseCaseModulePromise,
-  ])
-
   await new UpdateStaffStatusUseCase(translationService).execute(
     'owner-one',
     'staff-multiple-memberships',

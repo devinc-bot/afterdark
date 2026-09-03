@@ -42,7 +42,7 @@ export function OrderSummary({ order, onDelete }: OrderSummaryProps) {
             <Ticket className="mt-0.5 size-3.5 shrink-0" aria-hidden strokeWidth={1.75} />
             <span className="min-w-0">
               <span className="sr-only">{t('card.ticket')}: </span>
-              <span className="font-medium text-on-surface">{order.ticketName}</span>
+              <span className="font-medium text-on-surface">{order.ticketType.name}</span>
               <span className="px-1.5 text-outline-variant" aria-hidden>
                 ·
               </span>

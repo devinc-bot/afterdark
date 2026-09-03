@@ -17,6 +17,9 @@
     "TOKEN_INVALID": "El token es inválido.",
     "SESSION_NOT_FOUND": "Sesión no encontrada.",
     "REFRESH_TOKEN_INVALID": "Token de refresco inválido.",
+    "REFRESH_TOKEN_EXPIRED": "El token de refresco expiró.",
+    "REFRESH_TOKEN_REVOKED": "El token de refresco fue revocado.",
+    "REFRESH_TOKEN_ORIGIN_INVALID": "El origen de la solicitud de refresco no es válido.",
     "PASSWORD_RESET_TOKEN_INVALID": "El enlace no es válido o ya expiró.",
     "PASSWORD_RESET_RATE_LIMITED": "Demasiados intentos. Probá de nuevo más tarde.",
     "USER_REGISTRATION_TOKEN_INVALID": "El enlace no es válido o ya expiró.",
@@ -83,6 +86,12 @@
     "CHECK_IN_EXPIRED": "El código QR del ticket venció.",
     "CHECK_IN_USED": "Este ticket ya fue usado."
   },
+  "ticketType": {
+    "NOT_FOUND": "El tipo de ticket seleccionado no está disponible.",
+    "CREATE_FAILED": "No se pudo crear el tipo de ticket.",
+    "LIST_FAILED": "No se pudieron cargar los tipos de ticket.",
+    "DUPLICATE": "Ya tenés un tipo de ticket con ese nombre."
+  },
   "file": {
     "FILE_REQUIRED": "Tenés que enviar un archivo de imagen.",
     "INVALID_IMAGE_TYPE": "El archivo debe ser una imagen JPG, PNG o WEBP.",
@@ -114,6 +123,10 @@
   "geo": {
     "PROVIDER_FAILED": "No pudimos ubicar tu zona. Probá de nuevo o mové el pin.",
     "RATE_LIMITED": "Demasiadas búsquedas. Esperá un momento e intentá de nuevo."
+  },
+  "rateLimit": {
+    "TOO_MANY_REQUESTS": "Demasiadas solicitudes. Esperá un momento e intentá de nuevo.",
+    "CLIENT_IP_REQUIRED": "No pudimos identificar tu dirección IP."
   },
   "order": {
     "NOT_FOUND": "No encontramos la orden.",

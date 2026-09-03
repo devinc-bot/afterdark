@@ -43,10 +43,10 @@ export class ListPurchasedTicketsUseCase {
       )
 
       return {
-        data: rows.map(({ ticketSold, ticket, event, location }) =>
+        data: rows.map(({ ticketSold, ticketType, event, location }) =>
           toPurchasedTicketResponse(
             ticketSold,
-            ticket,
+            ticketType,
             event,
             location,
             eventImageUrlById.get(event.id) ?? null

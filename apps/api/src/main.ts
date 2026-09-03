@@ -6,7 +6,10 @@ import { API_PREFIX } from '@repo/common'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
-  app.getHttpAdapter().getInstance().disable('x-powered-by')
+  app.enableShutdownHooks()
+  const express = app.getHttpAdapter().getInstance()
+  express.disable('x-powered-by')
+  express.set('trust proxy', ENV.TRUST_PROXY_HOPS)
   app.enableCors({
     origin: ENV.CORS_ALLOWED_ORIGINS,
     credentials: true,
@@ -14,7 +17,7 @@ async function bootstrap() {
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   })
   app.setGlobalPrefix(API_PREFIX)
-  await app.listen(ENV.PORT)
+  await app.listen(ENV.PORT, '0.0.0.0')
 }
 
 bootstrap()

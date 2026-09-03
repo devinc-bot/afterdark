@@ -11,6 +11,29 @@
     "loadFallback": "We couldn't load the settings. Try again in a few minutes.",
     "loading": "Loading settings…"
   },
+  "sessions": {
+    "title": "Sessions",
+    "description": "Review the devices signed in to this app.",
+    "count_one": "{{count}} session",
+    "count_other": "{{count}} sessions",
+    "loading": "Loading sessions…",
+    "loadError": "We couldn't load your sessions. Try again.",
+    "revokeError": "We couldn't revoke that session. Try again.",
+    "retry": "Retry",
+    "empty": "There are no sessions to display.",
+    "unknownDevice": "Unknown device",
+    "metadataUnavailable": "Location unavailable",
+    "current": "Current session",
+    "close": "Close",
+    "created": "Created {date}",
+    "expires": "Expires {date}",
+    "revoke": "Revoke",
+    "revoking": "Revoking…",
+    "cancel": "Cancel",
+    "confirmTitle": "Revoke this session?",
+    "confirmDescription": "This device will need to sign in again when it next refreshes.",
+    "status": { "active": "Active", "expired": "Expired", "revoked": "Revoked" }
+  },
   "shared": {
     "actions": {
       "save": "Save changes",

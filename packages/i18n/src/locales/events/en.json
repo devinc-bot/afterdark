@@ -259,10 +259,6 @@
       "paymentsUnavailableHint": "We’re getting payments ready for this event. Please check back soon.",
       "ticketSoldOut": "Sold out",
       "ticketAvailability": "{count, plural, one {# available} other {# available}}",
-      "ticketType": {
-        "general": "General",
-        "vip": "VIP"
-      },
       "purchasePanelAriaLabel": "Event booking",
       "faq": "Frequently asked questions",
       "faqAriaLabel": "Event frequently asked questions"

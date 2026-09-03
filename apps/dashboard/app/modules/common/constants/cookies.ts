@@ -1,3 +1,3 @@
 export const COOKIE_KEYS = {
-  accessToken: 'repo.dashboard.auth.token',
+  accessToken: 'app.dashboard.auth.token',
 } as const

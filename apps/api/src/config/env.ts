@@ -1,22 +1,24 @@
-import { databaseEnvSchema } from '@repo/db/config/env'
+import { runtimeDatabaseEnvSchema } from '@repo/db/config/env'
 import { z } from 'zod'
 import {
   googleOauthEnvSchema,
   mailEnvSchema,
   mercadoPagoEnvSchema,
   uploadEnvSchema,
-  apiConfigSchema,
   MODE,
+  apiConfigSchema,
 } from './env.schema'
+import { createRateLimitPolicy } from './rate-limit.policy'
 
-const envSchema = z.object({
-  ...databaseEnvSchema.shape,
-  ...uploadEnvSchema.shape,
-  ...mailEnvSchema.shape,
-  ...googleOauthEnvSchema.shape,
-  ...mercadoPagoEnvSchema.shape,
-  ...apiConfigSchema.shape,
-})
+export const envSchema = z
+  .object({
+    ...runtimeDatabaseEnvSchema.shape,
+    ...uploadEnvSchema.shape,
+    ...mailEnvSchema.shape,
+    ...googleOauthEnvSchema.shape,
+    ...mercadoPagoEnvSchema.shape,
+  })
+  .and(apiConfigSchema)
 
 type Env = z.infer<typeof envSchema>
 
@@ -27,6 +29,8 @@ try {
 } catch (error) {
   throw new Error(`Error validating environment variables: ${error}`, { cause: error })
 }
+
+export const RATE_LIMIT_POLICY = createRateLimitPolicy(envResult)
 
 export const ENV = {
   ...envResult,

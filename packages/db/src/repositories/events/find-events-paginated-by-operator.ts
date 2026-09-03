@@ -1,11 +1,12 @@
 import { and, count, desc, eq, exists, inArray, sql, type SQL } from 'drizzle-orm'
-import { PAYMENT_STATUS, USER_ROLE } from '@repo/types/enums'
+import { PURCHASE_STATUS, USER_ROLE } from '@repo/types/enums'
 import type { ListEventsByOperatorParams, PaginatedEventsResult } from '@repo/types'
 import { db } from '../../client.ts'
 import { events } from '../../schema/event.ts'
-import { orders } from '../../schema/orders.ts'
 import { tickets } from '../../schema/ticket.ts'
 import { ticketsSold } from '../../schema/tickets_sold.ts'
+import { purchaseItems } from '../../schema/purchase-item.ts'
+import { purchases } from '../../schema/purchase.ts'
 import { findSoleOrganizationByOwnerDocumentId } from '../organizations/find-sole-organization-by-owner-document-id.ts'
 import { findOrganizationsByStaffDocumentId } from '../organizations/find-organizations-by-staff-document-id.ts'
 import { eventsWithLocationQuery } from './events-with-location-query.ts'
@@ -16,9 +17,10 @@ function eventHasCompletedSales(): SQL {
     db
       .select({ one: sql`1` })
       .from(ticketsSold)
-      .innerJoin(orders, eq(orders.id, ticketsSold.orderId))
-      .innerJoin(tickets, eq(tickets.id, orders.ticketId))
-      .where(and(eq(tickets.eventId, events.id), eq(orders.status, PAYMENT_STATUS.COMPLETED)))
+      .innerJoin(purchaseItems, eq(purchaseItems.id, ticketsSold.purchaseItemId))
+      .innerJoin(purchases, eq(purchases.id, purchaseItems.purchaseId))
+      .innerJoin(tickets, eq(tickets.id, purchaseItems.ticketId))
+      .where(and(eq(tickets.eventId, events.id), eq(purchases.status, PURCHASE_STATUS.CONFIRMED)))
   )
 }
 

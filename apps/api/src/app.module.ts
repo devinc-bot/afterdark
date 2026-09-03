@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common'
 import { ScheduleModule } from '@nestjs/schedule'
-import { AppController } from './app.controller'
 import { I18nModule } from '@repo/i18n/server'
 import { CommonModule } from './modules/common/common.module'
 import { AuthModule } from './modules/auth'
@@ -15,6 +14,7 @@ import { SessionModule } from './modules/session'
 import { SettingsModule } from './modules/settings'
 import { StaffModule } from './modules/staff'
 import { TicketsModule } from './modules/tickets'
+import { TicketTypesModule } from './modules/ticket-types/ticket-types.module'
 import { EventsModule } from './modules/events'
 import { MailModule } from './modules/mail'
 import { GeoModule } from './modules/geo'
@@ -39,6 +39,7 @@ import { OrganizationsModule } from './modules/organizations/organizations.modul
     SettingsModule,
     StaffModule,
     TicketsModule,
+    TicketTypesModule,
     EventsModule,
     MailModule,
     GeoModule,
@@ -46,6 +47,5 @@ import { OrganizationsModule } from './modules/organizations/organizations.modul
     UsersModule,
     OrganizationsModule,
   ],
-  controllers: [AppController],
 })
 export class AppModule {}

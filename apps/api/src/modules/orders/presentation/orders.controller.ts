@@ -9,8 +9,10 @@ import {
   Param,
   Post,
   Query,
+  Sse,
   UseGuards,
 } from '@nestjs/common'
+import type { MessageEvent } from '@nestjs/common'
 import { API_ROUTES } from '@repo/common'
 import {
   USER_ROLE,
@@ -27,17 +29,28 @@ import {
   type CreateOrderInput,
   type ListOrdersQueryInput,
 } from '@repo/validators'
+import { ApiRateLimit } from '../../common/decorators/api-rate-limit.decorator'
 import { CurrentUser } from '../../common/decorators/current-user.decorator'
 import { Roles } from '../../common/decorators/roles.decorator'
+import { UserRateLimit } from '../../common/decorators/user-rate-limit.decorator'
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard'
 import { RolesGuard } from '../../common/guards/roles.guard'
+import { UserRateLimitGuard } from '../../common/guards/user-rate-limit.guard'
 import { ZodValidationPipe } from '../../common/pipes/zod-validation.pipe'
+import { RATE_LIMIT_PROFILE } from '../../../config/rate-limit.policy'
+import { SseStreamsService } from '../../realtime/application/services/sse-streams.service'
 import { CreatePendingOrderUseCase } from '../application/create-pending-order.use-case'
 import { DeletePendingOrderUseCase } from '../application/delete-pending-order.use-case'
 import { GetOrderByDocumentIdUseCase } from '../application/get-order-by-document-id.use-case'
 import { ListMyOrdersUseCase } from '../application/list-my-orders.use-case'
 
+function toAfterVersion(value: string | undefined): number {
+  const parsed = Number.parseInt(value ?? '', 10)
+  return Number.isSafeInteger(parsed) && parsed >= 0 ? parsed : 0
+}
+
 @Controller(API_ROUTES.orders.prefix)
+@ApiRateLimit(RATE_LIMIT_PROFILE.AUTHENTICATED)
 export class OrdersController {
   constructor(
     @Inject(CreatePendingOrderUseCase)
@@ -46,7 +59,8 @@ export class OrdersController {
     private readonly getOrderByDocumentIdUseCase: GetOrderByDocumentIdUseCase,
     @Inject(ListMyOrdersUseCase) private readonly listMyOrdersUseCase: ListMyOrdersUseCase,
     @Inject(DeletePendingOrderUseCase)
-    private readonly deletePendingOrderUseCase: DeletePendingOrderUseCase
+    private readonly deletePendingOrderUseCase: DeletePendingOrderUseCase,
+    @Inject(SseStreamsService) private readonly sseStreamsService: SseStreamsService
   ) {}
 
   @Get(API_ROUTES.orders.path.list())
@@ -73,7 +87,9 @@ export class OrdersController {
   @Post(API_ROUTES.orders.path.create())
   @HttpCode(HttpStatus.CREATED)
   @Roles([USER_ROLE.USER])
-  @UseGuards(JwtAuthGuard, RolesGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard, UserRateLimitGuard)
+  @ApiRateLimit(RATE_LIMIT_PROFILE.PURCHASE)
+  @UserRateLimit(RATE_LIMIT_PROFILE.PURCHASE)
   create(
     @CurrentUser() user: JwtPayload,
     @Body(new ZodValidationPipe(createOrderSchema)) body: CreateOrderInput
@@ -89,5 +105,21 @@ export class OrdersController {
     @Param('documentId', new ZodValidationPipe(uuidSchema)) documentId: string
   ): Promise<OrderResponse> {
     return this.getOrderByDocumentIdUseCase.execute(user.sub, documentId)
+  }
+
+  @Sse(API_ROUTES.orders.path.stream(':documentId'))
+  @Roles([USER_ROLE.USER])
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @ApiRateLimit(RATE_LIMIT_PROFILE.SSE)
+  stream(
+    @CurrentUser() user: JwtPayload,
+    @Param('documentId', new ZodValidationPipe(uuidSchema)) documentId: string,
+    @Query('afterVersion') afterVersion?: string
+  ): Promise<import('rxjs').Observable<MessageEvent>> {
+    return this.sseStreamsService.createPurchaseStream(
+      user.sub,
+      documentId,
+      toAfterVersion(afterVersion)
+    )
   }
 }

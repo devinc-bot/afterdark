@@ -1,6 +1,5 @@
-import assert from 'node:assert/strict'
 import { readFile } from 'node:fs/promises'
-import test from 'node:test'
+import { expect, test } from 'vitest'
 
 const cookieModuleUrl = new URL('../app/modules/common/constants/cookies.ts', import.meta.url)
 const apiModuleUrl = new URL('../app/config/api.ts', import.meta.url)
@@ -62,17 +61,17 @@ test('admin session infrastructure uses an isolated token and authenticated API 
     readFile(apiModuleUrl, 'utf8'),
   ])
 
-  assert.equal(cookieSource.includes("accessToken: 'eventflow.admin.auth.token'"), true)
-  assert.equal(cookieSource.includes('repo.dashboard.auth.token'), false)
-  assert.equal(apiSource.includes('getAccessToken: getAccessTokenSync'), true)
+  expect(cookieSource.includes("accessToken: 'app.admin.auth.token'")).toBe(true)
+  expect(cookieSource.includes('app.dashboard.auth.token')).toBe(false)
+  expect(apiSource.includes('getAccessToken: getAccessTokenSync')).toBe(true)
 })
 
 test('admin sign-out clears credentials, session state, and query cache', async () => {
   const source = await readFile(signOutModuleUrl, 'utf8')
 
-  assert.equal(source.includes('clearAuthSession()'), true)
-  assert.equal(source.includes('useSessionStore.getState().clearSession()'), true)
-  assert.equal(source.includes('queryClient.clear()'), true)
+  expect(source.includes('clearAuthSession()')).toBe(true)
+  expect(source.includes('useSessionStore.getState().clearSession()')).toBe(true)
+  expect(source.includes('queryClient.clear()')).toBe(true)
 })
 
 test('admin route boundaries enforce the admin role and clear restored non-admin sessions', async () => {
@@ -81,11 +80,11 @@ test('admin route boundaries enforce the admin role and clear restored non-admin
     readFile(requireGuestModuleUrl, 'utf8'),
   ])
 
-  assert.equal(adminBoundarySource.includes('isAdminSession(user)'), true)
-  assert.equal(adminBoundarySource.includes('clearAuthenticatedState(queryClient)'), true)
-  assert.equal(adminBoundarySource.includes('SESSION_STATUS.UNAUTHENTICATED'), true)
-  assert.equal(guestBoundarySource.includes('isAdminSession(user)'), true)
-  assert.equal(guestBoundarySource.includes('clearAuthenticatedState(queryClient)'), true)
+  expect(adminBoundarySource.includes('isAdminSession(user)')).toBe(true)
+  expect(adminBoundarySource.includes('clearAuthenticatedState(queryClient)')).toBe(true)
+  expect(adminBoundarySource.includes('SESSION_STATUS.UNAUTHENTICATED')).toBe(true)
+  expect(guestBoundarySource.includes('isAdminSession(user)')).toBe(true)
+  expect(guestBoundarySource.includes('clearAuthenticatedState(queryClient)')).toBe(true)
 })
 
 test('admin login is password-only and rejects a session without the admin role', async () => {
@@ -94,19 +93,19 @@ test('admin login is password-only and rejects a session without the admin role'
     readFile(loginMutationModuleUrl, 'utf8'),
   ])
 
-  assert.equal(formSource.includes('loginSchema'), true)
-  assert.equal(formSource.includes('GoogleContinueButton'), false)
-  assert.equal(formSource.includes('forgotPassword'), false)
-  assert.equal(formSource.includes('createAccount'), false)
-  assert.equal(mutationSource.includes('isAdminSession(useSessionStore.getState().user)'), true)
-  assert.equal(mutationSource.includes('clearAuthenticatedState(queryClient)'), true)
+  expect(formSource.includes('loginSchema')).toBe(true)
+  expect(formSource.includes('GoogleContinueButton')).toBe(false)
+  expect(formSource.includes('forgotPassword')).toBe(false)
+  expect(formSource.includes('createAccount')).toBe(false)
+  expect(mutationSource.includes('isAdminSession(useSessionStore.getState().user)')).toBe(true)
+  expect(mutationSource.includes('clearAuthenticatedState(queryClient)')).toBe(true)
 })
 
 test('admin protected layout requires an admin session', async () => {
   const routeSource = await readFile(appLayoutRouteModuleUrl, 'utf8')
 
-  assert.equal(routeSource.includes('<RequireAdminSession>'), true)
-  assert.equal(routeSource.includes('<AppShell>'), true)
+  expect(routeSource.includes('<RequireAdminSession>')).toBe(true)
+  expect(routeSource.includes('<AppShell>')).toBe(true)
 })
 
 test('admin protected root redirects to users and exposes section routes', async () => {
@@ -117,11 +116,11 @@ test('admin protected root redirects to users and exposes section routes', async
     readFile(legalDocumentsRouteModuleUrl, 'utf8'),
   ])
 
-  assert.equal(indexSource.includes('redirect('), true)
-  assert.equal(indexSource.includes('ADMIN_ROUTES.users()'), true)
-  assert.equal(usersSource.includes("createFileRoute('/_app/users')"), true)
-  assert.equal(errorsSource.includes("createFileRoute('/_app/errors')"), true)
-  assert.equal(legalDocumentsSource.includes("createFileRoute('/_app/legal-documents')"), true)
+  expect(indexSource.includes('redirect(')).toBe(true)
+  expect(indexSource.includes('ADMIN_ROUTES.users()')).toBe(true)
+  expect(usersSource.includes("createFileRoute('/_app/users')")).toBe(true)
+  expect(errorsSource.includes("createFileRoute('/_app/errors')")).toBe(true)
+  expect(legalDocumentsSource.includes("createFileRoute('/_app/legal-documents')")).toBe(true)
 })
 
 test('admin shell provides navigation, account identity, and sign-out without mock metrics', async () => {
@@ -132,19 +131,19 @@ test('admin shell provides navigation, account identity, and sign-out without mo
     readFile(appShellLanguageModuleUrl, 'utf8'),
   ])
 
-  assert.equal(shellSource.includes('<AppSidebar'), true)
-  assert.equal(shellSource.includes('ADMIN_ROUTES.users()'), true)
-  assert.equal(shellSource.includes('ADMIN_ROUTES.errors()'), true)
-  assert.equal(shellSource.includes('ADMIN_ROUTES.legalDocuments()'), true)
-  assert.equal(shellSource.includes('clearAuthenticatedState(queryClient)'), true)
-  assert.equal(shellSource.includes("t('nav.users')"), true)
-  assert.equal(shellSource.includes("t('brand.subtitle')"), true)
-  assert.equal(userSource.includes('user.email'), true)
-  assert.equal(userSource.includes("t('nav.signOut')"), true)
-  assert.equal(themeSource.includes('useTheme'), true)
-  assert.equal(themeSource.includes("t('nav.theme')"), true)
-  assert.equal(languageSource.includes('useLanguage'), true)
-  assert.equal(shellSource.includes('KPI'), false)
+  expect(shellSource.includes('<AppSidebar')).toBe(true)
+  expect(shellSource.includes('ADMIN_ROUTES.users()')).toBe(true)
+  expect(shellSource.includes('ADMIN_ROUTES.errors()')).toBe(true)
+  expect(shellSource.includes('ADMIN_ROUTES.legalDocuments()')).toBe(true)
+  expect(shellSource.includes('clearAuthenticatedState(queryClient)')).toBe(true)
+  expect(shellSource.includes("t('nav.users')")).toBe(true)
+  expect(shellSource.includes("t('brand.subtitle')")).toBe(true)
+  expect(userSource.includes('user.email')).toBe(true)
+  expect(userSource.includes("t('nav.signOut')")).toBe(true)
+  expect(themeSource.includes('useTheme')).toBe(true)
+  expect(themeSource.includes("t('nav.theme')")).toBe(true)
+  expect(languageSource.includes('useLanguage')).toBe(true)
+  expect(shellSource.includes('KPI')).toBe(false)
 })
 
 test('admin legal documents provide organization and web editors without persistence actions', async () => {
@@ -153,12 +152,12 @@ test('admin legal documents provide organization and web editors without persist
     readFile(legalDocumentSectionModuleUrl, 'utf8'),
   ])
 
-  assert.equal(viewSource.match(/<LegalDocumentSection/g)?.length, 2)
-  assert.equal(sectionSource.match(/<RichEditor/g)?.length, 2)
-  assert.equal(sectionSource.includes('setTermsContent'), true)
-  assert.equal(sectionSource.includes('setPrivacyContent'), true)
-  assert.equal(viewSource.includes('save'), false)
-  assert.equal(sectionSource.includes('publish'), false)
+  expect(viewSource.match(/<LegalDocumentSection/g)?.length).toBe(2)
+  expect(sectionSource.match(/<RichEditor/g)?.length).toBe(2)
+  expect(sectionSource.includes('setTermsContent')).toBe(true)
+  expect(sectionSource.includes('setPrivacyContent')).toBe(true)
+  expect(viewSource.includes('save')).toBe(false)
+  expect(sectionSource.includes('publish')).toBe(false)
 })
 
 test('admin copy is provided in Spanish and English', async () => {
@@ -167,18 +166,20 @@ test('admin copy is provided in Spanish and English', async () => {
     readFile(adminLocaleEnUrl, 'utf8'),
   ])
 
-  assert.equal(esSource.includes('"accessDenied"'), true)
-  assert.equal(enSource.includes('"accessDenied"'), true)
-  assert.equal(esSource.includes('"home"'), true)
-  assert.equal(enSource.includes('"home"'), true)
-  assert.equal(esSource.includes('"brand"'), true)
-  assert.equal(enSource.includes('"brand"'), true)
-  assert.equal(esSource.includes('"sections"'), true)
-  assert.equal(enSource.includes('"sections"'), true)
-  assert.equal(esSource.includes('"users"'), true)
-  assert.equal(enSource.includes('"errors"'), true)
-  assert.equal(esSource.includes('"theme"'), true)
-  assert.equal(enSource.includes('"fallbackName"'), true)
-  assert.equal(esSource.includes('"legalDocuments"'), true)
-  assert.equal(enSource.includes('"legalDocuments"'), true)
+  expect(esSource.includes('"accessDenied"')).toBe(true)
+  expect(enSource.includes('"accessDenied"')).toBe(true)
+  expect(esSource.includes('"home"')).toBe(true)
+  expect(enSource.includes('"home"')).toBe(true)
+  expect(esSource.includes('"brand"')).toBe(true)
+  expect(enSource.includes('"brand"')).toBe(true)
+  expect(esSource.includes('"sections"')).toBe(true)
+  expect(enSource.includes('"sections"')).toBe(true)
+  expect(esSource.includes('"users"')).toBe(true)
+  expect(enSource.includes('"errors"')).toBe(true)
+  expect(esSource.includes('"theme"')).toBe(true)
+  expect(enSource.includes('"fallbackName"')).toBe(true)
+  expect(esSource.includes('"legalDocuments"')).toBe(true)
+  expect(enSource.includes('"legalDocuments"')).toBe(true)
+  expect(esSource.includes('"settings"')).toBe(true)
+  expect(enSource.includes('"settings"')).toBe(true)
 })

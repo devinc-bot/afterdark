@@ -10,14 +10,21 @@ import {
   registerAccount,
   setProfileAvatarFromUrlIfEmpty,
 } from '@repo/db'
-import { AUTH_PROVIDER, AUTH_OAUTH_APP, type AuthOauthApp, type UserRole } from '@repo/types'
+import {
+  AUTH_PROVIDER,
+  AUTH_OAUTH_APP,
+  type AuthOauthApp,
+  type ClientApp,
+  type UserRole,
+} from '@repo/types'
+import { googleOauthStartSchema } from '@repo/validators'
 import {
   GOOGLE_OAUTH_ERROR,
   GOOGLE_OAUTH_STATE_PURPOSE,
   type GoogleOauthErrorCode,
 } from '../auth.constants'
 import type { GoogleOauthStatePayload } from './google-oauth-start.use-case'
-import { AuthAccountService } from './services/auth-account.service'
+import { AuthAccountService, type SessionRequestMetadata } from './services/auth-account.service'
 import { GoogleOauthService } from './services/google-oauth.service'
 import { buildAppAuthCallbackUrl, buildAppLoginErrorUrl } from '../utils/google-oauth.utils'
 
@@ -31,18 +38,21 @@ export class GoogleOauthCallbackUseCase {
     @Inject(AuthAccountService) private readonly accounts: AuthAccountService
   ) {}
 
-  async execute(input: { code?: string; state?: string; error?: string }): Promise<string> {
+  async execute(
+    input: { code?: string; state?: string; error?: string },
+    metadata: SessionRequestMetadata
+  ): Promise<GoogleOauthCallbackResult> {
     const fallbackApp = AUTH_OAUTH_APP.WEB
 
     if (input.error) {
       const app = await this.safeDecodeApp(input.state, fallbackApp)
       const code: GoogleOauthErrorCode =
         input.error === 'access_denied' ? GOOGLE_OAUTH_ERROR.CANCELLED : GOOGLE_OAUTH_ERROR.FAILED
-      return buildAppLoginErrorUrl(app, code)
+      return { redirectUrl: buildAppLoginErrorUrl(app, code) }
     }
 
     if (!input.code || !input.state) {
-      return buildAppLoginErrorUrl(fallbackApp, GOOGLE_OAUTH_ERROR.FAILED)
+      return { redirectUrl: buildAppLoginErrorUrl(fallbackApp, GOOGLE_OAUTH_ERROR.FAILED) }
     }
 
     let statePayload: GoogleOauthStatePayload
@@ -51,15 +61,19 @@ export class GoogleOauthCallbackUseCase {
       if (payload.purpose !== GOOGLE_OAUTH_STATE_PURPOSE) {
         throw new Error('Invalid state purpose')
       }
-      statePayload = payload
+      const parsedState = googleOauthStartSchema.safeParse({ role: payload.role, app: payload.app })
+      if (!parsedState.success) {
+        throw new Error('Invalid OAuth state')
+      }
+      statePayload = { purpose: payload.purpose, ...parsedState.data }
     } catch {
-      return buildAppLoginErrorUrl(fallbackApp, GOOGLE_OAUTH_ERROR.FAILED)
+      return { redirectUrl: buildAppLoginErrorUrl(fallbackApp, GOOGLE_OAUTH_ERROR.FAILED) }
     }
 
     const { role, app } = statePayload
 
     try {
-      const profile = await this.googleOauth.exchangeCodeForProfile(input.code)
+      const profile = await this.googleOauth.exchangeCodeForProfile(input.code, app)
 
       const existingOauth = await findAuthAccountByProviderAccount(
         AUTH_PROVIDER.GOOGLE,
@@ -68,7 +82,7 @@ export class GoogleOauthCallbackUseCase {
 
       if (existingOauth) {
         if (existingOauth.role.name !== role) {
-          return buildAppLoginErrorUrl(app, GOOGLE_OAUTH_ERROR.EMAIL_EXISTS)
+          return { redirectUrl: buildAppLoginErrorUrl(app, GOOGLE_OAUTH_ERROR.EMAIL_EXISTS) }
         }
 
         if (profile.pictureUrl) {
@@ -86,18 +100,18 @@ export class GoogleOauthCallbackUseCase {
           }
         }
 
-        const session = await this.accounts.createAccessToken(existingOauth)
-        return buildAppAuthCallbackUrl(app, session.accessToken)
+        const session = await this.accounts.createSession(existingOauth, metadata, app)
+        return this.createSuccessResult(app, session.clientApp, session.refreshToken)
       }
 
       if (await accountExistsByEmail(profile.email)) {
-        return buildAppLoginErrorUrl(app, GOOGLE_OAUTH_ERROR.EMAIL_EXISTS)
+        return { redirectUrl: buildAppLoginErrorUrl(app, GOOGLE_OAUTH_ERROR.EMAIL_EXISTS) }
       }
 
       const dbRole = await findRoleByName(role as UserRole)
       if (!dbRole) {
         this.logger.error(`Role not configured: ${role}`)
-        return buildAppLoginErrorUrl(app, GOOGLE_OAUTH_ERROR.FAILED)
+        return { redirectUrl: buildAppLoginErrorUrl(app, GOOGLE_OAUTH_ERROR.FAILED) }
       }
 
       let avatarId: number | null = null
@@ -132,21 +146,21 @@ export class GoogleOauthCallbackUseCase {
 
       const created = await findAuthAccountByEmail(profile.email)
       if (!created) {
-        return buildAppLoginErrorUrl(app, GOOGLE_OAUTH_ERROR.FAILED)
+        return { redirectUrl: buildAppLoginErrorUrl(app, GOOGLE_OAUTH_ERROR.FAILED) }
       }
 
-      const session = await this.accounts.createAccessToken(created)
-      return buildAppAuthCallbackUrl(app, session.accessToken)
+      const session = await this.accounts.createSession(created, metadata, app)
+      return this.createSuccessResult(app, session.clientApp, session.refreshToken)
     } catch (error) {
       if (error instanceof UnauthorizedException) {
-        return buildAppLoginErrorUrl(app, GOOGLE_OAUTH_ERROR.PENDING_APPROVAL)
+        return { redirectUrl: buildAppLoginErrorUrl(app, GOOGLE_OAUTH_ERROR.PENDING_APPROVAL) }
       }
 
       this.logger.error(
         'Google OAuth callback failed',
         error instanceof Error ? error.stack : undefined
       )
-      return buildAppLoginErrorUrl(app, GOOGLE_OAUTH_ERROR.FAILED)
+      return { redirectUrl: buildAppLoginErrorUrl(app, GOOGLE_OAUTH_ERROR.FAILED) }
     }
   }
 
@@ -157,9 +171,29 @@ export class GoogleOauthCallbackUseCase {
     if (!state) return fallback
     try {
       const payload = await this.jwtService.verifyAsync<GoogleOauthStatePayload>(state)
-      return payload.app ?? fallback
+      if (payload.purpose !== GOOGLE_OAUTH_STATE_PURPOSE) return fallback
+      const parsedState = googleOauthStartSchema.safeParse({ role: payload.role, app: payload.app })
+      return parsedState.success ? parsedState.data.app : fallback
     } catch {
       return fallback
     }
   }
+
+  private createSuccessResult(
+    app: AuthOauthApp,
+    clientApp: ClientApp,
+    refreshToken: string
+  ): GoogleOauthCallbackResult {
+    return {
+      redirectUrl: buildAppAuthCallbackUrl(app),
+      clientApp,
+      refreshToken,
+    }
+  }
+}
+
+type GoogleOauthCallbackResult = {
+  redirectUrl: string
+  clientApp?: ClientApp
+  refreshToken?: string
 }

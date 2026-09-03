@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX "payment_webhook_events_provider_payment_unique" ON "payment_webhook_events" USING btree ("provider", "provider_payment_id") WHERE "payment_webhook_events"."provider_payment_id" IS NOT NULL;

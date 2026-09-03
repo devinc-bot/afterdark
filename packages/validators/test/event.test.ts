@@ -1,5 +1,4 @@
-import assert from 'node:assert/strict'
-import test from 'node:test'
+import { expect, test } from 'vitest'
 import {
   EVENT_DURATION_MAX_HOURS,
   EVENT_DURATION_MIN_HOURS,
@@ -9,16 +8,16 @@ import {
 } from '../src/index.ts'
 
 test('event duration accepts whole and half-hour values within its range', () => {
-  assert.equal(eventDurationHoursSchema.parse(EVENT_DURATION_MIN_HOURS), EVENT_DURATION_MIN_HOURS)
-  assert.equal(eventDurationHoursSchema.parse(1.5), 1.5)
-  assert.equal(eventDurationHoursSchema.parse(EVENT_DURATION_MAX_HOURS), EVENT_DURATION_MAX_HOURS)
+  expect(eventDurationHoursSchema.parse(EVENT_DURATION_MIN_HOURS)).toBe(EVENT_DURATION_MIN_HOURS)
+  expect(eventDurationHoursSchema.parse(1.5)).toBe(1.5)
+  expect(eventDurationHoursSchema.parse(EVENT_DURATION_MAX_HOURS)).toBe(EVENT_DURATION_MAX_HOURS)
 })
 
 test('event duration rejects negative, out-of-range, and unsupported fractions', () => {
-  assert.equal(eventDurationHoursSchema.safeParse(-1).success, false)
-  assert.equal(eventDurationHoursSchema.safeParse(0).success, false)
-  assert.equal(eventDurationHoursSchema.safeParse(72.5).success, false)
-  assert.equal(eventDurationHoursSchema.safeParse(1.25).success, false)
+  expect(eventDurationHoursSchema.safeParse(-1).success).toBe(false)
+  expect(eventDurationHoursSchema.safeParse(0).success).toBe(false)
+  expect(eventDurationHoursSchema.safeParse(72.5).success).toBe(false)
+  expect(eventDurationHoursSchema.safeParse(1.25).success).toBe(false)
 })
 
 test('create event parses a duration instead of an end timestamp', () => {
@@ -30,8 +29,8 @@ test('create event parses a duration instead of an end timestamp', () => {
     durationHours: '4',
   })
 
-  assert.equal(result.durationHours, 4)
-  assert.equal('endsAt' in result, false)
+  expect(result.durationHours).toBe(4)
+  expect('endsAt' in result).toBe(false)
 })
 
 test('event details form requires a valid duration', () => {
@@ -43,6 +42,6 @@ test('event details form requires a valid duration', () => {
     status: 'published',
   })
 
-  assert.equal(result.success, false)
-  assert.equal(result.error?.issues[0]?.path[0], 'durationHours')
+  expect(result.success).toBe(false)
+  expect(result.error?.issues[0]?.path[0]).toBe('durationHours')
 })

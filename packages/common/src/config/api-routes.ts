@@ -7,6 +7,7 @@ export const API_LOCATIONS_PREFIX = '/locations' as const
 export const API_STAFF_PREFIX = '/staff' as const
 export const API_INVITATIONS_PREFIX = '/invitations' as const
 export const API_TICKETS_PREFIX = '/tickets' as const
+export const API_TICKET_TYPES_PREFIX = '/ticket-types' as const
 export const API_EVENTS_PREFIX = '/events' as const
 export const API_ORDERS_PREFIX = '/orders' as const
 export const API_MERCADO_PAGO_PREFIX = '/mercado-pago' as const
@@ -30,6 +31,7 @@ export const API_ROUTES = {
       registerOwnerRequest: () => '/register/owner/request' as const,
       registerOwnerConfirm: () => '/register/owner/confirm' as const,
       refreshToken: () => '/refresh' as const,
+      logout: () => '/logout' as const,
       forgotPassword: () => '/forgot-password' as const,
       resetPassword: () => '/reset-password' as const,
       google: () => '/google' as const,
@@ -40,6 +42,8 @@ export const API_ROUTES = {
     prefix: API_SESSION_PREFIX,
     path: {
       me: () => '/me' as const,
+      list: () => '/' as const,
+      revoke: (documentId: string) => `/${routeSegment(documentId)}` as const,
     },
   },
   settings: {
@@ -97,6 +101,13 @@ export const API_ROUTES = {
       delete: (documentId: string) => `/${documentId}` as const,
     },
   },
+  ticketTypes: {
+    prefix: API_TICKET_TYPES_PREFIX,
+    path: {
+      list: () => '/' as const,
+      create: () => '/' as const,
+    },
+  },
   events: {
     prefix: API_EVENTS_PREFIX,
     path: {
@@ -104,6 +115,9 @@ export const API_ROUTES = {
       listPublic: () => '/' as const,
       /** Anonymous published-event detail (GET). */
       getPublic: (slug: string) => `/slug/${routeSegment(slug)}` as const,
+      /** Public published-event availability stream (SSE). */
+      availabilityStream: (documentId: string) =>
+        `/${routeSegment(documentId)}/availability/events` as const,
       list: () => '/my-events' as const,
       get: (documentId: string) => `/${documentId}` as const,
       create: () => '/' as const,
@@ -130,6 +144,8 @@ export const API_ROUTES = {
       get: (documentId: string) => `/${routeSegment(documentId)}` as const,
       /** Authenticated buyer — delete their pending order (DELETE). */
       delete: (documentId: string) => `/${routeSegment(documentId)}` as const,
+      /** Authenticated buyer's private purchase state stream (SSE). */
+      stream: (documentId: string) => `/${routeSegment(documentId)}/events` as const,
     },
   },
   mercadoPago: {
@@ -143,6 +159,7 @@ export const API_ROUTES = {
     prefix: API_HEALTH_PREFIX,
     path: {
       root: () => '/' as const,
+      ready: () => '/ready' as const,
     },
   },
   errors: {

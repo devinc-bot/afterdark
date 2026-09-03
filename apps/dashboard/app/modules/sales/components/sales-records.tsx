@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
-import { TICKET_TYPE, type OwnerSaleResponse } from '@repo/types'
+import type { OwnerSaleResponse } from '@repo/types'
 import {
   Button,
   Card,
@@ -32,7 +32,6 @@ export type SalesRecordsPagination = {
 const SALES_COLUMN_KEYS = [
   'buyer',
   'event',
-  'ticket',
   'ticketType',
   'location',
   'paidAt',
@@ -169,11 +168,6 @@ function SalesRecordsPaginationBar({
 
 function SaleRecordRow({ sale }: { sale: OwnerSaleResponse }) {
   const { t } = useTranslation('sales')
-  const typeLabel =
-    sale.ticketType === TICKET_TYPE.VIP
-      ? t('filters.ticketTypeVip')
-      : t('filters.ticketTypeGeneral')
-
   return (
     <TableRow className="border-0">
       <TableCell className="p-6">
@@ -183,8 +177,7 @@ function SaleRecordRow({ sale }: { sale: OwnerSaleResponse }) {
         </div>
       </TableCell>
       <TableCell className="p-6 text-ink">{sale.eventName}</TableCell>
-      <TableCell className="p-6 text-ink">{sale.ticketName}</TableCell>
-      <TableCell className="p-6 text-ink">{typeLabel}</TableCell>
+      <TableCell className="p-6 text-ink">{sale.ticketType.name}</TableCell>
       <TableCell className="p-6 text-ink">{sale.locationName}</TableCell>
       <TableCell className="p-6 text-ink">{formatSaleDateTime(sale.paidAt)}</TableCell>
       <TableCell className="p-6 text-ink">{sale.quantity}</TableCell>

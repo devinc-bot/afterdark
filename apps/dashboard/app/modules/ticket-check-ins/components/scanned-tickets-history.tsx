@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { TICKET_TYPE, type ScannedTicketHistoryItem } from '@repo/types'
+import type { ScannedTicketHistoryItem } from '@repo/types'
 import {
   Badge,
   Card,
@@ -55,11 +55,6 @@ function HistoryTable({ items }: { items: ScannedTicketHistoryItem[] }) {
         {items.map((item, index) => {
           const operatorName = item.operator?.fullName ?? null
           const operatorEmail = item.operator?.email ?? null
-          const ticketTypeLabel =
-            item.ticket.type === TICKET_TYPE.VIP
-              ? t('pages.qrTicket.history.typeVip')
-              : t('pages.qrTicket.history.typeGeneral')
-
           return (
             <TableRow key={`${item.scannedAt}-${index}`}>
               <TableCell className="whitespace-nowrap p-6 text-ink">
@@ -82,9 +77,8 @@ function HistoryTable({ items }: { items: ScannedTicketHistoryItem[] }) {
                 )}
               </TableCell>
               <TableCell className="p-6">
-                <p className="font-semibold text-ink">{item.ticket.name}</p>
-                <Badge variant="outline" size="sm" className="mt-1">
-                  {ticketTypeLabel}
+                <Badge variant="outline" size="sm">
+                  {item.ticket.ticketType.name}
                 </Badge>
               </TableCell>
             </TableRow>

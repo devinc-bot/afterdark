@@ -1,6 +1,5 @@
-import assert from 'node:assert/strict'
 import { readFile } from 'node:fs/promises'
-import test from 'node:test'
+import { expect, test } from 'vitest'
 
 const sectionModuleUrl = new URL(
   '../app/modules/owner/components/organization-settings-section.tsx',
@@ -10,8 +9,8 @@ const sectionModuleUrl = new URL(
 test('owner settings always show organization fields without a type control', async () => {
   const source = await readFile(sectionModuleUrl, 'utf8')
 
-  assert.equal(source.includes('Checkbox'), false)
-  assert.equal(source.includes('isOrganization'), false)
-  assert.equal(source.includes('name="organizationName"'), true)
-  assert.equal(source.includes('name="taxId"'), true)
+  expect(source.includes('Checkbox')).toBe(false)
+  expect(source.includes('isOrganization')).toBe(false)
+  expect(source.includes('name="organizationName"')).toBe(true)
+  expect(source.includes('name="taxId"')).toBe(true)
 })

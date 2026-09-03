@@ -1,10 +1,9 @@
 import type { SessionResponse } from '@repo/types'
 import { create } from 'zustand'
 import { i18n } from '@repo/i18n/client'
-import { getCookieSync } from '@repo/common'
-import { COOKIE_KEYS } from '~/modules/common/constants/cookies'
 import { SESSION_STATUS, type SessionStatus } from '~/modules/common/constants/session-status'
 import { fetchSession, SessionFetchError } from '~/modules/common/services/session.service'
+import { registerSessionStateCleanup } from '~/modules/common/services/session-cleanup'
 
 type SessionState = {
   user: SessionResponse | null
@@ -20,13 +19,6 @@ export const useSessionStore = create<SessionState>((set) => ({
   error: null,
 
   loadSession: async () => {
-    const hasToken = getCookieSync({ name: COOKIE_KEYS.accessToken }) !== null
-
-    if (!hasToken) {
-      set({ user: null, status: SESSION_STATUS.UNAUTHENTICATED, error: null })
-      return
-    }
-
     set({ status: SESSION_STATUS.LOADING, error: null })
 
     try {
@@ -47,3 +39,5 @@ export const useSessionStore = create<SessionState>((set) => ({
     set({ user: null, status: SESSION_STATUS.UNAUTHENTICATED, error: null })
   },
 }))
+
+registerSessionStateCleanup(() => useSessionStore.getState().clearSession())

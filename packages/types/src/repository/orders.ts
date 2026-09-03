@@ -1,5 +1,5 @@
 import type { PaymentProvider, PaymentStatus } from '../enums/payment.ts'
-import type { TicketType } from '../enums/ticket.ts'
+import type { TicketTypeResponse } from '../dto/ticket-type.ts'
 
 export type ListBuyerOrdersParams = {
   userDocumentId: string
@@ -17,8 +17,7 @@ export type BuyerOrderSummaryRow = {
   createdAt: Date
   updatedAt: Date
   ticketId: string
-  ticketName: string
-  ticketType: TicketType
+  ticketType: TicketTypeResponse
   eventId: string | null
   eventName: string | null
   eventStartsAt: Date | null

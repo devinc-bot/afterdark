@@ -7,6 +7,9 @@ export const AUTH_ERROR_CODE = {
   TOKEN_INVALID: 'auth.TOKEN_INVALID',
   SESSION_NOT_FOUND: 'auth.SESSION_NOT_FOUND',
   REFRESH_TOKEN_INVALID: 'auth.REFRESH_TOKEN_INVALID',
+  REFRESH_TOKEN_EXPIRED: 'auth.REFRESH_TOKEN_EXPIRED',
+  REFRESH_TOKEN_REVOKED: 'auth.REFRESH_TOKEN_REVOKED',
+  REFRESH_TOKEN_ORIGIN_INVALID: 'auth.REFRESH_TOKEN_ORIGIN_INVALID',
   PASSWORD_RESET_TOKEN_INVALID: 'auth.PASSWORD_RESET_TOKEN_INVALID',
   PASSWORD_RESET_RATE_LIMITED: 'auth.PASSWORD_RESET_RATE_LIMITED',
   USER_REGISTRATION_TOKEN_INVALID: 'auth.USER_REGISTRATION_TOKEN_INVALID',
@@ -72,6 +75,13 @@ export const TICKET_ERROR_CODE = {
   CHECK_IN_USED: 'ticket.CHECK_IN_USED',
 } as const
 
+export const TICKET_TYPE_ERROR_CODE = {
+  NOT_FOUND: 'ticketType.NOT_FOUND',
+  CREATE_FAILED: 'ticketType.CREATE_FAILED',
+  LIST_FAILED: 'ticketType.LIST_FAILED',
+  DUPLICATE: 'ticketType.DUPLICATE',
+} as const
+
 export const FILE_ERROR_CODE = {
   FILE_REQUIRED: 'file.FILE_REQUIRED',
   INVALID_IMAGE_TYPE: 'file.INVALID_IMAGE_TYPE',
@@ -121,18 +131,26 @@ export const ORDER_ERROR_CODE = {
   WEBHOOK_INVALID: 'order.WEBHOOK_INVALID',
 } as const
 
+export const RATE_LIMIT_ERROR_CODE = {
+  TOO_MANY_REQUESTS: 'rateLimit.TOO_MANY_REQUESTS',
+  CLIENT_IP_REQUIRED: 'rateLimit.CLIENT_IP_REQUIRED',
+} as const
+
 export type AuthErrorCode = (typeof AUTH_ERROR_CODE)[keyof typeof AUTH_ERROR_CODE]
 export type InvitationErrorCode = (typeof INVITATION_ERROR_CODE)[keyof typeof INVITATION_ERROR_CODE]
 export type LocationErrorCode = (typeof LOCATION_ERROR_CODE)[keyof typeof LOCATION_ERROR_CODE]
 export type StaffErrorCode = (typeof STAFF_ERROR_CODE)[keyof typeof STAFF_ERROR_CODE]
 export type OwnerErrorCode = (typeof OWNER_ERROR_CODE)[keyof typeof OWNER_ERROR_CODE]
 export type TicketErrorCode = (typeof TICKET_ERROR_CODE)[keyof typeof TICKET_ERROR_CODE]
+export type TicketTypeErrorCode =
+  (typeof TICKET_TYPE_ERROR_CODE)[keyof typeof TICKET_TYPE_ERROR_CODE]
 export type FileErrorCode = (typeof FILE_ERROR_CODE)[keyof typeof FILE_ERROR_CODE]
 export type MailErrorCode = (typeof MAIL_ERROR_CODE)[keyof typeof MAIL_ERROR_CODE]
 export type GuardErrorCode = (typeof GUARD_ERROR_CODE)[keyof typeof GUARD_ERROR_CODE]
 export type EventErrorCode = (typeof EVENT_ERROR_CODE)[keyof typeof EVENT_ERROR_CODE]
 export type GeoErrorCode = (typeof GEO_ERROR_CODE)[keyof typeof GEO_ERROR_CODE]
 export type OrderErrorCode = (typeof ORDER_ERROR_CODE)[keyof typeof ORDER_ERROR_CODE]
+export type RateLimitErrorCode = (typeof RATE_LIMIT_ERROR_CODE)[keyof typeof RATE_LIMIT_ERROR_CODE]
 
 export type ErrorCode =
   | AuthErrorCode
@@ -141,9 +159,11 @@ export type ErrorCode =
   | StaffErrorCode
   | OwnerErrorCode
   | TicketErrorCode
+  | TicketTypeErrorCode
   | FileErrorCode
   | MailErrorCode
   | GuardErrorCode
   | EventErrorCode
   | GeoErrorCode
   | OrderErrorCode
+  | RateLimitErrorCode

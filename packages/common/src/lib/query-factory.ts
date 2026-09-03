@@ -1,8 +1,28 @@
-import type { ApiError } from '@repo/types'
+import type { ApiError, LoginResponse } from '@repo/types'
+import { API_ROUTES, buildApiPath } from '../config/api-routes.ts'
+
+const UNAUTHENTICATED_AUTH_PATHS = [
+  toPathname(buildApiPath(API_ROUTES.auth, API_ROUTES.auth.path.login())),
+  toPathname(buildApiPath(API_ROUTES.auth, API_ROUTES.auth.path.refreshToken())),
+  toPathname(buildApiPath(API_ROUTES.auth, API_ROUTES.auth.path.logout())),
+] as const
+
+export type QueryFactoryRefreshOptions = {
+  path: string
+  data: unknown
+  onSuccess: (response: LoginResponse) => void | Promise<void>
+}
 
 export type QueryFactoryOptions = {
   getAccessToken?: () => string | null
   defaultRequestInit?: RequestInit
+  refresh?: QueryFactoryRefreshOptions
+  onAuthenticationFailure?: () => void | Promise<void>
+}
+
+export type QueryFactoryResponse<T> = {
+  data: T
+  headers: Headers
 }
 
 export class QueryFactoryError extends Error {
@@ -15,14 +35,31 @@ export class QueryFactoryError extends Error {
   }
 }
 
+export class QueryFactoryAuthenticationError extends Error {
+  readonly isAuthenticationFailure = true as const
+
+  constructor(
+    readonly originalError: QueryFactoryError,
+    readonly refreshError: QueryFactoryError
+  ) {
+    super(refreshError.message)
+    this.name = 'QueryFactoryAuthenticationError'
+  }
+}
+
 export class QueryFactory {
   baseUrl: URL
   private defaultInit: RequestInit
   private getAccessToken?: () => string | null
+  private refresh?: QueryFactoryRefreshOptions
+  private onAuthenticationFailure?: () => void | Promise<void>
+  private refreshPromise: Promise<void> | null = null
 
   constructor(baseUrl: string, options?: QueryFactoryOptions) {
     this.baseUrl = new URL(baseUrl)
     this.getAccessToken = options?.getAccessToken
+    this.refresh = options?.refresh
+    this.onAuthenticationFailure = options?.onAuthenticationFailure
 
     const defaultRequestInit = options?.defaultRequestInit
     this.defaultInit = {
@@ -70,6 +107,22 @@ export class QueryFactory {
     }
 
     return this.request<T>(path, {
+      ...requestInit,
+      method: 'POST',
+      body: JSON.stringify(data),
+    })
+  }
+
+  postWithResponse<T>(path: string, data: unknown, requestInit?: RequestInit) {
+    if (data instanceof FormData) {
+      return this.requestWithResponse<T>(path, {
+        ...requestInit,
+        method: 'POST',
+        body: data,
+      })
+    }
+
+    return this.requestWithResponse<T>(path, {
       ...requestInit,
       method: 'POST',
       body: JSON.stringify(data),
@@ -124,12 +177,14 @@ export class QueryFactory {
     return init
   }
 
-  private async buildHeaders(init: RequestInit): Promise<Headers> {
+  private async buildHeaders(init: RequestInit, includeAccessToken = true): Promise<Headers> {
     const headers = new Headers(init.headers)
     const token = this.getAccessToken?.()
 
-    if (token) {
+    if (includeAccessToken && token) {
       headers.set('Authorization', `Bearer ${token}`)
+    } else if (!includeAccessToken) {
+      headers.delete('Authorization')
     }
 
     return headers
@@ -151,8 +206,17 @@ export class QueryFactory {
     }
   }
 
-  private async execute<T>(url: string, init: RequestInit): Promise<T> {
-    const headers = await this.buildHeaders(init)
+  private async execute<T>(url: string, init: RequestInit, includeAccessToken = true): Promise<T> {
+    const response = await this.executeWithResponse<T>(url, init, includeAccessToken)
+    return response.data
+  }
+
+  private async executeWithResponse<T>(
+    url: string,
+    init: RequestInit,
+    includeAccessToken = true
+  ): Promise<QueryFactoryResponse<T>> {
+    const headers = await this.buildHeaders(init, includeAccessToken)
     const response = await fetch(url, { ...init, headers })
 
     if (!response.ok) {
@@ -160,14 +224,85 @@ export class QueryFactory {
       throw new QueryFactoryError(response.status, body)
     }
 
-    return this.parseBody<T>(response)
+    return { data: await this.parseBody<T>(response), headers: response.headers }
   }
 
-  private request<T>(path: string, requestInit?: RequestInit): Promise<T> {
+  private async request<T>(path: string, requestInit?: RequestInit): Promise<T> {
+    const response = await this.requestWithResponse<T>(path, requestInit)
+    return response.data
+  }
+
+  private async requestWithResponse<T>(
+    path: string,
+    requestInit?: RequestInit
+  ): Promise<QueryFactoryResponse<T>> {
     const url = this.resolveUrl(path)
     const init = this.mergeInit(requestInit)
+    const accessToken = this.getAccessToken?.() ?? null
 
-    return this.execute<T>(url, init)
+    try {
+      return await this.executeWithResponse<T>(url, init)
+    } catch (error) {
+      if (!(error instanceof QueryFactoryError) || error.status !== 401 || !this.canRefresh(url)) {
+        throw error
+      }
+
+      if ((this.getAccessToken?.() ?? null) !== accessToken) {
+        return this.executeWithResponse<T>(url, init)
+      }
+
+      try {
+        await this.refreshAccessToken()
+      } catch (refreshError) {
+        if (refreshError instanceof QueryFactoryError && refreshError.status === 401) {
+          const authenticationError = new QueryFactoryAuthenticationError(error, refreshError)
+          await this.onAuthenticationFailure?.()
+          throw authenticationError
+        }
+        throw refreshError
+      }
+
+      return this.executeWithResponse<T>(url, init)
+    }
+  }
+
+  private canRefresh(url: string): boolean {
+    if (!this.refresh) {
+      return false
+    }
+
+    const pathname = new URL(url).pathname
+    return !UNAUTHENTICATED_AUTH_PATHS.includes(
+      pathname as (typeof UNAUTHENTICATED_AUTH_PATHS)[number]
+    )
+  }
+
+  private async refreshAccessToken(): Promise<void> {
+    const refresh = this.refresh
+    if (!refresh) {
+      return
+    }
+
+    if (!this.refreshPromise) {
+      const refreshPromise = this.execute<LoginResponse>(
+        this.resolveUrl(refresh.path),
+        this.mergeInit({
+          method: 'POST',
+          body: JSON.stringify(refresh.data),
+        }),
+        false
+      ).then((response) => refresh.onSuccess(response))
+      this.refreshPromise = refreshPromise
+    }
+
+    const refreshPromise = this.refreshPromise
+    try {
+      await refreshPromise
+    } finally {
+      if (this.refreshPromise === refreshPromise) {
+        this.refreshPromise = null
+      }
+    }
   }
 }
 
@@ -191,4 +326,8 @@ function mergeHeaders(base?: HeadersInit, next?: HeadersInit): Headers {
   }
 
   return headers
+}
+
+function toPathname(path: string): string {
+  return path.startsWith('/') ? path : `/${path}`
 }

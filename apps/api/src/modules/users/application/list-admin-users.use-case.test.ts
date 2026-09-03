@@ -1,49 +1,24 @@
-import assert from 'node:assert/strict'
-import { mock, test } from 'node:test'
+import { expect, test, vi } from 'vitest'
 
-const state: {
-  rows: Array<{
-    documentId: string
-    email: string
-    createdAt: Date
-    roleName: string
-    userName: string | null
-    userLastName: string | null
-    ownerName: string | null
-    ownerLastName: string | null
-    staffName: string | null
-    staffLastName: string | null
-    userStatus: string | null
-    ownerStatus: string | null
-    staffStatus: string | null
-  }>
-  total: number
-  fail: boolean
-  lastParams: Record<string, unknown> | null
-} = {
-  rows: [],
+const state = vi.hoisted(() => ({
+  rows: [] as Array<Record<string, unknown>>,
   total: 0,
   fail: false,
-  lastParams: null,
-}
+  lastParams: null as Record<string, unknown> | null,
+}))
 
-mock.module('@repo/db', {
-  namedExports: {
-    findAccountsWithRolePaginated: async (params: Record<string, unknown>) => {
-      state.lastParams = params
-      if (state.fail) throw new Error('db down')
-      return { rows: state.rows, total: state.total }
-    },
+vi.mock('@repo/db', () => ({
+  findAccountsWithRolePaginated: async (params: Record<string, unknown>) => {
+    state.lastParams = params
+    if (state.fail) throw new Error('db down')
+    return { rows: state.rows, total: state.total }
   },
-})
+}))
 
-const useCaseModulePromise = import('./list-admin-users.use-case.ts')
+import { ListAdminUsersUseCase } from './list-admin-users.use-case.ts'
 
 function createUseCase() {
-  return useCaseModulePromise.then(
-    ({ ListAdminUsersUseCase }) =>
-      new ListAdminUsersUseCase({ translateError: (code: string) => code } as never)
-  )
+  return new ListAdminUsersUseCase({ translateError: (code: string) => code } as never)
 }
 
 function resetState() {
@@ -92,11 +67,11 @@ test('maps repository rows to admin user list responses with pagination metadata
   const useCase = await createUseCase()
   const result = await useCase.execute({ page: 2, limit: 10 })
 
-  assert.equal(result.total, 25)
-  assert.equal(result.page, 2)
-  assert.equal(result.limit, 10)
-  assert.equal(result.totalPages, 3)
-  assert.deepEqual(result.data, [
+  expect(result.total).toBe(25)
+  expect(result.page).toBe(2)
+  expect(result.limit).toBe(10)
+  expect(result.totalPages).toBe(3)
+  expect(result.data).toEqual([
     {
       documentId: 'acc-user',
       email: 'alice@example.com',
@@ -142,7 +117,7 @@ test('resolves owner name when the account has an owner profile', async () => {
   const useCase = await createUseCase()
   const result = await useCase.execute({ page: 1, limit: 10 })
 
-  assert.deepEqual(result.data[0], {
+  expect(result.data[0]).toEqual({
     documentId: 'acc-owner',
     email: 'owner@example.com',
     name: 'Olivia',
@@ -165,7 +140,7 @@ test('passes email and role filters through to the repository', async () => {
     role: 'staff',
   })
 
-  assert.deepEqual(state.lastParams, {
+  expect(state.lastParams).toEqual({
     page: 1,
     limit: 10,
     email: 'alice',
@@ -180,8 +155,8 @@ test('computes zero total pages for an empty result', async () => {
   const useCase = await createUseCase()
   const result = await useCase.execute({ page: 1, limit: 10 })
 
-  assert.equal(result.totalPages, 0)
-  assert.deepEqual(result.data, [])
+  expect(result.totalPages).toBe(0)
+  expect(result.data).toEqual([])
 })
 
 test('throws an internal server error when the repository fails', async () => {
@@ -189,7 +164,7 @@ test('throws an internal server error when the repository fails', async () => {
   state.fail = true
 
   const useCase = await createUseCase()
-  await assert.rejects(() => useCase.execute({ page: 1, limit: 10 }), {
+  await expect(useCase.execute({ page: 1, limit: 10 })).rejects.toMatchObject({
     name: 'InternalServerErrorException',
     message: 'admin.USERS_LIST_FAILED',
   })

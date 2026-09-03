@@ -1,0 +1,15 @@
+{$WEB_HOST} {
+	reverse_proxy web:3001
+}
+
+{$DASHBOARD_HOST} {
+	reverse_proxy dashboard:3002
+}
+
+{$ADMIN_HOST} {
+	reverse_proxy admin:3003
+}
+
+{$API_HOST} {
+	reverse_proxy api:3000
+}

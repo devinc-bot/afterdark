@@ -4,7 +4,7 @@
 
 ## Producto
 
-**Repo** — plataforma de eventos.
+**Lumina events** — plataforma de eventos.
 
 | Audiencia             | App         | Rol                                                                |
 | --------------------- | ----------- | ------------------------------------------------------------------ |
@@ -25,7 +25,7 @@ Un solo lugar donde el público descubre y compra eventos, y donde cada ubicaci�
 1. **UI en español, código en inglés** — copy visible al usuario en español; identificadores, rutas y APIs en inglés.
 2. **Una fuente de verdad compartida** — tipos en `@repo/types`, validación en `@repo/validators`, persistencia en `@repo/db`; sin duplicar reglas entre apps.
 3. **Dueño primero en el dashboard** — el panel prioriza operaciones de la ubicación (ubicaciones, entradas, staff) antes que features secundarias.
-4. **Contratos explícitos** — trabajo nuevo vía OpenSpec (`openspec/`); specs legacy en `spec/features/` quedan como referencia hasta el próximo touch.
+4. **Contratos explícitos** — trabajo nuevo planificado en `spec/features/active/` mediante `spec.md`, `plan.md` y `tasks.md`; el trabajo verificado se conserva en `spec/features/archive/`.
 5. **Seguridad por capa** — autenticación y autorización verificadas en API (guards, roles); el frontend no es barrera de seguridad.
 
 ## Fuera de misión (no construir)

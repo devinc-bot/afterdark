@@ -4,13 +4,15 @@ import type { PaginatedScannedTicketsResult, ScannedTicketHistoryRow } from '@re
 import { db } from '../../client.ts'
 import { accounts } from '../../schema/account.ts'
 import { events } from '../../schema/event.ts'
-import { orders } from '../../schema/orders.ts'
 import { ownerAccountsLnk } from '../../schema/owner-account-lnk.ts'
 import { owners } from '../../schema/owner.ts'
 import { staffAccountsLnk } from '../../schema/staff-account-lnk.ts'
 import { staff } from '../../schema/staff.ts'
 import { tickets } from '../../schema/ticket.ts'
+import { ticketTypes } from '../../schema/ticket-type.ts'
 import { ticketsSold } from '../../schema/tickets_sold.ts'
+import { purchaseItems } from '../../schema/purchase-item.ts'
+import { purchases } from '../../schema/purchase.ts'
 import { userAccountsLnk } from '../../schema/user-account-lnk.ts'
 import { users } from '../../schema/user.ts'
 
@@ -34,10 +36,8 @@ export async function findScannedTicketsPaginatedByEvent(params: {
     db
       .select({
         scannedAt: ticketsSold.usedAt,
-        ticket: {
-          name: tickets.name,
-          type: tickets.type,
-        },
+        ticketTypeDocumentId: ticketTypes.documentId,
+        ticketTypeName: ticketTypes.name,
         purchaser: {
           name: users.name,
           lastName: users.lastName,
@@ -52,10 +52,12 @@ export async function findScannedTicketsPaginatedByEvent(params: {
         },
       })
       .from(ticketsSold)
-      .innerJoin(orders, eq(orders.id, ticketsSold.orderId))
-      .innerJoin(tickets, eq(tickets.id, orders.ticketId))
+      .innerJoin(purchaseItems, eq(purchaseItems.id, ticketsSold.purchaseItemId))
+      .innerJoin(purchases, eq(purchases.id, purchaseItems.purchaseId))
+      .innerJoin(tickets, eq(tickets.id, purchaseItems.ticketId))
+      .innerJoin(ticketTypes, eq(ticketTypes.id, tickets.ticketTypeId))
       .innerJoin(events, eq(events.id, tickets.eventId))
-      .innerJoin(users, eq(users.id, orders.userId))
+      .innerJoin(users, eq(users.id, purchases.userId))
       .innerJoin(userAccountsLnk, eq(userAccountsLnk.userId, users.id))
       .innerJoin(purchaserAccount, eq(purchaserAccount.id, userAccountsLnk.accountId))
       .leftJoin(operatorAccount, eq(operatorAccount.id, ticketsSold.checkedInByAccountId))
@@ -70,8 +72,10 @@ export async function findScannedTicketsPaginatedByEvent(params: {
     db
       .select({ total: count() })
       .from(ticketsSold)
-      .innerJoin(orders, eq(orders.id, ticketsSold.orderId))
-      .innerJoin(tickets, eq(tickets.id, orders.ticketId))
+      .innerJoin(purchaseItems, eq(purchaseItems.id, ticketsSold.purchaseItemId))
+      .innerJoin(purchases, eq(purchases.id, purchaseItems.purchaseId))
+      .innerJoin(tickets, eq(tickets.id, purchaseItems.ticketId))
+      .innerJoin(ticketTypes, eq(ticketTypes.id, tickets.ticketTypeId))
       .innerJoin(events, eq(events.id, tickets.eventId))
       .where(where),
   ])
@@ -81,7 +85,12 @@ export async function findScannedTicketsPaginatedByEvent(params: {
     if (!row.scannedAt) continue
     typedRows.push({
       scannedAt: row.scannedAt,
-      ticket: row.ticket,
+      ticket: {
+        ticketType: {
+          documentId: row.ticketTypeDocumentId,
+          name: row.ticketTypeName,
+        },
+      },
       purchaser: row.purchaser,
       operator: row.operator,
     })

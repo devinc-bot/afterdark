@@ -1,5 +1,4 @@
-import assert from 'node:assert/strict'
-import test from 'node:test'
+import { expect, test } from 'vitest'
 import { API_ERROR_RECORD_FIELD_LIMITS, type CreateApiErrorRecordUnlessRecentInput } from '@repo/db'
 import {
   ApiErrorRecorderService,
@@ -27,8 +26,8 @@ class TestApiErrorRecorderService extends ApiErrorRecorderService {
 function getRecordedInput(
   service: TestApiErrorRecorderService
 ): CreateApiErrorRecordUnlessRecentInput {
-  assert.ok(service.input)
-  return service.input
+  expect(service.input).toBeTruthy()
+  return service.input!
 }
 
 const context: ApiErrorRecordingContext = {
@@ -43,7 +42,7 @@ test('records only allowlisted context with a path without query parameters', as
 
   await service.record(new Error('Unexpected failure'), context)
 
-  assert.deepEqual(getRecordedInput(service), {
+  expect(getRecordedInput(service)).toEqual({
     method: 'POST',
     path: '/api/orders',
     statusCode: 500,
@@ -65,11 +64,11 @@ test('scrubs supported credential patterns from messages and stacks', async () =
   await service.record(error, context)
 
   const input = getRecordedInput(service)
-  assert.equal(
+  expect(
     input.message,
     'authorization=[REDACTED] token=[REDACTED] password=[REDACTED] api_key=[REDACTED]'
-  )
-  assert.equal(input.stack, 'Error: Bearer [REDACTED]\nCookie=[REDACTED]')
+  ).toBe('authorization=[REDACTED] token=[REDACTED] password=[REDACTED] api_key=[REDACTED]')
+  expect(input.stack).toBe('Error: Bearer [REDACTED]\nCookie=[REDACTED]')
 })
 
 test('truncates all bounded diagnostic fields', async () => {
@@ -86,12 +85,12 @@ test('truncates all bounded diagnostic fields', async () => {
   })
 
   const input = getRecordedInput(service)
-  assert.equal(input.method.length, API_ERROR_RECORD_FIELD_LIMITS.method)
-  assert.equal(input.path.length, API_ERROR_RECORD_FIELD_LIMITS.path)
-  assert.equal(input.errorName.length, API_ERROR_RECORD_FIELD_LIMITS.errorName)
-  assert.equal(input.message.length, API_ERROR_RECORD_FIELD_LIMITS.message)
-  assert.equal(input.stack?.length, API_ERROR_RECORD_FIELD_LIMITS.stack)
-  assert.equal(input.correlationId?.length, API_ERROR_RECORD_FIELD_LIMITS.correlationId)
+  expect(input.method.length).toBe(API_ERROR_RECORD_FIELD_LIMITS.method)
+  expect(input.path.length).toBe(API_ERROR_RECORD_FIELD_LIMITS.path)
+  expect(input.errorName.length).toBe(API_ERROR_RECORD_FIELD_LIMITS.errorName)
+  expect(input.message.length).toBe(API_ERROR_RECORD_FIELD_LIMITS.message)
+  expect(input.stack?.length).toBe(API_ERROR_RECORD_FIELD_LIMITS.stack)
+  expect(input.correlationId?.length).toBe(API_ERROR_RECORD_FIELD_LIMITS.correlationId)
 })
 
 test('uses the same fingerprint for equivalent sanitized failures during a five-minute window', async () => {
@@ -108,9 +107,9 @@ test('uses the same fingerprint for equivalent sanitized failures during a five-
     correlationId: 'request-456',
   })
 
-  assert.equal(getRecordedInput(service).fingerprint, firstFingerprint)
-  assert.ok(service.cutoff)
-  assert.equal(service.cutoff.getTime(), service.now - 5 * 60 * 1000)
+  expect(getRecordedInput(service).fingerprint).toBe(firstFingerprint)
+  expect(service.cutoff).toBeTruthy()
+  expect(service.cutoff!.getTime()).toBe(service.now - 5 * 60 * 1000)
 })
 
 test('includes the sanitized stack in the fingerprint', async () => {
@@ -124,5 +123,5 @@ test('includes the sanitized stack in the fingerprint', async () => {
   const firstFingerprint = getRecordedInput(service).fingerprint
   await service.record(secondError, context)
 
-  assert.notEqual(getRecordedInput(service).fingerprint, firstFingerprint)
+  expect(getRecordedInput(service).fingerprint).not.toBe(firstFingerprint)
 })

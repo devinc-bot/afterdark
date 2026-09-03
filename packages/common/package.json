@@ -10,7 +10,7 @@
   },
   "scripts": {
     "type-check": "tsc --noEmit",
-    "test": "node --experimental-strip-types --test test/formatters.test.ts"
+    "test": "pnpm -C ../.. exec vitest run packages/common/test"
   },
   "dependencies": {
     "@repo/types": "workspace:*",

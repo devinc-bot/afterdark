@@ -1,4 +1,10 @@
-import type { EventSelect, LocationSelect, TicketSelect, TicketSoldSelect } from '@repo/db'
+import type {
+  EventSelect,
+  LocationSelect,
+  TicketSelect,
+  TicketSoldSelect,
+  TicketTypeSelect,
+} from '@repo/db'
 import type { PurchasedTicketResponse, TicketResponse } from '@repo/types'
 import type { CreateTicketInput, UpdateTicketInput } from '@repo/validators'
 
@@ -11,6 +17,7 @@ const EMPTY_SALES: TicketSalesStats = { totalSold: 0, revenue: 0 }
 
 export function toTicketResponse(
   ticket: TicketSelect,
+  ticketType: TicketTypeSelect,
   event: Pick<EventSelect, 'documentId' | 'name'> | null,
   location: Pick<LocationSelect, 'documentId' | 'name'> | null,
   sales: TicketSalesStats = EMPTY_SALES,
@@ -18,12 +25,11 @@ export function toTicketResponse(
 ): TicketResponse {
   return {
     documentId: ticket.documentId,
-    name: ticket.name,
     price: ticket.price,
     quantity: ticket.quantity,
     status: ticket.status,
     description: ticket.description,
-    type: ticket.type,
+    ticketType: { documentId: ticketType.documentId, name: ticketType.name },
     saleStartsAt: ticket.saleStartsAt,
     saleEndsAt: ticket.saleEndsAt,
     eventId: event?.documentId ?? null,
@@ -40,7 +46,7 @@ export function toTicketResponse(
 
 export function toPurchasedTicketResponse(
   ticketSold: TicketSoldSelect,
-  ticket: Pick<TicketSelect, 'name' | 'type'>,
+  ticketType: TicketTypeSelect,
   event: Pick<EventSelect, 'slug' | 'name' | 'startsAt'>,
   location: Pick<LocationSelect, 'name'>,
   eventImageUrl: string | null
@@ -49,8 +55,7 @@ export function toPurchasedTicketResponse(
     documentId: ticketSold.documentId,
     checkedIn: ticketSold.checkedIn,
     usedAt: ticketSold.usedAt,
-    ticketName: ticket.name,
-    ticketType: ticket.type,
+    ticketType: { documentId: ticketType.documentId, name: ticketType.name },
     eventSlug: event.slug,
     eventName: event.name,
     eventStartsAt: event.startsAt,
@@ -61,15 +66,15 @@ export function toPurchasedTicketResponse(
 
 export function toTicketUpsertInput(
   input: CreateTicketInput | UpdateTicketInput,
-  eventId?: number | null
+  eventId: number | null,
+  ticketTypeId: number
 ) {
   return {
-    name: input.name,
     price: input.price,
     quantity: input.quantity,
     description: input.description,
     status: input.status,
-    type: input.type,
+    ticketTypeId,
     saleStartsAt: input.saleStartsAt ?? null,
     saleEndsAt: input.saleEndsAt ?? null,
     eventId: eventId ?? null,

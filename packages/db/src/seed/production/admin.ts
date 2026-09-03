@@ -1,4 +1,4 @@
-import { hash } from 'bcryptjs'
+import { compare, hash } from 'bcryptjs'
 import { eq } from 'drizzle-orm'
 import type { NodePgDatabase } from 'drizzle-orm/node-postgres'
 import { AUTH_PROVIDER, USER_ROLE } from '@repo/types'
@@ -22,31 +22,35 @@ export async function seedAdmin(database: SeedDatabase, seedEnv: AdminSeedEnv): 
 
   if (!adminRole) throw new Error(`Role not found: ${USER_ROLE.ADMIN}`)
 
-  const password = await hash(seedEnv.SEED_ADMIN_PASSWORD, BCRYPT_SALT_ROUNDS)
   const [existingAccount] = await database
-    .select({ id: accounts.id })
+    .select({ id: accounts.id, password: accounts.password })
     .from(accounts)
     .where(eq(accounts.email, seedEnv.SEED_ADMIN_EMAIL))
     .limit(1)
 
-  const accountId =
-    existingAccount?.id ??
-    (
-      await database
-        .insert(accounts)
-        .values({
-          email: seedEnv.SEED_ADMIN_EMAIL,
-          password,
-          provider: AUTH_PROVIDER.LOCAL,
-        })
-        .returning({ id: accounts.id })
-    )[0].id
+  const accountId = existingAccount
+    ? existingAccount.id
+    : (
+        await database
+          .insert(accounts)
+          .values({
+            email: seedEnv.SEED_ADMIN_EMAIL,
+            password: await hash(seedEnv.SEED_ADMIN_PASSWORD, BCRYPT_SALT_ROUNDS),
+            provider: AUTH_PROVIDER.LOCAL,
+          })
+          .returning({ id: accounts.id })
+      )[0].id
 
-  if (existingAccount) {
+  // Rehash only when the configured password no longer matches the stored hash.
+  if (
+    existingAccount &&
+    (!existingAccount.password ||
+      !(await compare(seedEnv.SEED_ADMIN_PASSWORD, existingAccount.password)))
+  ) {
     await database
       .update(accounts)
       .set({
-        password,
+        password: await hash(seedEnv.SEED_ADMIN_PASSWORD, BCRYPT_SALT_ROUNDS),
         provider: AUTH_PROVIDER.LOCAL,
         providerAccountId: null,
         updatedAt: new Date(),

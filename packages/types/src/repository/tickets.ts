@@ -1,9 +1,17 @@
-import type { EventSelect, LocationSelect, TicketSelect, TicketSoldSelect } from '@repo/db/schema'
-import type { TicketSalesFilter, TicketStatus, TicketType } from '../enums/ticket.ts'
+import type {
+  EventSelect,
+  LocationSelect,
+  TicketSelect,
+  TicketSoldSelect,
+  TicketTypeSelect,
+} from '@repo/db/schema'
+import type { TicketSalesFilter, TicketStatus } from '../enums/ticket.ts'
 import type { CheckInOperatorRole } from '../enums/user.ts'
+import type { TicketTypeResponse } from '../dto/ticket-type.ts'
 
 export type TicketWithRelations = {
   ticket: TicketSelect
+  ticketType: TicketTypeSelect
   event: EventSelect | null
   location: LocationSelect | null
 }
@@ -14,12 +22,11 @@ export type TicketWithRelationsAndSales = TicketWithRelations & {
 }
 
 export type TicketUpsertInput = {
-  name: string
   price: number
   quantity: number
   description: string
   status: TicketStatus
-  type: TicketType
+  ticketTypeId: number
   saleStartsAt?: Date | null
   saleEndsAt?: Date | null
   eventId?: number | null
@@ -48,6 +55,7 @@ export type ListPurchasedTicketsParams = {
 export type PurchasedTicketWithRelations = {
   ticketSold: TicketSoldSelect
   ticket: TicketSelect
+  ticketType: TicketTypeSelect
   event: EventSelect
   location: LocationSelect
 }
@@ -62,8 +70,7 @@ export type PurchasedTicketWithRelationsByDocumentId = PurchasedTicketWithRelati
 export type ScannedTicketHistoryRow = {
   scannedAt: Date
   ticket: {
-    name: string
-    type: TicketType
+    ticketType: TicketTypeResponse
   }
   purchaser: {
     name: string

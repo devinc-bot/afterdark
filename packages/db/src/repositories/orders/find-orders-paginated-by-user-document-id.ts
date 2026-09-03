@@ -4,6 +4,7 @@ import { db } from '../../client.ts'
 import { events } from '../../schema/event.ts'
 import { orders } from '../../schema/orders.ts'
 import { tickets } from '../../schema/ticket.ts'
+import { ticketTypes } from '../../schema/ticket-type.ts'
 import { users } from '../../schema/user.ts'
 
 export async function findOrdersPaginatedByUserDocumentId(
@@ -25,8 +26,10 @@ export async function findOrdersPaginatedByUserDocumentId(
         createdAt: orders.createdAt,
         updatedAt: orders.updatedAt,
         ticketId: tickets.documentId,
-        ticketName: tickets.name,
-        ticketType: tickets.type,
+        ticketType: {
+          documentId: ticketTypes.documentId,
+          name: ticketTypes.name,
+        },
         eventId: events.documentId,
         eventName: events.name,
         eventStartsAt: events.startsAt,
@@ -34,6 +37,7 @@ export async function findOrdersPaginatedByUserDocumentId(
       .from(orders)
       .innerJoin(users, eq(users.id, orders.userId))
       .innerJoin(tickets, eq(tickets.id, orders.ticketId))
+      .innerJoin(ticketTypes, eq(ticketTypes.id, tickets.ticketTypeId))
       .leftJoin(events, eq(events.id, tickets.eventId))
       .where(where)
       .orderBy(desc(orders.createdAt), desc(orders.id))
@@ -44,6 +48,7 @@ export async function findOrdersPaginatedByUserDocumentId(
       .from(orders)
       .innerJoin(users, eq(users.id, orders.userId))
       .innerJoin(tickets, eq(tickets.id, orders.ticketId))
+      .innerJoin(ticketTypes, eq(ticketTypes.id, tickets.ticketTypeId))
       .leftJoin(events, eq(events.id, tickets.eventId))
       .where(where),
   ])

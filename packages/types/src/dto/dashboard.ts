@@ -1,5 +1,5 @@
 import type { PaymentStatus } from '../enums/payment.ts'
-import type { TicketType } from '../enums/ticket.ts'
+import type { TicketTypeResponse } from './ticket-type.ts'
 
 export type DashboardSeriesGranularity = 'day' | 'month'
 
@@ -28,8 +28,7 @@ export type OwnerSaleResponse = {
   buyerName: string
   buyerEmail: string
   eventName: string
-  ticketName: string
-  ticketType: TicketType
+  ticketType: TicketTypeResponse
   locationName: string
   paidAt: string | null
   quantity: number

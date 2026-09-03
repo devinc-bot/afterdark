@@ -1,12 +1,18 @@
 import { z } from 'zod'
-import { TICKET_SALES_FILTER, TICKET_STATUS, TICKET_TYPE } from '@repo/types'
+import { TICKET_SALES_FILTER, TICKET_STATUS } from '@repo/types'
 import { paginationSchema, optionalCoercedDateSchema, uuidSchema } from './common.ts'
 
 export const ticketSoldDocumentIdSchema = z.string().trim().min(1).max(255)
 
 export const ticketStatusSchema = z.enum([TICKET_STATUS.ACTIVE, TICKET_STATUS.INACTIVE])
 
-export const ticketTypeSchema = z.enum([TICKET_TYPE.GENERAL, TICKET_TYPE.VIP])
+export const ticketTypeDocumentIdSchema = uuidSchema
+
+export const createTicketTypeSchema = z.object({
+  name: z.string().trim().min(1).max(100),
+})
+
+export type CreateTicketTypeInput = z.infer<typeof createTicketTypeSchema>
 
 export const ticketSalesFilterSchema = z.enum([
   TICKET_SALES_FILTER.SOLD,
@@ -71,8 +77,7 @@ const ticketSaleDateRangeRefineApi = {
 
 const ticketBaseSchema = z
   .object({
-    name: z.string().trim().min(1, 'validation:field.ticket.name'),
-    type: ticketTypeSchema.default(TICKET_TYPE.GENERAL),
+    ticketTypeId: ticketTypeDocumentIdSchema,
     price: z.coerce.number().positive('validation:field.ticket.price'),
     quantity: z.coerce.number().int().positive('validation:field.ticket.quantity'),
     description: z.string().trim().min(1, 'validation:field.ticket.description'),
@@ -101,9 +106,8 @@ const priceStringSchema = z.string().trim().min(1, 'validation:field.ticket.pric
 
 export const ticketFormSchema = z
   .object({
-    name: z.string().trim().min(1, 'validation:field.ticket.name'),
     eventId: z.string().trim().min(1, 'validation:field.ticket.event'),
-    type: ticketTypeSchema,
+    ticketTypeId: ticketTypeDocumentIdSchema,
     price: priceStringSchema,
     quantity: quantityStringSchema,
     description: z.string().trim().min(1, 'validation:field.ticket.description'),
@@ -128,8 +132,7 @@ export function parseTicketFormToCreateInput(values: TicketFormValues): CreateTi
 
 export function parseTicketFormToUpdateInput(values: TicketFormValues): UpdateTicketInput {
   return updateTicketSchema.parse({
-    name: values.name,
-    type: values.type,
+    ticketTypeId: values.ticketTypeId,
     price: values.price,
     quantity: values.quantity,
     description: values.description,

@@ -1,24 +1,17 @@
-import assert from 'node:assert/strict'
-import { mock, test } from 'node:test'
+import { expect, test, vi } from 'vitest'
+import { DeleteApiErrorRecordUseCase } from './delete-api-error-record.use-case.ts'
 
-const state: { deleted: boolean; fail: boolean } = { deleted: true, fail: false }
+const state = vi.hoisted(() => ({ deleted: true, fail: false }))
 
-mock.module('@repo/db', {
-  namedExports: {
-    deleteApiErrorRecordByDocumentId: async () => {
-      if (state.fail) throw new Error('db down')
-      return state.deleted
-    },
+vi.mock('@repo/db', () => ({
+  deleteApiErrorRecordByDocumentId: async () => {
+    if (state.fail) throw new Error('db down')
+    return state.deleted
   },
-})
-
-const useCaseModulePromise = import('./delete-api-error-record.use-case.ts')
+}))
 
 function createUseCase() {
-  return useCaseModulePromise.then(
-    ({ DeleteApiErrorRecordUseCase }) =>
-      new DeleteApiErrorRecordUseCase({ translateError: (code: string) => code } as never)
-  )
+  return new DeleteApiErrorRecordUseCase({ translateError: (code: string) => code } as never)
 }
 
 test('resolves when the record is deleted', async () => {
@@ -34,7 +27,7 @@ test('throws not found when no record matches', async () => {
   state.fail = false
 
   const useCase = await createUseCase()
-  await assert.rejects(() => useCase.execute('missing'), {
+  await expect(useCase.execute('missing')).rejects.toMatchObject({
     name: 'NotFoundException',
     message: 'admin.ERRORS_DELETE_NOT_FOUND',
   })
@@ -45,7 +38,7 @@ test('throws an internal server error when the repository fails', async () => {
   state.fail = true
 
   const useCase = await createUseCase()
-  await assert.rejects(() => useCase.execute('rec-1'), {
+  await expect(useCase.execute('rec-1')).rejects.toMatchObject({
     name: 'InternalServerErrorException',
     message: 'admin.ERRORS_DELETE_FAILED',
   })

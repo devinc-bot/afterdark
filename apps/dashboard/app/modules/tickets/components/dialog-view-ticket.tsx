@@ -1,24 +1,12 @@
-import { useTranslation } from 'react-i18next'
 import { Button, Dialog, DialogClose, DialogContent } from '@repo/ui'
 import { X } from 'lucide-react'
-import {
-  getTicketTypeLabel,
-  type TicketRecordItem,
-} from '~/modules/tickets/components/ticket-record'
+import type { TicketRecordItem } from '~/modules/tickets/components/ticket-record'
 import {
   ViewTicketMobile,
   type MobileTicketTemplate,
 } from '~/modules/tickets/components/view-ticket-mobile'
 
-function getTicketBenefits(record: TicketRecordItem): string[] {
-  if (record.ticketTypeTone === 'primary') {
-    return ['Zona Reservada', '2 Drinks Premium', 'Sin Cola']
-  }
-
-  if (record.ticketTypeTone === 'tertiary') {
-    return ['Mesa reservada', 'Servicio de botellas', 'Acceso preferente']
-  }
-
+function getTicketBenefits(): string[] {
   return ['Acceso general', 'Validación en puerta']
 }
 
@@ -31,7 +19,7 @@ function recordToMobileTemplate(
     ticketTypeLabel,
     price: record.price,
     validityLabel: 'Acceso 24h',
-    benefits: getTicketBenefits(record),
+    benefits: getTicketBenefits(),
   }
 }
 
@@ -42,8 +30,6 @@ export type TicketViewDialogProps = {
 }
 
 export function TicketViewDialog({ record, open, onOpenChange }: TicketViewDialogProps) {
-  const { t } = useTranslation('tickets')
-
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent showCloseButton={false} className="w-full border-0 bg-transparent">
@@ -60,9 +46,7 @@ export function TicketViewDialog({ record, open, onOpenChange }: TicketViewDialo
                 <X aria-hidden="true" />
               </Button>
             </DialogClose>
-            <ViewTicketMobile
-              ticket={recordToMobileTemplate(record, getTicketTypeLabel(record.ticketType, t))}
-            />
+            <ViewTicketMobile ticket={recordToMobileTemplate(record, record.ticketType)} />
           </div>
         ) : null}
       </DialogContent>

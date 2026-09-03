@@ -1,15 +1,15 @@
 import type { CheckInOperatorRole } from '../enums/user.ts'
-import type { TicketCheckInOutcome, TicketStatus, TicketType } from '../enums/ticket.ts'
+import type { TicketCheckInOutcome, TicketStatus } from '../enums/ticket.ts'
 import type { PaginatedResponse } from './common.ts'
+import type { TicketTypeResponse } from './ticket-type.ts'
 
 export interface TicketResponse {
   documentId: string
-  name: string
   price: number
   quantity: number
   status: TicketStatus
   description: string
-  type: TicketType
+  ticketType: TicketTypeResponse
   saleStartsAt: Date | null
   saleEndsAt: Date | null
   eventId: string | null
@@ -28,9 +28,8 @@ export interface TicketResponse {
 /** On-sale ticket offer on anonymous public event detail. */
 export interface PublicPurchasableTicketResponse {
   documentId: string
-  name: string
   price: number
-  type: TicketType
+  ticketType: TicketTypeResponse
   /** Units still available for purchase. */
   remainingQuantity: number
   saleStartsAt: Date | null
@@ -41,8 +40,7 @@ export interface PurchasedTicketResponse {
   documentId: string
   checkedIn: boolean
   usedAt: Date | null
-  ticketName: string
-  ticketType: TicketType
+  ticketType: TicketTypeResponse
   eventSlug: string
   eventName: string
   eventStartsAt: Date
@@ -61,8 +59,7 @@ export interface TicketCheckInResponse {
   checkedInAt: Date
   ticket: {
     documentId: string
-    name: string
-    type: TicketType
+    ticketType: TicketTypeResponse
   }
   event: {
     documentId: string
@@ -96,8 +93,7 @@ export interface ScannedTicketHistoryItem {
   }
   operator: ScannedTicketHistoryOperator | null
   ticket: {
-    name: string
-    type: TicketType
+    ticketType: TicketTypeResponse
   }
   scannedAt: Date
 }

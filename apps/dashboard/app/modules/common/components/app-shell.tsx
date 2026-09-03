@@ -22,6 +22,7 @@ import { useCallback, useMemo, useRef, useState } from 'react'
 import { CalendarDays, LayoutGrid, MapPin, QrCode, ShoppingBag, Ticket, Users } from 'lucide-react'
 import { USER_ROLE, type UserRole } from '@repo/types'
 import { clearAuthSession } from '~/modules/auth/utils/auth-storage.utils'
+import { logoutAuthSession } from '~/modules/common/services/session.service'
 import { AppShellLanguageSwitcher } from '~/modules/common/components/app-shell-language-switcher'
 import { AppShellSidebarFooter } from '~/modules/common/components/app-shell-sidebar-footer'
 import { AppShellThemeSwitcher } from '~/modules/common/components/app-shell-theme-switcher'
@@ -125,11 +126,14 @@ function AppShellLayout({ children }: { children: React.ReactNode }) {
     setIsSigningOut(true)
 
     try {
+      await logoutAuthSession()
+    } catch {
+      // Local authentication must be cleared even when the API cannot be reached.
+    } finally {
       clearAuthSession()
       clearSession()
       setSignOutOpen(false)
       await navigate({ to: DASHBOARD_ROUTES.login() })
-    } finally {
       signOutInFlight.current = false
       setIsSigningOut(false)
     }

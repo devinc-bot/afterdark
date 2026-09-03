@@ -72,8 +72,6 @@
         "empty": "No scanned tickets for this event.",
         "error": "We couldn't load the history. Try again.",
         "notReported": "Not reported",
-        "typeGeneral": "General",
-        "typeVip": "VIP",
         "table": {
           "scannedAt": "Scanned at",
           "purchaser": "Purchaser",

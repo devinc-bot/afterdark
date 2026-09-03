@@ -11,6 +11,29 @@
     "loadFallback": "No pudimos cargar la configuración. Intentá de nuevo en unos minutos.",
     "loading": "Cargando configuración…"
   },
+  "sessions": {
+    "title": "Sesiones",
+    "description": "Revisá los dispositivos que iniciaron sesión en esta aplicación.",
+    "count_one": "{{count}} sesión",
+    "count_other": "{{count}} sesiones",
+    "loading": "Cargando sesiones…",
+    "loadError": "No pudimos cargar tus sesiones. Intentá de nuevo.",
+    "revokeError": "No pudimos revocar esa sesión. Intentá de nuevo.",
+    "retry": "Reintentar",
+    "empty": "No hay sesiones para mostrar.",
+    "unknownDevice": "Dispositivo desconocido",
+    "metadataUnavailable": "Ubicación no disponible",
+    "current": "Sesión actual",
+    "close": "Cerrar",
+    "created": "Creada el {date}",
+    "expires": "Vence el {date}",
+    "revoke": "Revocar",
+    "revoking": "Revocando…",
+    "cancel": "Cancelar",
+    "confirmTitle": "¿Revocar esta sesión?",
+    "confirmDescription": "Este dispositivo tendrá que iniciar sesión otra vez cuando actualice su acceso.",
+    "status": { "active": "Activa", "expired": "Vencida", "revoked": "Revocada" }
+  },
   "shared": {
     "actions": {
       "save": "Guardar cambios",

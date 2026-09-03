@@ -28,8 +28,7 @@ import {
   TableHeader,
   TableRow,
 } from '@repo/ui'
-import { TICKET_TYPE, type TicketStatus, type TicketType } from '@repo/types'
-import type { TFunction } from 'i18next'
+import type { TicketStatus } from '@repo/types'
 import { EllipsisVertical, Eye, Pencil, Trash2 } from 'lucide-react'
 import { TicketViewDialog } from '~/modules/tickets/components/dialog-view-ticket'
 import { TICKET_TAB, type TicketTab } from '~/modules/tickets/constants/tickets-tabs.constants'
@@ -38,26 +37,15 @@ const ticketActionIconClassName = '!size-[20px] shrink-0'
 
 export type TicketRecordItem = {
   id: string
-  name: string
   clubName: string
   eventName: string
   eventImageUrl: string | null
-  ticketType: TicketType
-  ticketTypeTone?: 'default' | 'primary' | 'tertiary'
+  ticketType: string
   price: number
   quantity: number
   totalSold: number
   revenue: number
   status: TicketStatus
-}
-
-export function getTicketTypeLabel(type: TicketType, t: TFunction<'tickets'>): string {
-  return type === TICKET_TYPE.VIP ? t('form.typeVip') : t('form.typeGeneral')
-}
-
-function getTicketTypeTone(type: TicketType): TicketRecordItem['ticketTypeTone'] {
-  if (type === TICKET_TYPE.VIP) return 'primary'
-  return 'default'
 }
 
 function formatSoldCount(value: number): string {
@@ -93,7 +81,7 @@ function TicketTypeBadge({
   tone = 'default',
 }: {
   label: string
-  tone?: TicketRecordItem['ticketTypeTone']
+  tone?: 'default' | 'primary' | 'tertiary'
 }) {
   return (
     <Badge
@@ -126,7 +114,7 @@ function TicketRecordRow({
 }) {
   const { t } = useTranslation('tickets')
 
-  const ticketTypeLabel = getTicketTypeLabel(record.ticketType, t)
+  const ticketTypeLabel = record.ticketType
 
   return (
     <TableRow className="border-0">
@@ -134,12 +122,8 @@ function TicketRecordRow({
         <EventIdentityCell eventName={record.eventName} eventImageUrl={record.eventImageUrl} />
       </TableCell>
       <TableCell className="p-6 font-semibold text-ink">{record.clubName}</TableCell>
-      <TableCell className="p-6 font-semibold text-ink">{record.name}</TableCell>
       <TableCell className="p-6">
-        <TicketTypeBadge
-          label={ticketTypeLabel}
-          tone={record.ticketTypeTone ?? getTicketTypeTone(record.ticketType)}
-        />
+        <TicketTypeBadge label={ticketTypeLabel} tone="default" />
       </TableCell>
       <TableCell className="p-6 text-ink">
         {formatCurrency(record.price, {
@@ -341,7 +325,6 @@ export function TicketRecords({
                 <TableRow>
                   <TableHead className="p-6">{t('table.event')}</TableHead>
                   <TableHead className="p-6">{t('table.location')}</TableHead>
-                  <TableHead className="p-6">{t('table.name')}</TableHead>
                   <TableHead className="p-6">{t('table.ticketType')}</TableHead>
                   <TableHead className="p-6">{t('table.price')}</TableHead>
                   <TableHead className="p-6">{t('table.quantity')}</TableHead>

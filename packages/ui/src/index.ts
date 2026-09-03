@@ -1,6 +1,11 @@
 export { cn } from './lib/utils'
 export { fieldErrorMessage, optionalFieldLabel, requiredFieldLabel } from './lib/form-field.utils'
 export { getPaginationItems, type PaginationRangeItem } from './lib/pagination.utils.ts'
+export {
+  AccountSessions,
+  type AccountSessionsLabels,
+  type AccountSessionsProps,
+} from './components/account-sessions.tsx'
 
 export {
   Accordion,

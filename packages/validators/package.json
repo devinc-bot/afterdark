@@ -10,7 +10,7 @@
     "./env": "./src/env/index.ts"
   },
   "scripts": {
-    "test": "node --experimental-strip-types --test test/*.test.ts",
+    "test": "pnpm -C ../.. exec vitest run packages/validators/test",
     "type-check": "tsc --noEmit"
   },
   "dependencies": {

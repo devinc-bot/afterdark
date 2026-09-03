@@ -1,5 +1,4 @@
-import assert from 'node:assert/strict'
-import test from 'node:test'
+import { expect, test } from 'vitest'
 import { OrganizationsController } from './organizations.controller.ts'
 
 test('delegates public organization retrieval to the use case', async () => {
@@ -13,6 +12,6 @@ test('delegates public organization retrieval to the use case', async () => {
   }
   const controller = new OrganizationsController(useCase as never)
 
-  assert.equal(await controller.getPublicBySlug('organization-id', { page: 1, limit: 5 }), result)
-  assert.deepEqual(calls, ['organization-id'])
+  expect(await controller.getPublicBySlug('organization-id', { page: 1, limit: 5 })).toBe(result)
+  expect(calls).toEqual(['organization-id'])
 })

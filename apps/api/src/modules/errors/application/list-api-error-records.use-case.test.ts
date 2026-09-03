@@ -1,46 +1,24 @@
-import assert from 'node:assert/strict'
-import { mock, test } from 'node:test'
+import { expect, test, vi } from 'vitest'
 
-const state: {
-  rows: Array<{
-    documentId: string
-    method: string
-    path: string
-    statusCode: number
-    errorName: string
-    message: string
-    stack: string | null
-    correlationId: string | null
-    fingerprint: string
-    createdAt: Date
-  }>
-  total: number
-  fail: boolean
-  lastParams: Record<string, unknown> | null
-} = {
-  rows: [],
+const state = vi.hoisted(() => ({
+  rows: [] as Array<Record<string, unknown>>,
   total: 0,
   fail: false,
-  lastParams: null,
-}
+  lastParams: null as Record<string, unknown> | null,
+}))
 
-mock.module('@repo/db', {
-  namedExports: {
-    findApiErrorRecordsPaginated: async (params: Record<string, unknown>) => {
-      state.lastParams = params
-      if (state.fail) throw new Error('db down')
-      return { rows: state.rows, total: state.total }
-    },
+vi.mock('@repo/db', () => ({
+  findApiErrorRecordsPaginated: async (params: Record<string, unknown>) => {
+    state.lastParams = params
+    if (state.fail) throw new Error('db down')
+    return { rows: state.rows, total: state.total }
   },
-})
+}))
 
-const useCaseModulePromise = import('./list-api-error-records.use-case.ts')
+import { ListApiErrorRecordsUseCase } from './list-api-error-records.use-case.ts'
 
 function createUseCase() {
-  return useCaseModulePromise.then(
-    ({ ListApiErrorRecordsUseCase }) =>
-      new ListApiErrorRecordsUseCase({ translateError: (code: string) => code } as never)
-  )
+  return new ListApiErrorRecordsUseCase({ translateError: (code: string) => code } as never)
 }
 
 function resetState() {
@@ -71,11 +49,11 @@ test('maps repository rows to API error record responses with pagination metadat
   const useCase = await createUseCase()
   const result = await useCase.execute({ page: 2, limit: 10 })
 
-  assert.equal(result.total, 25)
-  assert.equal(result.page, 2)
-  assert.equal(result.limit, 10)
-  assert.equal(result.totalPages, 3)
-  assert.deepEqual(result.data, [
+  expect(result.total).toBe(25)
+  expect(result.page).toBe(2)
+  expect(result.limit).toBe(10)
+  expect(result.totalPages).toBe(3)
+  expect(result.data).toEqual([
     {
       documentId: 'rec-1',
       method: 'POST',
@@ -105,7 +83,7 @@ test('passes filters through to the repository', async () => {
     to: new Date('2026-08-31T00:00:00.000Z'),
   })
 
-  assert.deepEqual(state.lastParams, {
+  expect(state.lastParams).toEqual({
     page: 1,
     limit: 10,
     statusCode: 500,
@@ -122,8 +100,8 @@ test('computes zero total pages for an empty result', async () => {
   const useCase = await createUseCase()
   const result = await useCase.execute({ page: 1, limit: 10 })
 
-  assert.equal(result.totalPages, 0)
-  assert.deepEqual(result.data, [])
+  expect(result.totalPages).toBe(0)
+  expect(result.data).toEqual([])
 })
 
 test('throws an internal server error when the repository fails', async () => {
@@ -131,7 +109,7 @@ test('throws an internal server error when the repository fails', async () => {
   state.fail = true
 
   const useCase = await createUseCase()
-  await assert.rejects(() => useCase.execute({ page: 1, limit: 10 }), {
+  await expect(useCase.execute({ page: 1, limit: 10 })).rejects.toMatchObject({
     name: 'InternalServerErrorException',
     message: 'admin.ERRORS_LIST_FAILED',
   })

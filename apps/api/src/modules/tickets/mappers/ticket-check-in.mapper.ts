@@ -10,8 +10,7 @@ export function toTicketCheckInResponse(
     checkedInAt,
     ticket: {
       documentId: context.ticket.documentId,
-      name: context.ticket.name,
-      type: context.ticket.type,
+      ticketType: context.ticket.ticketType,
     },
     event: {
       documentId: context.event.documentId,

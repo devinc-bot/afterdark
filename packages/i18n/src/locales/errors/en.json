@@ -17,6 +17,9 @@
     "TOKEN_INVALID": "The token is invalid.",
     "SESSION_NOT_FOUND": "Session not found.",
     "REFRESH_TOKEN_INVALID": "Invalid refresh token.",
+    "REFRESH_TOKEN_EXPIRED": "The refresh token has expired.",
+    "REFRESH_TOKEN_REVOKED": "The refresh token has been revoked.",
+    "REFRESH_TOKEN_ORIGIN_INVALID": "The refresh request origin is invalid.",
     "PASSWORD_RESET_TOKEN_INVALID": "The link is invalid or has expired.",
     "PASSWORD_RESET_RATE_LIMITED": "Too many attempts. Please try again later.",
     "USER_REGISTRATION_TOKEN_INVALID": "The link is invalid or has expired.",
@@ -83,6 +86,12 @@
     "CHECK_IN_EXPIRED": "The ticket QR code has expired.",
     "CHECK_IN_USED": "This ticket has already been used."
   },
+  "ticketType": {
+    "NOT_FOUND": "The selected ticket type is not available.",
+    "CREATE_FAILED": "Could not create the ticket type.",
+    "LIST_FAILED": "Could not load ticket types.",
+    "DUPLICATE": "You already have a ticket type with that name."
+  },
   "file": {
     "FILE_REQUIRED": "You need to send an image file.",
     "INVALID_IMAGE_TYPE": "The file must be a JPG, PNG or WEBP image.",
@@ -114,6 +123,10 @@
   "geo": {
     "PROVIDER_FAILED": "We could not locate your area. Try again or move the pin.",
     "RATE_LIMITED": "Too many searches. Wait a moment and try again."
+  },
+  "rateLimit": {
+    "TOO_MANY_REQUESTS": "Too many requests. Please wait a moment and try again.",
+    "CLIENT_IP_REQUIRED": "We could not determine your client IP address."
   },
   "order": {
     "NOT_FOUND": "We could not find the order.",

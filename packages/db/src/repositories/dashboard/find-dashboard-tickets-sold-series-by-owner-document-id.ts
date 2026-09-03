@@ -1,5 +1,5 @@
 import { and, count, eq, gte, lte, sql } from 'drizzle-orm'
-import { PAYMENT_STATUS } from '@repo/types/enums'
+import { PURCHASE_STATUS } from '@repo/types/enums'
 import type {
   DashboardTicketsSoldSeriesPoint,
   FindDashboardTicketsSoldSeriesParams,
@@ -7,10 +7,11 @@ import type {
 import { db } from '../../client.ts'
 import { locations } from '../../schema/location.ts'
 import { events } from '../../schema/event.ts'
-import { orders } from '../../schema/orders.ts'
 import { owners } from '../../schema/owner.ts'
 import { tickets } from '../../schema/ticket.ts'
 import { ticketsSold } from '../../schema/tickets_sold.ts'
+import { purchaseItems } from '../../schema/purchase-item.ts'
+import { purchases } from '../../schema/purchase.ts'
 
 const DASHBOARD_TIME_ZONE = 'America/Argentina/Buenos_Aires'
 
@@ -22,8 +23,8 @@ export async function findDashboardTicketsSoldSeriesByOwnerDocumentId(
 
   const bucketExpr =
     granularity === 'day'
-      ? sql<string>`to_char(${orders.paidAt} AT TIME ZONE ${sql.raw(`'${DASHBOARD_TIME_ZONE}'`)}, 'YYYY-MM-DD')`
-      : sql<string>`to_char(${orders.paidAt} AT TIME ZONE ${sql.raw(`'${DASHBOARD_TIME_ZONE}'`)}, 'YYYY-MM')`
+      ? sql<string>`to_char(${purchases.confirmedAt} AT TIME ZONE ${sql.raw(`'${DASHBOARD_TIME_ZONE}'`)}, 'YYYY-MM-DD')`
+      : sql<string>`to_char(${purchases.confirmedAt} AT TIME ZONE ${sql.raw(`'${DASHBOARD_TIME_ZONE}'`)}, 'YYYY-MM')`
 
   const rows = await db
     .select({
@@ -31,17 +32,18 @@ export async function findDashboardTicketsSoldSeriesByOwnerDocumentId(
       ticketsSoldCount: count(),
     })
     .from(ticketsSold)
-    .innerJoin(orders, eq(orders.id, ticketsSold.orderId))
-    .innerJoin(tickets, eq(tickets.id, orders.ticketId))
+    .innerJoin(purchaseItems, eq(purchaseItems.id, ticketsSold.purchaseItemId))
+    .innerJoin(purchases, eq(purchases.id, purchaseItems.purchaseId))
+    .innerJoin(tickets, eq(tickets.id, purchaseItems.ticketId))
     .innerJoin(events, eq(events.id, tickets.eventId))
     .innerJoin(locations, eq(locations.id, events.locationId))
     .innerJoin(owners, eq(owners.id, locations.ownerId))
     .where(
       and(
         ownerWhere,
-        eq(orders.status, PAYMENT_STATUS.COMPLETED),
-        gte(orders.paidAt, fromDate),
-        lte(orders.paidAt, toDate)
+        eq(purchases.status, PURCHASE_STATUS.CONFIRMED),
+        gte(purchases.confirmedAt, fromDate),
+        lte(purchases.confirmedAt, toDate)
       )
     )
     .groupBy(bucketExpr)

@@ -86,3 +86,13 @@ export interface PublicEventDetailResponse {
   /** True when platform's Mercado Pago account is configured. */
   paymentsReady: boolean
 }
+
+/** Public, versioned inventory state sent by the published-event availability stream. */
+export interface PublicEventAvailabilitySnapshot {
+  eventDocumentId: string
+  version: number
+  tickets: Array<{
+    ticketDocumentId: string
+    remainingQuantity: number
+  }>
+}

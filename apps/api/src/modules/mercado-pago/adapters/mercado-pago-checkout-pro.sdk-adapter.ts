@@ -34,6 +34,9 @@ export class MercadoPagoCheckoutProSdkAdapter implements MercadoPagoCheckoutProP
         ],
         external_reference: input.externalReference,
         notification_url: input.notificationUrl,
+        expires: true,
+        expiration_date_from: new Date().toISOString(),
+        expiration_date_to: input.expiresAt.toISOString(),
         back_urls: input.backUrls,
         auto_return: 'approved',
       },
@@ -64,14 +67,21 @@ export class MercadoPagoCheckoutProSdkAdapter implements MercadoPagoCheckoutProP
 
   async getPayment(paymentId: string): Promise<MercadoPagoPaymentResult> {
     const response = await this.payment.get({ id: paymentId })
-    if (response.id === undefined || !response.status) {
-      throw new Error('Mercado Pago payment response is missing id or status')
+    if (
+      response.id === undefined ||
+      !response.status ||
+      response.transaction_amount === undefined ||
+      !response.currency_id
+    ) {
+      throw new Error('Mercado Pago payment response is missing verified payment facts')
     }
 
     return {
       id: String(response.id),
       status: response.status,
       externalReference: response.external_reference ?? null,
+      amount: response.transaction_amount,
+      currency: response.currency_id,
     }
   }
 }
