@@ -263,3 +263,14 @@ test('preserves API cross-field validation in the runtime environment schema', (
 
   expect(result.success).toBe(false)
 })
+
+test('accepts a complete API runtime environment without DATABASE_URL', () => {
+  const { DATABASE_URL: _omittedDatabaseUrl, ...apiEnvWithoutDatabaseUrl } = process.env
+
+  const result = envSchema.safeParse(apiEnvWithoutDatabaseUrl)
+
+  expect(result.success).toBe(true)
+  if (result.success) {
+    expect(result.data).not.toHaveProperty('DATABASE_URL')
+  }
+})
