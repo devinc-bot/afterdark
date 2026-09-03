@@ -16,7 +16,9 @@ import {
   uuidSchema,
   type ListApiErrorRecordsQueryInput,
 } from '@repo/validators'
+import { ApiRateLimit } from '../../common/decorators/api-rate-limit.decorator'
 import { Roles } from '../../common/decorators/roles.decorator'
+import { RATE_LIMIT_PROFILE } from '../../../config/rate-limit.policy'
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard'
 import { RolesGuard } from '../../common/guards/roles.guard'
 import { ZodValidationPipe } from '../../common/pipes/zod-validation.pipe'
@@ -24,6 +26,7 @@ import { DeleteApiErrorRecordUseCase } from '../application/delete-api-error-rec
 import { ListApiErrorRecordsUseCase } from '../application/list-api-error-records.use-case'
 
 @Controller(API_ROUTES.errors.prefix)
+@ApiRateLimit(RATE_LIMIT_PROFILE.AUTHENTICATED)
 export class ErrorsController {
   constructor(
     @Inject(ListApiErrorRecordsUseCase)

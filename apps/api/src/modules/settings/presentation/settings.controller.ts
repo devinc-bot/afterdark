@@ -10,13 +10,16 @@ import {
   type UpdateCurrentUserProfileInput,
 } from '@repo/validators'
 import { TranslationService } from '@repo/i18n/server'
+import { ApiRateLimit } from '../../common/decorators/api-rate-limit.decorator'
 import { CurrentUser } from '../../common/decorators/current-user.decorator'
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard'
+import { RATE_LIMIT_PROFILE } from '../../../config/rate-limit.policy'
 import { ZodValidationPipe } from '../../common/pipes/zod-validation.pipe'
 import { GetSettingsUseCase } from '../application/get-settings.use-case'
 import { UpdateSettingsUseCase } from '../application/update-settings.use-case'
 
 @Controller(API_ROUTES.settings.prefix)
+@ApiRateLimit(RATE_LIMIT_PROFILE.AUTHENTICATED)
 export class SettingsController {
   constructor(
     @Inject(GetSettingsUseCase) private readonly getSettings: GetSettingsUseCase,

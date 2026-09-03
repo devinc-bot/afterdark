@@ -52,6 +52,10 @@ but they remain runtime configuration because the API validates and uses them.
 `CORS_ALLOWED_ORIGINS` is optional. The API always allows `WEB_URL`, `DASHBOARD_URL`, and `ADMIN_URL`;
 set this variable as a comma-separated list only when additional origins are required.
 
+`RATE_LIMIT_*_LIMIT` and `RATE_LIMIT_*_TTL_MS` pairs are optional runtime configuration, not secrets.
+Each omitted pair uses the API schema default. Counters are per API process until shared storage
+exists; keep edge rate limiting on Caddy, the CDN, or a WAF for cluster-wide protection.
+
 ## VPS Compose
 
 `docker-compose.yml` is the single deployment definition. On each VPS, place populated environment

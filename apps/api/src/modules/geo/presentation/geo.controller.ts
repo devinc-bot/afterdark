@@ -3,10 +3,14 @@ import type { Request } from 'express'
 import { API_ROUTES } from '@repo/common'
 import type { GeoIpLocateResult, JwtPayload } from '@repo/types'
 import { USER_ROLE } from '@repo/types'
+import { ApiRateLimit } from '../../common/decorators/api-rate-limit.decorator'
 import { CurrentUser } from '../../common/decorators/current-user.decorator'
 import { Roles } from '../../common/decorators/roles.decorator'
+import { UserRateLimit } from '../../common/decorators/user-rate-limit.decorator'
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard'
 import { RolesGuard } from '../../common/guards/roles.guard'
+import { UserRateLimitGuard } from '../../common/guards/user-rate-limit.guard'
+import { RATE_LIMIT_PROFILE } from '../../../config/rate-limit.policy'
 import { LocateByIpUseCase } from '../application/locate-by-ip.use-case'
 import { resolvePublicClientIp } from '../utils/client-ip'
 
@@ -19,7 +23,9 @@ export class GeoController {
 
   @Get(API_ROUTES.geo.path.ipLocate())
   @Roles([USER_ROLE.OWNER])
-  @UseGuards(JwtAuthGuard, RolesGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard, UserRateLimitGuard)
+  @ApiRateLimit(RATE_LIMIT_PROFILE.AUTHENTICATED)
+  @UserRateLimit(RATE_LIMIT_PROFILE.GEO)
   ipLocate(@CurrentUser() user: JwtPayload, @Req() req: Request): Promise<GeoIpLocateResult> {
     return this.locateByIpUseCase.execute(user.sub, resolvePublicClientIp(req))
   }

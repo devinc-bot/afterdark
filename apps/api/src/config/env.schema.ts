@@ -1,6 +1,7 @@
 import { IMAGE_OPTIMIZATION, IMAGE_UPLOAD_MAX_BYTES } from '@repo/validators'
 import { getDomain } from 'tldts'
 import { z } from 'zod'
+import { RATE_LIMIT_POLICY_DEFAULTS, RATE_LIMIT_PROFILE } from './rate-limit.policy'
 
 export const googleOauthEnvSchema = z.object({
   GOOGLE_CLIENT_ID: z.string(),
@@ -37,6 +38,60 @@ export const MODE = {
   TEST: 'test',
 } as const
 
+const positiveInt = (defaultValue: number) =>
+  z.coerce.number().int().positive().default(defaultValue)
+
+const rateLimitEnvSchema = {
+  RATE_LIMIT_PUBLIC_LIMIT: positiveInt(RATE_LIMIT_POLICY_DEFAULTS[RATE_LIMIT_PROFILE.PUBLIC].limit),
+  RATE_LIMIT_PUBLIC_TTL_MS: positiveInt(
+    RATE_LIMIT_POLICY_DEFAULTS[RATE_LIMIT_PROFILE.PUBLIC].ttlMs
+  ),
+  RATE_LIMIT_AUTHENTICATED_LIMIT: positiveInt(
+    RATE_LIMIT_POLICY_DEFAULTS[RATE_LIMIT_PROFILE.AUTHENTICATED].limit
+  ),
+  RATE_LIMIT_AUTHENTICATED_TTL_MS: positiveInt(
+    RATE_LIMIT_POLICY_DEFAULTS[RATE_LIMIT_PROFILE.AUTHENTICATED].ttlMs
+  ),
+  RATE_LIMIT_LOGIN_LIMIT: positiveInt(RATE_LIMIT_POLICY_DEFAULTS[RATE_LIMIT_PROFILE.LOGIN].limit),
+  RATE_LIMIT_LOGIN_TTL_MS: positiveInt(RATE_LIMIT_POLICY_DEFAULTS[RATE_LIMIT_PROFILE.LOGIN].ttlMs),
+  RATE_LIMIT_AUTH_SENSITIVE_LIMIT: positiveInt(
+    RATE_LIMIT_POLICY_DEFAULTS[RATE_LIMIT_PROFILE.AUTH_SENSITIVE].limit
+  ),
+  RATE_LIMIT_AUTH_SENSITIVE_TTL_MS: positiveInt(
+    RATE_LIMIT_POLICY_DEFAULTS[RATE_LIMIT_PROFILE.AUTH_SENSITIVE].ttlMs
+  ),
+  RATE_LIMIT_AUTH_CONFIRM_LIMIT: positiveInt(
+    RATE_LIMIT_POLICY_DEFAULTS[RATE_LIMIT_PROFILE.AUTH_CONFIRM].limit
+  ),
+  RATE_LIMIT_AUTH_CONFIRM_TTL_MS: positiveInt(
+    RATE_LIMIT_POLICY_DEFAULTS[RATE_LIMIT_PROFILE.AUTH_CONFIRM].ttlMs
+  ),
+  RATE_LIMIT_REFRESH_LIMIT: positiveInt(
+    RATE_LIMIT_POLICY_DEFAULTS[RATE_LIMIT_PROFILE.REFRESH].limit
+  ),
+  RATE_LIMIT_REFRESH_TTL_MS: positiveInt(
+    RATE_LIMIT_POLICY_DEFAULTS[RATE_LIMIT_PROFILE.REFRESH].ttlMs
+  ),
+  RATE_LIMIT_PURCHASE_LIMIT: positiveInt(
+    RATE_LIMIT_POLICY_DEFAULTS[RATE_LIMIT_PROFILE.PURCHASE].limit
+  ),
+  RATE_LIMIT_PURCHASE_TTL_MS: positiveInt(
+    RATE_LIMIT_POLICY_DEFAULTS[RATE_LIMIT_PROFILE.PURCHASE].ttlMs
+  ),
+  RATE_LIMIT_QR_LIMIT: positiveInt(RATE_LIMIT_POLICY_DEFAULTS[RATE_LIMIT_PROFILE.QR].limit),
+  RATE_LIMIT_QR_TTL_MS: positiveInt(RATE_LIMIT_POLICY_DEFAULTS[RATE_LIMIT_PROFILE.QR].ttlMs),
+  RATE_LIMIT_CHECK_IN_LIMIT: positiveInt(
+    RATE_LIMIT_POLICY_DEFAULTS[RATE_LIMIT_PROFILE.CHECK_IN].limit
+  ),
+  RATE_LIMIT_CHECK_IN_TTL_MS: positiveInt(
+    RATE_LIMIT_POLICY_DEFAULTS[RATE_LIMIT_PROFILE.CHECK_IN].ttlMs
+  ),
+  RATE_LIMIT_GEO_LIMIT: positiveInt(RATE_LIMIT_POLICY_DEFAULTS[RATE_LIMIT_PROFILE.GEO].limit),
+  RATE_LIMIT_GEO_TTL_MS: positiveInt(RATE_LIMIT_POLICY_DEFAULTS[RATE_LIMIT_PROFILE.GEO].ttlMs),
+  RATE_LIMIT_SSE_LIMIT: positiveInt(RATE_LIMIT_POLICY_DEFAULTS[RATE_LIMIT_PROFILE.SSE].limit),
+  RATE_LIMIT_SSE_TTL_MS: positiveInt(RATE_LIMIT_POLICY_DEFAULTS[RATE_LIMIT_PROFILE.SSE].ttlMs),
+} as const
+
 function getSchemefulSite(url: string): string {
   const { protocol, hostname } = new URL(url)
   // Resolve the registrable domain so api.example.com and dashboard.example.com
@@ -65,6 +120,7 @@ export const apiConfigSchema = z
     CORS_ALLOWED_ORIGINS: z.string().default(''),
     // Number of trusted reverse-proxy hops before the client; use 0 for local direct access.
     TRUST_PROXY_HOPS: z.coerce.number().int().nonnegative(),
+    ...rateLimitEnvSchema,
     NODE_ENV: z.enum([MODE.DEVELOPMENT, MODE.PRODUCTION, MODE.TEST]).default(MODE.DEVELOPMENT),
   })
   .superRefine((config, context) => {

@@ -15,14 +15,17 @@ import {
   type DashboardSalesAnalyticsQueryInput,
   type ListOwnerSalesQueryInput,
 } from '@repo/validators'
+import { ApiRateLimit } from '../common/decorators/api-rate-limit.decorator'
 import { CurrentUser } from '../common/decorators/current-user.decorator'
 import { Roles } from '../common/decorators/roles.decorator'
+import { RATE_LIMIT_PROFILE } from '../../config/rate-limit.policy'
 import { JwtAuthGuard } from '../common/guards/jwt-auth.guard'
 import { RolesGuard } from '../common/guards/roles.guard'
 import { ZodValidationPipe } from '../common/pipes/zod-validation.pipe'
 import { DashboardService } from './dashboard.service'
 
 @Controller('dashboard')
+@ApiRateLimit(RATE_LIMIT_PROFILE.AUTHENTICATED)
 export class DashboardController {
   constructor(@Inject(DashboardService) private readonly dashboardService: DashboardService) {}
 

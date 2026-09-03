@@ -8,6 +8,7 @@ import {
   MODE,
   apiConfigSchema,
 } from './env.schema'
+import { createRateLimitPolicy } from './rate-limit.policy'
 
 export const envSchema = z
   .object({
@@ -28,6 +29,8 @@ try {
 } catch (error) {
   throw new Error(`Error validating environment variables: ${error}`, { cause: error })
 }
+
+export const RATE_LIMIT_POLICY = createRateLimitPolicy(envResult)
 
 export const ENV = {
   ...envResult,

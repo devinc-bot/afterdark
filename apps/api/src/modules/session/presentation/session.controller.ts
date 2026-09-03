@@ -12,14 +12,17 @@ import { API_ROUTES } from '@repo/common'
 import type { AccountSessionsResponse, JwtPayload, SessionResponse } from '@repo/types'
 import { uuidSchema } from '@repo/validators'
 import { CLIENT_APP_BY_USER_ROLE } from '../../auth/auth.constants'
+import { ApiRateLimit } from '../../common/decorators/api-rate-limit.decorator'
 import { CurrentUser } from '../../common/decorators/current-user.decorator'
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard'
+import { RATE_LIMIT_PROFILE } from '../../../config/rate-limit.policy'
 import { ZodValidationPipe } from '../../common/pipes/zod-validation.pipe'
 import { GetCurrentSessionUseCase } from '../application/get-current-session.use-case'
 import { ListAccountSessionsUseCase } from '../application/list-account-sessions.use-case'
 import { RevokeAccountSessionUseCase } from '../application/revoke-account-session.use-case'
 
 @Controller(API_ROUTES.session.prefix)
+@ApiRateLimit(RATE_LIMIT_PROFILE.AUTHENTICATED)
 export class SessionController {
   constructor(
     @Inject(GetCurrentSessionUseCase)

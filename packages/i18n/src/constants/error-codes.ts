@@ -131,6 +131,11 @@ export const ORDER_ERROR_CODE = {
   WEBHOOK_INVALID: 'order.WEBHOOK_INVALID',
 } as const
 
+export const RATE_LIMIT_ERROR_CODE = {
+  TOO_MANY_REQUESTS: 'rateLimit.TOO_MANY_REQUESTS',
+  CLIENT_IP_REQUIRED: 'rateLimit.CLIENT_IP_REQUIRED',
+} as const
+
 export type AuthErrorCode = (typeof AUTH_ERROR_CODE)[keyof typeof AUTH_ERROR_CODE]
 export type InvitationErrorCode = (typeof INVITATION_ERROR_CODE)[keyof typeof INVITATION_ERROR_CODE]
 export type LocationErrorCode = (typeof LOCATION_ERROR_CODE)[keyof typeof LOCATION_ERROR_CODE]
@@ -145,6 +150,7 @@ export type GuardErrorCode = (typeof GUARD_ERROR_CODE)[keyof typeof GUARD_ERROR_
 export type EventErrorCode = (typeof EVENT_ERROR_CODE)[keyof typeof EVENT_ERROR_CODE]
 export type GeoErrorCode = (typeof GEO_ERROR_CODE)[keyof typeof GEO_ERROR_CODE]
 export type OrderErrorCode = (typeof ORDER_ERROR_CODE)[keyof typeof ORDER_ERROR_CODE]
+export type RateLimitErrorCode = (typeof RATE_LIMIT_ERROR_CODE)[keyof typeof RATE_LIMIT_ERROR_CODE]
 
 export type ErrorCode =
   | AuthErrorCode
@@ -160,3 +166,4 @@ export type ErrorCode =
   | EventErrorCode
   | GeoErrorCode
   | OrderErrorCode
+  | RateLimitErrorCode

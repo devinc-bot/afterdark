@@ -5,7 +5,6 @@ import { JwtAuthGuard } from '../common/guards/jwt-auth.guard'
 import { RolesGuard } from '../common/guards/roles.guard'
 import { IpQueryLocatorAdapter } from './adapters/ipquery.locator'
 import { LocateByIpUseCase } from './application/locate-by-ip.use-case'
-import { GeoRateLimitService } from './application/services/geo-rate-limit.service'
 import { GEO_IP_LOCATOR } from './geo.tokens'
 import { GeoController } from './presentation/geo.controller'
 
@@ -14,7 +13,6 @@ import { GeoController } from './presentation/geo.controller'
   controllers: [GeoController],
   providers: [
     LocateByIpUseCase,
-    GeoRateLimitService,
     IpQueryLocatorAdapter,
     {
       provide: GEO_IP_LOCATOR,

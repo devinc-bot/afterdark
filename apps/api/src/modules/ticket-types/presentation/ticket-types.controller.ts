@@ -11,8 +11,10 @@ import {
 import { API_ROUTES } from '@repo/common'
 import { USER_ROLE, type JwtPayload, type TicketTypeResponse } from '@repo/types'
 import { createTicketTypeSchema, type CreateTicketTypeInput } from '@repo/validators'
+import { ApiRateLimit } from '../../common/decorators/api-rate-limit.decorator'
 import { CurrentUser } from '../../common/decorators/current-user.decorator'
 import { Roles } from '../../common/decorators/roles.decorator'
+import { RATE_LIMIT_PROFILE } from '../../../config/rate-limit.policy'
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard'
 import { RolesGuard } from '../../common/guards/roles.guard'
 import { ZodValidationPipe } from '../../common/pipes/zod-validation.pipe'
@@ -22,6 +24,7 @@ import { ListTicketTypesUseCase } from '../application/list-ticket-types.use-cas
 @Controller(API_ROUTES.ticketTypes.prefix)
 @Roles([USER_ROLE.OWNER])
 @UseGuards(JwtAuthGuard, RolesGuard)
+@ApiRateLimit(RATE_LIMIT_PROFILE.AUTHENTICATED)
 export class TicketTypesController {
   constructor(
     @Inject(ListTicketTypesUseCase) private readonly listTicketTypesUseCase: ListTicketTypesUseCase,

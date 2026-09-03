@@ -13,13 +13,13 @@ not create cloud resources, DNS zones, VPS hosts, or Neon databases.
 
 ## Prerequisites
 
-| Area | Required state |
-| --- | --- |
-| DNS and TLS | `WEB_HOST`, `DASHBOARD_HOST`, `ADMIN_HOST`, and `API_HOST` resolve to the matching VPS. Caddy obtains and renews TLS certificates. |
-| VPS | Docker Engine with Compose v2, read-only GHCR access, `/opt/app` checkout, and ports 80/443 exposed through the firewall. |
-| Neon | Staging and production use separate databases; retain a recovery point before destructive migrations. |
+| Area               | Required state                                                                                                                              |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| DNS and TLS        | `WEB_HOST`, `DASHBOARD_HOST`, `ADMIN_HOST`, and `API_HOST` resolve to the matching VPS. Caddy obtains and renews TLS certificates.          |
+| VPS                | Docker Engine with Compose v2, read-only GHCR access, `/opt/app` checkout, and ports 80/443 exposed through the firewall.                   |
+| Neon               | Staging and production use separate databases; retain a recovery point before destructive migrations.                                       |
 | GitHub Environment | Public `VITE_API_URL` and `VITE_DASHBOARD_URL` variables; `VPS_HOST`, `VPS_USER`, `VPS_SSH_PRIVATE_KEY`, and `VPS_SSH_KNOWN_HOSTS` secrets. |
-| Production | The `production` Environment must require protected approval before a deployment job starts. |
+| Production         | The `production` Environment must require protected approval before a deployment job starts.                                                |
 
 Only Caddy publishes ports 80 and 443. API and frontend containers, PostgreSQL migrations, and all
 runtime secrets stay on the internal Compose network or host filesystem.
@@ -98,10 +98,11 @@ database rollback.
 
 ## Troubleshooting
 
-| Symptom | Check |
-| --- | --- |
-| Migration fails | Confirm the direct Neon URL is only in the migrator file, inspect `docker compose ... run --rm migrator` output, and leave applications on the active release. |
-| API is unhealthy | Inspect `docker compose logs api`; verify pooled `DATABASE_URL` and Neon connectivity. |
-| Public route fails | Inspect Caddy logs, DNS records, firewall ports 80/443, and the matching `*_HOST` value. |
-| GHCR pull fails | Verify the VPS read-only registry credential and the digest exists in the publication artifact. |
-| Disk growth | Inspect `docker system df`, retain images required by `current-images.env` and `previous-images.env`, then prune only unreferenced images. |
+| Symptom                  | Check                                                                                                                                                                       |
+| ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Migration fails          | Confirm the direct Neon URL is only in the migrator file, inspect `docker compose ... run --rm migrator` output, and leave applications on the active release.              |
+| API is unhealthy         | Inspect `docker compose logs api`; verify pooled `DATABASE_URL` and Neon connectivity.                                                                                      |
+| Clients receive HTTP 429 | Confirm `RATE_LIMIT_*` pairs in the API runtime file, `Retry-After`, and that health/webhook routes stay excluded. In-memory limits do not synchronize across API replicas. |
+| Public route fails       | Inspect Caddy logs, DNS records, firewall ports 80/443, and the matching `*_HOST` value.                                                                                    |
+| GHCR pull fails          | Verify the VPS read-only registry credential and the digest exists in the publication artifact.                                                                             |
+| Disk growth              | Inspect `docker system df`, retain images required by `current-images.env` and `previous-images.env`, then prune only unreferenced images.                                  |

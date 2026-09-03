@@ -8,6 +8,7 @@ import {
   Post,
   Query,
 } from '@nestjs/common'
+import { SkipThrottle } from '@nestjs/throttler'
 import { API_ROUTES } from '@repo/common'
 import { ReconcileMercadoPagoWebhookUseCase } from '../application/reconcile-webhook.use-case'
 
@@ -20,6 +21,7 @@ export class MercadoPagoController {
 
   @Post(API_ROUTES.mercadoPago.path.webhook())
   @HttpCode(HttpStatus.NO_CONTENT)
+  @SkipThrottle()
   async webhook(
     @Body() body: unknown,
     @Headers('x-signature') signature: string | undefined,

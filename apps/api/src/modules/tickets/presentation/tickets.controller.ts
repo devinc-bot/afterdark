@@ -40,11 +40,15 @@ import {
   type UpdateTicketInput,
 } from '@repo/validators'
 import { TranslationService } from '@repo/i18n/server'
+import { ApiRateLimit } from '../../common/decorators/api-rate-limit.decorator'
 import { CurrentUser } from '../../common/decorators/current-user.decorator'
 import { Roles } from '../../common/decorators/roles.decorator'
+import { UserRateLimit } from '../../common/decorators/user-rate-limit.decorator'
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard'
 import { RolesGuard } from '../../common/guards/roles.guard'
+import { UserRateLimitGuard } from '../../common/guards/user-rate-limit.guard'
 import { ZodValidationPipe } from '../../common/pipes/zod-validation.pipe'
+import { RATE_LIMIT_PROFILE } from '../../../config/rate-limit.policy'
 import { CreateTicketUseCase } from '../application/create-ticket.use-case'
 import { CheckInTicketUseCase } from '../application/check-in-ticket.use-case'
 import { DeleteTicketUseCase } from '../application/delete-ticket.use-case'
@@ -57,6 +61,7 @@ import { UpdateTicketUseCase } from '../application/update-ticket.use-case'
 import { toTicketCheckInHttpResponse } from './ticket-check-in-http.mapper'
 
 @Controller(API_ROUTES.tickets.prefix)
+@ApiRateLimit(RATE_LIMIT_PROFILE.AUTHENTICATED)
 export class TicketsController {
   constructor(
     @Inject(ListMyTicketsUseCase) private readonly listMyTicketsUseCase: ListMyTicketsUseCase,
@@ -99,7 +104,9 @@ export class TicketsController {
 
   @Get(API_ROUTES.tickets.path.purchasedQr(':ticketSoldDocumentId'))
   @Roles([USER_ROLE.USER])
-  @UseGuards(JwtAuthGuard, RolesGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard, UserRateLimitGuard)
+  @ApiRateLimit(RATE_LIMIT_PROFILE.QR)
+  @UserRateLimit(RATE_LIMIT_PROFILE.QR)
   issuePurchasedTicketQr(
     @CurrentUser() user: JwtPayload,
     @Param('ticketSoldDocumentId', new ZodValidationPipe(ticketSoldDocumentIdSchema))
@@ -111,7 +118,9 @@ export class TicketsController {
   @Post(API_ROUTES.tickets.path.checkIns())
   @HttpCode(HttpStatus.OK)
   @Roles([USER_ROLE.OWNER, USER_ROLE.STAFF])
-  @UseGuards(JwtAuthGuard, RolesGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard, UserRateLimitGuard)
+  @ApiRateLimit(RATE_LIMIT_PROFILE.CHECK_IN)
+  @UserRateLimit(RATE_LIMIT_PROFILE.CHECK_IN)
   async checkInTicket(
     @CurrentUser() user: JwtPayload,
     @Body(new ZodValidationPipe(ticketCheckInSchema)) body: TicketCheckInInput
