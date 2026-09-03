@@ -1,30 +1,49 @@
-import { readFile } from 'node:fs/promises'
-import { expect, test } from 'vitest'
+// @vitest-environment jsdom
+import { createElement } from 'react'
+import { cleanup, fireEvent, render, screen } from '@testing-library/react'
+import { afterEach, expect, test, vi } from 'vitest'
+import { AccountSessions, type AccountSessionsLabels } from '@repo/ui'
 
-const routeUrl = new URL('../app/routes/_app/settings.tsx', import.meta.url)
-const viewUrl = new URL(
-  '../app/modules/settings/components/account-sessions-view.tsx',
-  import.meta.url
-)
-const shellUrl = new URL('../app/modules/common/components/app-shell.tsx', import.meta.url)
-const sharedComponentUrl = new URL(
-  '../../../packages/ui/src/components/account-sessions.tsx',
-  import.meta.url
-)
+const labels: AccountSessionsLabels = {
+  title: 'Sessions',
+  description: 'Review signed-in devices.',
+  loading: 'Loading sessions',
+  loadError: 'Unable to load sessions',
+  retry: 'Try again',
+  empty: 'No sessions',
+  unknownDevice: 'Unknown device',
+  metadataUnavailable: 'Metadata unavailable',
+  current: 'Current',
+  close: 'Close',
+  revoke: 'Revoke',
+  revoking: 'Revoking',
+  cancel: 'Cancel',
+  confirmTitle: 'Revoke this session?',
+  confirmDescription: 'This device will need to sign in again.',
+  getCreatedAtLabel: () => 'Created today',
+  getExpiresAtLabel: () => 'Expires tomorrow',
+  getStatusLabel: (status) => status,
+}
 
-test('admin exposes protected settings with confirmed session management', async () => {
-  const [route, view, shell, sharedComponent] = await Promise.all([
-    readFile(routeUrl, 'utf8'),
-    readFile(viewUrl, 'utf8'),
-    readFile(shellUrl, 'utf8'),
-    readFile(sharedComponentUrl, 'utf8'),
-  ])
+afterEach(cleanup)
 
-  expect(route).toContain("createFileRoute('/_app/settings')")
-  expect(view).toContain('QUERY_KEYS.accountSessions()')
-  expect(view).toContain('<AccountSessions')
-  expect(view).toContain('onRevoke={mutation.mutateAsync}')
-  expect(sharedComponent).toContain('!session.isCurrent')
-  expect(sharedComponent).toContain('DialogContent')
-  expect(shell).toContain('ADMIN_ROUTES.settings()')
+test('announces a session load failure and lets the user retry', () => {
+  const onRetry = vi.fn()
+
+  render(
+    createElement(AccountSessions, {
+      isLoading: false,
+      error: new Error('Sessions could not be loaded'),
+      revokeError: null,
+      isRevoking: false,
+      labels,
+      onRetry,
+      onRevoke: async () => undefined,
+      onClearRevokeError: () => undefined,
+    })
+  )
+
+  expect(screen.getByRole('alert').textContent).toContain('Sessions could not be loaded')
+  fireEvent.click(screen.getByRole('button', { name: 'Try again' }))
+  expect(onRetry).toHaveBeenCalledOnce()
 })

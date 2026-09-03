@@ -83,8 +83,16 @@ describe('development cookie isolation', () => {
     expect(environment.WEB_URL).toBe('http://web.localhost:3001')
     expect(environment.DASHBOARD_URL).toBe('http://dashboard.localhost:3002')
     expect(environment.ADMIN_URL).toBe('http://admin.localhost:3003')
-    expect(environment.CORS_ALLOWED_ORIGINS).toBe(
-      'http://web.localhost:3001,http://dashboard.localhost:3002,http://admin.localhost:3003'
+  })
+
+  test('documented API development runtime environment relies on derived CORS origins', async () => {
+    const environment = parseEnvironment(
+      await readFile(
+        new URL('../deploy/env/development.runtime.env.example', import.meta.url),
+        'utf8'
+      )
     )
+
+    expect(environment.CORS_ALLOWED_ORIGINS).toBeUndefined()
   })
 })
