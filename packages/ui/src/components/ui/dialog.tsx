@@ -67,6 +67,7 @@ export interface DialogContentProps
     React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>,
     VariantProps<typeof dialogContentVariants> {
   showCloseButton?: boolean
+  closeLabel?: string
   /** When true, only the close button (and DialogClose) dismiss the dialog — not outside click or Escape. */
   persistent?: boolean
 }
@@ -95,6 +96,7 @@ const DialogContent = React.forwardRef<
       size,
       variant,
       showCloseButton = true,
+      closeLabel = 'Cerrar',
       persistent = false,
       onPointerDownOutside,
       onInteractOutside,
@@ -139,7 +141,7 @@ const DialogContent = React.forwardRef<
               variant="ghost"
               size="icon"
               className="absolute top-3 right-3 text-ink-muted transition-colors duration-(--duration-instant) ease-emphasized hover:text-ink motion-reduce:transition-none"
-              aria-label="Cerrar"
+              aria-label={closeLabel}
             >
               <X aria-hidden="true" />
             </Button>

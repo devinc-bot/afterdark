@@ -70,8 +70,12 @@ export const apiConfigSchema = z
   .superRefine((config, context) => {
     const origins = [config.API_PUBLIC_URL, config.WEB_URL, config.DASHBOARD_URL, config.ADMIN_URL]
     const expectedSite = getSchemefulSite(config.API_PUBLIC_URL)
+    const isLocalDevelopmentTopology = config.NODE_ENV === MODE.DEVELOPMENT
 
-    if (origins.some((origin) => getSchemefulSite(origin) !== expectedSite)) {
+    if (
+      !isLocalDevelopmentTopology &&
+      origins.some((origin) => getSchemefulSite(origin) !== expectedSite)
+    ) {
       context.addIssue({
         code: 'custom',
         message:

@@ -1,5 +1,6 @@
 export * from './find-auth-account-by-email.ts'
 export * from './find-auth-account-by-provider-account.ts'
+export * from './account-sessions.ts'
 export * from './register-account.ts'
 export * from './register-staff-for-organization.ts'
 export * from './set-profile-avatar-from-url-if-empty.ts'

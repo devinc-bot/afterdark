@@ -17,6 +17,7 @@ import {
   type ClientApp,
   type UserRole,
 } from '@repo/types'
+import { googleOauthStartSchema } from '@repo/validators'
 import {
   GOOGLE_OAUTH_ERROR,
   GOOGLE_OAUTH_STATE_PURPOSE,
@@ -60,7 +61,11 @@ export class GoogleOauthCallbackUseCase {
       if (payload.purpose !== GOOGLE_OAUTH_STATE_PURPOSE) {
         throw new Error('Invalid state purpose')
       }
-      statePayload = payload
+      const parsedState = googleOauthStartSchema.safeParse({ role: payload.role, app: payload.app })
+      if (!parsedState.success) {
+        throw new Error('Invalid OAuth state')
+      }
+      statePayload = { purpose: payload.purpose, ...parsedState.data }
     } catch {
       return { redirectUrl: buildAppLoginErrorUrl(fallbackApp, GOOGLE_OAUTH_ERROR.FAILED) }
     }
@@ -68,7 +73,7 @@ export class GoogleOauthCallbackUseCase {
     const { role, app } = statePayload
 
     try {
-      const profile = await this.googleOauth.exchangeCodeForProfile(input.code)
+      const profile = await this.googleOauth.exchangeCodeForProfile(input.code, app)
 
       const existingOauth = await findAuthAccountByProviderAccount(
         AUTH_PROVIDER.GOOGLE,
@@ -166,7 +171,9 @@ export class GoogleOauthCallbackUseCase {
     if (!state) return fallback
     try {
       const payload = await this.jwtService.verifyAsync<GoogleOauthStatePayload>(state)
-      return payload.app ?? fallback
+      if (payload.purpose !== GOOGLE_OAUTH_STATE_PURPOSE) return fallback
+      const parsedState = googleOauthStartSchema.safeParse({ role: payload.role, app: payload.app })
+      return parsedState.success ? parsedState.data.app : fallback
     } catch {
       return fallback
     }

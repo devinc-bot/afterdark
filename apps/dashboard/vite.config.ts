@@ -6,6 +6,14 @@ import tsConfigPaths from 'vite-tsconfig-paths'
 
 const DASHBOARD_BUILD_ENV_KEY = 'VITE_API_URL'
 
+const DASHBOARD_DEVELOPMENT_SERVER = {
+  host: '0.0.0.0',
+  hostname: 'dashboard.localhost',
+  port: 3002,
+  apiPath: '/api',
+  apiTarget: 'http://localhost:3000',
+} as const
+
 function validateDashboardBuildEnv(value: string | undefined) {
   if (!value) {
     throw new Error(
@@ -34,13 +42,20 @@ export default defineConfig(({ mode }) => {
       react(),
     ],
     server: {
-      host: '0.0.0.0',
-      port: 3002,
+      host: DASHBOARD_DEVELOPMENT_SERVER.host,
+      allowedHosts: [DASHBOARD_DEVELOPMENT_SERVER.hostname],
+      port: DASHBOARD_DEVELOPMENT_SERVER.port,
       strictPort: true,
+      proxy: {
+        [DASHBOARD_DEVELOPMENT_SERVER.apiPath]: {
+          target: DASHBOARD_DEVELOPMENT_SERVER.apiTarget,
+          changeOrigin: true,
+        },
+      },
     },
     preview: {
-      host: '0.0.0.0',
-      port: 3002,
+      host: DASHBOARD_DEVELOPMENT_SERVER.host,
+      port: DASHBOARD_DEVELOPMENT_SERVER.port,
       strictPort: true,
     },
   }

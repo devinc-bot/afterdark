@@ -4,7 +4,9 @@ export {
   QueryFactoryError,
   type QueryFactoryOptions,
   type QueryFactoryRefreshOptions,
+  type QueryFactoryResponse,
 } from './query-factory.ts'
+export { forwardApiSetCookieHeaders } from './auth-response-headers.ts'
 export {
   formatCurrency,
   formatDate,

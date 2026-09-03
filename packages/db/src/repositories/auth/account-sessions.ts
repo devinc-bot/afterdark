@@ -1,4 +1,4 @@
-import { and, asc, eq, gt, inArray, isNull, lte, or } from 'drizzle-orm'
+import { and, asc, desc, eq, gt, inArray, isNull, lte, ne, or, sql } from 'drizzle-orm'
 import { db, type Transaction } from '../../client.ts'
 import { accounts } from '../../schema/account.ts'
 import { accountRolesLnk } from '../../schema/account-role-lnk.ts'
@@ -25,6 +25,59 @@ export type RevokeAccountSessionInput = {
   clientApp: AccountSessionInsert['clientApp']
   expectedRefreshTokenHash: string
   expectedRefreshTokenVersion: number
+}
+
+export type ListAccountSessionsInput = {
+  accountId: number
+  clientApp: AccountSessionInsert['clientApp']
+}
+
+export type RevokeManagedAccountSessionInput = ListAccountSessionsInput & {
+  documentId: string
+  currentSessionDocumentId: string
+}
+
+export async function listAccountSessions({ accountId, clientApp }: ListAccountSessionsInput) {
+  return db
+    .select({
+      documentId: accountSessions.documentId,
+      clientApp: accountSessions.clientApp,
+      device: accountSessions.device,
+      ipAddress: accountSessions.ipAddress,
+      city: accountSessions.city,
+      state: accountSessions.state,
+      country: accountSessions.country,
+      createdAt: accountSessions.createdAt,
+      expiresAt: accountSessions.expiresAt,
+      revokedAt: accountSessions.revokedAt,
+    })
+    .from(accountSessions)
+    .where(and(eq(accountSessions.accountId, accountId), eq(accountSessions.clientApp, clientApp)))
+    .orderBy(desc(accountSessions.createdAt), desc(accountSessions.id))
+}
+
+export async function revokeManagedAccountSession({
+  accountId,
+  clientApp,
+  documentId,
+  currentSessionDocumentId,
+}: RevokeManagedAccountSessionInput): Promise<boolean> {
+  const now = new Date()
+  const deleted = await db
+    .delete(accountSessions)
+    .where(
+      and(
+        eq(accountSessions.accountId, accountId),
+        eq(accountSessions.clientApp, clientApp),
+        eq(accountSessions.documentId, documentId),
+        ne(accountSessions.documentId, currentSessionDocumentId),
+        isNull(accountSessions.revokedAt),
+        gt(accountSessions.expiresAt, now)
+      )
+    )
+    .returning({ id: accountSessions.id })
+
+  return deleted.length > 0
 }
 
 export async function findAccountSessionForRefresh(
@@ -185,7 +238,12 @@ export async function revokeAccountSessionsForPasswordReset(accountId: number): 
 export async function deleteExpiredOrRevokedAccountSessionsBefore(cutoff: Date): Promise<number> {
   const deleted = await db
     .delete(accountSessions)
-    .where(or(lte(accountSessions.expiresAt, cutoff), lte(accountSessions.revokedAt, cutoff)))
+    .where(
+      or(
+        and(isNull(accountSessions.revokedAt), lte(accountSessions.expiresAt, sql`${cutoff}`)),
+        lte(accountSessions.revokedAt, sql`${cutoff}`)
+      )
+    )
     .returning({ id: accountSessions.id })
 
   return deleted.length

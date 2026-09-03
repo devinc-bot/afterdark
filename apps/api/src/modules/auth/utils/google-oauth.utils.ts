@@ -3,10 +3,14 @@ import { CLIENT_ROUTES } from '@repo/common'
 import { ENV } from '../../../config/env'
 import type { GoogleOauthErrorCode } from '../auth.constants'
 
-function appOrigin(app: AuthOauthApp, path: string): URL {
-  if (app === AUTH_OAUTH_APP.WEB) return new URL(path, ENV.WEB_URL)
-  if (app === AUTH_OAUTH_APP.DASHBOARD) return new URL(path, ENV.DASHBOARD_URL)
+export function getGoogleOauthAppOrigin(app: AuthOauthApp): string {
+  if (app === AUTH_OAUTH_APP.WEB) return ENV.WEB_URL
+  if (app === AUTH_OAUTH_APP.DASHBOARD) return ENV.DASHBOARD_URL
   throw new Error(`Invalid app: ${app}`)
+}
+
+function appOrigin(app: AuthOauthApp, path: string): URL {
+  return new URL(path, getGoogleOauthAppOrigin(app))
 }
 
 export function buildAppLoginErrorUrl(app: AuthOauthApp, error: GoogleOauthErrorCode): string {

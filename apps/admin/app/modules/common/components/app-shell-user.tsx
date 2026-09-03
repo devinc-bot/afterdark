@@ -16,7 +16,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from '@repo/ui'
-import { ChevronsUpDown, LogOut } from 'lucide-react'
+import { ChevronsUpDown, LogOut, Settings } from 'lucide-react'
 
 function getEmailInitial(email: string): string {
   const trimmed = email.trim()
@@ -30,9 +30,11 @@ function getUserDisplayName(user: SessionResponse, fallbackName: string): string
 
 export function AppShellUser({
   user,
+  onSettings,
   onSignOut,
 }: {
   user: SessionResponse | null
+  onSettings: () => void
   onSignOut: () => void
 }) {
   const { t } = useTranslation('admin')
@@ -81,6 +83,13 @@ export function AppShellUser({
                 </div>
               </div>
             </DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuGroup>
+              <DropdownMenuItem className="rounded-sm" onClick={onSettings}>
+                <Settings />
+                {t('nav.settings')}
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem

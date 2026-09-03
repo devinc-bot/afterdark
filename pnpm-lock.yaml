@@ -567,6 +567,9 @@ importers:
       '@repo/common':
         specifier: workspace:*
         version: link:../common
+      '@repo/types':
+        specifier: workspace:*
+        version: link:../types
       '@tanstack/react-router':
         specifier: 1.170.8
         version: 1.170.8(react-dom@19.2.6(react@19.2.6))(react@19.2.6)

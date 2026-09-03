@@ -6,6 +6,7 @@ import {
 import { OwnerSettingsView } from '~/modules/owner/components/owner-settings-view'
 import { useSettings } from '~/modules/settings/queries/use-settings'
 import { StaffSettingsView } from '~/modules/staff/components/staff-settings-view'
+import { AccountSessionsSection } from './account-sessions-section'
 
 export function SettingsView() {
   const { data, isLoading, error, refetch } = useSettings()
@@ -23,11 +24,21 @@ export function SettingsView() {
   }
 
   if (data.role === USER_ROLE.OWNER) {
-    return <OwnerSettingsView owner={data} />
+    return (
+      <>
+        <OwnerSettingsView owner={data} />
+        <AccountSessionsSection />
+      </>
+    )
   }
 
   if (data.role === USER_ROLE.STAFF) {
-    return <StaffSettingsView staff={data} />
+    return (
+      <>
+        <StaffSettingsView staff={data} />
+        <AccountSessionsSection />
+      </>
+    )
   }
 
   return null

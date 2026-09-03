@@ -55,7 +55,9 @@ La arquitectura de datos es `UI -> queries/mutations -> services -> QueryFactory
 
 ## Al terminar cualquier tarea
 
-- Delega a un subagente una revisión del trabajo terminado. Debe comprobar los criterios de aceptación de la tarea y los estándares de código aplicables; corrige los hallazgos antes de dar la tarea por finalizada.
+- Para cada tarea de implementación, el agente padre debe coordinar y recibir reportes de tres subagentes, en este orden: `test-engineer` para la cobertura automatizada, `implementation-engineer` para el código de producción y `quality-reviewer` para una revisión independiente tras la implementación.
+- `quality-reviewer` es de solo lectura. Debe comprobar los criterios de aceptación y estándares aplicables; en cambios de UI debe cargar la skill `impeccable` y aplicar sus criterios de artesanía, accesibilidad, responsividad y temas. El agente padre corrige los hallazgos antes de finalizar.
+- El reporte final debe resumir las fases de tests, implementación, revisión, correcciones y verificación.
 - Ejecuta la verificación más específica aplicable: tests del paquete afectado, `pnpm type-check`, `pnpm lint`, `pnpm format:check` y/o el build afectado.
 - Cuando aplique TDD, ejecuta las pruebas nuevas o modificadas y comprueba que cubren el comportamiento requerido.
 - Si la verificación global no puede ejecutarse o falla por problemas ajenos al cambio, informa el comando, el resultado y la causa concreta.

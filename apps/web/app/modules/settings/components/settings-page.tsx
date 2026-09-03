@@ -5,6 +5,7 @@ import { Container } from '~/modules/common/components/container'
 import { PageHeader } from '~/modules/common/components/page-header'
 import { ProfileForm } from '~/modules/settings/components/profile-form'
 import { useProfile } from '~/modules/settings/queries/use-profile'
+import { AccountSessionsSection } from './account-sessions-section'
 
 function SettingsFormSkeleton() {
   const { t } = useTranslation('settings')
@@ -76,6 +77,8 @@ export function SettingsPage() {
           {profileQuery.data ? (
             <ProfileForm key={profileQuery.data.sub} profile={profileQuery.data} />
           ) : null}
+
+          <AccountSessionsSection />
         </div>
       </div>
     </Container>

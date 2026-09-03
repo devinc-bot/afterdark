@@ -49,8 +49,8 @@ test('admin session infrastructure uses an isolated token and authenticated API 
     readFile(apiModuleUrl, 'utf8'),
   ])
 
-  expect(cookieSource.includes("accessToken: 'eventflow.admin.auth.token'")).toBe(true)
-  expect(cookieSource.includes('repo.dashboard.auth.token')).toBe(false)
+  expect(cookieSource.includes("accessToken: 'app.admin.auth.token'")).toBe(true)
+  expect(cookieSource.includes('app.dashboard.auth.token')).toBe(false)
   expect(apiSource.includes('getAccessToken: getAccessTokenSync')).toBe(true)
 })
 

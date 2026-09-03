@@ -42,6 +42,8 @@ export const API_ROUTES = {
     prefix: API_SESSION_PREFIX,
     path: {
       me: () => '/me' as const,
+      list: () => '/' as const,
+      revoke: (documentId: string) => `/${routeSegment(documentId)}` as const,
     },
   },
   settings: {
