@@ -1,5 +1,6 @@
 export const QUERY_KEYS = {
   settings: () => ['settings'] as const,
+  accountSessions: () => ['account-sessions'] as const,
   locations: () => ['locations'] as const,
   staffPersonnel: () => ['staff-personnel'] as const,
   staffInvitations: () => ['staff-invitations'] as const,

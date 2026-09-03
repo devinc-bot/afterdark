@@ -9,6 +9,14 @@ const WEB_BUILD_ENV_KEYS = {
   dashboardUrl: 'VITE_DASHBOARD_URL',
 } as const
 
+const WEB_DEVELOPMENT_SERVER = {
+  host: '0.0.0.0',
+  hostname: 'web.localhost',
+  port: 3001,
+  apiPath: '/api',
+  apiTarget: 'http://localhost:3000',
+} as const
+
 function validateBuildUrl(name: string, value: string | undefined) {
   if (!value) {
     throw new Error(`Missing required web build environment variable: ${name}`)
@@ -36,13 +44,20 @@ export default defineConfig(({ mode }) => {
       react(),
     ],
     server: {
-      host: '0.0.0.0',
-      port: 3001,
+      host: WEB_DEVELOPMENT_SERVER.host,
+      allowedHosts: [WEB_DEVELOPMENT_SERVER.hostname],
+      port: WEB_DEVELOPMENT_SERVER.port,
       strictPort: true,
+      proxy: {
+        [WEB_DEVELOPMENT_SERVER.apiPath]: {
+          target: WEB_DEVELOPMENT_SERVER.apiTarget,
+          changeOrigin: true,
+        },
+      },
     },
     preview: {
-      host: '0.0.0.0',
-      port: 3001,
+      host: WEB_DEVELOPMENT_SERVER.host,
+      port: WEB_DEVELOPMENT_SERVER.port,
       strictPort: true,
     },
   }

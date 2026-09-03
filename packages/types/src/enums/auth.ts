@@ -13,6 +13,14 @@ export const CLIENT_APP = {
 
 export type ClientApp = (typeof CLIENT_APP)[keyof typeof CLIENT_APP]
 
+export const ACCOUNT_SESSION_STATUS = {
+  ACTIVE: 'active',
+  EXPIRED: 'expired',
+  REVOKED: 'revoked',
+} as const
+
+export type AccountSessionStatus =
+  (typeof ACCOUNT_SESSION_STATUS)[keyof typeof ACCOUNT_SESSION_STATUS]
 export const AUTH_OAUTH_APP = {
   WEB: 'web',
   DASHBOARD: 'dashboard',

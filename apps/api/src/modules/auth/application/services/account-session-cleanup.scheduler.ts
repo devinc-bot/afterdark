@@ -1,15 +1,16 @@
 import { Injectable, Logger } from '@nestjs/common'
-import { Cron, CronExpression } from '@nestjs/schedule'
+import { Interval } from '@nestjs/schedule'
 import { deleteExpiredOrRevokedAccountSessionsBefore } from '@repo/db'
 
-const ACCOUNT_SESSION_RETENTION_DAYS = 30
+const ACCOUNT_SESSION_RETENTION_DAYS = 7
 const DAY_IN_MILLISECONDS = 24 * 60 * 60 * 1000
+const ACCOUNT_SESSION_CLEANUP_INTERVAL_MILLISECONDS = 14 * DAY_IN_MILLISECONDS
 
 @Injectable()
 export class AccountSessionCleanupScheduler {
   private readonly logger = new Logger(AccountSessionCleanupScheduler.name)
 
-  @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
+  @Interval(ACCOUNT_SESSION_CLEANUP_INTERVAL_MILLISECONDS)
   async cleanupExpiredOrRevokedSessions(): Promise<void> {
     try {
       const deleted = await this.deleteExpiredOrRevokedSessions(this.getRetentionCutoff(new Date()))

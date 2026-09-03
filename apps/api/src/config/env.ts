@@ -5,8 +5,8 @@ import {
   mailEnvSchema,
   mercadoPagoEnvSchema,
   uploadEnvSchema,
-  apiConfigSchema,
   MODE,
+  apiConfigSchema,
 } from './env.schema'
 
 export const envSchema = z

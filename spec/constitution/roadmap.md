@@ -36,6 +36,7 @@
 | 029 | `containerized-deployment`         | Despliegue contenerizado                          | `in-progress` | `api`, `web`, `dashboard`, `admin`, `db`                | Imágenes productivas, migraciones, Compose VPS, GHCR y promoción staging/production. Ver `spec/features/active/029-containerized-deployment/`.                                                                                                                                                                                                                                                                                               |
 | 030 | `testing-toolchain`                | Suite de testing moderna                          | `done`        | `api`, `web`, `dashboard`, `admin`, `packages`          | Vitest para unitarias/integración y Playwright Chromium para smoke E2E; React Testing Library + jsdom solo para componentes. Sin DB E2E ni cobertura en esta entrega. Coordina CI con `029`.                                                                                                                                                                                                                                                 |
 | 031 | `password-reset-token-retention`   | Retención de tokens de reset                      | `in-progress` | `api`, `db`                                             | Eliminar atómicamente el token de reset consumido; el cron conserva limpieza solo para tokens pendientes vencidos.                                                                                                                                                                                                                                                                                                                            |
+| 032 | `account-session-management`       | Gestión de sesiones de cuenta                     | `approved`    | `api`, `web`, `dashboard`, `admin`, `db`, `types`, `i18n` | Sección de sesiones por app con sesión actual protegida, historial retenido y revocación remota efectiva en el próximo refresh. Depende de `001`. Ver `spec/features/active/032-account-session-management/`. |
 
 ## Status
 
@@ -81,6 +82,7 @@
 028-user-register-email-verification →  requiere 001 (auth), 018 (web-user-registration), 019 (email-service); referencia 021 (password-reset)
 029-containerized-deployment         →  (sin deps; infraestructura transversal)
 030-testing-toolchain                →  coordina CI con 029; sin dependencia de producto
+032-account-session-management       →  requiere 001 (auth-sessions)
 ```
 
 ## Decisiones de prioridad

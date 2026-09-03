@@ -1,4 +1,5 @@
 import { createServerFn } from '@tanstack/react-start'
+import { getResponseHeaders } from '@tanstack/react-start/server'
 import {
   confirmUserRegistrationSchema,
   forgotPasswordSchema,
@@ -7,7 +8,7 @@ import {
   resetPasswordSchema,
 } from '@repo/validators'
 import { translateSync } from '@repo/i18n'
-import { throwApiServiceError, buildApiPath } from '@repo/common'
+import { forwardApiSetCookieHeaders, throwApiServiceError, buildApiPath } from '@repo/common'
 import { api } from '~/config/api'
 import { API_ROUTES } from '~/config/api'
 import type { LoginResponse } from '@repo/types'
@@ -20,10 +21,21 @@ async function postAuth<T>(path: string, data: unknown, fallback: string): Promi
   }
 }
 
+async function postAuthWithCookies<T>(path: string, data: unknown, fallback: string): Promise<T> {
+  try {
+    return forwardApiSetCookieHeaders(
+      await api.postWithResponse<T>(path, data),
+      getResponseHeaders()
+    )
+  } catch (error) {
+    throwApiServiceError(error, fallback)
+  }
+}
+
 export const loginFn = createServerFn({ method: 'POST' })
   .inputValidator(loginSchema)
   .handler(async ({ data }): Promise<LoginResponse> => {
-    return postAuth<LoginResponse>(
+    return postAuthWithCookies<LoginResponse>(
       buildApiPath(API_ROUTES.auth, API_ROUTES.auth.path.login()),
       data,
       translateSync('auth:login.error.fallback')
@@ -43,7 +55,7 @@ export const requestRegisterUserFn = createServerFn({ method: 'POST' })
 export const confirmUserRegistrationFn = createServerFn({ method: 'POST' })
   .inputValidator(confirmUserRegistrationSchema)
   .handler(async ({ data }): Promise<LoginResponse> => {
-    return postAuth<LoginResponse>(
+    return postAuthWithCookies<LoginResponse>(
       buildApiPath(API_ROUTES.auth, API_ROUTES.auth.path.registerUserConfirm()),
       data,
       translateSync('auth:register.confirm.error.fallback')

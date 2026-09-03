@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest'
+import { PgDialect } from 'drizzle-orm/pg-core'
 
 const { transaction, insert, select, update, deleteRows, deleteWhere } = vi.hoisted(() => ({
   transaction: vi.fn(),
@@ -10,19 +11,22 @@ const { transaction, insert, select, update, deleteRows, deleteWhere } = vi.hois
 }))
 
 vi.mock('../../client.ts', () => ({
-  db: { transaction, update, delete: deleteRows },
+  db: { transaction, select, update, delete: deleteRows },
 }))
 
 import {
   createAccountSession,
   deleteExpiredOrRevokedAccountSessionsBefore,
+  listAccountSessions,
   revokeAccountSession,
   revokeAccountSessionForReplay,
   revokeAccountSessionsForPasswordReset,
+  revokeManagedAccountSession,
   rotateAccountSession,
 } from './account-sessions.ts'
 import { completePasswordReset } from './complete-password-reset.ts'
 import { deleteExpiredPasswordResetTokens } from './delete-expired-password-reset-tokens.ts'
+import { accountSessions } from '../../schema/account-session.ts'
 import { passwordResetTokens } from '../../schema/password-reset-token.ts'
 
 const SESSION = {
@@ -61,7 +65,9 @@ function getSqlChunkValues(chunk: unknown): string[] {
   const sqlChunk = chunk as { name?: unknown; queryChunks?: unknown[]; value?: unknown }
   const values = typeof sqlChunk.name === 'string' ? [sqlChunk.name] : []
 
-  if (Array.isArray(sqlChunk.value)) {
+  if (typeof sqlChunk.value === 'string') {
+    values.push(sqlChunk.value)
+  } else if (Array.isArray(sqlChunk.value)) {
     values.push(...sqlChunk.value.filter((value): value is string => typeof value === 'string'))
   }
   if (Array.isArray(sqlChunk.queryChunks)) {
@@ -119,6 +125,13 @@ describe('account session repository', () => {
     expect(insert).toHaveBeenCalledOnce()
   })
 
+  test('lists retained sessions only for the requesting account and client app', async () => {
+    await expect(
+      listAccountSessions({ accountId: SESSION.accountId, clientApp: SESSION.clientApp })
+    ).resolves.toEqual([])
+
+    expect(select).toHaveBeenCalledOnce()
+  })
   test('rejects session creation for an account that cannot be locked', async () => {
     select.mockReturnValue({
       from: vi.fn().mockReturnValue({
@@ -187,6 +200,52 @@ describe('account session repository', () => {
     expect(update).toHaveBeenCalledTimes(2)
   })
 
+  test('physically deletes only an active non-current session owned by the requesting account and client app', async () => {
+    const currentSessionDocumentId = 'fc1598c2-3a5f-49e5-815f-5ddb609252d8'
+
+    await expect(
+      revokeManagedAccountSession({
+        accountId: SESSION.accountId,
+        clientApp: SESSION.clientApp,
+        documentId: SESSION.documentId,
+        currentSessionDocumentId,
+      })
+    ).resolves.toBe(true)
+
+    expect(deleteRows).toHaveBeenCalledWith(accountSessions)
+    expect(update).not.toHaveBeenCalled()
+    const predicate = deleteWhere.mock.calls[0]?.[0]
+    expect(getSqlChunkValues(predicate)).toEqual(
+      expect.arrayContaining([
+        'account_id',
+        'client_app',
+        SESSION.clientApp,
+        'document_id',
+        SESSION.documentId,
+        currentSessionDocumentId,
+        'revoked_at',
+        'expires_at',
+      ])
+    )
+  })
+
+  test('returns false without falling back to a disclosure when no managed session matches every predicate', async () => {
+    deleteRows.mockReturnValue({
+      where: deleteWhere.mockReturnValue({ returning: vi.fn().mockResolvedValue([]) }),
+    })
+
+    await expect(
+      revokeManagedAccountSession({
+        accountId: SESSION.accountId,
+        clientApp: SESSION.clientApp,
+        documentId: SESSION.documentId,
+        currentSessionDocumentId: SESSION.documentId,
+      })
+    ).resolves.toBe(false)
+
+    expect(deleteRows).toHaveBeenCalledWith(accountSessions)
+    expect(update).not.toHaveBeenCalled()
+  })
   test('deletes the reset token before updating the password and revoking sessions in one transaction', async () => {
     await expect(
       completePasswordReset({
@@ -233,11 +292,17 @@ describe('account session repository', () => {
     expect(getSqlChunkValues(predicate)).toEqual(expect.arrayContaining(['expires_at']))
   })
 
-  test('deletes sessions whose expiration or revocation retention period has elapsed', async () => {
-    await expect(
-      deleteExpiredOrRevokedAccountSessionsBefore(new Date('2026-08-01T00:00:00.000Z'))
-    ).resolves.toBe(1)
+  test('deletes unrevoked expired and revoked sessions at the retention cutoff, but retains later terminal timestamps', async () => {
+    const cutoff = new Date('2026-08-01T00:00:00.000Z')
+
+    await expect(deleteExpiredOrRevokedAccountSessionsBefore(cutoff)).resolves.toBe(1)
 
     expect(deleteRows).toHaveBeenCalledOnce()
+    const predicate = deleteWhere.mock.calls[0]?.[0]
+    const query = new PgDialect().sqlToQuery(predicate)
+
+    expect(query.sql).toMatch(/"expires_at"\s*<=\s*\$\d+/)
+    expect(query.sql).toMatch(/"revoked_at"\s*<=\s*\$\d+/)
+    expect(query.params).toEqual([cutoff, cutoff])
   })
 })

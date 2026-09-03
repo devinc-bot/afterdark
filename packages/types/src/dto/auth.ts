@@ -1,4 +1,4 @@
-import type { ClientApp } from '../enums/auth.ts'
+import type { AccountSessionStatus, ClientApp } from '../enums/auth.ts'
 import type { UserRole } from '../enums/user.ts'
 
 export const SESSION_METADATA_FIELD_LIMITS = {
@@ -37,4 +37,21 @@ export interface SessionMetadata {
   city: string | null
   state: string | null
   country: string | null
+}
+
+export interface AccountSessionResponse {
+  documentId: string
+  clientApp: ClientApp
+  device: string | null
+  ipAddress: string | null
+  locationLabel: string | null
+  createdAt: Date
+  expiresAt: Date
+  revokedAt: Date | null
+  status: AccountSessionStatus
+  isCurrent: boolean
+}
+
+export interface AccountSessionsResponse {
+  sessions: AccountSessionResponse[]
 }

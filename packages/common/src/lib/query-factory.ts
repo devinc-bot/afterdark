@@ -20,6 +20,11 @@ export type QueryFactoryOptions = {
   onAuthenticationFailure?: () => void | Promise<void>
 }
 
+export type QueryFactoryResponse<T> = {
+  data: T
+  headers: Headers
+}
+
 export class QueryFactoryError extends Error {
   constructor(
     readonly status: number,
@@ -108,6 +113,22 @@ export class QueryFactory {
     })
   }
 
+  postWithResponse<T>(path: string, data: unknown, requestInit?: RequestInit) {
+    if (data instanceof FormData) {
+      return this.requestWithResponse<T>(path, {
+        ...requestInit,
+        method: 'POST',
+        body: data,
+      })
+    }
+
+    return this.requestWithResponse<T>(path, {
+      ...requestInit,
+      method: 'POST',
+      body: JSON.stringify(data),
+    })
+  }
+
   put<T>(path: string, data: unknown, requestInit?: RequestInit) {
     return this.request<T>(path, {
       ...requestInit,
@@ -186,6 +207,15 @@ export class QueryFactory {
   }
 
   private async execute<T>(url: string, init: RequestInit, includeAccessToken = true): Promise<T> {
+    const response = await this.executeWithResponse<T>(url, init, includeAccessToken)
+    return response.data
+  }
+
+  private async executeWithResponse<T>(
+    url: string,
+    init: RequestInit,
+    includeAccessToken = true
+  ): Promise<QueryFactoryResponse<T>> {
     const headers = await this.buildHeaders(init, includeAccessToken)
     const response = await fetch(url, { ...init, headers })
 
@@ -194,23 +224,31 @@ export class QueryFactory {
       throw new QueryFactoryError(response.status, body)
     }
 
-    return this.parseBody<T>(response)
+    return { data: await this.parseBody<T>(response), headers: response.headers }
   }
 
   private async request<T>(path: string, requestInit?: RequestInit): Promise<T> {
+    const response = await this.requestWithResponse<T>(path, requestInit)
+    return response.data
+  }
+
+  private async requestWithResponse<T>(
+    path: string,
+    requestInit?: RequestInit
+  ): Promise<QueryFactoryResponse<T>> {
     const url = this.resolveUrl(path)
     const init = this.mergeInit(requestInit)
     const accessToken = this.getAccessToken?.() ?? null
 
     try {
-      return await this.execute<T>(url, init)
+      return await this.executeWithResponse<T>(url, init)
     } catch (error) {
       if (!(error instanceof QueryFactoryError) || error.status !== 401 || !this.canRefresh(url)) {
         throw error
       }
 
       if ((this.getAccessToken?.() ?? null) !== accessToken) {
-        return this.execute<T>(url, init)
+        return this.executeWithResponse<T>(url, init)
       }
 
       try {
@@ -224,7 +262,7 @@ export class QueryFactory {
         throw refreshError
       }
 
-      return this.execute<T>(url, init)
+      return this.executeWithResponse<T>(url, init)
     }
   }
 

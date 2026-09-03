@@ -6,4 +6,6 @@
 - [x] T4: Add the localized responsive Sessions section to authenticated `web` settings, including query, confirmation, revocation mutation, and state coverage.
 - [x] T5: Add the shared owner/staff localized responsive Sessions section to authenticated `dashboard` settings, including query, confirmation, revocation mutation, and state coverage.
 - [x] T6: Add protected admin settings navigation and the localized responsive Sessions section to `admin`, including query, confirmation, revocation mutation, and state coverage without manually editing generated routes.
+- [x] T8: Hide retained revoked sessions from the shared table and close confirmation after a successful remote revocation, with focused coverage.
+- [x] T9: Physically delete a managed session after confirmed revocation, change terminal cleanup retention to 7 days, and run cleanup every 14 days with focused repository, use-case, and scheduler coverage.
 - [ ] T7: Run affected tests, i18n validation, type-check, lint, format check, affected builds, manual desktop/mobile verification in all three apps, and `git diff --check`; complete delegated acceptance and code-quality review.

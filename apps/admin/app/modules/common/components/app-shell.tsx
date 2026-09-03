@@ -90,6 +90,11 @@ function AppShellLayout({ children }: { children: React.ReactNode }) {
     }
   }, [closeMobileSidebar, navigate, queryClient])
 
+  const goToSettings = useCallback(() => {
+    closeMobileSidebar()
+    void navigate({ to: ADMIN_ROUTES.settings() })
+  }, [closeMobileSidebar, navigate])
+
   return (
     <>
       <AppSidebar
@@ -104,7 +109,7 @@ function AppShellLayout({ children }: { children: React.ReactNode }) {
           <>
             <AppShellThemeSwitcher />
             <AppShellLanguageSwitcher />
-            <AppShellUser user={user} onSignOut={handleSignOut} />
+            <AppShellUser user={user} onSettings={goToSettings} onSignOut={handleSignOut} />
           </>
         }
         onNavigate={closeMobileSidebar}
