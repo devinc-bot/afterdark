@@ -1,8 +1,10 @@
 import { Controller, Get, ServiceUnavailableException } from '@nestjs/common'
+import { SkipThrottle } from '@nestjs/throttler'
 import { API_ROUTES } from '@repo/common'
 import { CheckApiReadinessUseCase } from '../application/check-api-readiness.use-case'
 
 @Controller(API_ROUTES.health.prefix)
+@SkipThrottle()
 export class HealthController {
   constructor(private readonly checkApiReadinessUseCase: CheckApiReadinessUseCase) {}
 

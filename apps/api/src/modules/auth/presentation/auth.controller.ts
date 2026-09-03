@@ -31,7 +31,9 @@ import {
   type RefreshSessionInput,
   type LogoutSessionInput,
 } from '@repo/validators'
+import { ApiRateLimit } from '../../common/decorators/api-rate-limit.decorator'
 import { ZodValidationPipe } from '../../common/pipes/zod-validation.pipe'
+import { RATE_LIMIT_PROFILE } from '../../../config/rate-limit.policy'
 import { ConfirmUserRegistrationUseCase } from '../application/confirm-user-registration.use-case'
 import { ConfirmOwnerRegistrationUseCase } from '../application/confirm-owner-registration.use-case'
 import { ForgotPasswordUseCase } from '../application/forgot-password.use-case'
@@ -92,6 +94,7 @@ export class AuthController {
 
   @Post(API_ROUTES.auth.path.login())
   @HttpCode(HttpStatus.OK)
+  @ApiRateLimit(RATE_LIMIT_PROFILE.LOGIN)
   async login(
     @Body(new ZodValidationPipe(loginSchema)) body: LoginInput,
     @Req() request: Request,
@@ -105,18 +108,21 @@ export class AuthController {
 
   @Post(API_ROUTES.auth.path.registerUser())
   @HttpCode(HttpStatus.CREATED)
+  @ApiRateLimit(RATE_LIMIT_PROFILE.AUTH_SENSITIVE)
   registerUser(@Body(new ZodValidationPipe(registerSchema)) body: RegisterUserInput) {
     return this.registerUserUseCase.execute(body)
   }
 
   @Post(API_ROUTES.auth.path.registerUserRequest())
   @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiRateLimit(RATE_LIMIT_PROFILE.AUTH_SENSITIVE)
   requestUserRegistration(@Body(new ZodValidationPipe(registerSchema)) body: RegisterUserInput) {
     return this.requestUserRegistrationUseCase.execute(body)
   }
 
   @Post(API_ROUTES.auth.path.registerUserConfirm())
   @HttpCode(HttpStatus.OK)
+  @ApiRateLimit(RATE_LIMIT_PROFILE.AUTH_CONFIRM)
   async confirmUserRegistration(
     @Body(new ZodValidationPipe(confirmUserRegistrationSchema)) body: ConfirmUserRegistrationInput,
     @Req() request: Request,
@@ -130,18 +136,21 @@ export class AuthController {
 
   @Post(API_ROUTES.auth.path.registerOwner())
   @HttpCode(HttpStatus.CREATED)
+  @ApiRateLimit(RATE_LIMIT_PROFILE.AUTH_SENSITIVE)
   registerOwner(@Body(new ZodValidationPipe(registerSchema)) body: RegisterOwnerInput) {
     return this.registerOwnerUseCase.execute(body)
   }
 
   @Post(API_ROUTES.auth.path.registerOwnerRequest())
   @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiRateLimit(RATE_LIMIT_PROFILE.AUTH_SENSITIVE)
   requestOwnerRegistration(@Body(new ZodValidationPipe(registerSchema)) body: RegisterOwnerInput) {
     return this.requestOwnerRegistrationUseCase.execute(body)
   }
 
   @Post(API_ROUTES.auth.path.registerOwnerConfirm())
   @HttpCode(HttpStatus.OK)
+  @ApiRateLimit(RATE_LIMIT_PROFILE.AUTH_CONFIRM)
   async confirmOwnerRegistration(
     @Body(new ZodValidationPipe(confirmUserRegistrationSchema)) body: ConfirmUserRegistrationInput,
     @Req() request: Request,
@@ -155,18 +164,21 @@ export class AuthController {
 
   @Post(API_ROUTES.auth.path.forgotPassword())
   @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiRateLimit(RATE_LIMIT_PROFILE.AUTH_SENSITIVE)
   forgotPassword(@Body(new ZodValidationPipe(forgotPasswordSchema)) body: ForgotPasswordInput) {
     return this.forgotPasswordUseCase.execute(body)
   }
 
   @Post(API_ROUTES.auth.path.resetPassword())
   @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiRateLimit(RATE_LIMIT_PROFILE.AUTH_CONFIRM)
   resetPassword(@Body(new ZodValidationPipe(resetPasswordSchema)) body: ResetPasswordInput) {
     return this.resetPasswordUseCase.execute(body)
   }
 
   @Post(API_ROUTES.auth.path.refreshToken())
   @HttpCode(HttpStatus.OK)
+  @ApiRateLimit(RATE_LIMIT_PROFILE.REFRESH)
   async refresh(
     @Body(new ZodValidationPipe(sessionClientAppSchema)) body: RefreshSessionInput,
     @Req() request: Request,
@@ -205,6 +217,7 @@ export class AuthController {
   }
 
   @Get(API_ROUTES.auth.path.google())
+  @ApiRateLimit(RATE_LIMIT_PROFILE.LOGIN)
   async googleStart(@Query() query: Record<string, string | undefined>, @Res() res: Response) {
     const parsed = googleOauthStartSchema.safeParse(query)
     if (!parsed.success) {
@@ -215,6 +228,7 @@ export class AuthController {
   }
 
   @Get(API_ROUTES.auth.path.googleCallback())
+  @ApiRateLimit(RATE_LIMIT_PROFILE.LOGIN)
   async googleCallback(
     @Query('code') code: string | undefined,
     @Query('state') state: string | undefined,

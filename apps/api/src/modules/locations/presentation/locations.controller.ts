@@ -25,8 +25,10 @@ import {
   type CreateLocationInput,
   type UpdateLocationMultipartInput,
 } from '@repo/validators'
+import { ApiRateLimit } from '../../common/decorators/api-rate-limit.decorator'
 import { CurrentUser } from '../../common/decorators/current-user.decorator'
 import { Roles } from '../../common/decorators/roles.decorator'
+import { RATE_LIMIT_PROFILE } from '../../../config/rate-limit.policy'
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard'
 import { RolesGuard } from '../../common/guards/roles.guard'
 import { ZodValidationPipe } from '../../common/pipes/zod-validation.pipe'
@@ -37,6 +39,7 @@ import { ListMyLocationsUseCase } from '../application/list-my-locations.use-cas
 import { UpdateLocationUseCase } from '../application/update-location.use-case'
 
 @Controller(API_ROUTES.locations.prefix)
+@ApiRateLimit(RATE_LIMIT_PROFILE.AUTHENTICATED)
 export class LocationsController {
   constructor(
     @Inject(ListMyLocationsUseCase) private readonly listMyLocationsUseCase: ListMyLocationsUseCase,

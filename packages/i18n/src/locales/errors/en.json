@@ -124,6 +124,10 @@
     "PROVIDER_FAILED": "We could not locate your area. Try again or move the pin.",
     "RATE_LIMITED": "Too many searches. Wait a moment and try again."
   },
+  "rateLimit": {
+    "TOO_MANY_REQUESTS": "Too many requests. Please wait a moment and try again.",
+    "CLIENT_IP_REQUIRED": "We could not determine your client IP address."
+  },
   "order": {
     "NOT_FOUND": "We could not find the order.",
     "NOT_ON_SALE": "This ticket is not on sale.",

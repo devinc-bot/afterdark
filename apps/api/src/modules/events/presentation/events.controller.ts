@@ -39,11 +39,13 @@ import {
   type ListPublicEventsQueryInput,
   type UpdateEventMultipartInput,
 } from '@repo/validators'
+import { ApiRateLimit } from '../../common/decorators/api-rate-limit.decorator'
 import { CurrentUser } from '../../common/decorators/current-user.decorator'
 import { Roles } from '../../common/decorators/roles.decorator'
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard'
 import { RolesGuard } from '../../common/guards/roles.guard'
 import { ZodValidationPipe } from '../../common/pipes/zod-validation.pipe'
+import { RATE_LIMIT_PROFILE } from '../../../config/rate-limit.policy'
 import { SseStreamsService } from '../../realtime/application/services/sse-streams.service'
 import { imageUploadOptions } from '../../files/image-upload.options'
 import { CreateEventUseCase } from '../application/create-event.use-case'
@@ -90,6 +92,7 @@ export class EventsController {
   }
 
   @Sse(API_ROUTES.events.path.availabilityStream(':documentId'))
+  @ApiRateLimit(RATE_LIMIT_PROFILE.SSE)
   streamPublishedAvailability(
     @Param('documentId', new ZodValidationPipe(uuidSchema)) documentId: string,
     @Query('afterVersion') afterVersion?: string
@@ -103,6 +106,7 @@ export class EventsController {
   @Get(API_ROUTES.events.path.list())
   @Roles([USER_ROLE.OWNER, USER_ROLE.STAFF])
   @UseGuards(JwtAuthGuard, RolesGuard)
+  @ApiRateLimit(RATE_LIMIT_PROFILE.AUTHENTICATED)
   listMyEvents(
     @CurrentUser() user: JwtPayload,
     @Query(new ZodValidationPipe(listEventsQuerySchema)) query: ListEventsQueryInput
@@ -113,6 +117,7 @@ export class EventsController {
   @Get(API_ROUTES.events.path.get(':documentId'))
   @Roles([USER_ROLE.OWNER])
   @UseGuards(JwtAuthGuard, RolesGuard)
+  @ApiRateLimit(RATE_LIMIT_PROFILE.AUTHENTICATED)
   getByDocumentId(
     @CurrentUser() user: JwtPayload,
     @Param('documentId', new ZodValidationPipe(uuidSchema)) documentId: string
@@ -124,6 +129,7 @@ export class EventsController {
   @HttpCode(HttpStatus.CREATED)
   @Roles([USER_ROLE.OWNER])
   @UseGuards(JwtAuthGuard, RolesGuard)
+  @ApiRateLimit(RATE_LIMIT_PROFILE.AUTHENTICATED)
   @UseInterceptors(FilesInterceptor('images', EVENT_IMAGE_MAX_COUNT, imageUploadOptions))
   create(
     @CurrentUser() user: JwtPayload,
@@ -136,6 +142,7 @@ export class EventsController {
   @Patch(API_ROUTES.events.path.update(':documentId'))
   @Roles([USER_ROLE.OWNER])
   @UseGuards(JwtAuthGuard, RolesGuard)
+  @ApiRateLimit(RATE_LIMIT_PROFILE.AUTHENTICATED)
   @UseInterceptors(FilesInterceptor('images', EVENT_IMAGE_MAX_COUNT, imageUploadOptions))
   update(
     @CurrentUser() user: JwtPayload,
@@ -157,6 +164,7 @@ export class EventsController {
   @HttpCode(HttpStatus.NO_CONTENT)
   @Roles([USER_ROLE.OWNER])
   @UseGuards(JwtAuthGuard, RolesGuard)
+  @ApiRateLimit(RATE_LIMIT_PROFILE.AUTHENTICATED)
   delete(
     @CurrentUser() user: JwtPayload,
     @Param('documentId', new ZodValidationPipe(uuidSchema)) documentId: string

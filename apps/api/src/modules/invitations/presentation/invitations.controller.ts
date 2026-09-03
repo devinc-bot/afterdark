@@ -23,8 +23,10 @@ import {
   type AcceptStaffInvitationApiInput,
   type CreateStaffInvitationInput,
 } from '@repo/validators'
+import { ApiRateLimit } from '../../common/decorators/api-rate-limit.decorator'
 import { CurrentUser } from '../../common/decorators/current-user.decorator'
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard'
+import { RATE_LIMIT_PROFILE } from '../../../config/rate-limit.policy'
 import { ZodValidationPipe } from '../../common/pipes/zod-validation.pipe'
 import { AcceptStaffInvitationUseCase } from '../application/accept-staff-invitation.use-case'
 import { CreateStaffInvitationUseCase } from '../application/create-staff-invitation.use-case'
@@ -50,6 +52,7 @@ export class InvitationsController {
   @Post(API_ROUTES.invitations.path.staff())
   @HttpCode(HttpStatus.CREATED)
   @UseGuards(JwtAuthGuard)
+  @ApiRateLimit(RATE_LIMIT_PROFILE.AUTHENTICATED)
   createStaffInvitation(
     @CurrentUser() user: JwtPayload,
     @Body(new ZodValidationPipe(createStaffInvitationSchema)) body: CreateStaffInvitationInput
@@ -59,6 +62,7 @@ export class InvitationsController {
 
   @Get(API_ROUTES.invitations.path.staff())
   @UseGuards(JwtAuthGuard)
+  @ApiRateLimit(RATE_LIMIT_PROFILE.AUTHENTICATED)
   listStaffInvitations(@CurrentUser() user: JwtPayload): Promise<CreateStaffInvitationResponse[]> {
     return this.listStaffInvitationsUseCase.execute(user.sub)
   }
@@ -84,6 +88,7 @@ export class InvitationsController {
   @Delete(API_ROUTES.invitations.path.deleteStaff(':documentId'))
   @HttpCode(HttpStatus.NO_CONTENT)
   @UseGuards(JwtAuthGuard)
+  @ApiRateLimit(RATE_LIMIT_PROFILE.AUTHENTICATED)
   deleteStaffInvitation(
     @CurrentUser() user: JwtPayload,
     @Param('documentId', new ZodValidationPipe(uuidSchema)) documentId: string

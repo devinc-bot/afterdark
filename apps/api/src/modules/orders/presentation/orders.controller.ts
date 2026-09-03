@@ -29,11 +29,15 @@ import {
   type CreateOrderInput,
   type ListOrdersQueryInput,
 } from '@repo/validators'
+import { ApiRateLimit } from '../../common/decorators/api-rate-limit.decorator'
 import { CurrentUser } from '../../common/decorators/current-user.decorator'
 import { Roles } from '../../common/decorators/roles.decorator'
+import { UserRateLimit } from '../../common/decorators/user-rate-limit.decorator'
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard'
 import { RolesGuard } from '../../common/guards/roles.guard'
+import { UserRateLimitGuard } from '../../common/guards/user-rate-limit.guard'
 import { ZodValidationPipe } from '../../common/pipes/zod-validation.pipe'
+import { RATE_LIMIT_PROFILE } from '../../../config/rate-limit.policy'
 import { SseStreamsService } from '../../realtime/application/services/sse-streams.service'
 import { CreatePendingOrderUseCase } from '../application/create-pending-order.use-case'
 import { DeletePendingOrderUseCase } from '../application/delete-pending-order.use-case'
@@ -46,6 +50,7 @@ function toAfterVersion(value: string | undefined): number {
 }
 
 @Controller(API_ROUTES.orders.prefix)
+@ApiRateLimit(RATE_LIMIT_PROFILE.AUTHENTICATED)
 export class OrdersController {
   constructor(
     @Inject(CreatePendingOrderUseCase)
@@ -82,7 +87,9 @@ export class OrdersController {
   @Post(API_ROUTES.orders.path.create())
   @HttpCode(HttpStatus.CREATED)
   @Roles([USER_ROLE.USER])
-  @UseGuards(JwtAuthGuard, RolesGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard, UserRateLimitGuard)
+  @ApiRateLimit(RATE_LIMIT_PROFILE.PURCHASE)
+  @UserRateLimit(RATE_LIMIT_PROFILE.PURCHASE)
   create(
     @CurrentUser() user: JwtPayload,
     @Body(new ZodValidationPipe(createOrderSchema)) body: CreateOrderInput
@@ -103,6 +110,7 @@ export class OrdersController {
   @Sse(API_ROUTES.orders.path.stream(':documentId'))
   @Roles([USER_ROLE.USER])
   @UseGuards(JwtAuthGuard, RolesGuard)
+  @ApiRateLimit(RATE_LIMIT_PROFILE.SSE)
   stream(
     @CurrentUser() user: JwtPayload,
     @Param('documentId', new ZodValidationPipe(uuidSchema)) documentId: string,
