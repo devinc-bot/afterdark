@@ -88,6 +88,50 @@ The system SHALL provide authenticated Admin users with a localized legal docume
 
 #### Scenario: View persistence actions
 
-- **GIVEN** the Admin authoring surface has no write API
-- **WHEN** the Admin user edits any legal document
-- **THEN** the system does not present save or publish actions
+- **GIVEN** the Admin write API is available
+- **WHEN** the Admin user edits a legal document
+- **THEN** the system presents localized **Guardar** (draft) and **Publicar** actions for that document type
+
+### Requirement: Admin draft save
+
+The system SHALL upsert at most one unpublished draft per legal document type when an Admin saves.
+
+#### Scenario: Save a new draft
+
+- **GIVEN** no unpublished draft exists for `termsWeb`
+- **WHEN** an Admin saves that document
+- **THEN** the system persists one unpublished row with `isPublished` false, `publishedAt` null, and does not create a new published version
+
+#### Scenario: Save overwrites the current draft
+
+- **GIVEN** an unpublished draft already exists for `privacyDashboard`
+- **WHEN** an Admin saves that document again
+- **THEN** the system updates the same draft row and does not insert another unpublished row for that type
+
+#### Scenario: Save after a published version
+
+- **GIVEN** `termsDashboard` already has a published `v1`
+- **WHEN** an Admin saves new content
+- **THEN** the system creates or updates an unpublished `v2` draft and leaves the published `v1` unchanged
+
+### Requirement: Admin publish immutable version
+
+The system SHALL publish the current unpublished draft as an immutable versioned document.
+
+#### Scenario: First publish
+
+- **GIVEN** an unpublished draft exists for a document type
+- **WHEN** an Admin publishes it
+- **THEN** the system sets `isPublished` true, assigns `version` `v1`, sets `publishedAt`, and that row MUST NOT be overwritten by later saves
+
+#### Scenario: Subsequent publish
+
+- **GIVEN** a published `v1` and an unpublished `v2` draft for the same type
+- **WHEN** an Admin publishes the draft
+- **THEN** the system freezes that draft as published `v2` and leaves `v1` and its account acceptances unchanged
+
+#### Scenario: Publish without a draft
+
+- **GIVEN** a document type has no unpublished draft
+- **WHEN** an Admin attempts to publish
+- **THEN** the system rejects the request

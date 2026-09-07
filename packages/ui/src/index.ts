@@ -238,6 +238,7 @@ export {
 } from './components/ui/table.tsx'
 export { Textarea, textareaVariants, type TextareaProps } from './components/ui/textarea.tsx'
 export { RichEditor, type RichEditorProps } from './components/ui/rich-editor.tsx'
+export { richEditorHtmlToJson, richEditorJsonToHtml } from './lib/rich-editor-content.ts'
 export {
   Pagination,
   PaginationButton,

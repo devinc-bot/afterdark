@@ -11,13 +11,12 @@
 - Persist when an account accepts a specific legal document.
 - Export inferred select and insert types through the schema barrel.
 - Add a protected Admin destination for editing organization and web legal content.
-- Reuse shared tabs and rich editors while keeping this stage explicitly transient.
+- Persist Admin **Guardar** as an unpublished draft per document type and **Publicar** as an immutable version (`v1`, `v2`, …).
 
 **Non-Goals:**
 
-- Generate or apply the migration in this change.
 - Add application-managed update timestamp behavior beyond the existing base-column convention.
-- Add repositories, validation, API access, persisted writes, or publishing flows.
+- Public legal pages, account acceptance UI, or forcing re-acceptance after a new published version.
 
 ## Decisions
 
@@ -31,8 +30,15 @@
 - Add `/legal-documents` under the authenticated Admin route group and expose it through `ADMIN_ROUTES` and the primary sidebar navigation.
 - Render organization and web as two vertically separated sections on the same page. Each section owns terms and privacy tabs so audiences remain visible and independently editable without adding another navigation level.
 - Give each of the four editors independent local React state. Tab changes preserve edits while the route remains mounted, but navigation or reload may discard them.
-- Do not render save or publish controls. A non-persistent control would create a false success state and conflict with the explicitly deferred API layer.
+- Do not render save or publish controls until the write API exists. A non-persistent control would create a false success state.
 - Source all labels, descriptions, tab names, and editor accessible names from the Admin English and Spanish locale files.
+- Persist **draft vs publish**, not a new version on every save:
+  - Each of the four types MAY have at most one unpublished draft row.
+  - **Guardar** upserts that draft (`isPublished = false`, `publishedAt = null`) and does not change already published rows.
+  - **Publicar** freezes the current draft as an immutable published version (`isPublished = true`, `publishedAt` set, `version` like `v1`, `v2`).
+  - After a type is published, the next **Guardar** creates a new unpublished draft with the next version number.
+  - Published rows MUST NOT be overwritten. Account acceptances stay linked to the published document they accepted.
+  - `requiresAcceptance` applies to published versions; drafts are not shown to end users.
 
 ## Risks / Trade-offs
 
@@ -40,7 +46,8 @@
 - [TipTap content has no database-level shape validation] -> Add shared Zod validation when write flows are introduced.
 - [The shared `updatedAt` column does not update automatically] -> Application write operations must set it consistently with other entities in the repository.
 - [The shared editor currently emits HTML while the schema stores TipTap JSON] -> Keep editor output in component state only; define the conversion and validation contract with the future write API.
-- [Transient edits can be lost] -> Omit save controls and describe the screen as an editing preview until persistence is implemented.
+- [Transient edits can be lost] -> Add save as draft and publish once the write API exists.
+- [Saving as a new version on every click would flood history and re-acceptance] -> Only published rows increment the public version; drafts overwrite in place.
 
 ## Migration Plan
 
@@ -51,4 +58,5 @@
 
 ## Open Questions
 
-The API write contract and HTML-to-TipTap JSON handling remain intentionally deferred.
+- Editor payload: persist TipTap JSON as the schema requires, converting from the current HTML editor output at the API boundary.
+- Whether Admin should list previous published versions read-only in this increment (default: no; only current draft + last published status).

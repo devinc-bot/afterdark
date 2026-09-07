@@ -1,6 +1,6 @@
 ## Why
 
-The platform needs a persistent representation of versioned terms and privacy documents for its dashboard and public web experiences. Admin users also need an initial authoring surface that establishes how organization and web legal content will be managed before persistence and publishing workflows are introduced.
+The platform needs a persistent representation of versioned terms and privacy documents for its dashboard and public web experiences. Admin users also need to save unpublished drafts and publish immutable versions without creating a new public version on every save.
 
 ## What Changes
 
@@ -11,7 +11,8 @@ The platform needs a persistent representation of versioned terms and privacy do
 - Export the schema and inferred Drizzle types from `@repo/db`.
 - Add a protected Admin legal documents route and sidebar entry.
 - Present separate organization and web sections, each with terms and privacy tabs backed by the shared rich editor.
-- Keep editor content transient in this stage without save or publish actions.
+- Keep editor content transient until persistence is implemented.
+- Persist Admin saves as unpublished drafts and freeze a new immutable version only on publish.
 
 ## Capabilities
 
@@ -25,14 +26,13 @@ None.
 
 ## Non-goals
 
-- Generating or applying a database migration.
-- Adding repositories, validators, API endpoints, migrations, or persisted Admin writes.
-- Defining TipTap document validation beyond storing JSON.
-- Adding save, publish, version history, acceptance, or public legal document flows.
+- Defining TipTap document validation beyond storing JSON at the API boundary.
+- Adding public legal pages, account acceptance UI, or re-acceptance prompts after a new published version.
+- Showing a full version-history browser in Admin in this increment.
 
 ## Impact
 
-- Affected app and packages: `apps/admin`, `packages/db`, and `packages/i18n`.
+- Affected apps and packages: `apps/admin`, `apps/api`, `packages/db`, `packages/types`, `packages/validators`, `packages/common`, and `packages/i18n`.
 - Reuses the existing `RichEditor` and tab primitives from `packages/ui` without modifying that package.
-- Unaffected apps and packages: `apps/api`, `apps/web`, `apps/dashboard`, `packages/types`, and `packages/validators`.
-- No new dependencies or breaking changes.
+- Unaffected apps: `apps/web` and `apps/dashboard` remain read-only consumers later.
+- No new dependencies.

@@ -1,6 +1,7 @@
 export * from './auth.ts'
 export * from './location.ts'
 export * from './event.ts'
+export * from './legal-document.ts'
 export * from './payment.ts'
 export * from './purchase.ts'
 export * from './staff.ts'

@@ -136,6 +136,13 @@ export const RATE_LIMIT_ERROR_CODE = {
   CLIENT_IP_REQUIRED: 'rateLimit.CLIENT_IP_REQUIRED',
 } as const
 
+export const LEGAL_DOCUMENT_ERROR_CODE = {
+  NO_DRAFT: 'legalDocument.NO_DRAFT',
+  SAVE_FAILED: 'legalDocument.SAVE_FAILED',
+  PUBLISH_FAILED: 'legalDocument.PUBLISH_FAILED',
+  LIST_FAILED: 'legalDocument.LIST_FAILED',
+} as const
+
 export type AuthErrorCode = (typeof AUTH_ERROR_CODE)[keyof typeof AUTH_ERROR_CODE]
 export type InvitationErrorCode = (typeof INVITATION_ERROR_CODE)[keyof typeof INVITATION_ERROR_CODE]
 export type LocationErrorCode = (typeof LOCATION_ERROR_CODE)[keyof typeof LOCATION_ERROR_CODE]
@@ -151,6 +158,8 @@ export type EventErrorCode = (typeof EVENT_ERROR_CODE)[keyof typeof EVENT_ERROR_
 export type GeoErrorCode = (typeof GEO_ERROR_CODE)[keyof typeof GEO_ERROR_CODE]
 export type OrderErrorCode = (typeof ORDER_ERROR_CODE)[keyof typeof ORDER_ERROR_CODE]
 export type RateLimitErrorCode = (typeof RATE_LIMIT_ERROR_CODE)[keyof typeof RATE_LIMIT_ERROR_CODE]
+export type LegalDocumentErrorCode =
+  (typeof LEGAL_DOCUMENT_ERROR_CODE)[keyof typeof LEGAL_DOCUMENT_ERROR_CODE]
 
 export type ErrorCode =
   | AuthErrorCode
@@ -167,3 +176,4 @@ export type ErrorCode =
   | GeoErrorCode
   | OrderErrorCode
   | RateLimitErrorCode
+  | LegalDocumentErrorCode

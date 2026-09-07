@@ -146,18 +146,18 @@ test('admin shell provides navigation, account identity, and sign-out without mo
   expect(shellSource.includes('KPI')).toBe(false)
 })
 
-test('admin legal documents provide organization and web editors without persistence actions', async () => {
+test('admin legal documents provide organization and web editors with save and publish actions', async () => {
   const [viewSource, sectionSource] = await Promise.all([
     readFile(legalDocumentsViewModuleUrl, 'utf8'),
     readFile(legalDocumentSectionModuleUrl, 'utf8'),
   ])
 
   expect(viewSource.match(/<LegalDocumentSection/g)?.length).toBe(2)
-  expect(sectionSource.match(/<RichEditor/g)?.length).toBe(2)
+  expect(sectionSource.includes('RichEditor')).toBe(true)
   expect(sectionSource.includes('setTermsContent')).toBe(true)
   expect(sectionSource.includes('setPrivacyContent')).toBe(true)
-  expect(viewSource.includes('save')).toBe(false)
-  expect(sectionSource.includes('publish')).toBe(false)
+  expect(viewSource.includes('onSave')).toBe(true)
+  expect(sectionSource.includes('onPublish')).toBe(true)
 })
 
 test('admin copy is provided in Spanish and English', async () => {

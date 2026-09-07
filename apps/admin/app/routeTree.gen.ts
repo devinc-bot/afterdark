@@ -13,8 +13,8 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as AppIndexRouteImport } from './routes/_app/index'
 import { Route as AppUsersRouteImport } from './routes/_app/users'
-import { Route as AppLegalDocumentsRouteImport } from './routes/_app/legal-documents'
 import { Route as AppSettingsRouteImport } from './routes/_app/settings'
+import { Route as AppLegalDocumentsRouteImport } from './routes/_app/legal-documents'
 import { Route as AppErrorsRouteImport } from './routes/_app/errors'
 
 const LoginRoute = LoginRouteImport.update({
@@ -36,14 +36,14 @@ const AppUsersRoute = AppUsersRouteImport.update({
   path: '/users',
   getParentRoute: () => AppRoute,
 } as any)
-const AppLegalDocumentsRoute = AppLegalDocumentsRouteImport.update({
-  id: '/legal-documents',
-  path: '/legal-documents',
-  getParentRoute: () => AppRoute,
-} as any)
 const AppSettingsRoute = AppSettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppLegalDocumentsRoute = AppLegalDocumentsRouteImport.update({
+  id: '/legal-documents',
+  path: '/legal-documents',
   getParentRoute: () => AppRoute,
 } as any)
 const AppErrorsRoute = AppErrorsRouteImport.update({
@@ -80,7 +80,13 @@ export interface FileRoutesById {
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login' | '/errors' | '/legal-documents' | '/settings' | '/users'
+  fullPaths:
+    | '/'
+    | '/login'
+    | '/errors'
+    | '/legal-documents'
+    | '/settings'
+    | '/users'
   fileRoutesByTo: FileRoutesByTo
   to: '/login' | '/errors' | '/legal-documents' | '/settings' | '/users' | '/'
   id:
@@ -129,18 +135,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppUsersRouteImport
       parentRoute: typeof AppRoute
     }
-    '/_app/legal-documents': {
-      id: '/_app/legal-documents'
-      path: '/legal-documents'
-      fullPath: '/legal-documents'
-      preLoaderRoute: typeof AppLegalDocumentsRouteImport
-      parentRoute: typeof AppRoute
-    }
     '/_app/settings': {
       id: '/_app/settings'
       path: '/settings'
       fullPath: '/settings'
       preLoaderRoute: typeof AppSettingsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/legal-documents': {
+      id: '/_app/legal-documents'
+      path: '/legal-documents'
+      fullPath: '/legal-documents'
+      preLoaderRoute: typeof AppLegalDocumentsRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/errors': {

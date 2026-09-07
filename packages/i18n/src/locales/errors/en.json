@@ -144,6 +144,12 @@
     "SALES_ANALYTICS_FAILED": "We could not load dashboard sales analytics. Try again in a few minutes.",
     "SALES_LIST_FAILED": "We could not load the sales history. Try again in a few minutes."
   },
+  "legalDocument": {
+    "NO_DRAFT": "There is no draft to publish.",
+    "SAVE_FAILED": "We could not save the draft. Try again.",
+    "PUBLISH_FAILED": "We could not publish the document. Try again.",
+    "LIST_FAILED": "We could not load the legal documents. Try again in a few minutes."
+  },
   "admin": {
     "ERRORS_LIST_FAILED": "We could not load the error records. Try again in a few minutes.",
     "ERRORS_DELETE_FAILED": "We could not delete the error record. Try again.",

@@ -32,7 +32,42 @@
   },
   "legalDocuments": {
     "title": "Legal documents",
-    "description": "Prepare legal content for organizations and web customers. Changes in this view are not saved yet.",
+    "description": "Prepare legal content for organizations and web customers.",
+    "loading": "Loading legal documents",
+    "loadError": "Legal documents could not be loaded",
+    "retry": "Retry",
+    "save": "Save",
+    "saving": "Saving",
+    "publish": "Publish",
+    "publishing": "Publishing",
+    "saveError": "The draft could not be saved",
+    "publishError": "The document could not be published",
+    "toast": {
+      "saveSuccess": {
+        "termsDashboard": "Organization terms and conditions were saved.",
+        "termsWeb": "Web terms and conditions were saved.",
+        "privacyDashboard": "The organization privacy policy was saved.",
+        "privacyWeb": "The web privacy policy was saved."
+      },
+      "publishSuccess": {
+        "termsDashboard": "Organization terms and conditions were published.",
+        "termsWeb": "Web terms and conditions were published.",
+        "privacyDashboard": "The organization privacy policy was published.",
+        "privacyWeb": "The web privacy policy was published."
+      },
+      "saveError": {
+        "termsDashboard": "Organization terms and conditions could not be saved.",
+        "termsWeb": "Web terms and conditions could not be saved.",
+        "privacyDashboard": "The organization privacy policy could not be saved.",
+        "privacyWeb": "The web privacy policy could not be saved."
+      },
+      "publishError": {
+        "termsDashboard": "Organization terms and conditions could not be published.",
+        "termsWeb": "Web terms and conditions could not be published.",
+        "privacyDashboard": "The organization privacy policy could not be published.",
+        "privacyWeb": "The web privacy policy could not be published."
+      }
+    },
     "tabs": {
       "terms": "Terms and conditions",
       "privacy": "Privacy policy"

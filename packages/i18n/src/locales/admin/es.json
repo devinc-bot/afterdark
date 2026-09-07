@@ -32,7 +32,42 @@
   },
   "legalDocuments": {
     "title": "Documentos legales",
-    "description": "Prepará el contenido legal para organizaciones y clientes web. Los cambios de esta vista todavía no se guardan.",
+    "description": "Prepará el contenido legal para organizaciones y clientes web.",
+    "loading": "Cargando documentos legales",
+    "loadError": "No se pudieron cargar los documentos legales",
+    "retry": "Reintentar",
+    "save": "Guardar",
+    "saving": "Guardando",
+    "publish": "Publicar",
+    "publishing": "Publicando",
+    "saveError": "No se pudo guardar el borrador",
+    "publishError": "No se pudo publicar el documento",
+    "toast": {
+      "saveSuccess": {
+        "termsDashboard": "Se guardaron los términos y condiciones de organizaciones.",
+        "termsWeb": "Se guardaron los términos y condiciones de web.",
+        "privacyDashboard": "Se guardó la política de privacidad de organizaciones.",
+        "privacyWeb": "Se guardó la política de privacidad de web."
+      },
+      "publishSuccess": {
+        "termsDashboard": "Se publicaron los términos y condiciones de organizaciones.",
+        "termsWeb": "Se publicaron los términos y condiciones de web.",
+        "privacyDashboard": "Se publicó la política de privacidad de organizaciones.",
+        "privacyWeb": "Se publicó la política de privacidad de web."
+      },
+      "saveError": {
+        "termsDashboard": "No se pudieron guardar los términos y condiciones de organizaciones.",
+        "termsWeb": "No se pudieron guardar los términos y condiciones de web.",
+        "privacyDashboard": "No se pudo guardar la política de privacidad de organizaciones.",
+        "privacyWeb": "No se pudo guardar la política de privacidad de web."
+      },
+      "publishError": {
+        "termsDashboard": "No se pudieron publicar los términos y condiciones de organizaciones.",
+        "termsWeb": "No se pudieron publicar los términos y condiciones de web.",
+        "privacyDashboard": "No se pudo publicar la política de privacidad de organizaciones.",
+        "privacyWeb": "No se pudo publicar la política de privacidad de web."
+      }
+    },
     "tabs": {
       "terms": "Términos y condiciones",
       "privacy": "Política de privacidad"
