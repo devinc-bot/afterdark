@@ -210,3 +210,23 @@ describe('QueryFactory refresh', () => {
     expect(fetchMock).toHaveBeenCalledTimes(1)
   })
 })
+
+describe('QueryFactory request bodies', () => {
+  test('sends FormData through PUT without JSON serialization or a content-type override', async () => {
+    const factory = new QueryFactory(API_URL)
+    const fetchMock = vi.fn().mockResolvedValue(jsonResponse({ avatar: 'avatar.webp' }))
+    vi.stubGlobal('fetch', fetchMock)
+    const formData = new FormData()
+    formData.append('avatar', new Blob(['avatar-bytes'], { type: 'image/webp' }), 'avatar.webp')
+
+    await expect(factory.put('/api/settings/avatar', formData)).resolves.toEqual({
+      avatar: 'avatar.webp',
+    })
+
+    expect(fetchMock).toHaveBeenCalledOnce()
+    const requestInit = fetchMock.mock.calls[0]?.[1]
+    expect(requestInit?.method).toBe('PUT')
+    expect(requestInit?.body).toBe(formData)
+    expect(new Headers(requestInit?.headers).has('Content-Type')).toBe(false)
+  })
+})

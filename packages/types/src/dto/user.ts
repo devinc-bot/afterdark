@@ -44,6 +44,10 @@ export interface CurrentUserResponse extends BaseProfileResponse {
 
 export type SettingsResponse = CurrentOwnerResponse | CurrentStaffResponse | CurrentUserResponse
 
+export type AvatarMutationResponse = {
+  avatar: string | null
+}
+
 export interface CurrentUserAddress {
   address: string
   streetNumber: string

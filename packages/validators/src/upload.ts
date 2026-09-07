@@ -25,6 +25,15 @@ export const IMAGE_UPLOAD_MAX_BYTES = 5 * 1024 * 1024
 
 export const IMAGE_UPLOAD_MAX_MEGABYTES = IMAGE_UPLOAD_MAX_BYTES / (1024 * 1024)
 
+export const AVATAR_MULTIPART_FIELD = 'avatar'
+
+export const AVATAR_UPLOAD_MAX_BYTES = 2 * 1024 * 1024
+
+export const AVATAR_OPTIMIZATION = {
+  SIZE: 256,
+  QUALITY: 80,
+} as const
+
 export const IMAGE_OPTIMIZATION = {
   MAX_DIMENSION: 1280,
   QUALITY: 70,

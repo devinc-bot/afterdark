@@ -65,7 +65,7 @@ export class UpdateEventUseCase {
       this.ts.translateError('event.TOO_MANY_IMAGES', { max: EVENT_IMAGE_MAX_COUNT })
     )
 
-    const uploadedImages = await this.eventImages.upload(files)
+    const uploadedImages = await this.eventImages.upload(files, documentId, keepImageIds.length)
 
     try {
       const row = await updateEventByDocumentId(

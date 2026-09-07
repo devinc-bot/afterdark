@@ -1,17 +1,25 @@
 import { useForm } from '@tanstack/react-form'
 import { Trans, useTranslation } from 'react-i18next'
-import { AlertCircle, Check } from 'lucide-react'
+import { AlertCircle, Camera, Check, Trash2 } from 'lucide-react'
 import type { CurrentUserResponse } from '@repo/types'
 import {
+  ALLOWED_IMAGE_MIME_TYPES,
   updateCurrentUserProfileSchema,
   type UpdateCurrentUserProfileInput,
 } from '@repo/validators'
 import { useResolveFieldError } from '@repo/i18n/client'
 import {
   Avatar,
+  AvatarCropDialog,
   AvatarFallback,
   AvatarImage,
   Button,
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
   Field,
   Input,
   Label,
@@ -19,6 +27,7 @@ import {
   useUnsavedChangesGuard,
 } from '@repo/ui'
 import { getUserInitials } from '~/modules/common/utils/user-initials.utils'
+import { useProfileAvatar } from '~/modules/settings/hooks/use-profile-avatar'
 import { useUpdateProfile } from '~/modules/settings/queries/use-update-profile'
 
 type ProfileFormProps = {
@@ -56,6 +65,19 @@ export function ProfileForm({ profile }: ProfileFormProps) {
   const { t } = useTranslation('settings')
   const resolveFieldError = useResolveFieldError()
   const updateProfile = useUpdateProfile()
+  const {
+    fileInputRef,
+    cropImageSrc,
+    removeDialogOpen,
+    setRemoveDialogOpen,
+    closeCrop,
+    isAvatarBusy,
+    isUploading,
+    isRemoving,
+    handleAvatarSelection,
+    handleAvatarConfirm,
+    handleAvatarRemove,
+  } = useProfileAvatar()
 
   const form = useForm({
     defaultValues: {
@@ -116,15 +138,105 @@ export function ProfileForm({ profile }: ProfileFormProps) {
             {initials || avatarLabel.slice(0, 1).toUpperCase()}
           </AvatarFallback>
         </Avatar>
-        <div className="min-w-0">
+        <div className="min-w-0 flex-1">
           <p className="truncate font-display text-lg font-semibold tracking-[-0.01em] text-on-surface sm:text-xl">
             {displayName || avatarLabel}
           </p>
           <p className="mt-0.5 truncate font-label text-sm text-on-surface-variant">
             {profile.email}
           </p>
+          <div className="mt-3 flex flex-wrap gap-2">
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept={ALLOWED_IMAGE_MIME_TYPES.join(',')}
+              className="sr-only"
+              onChange={(event) => void handleAvatarSelection(event)}
+              disabled={isAvatarBusy}
+              tabIndex={-1}
+            />
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => fileInputRef.current?.click()}
+              disabled={isAvatarBusy}
+            >
+              <Camera className="size-4" aria-hidden="true" />
+              {t('web.profile.changePhoto')}
+            </Button>
+            {profile.avatar ? (
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={() => setRemoveDialogOpen(true)}
+                disabled={isAvatarBusy}
+                className="hover:text-destructive hover:bg-destructive/10"
+              >
+                <Trash2 className="size-4" aria-hidden="true" />
+                {t('web.profile.removePhoto')}
+              </Button>
+            ) : null}
+          </div>
         </div>
       </div>
+
+      {cropImageSrc ? (
+        <AvatarCropDialog
+          open
+          imageSrc={cropImageSrc}
+          onOpenChange={(open) => {
+            if (!open) {
+              closeCrop()
+            }
+          }}
+          onConfirm={handleAvatarConfirm}
+          onCancel={closeCrop}
+          isConfirming={isUploading}
+          labels={{
+            title: t('web.profile.cropTitle'),
+            description: t('web.profile.cropDescription'),
+            confirm: isUploading ? t('web.profile.uploading') : t('web.profile.cropConfirm'),
+            cancel: t('web.profile.cropCancel'),
+            zoom: t('web.profile.cropZoom'),
+            cropArea: t('web.profile.cropArea'),
+            cropError: t('web.profile.cropError'),
+          }}
+        />
+      ) : null}
+
+      <Dialog open={removeDialogOpen} onOpenChange={setRemoveDialogOpen}>
+        <DialogContent
+          size="sm"
+          variant="destructive"
+          persistent={isRemoving}
+          closeLabel={t('web.profile.cropCancel')}
+        >
+          <DialogHeader>
+            <DialogTitle>{t('web.profile.removePhoto')}</DialogTitle>
+            <DialogDescription>{t('web.profile.removeConfirm')}</DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setRemoveDialogOpen(false)}
+              disabled={isRemoving}
+            >
+              {t('web.profile.cropCancel')}
+            </Button>
+            <Button
+              type="button"
+              variant="destructive"
+              onClick={() => void handleAvatarRemove()}
+              loading={isRemoving}
+            >
+              {isRemoving ? t('web.profile.removing') : t('web.profile.removePhoto')}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       <form
         noValidate

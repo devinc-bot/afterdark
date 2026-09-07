@@ -50,6 +50,7 @@ export const API_ROUTES = {
     prefix: API_SETTINGS_PREFIX,
     path: {
       root: () => '/' as const,
+      avatar: () => '/avatar' as const,
     },
   },
   locations: {
@@ -186,5 +187,5 @@ export const API_ROUTES = {
 } as const
 
 export function buildApiPath(route: (typeof API_ROUTES)[keyof typeof API_ROUTES], path: string) {
-  return `${API_PREFIX}${route.prefix}${path}`
+  return `/${API_PREFIX}${route.prefix}${path}`
 }

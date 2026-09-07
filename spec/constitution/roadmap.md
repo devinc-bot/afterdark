@@ -38,6 +38,7 @@
 | 031 | `password-reset-token-retention`   | Retención de tokens de reset                      | `in-progress` | `api`, `db`                                             | Eliminar atómicamente el token de reset consumido; el cron conserva limpieza solo para tokens pendientes vencidos.                                                                                                                                                                                                                                                                                                                            |
 | 032 | `account-session-management`       | Gestión de sesiones de cuenta                     | `approved`    | `api`, `web`, `dashboard`, `admin`, `db`, `types`, `i18n` | Sección de sesiones por app con sesión actual protegida, historial retenido y revocación remota efectiva en el próximo refresh. Depende de `001`. Ver `spec/features/active/032-account-session-management/`. |
 | 033 | `api-rate-limiting`                | Rate limiting de API                              | `done`        | `api`, `i18n`                                           | Throttler global por IP + guard por `user.sub` en rutas sensibles; storage en memoria por instancia. Depende de `001`. Ver `spec/features/archive/033-api-rate-limiting/`. |
+| 034 | `profile-avatar-upload`            | Avatar de perfil + layout R2                      | `done`        | `api`, `web`, `dashboard`, `validators`, `types`, `i18n` | Crop + upload 256×256 WebP para `user`/`owner`; keys jerárquicas `events/`, `locations/`, `users/avatars/`; sin migración histórica ni staff upload. Ver `spec/features/archive/034-profile-avatar-upload/`. |
 
 ## Status
 
@@ -85,6 +86,7 @@
 030-testing-toolchain                →  coordina CI con 029; sin dependencia de producto
 032-account-session-management       →  requiere 001 (auth-sessions)
 033-api-rate-limiting                →  requiere 001 (auth-sessions); no cambia JWT global
+034-profile-avatar-upload            →  requiere 004 (owner-settings), 015 (files-module); web settings + 001
 ```
 
 ## Decisiones de prioridad

@@ -130,6 +130,14 @@ export class QueryFactory {
   }
 
   put<T>(path: string, data: unknown, requestInit?: RequestInit) {
+    if (data instanceof FormData) {
+      return this.request<T>(path, {
+        ...requestInit,
+        method: 'PUT',
+        body: data,
+      })
+    }
+
     return this.request<T>(path, {
       ...requestInit,
       method: 'PUT',
