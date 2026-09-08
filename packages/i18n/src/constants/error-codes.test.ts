@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest'
-import { AUTH_ERROR_CODE, RATE_LIMIT_ERROR_CODE } from './error-codes.ts'
+import { AUTH_ERROR_CODE, LEGAL_DOCUMENT_ERROR_CODE, RATE_LIMIT_ERROR_CODE } from './error-codes.ts'
 import enErrors from '../locales/errors/en.json' with { type: 'json' }
 import esErrors from '../locales/errors/es.json' with { type: 'json' }
 
@@ -38,5 +38,15 @@ test('localizes the fail-closed client IP copy in Spanish and English', () => {
   )
   expect(nestedCopy(enErrors, 'rateLimit.CLIENT_IP_REQUIRED')).toBe(
     'We could not determine your client IP address.'
+  )
+})
+
+test('exposes published legal document not-found in Spanish and English', () => {
+  expect(LEGAL_DOCUMENT_ERROR_CODE.PUBLISHED_NOT_FOUND).toBe('legalDocument.PUBLISHED_NOT_FOUND')
+  expect(nestedCopy(esErrors, LEGAL_DOCUMENT_ERROR_CODE.PUBLISHED_NOT_FOUND)).toBe(
+    'No encontramos un documento legal publicado.'
+  )
+  expect(nestedCopy(enErrors, LEGAL_DOCUMENT_ERROR_CODE.PUBLISHED_NOT_FOUND)).toBe(
+    'We could not find a published legal document.'
   )
 })

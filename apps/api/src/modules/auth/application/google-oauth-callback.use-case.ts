@@ -6,6 +6,7 @@ import {
   findAuthAccountByProviderAccount,
   findRoleByName,
   GOOGLE_AVATAR_ASSET_NAME,
+  insertAccountLegalAcceptances,
   insertExternalImageAsset,
   registerAccount,
   setProfileAvatarFromUrlIfEmpty,
@@ -15,6 +16,7 @@ import {
   AUTH_OAUTH_APP,
   type AuthOauthApp,
   type ClientApp,
+  USER_ROLE,
   type UserRole,
 } from '@repo/types'
 import { googleOauthStartSchema } from '@repo/validators'
@@ -24,9 +26,18 @@ import {
   type GoogleOauthErrorCode,
 } from '../auth.constants'
 import type { GoogleOauthStatePayload } from './google-oauth-start.use-case'
+import {
+  findPublishedRegistrationDocumentIds,
+  OWNER_REGISTRATION_LEGAL_DOCUMENT_TYPES,
+  USER_REGISTRATION_LEGAL_DOCUMENT_TYPES,
+} from './record-registration-legal-acceptances.ts'
 import { AuthAccountService, type SessionRequestMetadata } from './services/auth-account.service'
 import { GoogleOauthService } from './services/google-oauth.service'
-import { buildAppAuthCallbackUrl, buildAppLoginErrorUrl } from '../utils/google-oauth.utils'
+import {
+  buildAppAuthCallbackUrl,
+  buildAppLoginErrorUrl,
+  buildAppRegisterErrorUrl,
+} from '../utils/google-oauth.utils'
 
 @Injectable()
 export class GoogleOauthCallbackUseCase {
@@ -61,16 +72,25 @@ export class GoogleOauthCallbackUseCase {
       if (payload.purpose !== GOOGLE_OAUTH_STATE_PURPOSE) {
         throw new Error('Invalid state purpose')
       }
-      const parsedState = googleOauthStartSchema.safeParse({ role: payload.role, app: payload.app })
+      const parsedState = googleOauthStartSchema.safeParse({
+        role: payload.role,
+        app: payload.app,
+        legalAccepted: payload.legalAccepted,
+      })
       if (!parsedState.success) {
         throw new Error('Invalid OAuth state')
       }
-      statePayload = { purpose: payload.purpose, ...parsedState.data }
+      statePayload = {
+        purpose: payload.purpose,
+        role: parsedState.data.role,
+        app: parsedState.data.app,
+        legalAccepted: parsedState.data.legalAccepted === true,
+      }
     } catch {
       return { redirectUrl: buildAppLoginErrorUrl(fallbackApp, GOOGLE_OAUTH_ERROR.FAILED) }
     }
 
-    const { role, app } = statePayload
+    const { role, app, legalAccepted } = statePayload
 
     try {
       const profile = await this.googleOauth.exchangeCodeForProfile(input.code, app)
@@ -108,9 +128,24 @@ export class GoogleOauthCallbackUseCase {
         return { redirectUrl: buildAppLoginErrorUrl(app, GOOGLE_OAUTH_ERROR.EMAIL_EXISTS) }
       }
 
+      if (!legalAccepted) {
+        return {
+          redirectUrl: buildAppRegisterErrorUrl(app, GOOGLE_OAUTH_ERROR.REGISTER_REQUIRED),
+        }
+      }
+
       const dbRole = await findRoleByName(role as UserRole)
       if (!dbRole) {
         this.logger.error(`Role not configured: ${role}`)
+        return { redirectUrl: buildAppLoginErrorUrl(app, GOOGLE_OAUTH_ERROR.FAILED) }
+      }
+
+      const legalDocumentTypes =
+        role === USER_ROLE.USER
+          ? USER_REGISTRATION_LEGAL_DOCUMENT_TYPES
+          : OWNER_REGISTRATION_LEGAL_DOCUMENT_TYPES
+      const legalDocumentIds = await findPublishedRegistrationDocumentIds(legalDocumentTypes)
+      if (!legalDocumentIds) {
         return { redirectUrl: buildAppLoginErrorUrl(app, GOOGLE_OAUTH_ERROR.FAILED) }
       }
 
@@ -149,6 +184,11 @@ export class GoogleOauthCallbackUseCase {
         return { redirectUrl: buildAppLoginErrorUrl(app, GOOGLE_OAUTH_ERROR.FAILED) }
       }
 
+      await insertAccountLegalAcceptances({
+        accountId: created.account.id,
+        legalDocumentIds,
+      })
+
       const session = await this.accounts.createSession(created, metadata, app)
       return this.createSuccessResult(app, session.clientApp, session.refreshToken)
     } catch (error) {
@@ -172,7 +212,11 @@ export class GoogleOauthCallbackUseCase {
     try {
       const payload = await this.jwtService.verifyAsync<GoogleOauthStatePayload>(state)
       if (payload.purpose !== GOOGLE_OAUTH_STATE_PURPOSE) return fallback
-      const parsedState = googleOauthStartSchema.safeParse({ role: payload.role, app: payload.app })
+      const parsedState = googleOauthStartSchema.safeParse({
+        role: payload.role,
+        app: payload.app,
+        legalAccepted: payload.legalAccepted,
+      })
       return parsedState.success ? parsedState.data.app : fallback
     } catch {
       return fallback

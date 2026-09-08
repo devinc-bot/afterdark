@@ -5,6 +5,7 @@ import {
   type LegalDocumentByTypeResponse,
   type LegalDocumentResponse,
   type LegalDocumentType,
+  type PublicLegalDocumentResponse,
 } from '@repo/types'
 import {
   legalDocumentTypeSchema,
@@ -19,12 +20,12 @@ import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard'
 import { RolesGuard } from '../../common/guards/roles.guard'
 import { ZodValidationPipe } from '../../common/pipes/zod-validation.pipe'
 import { GetLegalDocumentByTypeUseCase } from '../application/get-legal-document-by-type.use-case'
+import { GetPublishedLegalDocumentByTypeUseCase } from '../application/get-published-legal-document-by-type.use-case'
 import { ListLegalDocumentsUseCase } from '../application/list-legal-documents.use-case'
 import { PublishLegalDocumentUseCase } from '../application/publish-legal-document.use-case'
 import { SaveLegalDocumentDraftUseCase } from '../application/save-legal-document-draft.use-case'
 
 @Controller(API_ROUTES.legalDocuments.prefix)
-@ApiRateLimit(RATE_LIMIT_PROFILE.AUTHENTICATED)
 export class LegalDocumentsController {
   constructor(
     @Inject(ListLegalDocumentsUseCase)
@@ -34,19 +35,30 @@ export class LegalDocumentsController {
     @Inject(SaveLegalDocumentDraftUseCase)
     private readonly saveLegalDocumentDraft: SaveLegalDocumentDraftUseCase,
     @Inject(PublishLegalDocumentUseCase)
-    private readonly publishLegalDocument: PublishLegalDocumentUseCase
+    private readonly publishLegalDocument: PublishLegalDocumentUseCase,
+    @Inject(GetPublishedLegalDocumentByTypeUseCase)
+    private readonly getPublishedLegalDocumentByType: GetPublishedLegalDocumentByTypeUseCase
   ) {}
 
   @Get(API_ROUTES.legalDocuments.path.list())
   @Roles([USER_ROLE.ADMIN])
   @UseGuards(JwtAuthGuard, RolesGuard)
+  @ApiRateLimit(RATE_LIMIT_PROFILE.AUTHENTICATED)
   list(): Promise<LegalDocumentByTypeResponse[]> {
     return this.listLegalDocuments.execute()
+  }
+
+  @Get(API_ROUTES.legalDocuments.path.getPublishedByType(':type'))
+  getPublishedByType(
+    @Param('type', new ZodValidationPipe(legalDocumentTypeSchema)) type: LegalDocumentType
+  ): Promise<PublicLegalDocumentResponse> {
+    return this.getPublishedLegalDocumentByType.execute(type)
   }
 
   @Get(API_ROUTES.legalDocuments.path.getByType(':type'))
   @Roles([USER_ROLE.ADMIN])
   @UseGuards(JwtAuthGuard, RolesGuard)
+  @ApiRateLimit(RATE_LIMIT_PROFILE.AUTHENTICATED)
   get(
     @Param('type', new ZodValidationPipe(legalDocumentTypeSchema)) type: LegalDocumentType
   ): Promise<LegalDocumentByTypeResponse> {
@@ -56,6 +68,7 @@ export class LegalDocumentsController {
   @Put(API_ROUTES.legalDocuments.path.saveDraft(':type'))
   @Roles([USER_ROLE.ADMIN])
   @UseGuards(JwtAuthGuard, RolesGuard)
+  @ApiRateLimit(RATE_LIMIT_PROFILE.AUTHENTICATED)
   saveDraft(
     @Param('type', new ZodValidationPipe(legalDocumentTypeSchema)) type: LegalDocumentType,
     @Body(new ZodValidationPipe(saveLegalDocumentDraftSchema)) body: SaveLegalDocumentDraftInput
@@ -66,6 +79,7 @@ export class LegalDocumentsController {
   @Post(API_ROUTES.legalDocuments.path.publish(':type'))
   @Roles([USER_ROLE.ADMIN])
   @UseGuards(JwtAuthGuard, RolesGuard)
+  @ApiRateLimit(RATE_LIMIT_PROFILE.AUTHENTICATED)
   publish(
     @Param('type', new ZodValidationPipe(publishLegalDocumentSchema)) type: LegalDocumentType
   ): Promise<LegalDocumentResponse> {

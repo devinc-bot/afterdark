@@ -70,7 +70,7 @@ function LegalDocumentEditorPane({
         value={value}
         onChange={onChange}
         editorAriaLabel={editorLabel}
-        className="[&_.ProseMirror]:min-h-[280px] sm:[&_.ProseMirror]:min-h-[340px]"
+        scrollable
       />
       <div className="flex flex-wrap gap-3">
         <Button

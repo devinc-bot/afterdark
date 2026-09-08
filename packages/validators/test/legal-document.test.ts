@@ -23,6 +23,7 @@ test('legal document type schema accepts only mapped values', () => {
 
   expect(legalDocumentTypeSchema.safeParse('terms').success).toBe(false)
   expect(legalDocumentTypeSchema.safeParse('privacyPolicy').success).toBe(false)
+  expect(legalDocumentTypeSchema.safeParse('public').success).toBe(false)
 })
 
 test('save legal document draft trims title and accepts JSON object content', () => {

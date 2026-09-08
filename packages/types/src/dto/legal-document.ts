@@ -18,3 +18,12 @@ export interface LegalDocumentByTypeResponse {
   draft: LegalDocumentResponse | null
   published: LegalDocumentResponse | null
 }
+
+export interface PublicLegalDocumentResponse {
+  documentId: string
+  type: LegalDocumentType
+  version: string
+  title: string
+  content: Record<string, unknown>
+  publishedAt: Date
+}

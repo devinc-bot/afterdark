@@ -1,18 +1,160 @@
 import { useState } from 'react'
 import { useForm } from '@tanstack/react-form'
-import { Link } from '@tanstack/react-router'
+import { Link, useSearch } from '@tanstack/react-router'
+import { useQuery } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
+import { googleOauthErrorMessageKey } from '@repo/common'
+import { LEGAL_DOCUMENT_TYPE, type PublicLegalDocumentResponse } from '@repo/types'
 import { registerFormFieldsSchema, registerFormSchema } from '@repo/validators'
-import { Button, Field, fieldErrorMessage } from '@repo/ui'
+import {
+  Button,
+  Checkbox,
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  Field,
+  fieldErrorMessage,
+  RICH_EDITOR_HTML_CLASS_NAME,
+  cn,
+  richEditorJsonToHtml,
+} from '@repo/ui'
+import { QUERY_KEYS } from '../../common/constants/query-keys'
 import { WEB_ROUTES } from '../../common/constants/routes'
+import { getPublishedLegalDocumentByType } from '../../legal-documents/services/legal-documents.service'
 import { useRequestRegister } from '../mutations/use-auth-mutations'
 import { AuthInput } from './auth-input'
 import { AuthMethodSeparator, GoogleContinueButton } from './google-continue-button'
 
+const REGISTER_LEGAL_CHECKBOX_ID = {
+  TERMS: 'register-legal-terms',
+  PRIVACY: 'register-legal-privacy',
+} as const
+
+const LEGAL_NOTICE = {
+  REQUIRED: 'required',
+  UNAVAILABLE: 'unavailable',
+} as const
+
+const LEGAL_NOTICE_ID = 'register-legal-notice'
+
+type LegalNotice = (typeof LEGAL_NOTICE)[keyof typeof LEGAL_NOTICE]
+
+function PublishedLegalDocumentDialog({
+  document,
+  onClose,
+}: {
+  document: PublicLegalDocumentResponse | null
+  onClose: () => void
+}) {
+  const { t } = useTranslation('auth')
+  const html = document ? richEditorJsonToHtml(document.content) : ''
+
+  return (
+    <Dialog
+      open={document !== null}
+      onOpenChange={(open) => {
+        if (!open) {
+          onClose()
+        }
+      }}
+    >
+      <DialogContent
+        size="lg"
+        closeLabel={t('register.legal.close')}
+        className="flex max-h-[min(90vh,40rem)] flex-col overflow-hidden"
+      >
+        <DialogHeader className="shrink-0">
+          <DialogTitle>{document?.title ?? ''}</DialogTitle>
+          <DialogDescription className="sr-only">{t('register.legal.dialogDescription')}</DialogDescription>
+        </DialogHeader>
+        <div
+          className={cn('min-h-0 overflow-y-auto', RICH_EDITOR_HTML_CLASS_NAME)}
+          dangerouslySetInnerHTML={{ __html: html }}
+        />
+      </DialogContent>
+    </Dialog>
+  )
+}
+
+function LegalAcceptanceField({
+  id,
+  label,
+  openLabel,
+  checked,
+  invalid,
+  describedBy,
+  onCheckedChange,
+  onOpen,
+}: {
+  id: string
+  label: string
+  openLabel: string
+  checked: boolean
+  invalid: boolean
+  describedBy?: string
+  onCheckedChange: (checked: boolean) => void
+  onOpen: () => void
+}) {
+  return (
+    <div className="flex items-center gap-3">
+      <Checkbox
+        id={id}
+        checked={checked}
+        className="shrink-0"
+        aria-invalid={invalid || undefined}
+        aria-describedby={describedBy}
+        onCheckedChange={(value) => onCheckedChange(value === true)}
+      />
+      <div className="flex min-w-0 flex-1 flex-wrap items-center gap-x-3 gap-y-1">
+        <label htmlFor={id} className="cursor-pointer py-2 text-sm leading-snug text-on-surface">
+          {label}
+        </label>
+        <Button
+          type="button"
+          variant="link"
+          size="sm"
+          className="h-auto min-w-0 whitespace-normal px-0 py-2 text-left leading-snug text-on-surface underline"
+          onClick={onOpen}
+        >
+          {openLabel}
+        </Button>
+      </div>
+    </div>
+  )
+}
+
 export function RegisterForm() {
   const { t } = useTranslation('auth')
+  const { error: oauthError } = useSearch({ from: '/register' })
   const register = useRequestRegister()
   const [submittedEmail, setSubmittedEmail] = useState<string | null>(null)
+  const [termsAccepted, setTermsAccepted] = useState(false)
+  const [privacyAccepted, setPrivacyAccepted] = useState(false)
+  const [legalNotice, setLegalNotice] = useState<LegalNotice | null>(null)
+  const [openDocument, setOpenDocument] = useState<PublicLegalDocumentResponse | null>(null)
+
+  const termsQuery = useQuery({
+    queryKey: QUERY_KEYS.publishedLegalDocument(LEGAL_DOCUMENT_TYPE.TERMS_WEB),
+    queryFn: () => getPublishedLegalDocumentByType(LEGAL_DOCUMENT_TYPE.TERMS_WEB),
+    retry: false,
+    refetchOnMount: 'always',
+    refetchOnWindowFocus: true,
+  })
+  const privacyQuery = useQuery({
+    queryKey: QUERY_KEYS.publishedLegalDocument(LEGAL_DOCUMENT_TYPE.PRIVACY_WEB),
+    queryFn: () => getPublishedLegalDocumentByType(LEGAL_DOCUMENT_TYPE.PRIVACY_WEB),
+    retry: false,
+    refetchOnMount: 'always',
+    refetchOnWindowFocus: true,
+  })
+
+  const canAcceptLegal = termsQuery.isSuccess && privacyQuery.isSuccess
+  const accepted = termsAccepted && privacyAccepted
+  const legalQueriesSettled = !termsQuery.isPending && !privacyQuery.isPending
+  const legalUnavailable = legalQueriesSettled && !canAcceptLegal
+  const visibleLegalNotice = legalUnavailable ? LEGAL_NOTICE.UNAVAILABLE : legalNotice
 
   const form = useForm({
     defaultValues: { name: '', lastName: '', email: '', password: '', confirmPassword: '' },
@@ -55,6 +197,18 @@ export function RegisterForm() {
       onSubmit={(event) => {
         event.preventDefault()
         event.stopPropagation()
+        if (!legalQueriesSettled) {
+          return
+        }
+        if (!canAcceptLegal) {
+          setLegalNotice(LEGAL_NOTICE.UNAVAILABLE)
+          return
+        }
+        if (!accepted) {
+          setLegalNotice(LEGAL_NOTICE.REQUIRED)
+          return
+        }
+        setLegalNotice(null)
         void form.handleSubmit()
       }}
     >
@@ -66,6 +220,15 @@ export function RegisterForm() {
       </p>
 
       <div className="mt-10 space-y-5">
+        {oauthError ? (
+          <p
+            role="alert"
+            className="rounded-lg border border-error/40 bg-error-container/20 px-4 py-3 text-sm text-error"
+          >
+            {t(googleOauthErrorMessageKey(oauthError))}
+          </p>
+        ) : null}
+
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-4">
           <form.Field
             name="name"
@@ -205,6 +368,66 @@ export function RegisterForm() {
           </form.Field>
         </div>
 
+        {canAcceptLegal ? (
+          <fieldset className="space-y-3 border-0 p-0">
+            <legend className="sr-only">{t('register.legal.legend')}</legend>
+            <LegalAcceptanceField
+              id={REGISTER_LEGAL_CHECKBOX_ID.TERMS}
+              label={t('register.legal.terms')}
+              openLabel={t('register.legal.termsOpen')}
+              checked={termsAccepted}
+              invalid={legalNotice === LEGAL_NOTICE.REQUIRED && !termsAccepted}
+              describedBy={legalNotice === LEGAL_NOTICE.REQUIRED ? LEGAL_NOTICE_ID : undefined}
+              onCheckedChange={setTermsAccepted}
+              onOpen={() => setOpenDocument(termsQuery.data ?? null)}
+            />
+            <LegalAcceptanceField
+              id={REGISTER_LEGAL_CHECKBOX_ID.PRIVACY}
+              label={t('register.legal.privacy')}
+              openLabel={t('register.legal.privacyOpen')}
+              checked={privacyAccepted}
+              invalid={legalNotice === LEGAL_NOTICE.REQUIRED && !privacyAccepted}
+              describedBy={legalNotice === LEGAL_NOTICE.REQUIRED ? LEGAL_NOTICE_ID : undefined}
+              onCheckedChange={setPrivacyAccepted}
+              onOpen={() => setOpenDocument(privacyQuery.data ?? null)}
+            />
+          </fieldset>
+        ) : null}
+
+        <PublishedLegalDocumentDialog
+          document={openDocument}
+          onClose={() => setOpenDocument(null)}
+        />
+
+        {visibleLegalNotice ? (
+          <div className="space-y-3">
+            <p
+              id={LEGAL_NOTICE_ID}
+              role="alert"
+              className="rounded-lg border border-error/40 bg-error-container/20 px-4 py-3 text-sm text-error"
+            >
+              {t(
+                visibleLegalNotice === LEGAL_NOTICE.UNAVAILABLE
+                  ? 'register.legal.unavailable'
+                  : 'register.legal.required'
+              )}
+            </p>
+            {legalUnavailable ? (
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  void termsQuery.refetch()
+                  void privacyQuery.refetch()
+                }}
+              >
+                {t('register.legal.retry')}
+              </Button>
+            ) : null}
+          </div>
+        ) : null}
+
         {register.isError ? (
           <p
             role="alert"
@@ -232,12 +455,15 @@ export function RegisterForm() {
         </form.Subscribe>
 
         <AuthMethodSeparator />
-        <GoogleContinueButton />
+        <GoogleContinueButton
+          disabled={!canAcceptLegal || !accepted}
+          legalAccepted={accepted && canAcceptLegal}
+        />
       </div>
 
       <hr className="mt-10 border-hairline" />
 
-      <nav aria-label="Otras opciones de acceso" className="mt-6 flex justify-center text-sm">
+      <nav aria-label={t('register.otherOptions')} className="mt-6 flex justify-center text-sm">
         <Link
           to={WEB_ROUTES.login()}
           className="text-on-surface-variant underline underline-offset-4 transition-colors duration-150 hover:text-primary"

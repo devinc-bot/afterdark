@@ -13,3 +13,11 @@
 - [x] 3.2 Add shared types, validators, and `API_ROUTES` for Admin list/get, save-draft, and publish of a legal document type
 - [x] 3.3 Add repositories and Nest Admin-authenticated use cases: load current draft + last published per type, upsert unpublished draft, publish immutable version
 - [x] 3.4 Wire Admin editors to load persisted content and expose **Guardar** / **Publicar** with Spanish copy, without a version-history browser
+
+## 4. Registration acceptance (web and dashboard)
+
+- [x] 4.1 Unauthenticated GET of the latest published legal document by type (`/public/:type`); never return drafts (no schema change)
+- [x] 4.2 Persist `account_legal_acceptances` on email user/owner confirmation; reject if a published document is missing; backfill unused-token retries
+- [x] 4.3 Persist acceptances on Google new-account from register; refuse Google login that would create an account
+- [x] 4.4 Web register: checkboxes, information dialogs, and Google gating for web terms and privacy
+- [x] 4.5 Dashboard register: checkboxes, information dialogs, and Google gating for dashboard terms and privacy

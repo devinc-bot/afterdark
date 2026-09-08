@@ -154,6 +154,7 @@ test('admin legal documents provide organization and web editors with save and p
 
   expect(viewSource.match(/<LegalDocumentSection/g)?.length).toBe(2)
   expect(sectionSource.includes('RichEditor')).toBe(true)
+  expect(sectionSource.includes('scrollable')).toBe(true)
   expect(sectionSource.includes('setTermsContent')).toBe(true)
   expect(sectionSource.includes('setPrivacyContent')).toBe(true)
   expect(viewSource.includes('onSave')).toBe(true)

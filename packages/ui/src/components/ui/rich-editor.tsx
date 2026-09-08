@@ -65,6 +65,7 @@ export interface RichEditorProps extends Omit<
   disabled?: boolean
   error?: string
   editorAriaLabel?: string
+  scrollable?: boolean
 }
 
 function RichEditor({
@@ -74,6 +75,7 @@ function RichEditor({
   disabled = false,
   error,
   editorAriaLabel,
+  scrollable = false,
   className,
   id,
   ...props
@@ -154,12 +156,20 @@ function RichEditor({
   const toolbarDisabled = disabled || !editor
 
   return (
-    <div className={cn('flex flex-col gap-1.5', className)} {...props}>
+    <div
+      className={cn(
+        'flex flex-col gap-1.5',
+        scrollable && 'h-[min(22rem,55vh)]',
+        className
+      )}
+      {...props}
+    >
       <div
         className={cn(
           'cn-gradient-border cn-gradient-border--field overflow-hidden rounded-app transition-[box-shadow] focus-within:ring-2 focus-within:ring-primary/25',
           hasError && 'focus-within:ring-error/40',
-          disabled && 'cursor-not-allowed opacity-60'
+          disabled && 'cursor-not-allowed opacity-60',
+          scrollable && 'flex min-h-0 flex-1 flex-col'
         )}
         aria-invalid={hasError || undefined}
       >
@@ -167,7 +177,7 @@ function RichEditor({
           <div
             role="toolbar"
             aria-label={t('richEditor.toolbarLabel')}
-            className="flex flex-wrap items-center gap-1 border-b border-hairline px-2 py-1.5"
+            className="flex shrink-0 flex-wrap items-center gap-1 border-b border-hairline px-2 py-1.5"
           >
             <ToolbarButton
               label={t('richEditor.bold')}
@@ -233,7 +243,10 @@ function RichEditor({
             />
           </div>
         </TooltipProvider>
-        <EditorContent editor={editor} />
+        <EditorContent
+          editor={editor}
+          className={cn(scrollable && 'min-h-0 flex-1 overflow-y-auto overscroll-contain')}
+        />
       </div>
       {error ? (
         <p id={errorId} role="alert" className="text-xs text-error">

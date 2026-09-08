@@ -148,7 +148,8 @@
     "NO_DRAFT": "There is no draft to publish.",
     "SAVE_FAILED": "We could not save the draft. Try again.",
     "PUBLISH_FAILED": "We could not publish the document. Try again.",
-    "LIST_FAILED": "We could not load the legal documents. Try again in a few minutes."
+    "LIST_FAILED": "We could not load the legal documents. Try again in a few minutes.",
+    "PUBLISHED_NOT_FOUND": "We could not find a published legal document."
   },
   "admin": {
     "ERRORS_LIST_FAILED": "We could not load the error records. Try again in a few minutes.",

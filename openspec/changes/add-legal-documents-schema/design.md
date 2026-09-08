@@ -16,7 +16,7 @@
 **Non-Goals:**
 
 - Add application-managed update timestamp behavior beyond the existing base-column convention.
-- Public legal pages, account acceptance UI, or forcing re-acceptance after a new published version.
+- Dedicated public legal pages, staff invitation acceptance, or forcing re-acceptance after a new published version.
 
 ## Decisions
 

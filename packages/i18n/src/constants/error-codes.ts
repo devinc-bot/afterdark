@@ -141,6 +141,7 @@ export const LEGAL_DOCUMENT_ERROR_CODE = {
   SAVE_FAILED: 'legalDocument.SAVE_FAILED',
   PUBLISH_FAILED: 'legalDocument.PUBLISH_FAILED',
   LIST_FAILED: 'legalDocument.LIST_FAILED',
+  PUBLISHED_NOT_FOUND: 'legalDocument.PUBLISHED_NOT_FOUND',
 } as const
 
 export type AuthErrorCode = (typeof AUTH_ERROR_CODE)[keyof typeof AUTH_ERROR_CODE]

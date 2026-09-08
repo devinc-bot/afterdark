@@ -148,7 +148,8 @@
     "NO_DRAFT": "No hay un borrador para publicar.",
     "SAVE_FAILED": "No pudimos guardar el borrador. Intentá de nuevo.",
     "PUBLISH_FAILED": "No pudimos publicar el documento. Intentá de nuevo.",
-    "LIST_FAILED": "No pudimos cargar los documentos legales. Intentá de nuevo en unos minutos."
+    "LIST_FAILED": "No pudimos cargar los documentos legales. Intentá de nuevo en unos minutos.",
+    "PUBLISHED_NOT_FOUND": "No encontramos un documento legal publicado."
   },
   "admin": {
     "ERRORS_LIST_FAILED": "No pudimos cargar los errores registrados. Intentá de nuevo en unos minutos.",

@@ -1,5 +1,9 @@
 import { beforeEach, expect, test, vi } from 'vitest'
-import { BadRequestException, InternalServerErrorException } from '@nestjs/common'
+import {
+  BadRequestException,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common'
 import { LEGAL_DOCUMENT_TYPE } from '@repo/types'
 
 type LegalDocumentRow = {
@@ -105,6 +109,7 @@ vi.mock('@repo/db', () => ({
 
 const translationService = { translateError: (code: string) => code } as never
 import { GetLegalDocumentByTypeUseCase } from './get-legal-document-by-type.use-case.ts'
+import { GetPublishedLegalDocumentByTypeUseCase } from './get-published-legal-document-by-type.use-case.ts'
 import { ListLegalDocumentsUseCase } from './list-legal-documents.use-case.ts'
 import { PublishLegalDocumentUseCase } from './publish-legal-document.use-case.ts'
 import { SaveLegalDocumentDraftUseCase } from './save-legal-document-draft.use-case.ts'
@@ -398,6 +403,96 @@ test('publish marks the current draft as published', async () => {
   expect(state.published.get(LEGAL_DOCUMENT_TYPE.PRIVACY_DASHBOARD)?.at(-1)?.isPublished).toBe(true)
 })
 
+test('returns the latest published document without draft or unpublished fields', async () => {
+  seedDraft({
+    type: LEGAL_DOCUMENT_TYPE.TERMS_WEB,
+    documentId: 'draft-secret',
+    title: 'Unpublished draft',
+    content: TIPTAP_DOC,
+  })
+  seedPublished({
+    type: LEGAL_DOCUMENT_TYPE.TERMS_WEB,
+    documentId: 'terms-v1',
+    version: 'v1',
+    title: 'Published v1',
+  })
+  const latest = seedPublished({
+    type: LEGAL_DOCUMENT_TYPE.TERMS_WEB,
+    documentId: 'terms-v2',
+    version: 'v2',
+    title: 'Published v2',
+    content: TIPTAP_UPDATED,
+    publishedAt: new Date('2026-06-01T00:00:00.000Z'),
+  })
+
+  const result = await new GetPublishedLegalDocumentByTypeUseCase(translationService).execute(
+    LEGAL_DOCUMENT_TYPE.TERMS_WEB
+  )
+
+  expect(result).toEqual({
+    documentId: latest.documentId,
+    type: LEGAL_DOCUMENT_TYPE.TERMS_WEB,
+    version: 'v2',
+    title: 'Published v2',
+    content: TIPTAP_UPDATED,
+    publishedAt: latest.publishedAt,
+  })
+  expect([...Object.keys(result)].sort()).toEqual(
+    ['content', 'documentId', 'publishedAt', 'title', 'type', 'version'].sort()
+  )
+  expect(result).not.toHaveProperty('draft')
+  expect(result).not.toHaveProperty('isPublished')
+  expect(result).not.toHaveProperty('requiresAcceptance')
+  expect(result).not.toHaveProperty('createdAt')
+  expect(result).not.toHaveProperty('updatedAt')
+})
+
+test('throws not found when no published document exists for the type', async () => {
+  seedDraft({
+    type: LEGAL_DOCUMENT_TYPE.PRIVACY_DASHBOARD,
+    documentId: 'privacy-draft-only',
+    title: 'Draft only',
+  })
+
+  await expect(
+    new GetPublishedLegalDocumentByTypeUseCase(translationService).execute(
+      LEGAL_DOCUMENT_TYPE.PRIVACY_DASHBOARD
+    )
+  ).rejects.toBeInstanceOf(NotFoundException)
+  await expect(
+    new GetPublishedLegalDocumentByTypeUseCase(translationService).execute(
+      LEGAL_DOCUMENT_TYPE.PRIVACY_DASHBOARD
+    )
+  ).rejects.toMatchObject({
+    name: 'NotFoundException',
+    message: 'legalDocument.PUBLISHED_NOT_FOUND',
+  })
+  await expect(
+    new GetPublishedLegalDocumentByTypeUseCase(translationService).execute(
+      LEGAL_DOCUMENT_TYPE.TERMS_WEB
+    )
+  ).rejects.toMatchObject({
+    name: 'NotFoundException',
+    message: 'legalDocument.PUBLISHED_NOT_FOUND',
+  })
+})
+
+test('does not convert published-not-found into LIST_FAILED', async () => {
+  await expect(
+    new GetPublishedLegalDocumentByTypeUseCase(translationService).execute(
+      LEGAL_DOCUMENT_TYPE.PRIVACY_WEB
+    )
+  ).rejects.not.toMatchObject({
+    name: 'InternalServerErrorException',
+    message: 'legalDocument.LIST_FAILED',
+  })
+  await expect(
+    new GetPublishedLegalDocumentByTypeUseCase(translationService).execute(
+      LEGAL_DOCUMENT_TYPE.PRIVACY_WEB
+    )
+  ).rejects.toBeInstanceOf(NotFoundException)
+})
+
 test('throws internal errors when legal document persistence fails', async () => {
   state.failList = true
   await expect(new ListLegalDocumentsUseCase(translationService).execute()).rejects.toMatchObject({
@@ -429,4 +524,20 @@ test('throws internal errors when legal document persistence fails', async () =>
     name: 'InternalServerErrorException',
     message: 'legalDocument.PUBLISH_FAILED',
   })
+
+  resetRepo()
+  state.failList = true
+  await expect(
+    new GetPublishedLegalDocumentByTypeUseCase(translationService).execute(
+      LEGAL_DOCUMENT_TYPE.TERMS_WEB
+    )
+  ).rejects.toMatchObject({
+    name: 'InternalServerErrorException',
+    message: 'legalDocument.LIST_FAILED',
+  })
+  await expect(
+    new GetPublishedLegalDocumentByTypeUseCase(translationService).execute(
+      LEGAL_DOCUMENT_TYPE.TERMS_WEB
+    )
+  ).rejects.toBeInstanceOf(InternalServerErrorException)
 })

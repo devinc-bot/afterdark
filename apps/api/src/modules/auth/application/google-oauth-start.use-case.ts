@@ -13,6 +13,7 @@ export type GoogleOauthStatePayload = {
   purpose: typeof GOOGLE_OAUTH_STATE_PURPOSE
   role: GoogleOauthStartInput['role']
   app: GoogleOauthStartInput['app']
+  legalAccepted: boolean
 }
 
 @Injectable()
@@ -32,6 +33,7 @@ export class GoogleOauthStartUseCase {
         purpose: GOOGLE_OAUTH_STATE_PURPOSE,
         role: input.role,
         app: input.app,
+        legalAccepted: input.legalAccepted === true,
       } satisfies GoogleOauthStatePayload,
       { expiresIn: GOOGLE_OAUTH_STATE_TTL }
     )

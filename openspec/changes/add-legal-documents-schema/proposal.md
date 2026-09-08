@@ -13,6 +13,7 @@ The platform needs a persistent representation of versioned terms and privacy do
 - Present separate organization and web sections, each with terms and privacy tabs backed by the shared rich editor.
 - Keep editor content transient until persistence is implemented.
 - Persist Admin saves as unpublished drafts and freeze a new immutable version only on publish.
+- Require web and dashboard registration (email form and Google) to show published terms and privacy in dialogs, accept them with checkboxes, and persist account acceptances when the account is created.
 
 ## Capabilities
 
@@ -27,12 +28,13 @@ None.
 ## Non-goals
 
 - Defining TipTap document validation beyond storing JSON at the API boundary.
-- Adding public legal pages, account acceptance UI, or re-acceptance prompts after a new published version.
+- Adding dedicated public legal pages or re-acceptance prompts after a new published version.
+- Staff invitation acceptance.
 - Showing a full version-history browser in Admin in this increment.
 
 ## Impact
 
 - Affected apps and packages: `apps/admin`, `apps/api`, `packages/db`, `packages/types`, `packages/validators`, `packages/common`, and `packages/i18n`.
 - Reuses the existing `RichEditor` and tab primitives from `packages/ui` without modifying that package.
-- Unaffected apps: `apps/web` and `apps/dashboard` remain read-only consumers later.
+- Affected apps now include `apps/web` and `apps/dashboard` for registration acceptance.
 - No new dependencies.

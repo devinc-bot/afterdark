@@ -189,6 +189,7 @@ export const API_ROUTES = {
     path: {
       list: () => '/' as const,
       getByType: (type: string) => `/${routeSegment(type)}` as const,
+      getPublishedByType: (type: string) => `/public/${routeSegment(type)}` as const,
       saveDraft: (type: string) => `/${routeSegment(type)}/draft` as const,
       publish: (type: string) => `/${routeSegment(type)}/publish` as const,
     },
