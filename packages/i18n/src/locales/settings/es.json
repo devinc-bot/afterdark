@@ -82,7 +82,8 @@
       "state": "Provincia",
       "city": "Ciudad",
       "email": "Correo electrónico",
-      "emailHint": "Para cambiar el correo, escribinos a soporte.",
+      "emailHint": "Para cambiar el correo, <supportLink>escribinos a {{supportEmail}}</supportLink>.",
+      "emailSupportSubject": "Cambio de correo",
       "password": "Contraseña",
       "changePassword": "Cambiar contraseña",
       "passwordHint": "Pronto vas a poder cambiarla desde acá.",
@@ -105,7 +106,8 @@
       "lastName": "Apellido",
       "phone": "Teléfono",
       "email": "Correo electrónico",
-      "emailHint": "Para cambiar el correo, escribinos a soporte.",
+      "emailHint": "Para cambiar el correo, <supportLink>escribinos a {{supportEmail}}</supportLink>.",
+      "emailSupportSubject": "Cambio de correo",
       "avatarFallback": "Usuario"
     }
   },
@@ -124,7 +126,6 @@
       "phone": "Teléfono",
       "email": "Correo electrónico",
       "emailHint": "Para cambiar el correo, <supportLink>escribinos a {{supportEmail}}</supportLink>.",
-      "supportEmail": "soporte@eventflow.app",
       "emailSupportSubject": "Cambio de correo"
     },
     "actions": {

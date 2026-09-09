@@ -37,6 +37,7 @@ function parseEnvironment(source: string) {
 beforeEach(() => {
   vi.stubEnv('VITE_API_URL', 'http://web.localhost:3001')
   vi.stubEnv('VITE_DASHBOARD_URL', 'http://dashboard.localhost:3002')
+  vi.stubEnv('VITE_SUPPORT_EMAIL', 'support@example.com')
 })
 
 describe('development cookie isolation', () => {

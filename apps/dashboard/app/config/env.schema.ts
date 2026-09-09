@@ -1,7 +1,6 @@
 import { clientApiEnvSchema } from '@repo/validators'
 import { z } from 'zod'
 
-export const webEnvSchema = clientApiEnvSchema.extend({
-  VITE_DASHBOARD_URL: z.url(),
+export const dashboardEnvSchema = clientApiEnvSchema.extend({
   VITE_SUPPORT_EMAIL: z.email(),
 })

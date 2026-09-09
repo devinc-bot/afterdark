@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next'
 import { Avatar, AvatarFallback, AvatarImage, Button, Field, Input, Label } from '@repo/ui'
 import { FormSection } from '~/modules/common/components/form-section'
 import { useSettingsForm } from '~/modules/owner/hooks/settings-form-context'
+import { EmailChangeSupportHint } from '~/modules/settings/components/email-change-support-hint'
 
 export function ProfileSettingsSection() {
   const { t } = useTranslation('settings')
@@ -223,7 +224,10 @@ export function ProfileSettingsSection() {
             value={user.email}
             aria-readonly="true"
           />
-          <p className="mt-2 text-sm text-ink-muted">{t('owner.profile.emailHint')}</p>
+          <EmailChangeSupportHint
+            hintKey="owner.profile.emailHint"
+            subjectKey="owner.profile.emailSupportSubject"
+          />
         </Field>
 
         <div className="flex flex-col items-start gap-1">

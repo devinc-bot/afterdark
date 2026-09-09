@@ -58,7 +58,7 @@ export const Password: Story = {
     </div>
   ),
   args: {
-    defaultValue: 'eventflow-2026',
+    defaultValue: 'lumina-2026',
     type: 'password',
   },
 }

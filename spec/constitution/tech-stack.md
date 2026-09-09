@@ -35,10 +35,12 @@
 
 ## Correo (transaccional)
 
-- Puerto `MailSender` + adaptador Resend (`apps/api/src/modules/mail/`).
-- Templates: React Email (`react-email`); copy en namespace i18n `emails`.
-- Variables: `RESEND_API_KEY`, `MAIL_FROM`, `MAIL_SMOKE_TO` (opcional; ver `packages/validators/src/mail.ts`).
+- Puerto `MailSender` + adaptador Amazon SES v2 (`apps/api/src/modules/mail/`, `SesMailSender`).
+- Templates: React Email; copy en namespace i18n `emails`.
+- Preview local: `pnpm --filter @repo/api mail:preview` (puerto 3333).
+- Variables: `AWS_REGION` (usar `sa-east-1`), `AWS_ACCESS_KEY_ID` / `AWS_SECRET_ACCESS_KEY` opcionales y pareados (ambos vacíos = cadena de credenciales por defecto), `MAIL_FROM`, `MAIL_REPLY_TO` (opcional; Reply-To corporativo), `MAIL_SMOKE_TO`. Schema: `apps/api/src/config/env.schema.ts` (no en packages/validators).
 - Humo: `pnpm --filter @repo/api mail:smoke` (solo development).
+- Checklist de identidad SES para operadores: `deploy/env/README.md`.
 
 ## Comandos habituales
 

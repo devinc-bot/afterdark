@@ -3,6 +3,7 @@ import { defineConfig, devices } from '@playwright/test'
 const publicEnvironment = {
   VITE_API_URL: 'http://127.0.0.1:3000',
   VITE_DASHBOARD_URL: 'http://127.0.0.1:3002',
+  VITE_SUPPORT_EMAIL: 'support@example.com',
 }
 
 export default defineConfig({

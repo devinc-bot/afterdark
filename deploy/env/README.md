@@ -26,10 +26,10 @@ credentials, domains, and database URLs remain distinct from production.
 ## Required Build Inputs
 
 Every frontend requires `VITE_API_URL`. The `web` application also requires `VITE_DASHBOARD_URL`.
-The examples contain the exact variable names expected by each app's environment validation.
-Configure those two values as GitHub Environment variables for the `staging` and `production`
-environments before dispatching the image publication workflow. They are public build inputs, not
-GitHub secrets.
+Both `web` and `dashboard` require `VITE_SUPPORT_EMAIL`. The examples contain the exact variable
+names expected by each app's environment validation. Configure those values as GitHub Environment
+variables for the `staging` and `production` environments before dispatching the image publication
+workflow. They are public build inputs, not GitHub secrets.
 
 ## Runtime Secrets
 
@@ -40,14 +40,20 @@ The following runtime values are secrets and must not be supplied as Docker buil
 - `JWT_SECRET`
 - `REFRESH_TOKEN_SECRET`
 - `GOOGLE_CLIENT_SECRET`
-- `RESEND_API_KEY`
+- `AWS_ACCESS_KEY_ID` (when set; must be paired with `AWS_SECRET_ACCESS_KEY`)
+- `AWS_SECRET_ACCESS_KEY` (when set; must be paired with `AWS_ACCESS_KEY_ID`)
 - `MERCADOPAGO_ACCESS_TOKEN`
 - `MERCADOPAGO_WEBHOOK_SECRET`
 - `R2_ACCESS_KEY_ID`
 - `R2_SECRET_ACCESS_KEY`
 
-`GOOGLE_CLIENT_ID`, `MAIL_FROM`, `R2_ACCOUNT_ID`, `R2_BUCKET`, and public URLs are not credentials,
-but they remain runtime configuration because the API validates and uses them.
+Leave both AWS key variables empty to use the AWS default credential provider chain (for example an
+IAM role). When either key is set, both must be set together.
+
+`GOOGLE_CLIENT_ID`, `AWS_REGION`, `MAIL_FROM`, `MAIL_REPLY_TO`, `R2_ACCOUNT_ID`, `R2_BUCKET`, and
+public URLs are not credentials, but they remain runtime configuration because the API validates and
+uses them. `MAIL_REPLY_TO` is an optional Reply-To address for a corporate inbox; leave it empty to
+omit Reply-To. It is not SES inbound receiving.
 
 `CORS_ALLOWED_ORIGINS` is optional. The API always allows `WEB_URL`, `DASHBOARD_URL`, and `ADMIN_URL`;
 set this variable as a comma-separated list only when additional origins are required.
@@ -55,6 +61,14 @@ set this variable as a comma-separated list only when additional origins are req
 `RATE_LIMIT_*_LIMIT` and `RATE_LIMIT_*_TTL_MS` pairs are optional runtime configuration, not secrets.
 Each omitted pair uses the API schema default. Counters are per API process until shared storage
 exists; keep edge rate limiting on Caddy, the CDN, or a WAF for cluster-wide protection.
+
+## Amazon SES (transactional mail)
+
+1. In the SES console (`sa-east-1`), verify the domain or email used by `MAIL_FROM`.
+2. Until production access is approved, verify each smoke/test recipient (or remain in the SES sandbox).
+3. Prefer an IAM task/instance role in deployed environments; use explicit AWS keys only for
+   local/dev when needed (both empty = default credential chain; both set together).
+4. After env is set, run `pnpm --filter @repo/api mail:smoke` in development.
 
 ## VPS Compose
 

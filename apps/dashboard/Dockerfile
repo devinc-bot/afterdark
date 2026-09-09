@@ -29,8 +29,10 @@ RUN --mount=type=cache,id=pnpm,target=/pnpm/store,sharing=locked \
 FROM dependencies AS build
 
 ARG VITE_API_URL
+ARG VITE_SUPPORT_EMAIL
 
-ENV VITE_API_URL=$VITE_API_URL
+ENV VITE_API_URL=$VITE_API_URL \
+    VITE_SUPPORT_EMAIL=$VITE_SUPPORT_EMAIL
 
 COPY tsconfig.json ./tsconfig.json
 COPY apps/dashboard apps/dashboard

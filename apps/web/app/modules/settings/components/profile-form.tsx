@@ -18,6 +18,7 @@ import {
   cn,
   useUnsavedChangesGuard,
 } from '@repo/ui'
+import { clientEnv } from '~/config/env'
 import { getUserInitials } from '~/modules/common/utils/user-initials.utils'
 import { useUpdateProfile } from '~/modules/settings/queries/use-update-profile'
 
@@ -82,7 +83,7 @@ export function ProfileForm({ profile }: ProfileFormProps) {
   const avatarLabel = displayName || profile.email || t('web.profile.avatarFallback')
   const isPending = updateProfile.isPending
   const emailHintId = 'profile-email-hint'
-  const supportEmail = t('web.form.supportEmail')
+  const supportEmail = clientEnv.VITE_SUPPORT_EMAIL
 
   const clearMutationFeedback = () => {
     if (updateProfile.isSuccess || updateProfile.isError) {

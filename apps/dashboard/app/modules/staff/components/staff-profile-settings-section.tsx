@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import { Avatar, AvatarFallback, AvatarImage, Field, Input } from '@repo/ui'
 import { FormSection } from '~/modules/common/components/form-section'
+import { EmailChangeSupportHint } from '~/modules/settings/components/email-change-support-hint'
 import { useStaffSettingsForm } from '~/modules/staff/hooks/settings-form-context'
 
 export function StaffProfileSettingsSection() {
@@ -101,7 +102,10 @@ export function StaffProfileSettingsSection() {
             value={user.email}
             aria-readonly="true"
           />
-          <p className="mt-2 text-sm text-ink-muted">{t('staff.profile.emailHint')}</p>
+          <EmailChangeSupportHint
+            hintKey="staff.profile.emailHint"
+            subjectKey="staff.profile.emailSupportSubject"
+          />
         </Field>
       </FormSection>
     </>

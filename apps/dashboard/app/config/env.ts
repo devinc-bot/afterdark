@@ -1,6 +1,6 @@
-import { clientApiEnvSchema } from '@repo/validators'
+import { dashboardEnvSchema } from './env.schema'
 
-const envResult = clientApiEnvSchema.safeParse(import.meta.env)
+const envResult = dashboardEnvSchema.safeParse(import.meta.env)
 
 if (!envResult.success) {
   throw new Error('Error validating client environment variables', { cause: envResult.error })
