@@ -107,7 +107,7 @@ export function ProfileForm({ profile }: ProfileFormProps) {
         )}
       </form.Subscribe>
 
-      <div className="flex items-center gap-4 border-b border-outline-variant/35 pb-8 sm:gap-5">
+      <div className="flex items-center gap-4 border-b border-outline-variant/35 pb-8 sm:gap-5 sm:pb-10">
         <Avatar className="size-16 shrink-0 ring-1 ring-outline-variant/50 sm:size-20">
           {profile.avatar ? (
             <AvatarImage src={profile.avatar} alt={avatarLabel} className="object-cover" />

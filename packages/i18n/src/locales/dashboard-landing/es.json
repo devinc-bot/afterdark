@@ -19,7 +19,13 @@
     "headline": "Gestioná tu club sin perder el ritmo.",
     "support": "Eventos, entradas, staff y ventas en un solo panel. Menos planillas sueltas, más control de tu noche.",
     "ctaPrimary": "Crear cuenta",
-    "ctaSecondary": "Iniciar sesión"
+    "ctaSecondary": "Iniciar sesión",
+    "imageAlt": "Escalinata de un venue moderno de noche, iluminada con focos cálidos"
+  },
+  "demo": {
+    "headline": "Mirá el panel en acción.",
+    "support": "Un recorrido corto por cómo publicás eventos, vendés entradas y seguís tu operación.",
+    "videoLabel": "Video demo del panel para dueños"
   },
   "features": {
     "eyebrow": "Todo en un panel",

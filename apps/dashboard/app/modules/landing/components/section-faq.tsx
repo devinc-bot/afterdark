@@ -29,7 +29,7 @@ export function SectionFaq() {
         >
           {LANDING_FAQ_KEYS.map((key) => (
             <AccordionItem key={key} value={key} className="border-hairline/50 first:border-t-0">
-              <AccordionTrigger className="text-left font-display text-base font-semibold tracking-tight hover:no-underline sm:text-lg">
+              <AccordionTrigger className="text-left font-display text-base font-semibold tracking-tight text-on-surface hover:text-on-surface hover:no-underline sm:text-lg">
                 {t(`faq.items.${key}.question`)}
               </AccordionTrigger>
               <AccordionContent className="max-w-[56ch] text-base leading-relaxed text-pretty text-on-surface-variant">

@@ -211,6 +211,8 @@
   --color-surface-card: #1e1f1c;
   --color-hairline: #44473c;
   --color-hairline-strong: #4a4e42;
+  --color-loader-on: #dcff02;
+  --color-loader-off: #8e9280;
 
   --animate-fade-up: fade-up 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
   --animate-hero-drift: hero-drift 28s cubic-bezier(0.22, 1, 0.36, 1) both;
@@ -414,6 +416,8 @@ html[data-theme='light'] {
   --color-surface-card: #ffffff;
   --color-hairline: #c5c8b8;
   --color-hairline-strong: #c5c9b8;
+  --color-loader-on: #4d7c0f;
+  --color-loader-off: #6f7364;
 }
 
 @layer utilities {
@@ -537,6 +541,11 @@ html[data-theme='light'] {
     background: var(--color-popover);
     border: 1px solid color-mix(in srgb, var(--color-on-surface) 12%, transparent);
     box-shadow: var(--shadow-glass);
+  }
+
+  .glass-panel-border {
+    border: 1px solid color-mix(in srgb, var(--color-primary) 12%, transparent);
+    box-shadow: 0 1px 0 var(--color-primary-fixed), 0 4px 8px rgba(26, 27, 24, 0.2);
   }
 
   @supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {

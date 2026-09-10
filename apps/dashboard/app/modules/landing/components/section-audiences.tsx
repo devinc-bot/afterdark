@@ -40,7 +40,7 @@ export function SectionAudiences() {
           </ul>
         </div>
 
-        <div className="relative aspect-4/3 overflow-hidden rounded-xl bg-surface-container-low md:order-last">
+        <div className="relative aspect-4/3 overflow-hidden rounded-app bg-surface-container-low ring-1 ring-hairline/40 md:order-last">
           <img
             src={LANDING_IMAGES.audiences.src}
             srcSet={LANDING_IMAGES.audiences.srcSet}

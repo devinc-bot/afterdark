@@ -5,6 +5,7 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
+  Skeleton,
   VT,
   armEventHero,
   cn,
@@ -33,12 +34,14 @@ function usePrefersReducedMotion(): boolean {
 type EventsDiscoverCoverflowProps = {
   slides: EventsDiscoverCoverflowSlide[]
   onActivate: (slug: string) => void
+  isLoading?: boolean
   className?: string
 }
 
 export function EventsDiscoverCoverflow({
   slides,
   onActivate,
+  isLoading = false,
   className,
 }: EventsDiscoverCoverflowProps) {
   const { t } = useTranslation('events')
@@ -204,6 +207,37 @@ export function EventsDiscoverCoverflow({
 
     void autoplay.current.play()
   }, [api, reduceMotion, slides.length])
+
+  if (isLoading) {
+    return (
+      <section
+        className={cn('flex flex-col gap-3', className)}
+        aria-labelledby="events-featured-heading"
+        aria-busy="true"
+      >
+        <div className="flex items-baseline justify-between gap-3 px-0.5">
+          <h2
+            id="events-featured-heading"
+            className="font-display text-lg font-semibold tracking-tight text-balance text-on-surface sm:text-xl"
+          >
+            {t('discover.coverflow.heading')}
+          </h2>
+          <Skeleton className="h-4 w-40 max-w-[28ch] bg-surface-high/50" aria-hidden />
+        </div>
+        <p className="sr-only" role="status">
+          {t('discover.coverflow.loading')}
+        </p>
+        <Skeleton
+          className="aspect-19/9 w-full rounded-app-lg bg-surface-high/80"
+          aria-hidden
+        />
+        {/* Reserve control-strip height to limit CLS when 2+ slides mount after load. */}
+        <div className="flex flex-col items-center gap-3 p-4 text-center sm:p-5" aria-hidden>
+          <Skeleton className="h-14 w-48 max-w-full rounded-full bg-surface-high/60" />
+        </div>
+      </section>
+    )
+  }
 
   if (slides.length === 0) {
     return null

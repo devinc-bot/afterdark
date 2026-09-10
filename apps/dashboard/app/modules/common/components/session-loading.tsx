@@ -10,7 +10,7 @@ export function SessionLoading() {
       className="flex min-h-dvh flex-col items-center justify-center gap-3 bg-background"
     >
       <Loader size={24} />
-      <p className="text-sm text-ink-muted">{ready ? t('shell.loading') : 'Cargando…'}</p>
+      <p className="text-sm text-ink">{ready ? t('shell.loading') : 'Cargando…'}</p>
     </div>
   )
 }

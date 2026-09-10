@@ -28,6 +28,7 @@ const SOCIAL_LINKS = [
 const FOOTER_SECTION_NAV = [
   { href: '#como-funciona', labelKey: 'nav.how' },
   { href: '#claridad', labelKey: 'nav.clarity' },
+  { href: '#eventos', labelKey: 'nav.events' },
 ] as const
 
 const SOCIAL_ICON_CLASS = 'h-8 w-8 shrink-0'

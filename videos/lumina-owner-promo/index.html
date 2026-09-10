@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1920, height=1080">
+    <title>Lumina — Owner promo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      :root {
+        --bg: #121311;
+        --surface: #1e1f1c;
+        --surface-high: #282a26;
+        --ink: #e6e7e2;
+        --muted: #c5c8b8;
+        --primary: #dcff02;
+        --on-primary: #2a3208;
+        --hairline: #44473c;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: Inter, system-ui, sans-serif;
+      }
+
+      #root {
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: var(--bg);
+      }
+
+      .clip {
+        position: absolute;
+        inset: 0;
+      }
+
+      .scene-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        padding: 120px 160px;
+        gap: 28px;
+        box-sizing: border-box;
+      }
+
+      .wash {
+        position: absolute;
+        inset: 0;
+        background:
+          radial-gradient(ellipse at 18% 12%, color-mix(in srgb, var(--primary) 10%, transparent) 0%, transparent 48%),
+          radial-gradient(ellipse at 88% 88%, color-mix(in srgb, var(--surface-high) 80%, transparent) 0%, transparent 42%),
+          var(--bg);
+      }
+
+      .brand {
+        font-family: Montserrat, sans-serif;
+        font-weight: 700;
+        font-size: 148px;
+        line-height: 0.95;
+        letter-spacing: -0.03em;
+        color: var(--ink);
+      }
+
+      .brand-mark {
+        width: 120px;
+        height: 4px;
+        margin-top: 28px;
+        border-radius: 999px;
+        background: var(--primary);
+        transform-origin: left center;
+      }
+
+      .headline {
+        font-family: Montserrat, sans-serif;
+        font-weight: 600;
+        font-size: 72px;
+        line-height: 1.08;
+        letter-spacing: -0.025em;
+        max-width: 14ch;
+        color: var(--ink);
+      }
+
+      .headline .word {
+        display: inline-block;
+        margin-right: 0.28em;
+      }
+
+      .headline .word.emphasis {
+        color: var(--ink);
+      }
+
+      .product-layout {
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 56px;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+      }
+
+      .panel {
+        background: var(--surface);
+        border: 1px solid var(--hairline);
+        border-radius: 16px;
+        padding: 36px 40px;
+        box-shadow: 0 18px 40px rgba(0, 0, 0, 0.28);
+      }
+
+      .panel-title {
+        font-family: Montserrat, sans-serif;
+        font-size: 28px;
+        font-weight: 600;
+        letter-spacing: -0.02em;
+        margin-bottom: 28px;
+      }
+
+      .labels {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+      }
+
+      .label {
+        display: inline-flex;
+        align-items: center;
+        padding: 12px 18px;
+        border-radius: 12px;
+        background: var(--surface-high);
+        color: var(--ink);
+        font-size: 22px;
+        font-weight: 500;
+        letter-spacing: -0.01em;
+      }
+
+      .media-stack {
+        position: relative;
+        height: 620px;
+      }
+
+      .media-card {
+        position: absolute;
+        overflow: hidden;
+        border-radius: 16px;
+        border: 1px solid var(--hairline);
+        background: var(--surface);
+        box-shadow: 0 22px 48px rgba(0, 0, 0, 0.35);
+      }
+
+      .media-card img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .media-a {
+        width: 520px;
+        height: 360px;
+        left: 40px;
+        top: 40px;
+        z-index: 2;
+      }
+
+      .media-b {
+        width: 420px;
+        height: 300px;
+        right: 20px;
+        bottom: 40px;
+        z-index: 1;
+      }
+
+      .cta-wrap {
+        display: flex;
+        flex-direction: column;
+        gap: 36px;
+        align-items: flex-start;
+      }
+
+      .cta-brand {
+        font-family: Montserrat, sans-serif;
+        font-weight: 700;
+        font-size: 96px;
+        letter-spacing: -0.03em;
+        line-height: 1;
+      }
+
+      .cta-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 72px;
+        padding: 0 36px;
+        border-radius: 16px;
+        background: var(--primary);
+        color: var(--on-primary);
+        font-family: Montserrat, sans-serif;
+        font-size: 32px;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+      }
+
+      .cta-support {
+        color: var(--muted);
+        font-size: 24px;
+        max-width: 28ch;
+        line-height: 1.4;
+      }
+    </style>
+  </head>
+  <body>
+    <div data-hf-id="hf-199x" id="root" data-composition-id="main" data-start="0" data-duration="10" data-width="1920" data-height="1080">
+      <div data-hf-id="hf-1m6k" class="wash" aria-hidden="true"></div>
+
+      <!-- 0.0–1.5 Brand -->
+      <section data-hf-id="hf-vek1" id="scene-brand" class="clip" data-start="0" data-duration="1.5" data-track-index="1">
+        <div data-hf-id="hf-cn5c" class="scene-content">
+          <div data-hf-id="hf-yeow">
+            <p data-hf-id="hf-r2f8" id="brand-word" class="brand">Lumina</p>
+            <div data-hf-id="hf-pgta" id="brand-mark" class="brand-mark"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 1.5–4.5 Headline -->
+      <section data-hf-id="hf-r5rp" id="scene-headline" class="clip" data-start="1.5" data-duration="3" data-track-index="1">
+        <div data-hf-id="hf-o0eg" class="scene-content">
+          <h1 data-hf-id="hf-fulc" id="headline" class="headline">
+            <span data-hf-id="hf-j4a7" class="word" data-word="">Gestioná</span>
+            <span data-hf-id="hf-k72u" class="word" data-word="">tu</span>
+            <span data-hf-id="hf-tctd" class="word" data-word="">club</span>
+            <span data-hf-id="hf-frjl" class="word" data-word="">sin</span>
+            <span data-hf-id="hf-o6df" class="word" data-word="">perder</span>
+            <span data-hf-id="hf-3cd4" class="word" data-word="">el</span>
+            <span data-hf-id="hf-0yja" class="word emphasis" data-word="">ritmo.</span>
+          </h1>
+        </div>
+      </section>
+
+      <!-- 4.5–7.5 Product -->
+      <section data-hf-id="hf-a3hv" id="scene-product" class="clip" data-start="4.5" data-duration="3" data-track-index="1">
+        <div data-hf-id="hf-mthd" class="scene-content">
+          <div data-hf-id="hf-lxjs" class="product-layout">
+            <div data-hf-id="hf-xd1o" id="product-panel" class="panel">
+              <p data-hf-id="hf-p9ep" class="panel-title">Tu panel, en un solo lugar</p>
+              <div data-hf-id="hf-oh85" class="labels">
+                <span data-hf-id="hf-jjjt" class="label" data-label="">Eventos</span>
+                <span data-hf-id="hf-25n9" class="label" data-label="">Entradas</span>
+                <span data-hf-id="hf-iz1t" class="label" data-label="">Staff</span>
+                <span data-hf-id="hf-by56" class="label" data-label="">Ventas</span>
+              </div>
+            </div>
+            <div data-hf-id="hf-7ipb" class="media-stack">
+              <div data-hf-id="hf-os37" id="media-a" class="media-card media-a">
+                <img data-hf-id="hf-lplu" src="assets/event-1.png" alt="" width="1040" height="720">
+              </div>
+              <div data-hf-id="hf-0gzh" id="media-b" class="media-card media-b">
+                <img data-hf-id="hf-pkk1" src="assets/event-2.png" alt="" width="840" height="600">
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 7.5–10 CTA -->
+      <section data-hf-id="hf-arcd" id="scene-cta" class="clip" data-start="7.5" data-duration="2.5" data-track-index="1">
+        <div data-hf-id="hf-n7se" class="scene-content">
+          <div data-hf-id="hf-466v" class="cta-wrap">
+            <p data-hf-id="hf-7dct" id="cta-brand" class="cta-brand">Lumina</p>
+            <div data-hf-id="hf-s7q2" id="cta-btn" class="cta-btn">Creá tu cuenta</div>
+            <p data-hf-id="hf-hych" id="cta-support" class="cta-support">Eventos · Entradas · Staff · Ventas</p>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <script>
+      const tl = gsap.timeline({ paused: true });
+
+      // Brand
+      tl.fromTo(
+        "#brand-word",
+        { autoAlpha: 0, scale: 0.92, y: 24 },
+        { autoAlpha: 1, scale: 1, y: 0, duration: 0.7, ease: "power3.out" },
+        0.15
+      );
+      tl.fromTo(
+        "#brand-mark",
+        { autoAlpha: 0, scaleX: 0 },
+        { autoAlpha: 1, scaleX: 1, duration: 0.45, ease: "power2.out" },
+        0.55
+      );
+
+      // Headline — absolute times on main timeline
+      tl.fromTo(
+        "#headline [data-word]",
+        { autoAlpha: 0, y: 28 },
+        {
+          autoAlpha: 1,
+          y: 0,
+          duration: 0.55,
+          stagger: 0.08,
+          ease: "power3.out",
+        },
+        1.65
+      );
+      tl.fromTo(
+        "#headline .emphasis",
+        { scale: 1 },
+        { scale: 1.04, duration: 0.28, yoyo: true, repeat: 1, ease: "power2.out" },
+        3.15
+      );
+
+      // Product
+      tl.fromTo(
+        "#product-panel",
+        { autoAlpha: 0, x: -36 },
+        { autoAlpha: 1, x: 0, duration: 0.65, ease: "power3.out" },
+        4.6
+      );
+      tl.fromTo(
+        "#media-a",
+        { autoAlpha: 0, y: 40, scale: 0.96 },
+        { autoAlpha: 1, y: 0, scale: 1, duration: 0.7, ease: "power3.out" },
+        4.75
+      );
+      tl.fromTo(
+        "#media-b",
+        { autoAlpha: 0, y: 48, scale: 0.96 },
+        { autoAlpha: 1, y: 0, scale: 1, duration: 0.7, ease: "power3.out" },
+        4.95
+      );
+      tl.fromTo(
+        "#product-panel [data-label]",
+        { autoAlpha: 0, y: 12 },
+        {
+          autoAlpha: 1,
+          y: 0,
+          duration: 0.4,
+          stagger: 0.12,
+          ease: "power2.out",
+        },
+        5.2
+      );
+
+      // CTA
+      tl.fromTo(
+        "#cta-brand",
+        { autoAlpha: 0, y: 20 },
+        { autoAlpha: 1, y: 0, duration: 0.55, ease: "power3.out" },
+        7.65
+      );
+      tl.fromTo(
+        "#cta-btn",
+        { autoAlpha: 0, scale: 0.94 },
+        { autoAlpha: 1, scale: 1, duration: 0.5, ease: "power3.out" },
+        7.9
+      );
+      tl.fromTo(
+        "#cta-support",
+        { autoAlpha: 0 },
+        { autoAlpha: 1, duration: 0.4, ease: "power2.out" },
+        8.2
+      );
+
+      tl.seek(0);
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

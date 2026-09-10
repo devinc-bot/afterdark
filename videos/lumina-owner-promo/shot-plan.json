@@ -1,0 +1,78 @@
+{
+  "category": "kinetic-type",
+  "duration_s": 10,
+  "fps": 30,
+  "canvas": { "w": 1920, "h": 1080, "aspect": "16:9" },
+  "style": "Alegre / original / minimalista — Cooldock soft depth on dark olive surfaces, large type, short copy, product as hero. No neon, purple glow, glitch, or nightlife flyer energy.",
+  "palette": ["#121311", "#1e1f1c", "#e6e7e2", "#c5c8b8", "#dcff02", "#2a3208", "#ff6b3d"],
+  "font": "Montserrat",
+  "beats": [0, 1.5, 4.5, 7.5, 10],
+  "export": "mp4",
+  "asset_needs": [
+    {
+      "role": "venue-hero",
+      "kind": "image",
+      "source": "../../apps/web/public/landing/hero.png",
+      "treatment": "none"
+    },
+    {
+      "role": "event-a",
+      "kind": "image",
+      "source": "../../apps/web/public/landing/event-1.png",
+      "treatment": "none"
+    },
+    {
+      "role": "event-b",
+      "kind": "image",
+      "source": "../../apps/web/public/landing/event-2.png",
+      "treatment": "none"
+    }
+  ],
+  "block": null,
+  "customize": {},
+  "content": {
+    "scenes": [
+      {
+        "id": "brand",
+        "start": 0,
+        "end": 1.5,
+        "text": "Lumina",
+        "emphasis_words": ["Lumina"],
+        "emotion": "confident-warm",
+        "motion": "soft scale-in + fade; thin citrus underline draw",
+        "beats": [0.2]
+      },
+      {
+        "id": "headline",
+        "start": 1.5,
+        "end": 4.5,
+        "text": "Gestioná tu club sin perder el ritmo.",
+        "emphasis_words": ["ritmo"],
+        "emotion": "cheerful-clear",
+        "motion": "word stagger reveal; soft punch on ritmo",
+        "beats": [1.7, 3.2]
+      },
+      {
+        "id": "product",
+        "start": 4.5,
+        "end": 7.5,
+        "text": "Eventos · Entradas · Staff · Ventas",
+        "emphasis_words": ["Eventos", "Entradas", "Staff", "Ventas"],
+        "emotion": "product-focus",
+        "motion": "panel slide/scale soft; label stagger; 1–2 event surfaces",
+        "beats": [4.7, 5.4, 6.1, 6.8]
+      },
+      {
+        "id": "cta",
+        "start": 7.5,
+        "end": 10,
+        "text": "Creá tu cuenta",
+        "emphasis_words": ["Creá"],
+        "emotion": "invite",
+        "motion": "lockup + CTA fade/scale hold",
+        "beats": [7.7]
+      }
+    ]
+  },
+  "shot_brief": "Viewer meets Lumina on a soft dark canvas, then the Spanish kinetic headline lands with air and one punch on 'ritmo'. Mid-clip shows a calm product panel with event surfaces and the four capability labels. Ends on a clean 'Creá tu cuenta' hold — embed-ready for the owner dashboard landing."
+}

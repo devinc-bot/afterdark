@@ -19,7 +19,13 @@
     "headline": "Run your club without missing a beat.",
     "support": "Events, tickets, staff and sales in a single panel. Fewer scattered spreadsheets, more control over your night.",
     "ctaPrimary": "Create account",
-    "ctaSecondary": "Log in"
+    "ctaSecondary": "Log in",
+    "imageAlt": "Modern venue steps at night lit with warm spotlights"
+  },
+  "demo": {
+    "headline": "See the panel in action.",
+    "support": "A short walkthrough of publishing events, selling tickets, and running your operation.",
+    "videoLabel": "Owner panel product demo video"
   },
   "features": {
     "eyebrow": "All in one panel",

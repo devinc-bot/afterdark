@@ -12,7 +12,7 @@ export function SectionValue() {
       className="scroll-mt-20 border-b border-hairline/60 bg-surface-container-lowest"
     >
       <div className="mx-auto grid w-full max-w-6xl items-center gap-12 px-margin-mobile py-[clamp(4rem,8vw,6.5rem)] md:grid-cols-2 md:gap-16 md:px-margin-desktop">
-        <div className="relative aspect-4/3 overflow-hidden rounded-xl bg-surface-container-low">
+        <div className="relative aspect-4/3 overflow-hidden rounded-app bg-surface-container-low ring-1 ring-hairline/40">
           <img
             src={LANDING_IMAGES.value.src}
             srcSet={LANDING_IMAGES.value.srcSet}

@@ -211,7 +211,8 @@
       "dotsAria": "Featured slides",
       "dotAria": "Slide {index} of {total}: {title}",
       "prev": "Previous event",
-      "next": "Next event"
+      "next": "Next event",
+      "loading": "Loading featured events…"
     },
     "detail": {
       "error": "We could not load the event. Try again in a few minutes.",

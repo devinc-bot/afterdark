@@ -10,7 +10,7 @@ colors:
   surface-high: '#282a26'
   surface-highest: '#33352f'
   surface-lowest: '#0d0e0c'
-  primary: '#d4e85a'
+  primary: '#dcff02'
   on-primary: '#2a3208'
   primary-hover: '#6b7a1a'
   accent: '#ff6b3d'
@@ -117,7 +117,7 @@ Repo’s visual system lives in `packages/ui/src/globals.css` (Tailwind v4 `@the
 
 **Personality:** Alegre · Original · Minimalista — aligned with [dock.cool](https://www.dock.cool/#hero): product as hero, soft depth on dark (and soon light), large type, short copy, generous air.
 
-**Color strategy:** Restrained accent on olive-tinted neutrals. Primary citrus (`#d4e85a`) and coral accent (`#ff6b3d`) are sparingly used; surfaces carry most of the UI.
+**Color strategy:** Restrained accent on olive-tinted neutrals. Primary citrus (`#dcff02` fill / `#d4e85a` soft) and coral accent (`#ff6b3d`) are sparingly used; surfaces carry most of the UI.
 
 **Themes:** Dark is the default (`data-theme="dark"`). Light is first-class via `[data-theme="light"]` overrides in `globals.css` and `ThemeProvider` / `ThemeToggle` in `@repo/ui`. Persist key: `repo:theme`.
 
@@ -144,18 +144,19 @@ Repo’s visual system lives in `packages/ui/src/globals.css` (Tailwind v4 `@the
 
 | Role          | Hex       | Use                                |
 | ------------- | --------- | ---------------------------------- |
-| Primary       | `#d4e85a` | CTAs, focus ring, charts           |
+| Primary       | `#dcff02` | CTAs / primary fills               |
 | On-primary    | `#2a3208` | Text on primary fills              |
+| Primary soft  | `#d4e85a` | Container, charts, dark focus ring |
 | Primary hover | `#6b7a1a` | Hover / inverse primary            |
 | Accent        | `#ff6b3d` | Rare emphasis (not default chrome) |
 
 ### Feedback
 
-Error text `#ffb4ab`, error container `#93000a`. Focus ring matches primary.
+Error text `#ffb4ab`, error container `#93000a`. Dark focus ring uses soft citrus `#d4e85a`; light focus ring uses `#6b7a1a` for contrast on near-white canvas.
 
 ### Light mode
 
-`[data-theme="light"]` mirrors the dark surface ramp toward near-white with low chroma on the citrus hue (`#f4f5f2` canvas, white raised surfaces). Primary fill is `#65a30d` with white on-primary; soft lime `#84cc16` stays on primary-container / chart. Hover deepens to `#4d7c0f`. Prefer surface steps over borders for hierarchy.
+`[data-theme="light"]` mirrors the dark surface ramp toward near-white with low chroma on the citrus hue (`#f4f5f2` canvas, white raised surfaces). Primary fill matches dark: citrus `#dcff02` with on-primary `#2a3208`; primary-container `#d4e85a` and hover / inverse-primary / focus ring `#6b7a1a`. Prefer surface steps over borders for hierarchy.
 
 ## Typography
 

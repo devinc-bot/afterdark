@@ -129,11 +129,12 @@ export function EventsDiscoverPage() {
         <PageHeader title={t('discover.page.title')} description={t('discover.page.description')} />
 
         <div className="flex flex-col gap-10 lg:gap-12">
-          {coverflowSlides.length > 0 ? (
+          {isLoading || coverflowSlides.length > 0 ? (
             <EventsDiscoverCoverflow
               key={filtersKey}
               slides={coverflowSlides}
               onActivate={handleCoverflowActivate}
+              isLoading={isLoading}
             />
           ) : null}
 

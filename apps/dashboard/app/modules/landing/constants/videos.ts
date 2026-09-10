@@ -1,3 +1,3 @@
 export const LANDING_VIDEOS = {
-  hero: '/landing/hero.mp4',
+  promo: '/landing/owner-promo.mp4',
 } as const

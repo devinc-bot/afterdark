@@ -34,6 +34,7 @@ import {
 
 /** Attendee path first. Organizer path lives in #organizadores + footer. */
 const LANDING_SECTION_NAV = [
+  { href: '#eventos', labelKey: 'nav.events' },
   { href: '#como-funciona', labelKey: 'nav.how' },
   { href: '#claridad', labelKey: 'nav.clarity' },
 ] as const
@@ -123,11 +124,11 @@ export function LandingHeader() {
           </Link>
 
           <nav aria-label={t('nav.ariaLabel')} className="hidden items-center gap-0.5 md:flex">
-            <Link to={WEB_ROUTES.events()} className={navLink}>
-              {t('nav.events')}
-            </Link>
             {showAuthChrome ? (
               <>
+                <Link to={WEB_ROUTES.events()} className={navLink}>
+                  {t('nav.events')}
+                </Link>
                 <Link to={WEB_ROUTES.tickets()} className={navLink}>
                   {t('nav.tickets')}
                 </Link>
@@ -214,17 +215,17 @@ export function LandingHeader() {
                   aria-label={t('nav.mobileAriaLabel')}
                   className="flex min-h-0 flex-1 flex-col gap-1 overflow-y-auto px-3 py-4"
                 >
-                  <SheetClose asChild>
-                    <Link
-                      to={WEB_ROUTES.events()}
-                      variant="ghost"
-                      className={cn(LANDING_FOCUS_RING)}
-                    >
-                      {t('nav.events')}
-                    </Link>
-                  </SheetClose>
                   {showAuthChrome ? (
                     <>
+                      <SheetClose asChild>
+                        <Link
+                          to={WEB_ROUTES.events()}
+                          variant="ghost"
+                          className={cn(LANDING_FOCUS_RING)}
+                        >
+                          {t('nav.events')}
+                        </Link>
+                      </SheetClose>
                       <SheetClose asChild>
                         <Link
                           to={WEB_ROUTES.tickets()}
