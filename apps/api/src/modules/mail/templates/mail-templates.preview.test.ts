@@ -71,17 +71,23 @@ const previewCases = [
   | PreviewCase<StaffInvitationEmailProps>
 >
 
+function moduleExport(module: object, name: string): unknown {
+  return (module as Record<string, unknown>)[name]
+}
+
 describe('mail template React Email preview wiring', () => {
   test('shared layout helpers are not default-exported email templates', () => {
-    expect(MailLayoutModule.default).toBeUndefined()
-    expect(MailTokensModule.default).toBeUndefined()
+    expect(moduleExport(MailLayoutModule, 'default')).toBeUndefined()
+    expect(moduleExport(MailTokensModule, 'default')).toBeUndefined()
   })
 
   test.each(previewCases)(
     '$name default export matches named export and renders PreviewProps',
     async ({ module, namedExport, snippets }) => {
-      const DefaultExport = module.default
-      const NamedExport = module[namedExport]
+      const DefaultExport = moduleExport(module, 'default') as
+        | PreviewEmailComponent<Record<string, unknown>>
+        | undefined
+      const NamedExport = moduleExport(module, namedExport)
 
       expect(DefaultExport).toBeTypeOf('function')
       expect(NamedExport).toBeTypeOf('function')

@@ -1,4 +1,4 @@
-import { createElement } from 'react'
+import { createElement, type ComponentProps } from 'react'
 import { render } from 'react-email'
 import { describe, expect, test } from 'vitest'
 import { CtaButton, MailLayout } from './mail-layout.tsx'
@@ -58,7 +58,7 @@ describe('mail layout polish renders', () => {
           brand: 'Lumina',
           footer: 'Pie de página',
           copyright: '© 2026 Lumina',
-        },
+        } as ComponentProps<typeof MailLayout>,
         createElement(CtaButton, { href: ctaHref, label: 'Continuar' })
       )
     )
@@ -94,8 +94,7 @@ describe('mail layout polish renders', () => {
         footer: 'Footer',
         copyright: '© 2026 Lumina',
         lang: 'en',
-        children: null,
-      })
+      } as ComponentProps<typeof MailLayout>)
     )
 
     expect(html).toMatch(/<html[^>]*\slang="en"/i)
