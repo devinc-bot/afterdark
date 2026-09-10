@@ -57,6 +57,7 @@ export class MailTemplatesService {
         ignore,
         footer,
         copyright,
+        lang: language,
       }),
       subject,
       [body, expires, securityWordNote, `${cta}: ${input.url}`, ignore, footer]
@@ -97,6 +98,7 @@ export class MailTemplatesService {
         ignore,
         footer,
         copyright,
+        lang: language,
       }),
       subject,
       [body, expires, `${cta}: ${input.url}`, ignore, footer].filter(Boolean).join('\n\n')
@@ -135,6 +137,7 @@ export class MailTemplatesService {
         ignore,
         footer,
         copyright,
+        lang: language,
       }),
       subject,
       [body, expires, `${cta}: ${input.url}`, ignore, footer].filter(Boolean).join('\n\n')
@@ -166,6 +169,7 @@ export class MailTemplatesService {
         ctaUrl: input.ctaUrl,
         footer,
         copyright,
+        lang: language,
       }),
       subject,
       [title, body, `${cta}: ${input.ctaUrl}`, footer].join('\n\n')

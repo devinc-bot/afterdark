@@ -41,6 +41,7 @@
 | 033 | `legal-acceptance-on-register`     | Aceptación legal en registro                      | `in-progress` | `api`, `web`, `dashboard`, `db`, `types`, `validators`, `i18n` | Checkboxes + diálogo de términos/privacidad publicados en registro email y Google; persistir `account_legal_acceptances`. Ver `spec/features/active/033-legal-acceptance-on-register/`. |
 | 034 | `profile-avatar-upload`            | Avatar de perfil + layout R2                      | `done`        | `api`, `web`, `dashboard`, `validators`, `types`, `i18n` | Crop + upload 256×256 WebP para `user`/`owner`; keys jerárquicas `events/`, `locations/`, `users/avatars/`; sin migración histórica ni staff upload. Ver `spec/features/archive/034-profile-avatar-upload/`. |
 | 034 | `legal-reacceptance-on-publish`    | Reaceptar legales tras publicar                   | `draft`       | `api`, `web`, `dashboard`, `db`, `types`, `validators`, `i18n` | Cuentas `user`/`owner` existentes deben aceptar solo los docs republished; página dedicada + API. Staff/admin fuera. Depende de registro legal (`033-legal-acceptance-on-register`). |
+| 035 | `aws-ses-mail`                     | Migración mail Resend → AWS SES                   | `done`        | `api`                                                   | Reemplazo duro del adaptador Resend por SESv2 (`sa-east-1`); keys opcionales + default chain; templates/use cases intactos. Smoke live diferido hasta identidad SES. Ver `spec/features/active/035-aws-ses-mail/`. |
 
 ## Status
 
@@ -91,6 +92,7 @@
 033-legal-acceptance-on-register     →  requiere 001 (auth-sessions), 018, 022 (Google en registro)
 034-profile-avatar-upload            →  requiere 004 (owner-settings), 015 (files-module); web settings + 001
 034-legal-reacceptance-on-publish    →  requiere 033-legal-acceptance-on-register
+035-aws-ses-mail                     →  reemplaza adaptador de 019 (email-service); sin cambio de templates/call sites
 ```
 
 ## Decisiones de prioridad

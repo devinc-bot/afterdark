@@ -21,6 +21,7 @@ import { FormSection } from '~/modules/common/components/form-section'
 import { getUserInitials } from '~/modules/common/utils/app-shell-user.utils'
 import { useSettingsForm } from '~/modules/owner/hooks/settings-form-context'
 import { useProfileAvatar } from '~/modules/owner/hooks/use-profile-avatar'
+import { EmailChangeSupportHint } from '~/modules/settings/components/email-change-support-hint'
 
 export function ProfileSettingsSection() {
   const { t } = useTranslation('settings')
@@ -335,7 +336,10 @@ export function ProfileSettingsSection() {
             value={user.email}
             aria-readonly="true"
           />
-          <p className="mt-2 text-sm text-ink-muted">{t('owner.profile.emailHint')}</p>
+          <EmailChangeSupportHint
+            hintKey="owner.profile.emailHint"
+            subjectKey="owner.profile.emailSupportSubject"
+          />
         </Field>
 
         <div className="flex flex-col items-start gap-1">

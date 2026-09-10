@@ -8,7 +8,7 @@ export class MailConfigService {
   constructor(@Inject(TranslationService) private readonly ts: TranslationService) {}
 
   isConfigured(): boolean {
-    return Boolean(ENV.RESEND_API_KEY && ENV.MAIL_FROM)
+    return ENV.MAIL_FROM.trim().length > 0
   }
 
   assertConfigured(): void {

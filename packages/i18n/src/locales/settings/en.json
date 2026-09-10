@@ -98,7 +98,8 @@
       "state": "State",
       "city": "City",
       "email": "Email address",
-      "emailHint": "To change your email, contact support.",
+      "emailHint": "To change your email, <supportLink>write to {{supportEmail}}</supportLink>.",
+      "emailSupportSubject": "Email change request",
       "password": "Password",
       "changePassword": "Change password",
       "passwordHint": "You'll soon be able to change it from here.",
@@ -121,7 +122,8 @@
       "lastName": "Last name",
       "phone": "Phone",
       "email": "Email address",
-      "emailHint": "To change your email, contact support.",
+      "emailHint": "To change your email, <supportLink>write to {{supportEmail}}</supportLink>.",
+      "emailSupportSubject": "Email change request",
       "avatarFallback": "User"
     }
   },
@@ -158,7 +160,6 @@
       "phone": "Phone",
       "email": "Email address",
       "emailHint": "To change your email, <supportLink>write to {{supportEmail}}</supportLink>.",
-      "supportEmail": "soporte@eventflow.app",
       "emailSupportSubject": "Email change request"
     },
     "actions": {

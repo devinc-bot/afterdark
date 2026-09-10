@@ -12,10 +12,10 @@ import { createRateLimitPolicy } from './rate-limit.policy'
 export const envSchema = z
   .object({
     ...uploadEnvSchema.shape,
-    ...mailEnvSchema.shape,
     ...googleOauthEnvSchema.shape,
     ...mercadoPagoEnvSchema.shape,
   })
+  .and(mailEnvSchema)
   .and(apiConfigSchema)
 
 type Env = z.infer<typeof envSchema>
