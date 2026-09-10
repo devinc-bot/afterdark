@@ -3,8 +3,12 @@ import { tanstackStart } from '@tanstack/react-start/plugin/vite'
 import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
 import tsConfigPaths from 'vite-tsconfig-paths'
+import { z } from 'zod'
 
-const DASHBOARD_BUILD_ENV_KEY = 'VITE_API_URL'
+const DASHBOARD_BUILD_ENV_KEYS = {
+  apiUrl: 'VITE_API_URL',
+  supportEmail: 'VITE_SUPPORT_EMAIL',
+} as const
 
 const DASHBOARD_DEVELOPMENT_SERVER = {
   host: '0.0.0.0',
@@ -14,23 +18,38 @@ const DASHBOARD_DEVELOPMENT_SERVER = {
   apiTarget: 'http://localhost:3000',
 } as const
 
-function validateDashboardBuildEnv(value: string | undefined) {
+function validateBuildUrl(name: string, value: string | undefined) {
   if (!value) {
-    throw new Error(
-      `Missing required dashboard build environment variable: ${DASHBOARD_BUILD_ENV_KEY}`
-    )
+    throw new Error(`Missing required dashboard build environment variable: ${name}`)
   }
 
   try {
     new URL(value)
   } catch {
-    throw new Error(`Invalid dashboard build environment variable: ${DASHBOARD_BUILD_ENV_KEY}`)
+    throw new Error(`Invalid dashboard build environment variable: ${name}`)
+  }
+}
+
+function validateBuildEmail(name: string, value: string | undefined) {
+  // Validate with zod directly — do not import app env.schema (pulls @repo/validators .ts).
+  const result = z.email().safeParse(value)
+
+  if (!result.success) {
+    throw new Error(
+      value
+        ? `Invalid dashboard build environment variable: ${name}`
+        : `Missing required dashboard build environment variable: ${name}`
+    )
   }
 }
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
-  validateDashboardBuildEnv(env[DASHBOARD_BUILD_ENV_KEY])
+  validateBuildUrl(DASHBOARD_BUILD_ENV_KEYS.apiUrl, env[DASHBOARD_BUILD_ENV_KEYS.apiUrl])
+  validateBuildEmail(
+    DASHBOARD_BUILD_ENV_KEYS.supportEmail,
+    env[DASHBOARD_BUILD_ENV_KEYS.supportEmail]
+  )
 
   return {
     plugins: [

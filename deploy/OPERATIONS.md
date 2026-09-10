@@ -13,13 +13,13 @@ not create cloud resources, DNS zones, VPS hosts, or Neon databases.
 
 ## Prerequisites
 
-| Area               | Required state                                                                                                                              |
-| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| DNS and TLS        | `WEB_HOST`, `DASHBOARD_HOST`, `ADMIN_HOST`, and `API_HOST` resolve to the matching VPS. Caddy obtains and renews TLS certificates.          |
-| VPS                | Docker Engine with Compose v2, read-only GHCR access, `/opt/app` checkout, and ports 80/443 exposed through the firewall.                   |
-| Neon               | Staging and production use separate databases; retain a recovery point before destructive migrations.                                       |
-| GitHub Environment | Public `VITE_API_URL` and `VITE_DASHBOARD_URL` variables; `VPS_HOST`, `VPS_USER`, `VPS_SSH_PRIVATE_KEY`, and `VPS_SSH_KNOWN_HOSTS` secrets. |
-| Production         | The `production` Environment must require protected approval before a deployment job starts.                                                |
+| Area               | Required state                                                                                                                                                     |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| DNS and TLS        | `WEB_HOST`, `DASHBOARD_HOST`, `ADMIN_HOST`, and `API_HOST` resolve to the matching VPS. Caddy obtains and renews TLS certificates.                                 |
+| VPS                | Docker Engine with Compose v2, read-only GHCR access, `/opt/app` checkout, and ports 80/443 exposed through the firewall.                                          |
+| Neon               | Staging and production use separate databases; retain a recovery point before destructive migrations.                                                              |
+| GitHub Environment | Public `VITE_API_URL`, `VITE_DASHBOARD_URL`, and `VITE_SUPPORT_EMAIL` variables; `VPS_HOST`, `VPS_USER`, `VPS_SSH_PRIVATE_KEY`, and `VPS_SSH_KNOWN_HOSTS` secrets. |
+| Production         | The `production` Environment must require protected approval before a deployment job starts.                                                                       |
 
 Only Caddy publishes ports 80 and 443. API and frontend containers, PostgreSQL migrations, and all
 runtime secrets stay on the internal Compose network or host filesystem.
@@ -48,8 +48,10 @@ runtime behavior as production while retaining separate domains, credentials, an
 migrator, web, dashboard, and admin. The workflow saves the resolved immutable digests and Trivy
 SARIF report as artifacts. Never deploy `latest`.
 
-Frontend public URLs are embedded at build time. A changed `VITE_API_URL` or
-`VITE_DASHBOARD_URL` requires republishing the affected frontend images for that environment.
+Frontend public URLs and the support email are embedded at build time. A changed
+`VITE_API_URL` requires republishing the affected frontend images; a changed
+`VITE_DASHBOARD_URL` requires republishing the `web` image; a changed `VITE_SUPPORT_EMAIL`
+requires republishing the `web` and `dashboard` images for that environment.
 
 ## Deployment And Migrations
 

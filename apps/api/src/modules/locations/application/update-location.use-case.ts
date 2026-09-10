@@ -46,7 +46,7 @@ export class UpdateLocationUseCase {
       this.ts.translateError('location.TOO_MANY_IMAGES', { max: LOCATION_IMAGE_MAX_COUNT })
     )
 
-    const uploadedImages = await this.locationImages.upload(files)
+    const uploadedImages = await this.locationImages.upload(files, documentId, keepImageIds.length)
 
     try {
       const locationData = await updateLocationWithAddress(

@@ -1,11 +1,124 @@
 import { expect, test } from 'vitest'
 import { envSchema } from './env'
-import { apiConfigSchema } from './env.schema'
+import { apiConfigSchema, mailEnvSchema, uploadEnvSchema } from './env.schema'
 import {
   RATE_LIMIT_POLICY_DEFAULTS,
   RATE_LIMIT_PROFILE,
   createRateLimitPolicy,
 } from './rate-limit.policy'
+
+const validMailEnv = {
+  AWS_REGION: 'sa-east-1',
+  AWS_ACCESS_KEY_ID: '',
+  AWS_SECRET_ACCESS_KEY: '',
+  MAIL_FROM: 'no-reply@example.test',
+  MAIL_SMOKE_TO: 'smoke@example.test',
+}
+
+test('mail env accepts AWS_REGION with empty paired AWS keys', () => {
+  const env = mailEnvSchema.parse(validMailEnv)
+
+  expect(env).toMatchObject({
+    AWS_REGION: 'sa-east-1',
+    AWS_ACCESS_KEY_ID: '',
+    AWS_SECRET_ACCESS_KEY: '',
+    MAIL_FROM: 'no-reply@example.test',
+    MAIL_SMOKE_TO: 'smoke@example.test',
+  })
+  expect(env).not.toHaveProperty('RESEND_API_KEY')
+})
+
+test('mail env accepts both AWS access key and secret set together', () => {
+  const env = mailEnvSchema.parse({
+    ...validMailEnv,
+    AWS_ACCESS_KEY_ID: 'AKIATESTACCESSKEY',
+    AWS_SECRET_ACCESS_KEY: 'test-secret-access-key',
+  })
+
+  expect(env).toMatchObject({
+    AWS_REGION: 'sa-east-1',
+    AWS_ACCESS_KEY_ID: 'AKIATESTACCESSKEY',
+    AWS_SECRET_ACCESS_KEY: 'test-secret-access-key',
+  })
+})
+
+function expectAwsCredentialPairingFailure(
+  result: ReturnType<typeof mailEnvSchema.safeParse>
+): void {
+  expect(result.success).toBe(false)
+  if (result.success) {
+    return
+  }
+
+  const issuePaths = result.error.issues.flatMap((issue) => issue.path.map(String))
+  const issueMessages = result.error.issues.map((issue) => issue.message)
+  expect(
+    issuePaths.some((path) => path.includes('AWS_')) ||
+      issueMessages.some((message) => /AWS_|pair|access key|secret/i.test(message))
+  ).toBe(true)
+}
+
+test('mail env rejects an unpaired AWS access key', () => {
+  expectAwsCredentialPairingFailure(
+    mailEnvSchema.safeParse({
+      ...validMailEnv,
+      AWS_ACCESS_KEY_ID: 'AKIATESTACCESSKEY',
+      AWS_SECRET_ACCESS_KEY: '',
+    })
+  )
+})
+
+test('mail env rejects an unpaired AWS secret access key', () => {
+  expectAwsCredentialPairingFailure(
+    mailEnvSchema.safeParse({
+      ...validMailEnv,
+      AWS_ACCESS_KEY_ID: '',
+      AWS_SECRET_ACCESS_KEY: 'test-secret-access-key',
+    })
+  )
+})
+
+test('mail env schema does not include RESEND_API_KEY', () => {
+  expect(mailEnvSchema.shape).not.toHaveProperty('RESEND_API_KEY')
+  expect(mailEnvSchema.shape).toHaveProperty('AWS_REGION')
+  expect(mailEnvSchema.shape).toHaveProperty('AWS_ACCESS_KEY_ID')
+  expect(mailEnvSchema.shape).toHaveProperty('AWS_SECRET_ACCESS_KEY')
+  expect(mailEnvSchema.shape).toHaveProperty('MAIL_FROM')
+  expect(mailEnvSchema.shape).toHaveProperty('MAIL_SMOKE_TO')
+  expect(mailEnvSchema.shape).toHaveProperty('MAIL_REPLY_TO')
+})
+
+test('mail env defaults MAIL_REPLY_TO to empty string when omitted', () => {
+  const env = mailEnvSchema.parse(validMailEnv)
+
+  expect(env.MAIL_REPLY_TO).toBe('')
+})
+
+test('mail env accepts an explicit MAIL_REPLY_TO value', () => {
+  const env = mailEnvSchema.parse({
+    ...validMailEnv,
+    MAIL_REPLY_TO: 'support@example.test',
+  })
+
+  expect(env.MAIL_REPLY_TO).toBe('support@example.test')
+})
+
+test('mail env rejects an empty AWS_REGION', () => {
+  expect(mailEnvSchema.safeParse({ ...validMailEnv, AWS_REGION: '' }).success).toBe(false)
+})
+
+test('runtime env schema rejects unpaired AWS credentials', () => {
+  const result = envSchema.safeParse({
+    ...process.env,
+    AWS_REGION: 'sa-east-1',
+    AWS_ACCESS_KEY_ID: 'AKIATESTACCESSKEY',
+    AWS_SECRET_ACCESS_KEY: '',
+    MAIL_FROM: 'no-reply@example.test',
+    MAIL_SMOKE_TO: 'smoke@example.test',
+  })
+
+  expect(result.success).toBe(false)
+})
 
 const validConfig = {
   PORT: '3000',
@@ -20,6 +133,25 @@ const validConfig = {
   TRUST_PROXY_HOPS: '1',
   NODE_ENV: 'production',
 }
+
+test('upload env does not require or expose R2_UPLOAD_PREFIX', () => {
+  const env = uploadEnvSchema.parse({
+    R2_ACCOUNT_ID: 'test-account',
+    R2_ACCESS_KEY_ID: 'test-access-key',
+    R2_SECRET_ACCESS_KEY: 'test-secret-key',
+    R2_BUCKET: 'test-bucket',
+    R2_PUBLIC_BASE_URL: 'https://files.example.test',
+  })
+
+  expect(env).toMatchObject({
+    R2_ACCOUNT_ID: 'test-account',
+    R2_ACCESS_KEY_ID: 'test-access-key',
+    R2_SECRET_ACCESS_KEY: 'test-secret-key',
+    R2_BUCKET: 'test-bucket',
+    R2_PUBLIC_BASE_URL: 'https://files.example.test',
+  })
+  expect(env).not.toHaveProperty('R2_UPLOAD_PREFIX')
+})
 
 test('accepts same-site application and API origins with a configured proxy topology', () => {
   expect(apiConfigSchema.parse(validConfig)).toMatchObject({

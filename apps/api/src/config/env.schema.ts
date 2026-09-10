@@ -8,11 +8,40 @@ export const googleOauthEnvSchema = z.object({
   GOOGLE_CLIENT_SECRET: z.string(),
 })
 
-export const mailEnvSchema = z.object({
-  RESEND_API_KEY: z.string(),
-  MAIL_FROM: z.string(),
-  MAIL_SMOKE_TO: z.string(),
-})
+export const mailEnvSchema = z
+  .object({
+    AWS_REGION: z.string().min(1),
+    AWS_ACCESS_KEY_ID: z.string().default(''),
+    AWS_SECRET_ACCESS_KEY: z.string().default(''),
+    MAIL_FROM: z.string(),
+    MAIL_REPLY_TO: z.string().default(''),
+    MAIL_SMOKE_TO: z.string(),
+  })
+  .superRefine((config, context) => {
+    const hasAccessKeyId = config.AWS_ACCESS_KEY_ID.length > 0
+    const hasSecretAccessKey = config.AWS_SECRET_ACCESS_KEY.length > 0
+
+    if (hasAccessKeyId === hasSecretAccessKey) {
+      return
+    }
+
+    if (hasAccessKeyId) {
+      context.addIssue({
+        code: 'custom',
+        path: ['AWS_SECRET_ACCESS_KEY'],
+        message:
+          'AWS_SECRET_ACCESS_KEY must be set together with AWS_ACCESS_KEY_ID (pair both or leave both empty).',
+      })
+      return
+    }
+
+    context.addIssue({
+      code: 'custom',
+      path: ['AWS_ACCESS_KEY_ID'],
+      message:
+        'AWS_ACCESS_KEY_ID must be set together with AWS_SECRET_ACCESS_KEY (pair both or leave both empty).',
+    })
+  })
 
 export const mercadoPagoEnvSchema = z.object({
   MERCADOPAGO_ACCESS_TOKEN: z.string(),
@@ -29,7 +58,6 @@ export const uploadEnvSchema = z.object({
   R2_SECRET_ACCESS_KEY: z.string().min(1),
   R2_BUCKET: z.string().min(1),
   R2_PUBLIC_BASE_URL: z.url(),
-  R2_UPLOAD_PREFIX: z.string().default('images'),
 })
 
 export const MODE = {

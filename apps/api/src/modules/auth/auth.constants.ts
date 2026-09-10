@@ -35,6 +35,7 @@ export const GOOGLE_OAUTH_ERROR = {
   CANCELLED: 'google_cancelled',
   FAILED: 'google_failed',
   PENDING_APPROVAL: 'google_pending_approval',
+  REGISTER_REQUIRED: 'register_required',
 } as const
 
 export type GoogleOauthErrorCode = (typeof GOOGLE_OAUTH_ERROR)[keyof typeof GOOGLE_OAUTH_ERROR]

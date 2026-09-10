@@ -9,6 +9,7 @@ import {
   findAuthAccountByEmail,
   findRoleByName,
   findUserRegistrationTokenByToken,
+  insertAccountLegalAcceptances,
   markUserRegistrationTokenUsed,
   registerAccount,
 } from '@repo/db'
@@ -16,6 +17,11 @@ import { AUTH_ERROR_CODE } from '@repo/i18n'
 import { TranslationService } from '@repo/i18n/server'
 import { AUTH_PROVIDER, USER_ROLE } from '@repo/types'
 import type { ConfirmUserRegistrationInput } from '@repo/validators'
+import {
+  loadPublishedRegistrationDocumentIds,
+  recordRegistrationLegalAcceptances,
+  USER_REGISTRATION_LEGAL_DOCUMENT_TYPES,
+} from './record-registration-legal-acceptances.ts'
 import {
   AuthAccountService,
   type AuthenticatedSession,
@@ -57,6 +63,11 @@ export class ConfirmUserRegistrationUseCase {
       }
 
       if (!registrationToken.usedAt) {
+        await recordRegistrationLegalAcceptances(
+          this.ts,
+          existingAccount.account.id,
+          USER_REGISTRATION_LEGAL_DOCUMENT_TYPES
+        )
         await markUserRegistrationTokenUsed(registrationToken.id)
       }
 
@@ -96,6 +107,11 @@ export class ConfirmUserRegistrationUseCase {
       )
     }
 
+    const legalDocumentIds = await loadPublishedRegistrationDocumentIds(
+      this.ts,
+      USER_REGISTRATION_LEGAL_DOCUMENT_TYPES
+    )
+
     await registerAccount({
       email: registrationToken.email,
       hashedPassword: registrationToken.passwordHash,
@@ -110,8 +126,6 @@ export class ConfirmUserRegistrationUseCase {
       },
     })
 
-    await markUserRegistrationTokenUsed(registrationToken.id)
-
     const created = await findAuthAccountByEmail(registrationToken.email)
 
     if (!created) {
@@ -119,6 +133,12 @@ export class ConfirmUserRegistrationUseCase {
         this.ts.translateError(AUTH_ERROR_CODE.ROLE_NOT_CONFIGURED)
       )
     }
+
+    await insertAccountLegalAcceptances({
+      accountId: created.account.id,
+      legalDocumentIds,
+    })
+    await markUserRegistrationTokenUsed(registrationToken.id)
 
     return this.accounts.createSession(created, metadata)
   }

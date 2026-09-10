@@ -5,6 +5,7 @@ import { WEB_ROUTES } from '~/modules/common/constants/routes'
 import { refreshAuthSession } from '~/modules/common/services/session.service'
 import { useSessionStore } from '~/modules/common/stores/session.store'
 import { saveAuthSession } from '~/modules/auth/utils/auth-storage.utils'
+import { resolvePostAuthPath } from '~/modules/legal-documents/services/legal-documents.service'
 
 export const Route = createFileRoute('/auth/callback')({
   component: AuthCallbackPage,
@@ -23,7 +24,8 @@ function AuthCallbackPage() {
       try {
         saveAuthSession(await refreshAuthSession())
         await useSessionStore.getState().loadSession()
-        await navigate({ to: WEB_ROUTES.home(), replace: true })
+        const to = await resolvePostAuthPath(WEB_ROUTES.home())
+        await navigate({ to: to as '/', replace: true })
       } catch {
         await navigate({
           to: WEB_ROUTES.login(),

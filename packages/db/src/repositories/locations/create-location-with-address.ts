@@ -6,12 +6,14 @@ import type { LocationUpsertInput, LocationWithAddress } from '@repo/types'
 
 export async function createLocationWithAddress(
   ownerId: number,
-  input: LocationUpsertInput
+  input: LocationUpsertInput,
+  documentId?: string
 ): Promise<LocationWithAddress> {
   return db.transaction(async (tx: Transaction) => {
     const [location] = await tx
       .insert(locations)
       .values({
+        documentId,
         name: input.name,
         capacity: input.capacity,
         description: input.description,

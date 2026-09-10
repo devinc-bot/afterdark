@@ -1,4 +1,4 @@
-import { createElement } from 'react'
+import { createElement, type ComponentProps } from 'react'
 import { render } from 'react-email'
 import { describe, expect, test } from 'vitest'
 import { CtaButton, MailLayout } from './mail-layout.tsx'
@@ -26,8 +26,7 @@ function isRaisedGradientBorderContainer(style: string): boolean {
     /linear-gradient\(\s*135deg\s*,\s*transparent\s*,\s*#dcff02\s*,\s*transparent\s*\)/i.test(style)
   const hasRaisedFillGradient = /linear-gradient\(\s*#1e1f1c\s*,\s*#1e1f1c\s*\)/i.test(style)
   const hasBorderBoxOrigin = /background-origin:\s*border-box/i.test(style)
-  const hasPaddingThenBorderClip =
-    /background-clip:\s*padding-box\s*,\s*border-box/i.test(style)
+  const hasPaddingThenBorderClip = /background-clip:\s*padding-box\s*,\s*border-box/i.test(style)
 
   return (
     hasTransparentBorder &&
@@ -81,14 +80,17 @@ describe('mail layout polish renders', () => {
   test('MailLayout renders with 135deg transparent→primary→transparent border and citrus on-primary CTA', async () => {
     const ctaHref = 'https://example.com/continue'
     const html = await render(
-      createElement(MailLayout, {
-        preview: 'Vista previa de prueba',
-        title: 'Título de prueba',
-        brand: 'Lumina',
-        footer: 'Pie de página',
-        copyright: '© 2026 Lumina',
-        children: createElement(CtaButton, { href: ctaHref, label: 'Continuar' }),
-      })
+      createElement(
+        MailLayout,
+        {
+          preview: 'Vista previa de prueba',
+          title: 'Título de prueba',
+          brand: 'Lumina',
+          footer: 'Pie de página',
+          copyright: '© 2026 Lumina',
+        } as ComponentProps<typeof MailLayout>,
+        createElement(CtaButton, { href: ctaHref, label: 'Continuar' })
+      )
     )
 
     expect(html).toMatch(/<html[\s>]/i)
@@ -127,8 +129,7 @@ describe('mail layout polish renders', () => {
         footer: 'Footer',
         copyright: '© 2026 Lumina',
         lang: 'en',
-        children: null,
-      })
+      } as ComponentProps<typeof MailLayout>)
     )
 
     expect(html).toMatch(/<html[^>]*\slang="en"/i)

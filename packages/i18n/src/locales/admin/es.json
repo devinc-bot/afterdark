@@ -11,6 +11,7 @@
     "signOut": "Cerrar sesión",
     "users": "Usuarios registrados",
     "errors": "Errores",
+    "legalDocuments": "Documentos legales",
     "settings": "Configuración",
     "theme": "Tema",
     "themeDark": "Oscuro",
@@ -18,7 +19,8 @@
   },
   "sections": {
     "users": "Usuarios registrados",
-    "errors": "Errores"
+    "errors": "Errores",
+    "legalDocuments": "Documentos legales"
   },
   "user": {
     "fallbackName": "Administrador"
@@ -27,6 +29,61 @@
     "label": "Admin",
     "title": "Tu espacio de administración está listo.",
     "description": "Las herramientas de gestión de la plataforma aparecerán acá a medida que estén disponibles."
+  },
+  "legalDocuments": {
+    "title": "Documentos legales",
+    "description": "Prepará el contenido legal para organizaciones y clientes web.",
+    "loading": "Cargando documentos legales",
+    "loadError": "No se pudieron cargar los documentos legales",
+    "retry": "Reintentar",
+    "save": "Guardar",
+    "saving": "Guardando",
+    "publish": "Publicar",
+    "publishing": "Publicando",
+    "saveError": "No se pudo guardar el borrador",
+    "publishError": "No se pudo publicar el documento",
+    "toast": {
+      "saveSuccess": {
+        "termsDashboard": "Se guardaron los términos y condiciones de organizaciones.",
+        "termsWeb": "Se guardaron los términos y condiciones de web.",
+        "privacyDashboard": "Se guardó la política de privacidad de organizaciones.",
+        "privacyWeb": "Se guardó la política de privacidad de web."
+      },
+      "publishSuccess": {
+        "termsDashboard": "Se publicaron los términos y condiciones de organizaciones.",
+        "termsWeb": "Se publicaron los términos y condiciones de web.",
+        "privacyDashboard": "Se publicó la política de privacidad de organizaciones.",
+        "privacyWeb": "Se publicó la política de privacidad de web."
+      },
+      "saveError": {
+        "termsDashboard": "No se pudieron guardar los términos y condiciones de organizaciones.",
+        "termsWeb": "No se pudieron guardar los términos y condiciones de web.",
+        "privacyDashboard": "No se pudo guardar la política de privacidad de organizaciones.",
+        "privacyWeb": "No se pudo guardar la política de privacidad de web."
+      },
+      "publishError": {
+        "termsDashboard": "No se pudieron publicar los términos y condiciones de organizaciones.",
+        "termsWeb": "No se pudieron publicar los términos y condiciones de web.",
+        "privacyDashboard": "No se pudo publicar la política de privacidad de organizaciones.",
+        "privacyWeb": "No se pudo publicar la política de privacidad de web."
+      }
+    },
+    "tabs": {
+      "terms": "Términos y condiciones",
+      "privacy": "Política de privacidad"
+    },
+    "organizations": {
+      "title": "Organizaciones",
+      "description": "Contenido dirigido a dueños y equipos que administran organizaciones.",
+      "termsEditorLabel": "Editor de términos y condiciones para organizaciones",
+      "privacyEditorLabel": "Editor de política de privacidad para organizaciones"
+    },
+    "web": {
+      "title": "Web",
+      "description": "Contenido dirigido a clientes que usan la experiencia pública de Repo.",
+      "termsEditorLabel": "Editor de términos y condiciones para web",
+      "privacyEditorLabel": "Editor de política de privacidad para web"
+    }
   },
   "errors": {
     "description": "Errores registrados por la API en los últimos 30 días.",

@@ -6,7 +6,7 @@
     "subtitle": "Accedé a tu cuenta para gestionar tus entradas.",
     "createAccount": "Crear cuenta",
     "email": "Correo",
-    "emailPlaceholder": "admin@eventflow.io",
+    "emailPlaceholder": "example@email.com",
     "password": "Contraseña",
     "passwordPlaceholder": "••••••••",
     "submit": "Iniciar sesión",
@@ -25,7 +25,7 @@
     "title": "Recuperar contraseña",
     "description": "Ingresá tu email y te enviamos un enlace para restablecer la contraseña.",
     "email": "Correo",
-    "emailPlaceholder": "admin@eventflow.io",
+    "emailPlaceholder": "example@email.com",
     "emailPlaceholderWeb": "maria@correo.com",
     "submit": "Enviar enlace",
     "submitting": "Enviando…",
@@ -68,7 +68,7 @@
     "lastName": "Apellido",
     "lastNamePlaceholder": "González",
     "email": "Correo corporativo",
-    "emailPlaceholder": "local@eventflow.io",
+    "emailPlaceholder": "example@email.com",
     "emailWeb": "Correo",
     "emailPlaceholderWeb": "maria@correo.com",
     "password": "Contraseña",
@@ -78,6 +78,20 @@
     "submit": "Crear cuenta",
     "submitting": "Creando…",
     "alreadyHaveAccount": "¿Ya tenés cuenta?",
+    "otherOptions": "Otras opciones de acceso",
+    "legal": {
+      "terms": "Acepto los términos y condiciones",
+      "privacy": "Acepto la política de privacidad",
+      "termsOpen": "Leer términos y condiciones",
+      "privacyOpen": "Leer política de privacidad",
+      "unavailable": "No se pudieron cargar los documentos legales requeridos.",
+      "required": "Tenés que aceptar los términos y la privacidad.",
+      "close": "Cerrar",
+      "dialogDescription": "Documento legal publicado.",
+      "legend": "Aceptación de documentos legales",
+      "loading": "Cargando documentos legales…",
+      "retry": "Reintentar"
+    },
     "checkEmail": {
       "title": "Revisá tu correo",
       "description": "Te enviamos un enlace a {email} para confirmar tu cuenta. El enlace vence en 60 minutos.",
@@ -104,6 +118,16 @@
       "fallback": "No pudimos crear tu cuenta. Intentá de nuevo en unos minutos."
     }
   },
+  "legalAcceptance": {
+    "metaTitle": "Documentos legales · {appName}",
+    "title": "Hay una versión nueva",
+    "description": "Actualizamos los documentos legales. Aceptá la versión vigente para seguir usando Lumina.",
+    "submit": "Aceptar y continuar",
+    "submitting": "Guardando…",
+    "required": "Marcá todos los documentos para continuar.",
+    "loadError": "No pudimos comprobar tus documentos legales. Intentá de nuevo.",
+    "submitError": "No pudimos registrar la aceptación. Intentá de nuevo."
+  },
   "logout": "Cerrar sesión",
   "google": {
     "continue": "Continuar con Google",
@@ -111,7 +135,8 @@
     "errors": {
       "emailExists": "Ya existe una cuenta con este correo.",
       "generic": "No se pudo continuar con Google. Intentá de nuevo.",
-      "pendingApproval": "Tu cuenta está pendiente de aprobación. Cuando un administrador la apruebe, vas a poder ingresar."
+      "pendingApproval": "Tu cuenta está pendiente de aprobación. Cuando un administrador la apruebe, vas a poder ingresar.",
+      "registerRequired": "Para crear una cuenta con Google, registrate y aceptá los términos y la privacidad."
     }
   },
   "session": {

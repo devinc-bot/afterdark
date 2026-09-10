@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common'
-import { ResendMailSender } from './adapters/resend.mail-sender'
+import { SesMailSender } from './adapters/ses.mail-sender'
 import { SendMailUseCase } from './application/send-mail.use-case'
 import { SendPasswordResetUseCase } from './application/send-password-reset.use-case'
 import { SendSmokeUseCase } from './application/send-smoke.use-case'
@@ -22,7 +22,7 @@ import { MAIL_SENDER } from './mail.tokens'
     SendSmokeUseCase,
     {
       provide: MAIL_SENDER,
-      useClass: ResendMailSender,
+      useClass: SesMailSender,
     },
   ],
   exports: [

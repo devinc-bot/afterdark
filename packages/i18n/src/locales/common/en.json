@@ -1,8 +1,8 @@
 {
-  "appName": "EventFlow",
-  "appNameDisplay": "EventFlow",
-  "appNameUpper": "EVENTFLOW",
-  "appNameAdmin": "EventFlow Admin",
+  "appName": "Lumina",
+  "appNameDisplay": "Lumina",
+  "appNameUpper": "Lumina",
+  "appNameAdmin": "Lumina Admin",
   "save": "Save",
   "cancel": "Cancel",
   "delete": "Delete",
@@ -56,6 +56,19 @@
     "light": "Light",
     "switchToDark": "Switch to dark theme",
     "switchToLight": "Switch to light theme"
+  },
+  "richEditor": {
+    "inputLabel": "Rich text editor",
+    "toolbarLabel": "Text formatting",
+    "bold": "Bold",
+    "italic": "Italic",
+    "strike": "Strikethrough",
+    "heading": "Heading",
+    "bulletList": "Bulleted list",
+    "orderedList": "Numbered list",
+    "blockquote": "Quote",
+    "undo": "Undo",
+    "redo": "Redo"
   },
   "pageError": {
     "title": "Something went wrong",

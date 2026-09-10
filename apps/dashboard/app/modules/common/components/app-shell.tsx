@@ -98,6 +98,7 @@ function resolveMobileHeaderTitle(
 
 function AppShellLayout({ children }: { children: React.ReactNode }) {
   const { t } = useTranslation('dashboard')
+  const { t: tAuth } = useTranslation('auth')
   const [signOutOpen, setSignOutOpen] = useState(false)
   const [isSigningOut, setIsSigningOut] = useState(false)
   const signOutInFlight = useRef(false)
@@ -153,10 +154,12 @@ function AppShellLayout({ children }: { children: React.ReactNode }) {
     void navigate({ to: settingsHref })
   }, [closeMobileSidebar, navigate, settingsHref])
 
-  const mobileHeaderTitle = useMemo(
-    () => resolveMobileHeaderTitle(pathname, primaryNav, t('nav.panel')),
-    [pathname, primaryNav, t]
-  )
+  const mobileHeaderTitle = useMemo(() => {
+    if (pathname === DASHBOARD_ROUTES.legalAcceptance()) {
+      return tAuth('legalAcceptance.title')
+    }
+    return resolveMobileHeaderTitle(pathname, primaryNav, t('nav.panel'))
+  }, [pathname, primaryNav, t, tAuth])
 
   const navUser = user
     ? {

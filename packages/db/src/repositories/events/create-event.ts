@@ -6,7 +6,10 @@ import { replaceEventFaqs } from './replace-event-faqs.ts'
 import { allocateSlug } from '../slug.ts'
 import type { EventUpsertInput, EventWithLocation } from '@repo/types'
 
-export async function createEvent(input: EventUpsertInput): Promise<EventWithLocation> {
+export async function createEvent(
+  input: EventUpsertInput,
+  documentId?: string
+): Promise<EventWithLocation> {
   return db.transaction(async (tx: Transaction) => {
     const now = new Date()
     const existingSlugs = await tx.select({ slug: events.slug }).from(events)
@@ -18,6 +21,7 @@ export async function createEvent(input: EventUpsertInput): Promise<EventWithLoc
     const [event] = await tx
       .insert(events)
       .values({
+        documentId,
         locationId: input.locationId,
         organizationId: input.organizationId,
         name: input.name,
