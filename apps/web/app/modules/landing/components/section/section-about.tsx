@@ -19,7 +19,7 @@ export function SectionAbout({ className }: SectionAboutProps) {
     >
       <Container>
         <Reveal>
-          <div className="overflow-hidden rounded-app bg-surface-container-low panel p-2">
+          <div className="overflow-hidden rounded-app bg-surface-container-low/40 p-2 panel backdrop-blur-2xl backdrop-saturate-150">
             <div className="grid gap-0 md:grid-cols-12">
               <div className="flex flex-col justify-center gap-5 px-margin-mobile py-10 md:col-span-5 md:px-10 lg:px-12 lg:py-14">
                 <h2 id="about-heading" className={cn(LANDING_HEADING, 'text-on-surface')}>

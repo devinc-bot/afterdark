@@ -1,4 +1,4 @@
-import { existsSync, readFileSync } from 'node:fs'
+import { readFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { expect, test } from 'vitest'
@@ -13,6 +13,7 @@ test('section-about is an elevated overlapping panel with local about image', ()
   expect(aboutSource).toMatch(/-mt-/)
   expect(aboutSource).toMatch(/rounded-app/)
   expect(aboutSource).toMatch(/surface-container/)
+  expect(aboutSource).toMatch(/backdrop-blur/)
   expect(aboutSource).not.toMatch(/rounded-\[1\./)
   expect(aboutSource).not.toMatch(/rounded-3xl/)
 })

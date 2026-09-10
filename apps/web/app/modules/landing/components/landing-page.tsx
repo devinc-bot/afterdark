@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { Link, Skeleton, VT, cn, vtStyle } from '@repo/ui'
+import { Link, Skeleton, cn } from '@repo/ui'
 import { useTranslation } from 'react-i18next'
 import { LandingHeader } from '~/modules/common/components/landing-header'
 import { WEB_ROUTES } from '~/modules/common/constants/routes'
@@ -47,7 +47,8 @@ export function LandingPage() {
 
       <LandingHeader />
 
-      <main id="contenido" style={vtStyle(VT.mainContent)}>
+      {/* No view-transition-name: it isolates stacking and breaks backdrop-blur on the about glass panel. */}
+      <main id="contenido">
         <SectionHero showAuthCtas={showAuthCtas || isLoading}>
           {isLoading ? (
             <div
