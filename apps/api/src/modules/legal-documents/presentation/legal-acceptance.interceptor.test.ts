@@ -1,5 +1,5 @@
 import 'reflect-metadata'
-import { Controller, ForbiddenException, Get } from '@nestjs/common'
+import { Controller, ForbiddenException } from '@nestjs/common'
 import type { CallHandler, ExecutionContext } from '@nestjs/common'
 import { Reflector } from '@nestjs/core'
 import { LEGAL_DOCUMENT_ERROR_CODE } from '@repo/i18n'
@@ -10,6 +10,7 @@ import { AllowStaleLegalAcceptance } from '../../common/decorators/allow-stale-l
 import { AuthController } from '../../auth/presentation/auth.controller.ts'
 import { SessionController } from '../../session/presentation/session.controller.ts'
 import { LegalDocumentsController } from './legal-documents.controller.ts'
+import { LegalAcceptanceInterceptor } from './legal-acceptance.interceptor.ts'
 
 const USER_PROFILE_DOCUMENT_ID = '1dbd7dc5-61ff-4e3d-b3b0-078aa18e2c37'
 const OWNER_PROFILE_DOCUMENT_ID = '2dbd7dc5-61ff-4e3d-b3b0-078aa18e2c38'
@@ -39,8 +40,6 @@ vi.mock('@repo/db', () => ({
     return [...state.staleTypes]
   },
 }))
-
-const { LegalAcceptanceInterceptor } = await import('./legal-acceptance.interceptor.ts')
 
 @Controller()
 class ProbeController {
@@ -83,7 +82,7 @@ function createContext(input: {
     switchToHttp: () => ({
       getRequest: () => ({ user: input.user }),
     }),
-  } as ExecutionContext
+  } as unknown as ExecutionContext
 }
 
 beforeEach(() => {
