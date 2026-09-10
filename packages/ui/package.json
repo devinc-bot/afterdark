@@ -45,6 +45,7 @@
     "lucide-react": "1.17.0",
     "maplibre-gl": "5.24.0",
     "react-day-picker": "10.0.1",
+    "react-easy-crop": "5.5.6",
     "recharts": "2.15.4",
     "sileo": "0.1.5",
     "tailwind-merge": "3.3.1"

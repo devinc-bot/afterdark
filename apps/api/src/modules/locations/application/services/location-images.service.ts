@@ -18,14 +18,26 @@ export class LocationImagesService {
     @Inject(TranslationService) private readonly ts: TranslationService
   ) {}
 
-  async upload(files: Express.Multer.File[]): Promise<UploadedLocationImage[]> {
+  async upload(
+    files: Express.Multer.File[],
+    locationDocumentId: string,
+    startIndex: number
+  ): Promise<UploadedLocationImage[]> {
     if (files.length === 0) {
       return []
     }
 
+    const uploads: UploadedLocationImage[] = []
+
     try {
-      return await Promise.all(files.map((file) => this.filesService.uploadImage(file)))
+      for (const [index, file] of files.entries()) {
+        const key = this.filesService.buildLocationImageKey(locationDocumentId, startIndex + index)
+        uploads.push(await this.filesService.uploadImageWithKey(file, key))
+      }
+
+      return uploads
     } catch {
+      await this.rollback(uploads)
       throw new InternalServerErrorException(this.ts.translateError('location.IMAGE_UPLOAD_FAILED'))
     }
   }

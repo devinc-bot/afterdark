@@ -1,3 +1,4 @@
+import { randomUUID } from 'node:crypto'
 import { Inject, Injectable, InternalServerErrorException } from '@nestjs/common'
 import { createLocationWithAddress } from '@repo/db'
 import type { LocationResponse } from '@repo/types'
@@ -29,16 +30,27 @@ export class CreateLocationUseCase {
       this.ts.translateError('location.TOO_MANY_IMAGES', { max: LOCATION_IMAGE_MAX_COUNT })
     )
 
-    const uploads = await this.locationImages.upload(files)
-    const row = await this.createLocationRecord(ownerId, input)
-    const images = await this.locationImages.saveNew(row.location.id, files, uploads)
+    const documentId = randomUUID()
+    const uploads = await this.locationImages.upload(files, documentId, 0)
 
-    return toLocationResponse(row.location, row.address, images)
+    try {
+      const row = await this.createLocationRecord(ownerId, input, documentId)
+      const images = await this.locationImages.saveNew(row.location.id, files, uploads)
+
+      return toLocationResponse(row.location, row.address, images)
+    } catch (error) {
+      await this.locationImages.rollback(uploads)
+      throw error
+    }
   }
 
-  private async createLocationRecord(ownerId: number, input: CreateLocationInput) {
+  private async createLocationRecord(
+    ownerId: number,
+    input: CreateLocationInput,
+    documentId: string
+  ) {
     try {
-      return await createLocationWithAddress(ownerId, toLocationUpsertInput(input))
+      return await createLocationWithAddress(ownerId, toLocationUpsertInput(input), documentId)
     } catch {
       throw new InternalServerErrorException(this.ts.translateError('location.CREATE_FAILED'))
     }
