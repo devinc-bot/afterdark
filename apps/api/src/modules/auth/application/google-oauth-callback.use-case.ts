@@ -93,7 +93,7 @@ export class GoogleOauthCallbackUseCase {
     const { role, app, legalAccepted } = statePayload
 
     try {
-      const profile = await this.googleOauth.exchangeCodeForProfile(input.code, app)
+      const profile = await this.googleOauth.exchangeCodeForProfile(input.code)
 
       const existingOauth = await findAuthAccountByProviderAccount(
         AUTH_PROVIDER.GOOGLE,

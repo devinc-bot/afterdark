@@ -495,7 +495,7 @@ describe('session issuance use cases', () => {
 
     const result = await useCase.execute({ code: 'code', state: 'state' }, metadata)
 
-    expect(googleOauth.exchangeCodeForProfile).toHaveBeenCalledWith('code', AUTH_OAUTH_APP.WEB)
+    expect(googleOauth.exchangeCodeForProfile).toHaveBeenCalledWith('code')
     expect(accounts.createSession).toHaveBeenCalledWith(account, metadata, AUTH_OAUTH_APP.WEB)
     expect(findLatestPublishedLegalDocumentByType).not.toHaveBeenCalled()
     expect(insertAccountLegalAcceptances).not.toHaveBeenCalled()
@@ -523,25 +523,23 @@ describe('session issuance use cases', () => {
       'https://accounts.google.com/authorization'
     )
 
-    expect(googleOauth.buildAuthorizationUrl).toHaveBeenCalledWith(state, app)
+    expect(googleOauth.buildAuthorizationUrl).toHaveBeenCalledWith(state)
   })
 
-  test.each([
-    [AUTH_OAUTH_APP.WEB, ENV.WEB_URL],
-    [AUTH_OAUTH_APP.DASHBOARD, ENV.DASHBOARD_URL],
-  ] as const)('uses the %s app proxy callback rather than the API host', (app, appUrl) => {
-    const service = new GoogleOauthService()
-    const buildAuthorizationUrl = service.buildAuthorizationUrl as (
-      state: string,
-      app: AuthOauthApp
-    ) => string
-    const authorizationUrl = new URL(buildAuthorizationUrl.call(service, 'signed-state', app))
-    const callbackUrl = authorizationUrl.searchParams.get('redirect_uri')
-    const callbackPath = buildApiPath(API_ROUTES.auth, API_ROUTES.auth.path.googleCallback())
+  test.each([AUTH_OAUTH_APP.WEB, AUTH_OAUTH_APP.DASHBOARD] as const)(
+    'uses the API host Google redirect_uri for %s rather than the app origin',
+    (app) => {
+      const service = new GoogleOauthService()
+      const callbackPath = buildApiPath(API_ROUTES.auth, API_ROUTES.auth.path.googleCallback())
+      const expectedRedirectUri = new URL(callbackPath, ENV.API_PUBLIC_URL).toString()
+      const authorizationUrl = new URL(service.buildAuthorizationUrl('signed-state'))
+      const callbackUrl = authorizationUrl.searchParams.get('redirect_uri')
 
-    expect(callbackUrl).toBe(new URL(callbackPath, appUrl).toString())
-    expect(callbackUrl).not.toBe(new URL(callbackPath, ENV.API_PUBLIC_URL).toString())
-  })
+      expect(service.getRedirectUri()).toBe(expectedRedirectUri)
+      expect(callbackUrl).toBe(expectedRedirectUri)
+      expect(callbackUrl).not.toBe(new URL(callbackPath, googleAppOrigin(app)).toString())
+    }
+  )
 
   test('exposes Google register_required contract helpers', () => {
     expect(GOOGLE_OAUTH_ERROR.REGISTER_REQUIRED).toBe('register_required')
@@ -608,7 +606,7 @@ describe('session issuance use cases', () => {
 
       const result = await useCase.execute({ code: 'code', state: 'state' }, metadata)
 
-      expect(googleOauth.exchangeCodeForProfile).toHaveBeenCalledWith('code', app)
+      expect(googleOauth.exchangeCodeForProfile).toHaveBeenCalledWith('code')
       expect(findLatestPublishedLegalDocumentByType).not.toHaveBeenCalled()
       expect(insertAccountLegalAcceptances).not.toHaveBeenCalled()
       expect(registerAccount).not.toHaveBeenCalled()

@@ -38,6 +38,6 @@ export class GoogleOauthStartUseCase {
       { expiresIn: GOOGLE_OAUTH_STATE_TTL }
     )
 
-    return this.googleOauth.buildAuthorizationUrl(state, input.app)
+    return this.googleOauth.buildAuthorizationUrl(state)
   }
 }
