@@ -18,14 +18,26 @@ export class EventImagesService {
     @Inject(TranslationService) private readonly ts: TranslationService
   ) {}
 
-  async upload(files: Express.Multer.File[]): Promise<UploadedEventImage[]> {
+  async upload(
+    files: Express.Multer.File[],
+    eventDocumentId: string,
+    startIndex: number
+  ): Promise<UploadedEventImage[]> {
     if (files.length === 0) {
       return []
     }
 
+    const uploads: UploadedEventImage[] = []
+
     try {
-      return await Promise.all(files.map((file) => this.filesService.uploadImage(file)))
+      for (const [index, file] of files.entries()) {
+        const key = this.filesService.buildEventImageKey(eventDocumentId, startIndex + index)
+        uploads.push(await this.filesService.uploadImageWithKey(file, key))
+      }
+
+      return uploads
     } catch {
+      await this.rollback(uploads)
       throw new InternalServerErrorException(this.ts.translateError('event.IMAGE_UPLOAD_FAILED'))
     }
   }

@@ -6,6 +6,12 @@ export {
   type AccountSessionsLabels,
   type AccountSessionsProps,
 } from './components/account-sessions.tsx'
+export {
+  AvatarCropDialog,
+  cropImageToBlob,
+  type AvatarCropDialogLabels,
+  type AvatarCropDialogProps,
+} from './components/avatar-crop-dialog.tsx'
 
 export {
   Accordion,

@@ -37,7 +37,10 @@
 | 030 | `testing-toolchain`                | Suite de testing moderna                          | `done`        | `api`, `web`, `dashboard`, `admin`, `packages`          | Vitest para unitarias/integración y Playwright Chromium para smoke E2E; React Testing Library + jsdom solo para componentes. Sin DB E2E ni cobertura en esta entrega. Coordina CI con `029`.                                                                                                                                                                                                                                                 |
 | 031 | `password-reset-token-retention`   | Retención de tokens de reset                      | `in-progress` | `api`, `db`                                             | Eliminar atómicamente el token de reset consumido; el cron conserva limpieza solo para tokens pendientes vencidos.                                                                                                                                                                                                                                                                                                                            |
 | 032 | `account-session-management`       | Gestión de sesiones de cuenta                     | `approved`    | `api`, `web`, `dashboard`, `admin`, `db`, `types`, `i18n` | Sección de sesiones por app con sesión actual protegida, historial retenido y revocación remota efectiva en el próximo refresh. Depende de `001`. Ver `spec/features/active/032-account-session-management/`. |
-| 034 | `legal-reacceptance-on-publish` | Reaceptar legales tras publicar | `draft`        | `api`, `web`, `dashboard`, `db`, `types`, `validators`, `i18n` | Cuentas `user`/`owner` existentes deben aceptar solo los docs republished; página dedicada + API. Staff/admin fuera. Depende de registro legal (`033-legal-acceptance-on-register`). |
+| 033 | `api-rate-limiting`                | Rate limiting de API                              | `done`        | `api`, `i18n`                                           | Throttler global por IP + guard por `user.sub` en rutas sensibles; storage en memoria por instancia. Depende de `001`. Ver `spec/features/archive/033-api-rate-limiting/`. |
+| 033 | `legal-acceptance-on-register`     | Aceptación legal en registro                      | `in-progress` | `api`, `web`, `dashboard`, `db`, `types`, `validators`, `i18n` | Checkboxes + diálogo de términos/privacidad publicados en registro email y Google; persistir `account_legal_acceptances`. Ver `spec/features/active/033-legal-acceptance-on-register/`. |
+| 034 | `profile-avatar-upload`            | Avatar de perfil + layout R2                      | `done`        | `api`, `web`, `dashboard`, `validators`, `types`, `i18n` | Crop + upload 256×256 WebP para `user`/`owner`; keys jerárquicas `events/`, `locations/`, `users/avatars/`; sin migración histórica ni staff upload. Ver `spec/features/archive/034-profile-avatar-upload/`. |
+| 034 | `legal-reacceptance-on-publish`    | Reaceptar legales tras publicar                   | `draft`       | `api`, `web`, `dashboard`, `db`, `types`, `validators`, `i18n` | Cuentas `user`/`owner` existentes deben aceptar solo los docs republished; página dedicada + API. Staff/admin fuera. Depende de registro legal (`033-legal-acceptance-on-register`). |
 
 ## Status
 
@@ -84,7 +87,10 @@
 029-containerized-deployment         →  (sin deps; infraestructura transversal)
 030-testing-toolchain                →  coordina CI con 029; sin dependencia de producto
 032-account-session-management       →  requiere 001 (auth-sessions)
-034-legal-reacceptance-on-publish    →  requiere aceptación en registro (spec active/archive 033-legal-acceptance-on-register)
+033-api-rate-limiting                →  requiere 001 (auth-sessions); no cambia JWT global
+033-legal-acceptance-on-register     →  requiere 001 (auth-sessions), 018, 022 (Google en registro)
+034-profile-avatar-upload            →  requiere 004 (owner-settings), 015 (files-module); web settings + 001
+034-legal-reacceptance-on-publish    →  requiere 033-legal-acceptance-on-register
 ```
 
 ## Decisiones de prioridad

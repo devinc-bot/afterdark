@@ -1,4 +1,3 @@
-import { runtimeDatabaseEnvSchema } from '@repo/db/config/env'
 import { z } from 'zod'
 import {
   googleOauthEnvSchema,
@@ -12,7 +11,6 @@ import { createRateLimitPolicy } from './rate-limit.policy'
 
 export const envSchema = z
   .object({
-    ...runtimeDatabaseEnvSchema.shape,
     ...uploadEnvSchema.shape,
     ...mailEnvSchema.shape,
     ...googleOauthEnvSchema.shape,

@@ -29,7 +29,6 @@ export const uploadEnvSchema = z.object({
   R2_SECRET_ACCESS_KEY: z.string().min(1),
   R2_BUCKET: z.string().min(1),
   R2_PUBLIC_BASE_URL: z.url(),
-  R2_UPLOAD_PREFIX: z.string().default('images'),
 })
 
 export const MODE = {

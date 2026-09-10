@@ -1,6 +1,7 @@
 import sharp from 'sharp'
 import {
   ALLOWED_IMAGE_MIME_TYPE,
+  AVATAR_OPTIMIZATION,
   IMAGE_EXTENSION_BY_MIME_TYPE,
   type AllowedImageMimeType,
 } from '@repo/validators'
@@ -45,6 +46,44 @@ export async function optimizeImage(
     })
 
   const optimizedBuffer = await encodeImage(pipeline, mimeType, options.quality).toBuffer()
+
+  return {
+    buffer: optimizedBuffer,
+    mimeType,
+    extension: IMAGE_EXTENSION_BY_MIME_TYPE[mimeType],
+  }
+}
+
+export async function optimizeImageAsWebp(
+  buffer: Buffer,
+  options: OptimizeImageOptions
+): Promise<OptimizedImage> {
+  const mimeType = ALLOWED_IMAGE_MIME_TYPE.WEBP
+  const optimizedBuffer = await sharp(buffer, { failOn: 'error' })
+    .rotate()
+    .resize(options.maxDimension, options.maxDimension, {
+      fit: 'inside',
+      withoutEnlargement: true,
+    })
+    .webp({ quality: options.quality })
+    .toBuffer()
+
+  return {
+    buffer: optimizedBuffer,
+    mimeType,
+    extension: IMAGE_EXTENSION_BY_MIME_TYPE[mimeType],
+  }
+}
+
+export async function optimizeAvatarImage(buffer: Buffer): Promise<OptimizedImage> {
+  const mimeType = ALLOWED_IMAGE_MIME_TYPE.WEBP
+  const optimizedBuffer = await sharp(buffer, { failOn: 'error' })
+    .rotate()
+    .resize(AVATAR_OPTIMIZATION.SIZE, AVATAR_OPTIMIZATION.SIZE, {
+      fit: 'cover',
+    })
+    .webp({ quality: AVATAR_OPTIMIZATION.QUALITY })
+    .toBuffer()
 
   return {
     buffer: optimizedBuffer,
