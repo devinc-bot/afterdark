@@ -55,7 +55,7 @@ export class FilesService implements OnModuleInit {
   }
 
   buildAvatarKey(profileDocumentId: string): string {
-    return `avatars/${profileDocumentId}-${randomUUID()}.webp`
+    return `users/avatars/${profileDocumentId}-${randomUUID()}.webp`
   }
 
   buildEventImageKey(eventDocumentId: string, imageIndex: number): string {
