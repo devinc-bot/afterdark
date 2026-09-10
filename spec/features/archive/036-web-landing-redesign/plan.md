@@ -4,23 +4,23 @@
 
 Recompose `apps/web` landing as an image-led brand surface:
 
-1. Replace hero video with a full-bleed local image.
-2. Point `LANDING_IMAGES` at `public/landing/*.png` assets generated for this feature.
-3. Slim the page: keep Hero → About/product image → How → Clarity → Events strip → Closing CTA → Organizers; drop or merge redundant Atmosphere/Pulse sections that repeat the same message.
-4. Keep Citrus Soft tokens; optionally restore primary citrus on primary CTAs where contrast allows (dark/light).
+1. Replace hero video with a full-bleed local image (`LANDING_IMAGES.hero` → `/landing/hero.png`).
+2. Point `LANDING_IMAGES` at `public/landing/*` assets (hero, about, events).
+3. Slim the page: Hero → About → How → Clarity → Events → Closing CTA → Organizers; drop Atmosphere/Pulse.
+4. Keep Citrus Soft tokens; primary citrus on primary CTAs where contrast allows (dark/light).
 
 ## Affected layers
 
 - `apps/web` landing module (components, constants)
 - `apps/web/public/landing` assets
-- Possibly `packages/i18n` landing locale keys if sections are removed
+- `packages/i18n` landing locale keys when sections are removed
 - No API, DB, validators, or types changes
 
 ## Technical notes
 
-- Remove `LANDING_VIDEOS` usage from `section-hero.tsx`; delete or leave unused `videos.ts` / `hero.mp4` unreferenced.
+- Remove `LANDING_VIDEOS` / `hero.mp4` from web landing; hero is `<img>` only with soft gradient scrim.
 - Prefer existing `Reveal` / layout tokens; avoid new card grids.
-- Header anchors must stay consistent with remaining sections.
+- Header nav anchors: `#eventos`, `#como-funciona`, `#claridad` (organizers via `#organizadores` / footer).
 
 ## Verification
 
