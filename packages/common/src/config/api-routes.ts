@@ -17,6 +17,7 @@ export const API_DASHBOARD_PREFIX = '/dashboard' as const
 export const API_ERRORS_PREFIX = '/errors' as const
 export const API_USERS_PREFIX = '/users' as const
 export const API_ORGANIZATIONS_PREFIX = '/organizations' as const
+export const API_LEGAL_DOCUMENTS_PREFIX = '/legal-documents' as const
 const routeSegment = (value: string) => (value.startsWith(':') ? value : encodeURIComponent(value))
 
 export const API_ROUTES = {
@@ -182,6 +183,18 @@ export const API_ROUTES = {
     prefix: API_ORGANIZATIONS_PREFIX,
     path: {
       getPublic: (slug: string) => `/public/${routeSegment(slug)}` as const,
+    },
+  },
+  legalDocuments: {
+    prefix: API_LEGAL_DOCUMENTS_PREFIX,
+    path: {
+      list: () => '/' as const,
+      getPendingAcceptance: () => '/me/pending' as const,
+      accept: () => '/me/accept' as const,
+      getByType: (type: string) => `/${routeSegment(type)}` as const,
+      getPublishedByType: (type: string) => `/public/${routeSegment(type)}` as const,
+      saveDraft: (type: string) => `/${routeSegment(type)}/draft` as const,
+      publish: (type: string) => `/${routeSegment(type)}/publish` as const,
     },
   },
 } as const

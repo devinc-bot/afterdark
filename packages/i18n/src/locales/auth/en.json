@@ -78,6 +78,20 @@
     "submit": "Create account",
     "submitting": "Creating…",
     "alreadyHaveAccount": "Already have an account?",
+    "otherOptions": "Other sign-in options",
+    "legal": {
+      "terms": "I accept the terms and conditions",
+      "privacy": "I accept the privacy policy",
+      "termsOpen": "Read terms and conditions",
+      "privacyOpen": "Read privacy policy",
+      "unavailable": "The required legal documents could not be loaded.",
+      "required": "You must accept the terms and the privacy policy.",
+      "close": "Close",
+      "dialogDescription": "Published legal document.",
+      "legend": "Legal document acceptance",
+      "loading": "Loading legal documents…",
+      "retry": "Retry"
+    },
     "checkEmail": {
       "title": "Check your email",
       "description": "We sent a link to {email} to confirm your account. The link expires in 60 minutes.",
@@ -104,6 +118,16 @@
       "fallback": "We couldn't create your account. Try again in a few minutes."
     }
   },
+  "legalAcceptance": {
+    "metaTitle": "Legal documents · {appName}",
+    "title": "There's a new version",
+    "description": "We updated the legal documents. Accept the current version to keep using Lumina.",
+    "submit": "Accept and continue",
+    "submitting": "Saving…",
+    "required": "Check every document to continue.",
+    "loadError": "We could not check your legal documents. Try again.",
+    "submitError": "We could not record your acceptance. Try again."
+  },
   "logout": "Sign out",
   "google": {
     "continue": "Continue with Google",
@@ -111,7 +135,8 @@
     "errors": {
       "emailExists": "An account with this email already exists.",
       "generic": "Could not continue with Google. Please try again.",
-      "pendingApproval": "Your account is pending approval. You'll be able to sign in once an administrator approves it."
+      "pendingApproval": "Your account is pending approval. You'll be able to sign in once an administrator approves it.",
+      "registerRequired": "To create an account with Google, register and accept the terms and privacy policy."
     }
   },
   "session": {

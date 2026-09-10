@@ -4,7 +4,12 @@ import { buildGoogleOauthStartUrl } from '@repo/common'
 import { AUTH_OAUTH_APP, USER_ROLE } from '@repo/types'
 import { API_URL } from '~/config/api'
 
-export function GoogleContinueButton() {
+type GoogleContinueButtonProps = {
+  disabled?: boolean
+  legalAccepted?: boolean
+}
+
+export function GoogleContinueButton({ disabled, legalAccepted }: GoogleContinueButtonProps) {
   const { t } = useTranslation('auth')
 
   return (
@@ -13,12 +18,18 @@ export function GoogleContinueButton() {
       variant="outline"
       size="lg"
       className="w-full"
+      disabled={disabled}
       onClick={() => {
+        if (disabled) {
+          return
+        }
+
         window.location.assign(
           buildGoogleOauthStartUrl({
             role: USER_ROLE.USER,
             app: AUTH_OAUTH_APP.WEB,
             apiUrl: API_URL,
+            ...(legalAccepted ? { legalAccepted: true } : {}),
           })
         )
       }}

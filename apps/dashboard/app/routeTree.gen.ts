@@ -21,6 +21,7 @@ import { Route as AppStaffRouteImport } from './routes/_app/staff'
 import { Route as AppSettingsRouteImport } from './routes/_app/settings'
 import { Route as AppSalesRouteImport } from './routes/_app/sales'
 import { Route as AppQrTicketRouteImport } from './routes/_app/qr-ticket'
+import { Route as AppLegalAcceptanceRouteImport } from './routes/_app/legal-acceptance'
 import { Route as AppDashboardRouteImport } from './routes/_app/dashboard'
 import { Route as NameTokenRouteImport } from './routes/$name.$token'
 import { Route as AppTicketsIndexRouteImport } from './routes/_app/tickets/index'
@@ -92,6 +93,11 @@ const AppQrTicketRoute = AppQrTicketRouteImport.update({
   path: '/qr-ticket',
   getParentRoute: () => AppRoute,
 } as any)
+const AppLegalAcceptanceRoute = AppLegalAcceptanceRouteImport.update({
+  id: '/legal-acceptance',
+  path: '/legal-acceptance',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppDashboardRoute = AppDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -158,6 +164,7 @@ export interface FileRoutesByFullPath {
   '/reset-password': typeof ResetPasswordRoute
   '/$name/$token': typeof NameTokenRoute
   '/dashboard': typeof AppDashboardRoute
+  '/legal-acceptance': typeof AppLegalAcceptanceRoute
   '/qr-ticket': typeof AppQrTicketRoute
   '/sales': typeof AppSalesRoute
   '/settings': typeof AppSettingsRoute
@@ -182,6 +189,7 @@ export interface FileRoutesByTo {
   '/reset-password': typeof ResetPasswordRoute
   '/$name/$token': typeof NameTokenRoute
   '/dashboard': typeof AppDashboardRoute
+  '/legal-acceptance': typeof AppLegalAcceptanceRoute
   '/qr-ticket': typeof AppQrTicketRoute
   '/sales': typeof AppSalesRoute
   '/settings': typeof AppSettingsRoute
@@ -208,6 +216,7 @@ export interface FileRoutesById {
   '/reset-password': typeof ResetPasswordRoute
   '/$name/$token': typeof NameTokenRoute
   '/_app/dashboard': typeof AppDashboardRoute
+  '/_app/legal-acceptance': typeof AppLegalAcceptanceRoute
   '/_app/qr-ticket': typeof AppQrTicketRoute
   '/_app/sales': typeof AppSalesRoute
   '/_app/settings': typeof AppSettingsRoute
@@ -234,6 +243,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/$name/$token'
     | '/dashboard'
+    | '/legal-acceptance'
     | '/qr-ticket'
     | '/sales'
     | '/settings'
@@ -258,6 +268,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/$name/$token'
     | '/dashboard'
+    | '/legal-acceptance'
     | '/qr-ticket'
     | '/sales'
     | '/settings'
@@ -283,6 +294,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/$name/$token'
     | '/_app/dashboard'
+    | '/_app/legal-acceptance'
     | '/_app/qr-ticket'
     | '/_app/sales'
     | '/_app/settings'
@@ -398,6 +410,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppQrTicketRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/legal-acceptance': {
+      id: '/_app/legal-acceptance'
+      path: '/legal-acceptance'
+      fullPath: '/legal-acceptance'
+      preLoaderRoute: typeof AppLegalAcceptanceRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/dashboard': {
       id: '/_app/dashboard'
       path: '/dashboard'
@@ -480,6 +499,7 @@ declare module '@tanstack/react-router' {
 
 interface AppRouteChildren {
   AppDashboardRoute: typeof AppDashboardRoute
+  AppLegalAcceptanceRoute: typeof AppLegalAcceptanceRoute
   AppQrTicketRoute: typeof AppQrTicketRoute
   AppSalesRoute: typeof AppSalesRoute
   AppSettingsRoute: typeof AppSettingsRoute
@@ -497,6 +517,7 @@ interface AppRouteChildren {
 
 const AppRouteChildren: AppRouteChildren = {
   AppDashboardRoute: AppDashboardRoute,
+  AppLegalAcceptanceRoute: AppLegalAcceptanceRoute,
   AppQrTicketRoute: AppQrTicketRoute,
   AppSalesRoute: AppSalesRoute,
   AppSettingsRoute: AppSettingsRoute,

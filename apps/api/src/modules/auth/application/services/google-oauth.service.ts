@@ -1,9 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common'
 import { API_ROUTES, buildApiPath } from '@repo/common'
-import type { AuthOauthApp } from '@repo/types'
 import { ENV } from '../../../../config/env'
 import { GOOGLE_OAUTH_SCOPES } from '../../auth.constants'
-import { getGoogleOauthAppOrigin } from '../../utils/google-oauth.utils'
 
 export type GoogleUserProfile = {
   providerAccountId: string
@@ -37,17 +35,17 @@ export class GoogleOauthService {
     return Boolean(ENV.GOOGLE_CLIENT_ID && ENV.GOOGLE_CLIENT_SECRET)
   }
 
-  getRedirectUri(app: AuthOauthApp): string {
+  getRedirectUri(): string {
     return new URL(
       buildApiPath(API_ROUTES.auth, API_ROUTES.auth.path.googleCallback()),
-      getGoogleOauthAppOrigin(app)
+      ENV.API_PUBLIC_URL
     ).toString()
   }
 
-  buildAuthorizationUrl(state: string, app: AuthOauthApp): string {
+  buildAuthorizationUrl(state: string): string {
     const url = new URL('https://accounts.google.com/o/oauth2/v2/auth')
     url.searchParams.set('client_id', ENV.GOOGLE_CLIENT_ID)
-    url.searchParams.set('redirect_uri', this.getRedirectUri(app))
+    url.searchParams.set('redirect_uri', this.getRedirectUri())
     url.searchParams.set('response_type', 'code')
     url.searchParams.set('scope', GOOGLE_OAUTH_SCOPES.join(' '))
     url.searchParams.set('state', state)
@@ -56,7 +54,7 @@ export class GoogleOauthService {
     return url.toString()
   }
 
-  async exchangeCodeForProfile(code: string, app: AuthOauthApp): Promise<GoogleUserProfile> {
+  async exchangeCodeForProfile(code: string): Promise<GoogleUserProfile> {
     const tokenResponse = await fetch('https://oauth2.googleapis.com/token', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -64,7 +62,7 @@ export class GoogleOauthService {
         code,
         client_id: ENV.GOOGLE_CLIENT_ID,
         client_secret: ENV.GOOGLE_CLIENT_SECRET,
-        redirect_uri: this.getRedirectUri(app),
+        redirect_uri: this.getRedirectUri(),
         grant_type: 'authorization_code',
       }),
     })
