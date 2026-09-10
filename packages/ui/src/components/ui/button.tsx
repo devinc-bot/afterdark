@@ -10,7 +10,6 @@ const buttonVariants = cva(
     'transition-[color,background-color,border-color,box-shadow,opacity,transform] duration-(--duration-instant) ease-(--ease-emphasized)',
     'active:scale-[0.98]',
     'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/25',
-
     'disabled:pointer-events-none disabled:opacity-50 disabled:active:scale-100',
     '[&_svg]:pointer-events-none [&_svg]:shrink-0',
     'motion-reduce:transition-none motion-reduce:active:scale-100',
@@ -18,7 +17,7 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: 'bg-primary text-primary-foreground shadow-sm hover:bg-primary/90',
+        default: 'bg-primary text-primary-foreground hover:bg-primary/90',
         destructive: 'bg-destructive text-white hover:bg-destructive/90',
         outline: 'border border-hairline-strong bg-surface-card text-ink hover:bg-surface-strong',
         gradient:

@@ -53,7 +53,10 @@ function published(type: PublicLegalDocumentResponse['type']): PublicLegalDocume
     type,
     version: 'v2',
     title: type,
-    content: { type: 'doc', content: [{ type: 'paragraph', content: [{ type: 'text', text: type }] }] },
+    content: {
+      type: 'doc',
+      content: [{ type: 'paragraph', content: [{ type: 'text', text: type }] }],
+    },
     publishedAt: new Date('2026-01-01T00:00:00Z'),
   }
 }
@@ -62,7 +65,9 @@ function renderPage() {
   const queryClient = new QueryClient({
     defaultOptions: { queries: { retry: false }, mutations: { retry: false } },
   })
-  render(createElement(QueryClientProvider, { client: queryClient }, createElement(LegalAcceptancePage)))
+  render(
+    createElement(QueryClientProvider, { client: queryClient }, createElement(LegalAcceptancePage))
+  )
   return queryClient
 }
 

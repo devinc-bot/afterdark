@@ -66,12 +66,7 @@ function LegalDocumentEditorPane({
 
   return (
     <div className="flex flex-col gap-4">
-      <RichEditor
-        value={value}
-        onChange={onChange}
-        editorAriaLabel={editorLabel}
-        scrollable
-      />
+      <RichEditor value={value} onChange={onChange} editorAriaLabel={editorLabel} scrollable />
       <div className="flex flex-wrap gap-3">
         <Button
           type="button"

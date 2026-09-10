@@ -25,18 +25,12 @@
     "ctaPrimary": "Create account",
     "ctaSecondary": "Sign in",
     "ctaLoading": "Loading actions",
-    "imageAlt": "Crowd enjoying a live event"
+    "imageAlt": "Modern venue steps at night lit with warm spotlights"
   },
   "about": {
     "headline": "Clear events. Tickets without the fuss.",
     "body": "{appNameDisplay} brings venues and audiences together: real dates, understandable tickets, and a clean interface so you can decide with confidence.",
-    "imageAlt": "Lit stage during a live show"
-  },
-  "atmosphere": {
-    "eyebrow": "No extra noise",
-    "quote": "Less confusion. More reason to go.",
-    "support": "Clear tickets, real dates, and a schedule you can read in seconds — before you leave home.",
-    "imageAlt": "Crowd with hands in the air at a show"
+    "imageAlt": "Hands holding a phone with a digital ticket QR at a venue entrance"
   },
   "how": {
     "headline": "Three steps. No noise.",
@@ -73,22 +67,6 @@
       }
     }
   },
-  "pulse": {
-    "eyebrow": "Built to go",
-    "headline": "For the event you want to live.",
-    "body": "{appNameDisplay} doesn’t invent the experience — it organizes it. Discover, choose, and secure your place without losing the rhythm.",
-    "imageAlt": "Crowd hands raised in front of the stage",
-    "stats": {
-      "nights": {
-        "label": "Focus",
-        "value": "Real events"
-      },
-      "focus": {
-        "label": "Promise",
-        "value": "Zero ambiguity"
-      }
-    }
-  },
   "events": {
     "headline": "The schedule isn’t open yet",
     "support": "When events go live, they’ll live here. Create your account so you’re ready the day the first date drops.",
@@ -96,13 +74,19 @@
     "previewAria": "Live-event atmosphere — no published dates yet",
     "items": {
       "1": {
-        "imageAlt": "Stage with strong lights at a live show"
+        "title": "Outdoor nights",
+        "blurb": "Lights, people, rhythm — the kind of night you want without friction.",
+        "imageAlt": "Crowd at an outdoor evening festival under string lights"
       },
       "2": {
-        "imageAlt": "Crowd at a festival under colored lights"
+        "title": "Small stages",
+        "blurb": "Bands and intimate rooms where the ticket matters as much as the show.",
+        "imageAlt": "Band performing on a small stage in warm light"
       },
       "3": {
-        "imageAlt": "Concert with a crowd facing the stage"
+        "title": "Arrive ready",
+        "blurb": "Your spot sorted before the door. Less queue, more moment.",
+        "imageAlt": "Friends smiling outside a venue entrance at dusk"
       }
     }
   },

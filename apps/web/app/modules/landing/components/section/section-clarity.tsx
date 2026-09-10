@@ -35,15 +35,9 @@ export function SectionClarity({ className }: SectionClarityProps) {
             </p>
           </div>
 
-          <ul className="mt-14 grid gap-0 border-t border-hairline/50 md:grid-cols-3 md:divide-x md:divide-hairline/50">
-            {CLARITY_ITEMS.map(({ id, Icon }, index) => (
-              <li
-                key={id}
-                className={cn(
-                  'flex flex-col gap-5 border-b border-hairline/50 py-10 last:border-b-0 md:border-b-0 md:px-8 md:pt-10 md:first:pl-0 md:last:pr-0',
-                  index === 0 && 'md:pl-0'
-                )}
-              >
+          <ul className="mt-14 grid gap-8 p-0 list-none md:grid-cols-3 md:gap-10">
+            {CLARITY_ITEMS.map(({ id, Icon }) => (
+              <li key={id} className="flex min-w-0 flex-col gap-5">
                 <Icon
                   className="size-8 text-on-surface-variant"
                   strokeWidth={1.5}

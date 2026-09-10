@@ -1,4 +1,10 @@
-import { ForbiddenException, HttpException, Inject, Injectable, NestInterceptor } from '@nestjs/common'
+import {
+  ForbiddenException,
+  HttpException,
+  Inject,
+  Injectable,
+  NestInterceptor,
+} from '@nestjs/common'
 import type { CallHandler, ExecutionContext } from '@nestjs/common'
 import { Reflector } from '@nestjs/core'
 import { findStaleLegalDocumentTypesForAccount } from '@repo/db'

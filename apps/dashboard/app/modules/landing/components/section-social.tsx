@@ -16,12 +16,9 @@ export function SectionSocial() {
           </h2>
         </div>
 
-        <ul className="mt-14 grid list-none gap-0 border-t border-hairline/50 p-0 md:grid-cols-3 md:divide-x md:divide-hairline/50">
+        <ul className="mt-14 grid list-none gap-12 p-0 md:grid-cols-3 md:gap-10 lg:gap-14">
           {LANDING_SOCIAL_KEYS.map((key) => (
-            <li
-              key={key}
-              className="flex flex-col justify-between gap-8 border-b border-hairline/50 py-10 last:border-b-0 md:border-b-0 md:px-8 md:first:pl-0 md:last:pr-0"
-            >
+            <li key={key} className="flex min-w-0 flex-col justify-between gap-8">
               <blockquote className="text-base leading-relaxed text-pretty text-on-surface sm:text-lg">
                 “{t(`social.items.${key}.quote`)}”
               </blockquote>

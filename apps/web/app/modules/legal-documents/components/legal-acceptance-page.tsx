@@ -2,14 +2,15 @@ import { useMemo, useState } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useNavigate } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
-import { LEGAL_DOCUMENT_TYPE, type LegalDocumentType, type PublicLegalDocumentResponse } from '@repo/types'
+import {
+  LEGAL_DOCUMENT_TYPE,
+  type LegalDocumentType,
+  type PublicLegalDocumentResponse,
+} from '@repo/types'
 import { Button } from '@repo/ui'
 import { QUERY_KEYS } from '../../common/constants/query-keys'
 import { WEB_ROUTES } from '../../common/constants/routes'
-import {
-  LegalAcceptanceField,
-  PublishedLegalDocumentDialog,
-} from './legal-acceptance-fields'
+import { LegalAcceptanceField, PublishedLegalDocumentDialog } from './legal-acceptance-fields'
 import {
   acceptLegalDocuments,
   getPendingLegalAcceptance,
@@ -61,7 +62,9 @@ export function LegalAcceptancePage() {
           return [type, document] as const
         })
       )
-      return Object.fromEntries(entries) as Partial<Record<LegalDocumentType, PublicLegalDocumentResponse>>
+      return Object.fromEntries(entries) as Partial<
+        Record<LegalDocumentType, PublicLegalDocumentResponse>
+      >
     },
     retry: false,
   })
@@ -150,13 +153,16 @@ export function LegalAcceptancePage() {
             className="rounded-lg border border-error/40 bg-error-container/20 px-4 py-3 text-sm text-error"
           >
             {t(
-              notice === 'unavailable'
-                ? 'register.legal.unavailable'
-                : 'legalAcceptance.required'
+              notice === 'unavailable' ? 'register.legal.unavailable' : 'legalAcceptance.required'
             )}
           </p>
           {legalUnavailable ? (
-            <Button type="button" variant="outline" size="sm" onClick={() => void publishedQueries.refetch()}>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => void publishedQueries.refetch()}
+            >
               {t('register.legal.retry')}
             </Button>
           ) : null}

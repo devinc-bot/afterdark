@@ -16,7 +16,7 @@ export function SectionAreYouReady({ showAuthCtas = true, className }: SectionAr
   return (
     <section
       aria-labelledby="closing-heading"
-      className={cn('border-t border-hairline/40', className)}
+      className={cn('border-t border-hairline/40 bg-surface-container-lowest', className)}
     >
       <Container className="relative flex flex-col items-center py-[clamp(4.5rem,12vw,8rem)] text-center">
         <Reveal className="mx-auto flex w-full max-w-3xl flex-col items-center">

@@ -25,18 +25,12 @@
     "ctaPrimary": "Crear cuenta",
     "ctaSecondary": "Iniciar sesión",
     "ctaLoading": "Cargando acciones",
-    "imageAlt": "Público disfrutando de un evento en vivo"
+    "imageAlt": "Escalinata de un venue moderno de noche, iluminada con focos cálidos"
   },
   "about": {
     "headline": "Eventos claros. Entradas sin vueltas.",
     "body": "{appNameDisplay} une ubicaciones y público en una sola experiencia: fechas reales, entradas entendibles y una interfaz limpia para decidir con confianza.",
-    "imageAlt": "Escenario iluminado durante un show en vivo"
-  },
-  "atmosphere": {
-    "eyebrow": "Sin ruido de más",
-    "quote": "Menos confusión. Más ganas de ir.",
-    "support": "Entradas claras, fechas reales y una agenda que se lee en segundos — antes de salir de casa.",
-    "imageAlt": "Público con las manos en el aire en un show"
+    "imageAlt": "Manos mostrando un celular con entrada digital y código QR frente a la puerta del venue"
   },
   "how": {
     "headline": "Tres pasos. Sin ruido.",
@@ -73,22 +67,6 @@
       }
     }
   },
-  "pulse": {
-    "eyebrow": "Hecha para ir",
-    "headline": "Para el evento que querés vivir.",
-    "body": "{appNameDisplay} no inventa la experiencia: la ordena. Descubrís, elegís y asegurás tu lugar sin perder el ritmo.",
-    "imageAlt": "Manos del público levantadas frente al escenario",
-    "stats": {
-      "nights": {
-        "label": "Enfoque",
-        "value": "Eventos reales"
-      },
-      "focus": {
-        "label": "Promesa",
-        "value": "Cero ambigüedad"
-      }
-    }
-  },
   "events": {
     "headline": "La agenda aún no abrió",
     "support": "Cuando haya eventos publicados, van a vivir acá. Creá tu cuenta para estar listo el día que salga la primera fecha.",
@@ -96,13 +74,19 @@
     "previewAria": "Ambiente de eventos en vivo — sin fechas publicadas todavía",
     "items": {
       "1": {
-        "imageAlt": "Escenario con luces fuertes en un show en vivo"
+        "title": "Noches al aire libre",
+        "blurb": "Luces, gente y ritmo — el tipo de noche que querés encontrar sin fricción.",
+        "imageAlt": "Público en un festival al aire libre bajo luces colgantes"
       },
       "2": {
-        "imageAlt": "Público en un festival bajo luces de color"
+        "title": "Escenarios chicos",
+        "blurb": "Bandas y salas íntimas donde la entrada importa tanto como el show.",
+        "imageAlt": "Banda tocando en un escenario pequeño con luz cálida"
       },
       "3": {
-        "imageAlt": "Concierto con multitud frente al escenario"
+        "title": "Llegar con todo listo",
+        "blurb": "Tu lugar resuelto antes de la puerta. Menos fila, más momento.",
+        "imageAlt": "Amigos sonriendo frente a la entrada de un venue al atardecer"
       }
     }
   },

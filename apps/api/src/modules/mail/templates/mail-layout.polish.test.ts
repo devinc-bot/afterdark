@@ -12,11 +12,41 @@ import type { StaffInvitationEmailProps } from './staff-invitation.tsx'
 /** Surface-high from DESIGN.md / globals `--color-surface-container-high` — security callout fill. */
 const SURFACE_HIGH = '#282a26'
 
-/** Hairline from DESIGN.md / globals — soft depth container border. */
-const HAIRLINE = '#44473c'
-
 function styleAttributes(html: string): string[] {
   return [...html.matchAll(/\bstyle="([^"]*)"/gi)].map((match) => match[1] ?? '')
+}
+
+/** Raised container: email-safe dual-layer gradient border (135deg transparent → primary → transparent). */
+function isRaisedGradientBorderContainer(style: string): boolean {
+  const hasTransparentBorder = /border:\s*1px\s+solid\s+transparent/i.test(style)
+  const hasRaisedSurfaceFill = /background-color:\s*#1e1f1c/i.test(style)
+  const hasControlRadius = /border-radius:\s*12px/i.test(style)
+  // Dual-layer pattern: solid raised fill + 135deg transparent→primary→transparent border gradient.
+  const hasPrimaryBorderGradient =
+    /linear-gradient\(\s*135deg\s*,\s*transparent\s*,\s*#dcff02\s*,\s*transparent\s*\)/i.test(style)
+  const hasRaisedFillGradient = /linear-gradient\(\s*#1e1f1c\s*,\s*#1e1f1c\s*\)/i.test(style)
+  const hasBorderBoxOrigin = /background-origin:\s*border-box/i.test(style)
+  const hasPaddingThenBorderClip = /background-clip:\s*padding-box\s*,\s*border-box/i.test(style)
+
+  return (
+    hasTransparentBorder &&
+    hasRaisedSurfaceFill &&
+    hasControlRadius &&
+    hasPrimaryBorderGradient &&
+    hasRaisedFillGradient &&
+    hasBorderBoxOrigin &&
+    hasPaddingThenBorderClip
+  )
+}
+
+/** Primary CTA fill: citrus background + near-black label (not white). */
+function isCitrusOnPrimaryCta(style: string): boolean {
+  const hasPrimaryFill = /background-color:\s*#dcff02/i.test(style)
+  const hasOnPrimaryLabel = /(?:^|;)\s*color:\s*#2a3208\b/i.test(style)
+  const hasWhiteLabel = /(?:^|;)\s*color:\s*(?:#fff(?:fff)?|white)\b/i.test(style)
+  const hasControlRadius = /border-radius:\s*12px/i.test(style)
+
+  return hasPrimaryFill && hasOnPrimaryLabel && !hasWhiteLabel && hasControlRadius
 }
 
 /** URL must remain readable when clients strip button/href styling. */
@@ -47,7 +77,7 @@ describe('mail design tokens align to shipping design system', () => {
 })
 
 describe('mail layout polish renders', () => {
-  test('MailLayout renders with soft-depth hairline container border and 12px citrus CTA', async () => {
+  test('MailLayout renders with 135deg transparent→primary→transparent border and citrus on-primary CTA', async () => {
     const ctaHref = 'https://example.com/continue'
     const html = await render(
       createElement(
@@ -67,22 +97,27 @@ describe('mail layout polish renders', () => {
     expect(html).toContain('Lumina')
     expect(html).toContain('Título de prueba')
     expect(html).toContain(ctaHref)
-    expect(html).toContain(HAIRLINE)
     expect(html).toMatch(/<html[^>]*\slang="es"/i)
 
     const raisedSurfaceStyles = styleAttributes(html).filter((style) =>
       style.toLowerCase().includes(MAIL_COLOR.surfaceRaised.toLowerCase())
     )
     expect(raisedSurfaceStyles.length).toBeGreaterThan(0)
+    expect(raisedSurfaceStyles.some(isRaisedGradientBorderContainer)).toBe(true)
+    // Container must not keep the old solid hairline border (Hr may still use #44473c).
     expect(
       raisedSurfaceStyles.some((style) => /border:\s*1px\s+solid\s*#44473c/i.test(style))
-    ).toBe(true)
+    ).toBe(false)
 
     const primaryFillStyles = styleAttributes(html).filter((style) =>
       /background-color:\s*#dcff02/i.test(style)
     )
     expect(primaryFillStyles.length).toBeGreaterThan(0)
-    expect(primaryFillStyles.some((style) => /border-radius:\s*12px/i.test(style))).toBe(true)
+    expect(primaryFillStyles.some(isCitrusOnPrimaryCta)).toBe(true)
+    // CTA label must stay near-black on citrus — never white on primary fill.
+    expect(
+      primaryFillStyles.some((style) => /(?:^|;)\s*color:\s*(?:#fff(?:fff)?|white)\b/i.test(style))
+    ).toBe(false)
   })
 
   test('MailLayout respects lang prop for bilingual HTML root', async () => {

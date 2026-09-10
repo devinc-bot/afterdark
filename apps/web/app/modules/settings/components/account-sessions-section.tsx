@@ -51,7 +51,7 @@ export function AccountSessionsSection() {
 
   return (
     <AccountSessions
-      className="mt-10 border-t border-outline-variant/35 pt-8"
+      className="mt-12 border-t border-outline-variant/35 pt-8 sm:mt-16 sm:pt-10"
       sessions={query.data?.sessions}
       isLoading={query.isLoading}
       error={query.error}

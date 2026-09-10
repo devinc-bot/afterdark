@@ -121,10 +121,7 @@ describe('findStaleLegalDocumentTypesForAccount', () => {
   })
 
   test('keeps the original requested type order for stale results', async () => {
-    const reversedUserAudience = [
-      LEGAL_DOCUMENT_TYPE.PRIVACY_WEB,
-      LEGAL_DOCUMENT_TYPE.TERMS_WEB,
-    ]
+    const reversedUserAudience = [LEGAL_DOCUMENT_TYPE.PRIVACY_WEB, LEGAL_DOCUMENT_TYPE.TERMS_WEB]
     mockPublished({
       [LEGAL_DOCUMENT_TYPE.TERMS_WEB]: PUBLISHED_ID[LEGAL_DOCUMENT_TYPE.TERMS_WEB],
       [LEGAL_DOCUMENT_TYPE.PRIVACY_WEB]: PUBLISHED_ID[LEGAL_DOCUMENT_TYPE.PRIVACY_WEB],

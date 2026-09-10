@@ -160,7 +160,7 @@ export function EventsDiscoverFiltersPanel({
         {showPendingHint ? (
           <p
             id={applyHintId}
-            className="min-h-4 text-xs text-on-surface-variant"
+            className="min-h-4 text-xs"
             aria-live="polite"
           >
             {showPending ? (

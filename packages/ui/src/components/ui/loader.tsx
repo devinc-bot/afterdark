@@ -16,8 +16,8 @@ export function Loader({ size = 16, label = 'Cargando' }: LoaderProps) {
       aria-label={label}
       style={
         {
-          '--on': 'var(--color-primary)',
-          '--off': '#404040',
+          '--on': 'var(--color-loader-on)',
+          '--off': 'var(--color-loader-off)',
           '--dur': '1.200s',
         } as CSSProperties
       }

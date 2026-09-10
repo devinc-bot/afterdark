@@ -1,6 +1,9 @@
 import type { CSSProperties } from 'react'
 
-/** Inline hex tokens aligned with DESIGN.md + `packages/ui` dark theme (email-safe). */
+/**
+ * Inline hex tokens aligned with DESIGN.md + `packages/ui` (email-safe).
+ * Shell is dark; primary CTA matches shared UI primary (citrus + near-black on-primary).
+ */
 export const MAIL_COLOR = {
   background: '#121311',
   surfaceRaised: '#1e1f1c',
@@ -10,7 +13,9 @@ export const MAIL_COLOR = {
   muted: '#c5c8b8',
   inkMuted: '#b8bcab',
   hairline: '#44473c',
+  /** Same fill as `--color-primary` in light and dark UI. */
   primary: '#dcff02',
+  /** Same label as `--color-on-primary` / `--color-primary-foreground`. */
   onPrimary: '#2a3208',
 } as const
 

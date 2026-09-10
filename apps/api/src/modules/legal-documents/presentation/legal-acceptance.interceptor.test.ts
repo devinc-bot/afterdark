@@ -201,7 +201,10 @@ test('allow-lists refresh, logout, session me, pending GET, and accept POST', ()
   expect(reflector.get(AllowStaleLegalAcceptance, AuthController.prototype.logout)).toBeTruthy()
   expect(reflector.get(AllowStaleLegalAcceptance, SessionController.prototype.getMe)).toBeTruthy()
   expect(
-    reflector.get(AllowStaleLegalAcceptance, LegalDocumentsController.prototype.getPendingAcceptance)
+    reflector.get(
+      AllowStaleLegalAcceptance,
+      LegalDocumentsController.prototype.getPendingAcceptance
+    )
   ).toBeTruthy()
   expect(
     reflector.get(AllowStaleLegalAcceptance, LegalDocumentsController.prototype.accept)
@@ -210,7 +213,13 @@ test('allow-lists refresh, logout, session me, pending GET, and accept POST', ()
 
 test('does not allow-list session list, session revoke, or legal admin routes', () => {
   expect(reflector.get(AllowStaleLegalAcceptance, SessionController.prototype.list)).toBeUndefined()
-  expect(reflector.get(AllowStaleLegalAcceptance, SessionController.prototype.revoke)).toBeUndefined()
-  expect(reflector.get(AllowStaleLegalAcceptance, LegalDocumentsController.prototype.list)).toBeUndefined()
-  expect(reflector.get(AllowStaleLegalAcceptance, LegalDocumentsController.prototype.get)).toBeUndefined()
+  expect(
+    reflector.get(AllowStaleLegalAcceptance, SessionController.prototype.revoke)
+  ).toBeUndefined()
+  expect(
+    reflector.get(AllowStaleLegalAcceptance, LegalDocumentsController.prototype.list)
+  ).toBeUndefined()
+  expect(
+    reflector.get(AllowStaleLegalAcceptance, LegalDocumentsController.prototype.get)
+  ).toBeUndefined()
 })

@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { usePageTitle, cn } from '@repo/ui'
 import { LandingHeader } from './landing-header'
 import { SectionHero } from './section-hero'
+import { SectionDemo } from './section-demo'
 import { SectionFeatures } from './section-features'
 import { SectionHow } from './section-how'
 import { SectionAudiences } from './section-audiences'
@@ -38,6 +39,7 @@ export function LandingPage() {
 
       <main id="contenido">
         <SectionHero />
+        <SectionDemo />
         <Reveal>
           <SectionFeatures />
         </Reveal>

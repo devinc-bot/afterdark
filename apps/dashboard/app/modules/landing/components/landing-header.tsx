@@ -27,9 +27,10 @@ const LANDING_NAV = [
 ] as const
 
 const NAV_LINK =
-  'inline-flex min-h-10 items-center rounded-full px-3 font-label text-sm text-on-surface-variant transition-colors duration-(--duration-instant) ease-emphasized hover:text-on-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/25'
+  'inline-flex min-h-11 items-center rounded-full px-3 font-label text-sm text-on-surface-variant transition-colors duration-(--duration-instant) ease-emphasized hover:text-on-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/25'
 const MOBILE_LINK = 'justify-start'
-const ICON_BUTTON = 'size-10 shrink-0'
+const ICON_BUTTON = 'size-11 shrink-0'
+const HEADER_CTA = 'h-11 min-h-11 px-4'
 
 export function LandingHeader() {
   const { t } = useTranslation('dashboardLanding')
@@ -41,12 +42,15 @@ export function LandingHeader() {
   }
 
   return (
-    <header className="sticky top-0 z-40 border-b border-hairline/60 bg-background/85 backdrop-blur-md">
+    <header className="sticky top-0 z-40 border-b border-hairline/60 bg-background/70 backdrop-blur-xl backdrop-saturate-150 supports-backdrop-filter:bg-background/55">
       <nav
         aria-label={t('header.navAria')}
-        className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between gap-3 px-margin-mobile md:px-margin-desktop"
+        className="mx-auto flex h-15 w-full max-w-6xl items-center justify-between gap-3 px-margin-mobile md:px-margin-desktop"
       >
-        <Link to={DASHBOARD_ROUTES.home()} className="flex shrink-0 items-center gap-2">
+        <Link
+          to={DASHBOARD_ROUTES.home()}
+          className="flex shrink-0 items-center gap-2 rounded-app focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/25"
+        >
           <AppLogo size="lg" />
           <span className="font-display text-lg font-bold tracking-tight text-on-surface">
             {t('header.brand')}
@@ -69,10 +73,10 @@ export function LandingHeader() {
         <div className="hidden shrink-0 items-center gap-1 lg:flex lg:gap-2">
           <LanguageToggle className={ICON_BUTTON} />
           <ThemeToggle className={ICON_BUTTON} />
-          <Button asChild variant="ghost" size="sm">
+          <Button asChild variant="ghost" className={HEADER_CTA}>
             <Link to={DASHBOARD_ROUTES.login()}>{t('header.login')}</Link>
           </Button>
-          <Button asChild size="sm">
+          <Button asChild className={HEADER_CTA}>
             <Link to={DASHBOARD_ROUTES.register()}>{t('header.register')}</Link>
           </Button>
         </div>
@@ -86,7 +90,7 @@ export function LandingHeader() {
                 type="button"
                 variant="ghost"
                 size="icon"
-                className="size-10 shrink-0"
+                className={ICON_BUTTON}
                 aria-label={t('header.openMenu')}
               >
                 <Menu className="size-5" aria-hidden />
@@ -94,8 +98,8 @@ export function LandingHeader() {
             </SheetTrigger>
             <SheetContent
               side="right"
-              overlayClassName="bg-surface-strong/50 backdrop-blur-sm"
-              className="inset-y-3 right-3 flex h-auto max-h-[calc(100dvh-1.5rem)] w-[min(calc(100%-1.5rem),20rem)] flex-col gap-0 overflow-hidden rounded-app-xl border border-hairline/60 bg-background p-0 text-on-surface shadow-(--shadow-glass)"
+              overlayClassName="bg-surface-strong/50"
+              className="inset-y-3 right-3 flex h-auto max-h-[calc(100dvh-1.5rem)] w-[min(calc(100%-1.5rem),20rem)] flex-col gap-0 overflow-hidden rounded-app-xl border border-hairline/60 bg-background p-0 text-on-surface shadow-none"
             >
               <SheetHeader className="shrink-0 border-b border-hairline/60 px-5 py-5 pr-14 text-left">
                 <SheetTitle className="flex items-center gap-2 font-display text-lg font-bold tracking-tight">

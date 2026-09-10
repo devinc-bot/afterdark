@@ -3,9 +3,8 @@ export const LANDING_SECTION_Y = 'py-[clamp(4rem,10vw,7.5rem)]'
 export const LANDING_HEADING =
   'font-display text-[clamp(1.75rem,3.5vw,2.75rem)] font-bold leading-[1.15] tracking-[-0.02em] text-balance'
 
-/** Primary ink CTA — brand color lives in photography, not chrome.
- *  Pair on-surface fill with background ink so dark/light both contrast. */
-export const LANDING_CTA_PRIMARY = 'min-h-11 bg-on-surface text-background hover:bg-on-surface/90'
+/** Primary citrus CTA — theme-agnostic; light/dark share the same primary tokens. */
+export const LANDING_CTA_PRIMARY = 'min-h-11 bg-primary text-on-primary hover:bg-primary/90'
 
 /** Ghost CTA on solid page sections (not over photography). */
 export const LANDING_CTA_GHOST =

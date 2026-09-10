@@ -71,9 +71,9 @@ test('dashboard legal reacceptance wires pending/accept, owner gate, and dedicat
   expect(gate).toContain('DASHBOARD_ROUTES.legalAcceptance()')
   expect(gate).not.toContain('USER_ROLE.STAFF')
 
-  expect(sliceBetween(authMutations, 'export function useLogin', 'export function useRequestRegister')).toContain(
-    'resolvePostAuthPath'
-  )
+  expect(
+    sliceBetween(authMutations, 'export function useLogin', 'export function useRequestRegister')
+  ).toContain('resolvePostAuthPath')
   expect(
     sliceBetween(
       authMutations,

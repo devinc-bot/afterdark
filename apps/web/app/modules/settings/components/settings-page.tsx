@@ -13,7 +13,7 @@ function SettingsFormSkeleton() {
   return (
     <div className="flex flex-col gap-8" aria-busy="true">
       <span className="sr-only">{t('web.loading')}</span>
-      <div className="flex items-center gap-4 border-b border-outline-variant/35 pb-8 sm:gap-5">
+      <div className="flex items-center gap-4 border-b border-outline-variant/35 pb-8 sm:gap-5 sm:pb-10">
         <Skeleton className="size-16 shrink-0 rounded-full sm:size-20" />
         <div className="flex min-w-0 flex-1 flex-col gap-2">
           <Skeleton className="h-5 w-44 max-w-full" />
@@ -55,12 +55,16 @@ export function SettingsPage() {
 
   return (
     <Container>
-      <div className="relative mx-auto w-full max-w-xl">
+      <div className="relative w-full">
         <PageAtmosphereWash className="h-40" />
 
-        <PageHeader title={t('web.page.title')} description={t('web.page.description')} />
+        <div className="relative w-full max-w-2xl">
+          <PageHeader
+            title={t('web.page.title')}
+            description={t('web.page.description')}
+            className="mb-10 sm:mb-12"
+          />
 
-        <div className="relative">
           {profileQuery.isLoading ? <SettingsFormSkeleton /> : null}
 
           {profileQuery.isError ? (

@@ -235,7 +235,11 @@ test.each([
   ['LegalDocumentsController.get', LegalDocumentsController, 'get'],
   ['LegalDocumentsController.saveDraft', LegalDocumentsController, 'saveDraft'],
   ['LegalDocumentsController.publish', LegalDocumentsController, 'publish'],
-  ['LegalDocumentsController.getPendingAcceptance', LegalDocumentsController, 'getPendingAcceptance'],
+  [
+    'LegalDocumentsController.getPendingAcceptance',
+    LegalDocumentsController,
+    'getPendingAcceptance',
+  ],
   ['LegalDocumentsController.accept', LegalDocumentsController, 'accept'],
 ] as const)(
   '%s uses the authenticated IP profile without a user limiter',

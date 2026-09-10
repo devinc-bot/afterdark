@@ -461,9 +461,9 @@ test('register wiring uses published-by-type routes, query keys, and legalAccept
   expect(registerForm).toContain('legalAccepted')
   expect(registerForm).not.toContain('/api/legal-documents')
 
-  expect(await readSource('../app/modules/legal-documents/components/legal-acceptance-fields.tsx')).toContain(
-    'RICH_EDITOR_HTML_CLASS_NAME'
-  )
+  expect(
+    await readSource('../app/modules/legal-documents/components/legal-acceptance-fields.tsx')
+  ).toContain('RICH_EDITOR_HTML_CLASS_NAME')
 
   expect(googleButtonSource).toContain('legalAccepted: true')
   expect(googleButtonSource).toContain('disabled')

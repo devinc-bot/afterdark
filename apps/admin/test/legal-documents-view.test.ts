@@ -44,7 +44,8 @@ vi.mock('react-i18next', () => ({
           'Se guardaron los términos y condiciones de web.',
         'legalDocuments.toast.saveSuccess.privacyDashboard':
           'Se guardó la política de privacidad de organizaciones.',
-        'legalDocuments.toast.saveSuccess.privacyWeb': 'Se guardó la política de privacidad de web.',
+        'legalDocuments.toast.saveSuccess.privacyWeb':
+          'Se guardó la política de privacidad de web.',
         'legalDocuments.toast.publishSuccess.termsDashboard':
           'Se publicaron los términos y condiciones de organizaciones.',
         'legalDocuments.toast.publishSuccess.termsWeb':

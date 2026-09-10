@@ -215,9 +215,9 @@ test('delegates pending GET and accept POST with account documentId and role', a
   })
 
   expect(await controller.getPendingAcceptance(ACCOUNT_USER)).toEqual(pending)
-  expect(
-    await controller.accept(ACCOUNT_USER, { types: [LEGAL_DOCUMENT_TYPE.TERMS_WEB] })
-  ).toEqual(remaining)
+  expect(await controller.accept(ACCOUNT_USER, { types: [LEGAL_DOCUMENT_TYPE.TERMS_WEB] })).toEqual(
+    remaining
+  )
   expect(await controller.getPendingAcceptance(owner)).toEqual(pending)
   expect(
     await controller.accept(owner, {

@@ -157,11 +157,7 @@ function RichEditor({
 
   return (
     <div
-      className={cn(
-        'flex flex-col gap-1.5',
-        scrollable && 'h-[min(22rem,55vh)]',
-        className
-      )}
+      className={cn('flex flex-col gap-1.5', scrollable && 'h-[min(22rem,55vh)]', className)}
       {...props}
     >
       <div

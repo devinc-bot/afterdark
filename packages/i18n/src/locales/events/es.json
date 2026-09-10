@@ -211,7 +211,8 @@
       "dotsAria": "Diapositivas destacadas",
       "dotAria": "Diapositiva {index} de {total}: {title}",
       "prev": "Evento anterior",
-      "next": "Evento siguiente"
+      "next": "Evento siguiente",
+      "loading": "Cargando destacados…"
     },
     "detail": {
       "error": "No pudimos cargar el evento. Intentá de nuevo en unos minutos.",

@@ -7,7 +7,7 @@ export function SessionLoading() {
   return (
     <div className="flex min-h-dvh flex-col items-center justify-center gap-3 bg-background">
       <Loader size={24} />
-      <p className="text-sm text-muted-foreground">{t('loading')}</p>
+      <p className="text-sm text-foreground">{t('loading')}</p>
     </div>
   )
 }

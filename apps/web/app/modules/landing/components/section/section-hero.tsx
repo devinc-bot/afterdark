@@ -1,9 +1,8 @@
-import { useEffect, useState, type ReactNode } from 'react'
+import type { ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import { cn } from '@repo/ui'
 import { Container } from '~/modules/common/components/container'
 import { LANDING_IMAGES } from '../../constants/images'
-import { LANDING_VIDEOS } from '../../constants/videos'
 
 type SectionHeroProps = {
   showAuthCtas?: boolean
@@ -13,15 +12,6 @@ type SectionHeroProps = {
 
 export function SectionHero({ showAuthCtas = true, children, className }: SectionHeroProps) {
   const { t } = useTranslation('landing')
-  const [reduceMotion, setReduceMotion] = useState(false)
-
-  useEffect(() => {
-    const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
-    const sync = () => setReduceMotion(mq.matches)
-    sync()
-    mq.addEventListener('change', sync)
-    return () => mq.removeEventListener('change', sync)
-  }, [])
 
   return (
     <section
@@ -30,50 +20,39 @@ export function SectionHero({ showAuthCtas = true, children, className }: Sectio
       className={cn('relative min-h-dvh overflow-hidden scroll-mt-0', className)}
     >
       <div className="absolute inset-0">
-        {reduceMotion ? (
-          <img
-            src={LANDING_IMAGES.hero.src}
-            srcSet={LANDING_IMAGES.hero.srcSet}
-            sizes="100vw"
-            width={2400}
-            height={1600}
-            alt={t('hero.imageAlt')}
-            className="h-full w-full object-cover object-[center_35%]"
-            fetchPriority="high"
-            decoding="async"
-          />
-        ) : (
-          <video
-            className="h-full w-full object-cover object-[center_35%]"
-            src={LANDING_VIDEOS.hero}
-            poster={LANDING_IMAGES.hero.src}
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="auto"
-            aria-label={t('hero.imageAlt')}
-          />
-        )}
-        <div
-          aria-hidden
-          className="absolute inset-0 bg-linear-to-b from-black/55 via-black/35 to-background"
+        <img
+          src={LANDING_IMAGES.hero.src}
+          srcSet={LANDING_IMAGES.hero.srcSet}
+          sizes="100vw"
+          width={2048}
+          height={1152}
+          alt={t('hero.imageAlt')}
+          className="h-full w-full object-cover object-[center_35%]"
+          fetchPriority="high"
+          decoding="async"
         />
+        {/* Soft scrim: gradient from transparent toward bottom for text contrast over media */}
         <div
+          className="pointer-events-none absolute inset-0 bg-linear-to-t from-black/75 via-black/35 to-black/15"
           aria-hidden
-          className="absolute inset-0 bg-linear-to-r from-black/45 via-black/15 to-transparent"
         />
       </div>
 
-      <Container className="relative z-10 flex min-h-dvh flex-col justify-end pb-[max(4rem,8vh)] pt-28 sm:pb-[max(5rem,10vh)]">
+      {/* Subtle geometric accent — hairline mark */}
+      <div
+        className="pointer-events-none absolute bottom-[max(5.5rem,14vh)] left-0 hidden h-px w-10 bg-white/35 sm:block"
+        aria-hidden
+      />
+
+      <Container className="relative z-10 flex min-h-dvh flex-col justify-end pb-[max(5.5rem,12vh)] pt-28 sm:pb-[max(6.5rem,14vh)]">
         <div className="max-w-3xl">
           <p
             id="landing-brand"
-            className="font-display text-[clamp(2.75rem,12vw,5.5rem)] font-bold leading-[0.95] tracking-[-0.03em] text-balance text-white"
+            className="font-display text-[clamp(2.75rem,12vw,5.5rem)] font-bold leading-[0.95] tracking-[-0.04em] text-balance text-white"
           >
             {t('nav.brand')}
           </p>
-          <h1 className="mt-6 max-w-[18ch] font-display text-[clamp(1.5rem,4.2vw,2.5rem)] font-semibold leading-tight tracking-[-0.02em] text-pretty text-white">
+          <h1 className="mt-6 max-w-[18ch] font-display text-[clamp(1.5rem,4.2vw,2.5rem)] font-semibold leading-tight -tracking-label-md text-pretty text-white">
             {t('hero.headline')}
           </h1>
           <p className="mt-4 max-w-[38ch] text-base leading-relaxed text-pretty text-white/85 sm:text-lg">

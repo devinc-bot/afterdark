@@ -66,7 +66,9 @@ function renderPage() {
   const queryClient = new QueryClient({
     defaultOptions: { queries: { retry: false }, mutations: { retry: false } },
   })
-  render(createElement(QueryClientProvider, { client: queryClient }, createElement(LegalAcceptancePage)))
+  render(
+    createElement(QueryClientProvider, { client: queryClient }, createElement(LegalAcceptancePage))
+  )
   return queryClient
 }
 
@@ -159,7 +161,9 @@ test('opening a stale document dialog shows the published title and converted co
   fireEvent.click(screen.getByRole('button', { name: 'Leer términos y condiciones' }))
 
   const dialog = await screen.findByRole('dialog')
-  expect(within(dialog).getByRole('heading', { name: 'Términos dashboard publicados' })).toBeTruthy()
+  expect(
+    within(dialog).getByRole('heading', { name: 'Términos dashboard publicados' })
+  ).toBeTruthy()
   expect(within(dialog).getByText('Contenido publicado de términos dashboard')).toBeTruthy()
   queryClient.clear()
 })

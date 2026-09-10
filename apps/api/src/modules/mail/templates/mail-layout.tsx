@@ -89,7 +89,10 @@ const bodyStyle: CSSProperties = {
 
 const containerStyle: CSSProperties = {
   backgroundColor: MAIL_COLOR.surfaceRaised,
-  border: `1px solid ${MAIL_COLOR.hairline}`,
+  backgroundImage: `linear-gradient(${MAIL_COLOR.surfaceRaised}, ${MAIL_COLOR.surfaceRaised}), linear-gradient(135deg, transparent, ${MAIL_COLOR.primary}, transparent)`,
+  backgroundOrigin: 'border-box',
+  backgroundClip: 'padding-box, border-box',
+  border: '1px solid transparent',
   borderRadius: MAIL_RADIUS.control,
   margin: '0 auto',
   maxWidth: '480px',

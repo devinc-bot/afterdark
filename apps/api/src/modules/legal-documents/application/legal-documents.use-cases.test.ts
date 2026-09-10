@@ -191,9 +191,8 @@ function resetRepo() {
 }
 
 async function loadPendingUseCase() {
-  const { GetPendingLegalAcceptanceUseCase } = await import(
-    './get-pending-legal-acceptance.use-case.ts'
-  )
+  const { GetPendingLegalAcceptanceUseCase } =
+    await import('./get-pending-legal-acceptance.use-case.ts')
   return new GetPendingLegalAcceptanceUseCase(translationService)
 }
 
@@ -644,10 +643,9 @@ test('throws internal errors when legal document persistence fails', async () =>
 test('pending returns only user audience stale types', async () => {
   seedAllAudiencesPublished()
 
-  const result = await (await loadPendingUseCase()).execute(
-    USER_ACCOUNT_DOCUMENT_ID,
-    USER_ROLE.USER
-  )
+  const result = await (
+    await loadPendingUseCase()
+  ).execute(USER_ACCOUNT_DOCUMENT_ID, USER_ROLE.USER)
 
   expect(result).toEqual({ staleTypes: USER_AUDIENCE })
   expect(state.staleCalls).toEqual([{ accountId: USER_ACCOUNT_ID, types: USER_AUDIENCE }])
@@ -656,10 +654,9 @@ test('pending returns only user audience stale types', async () => {
 test('pending returns only owner audience stale types', async () => {
   seedAllAudiencesPublished()
 
-  const result = await (await loadPendingUseCase()).execute(
-    OWNER_ACCOUNT_DOCUMENT_ID,
-    USER_ROLE.OWNER
-  )
+  const result = await (
+    await loadPendingUseCase()
+  ).execute(OWNER_ACCOUNT_DOCUMENT_ID, USER_ROLE.OWNER)
 
   expect(result).toEqual({ staleTypes: OWNER_AUDIENCE })
   expect(state.staleCalls).toEqual([{ accountId: OWNER_ACCOUNT_ID, types: OWNER_AUDIENCE }])
@@ -667,15 +664,11 @@ test('pending returns only owner audience stale types', async () => {
 
 test('pending returns empty staleTypes when the audience is current', async () => {
   const published = seedAllAudiencesPublished()
-  state.acceptedIds.set(
-    USER_ACCOUNT_ID,
-    new Set([published.termsWeb.id, published.privacyWeb.id])
-  )
+  state.acceptedIds.set(USER_ACCOUNT_ID, new Set([published.termsWeb.id, published.privacyWeb.id]))
 
-  const result = await (await loadPendingUseCase()).execute(
-    USER_ACCOUNT_DOCUMENT_ID,
-    USER_ROLE.USER
-  )
+  const result = await (
+    await loadPendingUseCase()
+  ).execute(USER_ACCOUNT_DOCUMENT_ID, USER_ROLE.USER)
 
   expect(result).toEqual({ staleTypes: [] })
 })
@@ -748,11 +741,9 @@ test('accept inserts current published ids for requested user types and returns 
   })
   const latestTermsWeb = state.published.get(LEGAL_DOCUMENT_TYPE.TERMS_WEB)?.at(-1)
 
-  const result = await (await loadAcceptUseCase()).execute(
-    USER_ACCOUNT_DOCUMENT_ID,
-    USER_ROLE.USER,
-    { types: [LEGAL_DOCUMENT_TYPE.TERMS_WEB] }
-  )
+  const result = await (
+    await loadAcceptUseCase()
+  ).execute(USER_ACCOUNT_DOCUMENT_ID, USER_ROLE.USER, { types: [LEGAL_DOCUMENT_TYPE.TERMS_WEB] })
 
   expect(latestTermsWeb?.id).not.toBe(published.termsWeb.id)
   expect(state.insertCalls).toEqual([
@@ -767,11 +758,9 @@ test('accept inserts current published ids for requested user types and returns 
 test('accept inserts published ids for every requested owner type', async () => {
   const published = seedAllAudiencesPublished()
 
-  const result = await (await loadAcceptUseCase()).execute(
-    OWNER_ACCOUNT_DOCUMENT_ID,
-    USER_ROLE.OWNER,
-    { types: [...OWNER_AUDIENCE] }
-  )
+  const result = await (
+    await loadAcceptUseCase()
+  ).execute(OWNER_ACCOUNT_DOCUMENT_ID, USER_ROLE.OWNER, { types: [...OWNER_AUDIENCE] })
 
   expect(state.insertCalls).toEqual([
     {
