@@ -10,10 +10,16 @@ export const sessionClientAppSchema = z.object({
   app: z.enum([CLIENT_APP.WEB, CLIENT_APP.DASHBOARD, CLIENT_APP.ADMIN]),
 })
 
+const googleOauthLegalAcceptedSchema = z.preprocess((value) => {
+  if (value === undefined || value === null) return undefined
+  return value === true || value === 'true'
+}, z.boolean().optional())
+
 export const googleOauthStartSchema = z
   .object({
     role: z.enum([USER_ROLE.USER, USER_ROLE.OWNER]),
     app: z.enum([AUTH_OAUTH_APP.WEB, AUTH_OAUTH_APP.DASHBOARD]),
+    legalAccepted: googleOauthLegalAcceptedSchema,
   })
   .refine(
     (data) =>

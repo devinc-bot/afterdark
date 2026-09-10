@@ -57,6 +57,19 @@
     "switchToDark": "Cambiar a tema oscuro",
     "switchToLight": "Cambiar a tema claro"
   },
+  "richEditor": {
+    "inputLabel": "Editor de texto enriquecido",
+    "toolbarLabel": "Formato de texto",
+    "bold": "Negrita",
+    "italic": "Cursiva",
+    "strike": "Tachado",
+    "heading": "Encabezado",
+    "bulletList": "Lista con viñetas",
+    "orderedList": "Lista numerada",
+    "blockquote": "Cita",
+    "undo": "Deshacer",
+    "redo": "Rehacer"
+  },
   "pageError": {
     "title": "Algo salió mal",
     "description": "Ocurrió un error inesperado. Podés intentar recargar la página o volver al inicio.",

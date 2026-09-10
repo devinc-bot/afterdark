@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest'
 import { envSchema } from './env'
-import { apiConfigSchema, mailEnvSchema } from './env.schema'
+import { apiConfigSchema, mailEnvSchema, uploadEnvSchema } from './env.schema'
 import {
   RATE_LIMIT_POLICY_DEFAULTS,
   RATE_LIMIT_PROFILE,
@@ -133,6 +133,25 @@ const validConfig = {
   TRUST_PROXY_HOPS: '1',
   NODE_ENV: 'production',
 }
+
+test('upload env does not require or expose R2_UPLOAD_PREFIX', () => {
+  const env = uploadEnvSchema.parse({
+    R2_ACCOUNT_ID: 'test-account',
+    R2_ACCESS_KEY_ID: 'test-access-key',
+    R2_SECRET_ACCESS_KEY: 'test-secret-key',
+    R2_BUCKET: 'test-bucket',
+    R2_PUBLIC_BASE_URL: 'https://files.example.test',
+  })
+
+  expect(env).toMatchObject({
+    R2_ACCOUNT_ID: 'test-account',
+    R2_ACCESS_KEY_ID: 'test-access-key',
+    R2_SECRET_ACCESS_KEY: 'test-secret-key',
+    R2_BUCKET: 'test-bucket',
+    R2_PUBLIC_BASE_URL: 'https://files.example.test',
+  })
+  expect(env).not.toHaveProperty('R2_UPLOAD_PREFIX')
+})
 
 test('accepts same-site application and API origins with a configured proxy topology', () => {
   expect(apiConfigSchema.parse(validConfig)).toMatchObject({

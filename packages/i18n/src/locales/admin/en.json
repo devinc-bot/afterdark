@@ -11,6 +11,7 @@
     "signOut": "Sign out",
     "users": "Registered users",
     "errors": "Errors",
+    "legalDocuments": "Legal documents",
     "settings": "Settings",
     "theme": "Theme",
     "themeDark": "Dark",
@@ -18,7 +19,8 @@
   },
   "sections": {
     "users": "Registered users",
-    "errors": "Errors"
+    "errors": "Errors",
+    "legalDocuments": "Legal documents"
   },
   "user": {
     "fallbackName": "Administrator"
@@ -27,6 +29,61 @@
     "label": "Admin",
     "title": "Your admin workspace is ready.",
     "description": "Platform management tools will appear here as they become available."
+  },
+  "legalDocuments": {
+    "title": "Legal documents",
+    "description": "Prepare legal content for organizations and web customers.",
+    "loading": "Loading legal documents",
+    "loadError": "Legal documents could not be loaded",
+    "retry": "Retry",
+    "save": "Save",
+    "saving": "Saving",
+    "publish": "Publish",
+    "publishing": "Publishing",
+    "saveError": "The draft could not be saved",
+    "publishError": "The document could not be published",
+    "toast": {
+      "saveSuccess": {
+        "termsDashboard": "Organization terms and conditions were saved.",
+        "termsWeb": "Web terms and conditions were saved.",
+        "privacyDashboard": "The organization privacy policy was saved.",
+        "privacyWeb": "The web privacy policy was saved."
+      },
+      "publishSuccess": {
+        "termsDashboard": "Organization terms and conditions were published.",
+        "termsWeb": "Web terms and conditions were published.",
+        "privacyDashboard": "The organization privacy policy was published.",
+        "privacyWeb": "The web privacy policy was published."
+      },
+      "saveError": {
+        "termsDashboard": "Organization terms and conditions could not be saved.",
+        "termsWeb": "Web terms and conditions could not be saved.",
+        "privacyDashboard": "The organization privacy policy could not be saved.",
+        "privacyWeb": "The web privacy policy could not be saved."
+      },
+      "publishError": {
+        "termsDashboard": "Organization terms and conditions could not be published.",
+        "termsWeb": "Web terms and conditions could not be published.",
+        "privacyDashboard": "The organization privacy policy could not be published.",
+        "privacyWeb": "The web privacy policy could not be published."
+      }
+    },
+    "tabs": {
+      "terms": "Terms and conditions",
+      "privacy": "Privacy policy"
+    },
+    "organizations": {
+      "title": "Organizations",
+      "description": "Content for owners and teams that manage organizations.",
+      "termsEditorLabel": "Terms and conditions editor for organizations",
+      "privacyEditorLabel": "Privacy policy editor for organizations"
+    },
+    "web": {
+      "title": "Web",
+      "description": "Content for customers using Repo's public experience.",
+      "termsEditorLabel": "Terms and conditions editor for web",
+      "privacyEditorLabel": "Privacy policy editor for web"
+    }
   },
   "errors": {
     "description": "Errors recorded by the API in the last 30 days.",

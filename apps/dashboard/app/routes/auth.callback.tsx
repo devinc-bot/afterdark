@@ -2,6 +2,7 @@ import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { DASHBOARD_ROUTES } from '~/modules/common/constants/routes'
+import { resolvePostAuthPath } from '~/modules/legal-documents/services/legal-documents.service'
 import { refreshAuthSession } from '~/modules/common/services/session.service'
 import { useSessionStore } from '~/modules/common/stores/session.store'
 import { saveAuthSession } from '~/modules/auth/utils/auth-storage.utils'
@@ -23,7 +24,8 @@ function AuthCallbackPage() {
       try {
         saveAuthSession(await refreshAuthSession())
         await useSessionStore.getState().loadSession()
-        await navigate({ to: DASHBOARD_ROUTES.home(), replace: true })
+        const to = await resolvePostAuthPath(DASHBOARD_ROUTES.home())
+        await navigate({ to: to as '/dashboard' | '/legal-acceptance', replace: true })
       } catch {
         await navigate({
           to: DASHBOARD_ROUTES.login(),

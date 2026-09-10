@@ -19,6 +19,12 @@ export function buildAppLoginErrorUrl(app: AuthOauthApp, error: GoogleOauthError
   return url.toString()
 }
 
+export function buildAppRegisterErrorUrl(app: AuthOauthApp, error: GoogleOauthErrorCode): string {
+  const url = appOrigin(app, CLIENT_ROUTES.register())
+  url.searchParams.set('error', error)
+  return url.toString()
+}
+
 export function buildAppAuthCallbackUrl(app: AuthOauthApp): string {
   return appOrigin(app, CLIENT_ROUTES.authCallback()).toString()
 }

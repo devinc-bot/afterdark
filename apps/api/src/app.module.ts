@@ -9,6 +9,7 @@ import { DashboardModule } from './modules/dashboard'
 import { ErrorsModule } from './modules/errors'
 import { HealthModule } from './modules/health'
 import { InvitationsModule } from './modules/invitations'
+import { LegalDocumentsModule } from './modules/legal-documents'
 import { OrdersModule } from './modules/orders'
 import { SessionModule } from './modules/session'
 import { SettingsModule } from './modules/settings'
@@ -34,6 +35,7 @@ import { OrganizationsModule } from './modules/organizations/organizations.modul
     ErrorsModule,
     HealthModule,
     InvitationsModule,
+    LegalDocumentsModule,
     OrdersModule,
     SessionModule,
     SettingsModule,

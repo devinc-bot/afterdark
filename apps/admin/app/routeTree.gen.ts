@@ -14,6 +14,7 @@ import { Route as AppRouteImport } from './routes/_app'
 import { Route as AppIndexRouteImport } from './routes/_app/index'
 import { Route as AppUsersRouteImport } from './routes/_app/users'
 import { Route as AppSettingsRouteImport } from './routes/_app/settings'
+import { Route as AppLegalDocumentsRouteImport } from './routes/_app/legal-documents'
 import { Route as AppErrorsRouteImport } from './routes/_app/errors'
 
 const LoginRoute = LoginRouteImport.update({
@@ -40,6 +41,11 @@ const AppSettingsRoute = AppSettingsRouteImport.update({
   path: '/settings',
   getParentRoute: () => AppRoute,
 } as any)
+const AppLegalDocumentsRoute = AppLegalDocumentsRouteImport.update({
+  id: '/legal-documents',
+  path: '/legal-documents',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppErrorsRoute = AppErrorsRouteImport.update({
   id: '/errors',
   path: '/errors',
@@ -50,12 +56,14 @@ export interface FileRoutesByFullPath {
   '/': typeof AppIndexRoute
   '/login': typeof LoginRoute
   '/errors': typeof AppErrorsRoute
+  '/legal-documents': typeof AppLegalDocumentsRoute
   '/settings': typeof AppSettingsRoute
   '/users': typeof AppUsersRoute
 }
 export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/errors': typeof AppErrorsRoute
+  '/legal-documents': typeof AppLegalDocumentsRoute
   '/settings': typeof AppSettingsRoute
   '/users': typeof AppUsersRoute
   '/': typeof AppIndexRoute
@@ -65,20 +73,28 @@ export interface FileRoutesById {
   '/_app': typeof AppRouteWithChildren
   '/login': typeof LoginRoute
   '/_app/errors': typeof AppErrorsRoute
+  '/_app/legal-documents': typeof AppLegalDocumentsRoute
   '/_app/settings': typeof AppSettingsRoute
   '/_app/users': typeof AppUsersRoute
   '/_app/': typeof AppIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login' | '/errors' | '/settings' | '/users'
+  fullPaths:
+    | '/'
+    | '/login'
+    | '/errors'
+    | '/legal-documents'
+    | '/settings'
+    | '/users'
   fileRoutesByTo: FileRoutesByTo
-  to: '/login' | '/errors' | '/settings' | '/users' | '/'
+  to: '/login' | '/errors' | '/legal-documents' | '/settings' | '/users' | '/'
   id:
     | '__root__'
     | '/_app'
     | '/login'
     | '/_app/errors'
+    | '/_app/legal-documents'
     | '/_app/settings'
     | '/_app/users'
     | '/_app/'
@@ -126,6 +142,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppSettingsRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/legal-documents': {
+      id: '/_app/legal-documents'
+      path: '/legal-documents'
+      fullPath: '/legal-documents'
+      preLoaderRoute: typeof AppLegalDocumentsRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/errors': {
       id: '/_app/errors'
       path: '/errors'
@@ -138,6 +161,7 @@ declare module '@tanstack/react-router' {
 
 interface AppRouteChildren {
   AppErrorsRoute: typeof AppErrorsRoute
+  AppLegalDocumentsRoute: typeof AppLegalDocumentsRoute
   AppSettingsRoute: typeof AppSettingsRoute
   AppUsersRoute: typeof AppUsersRoute
   AppIndexRoute: typeof AppIndexRoute
@@ -145,6 +169,7 @@ interface AppRouteChildren {
 
 const AppRouteChildren: AppRouteChildren = {
   AppErrorsRoute: AppErrorsRoute,
+  AppLegalDocumentsRoute: AppLegalDocumentsRoute,
   AppSettingsRoute: AppSettingsRoute,
   AppUsersRoute: AppUsersRoute,
   AppIndexRoute: AppIndexRoute,

@@ -21,6 +21,7 @@ export const WEB_ROUTES = {
   settings: () => '/settings' as const,
   tickets: () => '/tickets' as const,
   orders: () => '/orders' as const,
+  legalAcceptance: () => '/legal-acceptance' as const,
   properties: () => '/properties' as const,
   property: (id: string) => `/properties/${id}` as const,
   login,

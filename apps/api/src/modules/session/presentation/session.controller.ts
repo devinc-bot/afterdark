@@ -13,6 +13,7 @@ import type { AccountSessionsResponse, JwtPayload, SessionResponse } from '@repo
 import { uuidSchema } from '@repo/validators'
 import { CLIENT_APP_BY_USER_ROLE } from '../../auth/auth.constants'
 import { ApiRateLimit } from '../../common/decorators/api-rate-limit.decorator'
+import { AllowStaleLegalAcceptance } from '../../common/decorators/allow-stale-legal-acceptance.decorator'
 import { CurrentUser } from '../../common/decorators/current-user.decorator'
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard'
 import { RATE_LIMIT_PROFILE } from '../../../config/rate-limit.policy'
@@ -34,6 +35,7 @@ export class SessionController {
   ) {}
 
   @Get(API_ROUTES.session.path.me())
+  @AllowStaleLegalAcceptance()
   @UseGuards(JwtAuthGuard)
   getMe(@CurrentUser() user: JwtPayload): Promise<SessionResponse> {
     return this.getCurrentSessionUseCase.execute(user)

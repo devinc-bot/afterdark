@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 type UpdateValuesCallback<TValues> = (current: TValues) => TValues
 
@@ -13,16 +13,23 @@ export function useSettingsFormValues<TUser, TValues>(
 ) {
   const [values, setValues] = useState<TValues>(() => toFormValues(user))
   const [savedValues, setSavedValues] = useState<TValues>(() => toFormValues(user))
+  const isDirtyRef = useRef(false)
+
+  /** True when `values` diverge from `savedValues` per `areEqual`. */
+  const isDirty = useMemo(() => !areEqual(values, savedValues), [values, savedValues, areEqual])
+  isDirtyRef.current = isDirty
 
   useEffect(() => {
+    // Avatar-only refreshes (and other server patches) must not wipe in-progress edits.
+    if (isDirtyRef.current) {
+      return
+    }
+
     const initialValues = toFormValues(user)
     setValues(initialValues)
     setSavedValues(initialValues)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user])
-
-  /** True when `values` diverge from `savedValues` per `areEqual`. */
-  const isDirty = useMemo(() => !areEqual(values, savedValues), [values, savedValues, areEqual])
 
   /** Apply an updater fn to current form values. */
   const updateValues = useCallback((updater: UpdateValuesCallback<TValues>) => {

@@ -8,6 +8,7 @@ import {
   OnModuleInit,
 } from '@nestjs/common'
 import {
+  AVATAR_UPLOAD_MAX_BYTES,
   IMAGE_EXTENSION_BY_MIME_TYPE,
   isAllowedImageMimeType,
   type AllowedImageMimeType,
@@ -15,7 +16,11 @@ import {
 import { FILE_ERROR_CODE } from '@repo/i18n/constants'
 import { TranslationService } from '@repo/i18n/server'
 import { ENV } from '../../../../config/env'
-import { optimizeImage } from '../../utils/image-optimizer'
+import {
+  optimizeAvatarImage,
+  optimizeImage,
+  optimizeImageAsWebp,
+} from '../../utils/image-optimizer'
 
 type FilesClient = import('files-sdk').Files
 
@@ -36,7 +41,6 @@ export class FilesService implements OnModuleInit {
         secretAccessKey: ENV.R2_SECRET_ACCESS_KEY,
         publicBaseUrl: ENV.R2_PUBLIC_BASE_URL,
       }),
-      prefix: ENV.R2_UPLOAD_PREFIX,
     })
   }
 
@@ -48,6 +52,24 @@ export class FilesService implements OnModuleInit {
     }
 
     return `${randomUUID()}${extension}`
+  }
+
+  buildAvatarKey(profileDocumentId: string): string {
+    return `avatars/${profileDocumentId}-${randomUUID()}.webp`
+  }
+
+  buildEventImageKey(eventDocumentId: string, imageIndex: number): string {
+    const version = randomUUID()
+
+    if (imageIndex === 0) {
+      return `events/${eventDocumentId}/cover-${version}.webp`
+    }
+
+    return `events/${eventDocumentId}/gallery-${imageIndex}-${version}.webp`
+  }
+
+  buildLocationImageKey(locationDocumentId: string, imageIndex: number): string {
+    return `locations/${locationDocumentId}/gallery-${imageIndex}-${randomUUID()}.webp`
   }
 
   async uploadImage(file: Express.Multer.File): Promise<{ key: string; url: string }> {
@@ -85,6 +107,75 @@ export class FilesService implements OnModuleInit {
         throw error
       }
 
+      throw new InternalServerErrorException(this.ts.translateError(FILE_ERROR_CODE.UPLOAD_FAILED))
+    }
+  }
+
+  async uploadImageWithKey(
+    file: Express.Multer.File,
+    key: string
+  ): Promise<{ key: string; url: string }> {
+    if (!isAllowedImageMimeType(file.mimetype)) {
+      throw new BadRequestException(this.ts.translateError(FILE_ERROR_CODE.INVALID_IMAGE_TYPE))
+    }
+
+    if (file.size > ENV.UPLOAD_MAX_BYTES) {
+      throw new BadRequestException(this.ts.translateError(FILE_ERROR_CODE.FILE_TOO_LARGE))
+    }
+
+    let optimized
+
+    try {
+      optimized = await optimizeImageAsWebp(file.buffer, {
+        maxDimension: ENV.IMAGE_MAX_DIMENSION,
+        quality: ENV.IMAGE_QUALITY,
+      })
+    } catch {
+      throw new BadRequestException(this.ts.translateError(FILE_ERROR_CODE.INVALID_IMAGE_TYPE))
+    }
+
+    try {
+      await this.client.upload(key, optimized.buffer, {
+        contentType: optimized.mimeType,
+        cacheControl: 'public, max-age=31536000, immutable',
+      })
+
+      const url = await this.client.url(key)
+      return { key, url }
+    } catch {
+      throw new InternalServerErrorException(this.ts.translateError(FILE_ERROR_CODE.UPLOAD_FAILED))
+    }
+  }
+
+  async uploadAvatarWithKey(
+    file: Express.Multer.File,
+    key: string
+  ): Promise<{ key: string; url: string }> {
+    if (!isAllowedImageMimeType(file.mimetype)) {
+      throw new BadRequestException(this.ts.translateError(FILE_ERROR_CODE.INVALID_IMAGE_TYPE))
+    }
+
+    if (file.size > AVATAR_UPLOAD_MAX_BYTES) {
+      throw new BadRequestException(this.ts.translateError(FILE_ERROR_CODE.FILE_TOO_LARGE))
+    }
+
+    let optimized
+
+    try {
+      optimized = await optimizeAvatarImage(file.buffer)
+    } catch {
+      throw new BadRequestException(this.ts.translateError(FILE_ERROR_CODE.INVALID_IMAGE_TYPE))
+    }
+
+    try {
+      await this.client.upload(key, optimized.buffer, {
+        contentType: optimized.mimeType,
+        cacheControl: 'public, max-age=31536000, immutable',
+      })
+
+      const url = await this.client.url(key)
+      return { key, url }
+    } catch {
       throw new InternalServerErrorException(this.ts.translateError(FILE_ERROR_CODE.UPLOAD_FAILED))
     }
   }

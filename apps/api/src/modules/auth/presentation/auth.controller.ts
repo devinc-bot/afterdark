@@ -32,6 +32,7 @@ import {
   type LogoutSessionInput,
 } from '@repo/validators'
 import { ApiRateLimit } from '../../common/decorators/api-rate-limit.decorator'
+import { AllowStaleLegalAcceptance } from '../../common/decorators/allow-stale-legal-acceptance.decorator'
 import { ZodValidationPipe } from '../../common/pipes/zod-validation.pipe'
 import { RATE_LIMIT_PROFILE } from '../../../config/rate-limit.policy'
 import { ConfirmUserRegistrationUseCase } from '../application/confirm-user-registration.use-case'
@@ -177,6 +178,7 @@ export class AuthController {
   }
 
   @Post(API_ROUTES.auth.path.refreshToken())
+  @AllowStaleLegalAcceptance()
   @HttpCode(HttpStatus.OK)
   @ApiRateLimit(RATE_LIMIT_PROFILE.REFRESH)
   async refresh(
@@ -196,6 +198,7 @@ export class AuthController {
   }
 
   @Post(API_ROUTES.auth.path.logout())
+  @AllowStaleLegalAcceptance()
   @HttpCode(HttpStatus.NO_CONTENT)
   async logout(
     @Body(new ZodValidationPipe(sessionClientAppSchema)) body: LogoutSessionInput,

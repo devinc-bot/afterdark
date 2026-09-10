@@ -47,7 +47,6 @@ Object.assign(process.env, {
   R2_SECRET_ACCESS_KEY: 'test-r2-secret-key',
   R2_BUCKET: 'test-bucket',
   R2_PUBLIC_BASE_URL: 'http://localhost:3000/files',
-  R2_UPLOAD_PREFIX: 'images',
   AWS_REGION: 'sa-east-1',
   AWS_ACCESS_KEY_ID: '',
   AWS_SECRET_ACCESS_KEY: '',

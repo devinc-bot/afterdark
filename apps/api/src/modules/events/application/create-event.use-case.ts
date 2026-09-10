@@ -1,3 +1,4 @@
+import { randomUUID } from 'node:crypto'
 import {
   HttpException,
   Inject,
@@ -47,10 +48,14 @@ export class CreateEventUseCase {
       this.ts.translateError('event.TOO_MANY_IMAGES', { max: EVENT_IMAGE_MAX_COUNT })
     )
 
-    const uploadedImages = await this.eventImages.upload(files)
+    const documentId = randomUUID()
+    const uploadedImages = await this.eventImages.upload(files, documentId, 0)
 
     try {
-      const row = await createEvent(toEventUpsertInput(input, location.id, organization.id))
+      const row = await createEvent(
+        toEventUpsertInput(input, location.id, organization.id),
+        documentId
+      )
       const images = await this.eventImages.saveNew(row.event.id, files, uploadedImages)
       return toEventResponse(row.event, row.location, images, row.faqs)
     } catch (error) {

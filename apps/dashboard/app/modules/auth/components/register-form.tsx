@@ -1,18 +1,68 @@
 import { useState } from 'react'
-import { useTranslation } from 'react-i18next'
-import { Link } from '@tanstack/react-router'
 import { useForm } from '@tanstack/react-form'
+import { Link, useSearch } from '@tanstack/react-router'
+import { useQuery } from '@tanstack/react-query'
+import { useTranslation } from 'react-i18next'
+import { googleOauthErrorMessageKey } from '@repo/common'
+import { LEGAL_DOCUMENT_TYPE, type PublicLegalDocumentResponse } from '@repo/types'
 import { registerFormFieldsSchema, registerFormSchema } from '@repo/validators'
 import { Button, Field, fieldErrorMessage } from '@repo/ui'
+import { QUERY_KEYS } from '../../common/constants/query-keys'
 import { DASHBOARD_ROUTES } from '../../common/constants/routes'
+import {
+  LegalAcceptanceField,
+  PublishedLegalDocumentDialog,
+} from '../../legal-documents/components/legal-acceptance-fields'
+import { getPublishedLegalDocumentByType } from '../../legal-documents/services/legal-documents.service'
 import { useRequestRegister } from '../mutations/use-auth-mutations'
 import { AuthInput } from './auth-input'
 import { AuthMethodSeparator, GoogleContinueButton } from './google-continue-button'
 
+const REGISTER_LEGAL_CHECKBOX_ID = {
+  TERMS: 'register-legal-terms',
+  PRIVACY: 'register-legal-privacy',
+} as const
+
+const LEGAL_NOTICE = {
+  REQUIRED: 'required',
+  UNAVAILABLE: 'unavailable',
+} as const
+
+const LEGAL_NOTICE_ID = 'register-legal-notice'
+
+type LegalNotice = (typeof LEGAL_NOTICE)[keyof typeof LEGAL_NOTICE]
+
 export function RegisterForm() {
   const { t } = useTranslation('auth')
+  const { error: oauthError } = useSearch({ from: '/register' })
   const register = useRequestRegister()
   const [submittedEmail, setSubmittedEmail] = useState<string | null>(null)
+  const [termsAccepted, setTermsAccepted] = useState(false)
+  const [privacyAccepted, setPrivacyAccepted] = useState(false)
+  const [legalNotice, setLegalNotice] = useState<LegalNotice | null>(null)
+  const [openDocument, setOpenDocument] = useState<PublicLegalDocumentResponse | null>(null)
+
+  const termsQuery = useQuery({
+    queryKey: QUERY_KEYS.publishedLegalDocument(LEGAL_DOCUMENT_TYPE.TERMS_DASHBOARD),
+    queryFn: () => getPublishedLegalDocumentByType(LEGAL_DOCUMENT_TYPE.TERMS_DASHBOARD),
+    retry: false,
+    refetchOnMount: 'always',
+    refetchOnWindowFocus: true,
+  })
+  const privacyQuery = useQuery({
+    queryKey: QUERY_KEYS.publishedLegalDocument(LEGAL_DOCUMENT_TYPE.PRIVACY_DASHBOARD),
+    queryFn: () => getPublishedLegalDocumentByType(LEGAL_DOCUMENT_TYPE.PRIVACY_DASHBOARD),
+    retry: false,
+    refetchOnMount: 'always',
+    refetchOnWindowFocus: true,
+  })
+
+  const canAcceptLegal = termsQuery.isSuccess && privacyQuery.isSuccess
+  const accepted = termsAccepted && privacyAccepted
+  const legalQueriesSettled = !termsQuery.isPending && !privacyQuery.isPending
+  const legalUnavailable = legalQueriesSettled && !canAcceptLegal
+  const visibleLegalNotice = legalUnavailable ? LEGAL_NOTICE.UNAVAILABLE : legalNotice
+  const legalNoticeId = visibleLegalNotice ? LEGAL_NOTICE_ID : undefined
 
   const form = useForm({
     defaultValues: { name: '', lastName: '', email: '', password: '', confirmPassword: '' },
@@ -55,9 +105,36 @@ export function RegisterForm() {
       onSubmit={(event) => {
         event.preventDefault()
         event.stopPropagation()
+        if (!legalQueriesSettled) {
+          return
+        }
+        if (!canAcceptLegal) {
+          setLegalNotice(LEGAL_NOTICE.UNAVAILABLE)
+          return
+        }
+        if (!accepted) {
+          setLegalNotice(LEGAL_NOTICE.REQUIRED)
+          return
+        }
+        setLegalNotice(null)
         void form.handleSubmit()
       }}
     >
+      <div>
+        <h1 className="font-display text-2xl font-bold tracking-tight text-balance text-on-surface">
+          {t('register.title')}
+        </h1>
+      </div>
+
+      {oauthError ? (
+        <p
+          role="alert"
+          className="rounded-lg border border-error/40 bg-error-container/20 px-4 py-3 text-sm text-error"
+        >
+          {t(googleOauthErrorMessageKey(oauthError))}
+        </p>
+      ) : null}
+
       <div className="grid grid-cols-1 gap-7 sm:grid-cols-2 sm:gap-6">
         <form.Field
           name="name"
@@ -200,6 +277,84 @@ export function RegisterForm() {
         }}
       </form.Field>
 
+      {!legalQueriesSettled ? (
+        <p className="text-sm text-on-surface-variant" aria-live="polite">
+          {t('register.legal.loading')}
+        </p>
+      ) : null}
+
+      {canAcceptLegal ? (
+        <fieldset className="space-y-3 border-0 p-0">
+          <legend className="sr-only">{t('register.legal.legend')}</legend>
+          <LegalAcceptanceField
+            id={REGISTER_LEGAL_CHECKBOX_ID.TERMS}
+            label={t('register.legal.terms')}
+            openLabel={t('register.legal.termsOpen')}
+            checked={termsAccepted}
+            invalid={legalNotice === LEGAL_NOTICE.REQUIRED && !termsAccepted}
+            describedBy={legalNotice === LEGAL_NOTICE.REQUIRED ? LEGAL_NOTICE_ID : undefined}
+            onCheckedChange={(checked) => {
+              setTermsAccepted(checked)
+              if (checked && privacyAccepted) {
+                setLegalNotice(null)
+              }
+            }}
+            onOpen={() => setOpenDocument(termsQuery.data ?? null)}
+          />
+          <LegalAcceptanceField
+            id={REGISTER_LEGAL_CHECKBOX_ID.PRIVACY}
+            label={t('register.legal.privacy')}
+            openLabel={t('register.legal.privacyOpen')}
+            checked={privacyAccepted}
+            invalid={legalNotice === LEGAL_NOTICE.REQUIRED && !privacyAccepted}
+            describedBy={legalNotice === LEGAL_NOTICE.REQUIRED ? LEGAL_NOTICE_ID : undefined}
+            onCheckedChange={(checked) => {
+              setPrivacyAccepted(checked)
+              if (checked && termsAccepted) {
+                setLegalNotice(null)
+              }
+            }}
+            onOpen={() => setOpenDocument(privacyQuery.data ?? null)}
+          />
+        </fieldset>
+      ) : null}
+
+      <PublishedLegalDocumentDialog
+        document={openDocument}
+        closeLabel={t('register.legal.close')}
+        description={t('register.legal.dialogDescription')}
+        onClose={() => setOpenDocument(null)}
+      />
+
+      {visibleLegalNotice ? (
+        <div className="space-y-3">
+          <p
+            id={LEGAL_NOTICE_ID}
+            role="alert"
+            className="rounded-lg border border-error/40 bg-error-container/20 px-4 py-3 text-sm text-error"
+          >
+            {t(
+              visibleLegalNotice === LEGAL_NOTICE.UNAVAILABLE
+                ? 'register.legal.unavailable'
+                : 'register.legal.required'
+            )}
+          </p>
+          {legalUnavailable ? (
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                void termsQuery.refetch()
+                void privacyQuery.refetch()
+              }}
+            >
+              {t('register.legal.retry')}
+            </Button>
+          ) : null}
+        </div>
+      ) : null}
+
       {register.isError ? (
         <p
           role="alert"
@@ -221,9 +376,16 @@ export function RegisterForm() {
       </form.Subscribe>
 
       <AuthMethodSeparator />
-      <GoogleContinueButton />
+      <GoogleContinueButton
+        disabled={!canAcceptLegal || !accepted}
+        legalAccepted={accepted && canAcceptLegal}
+        describedBy={legalNoticeId}
+      />
 
-      <div className="flex justify-center gap-1.5 text-sm text-on-surface-variant">
+      <nav
+        aria-label={t('register.otherOptions')}
+        className="flex justify-center gap-1.5 text-sm text-on-surface-variant"
+      >
         <span>{t('register.alreadyHaveAccount')}</span>
         <Link
           to={DASHBOARD_ROUTES.login()}
@@ -231,7 +393,7 @@ export function RegisterForm() {
         >
           {t('register.signIn')}
         </Link>
-      </div>
+      </nav>
     </form>
   )
 }

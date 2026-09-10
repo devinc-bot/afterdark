@@ -9,6 +9,7 @@ import type {
 } from '@repo/validators'
 import { WEB_ROUTES } from '../../common/constants/routes'
 import { useSessionStore } from '../../common/stores/session.store'
+import { resolvePostAuthPath } from '../../legal-documents/services/legal-documents.service'
 import {
   confirmUserRegistrationFn,
   forgotPasswordFn,
@@ -26,7 +27,8 @@ export function useLogin(returnTo?: string) {
     onSuccess: async (session) => {
       saveAuthSession(session)
       await useSessionStore.getState().loadSession()
-      await navigate(returnTo ? { to: returnTo as '/' } : { to: WEB_ROUTES.home() })
+      const to = await resolvePostAuthPath(returnTo ?? WEB_ROUTES.home())
+      await navigate({ to: to as '/', replace: true })
     },
   })
 }
@@ -45,7 +47,8 @@ export function useConfirmUserRegistration() {
     onSuccess: async (session) => {
       saveAuthSession(session)
       await useSessionStore.getState().loadSession()
-      await navigate({ to: WEB_ROUTES.home() })
+      const to = await resolvePostAuthPath(WEB_ROUTES.home())
+      await navigate({ to: to as '/', replace: true })
     },
   })
 }

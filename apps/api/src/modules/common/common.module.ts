@@ -4,6 +4,7 @@ import { ThrottlerModule } from '@nestjs/throttler'
 import { RATE_LIMIT_POLICY } from '../../config/env.ts'
 import { RATE_LIMIT_PROFILE } from '../../config/rate-limit.policy.ts'
 import { HttpExceptionFilter } from './filters/http-exception.filter.ts'
+import { MulterExceptionFilter } from './filters/multer-exception.filter.ts'
 import { ApiThrottlerGuard } from './guards/api-throttler.guard.ts'
 import { UserRateLimitGuard } from './guards/user-rate-limit.guard.ts'
 import { ApiErrorRetentionScheduler } from './services/api-error-retention.scheduler.ts'
@@ -31,6 +32,10 @@ const publicBudget = RATE_LIMIT_POLICY[RATE_LIMIT_PROFILE.PUBLIC]
     {
       provide: APP_FILTER,
       useClass: HttpExceptionFilter,
+    },
+    {
+      provide: APP_FILTER,
+      useClass: MulterExceptionFilter,
     },
     {
       provide: APP_GUARD,

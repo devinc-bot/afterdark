@@ -9,6 +9,7 @@ import { ErrorsController } from '../../errors/presentation/errors.controller.ts
 import { EventsController } from '../../events/presentation/events.controller.ts'
 import { GeoController } from '../../geo/presentation/geo.controller.ts'
 import { InvitationsController } from '../../invitations/presentation/invitations.controller.ts'
+import { LegalDocumentsController } from '../../legal-documents/presentation/legal-documents.controller.ts'
 import { LocationsController } from '../../locations/presentation/locations.controller.ts'
 import { OrdersController } from '../../orders/presentation/orders.controller.ts'
 import { OrganizationsController } from '../../organizations/presentation/organizations.controller.ts'
@@ -150,6 +151,7 @@ test.each([
   ['EventsController.listPublic', EventsController, 'listPublic'],
   ['EventsController.getPublicBySlug', EventsController, 'getPublicBySlug'],
   ['OrganizationsController.getPublicBySlug', OrganizationsController, 'getPublicBySlug'],
+  ['LegalDocumentsController.getPublishedByType', LegalDocumentsController, 'getPublishedByType'],
 ] as const)('%s has no Throttle override', (_name, Controller, method) => {
   expectPublicDefault(Controller, method)
   expectUserProfile(Controller, method, undefined)
@@ -229,6 +231,12 @@ test.each([
   ['TicketsController.create', TicketsController, 'create'],
   ['TicketsController.update', TicketsController, 'update'],
   ['TicketsController.delete', TicketsController, 'delete'],
+  ['LegalDocumentsController.list', LegalDocumentsController, 'list'],
+  ['LegalDocumentsController.get', LegalDocumentsController, 'get'],
+  ['LegalDocumentsController.saveDraft', LegalDocumentsController, 'saveDraft'],
+  ['LegalDocumentsController.publish', LegalDocumentsController, 'publish'],
+  ['LegalDocumentsController.getPendingAcceptance', LegalDocumentsController, 'getPendingAcceptance'],
+  ['LegalDocumentsController.accept', LegalDocumentsController, 'accept'],
 ] as const)(
   '%s uses the authenticated IP profile without a user limiter',
   (_name, Controller, method) => {

@@ -6,6 +6,12 @@ export {
   type AccountSessionsLabels,
   type AccountSessionsProps,
 } from './components/account-sessions.tsx'
+export {
+  AvatarCropDialog,
+  cropImageToBlob,
+  type AvatarCropDialogLabels,
+  type AvatarCropDialogProps,
+} from './components/avatar-crop-dialog.tsx'
 
 export {
   Accordion,
@@ -237,6 +243,8 @@ export {
   tableVariants,
 } from './components/ui/table.tsx'
 export { Textarea, textareaVariants, type TextareaProps } from './components/ui/textarea.tsx'
+export { RichEditor, type RichEditorProps } from './components/ui/rich-editor.tsx'
+export { richEditorHtmlToJson, richEditorJsonToHtml, RICH_EDITOR_HTML_CLASS_NAME } from './lib/rich-editor-content.ts'
 export {
   Pagination,
   PaginationButton,

@@ -18,6 +18,7 @@ export const OWNER_ALLOWED_PATH_PREFIXES = [
   DASHBOARD_ROUTES.qrTicket(),
   DASHBOARD_ROUTES.staff(),
   DASHBOARD_ROUTES.settings(),
+  DASHBOARD_ROUTES.legalAcceptance(),
 ] as const
 
 const ROLE_ALLOWED_PATH_PREFIXES: Partial<Record<UserRole, readonly string[]>> = {
