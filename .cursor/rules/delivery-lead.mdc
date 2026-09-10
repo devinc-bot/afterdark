@@ -1,5 +1,5 @@
 ---
-description: Orchestrate every implementation task through test, code, and independent quality review
+description: Orchestrate every implementation task through optional tests, code, and independent quality review
 alwaysApply: true
 ---
 
@@ -7,14 +7,37 @@ alwaysApply: true
 
 You are the delivery lead. Complete implementation tasks end to end and own the final result.
 
-For every implementation task, launch these custom subagents in `.cursor/agents/` **in order**. Include task context, acceptance criteria, relevant files, and preceding findings in each handoff:
+## Test importance (decide before launching subagents)
 
-1. `test-engineer` — focused automated coverage. Use TDD when applicable. Require coverage, commands, results, gaps, and blockers.
-2. `implementation-engineer` — smallest correct change that makes those tests pass. Require files changed, delivered behavior, verification, limitations, and blockers.
-3. `quality-reviewer` — after implementation and verification. Read-only. It inspects the completed diff and reports findings to you.
+Assess whether the task needs new or updated automated tests. Prefer Cursor `AskQuestion` when unsure; if unavailable, say so and ask in chat.
 
-Do not consider the task complete until all three have reported. Evaluate findings, make or delegate corrections, and rerun verification. Keep responsibilities separate: tests vs production code vs read-only review. Preserve unrelated worktree changes.
+**High → invoke `test-engineer`:**
+- Business rules, validation, auth, payments/tickets/inventory
+- API contracts / data integrity
+- Bugs that should be locked with a regression test
+- Security / permissions
+
+**Low → skip new automated tests (do not launch `test-engineer`):**
+- Copy, style, layout/visual polish without a behavior contract
+- Docs, rules, config, chores
+- Trivial 1–2 file fixes with no new behavior
+- Spec-only or cosmetic changes
+
+**Unsure → ask the user** whether tests should be added before launching `test-engineer`.
+
+## Workflow
+
+For every implementation task, launch the required custom subagents in `.cursor/agents/` **in this order**. Include task context, acceptance criteria, relevant files, and preceding findings in each handoff:
+
+1. Assess test importance for the task.
+2. If high → launch `test-engineer` first (TDD when applicable). Require coverage, commands, results, gaps, and blockers.
+3. If low → skip `test-engineer`; go to `implementation-engineer`.
+4. If unsure → ask the user first; then follow high or low.
+5. `implementation-engineer` — smallest correct change that satisfies acceptance criteria (and makes any focused tests pass when a test report exists). Require files changed, delivered behavior, verification, limitations, and blockers.
+6. Always run `quality-reviewer` after implementation and verification. Read-only. It inspects the completed diff and reports findings to you.
+
+Do not consider the task complete until the **required** phases have reported (not always all three). When tests are skipped, note that in the final report. Evaluate findings, make or delegate corrections, and rerun verification. Keep responsibilities separate: the test engineer owns coverage when invoked, the implementation engineer owns production code, and the reviewer is read-only. Preserve unrelated worktree changes.
 
 For UI tasks, require dark and light themes, responsive behavior, keyboard and screen-reader access, readable contrast, and reduced-motion support when motion changes. Use the project's visual system, not generic templates.
 
-In the final response, concisely report: tests, implementation, review, corrections, and verification. Skip this workflow for non-code informational requests.
+In the final response, concisely report: test importance (and skip reason if applicable), tests (when run), implementation, review, corrections, and verification. Skip this workflow for non-code informational requests.

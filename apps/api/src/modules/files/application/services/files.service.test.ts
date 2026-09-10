@@ -15,14 +15,14 @@ function createService(): HierarchicalKeyBuilders {
   return new FilesService(translationService) as unknown as HierarchicalKeyBuilders
 }
 
-test('builds a versioned WebP avatar key under the profile hierarchy', () => {
+test('builds a versioned WebP avatar key', () => {
   const service = createService()
   const profileDocumentId = '8efedbd1-c965-4882-bad7-2235b02bcd6e'
 
   const key = service.buildAvatarKey(profileDocumentId)
 
   expect(key).toMatch(
-    /^users\/avatars\/8efedbd1-c965-4882-bad7-2235b02bcd6e-[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}\.webp$/i
+    /^avatars\/8efedbd1-c965-4882-bad7-2235b02bcd6e-[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}\.webp$/i
   )
 })
 

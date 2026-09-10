@@ -42,7 +42,7 @@ La arquitectura de datos es `UI -> queries/mutations -> services -> QueryFactory
 - Los cambios nuevos y expansiones de alcance siguen SDD: crea o actualiza `spec/features/active/<NNN-slug>/` con exactamente `spec.md`, `plan.md` y `tasks.md`, revisa los artefactos antes de implementar y archiva solo el trabajo verificado.
 - Cada `spec.md` nueva usa `spec/SPEC_TEMPLATE.md` en inglés, con requisitos funcionales EARS. Antes de una propuesta, delega exploración del código relevante y registra dudas en `Open Questions` con `[NEEDS CLARIFICATION]`.
 - Implementa una tarea de `tasks.md` por turno salvo que el usuario autorice un lote. Ante una decisión de producto bloqueante, pregunta en vez de asumir.
-- Aplica TDD cuando el cambio lo requiera: escribe primero una prueba que falle, implementa lo mínimo para hacerla pasar y refactoriza. Añade la cobertura mínima necesaria para validar el comportamiento nuevo o corregido.
+- Aplica TDD cuando la importancia de tests sea **alta** (ver “Al terminar cualquier tarea”): escribe primero una prueba que falle, implementa lo mínimo para hacerla pasar y refactoriza. Añade la cobertura mínima necesaria para validar el comportamiento nuevo o corregido.
 - No edites archivos generados, incluido `routeTree.gen.ts`. No crees `progress.md`, propuestas separadas ni delta specs para una feature.
 - Mantén el alcance mínimo y no refactorices áreas no relacionadas. No añadas dependencias, campos persistidos, compatibilidad retroactiva ni integraciones externas sin necesidad concreta o confirmación.
 - Usa `documentId` (UUID) en contratos API y JWT; los `id` enteros internos son solo foreign keys. El término canónico es `location`, no `club` ni `nightlife`.
@@ -55,11 +55,14 @@ La arquitectura de datos es `UI -> queries/mutations -> services -> QueryFactory
 
 ## Al terminar cualquier tarea
 
-- Para cada tarea de implementación, el agente padre debe coordinar y recibir reportes de tres subagentes, en este orden: `test-engineer` para la cobertura automatizada, `implementation-engineer` para el código de producción y `quality-reviewer` para una revisión independiente tras la implementación.
+- Para cada tarea de implementación, el agente padre (delivery lead) decide la **importancia de tests** antes de lanzar subagentes: **alta** → invocar `test-engineer`; **baja** → omitir tests automatizados nuevos y no lanzar `test-engineer`; **dudosa** → preguntar al usuario (preferir `AskQuestion`; si no está disponible, decirlo y preguntar en el chat).
+- **Alta** (sí `test-engineer`): reglas de negocio, validación, auth, pagos/tickets/inventario; contratos API / integridad de datos; bugs a fijar con regresión; seguridad / permisos.
+- **Baja** (omitir `test-engineer`): copy, estilo, layout/polish visual sin contrato de comportamiento; docs, rules, config, chores; fixes triviales de 1–2 archivos sin comportamiento nuevo; cambios solo de spec o cosméticos.
+- Coordinar las fases **requeridas** en este orden: `test-engineer` solo si la importancia es alta (o el usuario lo pidió), luego `implementation-engineer` para el código de producción, y siempre `quality-reviewer` tras la implementación. La tarea está completa cuando han reportado las fases requeridas (no siempre las tres); si se omitieron tests, anotarlo en el reporte final.
 - `quality-reviewer` es de solo lectura. Debe comprobar los criterios de aceptación y estándares aplicables; en cambios de UI debe cargar la skill `impeccable` y aplicar sus criterios de artesanía, accesibilidad, responsividad y temas. El agente padre corrige los hallazgos antes de finalizar.
-- El reporte final debe resumir las fases de tests, implementación, revisión, correcciones y verificación.
-- Ejecuta la verificación más específica aplicable: tests del paquete afectado, `pnpm type-check`, `pnpm lint`, `pnpm format:check` y/o el build afectado.
-- Cuando aplique TDD, ejecuta las pruebas nuevas o modificadas y comprueba que cubren el comportamiento requerido.
+- El reporte final debe resumir importancia de tests (y motivo de omisión si aplica), tests (si corrieron), implementación, revisión, correcciones y verificación.
+- Ejecuta la verificación más específica aplicable: tests del paquete afectado (cuando haya cobertura nueva o relevante), `pnpm type-check`, `pnpm lint`, `pnpm format:check` y/o el build afectado.
+- Cuando aplique TDD (tareas de importancia alta), ejecuta las pruebas nuevas o modificadas y comprueba que cubren el comportamiento requerido.
 - Si la verificación global no puede ejecutarse o falla por problemas ajenos al cambio, informa el comando, el resultado y la causa concreta.
 - Revisa `git diff --check` y no reviertas cambios preexistentes de otros colaboradores.
 - Para cambios de base de datos, verifica que la migración, los repositorios, validadores, tipos y contratos se hayan actualizado de forma consistente.
