@@ -1,4 +1,4 @@
-﻿import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next'
 import { cn } from '@repo/ui'
 import { Container } from '~/modules/common/components/container'
 import { LANDING_IMAGES } from '../../constants/images'
@@ -19,7 +19,7 @@ export function SectionAbout({ className }: SectionAboutProps) {
     >
       <Container>
         <Reveal>
-          <div className="overflow-hidden rounded-app border border-on-surface/12 bg-surface-container-low p-2 shadow-glass">
+          <div className="overflow-hidden rounded-app bg-surface-container-low panel p-2">
             <div className="grid gap-0 md:grid-cols-12">
               <div className="flex flex-col justify-center gap-5 px-margin-mobile py-10 md:col-span-5 md:px-10 lg:px-12 lg:py-14">
                 <h2 id="about-heading" className={cn(LANDING_HEADING, 'text-on-surface')}>

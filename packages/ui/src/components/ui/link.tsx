@@ -24,7 +24,7 @@ export const linkVariants = cva(
         secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
         ghost: 'hover:bg-surface-strong hover:text-ink',
         link: 'text-ink underline-offset-4 hover:underline active:scale-100',
-        button: 'bg-primary text-primary-foreground glass-panel-border hover:bg-primary/90',
+        button: 'bg-primary text-primary-foreground hover:bg-primary/90',
       },
       size: {
         default: 'h-10 px-5 [&_svg]:size-[16px]',

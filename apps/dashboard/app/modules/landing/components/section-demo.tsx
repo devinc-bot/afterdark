@@ -44,7 +44,7 @@ export function SectionDemo() {
       className="relative z-20 -mt-10 scroll-mt-20 border-b border-hairline/60 sm:-mt-14"
     >
       <div className="mx-auto w-full max-w-6xl px-margin-mobile pb-[clamp(4rem,8vw,6.5rem)] md:px-margin-desktop">
-        <div className="overflow-hidden rounded-app bg-surface-container-low glass-panel p-2">
+        <div className="overflow-hidden rounded-app bg-surface-container-low panel p-2">
           <div className="grid gap-0 lg:grid-cols-12">
             <div className="flex flex-col justify-center gap-4 px-margin-mobile py-10 md:px-10 lg:col-span-4 lg:px-12 lg:py-12">
               <h2
