@@ -188,6 +188,8 @@ export const API_ROUTES = {
     prefix: API_LEGAL_DOCUMENTS_PREFIX,
     path: {
       list: () => '/' as const,
+      getPendingAcceptance: () => '/me/pending' as const,
+      accept: () => '/me/accept' as const,
       getByType: (type: string) => `/${routeSegment(type)}` as const,
       getPublishedByType: (type: string) => `/public/${routeSegment(type)}` as const,
       saveDraft: (type: string) => `/${routeSegment(type)}/draft` as const,

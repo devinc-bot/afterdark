@@ -50,3 +50,33 @@ test('exposes published legal document not-found in Spanish and English', () => 
     'We could not find a published legal document.'
   )
 })
+
+test('exposes required legal reacceptance in Spanish and English', () => {
+  expect(LEGAL_DOCUMENT_ERROR_CODE.ACCEPTANCE_REQUIRED).toBe('legalDocument.ACCEPTANCE_REQUIRED')
+  expect(nestedCopy(esErrors, LEGAL_DOCUMENT_ERROR_CODE.ACCEPTANCE_REQUIRED)).toBe(
+    'Tenés que aceptar la versión vigente de los documentos legales.'
+  )
+  expect(nestedCopy(enErrors, LEGAL_DOCUMENT_ERROR_CODE.ACCEPTANCE_REQUIRED)).toBe(
+    'You must accept the current version of the legal documents.'
+  )
+})
+
+test('exposes legal acceptance persist failure in Spanish and English', () => {
+  expect(LEGAL_DOCUMENT_ERROR_CODE.ACCEPT_FAILED).toBe('legalDocument.ACCEPT_FAILED')
+  expect(nestedCopy(esErrors, LEGAL_DOCUMENT_ERROR_CODE.ACCEPT_FAILED)).toBe(
+    'No pudimos registrar la aceptación. Intentá de nuevo.'
+  )
+  expect(nestedCopy(enErrors, LEGAL_DOCUMENT_ERROR_CODE.ACCEPT_FAILED)).toBe(
+    'We could not record your acceptance. Try again.'
+  )
+})
+
+test('exposes invalid legal acceptance types in Spanish and English', () => {
+  expect(LEGAL_DOCUMENT_ERROR_CODE.INVALID_TYPES).toBe('legalDocument.INVALID_TYPES')
+  expect(nestedCopy(esErrors, LEGAL_DOCUMENT_ERROR_CODE.INVALID_TYPES)).toBe(
+    'Esos documentos no aplican a tu cuenta.'
+  )
+  expect(nestedCopy(enErrors, LEGAL_DOCUMENT_ERROR_CODE.INVALID_TYPES)).toBe(
+    'Those documents do not apply to your account.'
+  )
+})

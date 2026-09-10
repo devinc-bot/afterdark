@@ -17,6 +17,7 @@ export const DASHBOARD_ROUTES = {
   qrTicket: () => '/qr-ticket' as const,
   staff: () => '/staff' as const,
   settings: () => '/settings' as const,
+  legalAcceptance: () => '/legal-acceptance' as const,
   login,
   register: () => '/register' as const,
   registerConfirm,

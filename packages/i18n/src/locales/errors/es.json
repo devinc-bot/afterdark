@@ -149,7 +149,10 @@
     "SAVE_FAILED": "No pudimos guardar el borrador. Intentá de nuevo.",
     "PUBLISH_FAILED": "No pudimos publicar el documento. Intentá de nuevo.",
     "LIST_FAILED": "No pudimos cargar los documentos legales. Intentá de nuevo en unos minutos.",
-    "PUBLISHED_NOT_FOUND": "No encontramos un documento legal publicado."
+    "PUBLISHED_NOT_FOUND": "No encontramos un documento legal publicado.",
+    "ACCEPTANCE_REQUIRED": "Tenés que aceptar la versión vigente de los documentos legales.",
+    "ACCEPT_FAILED": "No pudimos registrar la aceptación. Intentá de nuevo.",
+    "INVALID_TYPES": "Esos documentos no aplican a tu cuenta."
   },
   "admin": {
     "ERRORS_LIST_FAILED": "No pudimos cargar los errores registrados. Intentá de nuevo en unos minutos.",

@@ -425,12 +425,14 @@ test('register wiring uses published-by-type routes, query keys, and legalAccept
   expect(registerForm).toContain('googleOauthErrorMessageKey')
   expect(registerForm).toContain('LEGAL_DOCUMENT_TYPE.TERMS_DASHBOARD')
   expect(registerForm).toContain('LEGAL_DOCUMENT_TYPE.PRIVACY_DASHBOARD')
-  expect(registerForm).toContain('richEditorJsonToHtml')
-  expect(registerForm).toContain('RICH_EDITOR_HTML_CLASS_NAME')
-  expect(registerForm).toContain('Checkbox')
-  expect(registerForm).toContain('Dialog')
+  expect(registerForm).toContain('LegalAcceptanceField')
+  expect(registerForm).toContain('PublishedLegalDocumentDialog')
   expect(registerForm).toContain('legalAccepted')
   expect(registerForm).not.toContain('/api/legal-documents')
+
+  expect(
+    await readSource('../app/modules/legal-documents/components/legal-acceptance-fields.tsx')
+  ).toContain('RICH_EDITOR_HTML_CLASS_NAME')
 
   expect(googleButtonSource).toContain('legalAccepted: true')
   expect(googleButtonSource).toContain('disabled')

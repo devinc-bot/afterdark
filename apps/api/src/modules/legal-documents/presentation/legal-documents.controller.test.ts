@@ -3,7 +3,7 @@ import { RequestMethod } from '@nestjs/common'
 import { Reflector } from '@nestjs/core'
 import { expect, test } from 'vitest'
 import { API_ROUTES } from '@repo/common'
-import { LEGAL_DOCUMENT_TYPE, USER_ROLE } from '@repo/types'
+import { LEGAL_DOCUMENT_TYPE, USER_ROLE, type JwtPayload } from '@repo/types'
 import { Roles } from '../../common/decorators/roles.decorator.ts'
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard.ts'
 import { RolesGuard } from '../../common/guards/roles.guard.ts'
@@ -22,6 +22,13 @@ function unusedUseCase() {
   }
 }
 
+const ACCOUNT_USER: JwtPayload = {
+  sub: '1dbd7dc5-61ff-4e3d-b3b0-078aa18e2c37',
+  email: 'user@example.com',
+  role: USER_ROLE.USER,
+  sessionDocumentId: '9f2ad9ee-7bb3-4b57-9435-e40ce65193e7',
+}
+
 function createController(
   overrides: {
     list?: { execute: () => Promise<unknown> }
@@ -29,6 +36,16 @@ function createController(
     save?: { execute: (type: string, input: { title: string }) => Promise<unknown> }
     publish?: { execute: (type: string) => Promise<unknown> }
     getPublished?: { execute: (type: string) => Promise<unknown> }
+    getPending?: {
+      execute: (accountDocumentId: string, role: string) => Promise<unknown>
+    }
+    accept?: {
+      execute: (
+        accountDocumentId: string,
+        role: string,
+        input: { types: string[] }
+      ) => Promise<unknown>
+    }
   } = {}
 ) {
   return new LegalDocumentsController(
@@ -36,8 +53,28 @@ function createController(
     (overrides.get ?? unusedUseCase()) as never,
     (overrides.save ?? unusedUseCase()) as never,
     (overrides.publish ?? unusedUseCase()) as never,
-    (overrides.getPublished ?? unusedUseCase()) as never
+    (overrides.getPublished ?? unusedUseCase()) as never,
+    (overrides.getPending ?? unusedUseCase()) as never,
+    (overrides.accept ?? unusedUseCase()) as never
   )
+}
+
+function expectUserOrOwnerRoles(handler: (...args: never[]) => unknown) {
+  const roles = reflector.get(Roles, handler)
+  expect(roles).toEqual(expect.arrayContaining([USER_ROLE.USER, USER_ROLE.OWNER]))
+  expect(roles).toHaveLength(2)
+  expect(roles).not.toContain(USER_ROLE.ADMIN)
+  expect(roles).not.toContain(USER_ROLE.STAFF)
+}
+
+function expectJwtAndRolesGuards(handler: (...args: never[]) => unknown) {
+  const classGuards = (Reflect.getMetadata(GUARDS_METADATA, LegalDocumentsController) ??
+    []) as unknown[]
+  const methodGuards = (Reflect.getMetadata(GUARDS_METADATA, handler) ?? []) as unknown[]
+  const guards = [...classGuards, ...methodGuards]
+
+  expect(guards).toContain(JwtAuthGuard)
+  expect(guards).toContain(RolesGuard)
 }
 
 test('delegates legal document list, get, save, and publish to admin use cases', async () => {
@@ -150,4 +187,85 @@ test('getPublishedByType has no JwtAuthGuard or Roles', () => {
   expect([...classGuards, ...methodGuards]).not.toContain(RolesGuard)
   expect(reflector.get(Roles, handler)).toBeUndefined()
   expect(reflector.get(Roles, LegalDocumentsController.prototype.get)).toEqual([USER_ROLE.ADMIN])
+})
+
+test('constructs with pending and accept use cases in addition to the five existing ones', () => {
+  expect(LegalDocumentsController.length).toBe(7)
+})
+
+test('delegates pending GET and accept POST with account documentId and role', async () => {
+  const calls: string[] = []
+  const pending = { staleTypes: [LEGAL_DOCUMENT_TYPE.TERMS_WEB] }
+  const remaining = { staleTypes: [] }
+  const owner: JwtPayload = { ...ACCOUNT_USER, role: USER_ROLE.OWNER }
+
+  const controller = createController({
+    getPending: {
+      execute: async (accountDocumentId: string, role: string) => {
+        calls.push(`pending:${accountDocumentId}:${role}`)
+        return pending
+      },
+    },
+    accept: {
+      execute: async (accountDocumentId: string, role: string, input: { types: string[] }) => {
+        calls.push(`accept:${accountDocumentId}:${role}:${input.types.join(',')}`)
+        return remaining
+      },
+    },
+  })
+
+  expect(await controller.getPendingAcceptance(ACCOUNT_USER)).toEqual(pending)
+  expect(
+    await controller.accept(ACCOUNT_USER, { types: [LEGAL_DOCUMENT_TYPE.TERMS_WEB] })
+  ).toEqual(remaining)
+  expect(await controller.getPendingAcceptance(owner)).toEqual(pending)
+  expect(
+    await controller.accept(owner, {
+      types: [LEGAL_DOCUMENT_TYPE.TERMS_DASHBOARD, LEGAL_DOCUMENT_TYPE.PRIVACY_DASHBOARD],
+    })
+  ).toEqual(remaining)
+  expect(calls).toEqual([
+    `pending:${ACCOUNT_USER.sub}:${USER_ROLE.USER}`,
+    `accept:${ACCOUNT_USER.sub}:${USER_ROLE.USER}:${LEGAL_DOCUMENT_TYPE.TERMS_WEB}`,
+    `pending:${owner.sub}:${USER_ROLE.OWNER}`,
+    `accept:${owner.sub}:${USER_ROLE.OWNER}:${LEGAL_DOCUMENT_TYPE.TERMS_DASHBOARD},${LEGAL_DOCUMENT_TYPE.PRIVACY_DASHBOARD}`,
+  ])
+})
+
+test('pending GET and accept POST use /me paths and are registered before GET /:type', () => {
+  expect(API_ROUTES.legalDocuments.path.getPendingAcceptance()).toBe('/me/pending')
+  expect(API_ROUTES.legalDocuments.path.accept()).toBe('/me/accept')
+  expect(API_ROUTES.legalDocuments.path.getByType(':type')).toBe('/:type')
+
+  const pendingHandler = LegalDocumentsController.prototype.getPendingAcceptance
+  const acceptHandler = LegalDocumentsController.prototype.accept
+
+  expect(typeof pendingHandler).toBe('function')
+  expect(typeof acceptHandler).toBe('function')
+  expect(Reflect.getMetadata(PATH_METADATA, pendingHandler)).toBe(
+    API_ROUTES.legalDocuments.path.getPendingAcceptance()
+  )
+  expect(Reflect.getMetadata(METHOD_METADATA, pendingHandler)).toBe(RequestMethod.GET)
+  expect(Reflect.getMetadata(PATH_METADATA, acceptHandler)).toBe(
+    API_ROUTES.legalDocuments.path.accept()
+  )
+  expect(Reflect.getMetadata(METHOD_METADATA, acceptHandler)).toBe(RequestMethod.POST)
+
+  const methodNames = Object.getOwnPropertyNames(LegalDocumentsController.prototype)
+  expect(methodNames).toContain('getPendingAcceptance')
+  expect(methodNames).toContain('accept')
+  expect(methodNames.indexOf('getPendingAcceptance')).toBeLessThan(methodNames.indexOf('get'))
+  expect(methodNames.indexOf('accept')).toBeLessThan(methodNames.indexOf('get'))
+})
+
+test('pending GET and accept POST require Jwt+Roles for USER and OWNER only', () => {
+  const pendingHandler = LegalDocumentsController.prototype.getPendingAcceptance
+  const acceptHandler = LegalDocumentsController.prototype.accept
+
+  expect(typeof pendingHandler).toBe('function')
+  expect(typeof acceptHandler).toBe('function')
+  expectJwtAndRolesGuards(pendingHandler)
+  expectJwtAndRolesGuards(acceptHandler)
+  expectUserOrOwnerRoles(pendingHandler)
+  expectUserOrOwnerRoles(acceptHandler)
 })

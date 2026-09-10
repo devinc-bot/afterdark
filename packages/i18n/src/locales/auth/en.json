@@ -118,6 +118,16 @@
       "fallback": "We couldn't create your account. Try again in a few minutes."
     }
   },
+  "legalAcceptance": {
+    "metaTitle": "Legal documents · {appName}",
+    "title": "There's a new version",
+    "description": "We updated the legal documents. Accept the current version to keep using Lumina.",
+    "submit": "Accept and continue",
+    "submitting": "Saving…",
+    "required": "Check every document to continue.",
+    "loadError": "We could not check your legal documents. Try again.",
+    "submitError": "We could not record your acceptance. Try again."
+  },
   "logout": "Sign out",
   "google": {
     "continue": "Continue with Google",

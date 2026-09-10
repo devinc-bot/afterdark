@@ -21,3 +21,13 @@
 - [x] 4.3 Persist acceptances on Google new-account from register; refuse Google login that would create an account
 - [x] 4.4 Web register: checkboxes, information dialogs, and Google gating for web terms and privacy
 - [x] 4.5 Dashboard register: checkboxes, information dialogs, and Google gating for dashboard terms and privacy
+
+## 5. Reacceptance after a new publish (existing accounts)
+
+- [x] 5.1 Stale-acceptance contracts, validators, `API_ROUTES`, and i18n error
+- [x] 5.2 Repository: current published vs account acceptances; stale types for `user` / `owner`
+- [x] 5.3 Authenticated pending GET + accept POST for current published rows of stale types
+- [x] 5.4 API allow-list after JWT for stale `user`/`owner`; skip admin, staff, anonymous
+- [x] 5.5 Web dedicated `/legal-acceptance` + redirect of other authenticated routes
+- [x] 5.6 Dashboard dedicated page + redirect for owners
+

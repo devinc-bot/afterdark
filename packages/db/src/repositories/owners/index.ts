@@ -1,4 +1,5 @@
 export * from './find-owner-id-by-document-id.ts'
+export * from './find-account-id-by-owner-document-id.ts'
 export * from './find-owner-document-id-by-account-id.ts'
 export * from './find-owner-profile-by-document-id.ts'
 export * from './find-current-owner-by-document-id.ts'

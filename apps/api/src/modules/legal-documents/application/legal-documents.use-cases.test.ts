@@ -4,7 +4,8 @@ import {
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common'
-import { LEGAL_DOCUMENT_TYPE } from '@repo/types'
+import { LEGAL_DOCUMENT_ERROR_CODE } from '@repo/i18n'
+import { LEGAL_DOCUMENT_TYPE, USER_ROLE, type LegalDocumentType } from '@repo/types'
 
 type LegalDocumentRow = {
   id: number
@@ -31,14 +32,34 @@ type UpsertDraftInput = {
 const TIPTAP_DOC = { type: 'doc', content: [{ type: 'paragraph' }] }
 const TIPTAP_UPDATED = { type: 'doc', content: [{ type: 'heading' }] }
 
+const USER_ACCOUNT_DOCUMENT_ID = '1dbd7dc5-61ff-4e3d-b3b0-078aa18e2c37'
+const OWNER_ACCOUNT_DOCUMENT_ID = '2dbd7dc5-61ff-4e3d-b3b0-078aa18e2c38'
+const USER_ACCOUNT_ID = 11
+const OWNER_ACCOUNT_ID = 22
+
+const USER_AUDIENCE: LegalDocumentType[] = [
+  LEGAL_DOCUMENT_TYPE.TERMS_WEB,
+  LEGAL_DOCUMENT_TYPE.PRIVACY_WEB,
+]
+
+const OWNER_AUDIENCE: LegalDocumentType[] = [
+  LEGAL_DOCUMENT_TYPE.TERMS_DASHBOARD,
+  LEGAL_DOCUMENT_TYPE.PRIVACY_DASHBOARD,
+]
+
 const state = vi.hoisted(() => ({
   nextId: 1,
   drafts: new Map<string, LegalDocumentRow>(),
   published: new Map<string, LegalDocumentRow[]>(),
   upsertCalls: [] as UpsertDraftInput[],
+  acceptedIds: new Map<number, Set<number>>(),
+  insertCalls: [] as { accountId: number; legalDocumentIds: number[] }[],
+  staleCalls: [] as { accountId: number; types: LegalDocumentType[] }[],
   failList: false,
   failSave: false,
   failPublish: false,
+  failStale: false,
+  failAccept: false,
 }))
 
 vi.mock('@repo/db', () => ({
@@ -105,6 +126,46 @@ vi.mock('@repo/db', () => ({
     state.published.set(type, history)
     return published
   },
+  findAccountIdByUserDocumentId: async (documentId: string) => {
+    if (documentId === USER_ACCOUNT_DOCUMENT_ID) return USER_ACCOUNT_ID
+    return null
+  },
+  findAccountIdByOwnerDocumentId: async (documentId: string) => {
+    if (documentId === OWNER_ACCOUNT_DOCUMENT_ID) return OWNER_ACCOUNT_ID
+    return null
+  },
+  findStaleLegalDocumentTypesForAccount: async (input: {
+    accountId: number
+    types: readonly LegalDocumentType[]
+  }) => {
+    if (state.failStale) throw new Error('db down')
+    state.staleCalls.push({ accountId: input.accountId, types: [...input.types] })
+    if (input.types.length === 0) return []
+    const accepted = state.acceptedIds.get(input.accountId) ?? new Set<number>()
+    const stale: LegalDocumentType[] = []
+    for (const type of input.types) {
+      const latest = state.published.get(type)?.at(-1)
+      if (latest && !accepted.has(latest.id)) {
+        stale.push(type)
+      }
+    }
+    return stale
+  },
+  insertAccountLegalAcceptances: async (input: {
+    accountId: number
+    legalDocumentIds: readonly number[]
+  }) => {
+    if (state.failAccept) throw new Error('db down')
+    state.insertCalls.push({
+      accountId: input.accountId,
+      legalDocumentIds: [...input.legalDocumentIds],
+    })
+    const accepted = state.acceptedIds.get(input.accountId) ?? new Set<number>()
+    for (const legalDocumentId of input.legalDocumentIds) {
+      accepted.add(legalDocumentId)
+    }
+    state.acceptedIds.set(input.accountId, accepted)
+  },
 }))
 
 const translationService = { translateError: (code: string) => code } as never
@@ -119,9 +180,47 @@ function resetRepo() {
   state.drafts.clear()
   state.published.clear()
   state.upsertCalls.length = 0
+  state.acceptedIds.clear()
+  state.insertCalls.length = 0
+  state.staleCalls.length = 0
   state.failList = false
   state.failSave = false
   state.failPublish = false
+  state.failStale = false
+  state.failAccept = false
+}
+
+async function loadPendingUseCase() {
+  const { GetPendingLegalAcceptanceUseCase } = await import(
+    './get-pending-legal-acceptance.use-case.ts'
+  )
+  return new GetPendingLegalAcceptanceUseCase(translationService)
+}
+
+async function loadAcceptUseCase() {
+  const { AcceptLegalDocumentsUseCase } = await import('./accept-legal-documents.use-case.ts')
+  return new AcceptLegalDocumentsUseCase(translationService)
+}
+
+function seedAllAudiencesPublished() {
+  return {
+    termsWeb: seedPublished({
+      type: LEGAL_DOCUMENT_TYPE.TERMS_WEB,
+      documentId: 'terms-web',
+    }),
+    privacyWeb: seedPublished({
+      type: LEGAL_DOCUMENT_TYPE.PRIVACY_WEB,
+      documentId: 'privacy-web',
+    }),
+    termsDashboard: seedPublished({
+      type: LEGAL_DOCUMENT_TYPE.TERMS_DASHBOARD,
+      documentId: 'terms-dashboard',
+    }),
+    privacyDashboard: seedPublished({
+      type: LEGAL_DOCUMENT_TYPE.PRIVACY_DASHBOARD,
+      documentId: 'privacy-dashboard',
+    }),
+  }
 }
 
 function toResponse(row: LegalDocumentRow) {
@@ -540,4 +639,187 @@ test('throws internal errors when legal document persistence fails', async () =>
       LEGAL_DOCUMENT_TYPE.TERMS_WEB
     )
   ).rejects.toBeInstanceOf(InternalServerErrorException)
+})
+
+test('pending returns only user audience stale types', async () => {
+  seedAllAudiencesPublished()
+
+  const result = await (await loadPendingUseCase()).execute(
+    USER_ACCOUNT_DOCUMENT_ID,
+    USER_ROLE.USER
+  )
+
+  expect(result).toEqual({ staleTypes: USER_AUDIENCE })
+  expect(state.staleCalls).toEqual([{ accountId: USER_ACCOUNT_ID, types: USER_AUDIENCE }])
+})
+
+test('pending returns only owner audience stale types', async () => {
+  seedAllAudiencesPublished()
+
+  const result = await (await loadPendingUseCase()).execute(
+    OWNER_ACCOUNT_DOCUMENT_ID,
+    USER_ROLE.OWNER
+  )
+
+  expect(result).toEqual({ staleTypes: OWNER_AUDIENCE })
+  expect(state.staleCalls).toEqual([{ accountId: OWNER_ACCOUNT_ID, types: OWNER_AUDIENCE }])
+})
+
+test('pending returns empty staleTypes when the audience is current', async () => {
+  const published = seedAllAudiencesPublished()
+  state.acceptedIds.set(
+    USER_ACCOUNT_ID,
+    new Set([published.termsWeb.id, published.privacyWeb.id])
+  )
+
+  const result = await (await loadPendingUseCase()).execute(
+    USER_ACCOUNT_DOCUMENT_ID,
+    USER_ROLE.USER
+  )
+
+  expect(result).toEqual({ staleTypes: [] })
+})
+
+test('pending throws LIST_FAILED when the stale query fails', async () => {
+  seedAllAudiencesPublished()
+  state.failStale = true
+
+  await expect(
+    (await loadPendingUseCase()).execute(USER_ACCOUNT_DOCUMENT_ID, USER_ROLE.USER)
+  ).rejects.toMatchObject({
+    name: 'InternalServerErrorException',
+    message: LEGAL_DOCUMENT_ERROR_CODE.LIST_FAILED,
+  })
+})
+
+test('pending throws not found when the user profile has no account link', async () => {
+  seedAllAudiencesPublished()
+
+  await expect(
+    (await loadPendingUseCase()).execute('aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', USER_ROLE.USER)
+  ).rejects.toMatchObject({
+    name: 'NotFoundException',
+    message: 'auth.USER_NOT_FOUND',
+  })
+})
+
+test('accept rejects owner requesting termsWeb without inserting', async () => {
+  seedAllAudiencesPublished()
+
+  await expect(
+    (await loadAcceptUseCase()).execute(OWNER_ACCOUNT_DOCUMENT_ID, USER_ROLE.OWNER, {
+      types: [LEGAL_DOCUMENT_TYPE.TERMS_WEB],
+    })
+  ).rejects.toMatchObject({
+    name: 'BadRequestException',
+    message: LEGAL_DOCUMENT_ERROR_CODE.INVALID_TYPES,
+  })
+  expect(state.insertCalls).toEqual([])
+})
+
+test('accept rejects user requesting termsDashboard without inserting', async () => {
+  seedAllAudiencesPublished()
+
+  await expect(
+    (await loadAcceptUseCase()).execute(USER_ACCOUNT_DOCUMENT_ID, USER_ROLE.USER, {
+      types: [LEGAL_DOCUMENT_TYPE.TERMS_DASHBOARD],
+    })
+  ).rejects.toBeInstanceOf(BadRequestException)
+  expect(state.insertCalls).toEqual([])
+})
+
+test('accept rejects a mixed audience list without inserting', async () => {
+  seedAllAudiencesPublished()
+
+  await expect(
+    (await loadAcceptUseCase()).execute(OWNER_ACCOUNT_DOCUMENT_ID, USER_ROLE.OWNER, {
+      types: [LEGAL_DOCUMENT_TYPE.TERMS_DASHBOARD, LEGAL_DOCUMENT_TYPE.TERMS_WEB],
+    })
+  ).rejects.toBeInstanceOf(BadRequestException)
+  expect(state.insertCalls).toEqual([])
+})
+
+test('accept inserts current published ids for requested user types and returns remaining stale', async () => {
+  const published = seedAllAudiencesPublished()
+  seedPublished({
+    type: LEGAL_DOCUMENT_TYPE.TERMS_WEB,
+    documentId: 'terms-web-v2',
+    version: 'v2',
+  })
+  const latestTermsWeb = state.published.get(LEGAL_DOCUMENT_TYPE.TERMS_WEB)?.at(-1)
+
+  const result = await (await loadAcceptUseCase()).execute(
+    USER_ACCOUNT_DOCUMENT_ID,
+    USER_ROLE.USER,
+    { types: [LEGAL_DOCUMENT_TYPE.TERMS_WEB] }
+  )
+
+  expect(latestTermsWeb?.id).not.toBe(published.termsWeb.id)
+  expect(state.insertCalls).toEqual([
+    {
+      accountId: USER_ACCOUNT_ID,
+      legalDocumentIds: [latestTermsWeb?.id],
+    },
+  ])
+  expect(result).toEqual({ staleTypes: [LEGAL_DOCUMENT_TYPE.PRIVACY_WEB] })
+})
+
+test('accept inserts published ids for every requested owner type', async () => {
+  const published = seedAllAudiencesPublished()
+
+  const result = await (await loadAcceptUseCase()).execute(
+    OWNER_ACCOUNT_DOCUMENT_ID,
+    USER_ROLE.OWNER,
+    { types: [...OWNER_AUDIENCE] }
+  )
+
+  expect(state.insertCalls).toEqual([
+    {
+      accountId: OWNER_ACCOUNT_ID,
+      legalDocumentIds: [published.termsDashboard.id, published.privacyDashboard.id],
+    },
+  ])
+  expect(result).toEqual({ staleTypes: [] })
+})
+
+test('accept throws published not found when a requested type has no published row', async () => {
+  seedPublished({
+    type: LEGAL_DOCUMENT_TYPE.TERMS_WEB,
+    documentId: 'terms-web-only',
+  })
+
+  await expect(
+    (await loadAcceptUseCase()).execute(USER_ACCOUNT_DOCUMENT_ID, USER_ROLE.USER, {
+      types: [LEGAL_DOCUMENT_TYPE.PRIVACY_WEB],
+    })
+  ).rejects.toBeInstanceOf(NotFoundException)
+  await expect(
+    (await loadAcceptUseCase()).execute(USER_ACCOUNT_DOCUMENT_ID, USER_ROLE.USER, {
+      types: [LEGAL_DOCUMENT_TYPE.PRIVACY_WEB],
+    })
+  ).rejects.toMatchObject({
+    name: 'NotFoundException',
+    message: LEGAL_DOCUMENT_ERROR_CODE.PUBLISHED_NOT_FOUND,
+  })
+  expect(state.insertCalls).toEqual([])
+})
+
+test('accept throws ACCEPT_FAILED when persistence fails', async () => {
+  seedAllAudiencesPublished()
+  state.failAccept = true
+
+  await expect(
+    (await loadAcceptUseCase()).execute(USER_ACCOUNT_DOCUMENT_ID, USER_ROLE.USER, {
+      types: [LEGAL_DOCUMENT_TYPE.TERMS_WEB],
+    })
+  ).rejects.toMatchObject({
+    name: 'InternalServerErrorException',
+    message: LEGAL_DOCUMENT_ERROR_CODE.ACCEPT_FAILED,
+  })
+  await expect(
+    (await loadAcceptUseCase()).execute(USER_ACCOUNT_DOCUMENT_ID, USER_ROLE.USER, {
+      types: [LEGAL_DOCUMENT_TYPE.TERMS_WEB],
+    })
+  ).rejects.toBeInstanceOf(InternalServerErrorException)
+  expect(state.insertCalls).toEqual([])
 })

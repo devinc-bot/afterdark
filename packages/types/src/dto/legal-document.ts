@@ -27,3 +27,11 @@ export interface PublicLegalDocumentResponse {
   content: Record<string, unknown>
   publishedAt: Date
 }
+
+export interface PendingLegalAcceptanceResponse {
+  staleTypes: LegalDocumentType[]
+}
+
+export interface AcceptLegalDocumentsInput {
+  types: LegalDocumentType[]
+}

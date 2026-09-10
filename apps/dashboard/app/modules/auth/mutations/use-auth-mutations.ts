@@ -9,6 +9,7 @@ import type {
 } from '@repo/validators'
 import { useSessionStore } from '~/modules/common/stores/session.store'
 import { DASHBOARD_ROUTES } from '../../common/constants/routes'
+import { resolvePostAuthPath } from '../../legal-documents/services/legal-documents.service'
 import {
   confirmOwnerRegistrationFn,
   forgotPasswordFn,
@@ -26,7 +27,8 @@ export function useLogin() {
     onSuccess: async (session) => {
       saveAuthSession(session)
       await useSessionStore.getState().loadSession()
-      await navigate({ to: DASHBOARD_ROUTES.home() })
+      const to = await resolvePostAuthPath(DASHBOARD_ROUTES.home())
+      await navigate({ to: to as '/dashboard' | '/legal-acceptance', replace: true })
     },
   })
 }
@@ -46,7 +48,8 @@ export function useConfirmOwnerRegistration() {
     onSuccess: async (session) => {
       saveAuthSession(session)
       await useSessionStore.getState().loadSession()
-      await navigate({ to: DASHBOARD_ROUTES.home() })
+      const to = await resolvePostAuthPath(DASHBOARD_ROUTES.home())
+      await navigate({ to: to as '/dashboard' | '/legal-acceptance', replace: true })
     },
   })
 }

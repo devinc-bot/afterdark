@@ -149,7 +149,10 @@
     "SAVE_FAILED": "We could not save the draft. Try again.",
     "PUBLISH_FAILED": "We could not publish the document. Try again.",
     "LIST_FAILED": "We could not load the legal documents. Try again in a few minutes.",
-    "PUBLISHED_NOT_FOUND": "We could not find a published legal document."
+    "PUBLISHED_NOT_FOUND": "We could not find a published legal document.",
+    "ACCEPTANCE_REQUIRED": "You must accept the current version of the legal documents.",
+    "ACCEPT_FAILED": "We could not record your acceptance. Try again.",
+    "INVALID_TYPES": "Those documents do not apply to your account."
   },
   "admin": {
     "ERRORS_LIST_FAILED": "We could not load the error records. Try again in a few minutes.",
