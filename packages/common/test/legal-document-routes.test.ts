@@ -23,7 +23,7 @@ test('pending acceptance GET is /me/pending and does not collide with type or pu
   expect(RESERVED_LEGAL_DOCUMENT_SEGMENTS.has(firstSegment)).toBe(false)
   expect(
     buildApiPath(API_ROUTES.legalDocuments, API_ROUTES.legalDocuments.path.getPendingAcceptance())
-  ).toBe('api/legal-documents/me/pending')
+  ).toBe('/api/legal-documents/me/pending')
 })
 
 test('accept POST is /me/accept and does not collide with type or public paths', () => {
@@ -38,6 +38,6 @@ test('accept POST is /me/accept and does not collide with type or public paths',
   const firstSegment = API_ROUTES.legalDocuments.path.accept().replace(/^\//, '').split('/')[0]
   expect(RESERVED_LEGAL_DOCUMENT_SEGMENTS.has(firstSegment)).toBe(false)
   expect(buildApiPath(API_ROUTES.legalDocuments, API_ROUTES.legalDocuments.path.accept())).toBe(
-    'api/legal-documents/me/accept'
+    '/api/legal-documents/me/accept'
   )
 })
