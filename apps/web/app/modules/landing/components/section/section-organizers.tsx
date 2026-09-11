@@ -24,7 +24,7 @@ export function SectionOrganizers({ className }: SectionOrganizersProps) {
       className={cn('scroll-mt-24 border-t border-outline-variant/30', className)}
     >
       <Container className={LANDING_SECTION_Y}>
-        <div className="relative overflow-hidden rounded-app-xl border border-outline-variant/30 bg-surface-container p-8 sm:p-10 lg:p-12">
+        <div className="relative overflow-hidden rounded-app-xl bg-surface-container p-8 sm:p-10 lg:p-12">
           <div
             className="pointer-events-none absolute -top-24 -right-16 size-64 rounded-full bg-primary/5 blur-3xl motion-reduce:hidden"
             aria-hidden

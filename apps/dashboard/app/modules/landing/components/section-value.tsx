@@ -36,7 +36,7 @@ export function SectionValue() {
                   aria-hidden
                 />
               </div>
-              <aside className="relative z-10 mx-auto mt-[-1.5rem] max-w-xs space-y-3 rounded-app-lg border border-hairline/40 bg-surface-container/95 p-5 shadow-glass backdrop-blur-xl md:absolute md:right-6 md:bottom-[-1.5rem] md:mx-0 md:mt-0">
+              <aside className="relative z-10 mx-auto mt-[-1.5rem] max-w-xs space-y-3 rounded-app-lg bg-surface-container/95 p-6 shadow-glass backdrop-blur-xl md:absolute md:right-6 md:bottom-[-1.5rem] md:mx-0 md:mt-0">
                 <div className="flex items-center gap-2">
                   <span className="size-2.5 rounded-full bg-primary" aria-hidden />
                   <span className="font-label text-xs font-semibold text-on-surface uppercase">

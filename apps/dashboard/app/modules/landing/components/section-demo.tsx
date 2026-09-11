@@ -48,7 +48,7 @@ export function SectionDemo() {
       className="relative z-20 mt-10 scroll-mt-28 sm:mt-14"
     >
       <div className={`${LANDING_MAX} pb-[clamp(4rem,8vw,7rem)]`}>
-        <div className="rounded-app-xl border border-hairline/40 bg-surface-container-low/95 p-4 glass-panel backdrop-blur-xl">
+        <div className="rounded-app-xl bg-surface-container-low/95 p-4 glass-panel backdrop-blur-xl">
           <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-12 lg:gap-12">
             <div className="flex flex-col gap-5 lg:col-span-4 p-6">
               <span className={LANDING_EYEBROW}>{t('demo.eyebrow')}</span>
