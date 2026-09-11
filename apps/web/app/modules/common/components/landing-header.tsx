@@ -91,7 +91,7 @@ export function LandingHeader() {
         <div
           className={cn(
             'pointer-events-auto flex h-15 w-full items-center justify-between gap-2 rounded-app-lg px-4 glass-panel sm:gap-3 sm:px-4',
-            'border border-hairline/30 bg-surface-container/70 backdrop-blur-xl supports-backdrop-filter:bg-surface-container/70'
+            'bg-surface-container/70 backdrop-blur-xl supports-backdrop-filter:bg-surface-container/70'
           )}
         >
           <Link
