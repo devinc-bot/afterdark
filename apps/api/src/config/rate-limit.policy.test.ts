@@ -28,8 +28,6 @@ test('maps validated env pairs onto every named rate-limit profile', () => {
       RATE_LIMIT_CHECK_IN_TTL_MS: 18,
       RATE_LIMIT_GEO_LIMIT: 19,
       RATE_LIMIT_GEO_TTL_MS: 20,
-      RATE_LIMIT_SSE_LIMIT: 21,
-      RATE_LIMIT_SSE_TTL_MS: 22,
     })
   ).toEqual({
     [RATE_LIMIT_PROFILE.PUBLIC]: { limit: 1, ttlMs: 2 },
@@ -42,7 +40,6 @@ test('maps validated env pairs onto every named rate-limit profile', () => {
     [RATE_LIMIT_PROFILE.QR]: { limit: 15, ttlMs: 16 },
     [RATE_LIMIT_PROFILE.CHECK_IN]: { limit: 17, ttlMs: 18 },
     [RATE_LIMIT_PROFILE.GEO]: { limit: 19, ttlMs: 20 },
-    [RATE_LIMIT_PROFILE.SSE]: { limit: 21, ttlMs: 22 },
   })
 })
 
@@ -58,6 +55,5 @@ test('locks the approved default budget for every named rate-limit profile', () 
     [RATE_LIMIT_PROFILE.QR]: { limit: 20, ttlMs: 60_000 },
     [RATE_LIMIT_PROFILE.CHECK_IN]: { limit: 60, ttlMs: 60_000 },
     [RATE_LIMIT_PROFILE.GEO]: { limit: 30, ttlMs: 60_000 },
-    [RATE_LIMIT_PROFILE.SSE]: { limit: 20, ttlMs: 60_000 },
   })
 })

@@ -52,16 +52,3 @@ export const PAYMENT_CURRENCY = {
 } as const
 
 export type PaymentCurrency = (typeof PAYMENT_CURRENCY)[keyof typeof PAYMENT_CURRENCY]
-
-export const OUTBOX_AGGREGATE_TYPE = {
-  PURCHASE: 'purchase',
-  EVENT_AVAILABILITY: 'event_availability',
-} as const
-
-export const OUTBOX_EVENT_TYPE = {
-  PURCHASE_RESERVED: 'purchase.reserved',
-  PURCHASE_RESERVATION_RELEASED: 'purchase.reservation_released',
-  PURCHASE_PAYMENT_RECONCILED: 'purchase.payment_reconciled',
-  PURCHASE_CONFIRMED: 'purchase.confirmed',
-  EVENT_AVAILABILITY_UPDATED: 'event.availability.updated',
-} as const

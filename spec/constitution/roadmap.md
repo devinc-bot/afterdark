@@ -45,6 +45,8 @@
 | 039 | `web-landing-editorial`            | Refresh editorial landing web                     | `done`        | `web`, `i18n`                                           | Adaptar mock HTML editorial a módulos React existentes (tokens Citrus, i18n, CTAs de sesión). Sin Material Symbols ni CDN; sin tests de landing. Ver `spec/features/archive/039-web-landing-editorial/`. |
 | 040 | `landing-events-preview`           | Preview de eventos publicados en landing          | `done`        | `web`, `i18n`                                           | `#eventos` lista hasta 3 eventos públicos (hook de `/events`) + Ver todos; empty = coming soon. Ver `spec/features/archive/040-landing-events-preview/`. |
 | 041 | `dashboard-landing-editorial`      | Refresh editorial landing dashboard               | `done`        | `dashboard`, `i18n`                                     | Adaptar mock HTML B2B a módulos React existentes (tokens Citrus, i18n, rutas auth). Sin Material Symbols ni CDN. Ver `spec/features/active/041-dashboard-landing-editorial/`. |
+| 042 | `api-cloud-run-scheduler`          | API en Cloud Run + jobs Scheduler                 | `draft`       | `api`, `db`, `common`                                   | Preparar API para Cloud Run (scale-to-zero), migrar crons Nest a endpoints internos OIDC + Cloud Scheduler; docs/scripts GCP sin reemplazar deploy VPS (029). Depende de 043. Ver `spec/features/active/042-api-cloud-run-scheduler/`. |
+| 043 | `remove-realtime-module`           | Quitar realtime SSE (sin polling)                 | `done`        | `api`, `db`, `web`, `common`, `types`                   | Eliminados `realtime`/SSE/polling; drop `domain_outbox_events`; web GET al montar. Ver `spec/features/archive/043-remove-realtime-module/`. |
 
 ## Status
 
@@ -96,6 +98,8 @@
 034-profile-avatar-upload            →  requiere 004 (owner-settings), 015 (files-module); web settings + 001
 034-legal-reacceptance-on-publish    →  requiere 033-legal-acceptance-on-register
 035-aws-ses-mail                     →  reemplaza adaptador de 019 (email-service); sin cambio de templates/call sites
+042-api-cloud-run-scheduler          →  después de 043; construye sobre 029; no reemplaza VPS frontends
+043-remove-realtime-module           →  quita SSE/outbox table; fetch on mount only
 ```
 
 ## Decisiones de prioridad

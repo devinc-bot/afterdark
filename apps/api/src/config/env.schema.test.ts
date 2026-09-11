@@ -274,8 +274,6 @@ test('defaults omitted rate-limit pairs to the approved policy budgets', () => {
     RATE_LIMIT_CHECK_IN_TTL_MS: RATE_LIMIT_POLICY_DEFAULTS[RATE_LIMIT_PROFILE.CHECK_IN].ttlMs,
     RATE_LIMIT_GEO_LIMIT: RATE_LIMIT_POLICY_DEFAULTS[RATE_LIMIT_PROFILE.GEO].limit,
     RATE_LIMIT_GEO_TTL_MS: RATE_LIMIT_POLICY_DEFAULTS[RATE_LIMIT_PROFILE.GEO].ttlMs,
-    RATE_LIMIT_SSE_LIMIT: RATE_LIMIT_POLICY_DEFAULTS[RATE_LIMIT_PROFILE.SSE].limit,
-    RATE_LIMIT_SSE_TTL_MS: RATE_LIMIT_POLICY_DEFAULTS[RATE_LIMIT_PROFILE.SSE].ttlMs,
   })
 })
 
@@ -308,8 +306,6 @@ test('accepts explicit rate-limit overrides', () => {
     RATE_LIMIT_CHECK_IN_TTL_MS: '20000',
     RATE_LIMIT_GEO_LIMIT: '15',
     RATE_LIMIT_GEO_TTL_MS: '30000',
-    RATE_LIMIT_SSE_LIMIT: '9',
-    RATE_LIMIT_SSE_TTL_MS: '15000',
   })
 
   expect(parsed).toMatchObject({
@@ -333,8 +329,6 @@ test('accepts explicit rate-limit overrides', () => {
     RATE_LIMIT_CHECK_IN_TTL_MS: 20_000,
     RATE_LIMIT_GEO_LIMIT: 15,
     RATE_LIMIT_GEO_TTL_MS: 30_000,
-    RATE_LIMIT_SSE_LIMIT: 9,
-    RATE_LIMIT_SSE_TTL_MS: 15_000,
   })
   expect(createRateLimitPolicy(parsed)).toEqual({
     [RATE_LIMIT_PROFILE.PUBLIC]: { limit: 80, ttlMs: 45_000 },
@@ -347,7 +341,6 @@ test('accepts explicit rate-limit overrides', () => {
     [RATE_LIMIT_PROFILE.QR]: { limit: 14, ttlMs: 25_000 },
     [RATE_LIMIT_PROFILE.CHECK_IN]: { limit: 40, ttlMs: 20_000 },
     [RATE_LIMIT_PROFILE.GEO]: { limit: 15, ttlMs: 30_000 },
-    [RATE_LIMIT_PROFILE.SSE]: { limit: 9, ttlMs: 15_000 },
   })
 })
 
@@ -364,7 +357,7 @@ test('rejects a non-positive rate-limit value', () => {
   })
   const nonIntegerLimit = apiConfigSchema.safeParse({
     ...validConfig,
-    RATE_LIMIT_SSE_LIMIT: '1.5',
+    RATE_LIMIT_GEO_LIMIT: '1.5',
   })
 
   expect(zeroLimit.success).toBe(false)

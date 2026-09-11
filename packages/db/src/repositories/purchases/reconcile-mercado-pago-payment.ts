@@ -6,12 +6,8 @@ import {
   PAYMENT_RECONCILIATION_ERROR,
   PAYMENT_WEBHOOK_EVENT_STATUS,
   PURCHASE_STATUS,
-  OUTBOX_AGGREGATE_TYPE,
-  OUTBOX_EVENT_TYPE,
 } from '@repo/types'
 import { db } from '../../client.ts'
-import { appendDomainOutboxEvent } from '../outbox/append-domain-outbox-event.ts'
-import { appendEventAvailabilityOutboxEvent } from '../outbox/append-event-availability-outbox-event.ts'
 import { inventoryReservations } from '../../schema/inventory-reservation.ts'
 import { payments } from '../../schema/payment.ts'
 import { paymentWebhookEvents } from '../../schema/payment-webhook-event.ts'
@@ -155,19 +151,6 @@ export async function reconcileMercadoPagoPayment(input: ReconcileMercadoPagoPay
         .where(eq(purchases.id, row.purchaseId))
         .returning()
       if (!purchase) throw new Error('Payment transition did not return its purchase')
-      await appendDomainOutboxEvent(tx, {
-        aggregateType: OUTBOX_AGGREGATE_TYPE.PURCHASE,
-        aggregateDocumentId: purchase.documentId,
-        aggregateVersion: purchase.stateVersion,
-        eventType: OUTBOX_EVENT_TYPE.PURCHASE_PAYMENT_RECONCILED,
-        payload: {
-          purchaseDocumentId: purchase.documentId,
-          status: purchase.status,
-          paymentStatus: terminalPaymentStatus,
-          version: purchase.stateVersion,
-        },
-        now: input.now,
-      })
       await tx
         .update(paymentWebhookEvents)
         .set({
@@ -214,19 +197,6 @@ export async function reconcileMercadoPagoPayment(input: ReconcileMercadoPagoPay
         .where(eq(purchases.id, row.purchaseId))
         .returning()
       if (!purchase) throw new Error('Late payment transition did not return its purchase')
-      await appendDomainOutboxEvent(tx, {
-        aggregateType: OUTBOX_AGGREGATE_TYPE.PURCHASE,
-        aggregateDocumentId: purchase.documentId,
-        aggregateVersion: purchase.stateVersion,
-        eventType: OUTBOX_EVENT_TYPE.PURCHASE_PAYMENT_RECONCILED,
-        payload: {
-          purchaseDocumentId: purchase.documentId,
-          status: purchase.status,
-          paymentStatus: PAYMENT_ATTEMPT_STATUS.APPROVED,
-          version: purchase.stateVersion,
-        },
-        now: input.now,
-      })
       await tx
         .update(paymentWebhookEvents)
         .set({
@@ -271,20 +241,6 @@ export async function reconcileMercadoPagoPayment(input: ReconcileMercadoPagoPay
       .returning()
     if (!purchase) throw new Error('Confirmed payment transition did not return its purchase')
     await issueTicketsSoldForPurchaseItem(row.purchaseItemId, tx)
-    await appendDomainOutboxEvent(tx, {
-      aggregateType: OUTBOX_AGGREGATE_TYPE.PURCHASE,
-      aggregateDocumentId: purchase.documentId,
-      aggregateVersion: purchase.stateVersion,
-      eventType: OUTBOX_EVENT_TYPE.PURCHASE_CONFIRMED,
-      payload: {
-        purchaseDocumentId: purchase.documentId,
-        status: purchase.status,
-        paymentStatus: PAYMENT_ATTEMPT_STATUS.APPROVED,
-        version: purchase.stateVersion,
-      },
-      now: input.now,
-    })
-    await appendEventAvailabilityOutboxEvent(tx, row.ticketId, input.now)
     await tx
       .update(paymentWebhookEvents)
       .set({

@@ -9,7 +9,6 @@ export const RATE_LIMIT_PROFILE = {
   QR: 'qr',
   CHECK_IN: 'checkIn',
   GEO: 'geo',
-  SSE: 'sse',
 } as const
 
 export type RateLimitProfile = (typeof RATE_LIMIT_PROFILE)[keyof typeof RATE_LIMIT_PROFILE]
@@ -30,7 +29,6 @@ export const RATE_LIMIT_POLICY_DEFAULTS = {
   [RATE_LIMIT_PROFILE.QR]: { limit: 20, ttlMs: 60_000 },
   [RATE_LIMIT_PROFILE.CHECK_IN]: { limit: 60, ttlMs: 60_000 },
   [RATE_LIMIT_PROFILE.GEO]: { limit: 30, ttlMs: 60_000 },
-  [RATE_LIMIT_PROFILE.SSE]: { limit: 20, ttlMs: 60_000 },
 } as const satisfies Record<RateLimitProfile, RateLimitBudget>
 
 export type RateLimitPolicySource = {
@@ -54,8 +52,6 @@ export type RateLimitPolicySource = {
   RATE_LIMIT_CHECK_IN_TTL_MS: number
   RATE_LIMIT_GEO_LIMIT: number
   RATE_LIMIT_GEO_TTL_MS: number
-  RATE_LIMIT_SSE_LIMIT: number
-  RATE_LIMIT_SSE_TTL_MS: number
 }
 
 export type RateLimitPolicy = Record<RateLimitProfile, RateLimitBudget>
@@ -101,10 +97,6 @@ export function createRateLimitPolicy(source: RateLimitPolicySource): RateLimitP
     [RATE_LIMIT_PROFILE.GEO]: {
       limit: source.RATE_LIMIT_GEO_LIMIT,
       ttlMs: source.RATE_LIMIT_GEO_TTL_MS,
-    },
-    [RATE_LIMIT_PROFILE.SSE]: {
-      limit: source.RATE_LIMIT_SSE_LIMIT,
-      ttlMs: source.RATE_LIMIT_SSE_TTL_MS,
     },
   }
 }

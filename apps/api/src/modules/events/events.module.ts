@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common'
 import { AuthModule } from '../auth/auth.module'
 import { FilesModule } from '../files'
-import { RealtimeModule } from '../realtime'
 import { JwtAuthGuard } from '../common/guards/jwt-auth.guard'
 import { RolesGuard } from '../common/guards/roles.guard'
 import { CreateEventUseCase } from './application/create-event.use-case'
@@ -15,7 +14,7 @@ import { EventImagesService } from './application/services/event-images.service'
 import { EventsController } from './presentation/events.controller'
 
 @Module({
-  imports: [AuthModule, FilesModule, RealtimeModule],
+  imports: [AuthModule, FilesModule],
   controllers: [EventsController],
   providers: [
     EventImagesService,

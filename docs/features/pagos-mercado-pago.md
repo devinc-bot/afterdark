@@ -12,7 +12,7 @@ El flujo de pagos reserva inventario para una orden pendiente, crea una preferen
 4. El usuario paga en Mercado Pago.
 5. Mercado Pago envía `POST /api/mercado-pago/webhook`.
 6. La API valida la firma, consulta el pago al proveedor y reconcilia el estado persistido.
-7. El cliente consulta la orden o recibe sus cambios por SSE en `/api/orders/:documentId/events`.
+7. El cliente obtiene el estado de la orden con GET al cargar la página de resultado.
 
 ## Crear una orden
 
@@ -118,7 +118,7 @@ No expongas estas variables al cliente ni las registres en logs.
 - [ ] El webhook de Mercado Pago apunta a la URL pública de la API.
 - [ ] `MERCADOPAGO_WEBHOOK_SECRET` está configurado en el entorno desplegado.
 - [ ] Las URLs públicas usan HTTPS fuera de desarrollo.
-- [ ] La UI observa la orden o su stream SSE; no confirma pagos desde los parámetros de retorno.
+- [ ] La UI consulta la orden con GET al cargar la página; no confirma pagos desde los parámetros de retorno.
 - [ ] Las pruebas cubren firma inválida, formato legado, ventana de replay, importe o moneda incongruentes e idempotencia de reconciliación.
 
 ## Referencias

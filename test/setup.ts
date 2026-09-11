@@ -35,8 +35,6 @@ Object.assign(process.env, {
   RATE_LIMIT_CHECK_IN_TTL_MS: '60000',
   RATE_LIMIT_GEO_LIMIT: '30',
   RATE_LIMIT_GEO_TTL_MS: '60000',
-  RATE_LIMIT_SSE_LIMIT: '20',
-  RATE_LIMIT_SSE_TTL_MS: '60000',
   DATABASE_URL: 'postgres://test:test@localhost:5432/test',
   DATABASE_MIGRATION_URL: 'postgres://test:test@localhost:5432/test',
   UPLOAD_MAX_BYTES: '10485760',

@@ -10,12 +10,10 @@ import {
   Patch,
   Post,
   Query,
-  Sse,
   UploadedFiles,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common'
-import type { MessageEvent } from '@nestjs/common'
 import { FilesInterceptor } from '@nestjs/platform-express'
 import { API_ROUTES } from '@repo/common'
 import type {
@@ -46,7 +44,6 @@ import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard'
 import { RolesGuard } from '../../common/guards/roles.guard'
 import { ZodValidationPipe } from '../../common/pipes/zod-validation.pipe'
 import { RATE_LIMIT_PROFILE } from '../../../config/rate-limit.policy'
-import { SseStreamsService } from '../../realtime/application/services/sse-streams.service'
 import { imageUploadOptions } from '../../files/image-upload.options'
 import { CreateEventUseCase } from '../application/create-event.use-case'
 import { DeleteEventUseCase } from '../application/delete-event.use-case'
@@ -55,11 +52,6 @@ import { GetPublicEventByDocumentIdUseCase } from '../application/get-public-eve
 import { ListMyEventsUseCase } from '../application/list-my-events.use-case'
 import { ListPublicEventsUseCase } from '../application/list-public-events.use-case'
 import { UpdateEventUseCase } from '../application/update-event.use-case'
-
-function toAfterVersion(value: string | undefined): number {
-  const parsed = Number.parseInt(value ?? '', 10)
-  return Number.isSafeInteger(parsed) && parsed >= 0 ? parsed : 0
-}
 
 @Controller(API_ROUTES.events.prefix)
 export class EventsController {
@@ -73,8 +65,7 @@ export class EventsController {
     private readonly getEventByDocumentIdUseCase: GetEventByDocumentIdUseCase,
     @Inject(CreateEventUseCase) private readonly createEventUseCase: CreateEventUseCase,
     @Inject(UpdateEventUseCase) private readonly updateEventUseCase: UpdateEventUseCase,
-    @Inject(DeleteEventUseCase) private readonly deleteEventUseCase: DeleteEventUseCase,
-    @Inject(SseStreamsService) private readonly sseStreamsService: SseStreamsService
+    @Inject(DeleteEventUseCase) private readonly deleteEventUseCase: DeleteEventUseCase
   ) {}
 
   @Get(API_ROUTES.events.path.listPublic())
@@ -89,18 +80,6 @@ export class EventsController {
     @Param('slug', new ZodValidationPipe(slugSchema)) slug: string
   ): Promise<PublicEventDetailResponse> {
     return this.getPublicEventByDocumentIdUseCase.execute(slug)
-  }
-
-  @Sse(API_ROUTES.events.path.availabilityStream(':documentId'))
-  @ApiRateLimit(RATE_LIMIT_PROFILE.SSE)
-  streamPublishedAvailability(
-    @Param('documentId', new ZodValidationPipe(uuidSchema)) documentId: string,
-    @Query('afterVersion') afterVersion?: string
-  ): Promise<import('rxjs').Observable<MessageEvent>> {
-    return this.sseStreamsService.createPublishedEventAvailabilityStream(
-      documentId,
-      toAfterVersion(afterVersion)
-    )
   }
 
   @Get(API_ROUTES.events.path.list())

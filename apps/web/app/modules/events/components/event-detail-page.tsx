@@ -1,10 +1,9 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { LoadErrorBanner, NotFoundView, Skeleton, usePageTitle } from '@repo/ui'
 import { PageAtmosphereWash } from '~/modules/common/components/page-atmosphere-wash'
 import { Container } from '~/modules/common/components/container'
 import { WEB_ROUTES } from '~/modules/common/constants/routes'
-import { usePublicEventAvailabilityStream } from '../hooks/use-public-event-availability-stream'
 import {
   isPublicEventSlug,
   usePublicEventDetailQuery,
@@ -19,8 +18,6 @@ export function EventDetailPage({ slug }: EventDetailPageProps) {
   const { t } = useTranslation('events')
   const { t: tCommon } = useTranslation('common')
   const isValidSlug = isPublicEventSlug(slug)
-  const [eventId, setEventId] = useState<string>()
-  const { isStreamActive } = usePublicEventAvailabilityStream(eventId, slug)
   const {
     data: event,
     isPending,
@@ -28,11 +25,7 @@ export function EventDetailPage({ slug }: EventDetailPageProps) {
     error,
     refetch,
     isFetching,
-  } = usePublicEventDetailQuery(slug, isStreamActive)
-
-  useEffect(() => {
-    setEventId(event?.documentId)
-  }, [event?.documentId])
+  } = usePublicEventDetailQuery(slug)
 
   usePageTitle('events', 'discover.detail.metaTitleFallback')
 
