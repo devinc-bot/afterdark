@@ -1,6 +1,6 @@
-import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { usePageTitle, cn } from '@repo/ui'
+import { useEffect } from 'react'
 import { LandingHeader } from './landing-header'
 import { SectionHero } from './section-hero'
 import { SectionDemo } from './section-demo'
@@ -25,11 +25,11 @@ export function LandingPage() {
   }, [])
 
   return (
-    <div className="min-h-dvh bg-background text-on-surface">
+    <div className="min-h-dvh bg-background text-on-surface selection:bg-primary selection:text-on-primary">
       <a
         href="#contenido"
         className={cn(
-          'absolute top-4 left-4 z-50 -translate-y-16 rounded-lg bg-on-surface px-4 py-2.5 font-label text-sm font-medium text-background transition-transform duration-(--duration-fast) ease-emphasized focus:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 motion-reduce:transition-none'
+          'absolute top-4 left-4 z-50 -translate-y-16 rounded-full bg-on-surface px-4 py-2.5 font-label text-sm font-medium text-background transition-transform duration-(--duration-fast) ease-emphasized focus:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 motion-reduce:transition-none'
         )}
       >
         {t('skipToContent')}
@@ -37,30 +37,22 @@ export function LandingPage() {
 
       <LandingHeader />
 
-      <main id="contenido">
-        <SectionHero />
-        <SectionDemo />
-        <Reveal>
+      <main id="contenido" className="w-full bg-background">
+        <div className="flex w-full flex-col bg-surface-dim text-on-surface">
+          <SectionHero />
+          <Reveal>
+            <SectionDemo />
+          </Reveal>
           <SectionFeatures />
-        </Reveal>
-        <Reveal>
           <SectionHow />
-        </Reveal>
-        <Reveal>
           <SectionAudiences />
-        </Reveal>
-        <Reveal>
           <SectionValue />
-        </Reveal>
-        <Reveal>
           <SectionSocial />
-        </Reveal>
-        <Reveal>
           <SectionFaq />
-        </Reveal>
-        <Reveal>
-          <SectionCta />
-        </Reveal>
+          <Reveal>
+            <SectionCta />
+          </Reveal>
+        </div>
       </main>
 
       <LandingFooter />

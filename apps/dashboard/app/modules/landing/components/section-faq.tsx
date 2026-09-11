@@ -1,22 +1,17 @@
 import { useTranslation } from 'react-i18next'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@repo/ui'
 import { LANDING_FAQ_KEYS } from '../constants/landing-content'
+import { LANDING_EYEBROW, LANDING_HEADING } from '../constants/layout'
 
 export function SectionFaq() {
   const { t } = useTranslation('dashboardLanding')
 
   return (
-    <section
-      id="faq"
-      aria-labelledby="faq-heading"
-      className="scroll-mt-20 border-b border-hairline/60 bg-surface-container-lowest"
-    >
-      <div className="mx-auto grid w-full max-w-6xl gap-10 px-margin-mobile py-[clamp(4rem,8vw,6.5rem)] md:grid-cols-12 md:gap-16 md:px-margin-desktop">
-        <div className="md:col-span-4">
-          <h2
-            id="faq-heading"
-            className="font-display text-[clamp(1.75rem,3.5vw,2.75rem)] font-bold leading-[1.15] tracking-[-0.02em] text-balance text-on-surface"
-          >
+    <section id="faq" aria-labelledby="faq-heading" className="scroll-mt-28">
+      <div className="mx-auto w-full max-w-4xl px-margin-mobile py-[clamp(4rem,8vw,6.5rem)] md:px-margin-desktop">
+        <div className="mb-12 text-center">
+          <span className={`${LANDING_EYEBROW} mb-2 block`}>{t('faq.eyebrow')}</span>
+          <h2 id="faq-heading" className={LANDING_HEADING}>
             {t('faq.headline')}
           </h2>
         </div>
@@ -25,14 +20,18 @@ export function SectionFaq() {
           type="single"
           collapsible
           defaultValue={LANDING_FAQ_KEYS[0]}
-          className="md:col-span-8"
+          className="space-y-4"
         >
           {LANDING_FAQ_KEYS.map((key) => (
-            <AccordionItem key={key} value={key} className="border-hairline/50 first:border-t-0">
-              <AccordionTrigger className="text-left font-display text-base font-semibold tracking-tight text-on-surface hover:text-on-surface hover:no-underline sm:text-lg">
+            <AccordionItem
+              key={key}
+              value={key}
+              className="overflow-hidden rounded-app-lg border-0 bg-surface-container-low px-2"
+            >
+              <AccordionTrigger className="px-4 text-left font-display text-base font-bold tracking-tight text-on-surface hover:text-primary hover:no-underline sm:text-lg">
                 {t(`faq.items.${key}.question`)}
               </AccordionTrigger>
-              <AccordionContent className="max-w-[56ch] text-base leading-relaxed text-pretty text-on-surface-variant">
+              <AccordionContent className="px-4 pb-5 text-base leading-relaxed text-pretty text-on-surface-variant">
                 {t(`faq.items.${key}.answer`)}
               </AccordionContent>
             </AccordionItem>

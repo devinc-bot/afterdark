@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next'
-import { AppLogo } from '@repo/ui'
 import { handleSectionNavClick } from '../utils/scroll-to-section.utils'
+import { LANDING_MAX } from '../constants/layout'
 
 const FOOTER_LINKS = [
   { labelKey: 'footer.features', hash: '#features' },
@@ -17,40 +17,41 @@ export function LandingFooter() {
   const year = new Date().getFullYear()
 
   return (
-    <footer className="bg-surface-container-lowest">
-      <div className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-margin-mobile py-[clamp(3rem,6vw,4.5rem)] md:flex-row md:items-end md:justify-between md:px-margin-desktop">
-        <div>
-          <div className="flex items-center gap-2">
-            <AppLogo size="xl" />
-            <span className="font-display text-lg font-bold tracking-tight text-on-surface">
-              {t('header.brand')}
-            </span>
+    <footer className="w-full bg-surface-container-lowest pt-10 pb-14">
+      <div className={LANDING_MAX}>
+        <div className="flex flex-col items-start justify-between gap-10 pb-10 md:flex-row">
+          <div className="max-w-sm">
+            <div className="mb-3 inline-flex items-center gap-1.5">
+              <span className="font-display text-lg font-bold tracking-tight text-on-surface">
+                {t('header.brand')}
+              </span>
+              <span className="size-2 rounded-full bg-primary" aria-hidden />
+            </div>
+            <p className="text-sm leading-relaxed text-on-surface-variant">{t('footer.tagline')}</p>
           </div>
-          <p className="mt-3 max-w-xs text-sm leading-relaxed text-on-surface-variant">
-            {t('footer.tagline')}
-          </p>
+
+          <nav aria-label={t('footer.navAria')}>
+            <span className="mb-3 block font-label text-xs tracking-wider text-on-surface-variant uppercase">
+              {t('footer.explore')}
+            </span>
+            <ul className="flex flex-col gap-1">
+              {FOOTER_LINKS.map((link) => (
+                <li key={link.labelKey}>
+                  <a
+                    href={link.hash}
+                    onClick={(event) => handleSectionNavClick(event, link.hash)}
+                    className={FOOTER_LINK}
+                  >
+                    {t(link.labelKey)}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
         </div>
 
-        <nav aria-label={t('footer.navAria')}>
-          <ul className="flex flex-wrap gap-x-1 gap-y-1">
-            {FOOTER_LINKS.map((link) => (
-              <li key={link.labelKey}>
-                <a
-                  href={link.hash}
-                  onClick={(event) => handleSectionNavClick(event, link.hash)}
-                  className={FOOTER_LINK + ' px-3'}
-                >
-                  {t(link.labelKey)}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </nav>
-      </div>
-
-      <div className="border-t border-hairline/60">
-        <div className="mx-auto w-full max-w-6xl px-margin-mobile py-6 md:px-margin-desktop">
-          <p className="text-sm text-on-surface-variant">{t('footer.rights', { year })}</p>
+        <div className="flex flex-col items-start justify-between gap-4 border-t border-hairline/40 pt-6 font-label text-xs text-on-surface-variant sm:flex-row sm:items-center">
+          <p>{t('footer.rights', { year })}</p>
         </div>
       </div>
     </footer>

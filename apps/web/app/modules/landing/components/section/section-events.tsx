@@ -1,6 +1,6 @@
 import { Link as RouterLink } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
-import { Button, Link, NotImage, Skeleton, armEventHero, cn } from '@repo/ui'
+import { Badge, Button, Link, NotImage, Skeleton, armEventHero, cn } from '@repo/ui'
 import type { PublicEventResponse } from '@repo/types'
 import { Container } from '~/modules/common/components/container'
 import { WEB_ROUTES } from '~/modules/common/constants/routes'
@@ -20,6 +20,10 @@ export const LANDING_EVENTS_PREVIEW_LIMIT = 3
 /** Asymmetric bento: featured tile + stacked companions from `lg`. */
 const BENTO_GRID =
   'grid list-none gap-4 p-0 sm:gap-5 lg:grid-cols-12 lg:grid-rows-2 lg:min-h-[32rem]'
+
+/** Frosted white chip on dark event media overlays. */
+const EVENT_MEDIA_META_BADGE =
+  'truncate rounded-full border-transparent px-3.5 font-medium text-black bg-white/60 backdrop-blur-md supports-backdrop-filter:bg-white/60 motion-reduce:backdrop-blur-none motion-reduce:bg-white'
 
 type PreviewVariant = 'featured' | 'compact'
 
@@ -263,14 +267,14 @@ function EventPreviewCard({
         {when || placePill ? (
           <div className="flex flex-wrap gap-2">
             {when ? (
-              <span className="max-w-full truncate rounded-full bg-white px-3.5 py-1 font-label text-xs font-medium text-black">
+              <Badge size="sm" className={cn(EVENT_MEDIA_META_BADGE, 'max-w-full')}>
                 {when}
-              </span>
+              </Badge>
             ) : null}
             {placePill ? (
-              <span className="max-w-56 truncate rounded-full bg-white px-3.5 py-1 font-label text-xs font-medium text-black">
+              <Badge size="sm" className={cn(EVENT_MEDIA_META_BADGE, 'max-w-56')}>
                 {placePill}
-              </span>
+              </Badge>
             ) : null}
           </div>
         ) : null}

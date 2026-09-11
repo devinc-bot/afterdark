@@ -1,8 +1,21 @@
+import type { CSSProperties } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from '@tanstack/react-router'
-import { Button } from '@repo/ui'
+import { Button, cn } from '@repo/ui'
 import { DASHBOARD_ROUTES } from '~/modules/common/constants/routes'
 import { LANDING_IMAGES } from '../constants/images'
+import { LANDING_CTA_PRIMARY, LANDING_CTA_SECONDARY, LANDING_MAX } from '../constants/layout'
+
+const HERO_IN_DELAYS = {
+  badge: 0,
+  headline: 90,
+  support: 180,
+  cta: 260,
+} as const
+
+function heroInStyle(delayMs: number): CSSProperties {
+  return { ['--landing-delay' as string]: delayMs }
+}
 
 export function SectionHero() {
   const { t } = useTranslation('dashboardLanding')
@@ -10,8 +23,8 @@ export function SectionHero() {
   return (
     <section
       id="inicio"
-      aria-labelledby="landing-brand"
-      className="relative min-h-[min(100dvh,52rem)] w-full overflow-hidden border-b border-hairline/60"
+      aria-labelledby="hero-heading"
+      className="relative flex min-h-[min(100dvh,58rem)] w-full flex-col overflow-hidden bg-surface-dim"
     >
       <div className="absolute inset-0">
         <img
@@ -21,40 +34,61 @@ export function SectionHero() {
           width={2048}
           height={1152}
           alt={t('hero.imageAlt')}
-          className="h-full w-full object-cover object-[center_35%]"
+          className="h-full w-full scale-[1.02] object-cover object-center animate-hero-drift"
           fetchPriority="high"
           decoding="async"
         />
         <div
-          className="pointer-events-none absolute inset-0 bg-linear-to-t from-black/75 via-black/35 to-black/15"
+          className="pointer-events-none absolute inset-0 bg-linear-to-t from-surface-dim via-surface-dim/80 to-surface-dim/35"
+          aria-hidden
+        />
+        <div
+          className="pointer-events-none absolute inset-0 bg-linear-to-r from-surface-dim/70 via-transparent to-transparent"
           aria-hidden
         />
       </div>
 
-      <div className="relative z-10 mx-auto flex min-h-[min(100dvh,52rem)] w-full max-w-6xl flex-col justify-end px-margin-mobile pb-[max(5rem,10vh)] pt-28 md:px-margin-desktop sm:pb-[max(6rem,12vh)]">
-        <div className="max-w-3xl">
-          <p
-            id="landing-brand"
-            className="font-display text-[clamp(2.75rem,10vw,5.5rem)] font-bold leading-[0.95] tracking-[-0.04em] text-balance text-white"
+      <div
+        className={cn(
+          LANDING_MAX,
+          'relative z-10 flex flex-1 flex-col justify-end gap-6 pt-28 pb-10 md:pt-32 md:pb-14'
+        )}
+      >
+        <div
+          className="inline-flex w-fit items-center gap-2 rounded-full border border-outline-variant/40 bg-surface-container/90 px-3.5 py-1.5 backdrop-blur-md animate-landing-hero-in"
+          style={heroInStyle(HERO_IN_DELAYS.badge)}
+        >
+          <span
+            className="size-1.5 shrink-0 rounded-full bg-primary motion-safe:animate-pulse motion-reduce:animate-none"
+            aria-hidden
+          />
+          <span className="font-label text-xs font-medium tracking-wider text-on-surface-variant uppercase">
+            {t('hero.eyebrow')}
+          </span>
+        </div>
+
+        <div className="flex max-w-3xl flex-col gap-6">
+          <h1
+            id="hero-heading"
+            className="max-w-[18ch] font-display text-[clamp(2.25rem,6vw,4.25rem)] font-extrabold leading-[1.02] tracking-[-0.03em] text-balance text-on-surface animate-landing-hero-in"
+            style={heroInStyle(HERO_IN_DELAYS.headline)}
           >
-            {t('header.brand')}
-          </p>
-          <h1 className="mt-6 max-w-[18ch] font-display text-[clamp(1.5rem,3.8vw,2.5rem)] font-semibold leading-tight tracking-[-0.02em] text-pretty text-white">
             {t('hero.headline')}
           </h1>
-          <p className="mt-4 max-w-[42ch] text-base leading-relaxed text-pretty text-white/85 sm:text-lg">
+          <p
+            className="max-w-2xl text-base leading-relaxed text-pretty text-on-surface-variant sm:text-xl animate-landing-hero-in"
+            style={heroInStyle(HERO_IN_DELAYS.support)}
+          >
             {t('hero.support')}
           </p>
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
-            <Button asChild size="lg" className="px-8">
+          <div
+            className="flex flex-wrap items-center gap-3 pt-2 animate-landing-hero-in"
+            style={heroInStyle(HERO_IN_DELAYS.cta)}
+          >
+            <Button asChild size="lg" className={LANDING_CTA_PRIMARY}>
               <Link to={DASHBOARD_ROUTES.register()}>{t('hero.ctaPrimary')}</Link>
             </Button>
-            <Button
-              asChild
-              size="lg"
-              variant="outline"
-              className="border-white/35 bg-transparent text-white hover:bg-white/10 hover:text-white"
-            >
+            <Button asChild size="lg" variant="outline" className={LANDING_CTA_SECONDARY}>
               <Link to={DASHBOARD_ROUTES.login()}>{t('hero.ctaSecondary')}</Link>
             </Button>
           </div>

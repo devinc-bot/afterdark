@@ -1,4 +1,12 @@
-import { useEffect, useRef, useState, type ElementType, type ReactNode } from 'react'
+import {
+  useEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+  type ElementType,
+  type ReactNode,
+  type RefObject,
+} from 'react'
 import { cn } from '@repo/ui'
 
 type RevealProps = {
@@ -7,12 +15,16 @@ type RevealProps = {
   as?: ElementType
 }
 
+type UseRevealEntranceResult = {
+  ref: RefObject<HTMLElement | null>
+  runEntrance: boolean
+}
+
 /**
- * Progressive scroll entrance. Content stays visible — never gated on
- * opacity-0 — so hash jumps, fast scroll, and failed observers cannot blank
- * sections. Animation is additive enhancement only.
+ * Shared IO entrance: content stays visible; `runEntrance` only adds animation.
+ * Skips when reduced-motion, already in view (incl. hash), or after failsafe.
  */
-export function Reveal({ children, className, as: Tag = 'div' }: RevealProps) {
+export function useRevealEntrance(): UseRevealEntranceResult {
   const ref = useRef<HTMLElement | null>(null)
   const [runEntrance, setRunEntrance] = useState(false)
 
@@ -28,7 +40,9 @@ export function Reveal({ children, className, as: Tag = 'div' }: RevealProps) {
       const hash = window.location.hash.slice(1)
       if (hash) {
         const target = document.getElementById(hash)
-        if (target && (target === el || target.contains(el))) return true
+        if (target && (target === el || target.contains(el) || el.contains(target))) {
+          return true
+        }
       }
       const rect = el.getBoundingClientRect()
       return rect.top < window.innerHeight && rect.bottom > 0
@@ -65,6 +79,20 @@ export function Reveal({ children, className, as: Tag = 'div' }: RevealProps) {
       window.clearTimeout(failsafe)
     }
   }, [])
+
+  return { ref, runEntrance }
+}
+
+export function staggerStyle(index: number): CSSProperties {
+  return { ['--i' as string]: index }
+}
+
+/**
+ * Progressive scroll entrance. Content is always visible — never gated on
+ * opacity-0. Animation is additive enhancement only.
+ */
+export function Reveal({ children, className, as: Tag = 'div' }: RevealProps) {
+  const { ref, runEntrance } = useRevealEntrance()
 
   return (
     <Tag ref={ref as never} className={cn(className, runEntrance && 'animate-landing-fade')}>

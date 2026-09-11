@@ -12,41 +12,96 @@
     "faq": "FAQ",
     "language": "Language",
     "openMenu": "Open menu",
+    "closeMenu": "Close menu",
     "mobileAriaLabel": "Navigation menu"
   },
   "hero": {
     "eyebrow": "Panel to manage events and clubs",
     "headline": "Run your club without missing a beat.",
-    "support": "Events, tickets, staff and sales in a single panel. Fewer scattered spreadsheets, more control over your night.",
+    "support": "Events, tickets, staff, and sales in a single panel. Fewer scattered spreadsheets, more control over your night.",
     "ctaPrimary": "Create account",
     "ctaSecondary": "Log in",
-    "imageAlt": "Modern venue steps at night lit with warm spotlights"
+    "imageAlt": "Cultural arts center and event venue at twilight, with monumental stairs and warm lobby lighting",
+    "dock": {
+      "label": "Live night",
+      "capacity": "Capacity",
+      "sales": "Sales",
+      "door": "Door"
+    },
+    "ticker": {
+      "left": "One panel",
+      "mid": "Lineup, tickets, and team",
+      "right": "Built for night operations"
+    }
   },
   "demo": {
+    "eyebrow": "Live operations",
     "headline": "See the panel in action.",
-    "support": "A short walkthrough of publishing events, selling tickets, and running your operation.",
-    "videoLabel": "Owner panel product demo video"
+    "support": "A short walkthrough of publishing dates, setting up tickets, and following the night with your team connected.",
+    "videoLabel": "Owner panel product demo video",
+    "windowLabel": "lumina-events",
+    "liveBadge": "Live",
+    "points": {
+      "1": {
+        "title": "No complex installs",
+        "body": "Web access from the browser—no software to install on every terminal."
+      },
+      "2": {
+        "title": "Visibility for the night",
+        "body": "Follow sales and event activity from the same panel."
+      },
+      "3": {
+        "title": "Staff roles and permissions",
+        "body": "Everyone gets into only what they need."
+      }
+    }
   },
   "features": {
     "eyebrow": "All in one panel",
     "headline": "Your whole event or nightlife business, in order.",
-    "support": "Every part of the operation in its place, with data that talks to each other.",
+    "support": "Every part of the operation in its place, with data that works together without technical friction.",
+    "highlight": {
+      "label": "Key point",
+      "body": "Centralizing the lineup and box office reduces door mistakes when the team works from the same information."
+    },
     "items": {
       "events": {
+        "badge": "Central calendar",
         "title": "Events",
-        "body": "Publish your lineup and keep every date up to date from one place."
+        "body": "Publish your lineup and keep every date up to date from one place. Update door times, artists, and descriptions without chasing spreadsheets.",
+        "tags": {
+          "1": "Multi-room",
+          "2": "Recurring dates",
+          "3": "Flyer and details"
+        }
       },
       "tickets": {
+        "badge": "Ticketing and pricing",
         "title": "Tickets",
-        "body": "Set ticket types, prices and sale windows with no ambiguity."
+        "body": "Define ticket types, capped batches, prices, and clear sale windows for your audience.",
+        "tags": {
+          "1": "Ticket types",
+          "2": "Capped batches",
+          "3": "Sale windows"
+        }
       },
       "staff": {
+        "badge": "Roles and access",
         "title": "Team",
-        "body": "Invite your staff and give them scoped access based on their role."
+        "body": "Invite your staff and give them scoped access by responsibility: door, production, or general ops.",
+        "tags": {
+          "1": "Email invites",
+          "2": "Role-based access"
+        }
       },
       "sales": {
+        "badge": "Reports",
         "title": "Sales",
-        "body": "Track the purchase history and understand how each night performs."
+        "body": "Follow purchase history and understand how each night performs with clear metrics in the panel.",
+        "tags": {
+          "1": "Purchase history",
+          "2": "Per-night metrics"
+        }
       }
     }
   },
@@ -56,106 +111,124 @@
     "steps": {
       "1": {
         "title": "Create your location",
-        "body": "The place where the event will take place, with the details your audience needs."
+        "body": "Set up the venue where the event happens: place details, capacity, and what your audience needs to see.",
+        "meta": "Quick setup"
       },
       "2": {
         "title": "Publish an event",
-        "body": "Add the date, the details and get everything ready to sell."
+        "body": "Add the date, details, and get batches and pre-sale ready to launch.",
+        "meta": "Batch control"
       },
       "3": {
         "title": "Sell tickets",
-        "body": "Open sales and follow every purchase from the panel."
+        "body": "Open online sales, share the link, and follow purchases and revenue from the panel.",
+        "meta": "Tracking from the panel"
       }
     }
   },
   "audiences": {
     "eyebrow": "Who it's for",
     "headline": "Made for the people who build the night.",
-    "support": "If you run events or manage a nightlife venue, {appNameDisplay} organizes your operation no matter the size.",
-    "imageAlt": "Crowd enjoying a nightlife event",
+    "support": "If you run events or manage a nightlife venue, {appNameDisplay} organizes your operation no matter the volume.",
+    "imageAlt": "Door host validating a QR entry ticket at a nightlife venue",
+    "frame": {
+      "label": "Door validation",
+      "title": "QR entry"
+    },
     "items": {
       "1": {
         "title": "Club owners",
-        "body": "Centralize the lineup, tickets, and team for every night in a single panel."
+        "body": "Centralize the lineup, ticket sales, and staff for every night in a single panel."
       },
       "2": {
         "title": "Event producers",
-        "body": "Coordinate dates, venues, and sales for each production without loose spreadsheets."
+        "body": "Coordinate dates, different locations, and each production’s tracking without loose spreadsheets."
       },
       "3": {
         "title": "Bars and venues",
-        "body": "Add your special events and control access without friction."
+        "body": "Add acoustic nights, pop-ups, and special dates with clearer capacity and access."
       }
     }
   },
   "value": {
     "eyebrow": "Value proposition",
     "headline": "Fewer scattered tools. More control.",
-    "support": "{appNameDisplay} brings together what you solve today with spreadsheets, chats, and separate apps into one place built for the night.",
-    "imageAlt": "Club lights during a live event",
+    "support": "{appNameDisplay} brings together what you solve today with spreadsheets, chats, and third-party apps into one place built for the night.",
+    "imageAlt": "Intimate stage with warm lights during a live show",
+    "aside": {
+      "label": "Centralized control",
+      "body": "Fewer hours syncing Excel. The team works from the same information."
+    },
     "items": {
       "1": {
         "title": "Everything connected",
-        "body": "Events, tickets, staff, and sales share the same data, with no duplicate entry."
+        "body": "Events, tickets, staff, and sales share the same records. When you update something, the rest of the panel reflects it."
       },
       "2": {
         "title": "Decisions with data",
-        "body": "See how each night performs and adjust your lineup with real data, not guesswork."
+        "body": "See how sales move and how each night performs so you can adjust the lineup and batches with real data."
       },
       "3": {
         "title": "Your team, focused",
-        "body": "Everyone gets into their own area with role-based access: fewer errors, more rhythm."
+        "body": "Everyone gets the view that matches their job: fewer ops mistakes and more rhythm on the night."
       }
     }
   },
   "social": {
     "eyebrow": "Why {appNameDisplay}",
     "headline": "Built for the real operation of a club.",
+    "support": "Typical scenarios for teams that stop chasing loose spreadsheets.",
     "items": {
       "1": {
-        "quote": "I stopped chasing spreadsheets. Now the whole night organizes itself from one place.",
+        "quote": "We stopped syncing spreadsheets every Friday. Now door, bar, and production see what they need from the same place.",
         "author": "Club owner"
       },
       "2": {
-        "quote": "Adding the team and giving the right access takes minutes, not a meeting.",
-        "author": "Floor manager"
+        "quote": "Clear capped ticket batches and giving the team the right access changed how we produce without fighting the box office.",
+        "author": "Event producer"
       },
       "3": {
-        "quote": "Knowing which tickets sell and when changed how we build the lineup.",
-        "author": "Event producer"
+        "quote": "Knowing which tickets sell and when changed how we build the week’s lineup.",
+        "author": "Floor manager"
       }
     }
   },
   "faq": {
-    "eyebrow": "Frequent questions",
-    "headline": "Before you start.",
+    "eyebrow": "FAQ",
+    "headline": "Clear answers.",
     "items": {
       "1": {
-        "question": "Do I need a card to create an account?",
-        "answer": "No. You create your owner account and start setting up your club with no upfront cost."
+        "question": "How long does it take to set up a location or room?",
+        "answer": "A few minutes. Add the venue name, capacity, and your first ticket types so you can start publishing dates."
       },
       "2": {
-        "question": "Can I add my team?",
-        "answer": "Yes. You invite your staff by email and each one signs in with access scoped to their role."
+        "question": "Can I add my team or producers on the same space?",
+        "answer": "Yes. Invite staff by email and each person signs in with access scoped to their role—nothing more than they need."
       },
       "3": {
-        "question": "Can I manage more than one club?",
-        "answer": "Yes. You manage your locations and their events from the same panel."
+        "question": "How is the ticket validated at the door?",
+        "answer": "Your team can validate from the panel’s scan flow on a phone or compatible device, built for door pace."
       },
       "4": {
-        "question": "How do I charge for tickets?",
-        "answer": "You define ticket types and prices; the sales and payment flow is handled from the platform."
+        "question": "What costs apply?",
+        "answer": "You can create an account and start setting up without a card. When you sell tickets, costs are tied to that operation transparently in the platform."
       }
     }
   },
   "closing": {
-    "headline": "Your next event starts here.",
-    "support": "Create your owner account and start organizing your club today.",
-    "cta": "Create account"
+    "eyebrow": "Organization without the runaround",
+    "headline": "Your next date with more control.",
+    "support": "Create your organizer account, add your locations, and start selling tickets in minutes.",
+    "cta": "Create account",
+    "micro": {
+      "1": "No card to get started",
+      "2": "Panel ready for your team"
+    }
   },
   "footer": {
-    "tagline": "The panel for event and club owners.",
+    "tagline": "Events, tickets, and clear operations. The panel for owners and venues that build the night.",
     "navAria": "Footer links",
+    "explore": "Explore",
     "features": "Features",
     "how": "How it works",
     "audiences": "Who it's for",
