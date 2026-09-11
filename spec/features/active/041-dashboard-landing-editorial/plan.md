@@ -26,27 +26,30 @@ Adapt the provided B2B editorial HTML mock into the existing `apps/dashboard` la
 - Do not load Tailwind CDN, Material Symbols, or remote `googleusercontent` URLs
 - Domain language: identifiers stay `location`; marketing “club” only if copy-approved
 
-## Pending decisions (block implementation)
+## Confirmed decisions
 
-See `spec.md` Open Questions: demo medium, imagery source, claim honesty, tests policy, hero dock/ticker.
+- Demo: keep local promo video; restyle surrounding chrome only.
+- Imagery: replace `public/landing/*` with downloaded mock assets (hero / audiences / value).
+- Copy: honest product messaging; soften mock claims.
+- Tests: update existing landing tests only; no new test files.
+- Hero dock + ticker: simplified decorative treatment.
 
-## Suggested task order (after decisions)
+## Task order
 
 1. i18n copy ES/EN
-2. Header pill + Hero (image, dock/ticker per decision)
-3. Demo (video vs console)
+2. Header pill + Hero (image + simplified dock/ticker)
+3. Demo video chrome restyle
 4. Features + How
 5. Audiences + Value + Social
-6. FAQ + Closing + Footer; verify dark/light / reduced motion / anchors
+6. FAQ + Closing + Footer; update existing tests; verify dark/light / reduced motion / anchors
 
 ## Verification
 
 - Manual: guest CTAs, dark/light, mobile, reduced motion, hash scroll to `#features` / `#how` / `#audiences` / `#faq`
+- Update and run existing `apps/dashboard` landing vitest files that break
 - Optional: `pnpm type-check` / lint for touched packages
-- Tests: only if Open Question chooses to update them
 
 ## Risks
 
-- Mock over-claims vs current product (settlement, offline QR, commissions)
-- Replacing demo video with static console may lose motion demo value from 038
-- Existing landing tests may fail if structure/copy change and tests are not updated
+- Softened copy must still feel close to the mock’s hierarchy without inventing SLAs
+- Existing landing tests may need assertion updates when markup/copy change

@@ -61,8 +61,9 @@ The owner-facing marketing landing in `apps/dashboard` already covers Hero → D
 
 ## Open Questions
 
-- [NEEDS CLARIFICATION] Demo section: keep the current local promo **video**, replace it with the mock’s **static console UI**, or show console UI with video optional/secondary?
-- [NEEDS CLARIFICATION] Imagery: download the mock’s remote hero/audience/value photos into `apps/dashboard/public/landing/` (replace existing), or keep current local assets and only restyle layout?
-- [NEEDS CLARIFICATION] Product honesty: tone down mock claims (commissions, liquidation T+24, offline QR, 85% incident reduction, “sublatency”) to current product truth, or ship copy closer to the mock?
-- [NEEDS CLARIFICATION] Tests: follow web 039 (do **not** add/update landing `*.test.*` in this feature), or update the existing `apps/dashboard` landing tests to match the new markup/copy?
-- [NEEDS CLARIFICATION] Hero live-ops dock (“Club Niceto” capacity/revenue card) and bottom ticker: include as decorative UI, simplify, or omit?
+- None blocking. Confirmed:
+  - Demo: **keep** the current local promo video (restyle chrome around it; no static console replacement).
+  - Imagery: **download** mock remote photos into `apps/dashboard/public/landing/` (replace existing; no runtime remote URLs).
+  - Copy: **tone down** to current product truth (no T+24 SLA, offline QR, “sublatency”, fixed commission schemes, or unverified % claims).
+  - Tests: **update** existing `apps/dashboard` landing `*.test.*` only — do **not** add new test files.
+  - Hero live-ops dock + ticker: **simplify** (lighter decorative hint, not full Niceto metrics card / dense ticker).
