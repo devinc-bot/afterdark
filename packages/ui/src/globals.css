@@ -218,6 +218,7 @@
   --animate-hero-drift: hero-drift 28s cubic-bezier(0.22, 1, 0.36, 1) both;
   /* forwards only + no opacity-0: additive when class is applied mid-scroll (never blanks). */
   --animate-landing-fade: landing-fade 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  /* No opacity-0: delay + both must not blank copy (additive entrance only). */
   --animate-landing-hero-in: landing-hero-in 0.65s cubic-bezier(0.16, 1, 0.3, 1) both;
   --animate-accordion-down: accordion-down 0.24s cubic-bezier(0.22, 1, 0.36, 1);
   --animate-accordion-up: accordion-up 0.24s cubic-bezier(0.22, 1, 0.36, 1);
@@ -263,12 +264,10 @@
 
   @keyframes landing-hero-in {
     from {
-      opacity: 0;
-      filter: blur(4px);
-      transform: translateY(12px);
+      filter: blur(3px);
+      transform: translateY(10px);
     }
     to {
-      opacity: 1;
       filter: blur(0);
       transform: none;
     }

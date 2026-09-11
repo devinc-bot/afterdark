@@ -4,10 +4,7 @@ import { fileURLToPath } from 'node:url'
 import { expect, test } from 'vitest'
 import { LANDING_IMAGES } from './images'
 
-const publicLandingDir = join(
-  dirname(fileURLToPath(import.meta.url)),
-  '../../../../public/landing'
-)
+const publicLandingDir = join(dirname(fileURLToPath(import.meta.url)), '../../../../public/landing')
 
 function assertLocalLandingSrc(src: string, expectedPath: string) {
   expect(src).toBe(expectedPath)
@@ -35,8 +32,8 @@ test('LANDING_IMAGES points hero, audiences, value, and demo poster at local /la
 
   // Cast until implementation adds `hero`; keeps this file type-checkable under TDD.
   const hero = (LANDING_IMAGES as Record<string, { src: string; srcSet?: string }>).hero
-  assertLocalLandingSrc(hero.src, '/landing/hero.png')
-  assertLocalLandingSrcSet(hero.srcSet, '/landing/hero.png')
+  assertLocalLandingSrc(hero.src, '/landing/hero.jpg')
+  assertLocalLandingSrcSet(hero.srcSet, '/landing/hero.jpg')
 
   assertLocalLandingSrc(LANDING_IMAGES.audiences.src, '/landing/audiences.jpg')
   assertLocalLandingSrcSet(LANDING_IMAGES.audiences.srcSet, '/landing/audiences.jpg')

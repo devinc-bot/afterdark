@@ -25,52 +25,36 @@ test('section-hero uses static LANDING_IMAGES.hero full-bleed image (no video)',
 
 test('section-hero soft scrim overlay supports text contrast over media', () => {
   const hasSoftScrim =
-    /(?:scrim|bg-gradient-|bg-linear-|from-(?:black|neutral|zinc|stone|background)\/|via-(?:black|neutral|zinc|stone|background)\/|to-(?:black|neutral|zinc|stone|background|transparent)\/)/i.test(
+    /(?:scrim|bg-gradient-|bg-linear-|from-(?:surface|black|neutral|zinc|stone|background)\/|via-(?:surface|black|neutral|zinc|stone|background)\/|to-(?:surface|black|neutral|zinc|stone|background|transparent)\/)/i.test(
       heroSource
-    ) ||
-    /absolute[^"'`\n]*opacity|opacity-\d+[^"'`\n]*absolute/i.test(heroSource)
+    ) || /absolute[^"'`\n]*opacity|opacity-\d+[^"'`\n]*absolute/i.test(heroSource)
 
   expect(hasSoftScrim).toBe(true)
-  expect(heroSource).toMatch(/from-black/)
+  expect(heroSource).toMatch(/from-surface/)
 })
 
-test('section-hero brand, headline, and support use light text over media', () => {
-  const brandClass = heroSource.match(
-    /id=["']landing-brand["'][\s\S]*?className=["`]([^"`]+)["`]/
-  )?.[1]
-  expect(brandClass).toBeDefined()
-  expect(brandClass!).toMatch(/\btext-white\b/)
-
-  const headlineClass = heroSource.match(
-    /<h1\b[^>]*className=["`]([^"`]+)["`][\s\S]*?t\(['"]hero\.headline['"]\)/
-  )?.[1]
-  expect(headlineClass).toBeDefined()
-  expect(headlineClass!).toMatch(/\btext-white\b/)
-
-  const supportClass = heroSource.match(
-    /className=["`]([^"`]+)["`]\s*>\s*\{\s*t\(['"]hero\.support['"]\)/
-  )?.[1]
-  expect(supportClass).toBeDefined()
-  expect(supportClass!).toMatch(/\btext-white(?:\/\d+)?\b/)
+test('section-hero headline and support use on-surface ink over editorial scrim', () => {
+  expect(heroSource).toMatch(/id=["']hero-heading["']/)
+  expect(heroSource).toMatch(/text-on-surface/)
+  expect(heroSource).toMatch(/text-on-surface-variant/)
+  expect(heroSource).toContain("t('hero.headline')")
+  expect(heroSource).toContain("t('hero.support')")
 })
 
-test('section-hero secondary CTA stays readable on dark media', () => {
-  const secondaryCtaBlock = heroSource.match(
-    /variant=["']([^"']+)["'][\s\S]{0,240}?t\(['"]hero\.ctaSecondary['"]\)/
-  )
-  const secondaryWithClass = heroSource.match(
-    /className=["`]([^"`]+)["`][\s\S]{0,240}?t\(['"]hero\.ctaSecondary['"]\)/
-  )
+test('section-hero choreographs entrance without dock/ticker chrome', () => {
+  expect(heroSource).toContain("t('hero.eyebrow')")
+  expect(heroSource).toContain("t('hero.headline')")
+  expect(heroSource).toMatch(/animate-hero-drift/)
+  expect(heroSource).toMatch(/animate-landing-hero-in/)
+  expect(heroSource).not.toContain("t('hero.dock.label')")
+  expect(heroSource).not.toContain("t('hero.ticker.left')")
+  expect(heroSource).not.toMatch(/<aside\b/)
+  expect(heroSource).not.toMatch(/opacity-0/)
+})
 
-  const variant = secondaryCtaBlock?.[1]
-  const className = secondaryWithClass?.[1] ?? ''
-
-  const readableOnDark =
-    variant === 'inverse' ||
-    /\btext-white\b/.test(className) ||
-    /\bborder-white\//.test(className)
-
-  expect(readableOnDark).toBe(true)
+test('section-hero secondary CTA stays readable on editorial media', () => {
+  expect(heroSource).toContain("t('hero.ctaSecondary')")
+  expect(heroSource).toMatch(/LANDING_CTA_SECONDARY|bg-surface-container/)
 })
 
 test('section-hero pattern avoids neon purple/blue costume colors', () => {

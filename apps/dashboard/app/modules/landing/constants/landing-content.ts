@@ -1,11 +1,9 @@
-import { CalendarDays, Ticket, Users, ShoppingBag, type LucideIcon } from 'lucide-react'
-
 export const LANDING_FEATURES = [
-  { key: 'events', icon: CalendarDays },
-  { key: 'tickets', icon: Ticket },
-  { key: 'staff', icon: Users },
-  { key: 'sales', icon: ShoppingBag },
-] as const satisfies readonly { key: string; icon: LucideIcon }[]
+  { key: 'events' },
+  { key: 'tickets' },
+  { key: 'staff' },
+  { key: 'sales' },
+] as const satisfies readonly { key: 'events' | 'tickets' | 'staff' | 'sales' }[]
 
 export const LANDING_STEP_KEYS = ['1', '2', '3'] as const
 

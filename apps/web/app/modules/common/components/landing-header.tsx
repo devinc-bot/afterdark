@@ -90,14 +90,14 @@ export function LandingHeader() {
       <Container>
         <div
           className={cn(
-            'pointer-events-auto flex h-15 w-full items-center justify-between gap-2 rounded-app-lg px-4 shadow-glass sm:gap-3 sm:px-4',
+            'pointer-events-auto flex h-15 w-full items-center justify-between gap-2 rounded-app-lg px-4 glass-panel sm:gap-3 sm:px-4',
             'border border-hairline/30 bg-surface-container/70 backdrop-blur-xl supports-backdrop-filter:bg-surface-container/70'
           )}
         >
           <Link
             to={WEB_ROUTES.home()}
             className={cn(
-              'flex shrink-0 items-center rounded-full px-0 transition-opacity duration-(--duration-instant) ease-emphasized hover:opacity-80',
+              'flex shrink-0 items-center rounded-full px-6 transition-opacity duration-(--duration-instant) ease-emphasized hover:opacity-80',
               LANDING_FOCUS_RING
             )}
           >

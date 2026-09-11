@@ -12,6 +12,7 @@
     "faq": "Preguntas",
     "language": "Idioma",
     "openMenu": "Abrir menú",
+    "closeMenu": "Cerrar menú",
     "mobileAriaLabel": "Menú de navegación"
   },
   "hero": {
@@ -20,33 +21,87 @@
     "support": "Eventos, entradas, staff y ventas en un solo panel. Menos planillas sueltas, más control de tu noche.",
     "ctaPrimary": "Crear cuenta",
     "ctaSecondary": "Iniciar sesión",
-    "imageAlt": "Escalinata de un venue moderno de noche, iluminada con focos cálidos"
+    "imageAlt": "Centro cultural y sala de eventos al atardecer, con escaleras monumentales e iluminación cálida en el lobby",
+    "dock": {
+      "label": "Noche en vivo",
+      "capacity": "Capacidad",
+      "sales": "Ventas",
+      "door": "Puerta"
+    },
+    "ticker": {
+      "left": "Un solo panel",
+      "mid": "Agenda, entradas y equipo",
+      "right": "Hecho para la operación de la noche"
+    }
   },
   "demo": {
+    "eyebrow": "Operación en vivo",
     "headline": "Mirá el panel en acción.",
-    "support": "Un recorrido corto por cómo publicás eventos, vendés entradas y seguís tu operación.",
-    "videoLabel": "Video demo del panel para dueños"
+    "support": "Un recorrido corto por cómo publicás fechas, configurás entradas y seguís la operación con tu equipo conectado.",
+    "videoLabel": "Video demo del panel para dueños",
+    "windowLabel": "lumina-events",
+    "liveBadge": "En vivo",
+    "points": {
+      "1": {
+        "title": "Sin instalaciones complejas",
+        "body": "Acceso web desde el navegador, sin montar software en cada terminal."
+      },
+      "2": {
+        "title": "Visibilidad de la noche",
+        "body": "Seguí ventas y actividad del evento desde el mismo panel."
+      },
+      "3": {
+        "title": "Roles y permisos por staff",
+        "body": "Cada persona entra solo a lo que le corresponde."
+      }
+    }
   },
   "features": {
     "eyebrow": "Todo en un panel",
     "headline": "Todo tu evento o negocio nocturno, ordenado.",
-    "support": "Cada parte de la operación en su lugar, con datos que hablan entre sí.",
+    "support": "Cada parte de la operación en su lugar, con datos que dialogan entre sí sin fricciones técnicas.",
+    "highlight": {
+      "label": "Dato clave",
+      "body": "Centralizar agenda y boletería reduce errores de acceso cuando el equipo trabaja con la misma información."
+    },
     "items": {
       "events": {
+        "badge": "Agenda central",
         "title": "Eventos",
-        "body": "Publicá tu agenda y mantené cada fecha al día desde un mismo lugar."
+        "body": "Publicá tu agenda y mantené cada fecha al día desde un mismo lugar. Actualizá horarios, artistas y descripciones sin depender de planillas sueltas.",
+        "tags": {
+          "1": "Multi-sala",
+          "2": "Fechas recurrentes",
+          "3": "Flyer y detalle"
+        }
       },
       "tickets": {
+        "badge": "Ticketing y precios",
         "title": "Entradas",
-        "body": "Definí tipos de entrada, precios y ventanas de venta sin ambigüedad."
+        "body": "Definí tipos de entrada, tandas con cupo, precios y ventanas de venta claras para tu público.",
+        "tags": {
+          "1": "Tipos de entrada",
+          "2": "Tandas con cupo",
+          "3": "Ventanas de venta"
+        }
       },
       "staff": {
+        "badge": "Roles y accesos",
         "title": "Equipo",
-        "body": "Invitá a tu personal y dales acceso acotado según su rol."
+        "body": "Invitá a tu personal y dales acceso acotado según su responsabilidad: puerta, producción u operación general.",
+        "tags": {
+          "1": "Invitaciones por email",
+          "2": "Permisos por rol"
+        }
       },
       "sales": {
+        "badge": "Reportes",
         "title": "Ventas",
-        "body": "Seguí el historial de compras y entendé cómo rinde cada noche."
+        "body": "Seguí el historial de compras y entendé cómo rinde cada noche con métricas claras desde el panel.",
+        "tags": {
+          "1": "Historial de compras",
+          "2": "Métricas por noche"
+        }
       }
     }
   },
@@ -56,106 +111,124 @@
     "steps": {
       "1": {
         "title": "Creá tu ubicación",
-        "body": "El lugar donde se va a realizar el evento, con los datos que tu público necesita."
+        "body": "Configurá el espacio donde ocurre el evento: datos del lugar, capacidad y lo que tu público necesita ver.",
+        "meta": "Configuración rápida"
       },
       "2": {
         "title": "Publicá un evento",
-        "body": "Cargá la fecha, los detalles y dejá todo listo para la venta."
+        "body": "Cargá la fecha, los detalles y dejá cupos y preventa listos para lanzar.",
+        "meta": "Control de tandas"
       },
       "3": {
         "title": "Vendé entradas",
-        "body": "Abrí la venta y seguí cada compra desde el panel."
+        "body": "Abrí la boletería online, compartí el enlace y seguí compras y recaudación desde el panel.",
+        "meta": "Seguimiento desde el panel"
       }
     }
   },
   "audiences": {
     "eyebrow": "Para quién es",
     "headline": "Hecho para quienes arman la noche.",
-    "support": "Si organizás eventos o gestionás un espacio nocturno, {appNameDisplay} ordena tu operación sin importar el tamaño.",
-    "imageAlt": "Público disfrutando de un evento nocturno",
+    "support": "Si organizás eventos o gestionás un espacio nocturno, {appNameDisplay} ordena tu operación sin importar el volumen.",
+    "imageAlt": "Validación de entrada con QR en la puerta de un venue de noche",
+    "frame": {
+      "label": "Validación en puerta",
+      "title": "Entrada con QR"
+    },
     "items": {
       "1": {
         "title": "Dueños de clubes",
-        "body": "Centralizá agenda, entradas y equipo de todas tus noches en un solo panel."
+        "body": "Centralizá agenda, venta de entradas y personal de todas tus noches en un solo panel."
       },
       "2": {
         "title": "Productoras de eventos",
-        "body": "Coordiná fechas, ubicaciones y ventas de cada producción sin planillas sueltas."
+        "body": "Coordiná fechas, distintas ubicaciones y el seguimiento de cada producción sin planillas sueltas."
       },
       "3": {
         "title": "Bares y espacios",
-        "body": "Sumá tus eventos especiales y controlá el acceso sin fricción."
+        "body": "Sumá acústicos, pop-ups y fechas especiales con aforo y acceso más ordenados."
       }
     }
   },
   "value": {
     "eyebrow": "Propuesta de valor",
     "headline": "Menos herramientas sueltas. Más control.",
-    "support": "{appNameDisplay} reúne lo que hoy resolvés con planillas, chats y apps separadas en un solo lugar pensado para la noche.",
-    "imageAlt": "Luces de un club durante un evento en vivo",
+    "support": "{appNameDisplay} reúne lo que hoy resolvés con planillas, chats y apps de terceros en un único entorno pensado para el ritmo nocturno.",
+    "imageAlt": "Escenario íntimo con luces cálidas durante un show en vivo",
+    "aside": {
+      "label": "Control centralizado",
+      "body": "Menos horas sincronizando Excel. El equipo trabaja sobre la misma información."
+    },
     "items": {
       "1": {
         "title": "Todo conectado",
-        "body": "Eventos, entradas, staff y ventas comparten los mismos datos, sin duplicar cargas."
+        "body": "Eventos, entradas, staff y ventas comparten los mismos registros. Si actualizás un dato, el resto del panel lo refleja."
       },
       "2": {
         "title": "Decisiones con información",
-        "body": "Ves cómo rinde cada noche y ajustás tu agenda con datos reales, no con intuición."
+        "body": "Ves cómo avanza la venta y cómo rinde cada noche para ajustar agenda y tandas con datos reales."
       },
       "3": {
         "title": "Tu equipo, con foco",
-        "body": "Cada persona entra a lo suyo con permisos por rol: menos errores, más ritmo."
+        "body": "Cada integrante entra a la vista que le corresponde: menos errores operativos y más ritmo en la noche."
       }
     }
   },
   "social": {
     "eyebrow": "Por qué {appNameDisplay}",
     "headline": "Pensado para la operación real de un club.",
+    "support": "Escenarios típicos de quienes dejan de pelearse con planillas sueltas.",
     "items": {
       "1": {
-        "quote": "Dejé de perseguir planillas. Ahora la noche entera se organiza sola desde un lugar.",
+        "quote": "Dejamos de sincronizar planillas cada viernes. Ahora puerta, barra y producción ven lo que necesitan desde el mismo lugar.",
         "author": "Dueño de club"
       },
       "2": {
-        "quote": "Sumar al equipo y darle acceso justo tarda minutos, no una reunión.",
-        "author": "Encargado de sala"
+        "quote": "Armar tandas con cupo claro y sumar al equipo con el acceso justo cambió cómo producimos sin pelearnos con la tiquetera.",
+        "author": "Productora de eventos"
       },
       "3": {
-        "quote": "Saber qué entradas se venden y cuándo cambió cómo armamos la agenda.",
-        "author": "Productora de eventos"
+        "quote": "Saber qué entradas se venden y cuándo cambió cómo armamos la agenda de la semana.",
+        "author": "Encargado de sala"
       }
     }
   },
   "faq": {
-    "eyebrow": "Dudas frecuentes",
-    "headline": "Antes de empezar.",
+    "eyebrow": "Preguntas frecuentes",
+    "headline": "Respuestas claras.",
     "items": {
       "1": {
-        "question": "¿Necesito tarjeta para crear una cuenta?",
-        "answer": "No. Creás tu cuenta de dueño y empezás a configurar tu club sin costo inicial."
+        "question": "¿Cuánto tiempo lleva configurar una ubicación o sala?",
+        "answer": "Pocos minutos. Cargás el nombre del espacio, la capacidad y tus primeros tipos de entrada para empezar a publicar fechas."
       },
       "2": {
-        "question": "¿Puedo sumar a mi equipo?",
-        "answer": "Sí. Invitás a tu personal por email y cada uno entra con permisos acotados a su rol."
+        "question": "¿Puedo sumar a mi equipo o a productoras en el mismo espacio?",
+        "answer": "Sí. Invitás personal por email y cada uno entra con permisos acotados a su rol, sin compartir más de lo necesario."
       },
       "3": {
-        "question": "¿Puedo gestionar más de un club?",
-        "answer": "Sí. Administrás tus ubicaciones y sus eventos desde el mismo panel."
+        "question": "¿Cómo se valida la entrada en la puerta?",
+        "answer": "Tu equipo puede validar desde el flujo de escaneo del panel en un teléfono o dispositivo compatible, pensado para el ritmo de la puerta."
       },
       "4": {
-        "question": "¿Cómo cobro las entradas?",
-        "answer": "Definís tipos de entrada y precios; el flujo de venta y cobro se gestiona desde la plataforma."
+        "question": "¿Qué costos aplican?",
+        "answer": "Podés crear tu cuenta y empezar a configurar sin tarjeta. Cuando vendés entradas, los costos se vinculan a esa operación de forma transparente desde la plataforma."
       }
     }
   },
   "closing": {
-    "headline": "Tu próximo evento empieza acá.",
-    "support": "Creá tu cuenta de dueño y empezá a ordenar tu club hoy.",
-    "cta": "Crear cuenta"
+    "eyebrow": "Organización sin vueltas",
+    "headline": "Tu próxima fecha con más control.",
+    "support": "Creá tu cuenta de organizador, cargá tus ubicaciones y empezá a vender entradas en minutos.",
+    "cta": "Crear cuenta",
+    "micro": {
+      "1": "Sin tarjeta para empezar",
+      "2": "Panel listo para tu equipo"
+    }
   },
   "footer": {
-    "tagline": "El panel para dueños de eventos o clubes.",
+    "tagline": "Eventos, entradas y gestión con claridad. El panel para dueños y espacios que arman la noche.",
     "navAria": "Enlaces del pie de página",
+    "explore": "Explorar",
     "features": "Funciones",
     "how": "Cómo funciona",
     "audiences": "Para quién es",

@@ -50,8 +50,9 @@ test('section-demo exposes an accessible title/label from i18n', () => {
   expect(demoSource).toMatch(/aria-labelledby=/)
 })
 
-test('section-demo uses an elevated overlapping product stage surface', () => {
-  expect(demoSource).toMatch(/-mt-/)
+test('section-demo uses an elevated product stage surface with spacing from the hero', () => {
+  expect(demoSource).toMatch(/(?:^|[\s"'`])mt-(?:\d|\[)/m)
+  expect(demoSource).not.toMatch(/(?:^|[\s"'`])-mt-/)
   expect(demoSource).toMatch(/rounded-app/)
   expect(demoSource).toMatch(/glass-panel|backdrop-blur/)
 })

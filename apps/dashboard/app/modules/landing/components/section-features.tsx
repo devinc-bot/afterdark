@@ -1,55 +1,73 @@
 import { useTranslation } from 'react-i18next'
+import { Badge } from '@repo/ui'
 import { LANDING_FEATURES } from '../constants/landing-content'
+import { LANDING_EYEBROW, LANDING_HEADING, LANDING_MAX } from '../constants/layout'
+
+const FEATURE_TAGS = {
+  events: ['1', '2', '3'],
+  tickets: ['1', '2', '3'],
+  staff: ['1', '2'],
+  sales: ['1', '2'],
+} as const
 
 export function SectionFeatures() {
   const { t } = useTranslation('dashboardLanding')
 
   return (
-    <section
-      id="features"
-      aria-labelledby="features-heading"
-      className="scroll-mt-20 border-b border-hairline/60"
-    >
-      <div className="mx-auto grid w-full max-w-6xl gap-12 px-margin-mobile py-[clamp(4rem,8vw,6.5rem)] md:grid-cols-12 md:gap-16 md:px-margin-desktop">
-        <div className="md:col-span-4">
-          <h2
-            id="features-heading"
-            className="font-display text-[clamp(1.75rem,3.5vw,2.75rem)] font-bold leading-[1.15] -tracking-label-md text-balance text-on-surface"
-          >
+    <section id="features" aria-labelledby="features-heading" className="scroll-mt-28">
+      <div
+        className={`${LANDING_MAX} grid grid-cols-1 items-start gap-12 py-[clamp(4rem,8vw,6.5rem)] lg:grid-cols-12`}
+      >
+        <div className="space-y-4 lg:sticky lg:top-28 lg:col-span-5">
+          <span className={LANDING_EYEBROW}>{t('features.eyebrow')}</span>
+          <h2 id="features-heading" className={LANDING_HEADING}>
             {t('features.headline')}
           </h2>
-          <p className="mt-4 max-w-[48ch] text-base leading-relaxed text-pretty text-on-surface-variant sm:text-lg">
+          <p className="max-w-[48ch] text-lg leading-relaxed text-pretty text-on-surface-variant">
             {t('features.support')}
           </p>
+          <div className="rounded-app-lg bg-surface-container-low p-6">
+            <span className="font-label text-xs font-semibold tracking-wide text-secondary uppercase">
+              {t('features.highlight.label')}
+            </span>
+            <p className="mt-2 text-sm leading-relaxed text-pretty text-on-surface">
+              {t('features.highlight.body')}
+            </p>
+          </div>
         </div>
 
-        <ul className="flex list-none flex-col gap-0 p-0 md:col-span-8">
-          {LANDING_FEATURES.map(({ key, icon: Icon }, index) => (
-            <li
-              key={key}
-              className="border-t border-hairline/50 py-7 first:border-t-0 first:pt-0 last:pb-0"
-            >
-              <div className="grid grid-cols-[auto_minmax(0,1fr)] gap-x-5 gap-y-3">
-                <span className="self-center font-label text-sm tabular-nums tracking-label-sm text-on-surface-variant">
-                  {String(index + 1).padStart(2, '0')}
-                </span>
-                <div className="flex min-w-0 items-center gap-3">
-                  <Icon
-                    className="size-7 shrink-0 text-on-surface-variant"
-                    strokeWidth={1.5}
-                    absoluteStrokeWidth
-                    aria-hidden
-                  />
-                  <h3 className="font-display text-xl font-semibold tracking-tight text-balance text-on-surface">
-                    {t(`features.items.${key}.title`)}
-                  </h3>
+        <ul className="flex list-none flex-col gap-6 p-0 lg:col-span-7">
+          {LANDING_FEATURES.map(({ key }, index) => {
+            const tags = FEATURE_TAGS[key]
+            return (
+              <li
+                key={key}
+                className="group rounded-app-xl bg-surface-container-low p-6 transition-colors duration-(--duration-fast) ease-emphasized hover:bg-surface-container hover:glass-panel md:p-8"
+              >
+                <div className="mb-4 flex items-baseline justify-between gap-3">
+                  <span className="font-display text-2xl font-bold text-primary">
+                    {String(index + 1).padStart(2, '0')}
+                  </span>
+                  <span className="rounded-full bg-surface-container px-3 py-1 font-label text-xs text-on-surface-variant transition-colors group-hover:text-on-surface">
+                    {t(`features.items.${key}.badge`)}
+                  </span>
                 </div>
-                <p className="col-start-2 max-w-[48ch] text-base leading-relaxed text-pretty text-on-surface-variant">
+                <h3 className="font-display text-xl font-bold tracking-tight text-on-surface md:text-2xl">
+                  {t(`features.items.${key}.title`)}
+                </h3>
+                <p className="mt-2 max-w-[48ch] text-base leading-relaxed text-pretty text-on-surface-variant">
                   {t(`features.items.${key}.body`)}
                 </p>
-              </div>
-            </li>
-          ))}
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {tags.map((tagKey) => (
+                    <Badge key={tagKey} variant="secondary" size="sm">
+                      {t(`features.items.${key}.tags.${tagKey}` as 'features.items.events.tags.1')}
+                    </Badge>
+                  ))}
+                </div>
+              </li>
+            )
+          })}
         </ul>
       </div>
     </section>
