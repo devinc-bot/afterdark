@@ -5,17 +5,15 @@ import { LandingHeader } from '~/modules/common/components/landing-header'
 import { WEB_ROUTES } from '~/modules/common/constants/routes'
 import { useSession } from '~/modules/common/hooks/use-session'
 import {
-  LANDING_CTA_GHOST_ON_MEDIA,
+  LANDING_CTA_HERO_SECONDARY,
   LANDING_CTA_PRIMARY,
   LANDING_FOCUS_RING,
-  LANDING_FOCUS_RING_ON_MEDIA,
   LANDING_HEADING,
   LANDING_SECTION_Y,
 } from '../constants/layout'
 import { scrollToSectionFromLocationHash } from '../utils/scroll-to-section.utils'
 import { HowSteps } from './how-steps'
 import { LandingFooter } from './footer'
-import { Reveal } from './reveal'
 import { SectionAbout } from './section/section-about'
 import { SectionAreYouReady } from './section/section-are-you-ready'
 import { SectionClarity } from './section/section-clarity'
@@ -38,7 +36,7 @@ export function LandingPage() {
       <a
         href="#contenido"
         className={cn(
-          'absolute top-4 left-4 z-50 -translate-y-16 rounded-lg bg-on-surface px-4 py-2.5 font-label text-sm font-medium text-background transition-transform duration-(--duration-fast) ease-emphasized focus:translate-y-0 motion-reduce:transition-none',
+          'absolute top-4 left-4 z-50 -translate-y-16 rounded-app-sm bg-on-surface px-4 py-2.5 font-label text-sm font-medium text-background transition-transform duration-(--duration-fast) ease-emphasized focus:translate-y-0 motion-reduce:transition-none',
           LANDING_FOCUS_RING
         )}
       >
@@ -56,15 +54,15 @@ export function LandingPage() {
               aria-busy="true"
               aria-label={t('hero.ctaLoading')}
             >
-              <Skeleton className="h-11 w-40 rounded-md bg-white/25" />
-              <Skeleton className="h-11 w-28 rounded-md bg-white/15" />
+              <Skeleton className="h-12 w-40 rounded-app bg-surface-container-high/80" />
+              <Skeleton className="h-12 w-28 rounded-app bg-surface-container/70" />
             </div>
           ) : (
             <div className="mt-8 flex flex-wrap items-center gap-3">
               <Link
                 to={WEB_ROUTES.register()}
                 size="lg"
-                className={cn('px-8', LANDING_CTA_PRIMARY, LANDING_FOCUS_RING_ON_MEDIA)}
+                className={cn('px-8 py-4', LANDING_CTA_PRIMARY, LANDING_FOCUS_RING)}
               >
                 {t('hero.ctaPrimary')}
               </Link>
@@ -72,7 +70,7 @@ export function LandingPage() {
                 to={WEB_ROUTES.login()}
                 variant="outline"
                 size="lg"
-                className={cn(LANDING_CTA_GHOST_ON_MEDIA, LANDING_FOCUS_RING_ON_MEDIA)}
+                className={cn('px-7 py-4', LANDING_CTA_HERO_SECONDARY, LANDING_FOCUS_RING)}
               >
                 {t('hero.ctaSecondary')}
               </Link>
@@ -88,21 +86,28 @@ export function LandingPage() {
           aria-labelledby="how-heading"
           className={cn(LANDING_SECTION_Y, 'scroll-mt-24')}
         >
-          <Reveal>
+          <div className="max-w-2xl space-y-3">
+            <span className="flex items-center gap-2 font-label text-xs font-semibold tracking-wider text-primary uppercase">
+              <span className="h-0.5 w-2 bg-primary" aria-hidden />
+              {t('how.kicker')}
+            </span>
             <h2 id="how-heading" className={cn(LANDING_HEADING, 'text-on-surface')}>
               {t('how.headline')}
             </h2>
-            <HowSteps />
-          </Reveal>
+            <p className="max-w-[46ch] text-base leading-relaxed text-pretty text-on-surface-variant sm:text-lg">
+              {t('how.support')}
+            </p>
+          </div>
+          <HowSteps />
         </Container>
 
         <SectionClarity />
 
         <SectionEvents showAuthCtas={showAuthCtas} />
 
-        <SectionAreYouReady showAuthCtas={showAuthCtas} />
-
         <SectionOrganizers />
+
+        <SectionAreYouReady showAuthCtas={showAuthCtas} />
       </main>
 
       <LandingFooter />

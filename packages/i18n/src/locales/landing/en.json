@@ -9,6 +9,7 @@
     "how": "How it works",
     "clarity": "Tickets",
     "events": "Events",
+    "organizers": "For organizers",
     "publish": "Organizers",
     "tickets": "Tickets",
     "orders": "Orders",
@@ -20,36 +21,67 @@
     "language": "Language"
   },
   "hero": {
-    "headline": "Your ticket, ready before you arrive.",
-    "support": "Discover events, reserve your spot, and show up with everything sorted.",
+    "badge": "2026 SEASON · DIGITAL ACCESS",
+    "headline": "Your ticket, ready",
+    "headlineAccent": "before you arrive.",
+    "support": "Discover events, reserve your spot, and show up with everything sorted. No lines, no guesswork — direct access in your hand.",
     "ctaPrimary": "Create account",
     "ctaSecondary": "Sign in",
     "ctaLoading": "Loading actions",
     "imageAlt": "Modern venue steps at night lit with warm spotlights"
   },
   "about": {
+    "kicker": "About {appNameDisplay}",
     "headline": "Clear events. Tickets without the fuss.",
-    "body": "{appNameDisplay} brings venues and audiences together: real dates, understandable tickets, and a clean interface so you can decide with confidence.",
-    "imageAlt": "Hands holding a phone with a digital ticket QR at a venue entrance"
+    "body": "{appNameDisplay} brings venues and audiences together in one experience: real dates, understandable tickets, and a clean interface so you can decide with absolute confidence. No fine print, no surprises at the door.",
+    "imageAlt": "Hands holding a phone with a digital ticket QR at a venue entrance",
+    "metrics": {
+      "1": {
+        "value": "0%",
+        "label": "Hidden fees"
+      },
+      "2": {
+        "value": "100%",
+        "label": "Digital pass"
+      },
+      "3": {
+        "value": "1 tap",
+        "label": "Door access"
+      }
+    },
+    "ticket": {
+      "status": "AUTHORIZED TICKET",
+      "code": "#LX-9940",
+      "eventName": "THE MIDNIGHT ECHOES",
+      "datetime": "20 OCT · 9:30 PM",
+      "capacity": "ADMITS 1 PERSON",
+      "gate": "GATE A"
+    }
   },
   "how": {
+    "kicker": "PURCHASE EXPERIENCE",
     "headline": "Three steps. No noise.",
+    "support": "We cut endless forms so you go from discovery to access in minutes, with just the right information at each step.",
     "steps": {
       "1": {
         "title": "Create your account",
-        "body": "Register once. After that, every event is one tap away."
+        "body": "Register once with the essentials. After that, every event is one tap away — no starting over or repeating details.",
+        "meta": "In under 30 seconds"
       },
       "2": {
         "title": "Pick the event",
-        "body": "Browse dates, venues, and tickets with the information that matters."
+        "body": "Browse dates, venues, and tickets with what matters: clear pricing, real availability, and the context you need to decide without noise.",
+        "meta": "Verified info and real stock"
       },
       "3": {
         "title": "Ticket ready",
-        "body": "Buy, confirm, and arrive knowing your place is already set."
+        "body": "Buy, confirm, and carry your digital pass on your phone. Arrive knowing your place is already set.",
+        "meta": "Ready on your phone"
       }
     }
   },
   "clarity": {
+    "kicker": "CLARITY PHILOSOPHY",
     "headline": "Ticket, door, and schedule — no fine print.",
     "support": "What you need to decide and arrive, up front.",
     "items": {
@@ -68,49 +100,50 @@
     }
   },
   "events": {
+    "badge": "COMING SOON",
     "headline": "The schedule isn’t open yet",
     "support": "When events go live, they’ll live here. Create your account so you’re ready the day the first date drops.",
-    "cta": "Create account",
-    "previewAria": "Live-event atmosphere — no published dates yet",
-    "items": {
-      "1": {
-        "title": "Outdoor nights",
-        "blurb": "Lights, people, rhythm — the kind of night you want without friction.",
-        "imageAlt": "Crowd at an outdoor evening festival under string lights"
-      },
-      "2": {
-        "title": "Small stages",
-        "blurb": "Bands and intimate rooms where the ticket matters as much as the show.",
-        "imageAlt": "Band performing on a small stage in warm light"
-      },
-      "3": {
-        "title": "Arrive ready",
-        "blurb": "Your spot sorted before the door. Less queue, more moment.",
-        "imageAlt": "Friends smiling outside a venue entrance at dusk"
-      }
+    "badgeLive": "SCHEDULE",
+    "headlineLive": "Upcoming events",
+    "supportLive": "A few dates to start. Open any one or browse the full list.",
+    "viewAll": "View all",
+    "listAria": "Preview of published events",
+    "loading": "Loading events",
+    "error": "We couldn’t load the schedule right now.",
+    "retry": "Try again",
+    "viewEventAria": "View event {name}",
+    "noImage": "No image",
+    "notify": {
+      "title": "Want to be first?",
+      "body": "Turn on the season-opening alert",
+      "cta": "Notify me"
     }
   },
   "closing": {
     "headline": "Your next event starts here.",
-    "support": "Create your account and come back when the full schedule opens.",
-    "cta": "Create account"
+    "support": "Create your account and come back when the full schedule opens. No noise — ready for the night.",
+    "cta": "Create account",
+    "ctaSecondary": "Sign in",
+    "trust": {
+      "1": "Account access",
+      "2": "No waiting around"
+    }
   },
   "organizers": {
     "kicker": "For organizers",
     "headline": "Publish venues, events, and tickets.",
-    "support": "Repo’s panel is for owners and staff: create venues, build the schedule, and sell tickets without the noise.",
-    "cta": "Open the panel",
-    "hint": "Opens the organizer panel in another tab."
+    "support": "The {appNameDisplay} panel is for owners and staff: create venues, build the schedule, and sell tickets without the noise.",
+    "cta": "Open the panel"
   },
   "footer": {
-    "tagline": "Events and tickets, with clarity.",
+    "tagline": "Clear events. Tickets ready before the door.",
     "explore": "Explore",
     "publish": "Organizers",
     "publishTitle": "Organizers",
     "publishBody": "Manage venues, events, and tickets from the panel.",
     "publishCta": "Open panel",
     "navAria": "Footer links",
-    "madeFor": "Made so you can enjoy every event with peace of mind.",
+    "madeFor": "Made so you can enjoy every event with clarity and peace of mind.",
     "rights": "© {year} {appName}",
     "social": {
       "title": "Follow us",

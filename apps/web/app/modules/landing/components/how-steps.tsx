@@ -1,13 +1,8 @@
-import type { LucideIcon } from 'lucide-react'
-import { CalendarCheck, Ticket, UserRound } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { cn } from '@repo/ui'
+import { useRevealEntrance } from './reveal'
 
-const HOW_STEPS = [
-  { id: '1', Icon: UserRound },
-  { id: '2', Icon: CalendarCheck },
-  { id: '3', Icon: Ticket },
-] as const satisfies ReadonlyArray<{ id: string; Icon: LucideIcon }>
+const HOW_STEP_IDS = ['1', '2', '3'] as const
 
 type HowStepsProps = {
   className?: string
@@ -15,36 +10,45 @@ type HowStepsProps = {
 
 export function HowSteps({ className }: HowStepsProps) {
   const { t } = useTranslation('landing')
+  const { ref, runEntrance } = useRevealEntrance()
 
   return (
     <ol
+      ref={ref as never}
       className={cn(
-        'mt-14 grid list-none gap-8 p-0 sm:grid-cols-2 lg:grid-cols-3 lg:gap-10',
+        'mt-12 list-none divide-y divide-outline-variant/30 border-y border-outline-variant/30 p-0',
         className
       )}
     >
-      {HOW_STEPS.map(({ id, Icon }, index) => (
-        <li key={id} className="min-w-0">
-          <div className="flex flex-col gap-5">
-            <div className="flex items-center gap-3">
-              <span className="font-label text-sm tabular-nums tracking-label-sm text-on-surface-variant">
-                {String(index + 1).padStart(2, '0')}
-              </span>
-              <Icon
-                className="size-7 text-on-surface-variant"
-                strokeWidth={1.5}
-                absoluteStrokeWidth
-                aria-hidden
-              />
-            </div>
-            <div className="flex flex-col gap-3">
-              <h3 className="font-display text-xl font-semibold tracking-tight text-balance text-on-surface">
+      {HOW_STEP_IDS.map((id, index) => (
+        <li
+          key={id}
+          style={{ ['--i' as string]: index }}
+          className={cn(
+            'group motion-safe:transition-colors motion-safe:duration-(--duration-fast) motion-safe:ease-emphasized motion-safe:hover:bg-surface-container/30 motion-reduce:transition-none',
+            runEntrance && 'animate-landing-stagger'
+          )}
+        >
+          <div className="grid grid-cols-1 gap-4 px-1 py-8 sm:grid-cols-12 sm:items-start sm:gap-6 sm:px-3 sm:py-10">
+            <span
+              className="font-display text-5xl font-bold tabular-nums tracking-tight text-on-surface-variant/40 motion-safe:transition-colors motion-safe:duration-(--duration-fast) motion-safe:ease-emphasized motion-safe:group-hover:text-primary motion-reduce:transition-none sm:col-span-2 sm:text-6xl lg:text-7xl"
+              aria-hidden
+            >
+              {String(index + 1).padStart(2, '0')}
+            </span>
+
+            <div className="flex min-w-0 flex-col gap-2 sm:col-span-4">
+              <h3 className="font-display text-xl font-semibold tracking-tight text-balance text-on-surface motion-safe:transition-transform motion-safe:duration-(--duration-fast) motion-safe:ease-emphasized motion-safe:group-hover:translate-x-1 motion-reduce:transition-none sm:text-2xl">
                 {t(`how.steps.${id}.title`)}
               </h3>
-              <p className="max-w-[36ch] text-base leading-relaxed text-pretty text-on-surface-variant">
-                {t(`how.steps.${id}.body`)}
+              <p className="font-label text-xs font-medium tracking-wider text-primary uppercase">
+                {t(`how.steps.${id}.meta`)}
               </p>
             </div>
+
+            <p className="max-w-[42ch] text-base leading-relaxed text-pretty text-on-surface-variant sm:col-span-6 sm:pt-1 sm:text-lg">
+              {t(`how.steps.${id}.body`)}
+            </p>
           </div>
         </li>
       ))}

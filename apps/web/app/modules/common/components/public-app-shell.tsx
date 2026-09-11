@@ -27,8 +27,8 @@ export function PublicAppShell({ children }: PublicAppShellProps) {
 
       <LandingHeader />
 
-      {/* pt clears the fixed landing header (h-14 + top padding) */}
-      <main id="contenido" className="flex-1 pt-24 pb-10" style={vtStyle(VT.mainContent)}>
+      {/* pt clears fixed pill header (top-5 + h-15) */}
+      <main id="contenido" className="flex-1 pt-28 pb-10" style={vtStyle(VT.mainContent)}>
         {children}
       </main>
 

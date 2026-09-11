@@ -1,4 +1,4 @@
-import { startTransition, useEffect, useState, type MouseEvent } from 'react'
+import { useState, type MouseEvent } from 'react'
 import { Menu } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate, useRouterState } from '@tanstack/react-router'
@@ -11,7 +11,6 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-  AppLogo,
   Skeleton,
   cn,
   ThemeToggle,
@@ -22,11 +21,7 @@ import { LanguageToggle } from '~/modules/common/components/language-toggle'
 import { Container } from '~/modules/common/components/container'
 import { WEB_ROUTES } from '~/modules/common/constants/routes'
 import { useSession } from '~/modules/common/hooks/use-session'
-import {
-  LANDING_CTA_PRIMARY,
-  LANDING_FOCUS_RING,
-  LANDING_FOCUS_RING_ON_MEDIA,
-} from '~/modules/landing/constants/layout'
+import { LANDING_CTA_PRIMARY, LANDING_FOCUS_RING } from '~/modules/landing/constants/layout'
 import {
   handleSectionNavClick,
   sectionIdFromHash,
@@ -37,49 +32,41 @@ const LANDING_SECTION_NAV = [
   { href: '#eventos', labelKey: 'nav.events' },
   { href: '#como-funciona', labelKey: 'nav.how' },
   { href: '#claridad', labelKey: 'nav.clarity' },
+  { href: '#organizadores', labelKey: 'nav.organizers' },
 ] as const
+
+function BrandMark() {
+  const { t } = useTranslation('landing')
+
+  return (
+    <span className="inline-flex items-center gap-1.5">
+      <span className="font-display text-sm font-bold tracking-[0.08em] text-on-surface uppercase sm:text-base">
+        {t('nav.brand')}
+      </span>
+      <span className="size-1.5 shrink-0 rounded-full bg-primary" aria-hidden />
+    </span>
+  )
+}
 
 export function LandingHeader() {
   const { t } = useTranslation('landing')
   const navigate = useNavigate()
   const pathname = useRouterState({ select: (s) => s.location.pathname })
   const { user, isAuthenticated, isLoading } = useSession()
-  const [navSolid, setNavSolid] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const showAuthChrome = !isLoading && isAuthenticated
   const showAuthCtas = !isLoading && !isAuthenticated
   const isLanding = pathname === WEB_ROUTES.home()
-  // Non-landing public pages have no hero media — keep chrome solid for separation.
-  const chromeSolid = navSolid || !isLanding
-  const onMedia = !chromeSolid
-  const focusRing = onMedia ? LANDING_FOCUS_RING_ON_MEDIA : LANDING_FOCUS_RING
 
   const navLink = cn(
-    'inline-flex min-h-11 items-center rounded-app px-2.5 font-label text-sm transition-colors duration-(--duration-instant) ease-emphasized',
-    onMedia
-      ? 'text-white/75 hover:text-white aria-[current=page]:text-white'
-      : 'text-on-surface-variant hover:text-on-surface aria-[current=page]:text-on-surface',
-    focusRing
+    'inline-flex min-h-11 items-center rounded-full px-2.5 font-label text-sm text-on-surface-variant transition-colors duration-(--duration-instant) ease-emphasized hover:text-on-surface aria-[current=page]:text-on-surface',
+    LANDING_FOCUS_RING
   )
   const authLink = cn(
-    'hidden min-h-11 items-center transition-colors duration-(--duration-instant) ease-emphasized sm:inline-flex',
-    onMedia ? 'text-white/80 hover:text-white' : 'text-on-surface-variant hover:text-on-surface',
-    focusRing
+    'hidden min-h-11 items-center text-on-surface-variant transition-colors duration-(--duration-instant) ease-emphasized hover:text-on-surface sm:inline-flex',
+    LANDING_FOCUS_RING
   )
-  const iconButton = cn(
-    'size-11 shrink-0 rounded-app',
-    onMedia ? 'text-white hover:bg-white/10 hover:text-white' : 'text-on-surface'
-  )
-
-  useEffect(() => {
-    const onScroll = () => {
-      const next = window.scrollY > 40
-      startTransition(() => setNavSolid(next))
-    }
-    onScroll()
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
+  const iconButton = 'size-11 shrink-0 text-on-surface [&_svg]:size-7'
 
   const displayName = user ? `${user.name} ${user.lastName}`.trim() || user.email : ''
 
@@ -99,31 +86,25 @@ export function LandingHeader() {
 
   return (
     // No VT name: it isolates stacking and breaks backdrop-blur on the glass bar.
-    <header className="pointer-events-none fixed inset-x-0 top-0 z-40 pt-4 sm:pt-5">
+    <header className="pointer-events-none fixed inset-x-0 top-5 z-40">
       <Container>
         <div
           className={cn(
-            'pointer-events-auto flex h-15 w-full items-center justify-between gap-2 rounded-app-lg px-4 transition-[background-color,border-color,box-shadow,backdrop-filter] duration-(--duration-normal) ease-emphasized motion-reduce:transition-none sm:gap-3 sm:px-4',
-            chromeSolid
-              ? 'border border-hairline/20 bg-surface-container-low/70 glass-panel backdrop-blur-xl backdrop-saturate-150 supports-backdrop-filter:bg-surface-container-low/55'
-              : 'border border-white/10 bg-black/25 shadow-none backdrop-blur-md backdrop-saturate-125 supports-backdrop-filter:bg-black/15'
+            'pointer-events-auto flex h-15 w-full items-center justify-between gap-2 rounded-app-lg px-4 shadow-glass sm:gap-3 sm:px-4',
+            'border border-hairline/30 bg-surface-container/70 backdrop-blur-xl supports-backdrop-filter:bg-surface-container/70'
           )}
         >
           <Link
             to={WEB_ROUTES.home()}
             className={cn(
-              'flex shrink-0 items-center gap-2 rounded-app px-0 transition-opacity duration-(--duration-instant) ease-emphasized hover:opacity-80',
-              onMedia ? 'text-white' : 'text-on-surface',
-              focusRing
+              'flex shrink-0 items-center rounded-full px-0 transition-opacity duration-(--duration-instant) ease-emphasized hover:opacity-80',
+              LANDING_FOCUS_RING
             )}
           >
-            <AppLogo />
-            <span className="font-display text-sm font-bold tracking-tight sm:text-base">
-              {t('nav.brand')}
-            </span>
+            <BrandMark />
           </Link>
 
-          <nav aria-label={t('nav.ariaLabel')} className="hidden items-center gap-0.5 md:flex">
+          <nav aria-label={t('nav.ariaLabel')} className="hidden items-center gap-0.5 lg:flex">
             {showAuthChrome ? (
               <>
                 <Link to={WEB_ROUTES.events()} className={navLink}>
@@ -154,13 +135,7 @@ export function LandingHeader() {
             <LanguageToggle className={iconButton} />
             <ThemeToggle className={iconButton} />
             {isLoading ? (
-              <Skeleton
-                className={cn(
-                  'size-9 rounded-full',
-                  onMedia ? 'bg-white/25' : 'bg-surface-container'
-                )}
-                aria-hidden
-              />
+              <Skeleton className="size-9 rounded-full bg-surface-container-high" aria-hidden />
             ) : showAuthChrome && user ? (
               <UserMenu
                 user={user}
@@ -175,10 +150,7 @@ export function LandingHeader() {
                 <Link
                   to={WEB_ROUTES.register()}
                   size="sm"
-                  className={cn(
-                    'hidden h-11 min-h-11 px-4 sm:inline-flex',
-                    onMedia ? 'bg-white text-black hover:bg-white/90' : LANDING_CTA_PRIMARY
-                  )}
+                  className={cn('hidden h-11 min-h-11 px-4 sm:inline-flex', LANDING_CTA_PRIMARY)}
                 >
                   {t('nav.register')}
                 </Link>
@@ -191,11 +163,11 @@ export function LandingHeader() {
                   type="button"
                   variant="ghost"
                   size="icon"
-                  className={cn(iconButton, 'md:hidden')}
+                  className={cn(iconButton, 'lg:hidden')}
                   aria-label={t('nav.openMenu')}
                   aria-expanded={menuOpen}
                 >
-                  <Menu className="size-5" aria-hidden />
+                  <Menu className="size-7" aria-hidden />
                 </Button>
               </SheetTrigger>
               <SheetContent
@@ -205,9 +177,8 @@ export function LandingHeader() {
                 className="inset-y-3 right-3 flex h-auto max-h-[calc(100dvh-1.5rem)] w-[min(calc(100%-1.5rem),20rem)] flex-col gap-0 overflow-hidden rounded-app-xl border border-hairline/50 bg-background p-0 text-on-surface shadow-(--shadow-glass)"
               >
                 <SheetHeader className="shrink-0 border-b border-hairline/40 px-5 py-5 pr-14 text-left">
-                  <SheetTitle className="flex items-center gap-2 font-display text-lg font-bold tracking-tight">
-                    <AppLogo />
-                    {t('nav.brand')}
+                  <SheetTitle>
+                    <BrandMark />
                   </SheetTitle>
                 </SheetHeader>
 
@@ -266,7 +237,7 @@ export function LandingHeader() {
                         to={WEB_ROUTES.login()}
                         variant="outline"
                         size="lg"
-                        className="min-h-11 flex-1 rounded-app hover:text-on-surface"
+                        className="min-h-11 flex-1 rounded-full hover:text-on-surface"
                       >
                         {t('nav.login')}
                       </Link>
@@ -275,7 +246,7 @@ export function LandingHeader() {
                       <Link
                         to={WEB_ROUTES.register()}
                         size="lg"
-                        className={cn('flex-1', LANDING_CTA_PRIMARY)}
+                        className={cn('flex-1', LANDING_CTA_PRIMARY, 'rounded-full')}
                       >
                         {t('nav.register')}
                       </Link>
