@@ -1,6 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { cn } from '@repo/ui'
-import { useRevealEntrance } from './reveal'
+import { cn, staggerStyle, useRevealEntrance } from '@repo/ui'
 
 const HOW_STEP_IDS = ['1', '2', '3'] as const
 
@@ -23,7 +22,7 @@ export function HowSteps({ className }: HowStepsProps) {
       {HOW_STEP_IDS.map((id, index) => (
         <li
           key={id}
-          style={{ ['--i' as string]: index }}
+          style={staggerStyle(index)}
           className={cn(
             'group motion-safe:transition-colors motion-safe:duration-(--duration-fast) motion-safe:ease-emphasized motion-safe:hover:bg-surface-container/30 motion-reduce:transition-none',
             runEntrance && 'animate-landing-stagger'

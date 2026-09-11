@@ -1,6 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common'
 import { Interval } from '@nestjs/schedule'
 import { deleteExpiredOrRevokedAccountSessionsBefore } from '@repo/db'
+import { runCleanupJob } from '../../../common'
 
 const ACCOUNT_SESSION_RETENTION_DAYS = 7
 const DAY_IN_MILLISECONDS = 24 * 60 * 60 * 1000
@@ -12,14 +13,12 @@ export class AccountSessionCleanupScheduler {
 
   @Interval(ACCOUNT_SESSION_CLEANUP_INTERVAL_MILLISECONDS)
   async cleanupExpiredOrRevokedSessions(): Promise<void> {
-    try {
-      const deleted = await this.deleteExpiredOrRevokedSessions(this.getRetentionCutoff(new Date()))
-      if (deleted > 0) {
-        this.logger.log(`Deleted ${deleted} expired or revoked account session(s)`)
-      }
-    } catch (error) {
-      this.logger.error('Account session cleanup failed', error)
-    }
+    await runCleanupJob({
+      logger: this.logger,
+      failureMessage: 'Account session cleanup failed',
+      successMessage: (deleted) => `Deleted ${deleted} expired or revoked account session(s)`,
+      run: () => this.deleteExpiredOrRevokedSessions(this.getRetentionCutoff(new Date())),
+    })
   }
 
   protected getRetentionCutoff(now: Date): Date {

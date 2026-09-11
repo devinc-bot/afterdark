@@ -436,6 +436,7 @@ test('register wiring uses published-by-type routes, query keys, and legalAccept
     googleButtonSource,
     loginForm,
     legalService,
+    legalFactory,
     queryKeys,
     authEs,
     authEn,
@@ -445,6 +446,7 @@ test('register wiring uses published-by-type routes, query keys, and legalAccept
     readSource('../app/modules/auth/components/google-continue-button.tsx'),
     readSource('../app/modules/auth/components/login-form.tsx'),
     readSource('../app/modules/legal-documents/services/legal-documents.service.ts'),
+    readSource('../../../packages/common/src/utils/create-legal-documents-client.ts'),
     readSource('../app/modules/common/constants/query-keys.ts'),
     readSource('../../../packages/i18n/src/locales/auth/es.json'),
     readSource('../../../packages/i18n/src/locales/auth/en.json'),
@@ -470,11 +472,13 @@ test('register wiring uses published-by-type routes, query keys, and legalAccept
   expect(loginForm).toContain('GoogleContinueButton')
   expect(loginForm).not.toContain('legalAccepted')
 
-  expect(legalService).toContain('getPublishedByType')
-  expect(legalService).toContain('LEGAL_DOCUMENT_TYPE')
-  expect(legalService).toContain('buildApiPath')
-  expect(legalService).toContain('API_ROUTES.legalDocuments')
-  expect(legalService).not.toContain('/api/legal-documents/')
+  expect(legalService).toContain('createLegalDocumentsClient')
+  expect(legalService).toContain('WEB_ROUTES.legalAcceptance')
+  expect(legalFactory).toContain('getPublishedByType')
+  expect(legalFactory).toContain('LEGAL_DOCUMENT_TYPE')
+  expect(legalFactory).toContain('buildApiPath')
+  expect(legalFactory).toContain('API_ROUTES.legalDocuments')
+  expect(legalFactory).not.toContain('/api/legal-documents/')
 
   expect(queryKeys).toContain('QUERY_KEYS')
   expect(queryKeys).toMatch(/publishedLegalDocument/)

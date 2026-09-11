@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next'
-import { usePageTitle, cn } from '@repo/ui'
+import { scrollToSectionFromLocationHash } from '@repo/common'
+import { usePageTitle, cn, Reveal } from '@repo/ui'
 import { useEffect } from 'react'
 import { LandingHeader } from './landing-header'
 import { SectionHero } from './section-hero'
@@ -12,16 +13,13 @@ import { SectionSocial } from './section-social'
 import { SectionFaq } from './section-faq'
 import { SectionCta } from './section-cta'
 import { LandingFooter } from './landing-footer'
-import { Reveal } from './reveal'
-import { scrollToSection } from '../utils/scroll-to-section.utils'
 
 export function LandingPage() {
   const { t } = useTranslation('dashboardLanding')
   usePageTitle('dashboardLanding', 'metaTitle')
 
   useEffect(() => {
-    const hash = window.location.hash
-    if (hash) scrollToSection(hash)
+    scrollToSectionFromLocationHash()
   }, [])
 
   return (

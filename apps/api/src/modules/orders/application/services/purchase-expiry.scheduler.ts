@@ -2,6 +2,7 @@ import { Injectable, Logger } from '@nestjs/common'
 import { Cron, CronExpression } from '@nestjs/schedule'
 import { findExpiredActiveReservationDocumentIds, releaseReservationOnce } from '@repo/db'
 import { INVENTORY_RESERVATION_STATUS, PURCHASE_STATUS } from '@repo/types'
+import { runCleanupJob } from '../../../common'
 
 const EXPIRY_BATCH_SIZE = 100
 
@@ -11,19 +12,21 @@ export class PurchaseExpiryScheduler {
 
   @Cron(CronExpression.EVERY_MINUTE)
   async expireReservations(): Promise<void> {
-    try {
-      const now = new Date()
-      const reservationDocumentIds = await this.findExpiredReservationDocumentIds(now)
-      const results = await Promise.all(
-        reservationDocumentIds.map((reservationDocumentId) =>
-          this.expireReservation(reservationDocumentId, now)
+    await runCleanupJob({
+      logger: this.logger,
+      failureMessage: 'Purchase reservation expiry failed',
+      successMessage: (n) => `Expired ${n} purchase reservation(s)`,
+      run: async () => {
+        const now = new Date()
+        const reservationDocumentIds = await this.findExpiredReservationDocumentIds(now)
+        const results = await Promise.all(
+          reservationDocumentIds.map((reservationDocumentId) =>
+            this.expireReservation(reservationDocumentId, now)
+          )
         )
-      )
-      const expired = results.filter(Boolean).length
-      if (expired > 0) this.logger.log(`Expired ${expired} purchase reservation(s)`)
-    } catch (error) {
-      this.logger.error('Purchase reservation expiry failed', error)
-    }
+        return results.filter(Boolean).length
+      },
+    })
   }
 
   protected findExpiredReservationDocumentIds(now: Date): Promise<string[]> {

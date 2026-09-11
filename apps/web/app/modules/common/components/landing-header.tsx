@@ -2,8 +2,10 @@ import { useState, type MouseEvent } from 'react'
 import { Menu } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate, useRouterState } from '@tanstack/react-router'
+import { handleSectionNavClick, sectionIdFromHash } from '@repo/common'
 import {
   Button,
+  LanguageToggle,
   Link,
   Sheet,
   SheetClose,
@@ -17,15 +19,10 @@ import {
   linkVariants,
 } from '@repo/ui'
 import { UserMenu } from '~/modules/common/components/user-menu'
-import { LanguageToggle } from '~/modules/common/components/language-toggle'
 import { Container } from '~/modules/common/components/container'
 import { WEB_ROUTES } from '~/modules/common/constants/routes'
 import { useSession } from '~/modules/common/hooks/use-session'
 import { LANDING_CTA_PRIMARY, LANDING_FOCUS_RING } from '~/modules/landing/constants/layout'
-import {
-  handleSectionNavClick,
-  sectionIdFromHash,
-} from '~/modules/landing/utils/scroll-to-section.utils'
 
 /** Attendee path first. Organizer path lives in #organizadores + footer. */
 const LANDING_SECTION_NAV = [
@@ -132,7 +129,7 @@ export function LandingHeader() {
           </nav>
 
           <div className="flex shrink-0 items-center gap-1 sm:gap-2">
-            <LanguageToggle className={iconButton} />
+            <LanguageToggle className={iconButton} languageLabel={t('nav.language')} />
             <ThemeToggle className={iconButton} />
             {isLoading ? (
               <Skeleton className="size-9 rounded-full bg-surface-container-high" aria-hidden />

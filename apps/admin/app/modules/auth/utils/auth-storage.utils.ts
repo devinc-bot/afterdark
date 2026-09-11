@@ -1,29 +1,9 @@
-import type { LoginResponse } from '@repo/types'
-import { deleteCookie, getCookieSync, setCookie } from '@repo/common'
-import { SESSION_DURATION_MS } from '~/modules/common/constants/auth-storage'
+import { createAuthStorage } from '@repo/common'
 import { COOKIE_KEYS } from '~/modules/common/constants/cookies'
 
-const accessTokenCookie = { name: COOKIE_KEYS.accessToken } as const
+const storage = createAuthStorage({ cookieName: COOKIE_KEYS.accessToken })
 
-export function saveAuthSession(session: LoginResponse): void {
-  setCookie({
-    ...accessTokenCookie,
-    value: session.accessToken,
-    maxAgeMs: SESSION_DURATION_MS,
-  })
-}
-
-export function getAuthSession(): LoginResponse | null {
-  const accessToken = getCookieSync(accessTokenCookie)
-  if (!accessToken) return null
-
-  return { accessToken }
-}
-
-export function getAccessTokenSync(): string | null {
-  return getCookieSync(accessTokenCookie)
-}
-
-export function clearAuthSession(): void {
-  deleteCookie(accessTokenCookie)
-}
+export const saveAuthSession = storage.saveAuthSession
+export const getAuthSession = storage.getAuthSession
+export const getAccessTokenSync = storage.getAccessTokenSync
+export const clearAuthSession = storage.clearAuthSession

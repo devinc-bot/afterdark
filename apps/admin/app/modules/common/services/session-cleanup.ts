@@ -1,12 +1,7 @@
+import { createSessionCleanup } from '@repo/common'
 import { clearAuthSession } from '~/modules/auth/utils/auth-storage.utils'
 
-let clearSessionState: (() => void) | null = null
+const cleanup = createSessionCleanup({ clearAuthSession })
 
-export function registerSessionStateCleanup(cleanup: () => void): void {
-  clearSessionState = cleanup
-}
-
-export function clearLocalSession(): void {
-  clearAuthSession()
-  clearSessionState?.()
-}
+export const registerSessionStateCleanup = cleanup.registerSessionStateCleanup
+export const clearLocalSession = cleanup.clearLocalSession

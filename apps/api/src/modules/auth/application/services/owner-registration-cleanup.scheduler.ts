@@ -1,6 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common'
 import { Cron, CronExpression } from '@nestjs/schedule'
 import { deleteExpiredOwnerRegistrationTokens } from '@repo/db'
+import { runCleanupJob } from '../../../common'
 
 @Injectable()
 export class OwnerRegistrationCleanupScheduler {
@@ -8,13 +9,11 @@ export class OwnerRegistrationCleanupScheduler {
 
   @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
   async cleanupExpiredTokens(): Promise<void> {
-    try {
-      const deleted = await deleteExpiredOwnerRegistrationTokens()
-      if (deleted > 0) {
-        this.logger.log(`Deleted ${deleted} expired owner registration token(s)`)
-      }
-    } catch (error) {
-      this.logger.error('Owner registration token cleanup failed', error)
-    }
+    await runCleanupJob({
+      logger: this.logger,
+      failureMessage: 'Owner registration token cleanup failed',
+      successMessage: (deleted) => `Deleted ${deleted} expired owner registration token(s)`,
+      run: () => deleteExpiredOwnerRegistrationTokens(),
+    })
   }
 }

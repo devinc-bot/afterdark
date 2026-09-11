@@ -47,6 +47,7 @@
 | 041 | `dashboard-landing-editorial`      | Refresh editorial landing dashboard               | `done`        | `dashboard`, `i18n`                                     | Adaptar mock HTML B2B a módulos React existentes (tokens Citrus, i18n, rutas auth). Sin Material Symbols ni CDN. Ver `spec/features/active/041-dashboard-landing-editorial/`. |
 | 042 | `api-cloud-run-scheduler`          | API en Cloud Run + jobs Scheduler                 | `draft`       | `api`, `db`, `common`                                   | Preparar API para Cloud Run (scale-to-zero), migrar crons Nest a endpoints internos OIDC + Cloud Scheduler; docs/scripts GCP sin reemplazar deploy VPS (029). Depende de 043. Ver `spec/features/active/042-api-cloud-run-scheduler/`. |
 | 043 | `remove-realtime-module`           | Quitar realtime SSE (sin polling)                 | `done`        | `api`, `db`, `web`, `common`, `types`                   | Eliminados `realtime`/SSE/polling; drop `domain_outbox_events`; web GET al montar. Ver `spec/features/archive/043-remove-realtime-module/`. |
+| 044 | `dry-client-auth-session-stack`    | DRY stack auth/sesión cliente                     | `done`        | `common`, `web`, `dashboard`, `admin`                   | Factories en `@repo/common` (`createAuthStorage`, cleanup, session service, QueryFactory auth options); cookies/`CLIENT_APP` intactos. Ver `spec/features/archive/044-dry-client-auth-session-stack/`. |
 
 ## Status
 

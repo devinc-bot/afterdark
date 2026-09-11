@@ -1,6 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common'
 import { Cron, CronExpression } from '@nestjs/schedule'
 import { deleteExpiredAndCancelledInvitations } from '@repo/db'
+import { runCleanupJob } from '../../../common'
 
 @Injectable()
 export class InvitationsCleanupScheduler {
@@ -8,10 +9,10 @@ export class InvitationsCleanupScheduler {
 
   @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
   async cleanupInvitations(): Promise<void> {
-    try {
-      await deleteExpiredAndCancelledInvitations()
-    } catch (error) {
-      this.logger.error('Cleanup failed', error)
-    }
+    await runCleanupJob({
+      logger: this.logger,
+      failureMessage: 'Cleanup failed',
+      run: () => deleteExpiredAndCancelledInvitations(),
+    })
   }
 }

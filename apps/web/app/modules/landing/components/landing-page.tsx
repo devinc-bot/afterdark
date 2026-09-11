@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { scrollToSectionFromLocationHash } from '@repo/common'
 import { Link, Skeleton, cn } from '@repo/ui'
 import { useTranslation } from 'react-i18next'
 import { LandingHeader } from '~/modules/common/components/landing-header'
@@ -11,7 +12,6 @@ import {
   LANDING_HEADING,
   LANDING_SECTION_Y,
 } from '../constants/layout'
-import { scrollToSectionFromLocationHash } from '../utils/scroll-to-section.utils'
 import { HowSteps } from './how-steps'
 import { LandingFooter } from './footer'
 import { SectionAbout } from './section/section-about'

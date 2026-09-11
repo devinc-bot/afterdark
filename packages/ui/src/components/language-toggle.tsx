@@ -1,23 +1,23 @@
 import { Languages } from 'lucide-react'
-import { useTranslation } from 'react-i18next'
 import { useLanguage } from '@repo/i18n/client'
 import { LANGUAGE_NAMES, SUPPORTED_LANGUAGES, type Language } from '@repo/i18n/config'
+import { cn } from '../lib/utils'
+import { Button } from './ui/button'
 import {
-  Button,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
-  cn,
-} from '@repo/ui'
+} from './ui/dropdown-menu'
 
 type LanguageToggleProps = {
   className?: string
+  /** Visible/ARIA language control label prefix (e.g. translated "Language") */
+  languageLabel: string
 }
 
-export function LanguageToggle({ className }: LanguageToggleProps) {
-  const { t } = useTranslation('dashboardLanding')
+export function LanguageToggle({ className, languageLabel }: LanguageToggleProps) {
   const { language, setLanguage } = useLanguage()
   const languageName = LANGUAGE_NAMES[language]
 
@@ -28,8 +28,8 @@ export function LanguageToggle({ className }: LanguageToggleProps) {
           type="button"
           variant="ghost"
           size="icon"
-          className={cn('size-10 shrink-0', className)}
-          aria-label={`${t('header.language')}: ${languageName}`}
+          className={cn('shrink-0', className)}
+          aria-label={`${languageLabel}: ${languageName}`}
           title={languageName}
         >
           <Languages className="size-5" aria-hidden />

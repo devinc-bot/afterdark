@@ -2,8 +2,10 @@ import { useState, type MouseEvent } from 'react'
 import { Menu } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { Link } from '@tanstack/react-router'
+import { handleSectionNavClick } from '@repo/common'
 import {
   Button,
+  LanguageToggle,
   Sheet,
   SheetClose,
   SheetContent,
@@ -15,8 +17,6 @@ import {
   linkVariants,
 } from '@repo/ui'
 import { DASHBOARD_ROUTES } from '~/modules/common/constants/routes'
-import { LanguageToggle } from '~/modules/common/components/language-toggle'
-import { handleSectionNavClick } from '../utils/scroll-to-section.utils'
 import {
   LANDING_CTA_PRIMARY,
   LANDING_FOCUS_RING,
@@ -97,7 +97,7 @@ export function LandingHeader() {
           </nav>
 
           <div className="flex shrink-0 items-center gap-1 sm:gap-2">
-            <LanguageToggle className={iconButton} />
+            <LanguageToggle className={iconButton} languageLabel={t('header.language')} />
             <ThemeToggle className={iconButton} />
             <Link to={DASHBOARD_ROUTES.login()} className={cn(authLink, 'px-2 font-label text-sm')}>
               {t('header.login')}

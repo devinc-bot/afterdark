@@ -8,7 +8,10 @@ import type {
 } from '@repo/types'
 import { PAYMENT_ATTEMPT_STATUS, PAYMENT_STATUS, PURCHASE_STATUS } from '@repo/types'
 
-function toLegacyPaymentStatus(purchaseStatus: string, paymentStatus: string): PaymentStatus {
+export function toLegacyPaymentStatus(
+  purchaseStatus: string,
+  paymentStatus: string
+): PaymentStatus {
   if (purchaseStatus === PURCHASE_STATUS.CONFIRMED) return PAYMENT_STATUS.COMPLETED
   if (paymentStatus === PAYMENT_ATTEMPT_STATUS.REJECTED) return PAYMENT_STATUS.REJECTED
   if (paymentStatus === PAYMENT_ATTEMPT_STATUS.CANCELLED) return PAYMENT_STATUS.CANCELLED
