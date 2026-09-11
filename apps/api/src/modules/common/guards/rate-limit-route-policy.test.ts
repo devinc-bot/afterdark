@@ -157,15 +157,6 @@ test.each([
   expectUserProfile(Controller, method, undefined)
 })
 
-test.each([
-  ['EventsController.streamPublishedAvailability', EventsController, 'streamPublishedAvailability'],
-  ['OrdersController.stream', OrdersController, 'stream'],
-] as const)('%s uses the sse IP profile', (_name, Controller, method) => {
-  expectIpProfile(Controller, method, RATE_LIMIT_PROFILE.SSE)
-  expectUserProfile(Controller, method, undefined)
-  expect(guardList(Controller, method)).not.toContain(UserRateLimitGuard)
-})
-
 test('orders.create uses purchase IP and user limits after JWT', () => {
   expectIpProfile(OrdersController, 'create', RATE_LIMIT_PROFILE.PURCHASE)
   expectUserProfile(OrdersController, 'create', RATE_LIMIT_PROFILE.PURCHASE)

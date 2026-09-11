@@ -4,12 +4,8 @@ import {
   PAYMENT_ATTEMPT_STATUS,
   PAYMENT_PROVIDER,
   PURCHASE_STATUS,
-  OUTBOX_AGGREGATE_TYPE,
-  OUTBOX_EVENT_TYPE,
 } from '@repo/types'
 import { db } from '../../client.ts'
-import { appendDomainOutboxEvent } from '../outbox/append-domain-outbox-event.ts'
-import { appendEventAvailabilityOutboxEvent } from '../outbox/append-event-availability-outbox-event.ts'
 import {
   inventoryReservations,
   type InventoryReservationSelect,
@@ -140,22 +136,6 @@ export async function reserveSingleTicketCheckout(
       })
       .returning()
     if (!payment) throw new Error('Payment insert returned no row')
-
-    await appendDomainOutboxEvent(tx, {
-      aggregateType: OUTBOX_AGGREGATE_TYPE.PURCHASE,
-      aggregateDocumentId: purchase.documentId,
-      aggregateVersion: purchase.stateVersion,
-      eventType: OUTBOX_EVENT_TYPE.PURCHASE_RESERVED,
-      payload: {
-        purchaseDocumentId: purchase.documentId,
-        status: purchase.status,
-        paymentStatus: payment.status,
-        expiresAt: purchase.expiresAt?.toISOString() ?? null,
-        version: purchase.stateVersion,
-      },
-      now: input.now,
-    })
-    await appendEventAvailabilityOutboxEvent(tx, ticket.id, input.now)
 
     return { purchase, purchaseItem, reservation, payment }
   })

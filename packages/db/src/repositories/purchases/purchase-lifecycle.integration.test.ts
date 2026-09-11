@@ -44,7 +44,6 @@ if (integration) {
     beforeEach(async () => {
       await pool.query(`
       truncate table
-        domain_outbox_events,
         payment_webhook_events,
         tickets_sold,
         inventory_reservations,

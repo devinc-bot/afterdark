@@ -3,7 +3,6 @@ import { AuthModule } from '../auth/auth.module'
 import { JwtAuthGuard } from '../common/guards/jwt-auth.guard'
 import { RolesGuard } from '../common/guards/roles.guard'
 import { MercadoPagoModule } from '../mercado-pago'
-import { RealtimeModule } from '../realtime'
 import { CreatePendingOrderUseCase } from './application/create-pending-order.use-case'
 import { DeletePendingOrderUseCase } from './application/delete-pending-order.use-case'
 import { GetOrderByDocumentIdUseCase } from './application/get-order-by-document-id.use-case'
@@ -13,7 +12,7 @@ import { PurchaseExpiryScheduler } from './application/services/purchase-expiry.
 import { OrdersController } from './presentation/orders.controller'
 
 @Module({
-  imports: [AuthModule, MercadoPagoModule, RealtimeModule],
+  imports: [AuthModule, MercadoPagoModule],
   controllers: [OrdersController],
   providers: [
     CreatePendingOrderUseCase,

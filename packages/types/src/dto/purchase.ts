@@ -35,12 +35,3 @@ export interface PurchaseResponse {
   createdAt: Date
   updatedAt: Date
 }
-
-/** Buyer-owned purchase state sent by the private purchase stream. */
-export interface PurchaseStreamSnapshot {
-  purchaseDocumentId: string
-  status: PurchaseStatus
-  paymentStatus: PaymentAttemptStatus
-  version: number
-  expiresAt: Date | null
-}
