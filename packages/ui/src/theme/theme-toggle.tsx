@@ -24,7 +24,7 @@ export function ThemeToggle({ className, size = 'icon' }: ThemeToggleProps) {
       aria-label={isDark ? t('theme.switchToLight') : t('theme.switchToDark')}
       title={isDark ? t('theme.light') : t('theme.dark')}
     >
-      {isDark ? <Sun className="size-5" aria-hidden /> : <Moon className="size-5" aria-hidden />}
+      {isDark ? <Sun className="size-7" aria-hidden /> : <Moon className="size-7" aria-hidden />}
     </Button>
   )
 }

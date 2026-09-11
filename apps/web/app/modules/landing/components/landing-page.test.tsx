@@ -21,13 +21,18 @@ test('landing-page does not import or render Atmosphere or Pulse sections', () =
 
 test('landing-page keeps Hero, About, How, Clarity, Events, Closing, and Organizers', () => {
   expect(pageSource).toMatch(/SectionHero/)
-  expect(pageSource).toMatch(/about-heading/)
+  expect(pageSource).toMatch(/SectionAbout/)
   expect(pageSource).toMatch(/id="como-funciona"/)
   expect(pageSource).toMatch(/HowSteps/)
   expect(pageSource).toMatch(/SectionClarity/)
-  expect(pageSource).toMatch(/id="eventos"/)
+  expect(pageSource).toMatch(/SectionEvents/)
   expect(pageSource).toMatch(/SectionAreYouReady/)
   expect(pageSource).toMatch(/SectionOrganizers/)
+})
+
+test('landing main omits view-transition-name so about glass backdrop-blur can sample the hero', () => {
+  expect(pageSource).not.toMatch(/vtStyle\s*\(\s*VT\.mainContent\s*\)/)
+  expect(pageSource).toMatch(/No view-transition-name/)
 })
 
 test('header and footer anchors #como-funciona and #claridad still resolve to kept sections', () => {

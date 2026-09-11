@@ -53,5 +53,5 @@ test('section-demo exposes an accessible title/label from i18n', () => {
 test('section-demo uses an elevated overlapping product stage surface', () => {
   expect(demoSource).toMatch(/-mt-/)
   expect(demoSource).toMatch(/rounded-app/)
-  expect(demoSource).toMatch(/glass-panel/)
+  expect(demoSource).toMatch(/glass-panel|backdrop-blur/)
 })

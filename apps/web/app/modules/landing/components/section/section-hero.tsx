@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import type { CSSProperties, ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import { cn } from '@repo/ui'
 import { Container } from '~/modules/common/components/container'
@@ -10,14 +10,28 @@ type SectionHeroProps = {
   className?: string
 }
 
+const HERO_IN_DELAYS = {
+  badge: 0,
+  headline: 90,
+  support: 180,
+  cta: 260,
+} as const
+
+function heroInStyle(delayMs: number): CSSProperties {
+  return { ['--landing-delay' as string]: delayMs }
+}
+
 export function SectionHero({ showAuthCtas = true, children, className }: SectionHeroProps) {
   const { t } = useTranslation('landing')
 
   return (
     <section
       id="inicio"
-      aria-labelledby="landing-brand"
-      className={cn('relative min-h-dvh overflow-hidden scroll-mt-0', className)}
+      aria-labelledby="hero-heading"
+      className={cn(
+        'relative flex min-h-[92vh] scroll-mt-0 items-end overflow-hidden bg-surface-dim',
+        className
+      )}
     >
       <div className="absolute inset-0">
         <img
@@ -27,39 +41,57 @@ export function SectionHero({ showAuthCtas = true, children, className }: Sectio
           width={2048}
           height={1152}
           alt={t('hero.imageAlt')}
-          className="h-full w-full object-cover object-[center_35%]"
+          className="h-full w-full scale-[1.02] object-cover object-center animate-hero-drift"
           fetchPriority="high"
           decoding="async"
         />
-        {/* Soft scrim: gradient from transparent toward bottom for text contrast over media */}
+        {/* Dual editorial scrims: bottom surface wash + left depth */}
         <div
-          className="pointer-events-none absolute inset-0 bg-linear-to-t from-black/75 via-black/35 to-black/15"
+          className="pointer-events-none absolute inset-0 bg-linear-to-t from-surface via-surface/60 to-transparent"
+          aria-hidden
+        />
+        <div
+          className="pointer-events-none absolute inset-0 bg-linear-to-r from-surface-container-lowest/80 via-transparent to-transparent"
           aria-hidden
         />
       </div>
 
-      {/* Subtle geometric accent — hairline mark */}
-      <div
-        className="pointer-events-none absolute bottom-[max(5.5rem,14vh)] left-0 hidden h-px w-10 bg-white/35 sm:block"
-        aria-hidden
-      />
+      <Container className="relative z-10 flex w-full flex-col justify-end pt-40 pb-20 sm:pb-28">
+        <div
+          className="mb-6 inline-flex w-fit items-center gap-2 rounded-full border border-outline-variant/40 bg-surface-container/90 px-3.5 py-1.5 shadow-sm backdrop-blur-md animate-landing-hero-in"
+          style={heroInStyle(HERO_IN_DELAYS.badge)}
+        >
+          <span
+            className="size-1.5 shrink-0 rounded-full bg-primary animate-pulse motion-reduce:animate-none"
+            aria-hidden
+          />
+          <span className="font-label text-xs font-medium tracking-widest text-on-surface uppercase">
+            {t('hero.badge')}
+          </span>
+        </div>
 
-      <Container className="relative z-10 flex min-h-dvh flex-col justify-end pb-[max(5.5rem,12vh)] pt-28 sm:pb-[max(6.5rem,14vh)]">
-        <div className="max-w-3xl">
-          <p
-            id="landing-brand"
-            className="font-display text-[clamp(2.75rem,12vw,5.5rem)] font-bold leading-[0.95] tracking-[-0.04em] text-balance text-white"
+        <div className="max-w-4xl space-y-4">
+          <h1
+            id="hero-heading"
+            className="font-display text-[clamp(2.25rem,6vw,4.5rem)] font-extrabold leading-[0.95] tracking-[-0.04em] text-balance text-on-surface animate-landing-hero-in"
+            style={heroInStyle(HERO_IN_DELAYS.headline)}
           >
-            {t('nav.brand')}
-          </p>
-          <h1 className="mt-6 max-w-[18ch] font-display text-[clamp(1.5rem,4.2vw,2.5rem)] font-semibold leading-tight -tracking-label-md text-pretty text-white">
-            {t('hero.headline')}
+            {t('hero.headline')} <br className="hidden sm:inline" />
+            <span className="text-primary">{t('hero.headlineAccent')}</span>
           </h1>
-          <p className="mt-4 max-w-[38ch] text-base leading-relaxed text-pretty text-white/85 sm:text-lg">
+          <p
+            className="max-w-xl pt-1 text-base leading-relaxed font-normal text-pretty text-on-surface-variant sm:text-lg animate-landing-hero-in"
+            style={heroInStyle(HERO_IN_DELAYS.support)}
+          >
             {t('hero.support')}
           </p>
-          {showAuthCtas ? children : null}
         </div>
+
+        {showAuthCtas ? (
+          <div className="animate-landing-hero-in" style={heroInStyle(HERO_IN_DELAYS.cta)}>
+            {children}
+          </div>
+        ) : null}
       </Container>
     </section>
   )

@@ -9,6 +9,7 @@
     "how": "Cómo funciona",
     "clarity": "Entradas",
     "events": "Eventos",
+    "organizers": "Para organizadores",
     "publish": "¿Organizás?",
     "tickets": "Entradas",
     "orders": "Órdenes",
@@ -20,36 +21,67 @@
     "language": "Idioma"
   },
   "hero": {
-    "headline": "Tu entrada, lista antes de llegar.",
-    "support": "Descubrí eventos, reservá tu lugar y llegá con todo resuelto.",
+    "badge": "TEMPORADA 2026 · ACCESO DIGITAL",
+    "headline": "Tu entrada, lista",
+    "headlineAccent": "antes de llegar.",
+    "support": "Descubrí eventos, reservá tu lugar y llegá con todo resuelto. Sin filas, sin dudas y con acceso directo en tu mano.",
     "ctaPrimary": "Crear cuenta",
     "ctaSecondary": "Iniciar sesión",
     "ctaLoading": "Cargando acciones",
     "imageAlt": "Escalinata de un venue moderno de noche, iluminada con focos cálidos"
   },
   "about": {
+    "kicker": "Sobre {appNameDisplay}",
     "headline": "Eventos claros. Entradas sin vueltas.",
-    "body": "{appNameDisplay} une ubicaciones y público en una sola experiencia: fechas reales, entradas entendibles y una interfaz limpia para decidir con confianza.",
-    "imageAlt": "Manos mostrando un celular con entrada digital y código QR frente a la puerta del venue"
+    "body": "{appNameDisplay} une ubicaciones y público en una sola experiencia: fechas reales, entradas entendibles y una interfaz limpia para decidir con absoluta confianza. Sin letra chica, sin sorpresas en la puerta.",
+    "imageAlt": "Manos mostrando un celular con entrada digital y código QR frente a la puerta del venue",
+    "metrics": {
+      "1": {
+        "value": "0%",
+        "label": "Costos ocultos"
+      },
+      "2": {
+        "value": "100%",
+        "label": "Pase digital"
+      },
+      "3": {
+        "value": "1 toque",
+        "label": "Acceso puerta"
+      }
+    },
+    "ticket": {
+      "status": "TICKET AUTORIZADO",
+      "code": "#LX-9940",
+      "eventName": "THE MIDNIGHT ECHOES",
+      "datetime": "20 OCT · 21:30 HS",
+      "capacity": "ADMITE 1 PERSONA",
+      "gate": "PUERTA A"
+    }
   },
   "how": {
+    "kicker": "EXPERIENCIA DE COMPRA",
     "headline": "Tres pasos. Sin ruido.",
+    "support": "Eliminamos formularios interminables para que pases del descubrimiento al acceso en minutos, con la información justa en cada paso.",
     "steps": {
       "1": {
         "title": "Creá tu cuenta",
-        "body": "Registrate una vez. Después, cada evento queda a un toque."
+        "body": "Registrate una vez con lo esencial. Después, cada evento queda a un toque — sin volver a empezar ni repetir datos.",
+        "meta": "En menos de 30 segundos"
       },
       "2": {
         "title": "Elegí el evento",
-        "body": "Mirás fechas, ubicaciones y entradas con la información que importa."
+        "body": "Mirás fechas, ubicaciones y entradas con lo que importa: precio claro, disponibilidad real y el contexto necesario para decidir sin ruido.",
+        "meta": "Información verídica y stock real"
       },
       "3": {
         "title": "Entrada lista",
-        "body": "Comprás, confirmás y llegás sabiendo que tu lugar ya está."
+        "body": "Comprás, confirmás y llevás tu pase digital en el teléfono. Llegás sabiendo que tu lugar ya está resuelto.",
+        "meta": "Lista en tu teléfono"
       }
     }
   },
   "clarity": {
+    "kicker": "FILOSOFÍA DE CLARIDAD",
     "headline": "Entrada, puerta y agenda — sin letra chica.",
     "support": "Lo que necesitás para decidir y llegar, al frente.",
     "items": {
@@ -68,49 +100,50 @@
     }
   },
   "events": {
+    "badge": "PRÓXIMAMENTE",
     "headline": "La agenda aún no abrió",
     "support": "Cuando haya eventos publicados, van a vivir acá. Creá tu cuenta para estar listo el día que salga la primera fecha.",
-    "cta": "Crear cuenta",
-    "previewAria": "Ambiente de eventos en vivo — sin fechas publicadas todavía",
-    "items": {
-      "1": {
-        "title": "Noches al aire libre",
-        "blurb": "Luces, gente y ritmo — el tipo de noche que querés encontrar sin fricción.",
-        "imageAlt": "Público en un festival al aire libre bajo luces colgantes"
-      },
-      "2": {
-        "title": "Escenarios chicos",
-        "blurb": "Bandas y salas íntimas donde la entrada importa tanto como el show.",
-        "imageAlt": "Banda tocando en un escenario pequeño con luz cálida"
-      },
-      "3": {
-        "title": "Llegar con todo listo",
-        "blurb": "Tu lugar resuelto antes de la puerta. Menos fila, más momento.",
-        "imageAlt": "Amigos sonriendo frente a la entrada de un venue al atardecer"
-      }
+    "badgeLive": "AGENDA",
+    "headlineLive": "Próximos eventos",
+    "supportLive": "Algunas fechas para empezar. Entrá a cualquiera o mirá el listado completo.",
+    "viewAll": "Ver todos",
+    "listAria": "Vista previa de eventos publicados",
+    "loading": "Cargando eventos",
+    "error": "No pudimos cargar la agenda ahora.",
+    "retry": "Reintentar",
+    "viewEventAria": "Ver evento {name}",
+    "noImage": "Sin imagen",
+    "notify": {
+      "title": "¿Querés ser el primero?",
+      "body": "Activá el aviso de apertura de temporada",
+      "cta": "Avisarme"
     }
   },
   "closing": {
     "headline": "Tu próximo evento empieza acá.",
-    "support": "Creá tu cuenta y entrá cuando la agenda abra del todo.",
-    "cta": "Crear cuenta"
+    "support": "Creá tu cuenta y entrá cuando la agenda abra del todo. Sin ruido, con todo listo para la noche.",
+    "cta": "Crear cuenta",
+    "ctaSecondary": "Iniciar sesión",
+    "trust": {
+      "1": "Acceso con cuenta",
+      "2": "Sin esperas"
+    }
   },
   "organizers": {
     "kicker": "Para quien organiza",
     "headline": "Publicá ubicaciones, eventos y entradas.",
-    "support": "El panel de Repo es para dueños y staff: crear ubicaciones, armar la agenda y vender entradas sin ruido.",
-    "cta": "Ir al panel",
-    "hint": "Se abre el panel de organización en otra pestaña."
+    "support": "El panel de {appNameDisplay} es para dueños y staff: crear ubicaciones, armar la agenda y vender entradas sin ruido.",
+    "cta": "Ir al panel"
   },
   "footer": {
-    "tagline": "Eventos y entradas, con claridad.",
+    "tagline": "Eventos claros. Entradas listas antes de la puerta.",
     "explore": "Explorar",
     "publish": "¿Organizás?",
     "publishTitle": "Organizadores",
     "publishBody": "Gestioná ubicaciones, eventos y entradas desde el panel.",
     "publishCta": "Abrir panel",
     "navAria": "Enlaces del pie de página",
-    "madeFor": "Hecha para que disfrutes cada evento con tranquilidad.",
+    "madeFor": "Hecha para que disfrutes cada evento con claridad y tranquilidad.",
     "rights": "© {year} {appName}",
     "social": {
       "title": "Seguinos",

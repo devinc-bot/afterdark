@@ -1,4 +1,11 @@
-import { useEffect, useRef, useState, type ElementType, type ReactNode } from 'react'
+import {
+  useEffect,
+  useRef,
+  useState,
+  type ElementType,
+  type ReactNode,
+  type RefObject,
+} from 'react'
 import { cn } from '@repo/ui'
 
 type RevealProps = {
@@ -7,12 +14,16 @@ type RevealProps = {
   as?: ElementType
 }
 
+type UseRevealEntranceResult = {
+  ref: RefObject<HTMLElement | null>
+  runEntrance: boolean
+}
+
 /**
- * Progressive scroll entrance. Content is always visible — never gated on
- * opacity-0 — so hash jumps, fast scroll, hidden tabs, and failed observers
- * cannot ship blank sections. Animation is additive enhancement only.
+ * Shared IO entrance: content stays visible; `runEntrance` only adds animation.
+ * Skips when reduced-motion, already in view (incl. hash), or after failsafe.
  */
-export function Reveal({ children, className, as: Tag = 'div' }: RevealProps) {
+export function useRevealEntrance(): UseRevealEntranceResult {
   const ref = useRef<HTMLElement | null>(null)
   const [runEntrance, setRunEntrance] = useState(false)
 
@@ -67,6 +78,17 @@ export function Reveal({ children, className, as: Tag = 'div' }: RevealProps) {
       window.clearTimeout(failsafe)
     }
   }, [])
+
+  return { ref, runEntrance }
+}
+
+/**
+ * Progressive scroll entrance. Content is always visible — never gated on
+ * opacity-0 — so hash jumps, fast scroll, hidden tabs, and failed observers
+ * cannot ship blank sections. Animation is additive enhancement only.
+ */
+export function Reveal({ children, className, as: Tag = 'div' }: RevealProps) {
+  const { ref, runEntrance } = useRevealEntrance()
 
   return (
     <Tag ref={ref as never} className={cn(className, runEntrance && 'animate-landing-fade')}>

@@ -32,7 +32,7 @@ export function LanguageToggle({ className }: LanguageToggleProps) {
           aria-label={`${t('nav.language')}: ${languageName}`}
           title={languageName}
         >
-          <Languages className="size-5" aria-hidden />
+          <Languages className="size-7" aria-hidden />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" sideOffset={4} className="min-w-40">
