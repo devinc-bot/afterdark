@@ -1,7 +1,7 @@
 import type { SessionResponse } from '@repo/types'
 import { create } from 'zustand'
 import { i18n } from '@repo/i18n/client'
-import { SESSION_STATUS, type SessionStatus } from '~/modules/common/constants/session-status'
+import { SESSION_STATUS, type SessionStatus } from '@repo/common'
 import { fetchSession, SessionFetchError } from '~/modules/common/services/session.service'
 import { registerSessionStateCleanup } from '~/modules/common/services/session-cleanup'
 

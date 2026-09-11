@@ -2,11 +2,12 @@ import {
   useEffect,
   useRef,
   useState,
+  type CSSProperties,
   type ElementType,
   type ReactNode,
   type RefObject,
 } from 'react'
-import { cn } from '@repo/ui'
+import { cn } from '../lib/utils'
 
 type RevealProps = {
   children: ReactNode
@@ -39,7 +40,9 @@ export function useRevealEntrance(): UseRevealEntranceResult {
       const hash = window.location.hash.slice(1)
       if (hash) {
         const target = document.getElementById(hash)
-        if (target && (target === el || target.contains(el))) return true
+        if (target && (target === el || target.contains(el) || el.contains(target))) {
+          return true
+        }
       }
       const rect = el.getBoundingClientRect()
       return rect.top < window.innerHeight && rect.bottom > 0
@@ -80,6 +83,10 @@ export function useRevealEntrance(): UseRevealEntranceResult {
   }, [])
 
   return { ref, runEntrance }
+}
+
+export function staggerStyle(index: number): CSSProperties {
+  return { ['--i' as string]: index }
 }
 
 /**

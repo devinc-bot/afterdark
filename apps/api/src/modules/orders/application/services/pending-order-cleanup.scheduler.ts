@@ -1,6 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common'
 import { Cron, CronExpression } from '@nestjs/schedule'
 import { deleteStalePendingOrders } from '@repo/db'
+import { runCleanupJob } from '../../../common'
 
 @Injectable()
 export class PendingOrderCleanupScheduler {
@@ -8,16 +9,12 @@ export class PendingOrderCleanupScheduler {
 
   @Cron(CronExpression.EVERY_1ST_DAY_OF_MONTH_AT_MIDNIGHT)
   async cleanupStalePendingOrders(): Promise<void> {
-    try {
-      const cutoff = this.getPreviousMonthStart(new Date())
-
-      const deleted = await this.deleteStalePendingOrders(cutoff)
-      if (deleted > 0) {
-        this.logger.log(`Deleted ${deleted} stale pending order(s)`)
-      }
-    } catch (error) {
-      this.logger.error('Pending order cleanup failed', error)
-    }
+    await runCleanupJob({
+      logger: this.logger,
+      failureMessage: 'Pending order cleanup failed',
+      successMessage: (deleted) => `Deleted ${deleted} stale pending order(s)`,
+      run: () => this.deleteStalePendingOrders(this.getPreviousMonthStart(new Date())),
+    })
   }
 
   protected getPreviousMonthStart(now: Date): Date {

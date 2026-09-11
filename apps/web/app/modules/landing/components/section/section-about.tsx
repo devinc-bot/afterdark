@@ -1,9 +1,8 @@
 import { useTranslation } from 'react-i18next'
-import { cn } from '@repo/ui'
+import { cn, Reveal } from '@repo/ui'
 import { Container } from '~/modules/common/components/container'
 import { LANDING_IMAGES } from '../../constants/images'
 import { LANDING_HEADING } from '../../constants/layout'
-import { Reveal } from '../reveal'
 
 const ABOUT_METRIC_KEYS = ['1', '2', '3'] as const
 

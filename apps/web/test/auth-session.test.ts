@@ -11,19 +11,27 @@ const callbackRouteModuleUrl = new URL('../app/routes/auth.callback.tsx', import
 const userMenuModuleUrl = new URL('../app/modules/common/components/user-menu.tsx', import.meta.url)
 
 test('web restores with its refresh cookie and clears local state after logout failures', async () => {
-  const [api, store, service, callback, userMenu] = await Promise.all([
+  const commonSessionServiceUrl = new URL(
+    '../../../packages/common/src/utils/create-session-service.ts',
+    import.meta.url
+  )
+  const [api, store, service, commonService, callback, userMenu] = await Promise.all([
     readFile(apiModuleUrl, 'utf8'),
     readFile(storeModuleUrl, 'utf8'),
     readFile(sessionServiceModuleUrl, 'utf8'),
+    readFile(commonSessionServiceUrl, 'utf8'),
     readFile(callbackRouteModuleUrl, 'utf8'),
     readFile(userMenuModuleUrl, 'utf8'),
   ])
 
-  expect(api).toContain('onAuthenticationFailure: clearLocalSession')
+  expect(api).toContain('clearLocalSession')
+  expect(api).toContain('createQueryFactoryAuthOptions')
+  expect(api).toContain('CLIENT_APP.WEB')
   expect(store).toContain('registerSessionStateCleanup')
   expect(store).not.toContain('hasToken')
+  expect(service).toContain('createSessionService')
   expect(service).toContain('app: CLIENT_APP.WEB')
-  expect(service).toContain('QueryFactoryAuthenticationError')
+  expect(commonService).toContain('QueryFactoryAuthenticationError')
   expect(callback).toContain('saveAuthSession(await refreshAuthSession())')
   expect(callback).not.toContain('accessToken: token')
   expect(userMenu).toContain('await logoutAuthSession()')

@@ -23,6 +23,7 @@ test('dashboard legal reacceptance wires pending/accept, owner gate, and dedicat
     pageRoute,
     page,
     service,
+    factory,
     queryKeys,
     gate,
     authMutations,
@@ -34,6 +35,7 @@ test('dashboard legal reacceptance wires pending/accept, owner gate, and dedicat
     readSource('../app/routes/_app/legal-acceptance.tsx'),
     readSource('../app/modules/legal-documents/components/legal-acceptance-page.tsx'),
     readSource('../app/modules/legal-documents/services/legal-documents.service.ts'),
+    readSource('../../../packages/common/src/utils/create-legal-documents-client.ts'),
     readSource('../app/modules/common/constants/query-keys.ts'),
     readSource('../app/modules/legal-documents/components/require-current-legal-acceptance.tsx'),
     readSource('../app/modules/auth/mutations/use-auth-mutations.ts'),
@@ -60,10 +62,12 @@ test('dashboard legal reacceptance wires pending/accept, owner gate, and dedicat
   expect(page).toContain('LEGAL_DOCUMENT_TYPE.TERMS_DASHBOARD')
   expect(page).toContain('LEGAL_DOCUMENT_TYPE.PRIVACY_DASHBOARD')
 
-  expect(service).toContain('API_ROUTES.legalDocuments.path.getPendingAcceptance()')
-  expect(service).toContain('API_ROUTES.legalDocuments.path.accept()')
+  expect(service).toContain('createLegalDocumentsClient')
+  expect(service).toContain('DASHBOARD_ROUTES.legalAcceptance')
   expect(service).toContain('resolvePostAuthPath')
-  expect(service).not.toContain('/api/legal-documents')
+  expect(factory).toContain('API_ROUTES.legalDocuments.path.getPendingAcceptance()')
+  expect(factory).toContain('API_ROUTES.legalDocuments.path.accept()')
+  expect(factory).not.toContain('/api/legal-documents')
   expect(queryKeys).toContain('pendingLegalAcceptance')
 
   expect(gate).toContain('user?.role === USER_ROLE.OWNER')

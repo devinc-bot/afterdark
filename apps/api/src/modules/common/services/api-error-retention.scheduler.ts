@@ -1,6 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common'
 import { Cron, CronExpression } from '@nestjs/schedule'
 import { deleteApiErrorRecordsBefore } from '@repo/db'
+import { runCleanupJob } from './run-cleanup-job'
 
 const API_ERROR_RETENTION_DAYS = 30
 
@@ -10,14 +11,12 @@ export class ApiErrorRetentionScheduler {
 
   @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
   async cleanupExpiredRecords(): Promise<void> {
-    try {
-      const deleted = await this.deleteApiErrorRecordsBefore(this.getCutoff(new Date()))
-      if (deleted > 0) {
-        this.logger.log(`Deleted ${deleted} expired API error record(s)`)
-      }
-    } catch (error) {
-      this.logger.error('API error record cleanup failed', error)
-    }
+    await runCleanupJob({
+      logger: this.logger,
+      failureMessage: 'API error record cleanup failed',
+      successMessage: (deleted) => `Deleted ${deleted} expired API error record(s)`,
+      run: () => this.deleteApiErrorRecordsBefore(this.getCutoff(new Date())),
+    })
   }
 
   protected getCutoff(now: Date): Date {

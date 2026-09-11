@@ -1,12 +1,12 @@
 import type { MouseEvent, ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate, useRouterState } from '@tanstack/react-router'
+import { handleSectionNavClick, sectionIdFromHash } from '@repo/common'
 import { Link, cn } from '@repo/ui'
 import { clientEnv } from '~/config/env'
 import { Container } from '~/modules/common/components/container'
 import { WEB_ROUTES } from '~/modules/common/constants/routes'
 import { LANDING_CTA_PRIMARY, LANDING_FOCUS_RING } from '../constants/layout'
-import { handleSectionNavClick, sectionIdFromHash } from '../utils/scroll-to-section.utils'
 
 const FOOTER_LINK = cn(
   'inline-flex min-h-11 items-center rounded-app-sm px-0 font-label text-sm text-on-surface-variant transition-colors duration-(--duration-fast) ease-emphasized hover:text-on-surface',

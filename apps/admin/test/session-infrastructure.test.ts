@@ -56,13 +56,19 @@ const adminLocaleEnUrl = new URL(
 )
 
 test('admin session infrastructure uses an isolated token and authenticated API client', async () => {
-  const [cookieSource, apiSource] = await Promise.all([
+  const [cookieSource, apiSource, commonAuthStorageSource] = await Promise.all([
     readFile(cookieModuleUrl, 'utf8'),
     readFile(apiModuleUrl, 'utf8'),
+    readFile(
+      new URL('../../../packages/common/src/constants/auth-storage.ts', import.meta.url),
+      'utf8'
+    ),
   ])
 
-  expect(cookieSource.includes("accessToken: 'app.admin.auth.token'")).toBe(true)
-  expect(cookieSource.includes('app.dashboard.auth.token')).toBe(false)
+  expect(cookieSource.includes('ACCESS_TOKEN_COOKIE_NAME[CLIENT_APP.ADMIN]')).toBe(true)
+  expect(cookieSource.includes('CLIENT_APP.DASHBOARD')).toBe(false)
+  expect(commonAuthStorageSource.includes("'app.admin.auth.token'")).toBe(true)
+  expect(commonAuthStorageSource.includes("'app.dashboard.auth.token'")).toBe(true)
   expect(apiSource.includes('getAccessToken: getAccessTokenSync')).toBe(true)
 })
 

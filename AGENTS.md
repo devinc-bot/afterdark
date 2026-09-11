@@ -23,6 +23,7 @@ La arquitectura de datos es `UI -> queries/mutations -> services -> QueryFactory
 
 ## Estilo y convenciones
 
+- Aplicá DRY: no copies lógica casi idéntica entre apps o capas; extraé a `packages/{common,ui,db,types,validators}` o `modules/common` / `apps/api/.../common` según `.cursor/rules/dry.mdc`. Extracciones grandes (auth session stack, registration pipelines) van en tareas incrementales, no en drive-bys.
 - TypeScript 6, versiones de dependencias fijadas y `pnpm-lock.yaml` siempre versionado. No uses actualizaciones masivas ni rangos `^` o `~`.
 - Archivos y rutas en inglés `kebab-case`; componentes `PascalCase`; funciones, hooks y keys de mapas `camelCase`; mapas de constantes `SCREAMING_SNAKE_CASE` con `as const`.
 - No uses magic strings para modos, estados, roles, query keys o valores de dominio. Define y reutiliza mapas de constantes. Las rutas literales solo son válidas dentro de `createFileRoute`.

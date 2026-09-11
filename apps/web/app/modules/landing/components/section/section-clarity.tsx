@@ -1,9 +1,8 @@
 import { Calendar, QrCode, Ticket } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
-import { cn } from '@repo/ui'
+import { cn, staggerStyle, useRevealEntrance } from '@repo/ui'
 import { Container } from '~/modules/common/components/container'
 import { LANDING_HEADING, LANDING_SECTION_Y } from '../../constants/layout'
-import { useRevealEntrance } from '../reveal'
 
 const CLARITY_ITEMS = [
   { id: 'ticket', Icon: Ticket },
@@ -51,7 +50,7 @@ export function SectionClarity({ className }: SectionClarityProps) {
           {CLARITY_ITEMS.map(({ id, Icon }, index) => (
             <li
               key={id}
-              style={{ ['--i' as string]: index }}
+              style={staggerStyle(index)}
               className={cn(
                 'flex min-w-0 flex-col gap-5 border border-transparent hover:border-hairline/20 rounded-app-lg bg-hairline/10 hover:bg-card transition-all duration-300 hover:shadow-glass p-8 sm:rounded-app-xl',
                 runEntrance && 'animate-landing-stagger'

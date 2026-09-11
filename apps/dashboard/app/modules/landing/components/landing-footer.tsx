@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { handleSectionNavClick } from '../utils/scroll-to-section.utils'
+import { handleSectionNavClick } from '@repo/common'
 import { LANDING_MAX } from '../constants/layout'
 
 const FOOTER_LINKS = [

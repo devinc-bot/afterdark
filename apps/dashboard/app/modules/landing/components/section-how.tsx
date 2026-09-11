@@ -1,10 +1,9 @@
 import type { LucideIcon } from 'lucide-react'
 import { MapPin, CalendarCheck, Ticket } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
-import { cn } from '@repo/ui'
+import { cn, staggerStyle, useRevealEntrance } from '@repo/ui'
 import { LANDING_STEP_KEYS } from '../constants/landing-content'
 import { LANDING_EYEBROW, LANDING_HEADING, LANDING_ICON, LANDING_MAX } from '../constants/layout'
-import { staggerStyle, useRevealEntrance } from './reveal'
 
 const STEP_ICONS = {
   '1': MapPin,

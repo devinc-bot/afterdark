@@ -1,0 +1,62 @@
+---
+description: Prefer DRY — extract shared logic once; avoid copy-paste across apps and layers
+alwaysApply: true
+---
+
+# DRY (Don't Repeat Yourself)
+
+When adding or changing code, **reuse or extract** instead of copying near-identical logic.
+
+## Before duplicating
+
+1. Search for an existing helper in `packages/{common,ui,db,types,validators}` or `modules/common/`.
+2. If two+ call sites share the same algorithm, extract a named function/factory **in this change** (or the next incremental task if the extract is large).
+3. Prefer **parameterized shared code** over parallel user/owner/web/dashboard copies.
+
+## Where shared code lives
+
+| Concern | Home |
+| -------- | ---- |
+| Cookies, API client, session factories, route helpers | `packages/common` |
+| Reusable UI primitives / hooks without app routes | `packages/ui` |
+| Repo helpers, table-parameterized deletes | `packages/db` |
+| Domain enums/DTOs | `packages/types` |
+| Nest boilerplate (cleanup cron shell, image upload) | `apps/api/src/modules/common` |
+| App-only glue | thin wrapper in that app — keep `CLIENT_APP` / register path differences only |
+
+## Do
+
+```typescript
+// ✅ one mapper, reused
+export function toLegacyPaymentStatus(purchaseStatus: string, paymentStatus: string): PaymentStatus
+status: toLegacyPaymentStatus(purchase.status, payment.status)
+```
+
+```typescript
+// ✅ factory with app-specific config
+createSessionService({ api, app: CLIENT_APP.WEB })
+```
+
+## Don't
+
+```typescript
+// ❌ copy the same ternary in use-case and mapper
+purchase.status === CONFIRMED ? COMPLETED : payment.status === REJECTED ? …
+```
+
+```typescript
+// ❌ redefine SESSION_STATUS in an app when `@repo/common` already exports it
+```
+
+## Exceptions (not DRY debt)
+
+- Intentional product differences (web attendee landing vs dashboard organizer landing **content**).
+- Generated files, migration history, thin re-exports.
+- Tests that mirror production contracts on purpose.
+- One-off adapters at system boundaries when abstraction would obscure the vendor/API.
+
+## Scope discipline
+
+- Do not DRY unrelated areas in the same PR.
+- Large cross-app extracts (auth session stack, registration pipelines) are **incremental tasks** with a short plan — not a drive-by mega-refactor.
+- Prefer clarity: extract when duplication causes drift risk; skip when the shared abstraction would be vaguer than two small copies.

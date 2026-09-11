@@ -6,6 +6,9 @@ export {
   type AccountSessionsLabels,
   type AccountSessionsProps,
 } from './components/account-sessions.tsx'
+export { buildAccountSessionsLabels } from './lib/build-account-sessions-labels.ts'
+export { LanguageToggle } from './components/language-toggle.tsx'
+export { Reveal, staggerStyle, useRevealEntrance } from './components/landing-reveal.tsx'
 export {
   AvatarCropDialog,
   cropImageToBlob,
