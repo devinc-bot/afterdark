@@ -48,6 +48,7 @@
 | 042 | `api-cloud-run-scheduler`          | API en Cloud Run + jobs Scheduler                 | `draft`       | `api`, `db`, `common`                                   | Preparar API para Cloud Run (scale-to-zero), migrar crons Nest a endpoints internos OIDC + Cloud Scheduler; docs/scripts GCP sin reemplazar deploy VPS (029). Depende de 043. Ver `spec/features/active/042-api-cloud-run-scheduler/`. |
 | 043 | `remove-realtime-module`           | Quitar realtime SSE (sin polling)                 | `done`        | `api`, `db`, `web`, `common`, `types`                   | Eliminados `realtime`/SSE/polling; drop `domain_outbox_events`; web GET al montar. Ver `spec/features/archive/043-remove-realtime-module/`. |
 | 044 | `dry-client-auth-session-stack`    | DRY stack auth/sesión cliente                     | `done`        | `common`, `web`, `dashboard`, `admin`                   | Factories en `@repo/common` (`createAuthStorage`, cleanup, session service, QueryFactory auth options); cookies/`CLIENT_APP` intactos. Ver `spec/features/archive/044-dry-client-auth-session-stack/`. |
+| 045 | `api-jobs-module`                  | Consolidar crons Nest en módulo `jobs`            | `done`        | `api`                                                   | Módulo `jobs` con los 8 schedulers + `runCleanupJob` + `JOBS.md`; sin HTTP/OIDC/Cloud Run (042 se replantea después). Ver `spec/features/archive/045-api-jobs-module/`. |
 
 ## Status
 
@@ -99,8 +100,9 @@
 034-profile-avatar-upload            →  requiere 004 (owner-settings), 015 (files-module); web settings + 001
 034-legal-reacceptance-on-publish    →  requiere 033-legal-acceptance-on-register
 035-aws-ses-mail                     →  reemplaza adaptador de 019 (email-service); sin cambio de templates/call sites
-042-api-cloud-run-scheduler          →  después de 043; construye sobre 029; no reemplaza VPS frontends
+042-api-cloud-run-scheduler          →  después de 043; construye sobre 029; no reemplaza VPS frontends; se replantea después de 045
 043-remove-realtime-module           →  quita SSE/outbox table; fetch on mount only
+045-api-jobs-module                  →  consolidación in-process; prerequisito informal antes de replantear 042
 ```
 
 ## Decisiones de prioridad

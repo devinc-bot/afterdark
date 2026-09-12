@@ -18,10 +18,6 @@ import { RefreshSessionUseCase } from './application/refresh-session.use-case'
 import { LogoutSessionUseCase } from './application/logout-session.use-case'
 import { AuthAccountService } from './application/services/auth-account.service'
 import { GoogleOauthService } from './application/services/google-oauth.service'
-import { PasswordResetCleanupScheduler } from './application/services/password-reset-cleanup.scheduler'
-import { AccountSessionCleanupScheduler } from './application/services/account-session-cleanup.scheduler'
-import { UserRegistrationCleanupScheduler } from './application/services/user-registration-cleanup.scheduler'
-import { OwnerRegistrationCleanupScheduler } from './application/services/owner-registration-cleanup.scheduler'
 import { SessionMetadataService } from './application/services/session-metadata.service'
 import { ACCESS_TOKEN_TTL } from './auth.constants'
 import { AuthController } from './presentation/auth.controller'
@@ -53,10 +49,6 @@ import { AuthController } from './presentation/auth.controller'
     LogoutSessionUseCase,
     GoogleOauthStartUseCase,
     GoogleOauthCallbackUseCase,
-    PasswordResetCleanupScheduler,
-    AccountSessionCleanupScheduler,
-    UserRegistrationCleanupScheduler,
-    OwnerRegistrationCleanupScheduler,
   ],
   exports: [JwtModule],
 })

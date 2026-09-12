@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common'
 import { Cron, CronExpression } from '@nestjs/schedule'
 import { deleteApiErrorRecordsBefore } from '@repo/db'
-import { runCleanupJob } from './run-cleanup-job'
+import { runCleanupJob } from '../run-cleanup-job'
 
 const API_ERROR_RETENTION_DAYS = 30
 

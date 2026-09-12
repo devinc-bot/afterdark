@@ -7,8 +7,6 @@ import { CreatePendingOrderUseCase } from './application/create-pending-order.us
 import { DeletePendingOrderUseCase } from './application/delete-pending-order.use-case'
 import { GetOrderByDocumentIdUseCase } from './application/get-order-by-document-id.use-case'
 import { ListMyOrdersUseCase } from './application/list-my-orders.use-case'
-import { PendingOrderCleanupScheduler } from './application/services/pending-order-cleanup.scheduler'
-import { PurchaseExpiryScheduler } from './application/services/purchase-expiry.scheduler'
 import { OrdersController } from './presentation/orders.controller'
 
 @Module({
@@ -19,8 +17,6 @@ import { OrdersController } from './presentation/orders.controller'
     DeletePendingOrderUseCase,
     GetOrderByDocumentIdUseCase,
     ListMyOrdersUseCase,
-    PendingOrderCleanupScheduler,
-    PurchaseExpiryScheduler,
     JwtAuthGuard,
     RolesGuard,
   ],

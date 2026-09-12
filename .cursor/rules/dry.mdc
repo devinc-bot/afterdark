@@ -21,7 +21,8 @@ When adding or changing code, **reuse or extract** instead of copying near-ident
 | Reusable UI primitives / hooks without app routes | `packages/ui` |
 | Repo helpers, table-parameterized deletes | `packages/db` |
 | Domain enums/DTOs | `packages/types` |
-| Nest boilerplate (cleanup cron shell, image upload) | `apps/api/src/modules/common` |
+| Nest boilerplate (image upload) | `apps/api/src/modules/common` |
+| Nest cleanup cron shell / schedulers | `apps/api/src/modules/jobs` |
 | App-only glue | thin wrapper in that app — keep `CLIENT_APP` / register path differences only |
 
 ## Do

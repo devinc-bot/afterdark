@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common'
 import { ScheduleModule } from '@nestjs/schedule'
 import { I18nModule } from '@repo/i18n/server'
 import { CommonModule } from './modules/common/common.module'
+import { JobsModule } from './modules/jobs'
 import { AuthModule } from './modules/auth'
 import { CategoriesModule } from './modules/categories'
 import { LocationsModule } from './modules/locations'
@@ -28,6 +29,7 @@ import { OrganizationsModule } from './modules/organizations/organizations.modul
     ScheduleModule.forRoot(),
     I18nModule,
     CommonModule,
+    JobsModule,
     AuthModule,
     CategoriesModule,
     LocationsModule,

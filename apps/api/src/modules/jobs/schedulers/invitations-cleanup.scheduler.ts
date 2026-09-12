@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common'
 import { Cron, CronExpression } from '@nestjs/schedule'
 import { deleteExpiredAndCancelledInvitations } from '@repo/db'
-import { runCleanupJob } from '../../../common'
+import { runCleanupJob } from '../run-cleanup-job'
 
 @Injectable()
 export class InvitationsCleanupScheduler {

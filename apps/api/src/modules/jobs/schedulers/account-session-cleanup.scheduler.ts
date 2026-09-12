@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common'
 import { Interval } from '@nestjs/schedule'
 import { deleteExpiredOrRevokedAccountSessionsBefore } from '@repo/db'
-import { runCleanupJob } from '../../../common'
+import { runCleanupJob } from '../run-cleanup-job'
 
 const ACCOUNT_SESSION_RETENTION_DAYS = 7
 const DAY_IN_MILLISECONDS = 24 * 60 * 60 * 1000
