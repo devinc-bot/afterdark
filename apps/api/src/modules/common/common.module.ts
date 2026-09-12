@@ -7,7 +7,6 @@ import { HttpExceptionFilter } from './filters/http-exception.filter.ts'
 import { MulterExceptionFilter } from './filters/multer-exception.filter.ts'
 import { ApiThrottlerGuard } from './guards/api-throttler.guard.ts'
 import { UserRateLimitGuard } from './guards/user-rate-limit.guard.ts'
-import { ApiErrorRetentionScheduler } from './services/api-error-retention.scheduler.ts'
 import { ApiErrorRecorderService } from './services/api-error-recorder.service.ts'
 import { DatabaseLifecycleService } from './services/database-lifecycle.service.ts'
 
@@ -26,7 +25,6 @@ const publicBudget = RATE_LIMIT_POLICY[RATE_LIMIT_PROFILE.PUBLIC]
   ],
   providers: [
     ApiErrorRecorderService,
-    ApiErrorRetentionScheduler,
     DatabaseLifecycleService,
     UserRateLimitGuard,
     {

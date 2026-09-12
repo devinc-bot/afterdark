@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common'
 import { Cron, CronExpression } from '@nestjs/schedule'
 import { findExpiredActiveReservationDocumentIds, releaseReservationOnce } from '@repo/db'
 import { INVENTORY_RESERVATION_STATUS, PURCHASE_STATUS } from '@repo/types'
-import { runCleanupJob } from '../../../common'
+import { runCleanupJob } from '../run-cleanup-job'
 
 const EXPIRY_BATCH_SIZE = 100
 
